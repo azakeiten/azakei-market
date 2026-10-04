@@ -82,6 +82,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .pips{display:flex;gap:6px}
 .pips i{width:26px;height:10px;border-radius:5px;background:var(--rail);box-shadow:inset 0 0 0 1px var(--line)}
 .pips i.done{background:var(--dim)} .pips i.now{background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.pips .term{display:flex;gap:2px;padding:3px;border-radius:7px;background:rgb(0 0 0 / .25)} .pips .term i{width:9px;height:8px;border-radius:3px} .pips .term.cur{box-shadow:inset 0 0 0 1.5px #ff9ad9}
+@media (max-width:560px){ .pips .term i{width:7px} .pips .term:not(.cur) i{width:3px;border-radius:2px} .pips .term{gap:1px;padding:2px} }
 .turnlbl{font-family:var(--display);color:var(--gold);font-size:15px;white-space:nowrap}
 .deckchip{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:13px;color:var(--muted);white-space:nowrap}
 .deckchip .mini-back{width:16px;height:22px;border-radius:4px;background:linear-gradient(135deg,#3a43b8,#232985);box-shadow:0 0 0 1.5px var(--gold-deep),3px 3px 0 -1px #232985,3px 3px 0 .5px var(--gold-deep)}
@@ -628,7 +630,7 @@ body.calm *{animation:none!important;transition:none!important}
 .overlay.settle .box{max-width:560px;gap:12px}
 .stitle{font-family:var(--display);font-size:clamp(40px,10vw,64px);line-height:1;color:var(--gold);text-shadow:0 6px 0 var(--rail),0 0 40px rgb(255 200 58 / .5);animation:bang .6s cubic-bezier(.2,.9,.3,1.4) both}
 .stable{width:100%;display:flex;flex-direction:column;gap:8px}
-.strow{display:flex;align-items:center;gap:10px;border-radius:16px;padding:8px 12px;background:rgb(7 8 24 / .55);box-shadow:inset 0 0 0 1px var(--line);text-align:left;animation:achin .5s cubic-bezier(.2,.9,.3,1.3) both}
+.strow{display:flex;flex-direction:column;align-items:stretch;gap:6px;border-radius:16px;padding:8px 12px;background:rgb(7 8 24 / .55);box-shadow:inset 0 0 0 1px var(--line);text-align:left;animation:achin .5s cubic-bezier(.2,.9,.3,1.3) both}
 .strow:nth-child(2){animation-delay:.1s} .strow:nth-child(3){animation-delay:.2s} .strow:nth-child(4){animation-delay:.3s} .strow:nth-child(5){animation-delay:.4s} .strow:nth-child(6){animation-delay:.5s}
 .strow .ava{width:34px;height:34px;font-size:14px}
 .strow .sr{font-family:var(--display);font-weight:400;font-size:20px;width:22px;text-align:center;color:var(--muted)}
@@ -640,7 +642,31 @@ body.calm *{animation:none!important;transition:none!important}
 .strow.me{background:linear-gradient(90deg,rgb(79 227 255 / .14),rgb(7 8 24 / .55))}
 .snext{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px}
 .snext b{font-family:var(--display);font-weight:400;font-size:22px}
-@media (max-width:560px){ .strow{gap:8px;padding:8px 10px} .strow .sg{font-size:11px} .strow .ava{display:none} }
+.srow1{display:flex;align-items:center;gap:10px}
+.srow2{display:flex;flex-wrap:wrap;gap:6px;padding-left:32px}
+.srow2:empty{display:none}
+.ctr{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;border-radius:10px;padding:3px 4px 3px 8px;background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--line);color:var(--muted);animation:achin .5s cubic-bezier(.2,.9,.3,1.3) both}
+.ctr i,.brd i,.ctchip i{font-style:normal;font-size:10px;letter-spacing:.08em;opacity:.8}
+.ctr b{border-radius:7px;padding:1px 7px;background:var(--rail);color:var(--dim);white-space:nowrap}
+.ctr.ok{color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--up);background:rgb(92 240 162 / .1)}
+.ctr.ok b{background:var(--up);color:#06331b;animation:stampin .45s cubic-bezier(.2,.9,.3,1.6) both;animation-delay:inherit}
+@keyframes stampin{from{transform:scale(2.4) rotate(-12deg);opacity:0}}
+.brd{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;border-radius:10px;padding:3px 9px;color:#fff;background:linear-gradient(135deg,color-mix(in srgb,var(--c) 80%,#fff),var(--c));box-shadow:0 2px 0 color-mix(in srgb,var(--c) 50%,#000);text-shadow:0 1px 0 rgb(0 0 0 / .3);white-space:nowrap}
+.brd.new{animation:lvpop .7s cubic-bezier(.2,.9,.3,1.6) 1.2s both}
+.brd.sm{font-size:10px;padding:1px 6px;border-radius:7px;margin-right:2px}
+.secret{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.ctchip{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;border-radius:12px;padding:5px 6px 5px 12px;color:var(--ink);background:repeating-linear-gradient(135deg,rgb(255 255 255 / .04) 0 6px,transparent 6px 12px),linear-gradient(90deg,#3a1450,#24123f);box-shadow:inset 0 0 0 1.5px #ff7ad1,0 0 18px -8px #ff7ad1}
+.ctchip i{color:#ff9ad9}
+.ctchip b{border-radius:8px;padding:1px 8px;background:#ff7ad1;color:#2b0f4f}
+.card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
+.card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
+@media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- mode themes: the same world, re-lit per mode ---- */
+body[data-theme="hist"]{--night:#140c07;--felt:#2a1910;--felt2:#55331b;--rail:#0c0704;--panel:#2f1f14;--panel2:#3f2a1a;--line:#5e4129;--muted:#d6c1a2;--dim:#9c8467}
+body[data-theme="long"]{--night:#11052a;--felt:#230a40;--felt2:#53146a;--rail:#09021a;--panel:#2a0f4c;--panel2:#3b1663;--line:#5c2b86;--muted:#dcbcec;--dim:#9d7abd}
+body[data-theme="hist"] #bg{filter:sepia(.9) hue-rotate(-12deg)}
+body[data-theme="long"] #bg{filter:hue-rotate(55deg) saturate(1.3)}
+body{transition:background-color .5s ease}
 /* ---- market cards (long only) ---- */
 .mkt{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;color:#fff;border-radius:20px;padding:16px 14px 14px;overflow:hidden;
   background:radial-gradient(circle at 50% 28%,rgb(255 255 255 / .35),transparent 45%),linear-gradient(165deg,var(--m1),var(--m2) 70%,color-mix(in srgb,var(--m2) 60%,#000));
@@ -891,7 +917,7 @@ const divOf = (cfg,v) => cfg.fore==='dividend' && v>=3 ? 1 : 0;
 const rowFor = (p,deck,t) => p.fut ? deck[t+1] : deck[t];
 // 先物は次のNEWSの点数から手数料1を引く（プラスのときだけ）
 const futBase = (v,cfg) => v>0 ? v-(cfg && cfg.fee!=null ? cfg.fee : 1) : v;   // 市況「先物ブーム」では手数料0
-const baseFor = (cfg,p,deck,t,c) => p.fut ? futBase(cfg.table[deck[t+1]][c],cfg) : cfg.table[deck[t]][c];
+const baseFor = (cfg,p,deck,t,c) => (p.fut ? futBase(cfg.table[deck[t+1]][c],cfg) : cfg.table[deck[t]][c]) + (p.brand===c?1:0);   // ロング版のブランドは+1
 // まだ起こりうるNEWS（公開情報）。歴史モードでは「今より後の年の出来事」
 function unseen(cfg,deck,t){
   if(cfg.hist){ const y=yearOf(deck[t]); return cfg.pool.filter(i=>yearOf(i)>y); }
@@ -925,7 +951,7 @@ function cardValues(cfg,p,players,deck,t,row,known,adj){
   for(const c of p.hand){
     let dist=[1];
     for(const od of opp){ const q=od[c], nd=new Array(dist.length+1).fill(0); for(let k=0;k<dist.length;k++){ nd[k]+=dist[k]*(1-q); nd[k+1]+=dist[k]*q; } dist=nd; }
-    const b0=adj?adj(T[row][c],cfg):T[row][c];
+    const b0=(adj?adj(T[row][c],cfg):T[row][c])+(p.brand===c?1:0);
     let ev=0; for(let k=0;k<dist.length;k++) ev+=dist[k]*gain(cfg,b0,k+1);
     let carry=0;
     if(cfg.fore==='dividend' && left>0 && fut.length){ if(known) carry=divOf(cfg,T[deck[t+1]][c]); else { for(const u of pool) carry+=divOf(cfg,T[u][c]); carry/=pool.length; } }
@@ -996,11 +1022,13 @@ function haptic(ms){ if(S && S.vib===false) return; try{ navigator.vibrate && na
 const FX={p:[],run:false};
 function fxSize(){ for(const id of ['fx','bg']){ const c=document.getElementById(id); if(!c) continue; const d=Math.min(2,devicePixelRatio||1); c.width=innerWidth*d; c.height=innerHeight*d; c.getContext('2d').setTransform(d,0,0,d,0,0); } }
 function burst(x,y,colors,n){
+  if(document.hidden || FX.p.length>1200) return;   // 裏にあるあいだは出さない・出しすぎない
   if(reduced()) return;
   for(let i=0;i<(n||40);i++){ const a=Math.random()*Math.PI*2, v=3+Math.random()*7; FX.p.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-3,g:.22,life:50+Math.random()*30,c:colors[i%colors.length],s:3+Math.random()*5,r:Math.random()*6,vr:(Math.random()-.5)*.4,sh:i%3}); }
   if(!FX.run) fxLoop();
 }
 function confetti(){
+  if(document.hidden || FX.p.length>1200) return;
   if(reduced()) return;
   const cols=['#ffc83a','#ff7a3d','#5f86ff','#ff5c9a','#20c6d1','#a77bff','#3fe08f'];
   for(let i=0;i<(phone()?110:180);i++) FX.p.push({x:Math.random()*innerWidth,y:-20-Math.random()*innerHeight*.6,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,g:.04,life:260,c:cols[i%cols.length],s:5+Math.random()*6,r:Math.random()*6,vr:(Math.random()-.5)*.3,sh:1+i%2});
@@ -1081,7 +1109,7 @@ function toggleSound(){ S.sound=!S.sound; save('azakei-sound',S.sound); if(S.sou
 let introTimer=null;
 function startGame(online, daily){
   sfx('open');
-  const long = !online && !daily && S.len==='long';
+  const long = !daily && S.len==='long';   // オンラインはホストの設定（S.len）に従う
   TURNS=daily ? 4 : long ? LONG_PER : (CFG.turns||4);
   let cfg=daily ? dailyCfg(daily) : cfgFor(S.mode, long?'all':S.era);
   let fullPool=null;
@@ -1091,7 +1119,7 @@ function startGame(online, daily){
       deck:buildDeck(cfg, daily?mulberry(daily):Math.random), rnd:daily?mulberry(daily*7+13):null, daily:daily||null, turn:0, phase:'choose', active:-1, sel:null, last:null, divs:[], ov:null,
       rounds: long ? (cfg.hist ? Math.ceil(fullPool.length/LONG_PER) : LONG_ROUNDS) : 1, round:0, fullPool, log:[], settles:[] };
   G.players.forEach(p=>p.roundStart=0);
-  if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); }
+  if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); G.players.forEach(p=>p.brand=null); dealContracts(); }
   G.me = online ? G.players.findIndex(p=>p.peer===NET.myPeer) : -1;
   scrollTo(0,0);
   beginTurn();
@@ -1197,7 +1225,7 @@ function resolveTurn(){
   G.last=G.players.map(p=>{
     const base=baseFor(C,p,G.deck,G.turn,p.pick), total=gain(C,base,cnt[p.pick]);
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++;
-    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut});
+    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick]});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
     return {ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick]};
   });
@@ -1230,8 +1258,8 @@ function nextTurn(){
   if(!G || G.phase!=='reveal') return;   // 連打で2ターン進まないように
   if(G.online && !G.host) return;
   sfx('click'); G.turn++;
-  if(G.turn>=TURNS && (G.round||0)<(G.rounds||1)-1){ settleRound(); return; }
-  if(G.turn>=TURNS){ G.phase='final'; recordResult(); render(); netSync(); scrollTo(0,0); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); return; }
+  if(G.turn>=TURNS && isLong()){ settleRound(); return; }   // ロング版は最後の期も決算してから最終結果へ
+  if(G.turn>=TURNS){ finishGame(); return; }
   scrollTo(0,0); beginTurn();
 }
 /* ---- long game: 6ターン×数期。期が変わると手札と未来予測が戻り、期末に決算ボーナス ---- */
@@ -1272,39 +1300,88 @@ const logDeck = () => G.log && G.log.length ? G.log : G.deck.slice(0,TURNS);
 const termName = r => G.cfg.hist && G.fullPool ? `${r===0?'前半':'後半'}` : `第${r+1}期`;
 function termRange(r){ if(!G.fullPool) return ''; const ids=G.fullPool.slice(r*LONG_PER,(r+1)*LONG_PER); return `${yearOf(ids[0])}–${yearOf(ids[ids.length-1])}`; }
 const turnLabel = () => (isLong()?`${termName(G.round)} · `:'')+`TURN ${G.turn+1}/${TURNS}`;
+function finishGame(){ G.phase='final'; G.ov=null; recordResult(); render(); netSync(); scrollTo(0,0); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); }
+/* ブランド：期の決算で、その期にいちばん独占した産業が自分のブランドになり、以後その産業は毎回+1 */
+function brandOf(us, prev){
+  const n=[0,0,0,0,0,0]; let lastMono=-1;
+  us.forEach(u=>{ if(u.k===1){ n[u.ind]++; lastMono=u.ind; } });
+  const mx=Math.max(...n); if(mx===0) return prev;           // 独占できなかった期はブランドそのまま
+  const cand=n.map((v,i)=>v===mx?i:-1).filter(i=>i>=0);
+  return cand.includes(lastMono) ? lastMono : cand[cand.length-1];
+}
+/* 極秘契約：期のはじめに1人1枚。自分だけが見られるお題で、期末に達成していればボーナス */
+const CONTRACTS={
+  mono:   {v:3, n:c=>`${IND[c.x]}で独占する`},
+  clean:  {v:3, n:()=>'この期、マイナス点を1回も取らない'},
+  mono3:  {v:4, n:()=>'この期に独占を3回以上する'},
+  big:    {v:3, n:()=>'+4以上を2回取る'},
+  fut:    {v:3, n:()=>'先物取引で+3以上を取る', fut:true},
+  last:   {v:3, n:()=>'期の最後のターンで独占する'}
+};
+function contractDone(c, us){
+  if(!c) return false;
+  switch(c.id){
+    case 'mono':  return us.some(u=>u.ind===c.x && u.k===1);
+    case 'clean': return us.length>0 && us.every(u=>u.total>=0);
+    case 'mono3': return us.filter(u=>u.k===1).length>=3;
+    case 'big':   return us.filter(u=>u.total>=4).length>=2;
+    case 'fut':   return us.some(u=>u.fut && u.total>=3);
+    case 'last':  { const u=us[us.length-1]; return !!u && u.k===1; }
+  }
+  return false;
+}
+const contractText = c => c && CONTRACTS[c.id] ? CONTRACTS[c.id].n(c) : '';
+const contractVal = c => c && CONTRACTS[c.id] ? CONTRACTS[c.id].v : 0;
+function dealContracts(){
+  const ids=Object.keys(CONTRACTS).filter(k=>!CONTRACTS[k].fut || G.cfg.fore==='futures');
+  const deck=ids.flatMap(k=>k==='mono'?[0,1,2,3,4,5].map(x=>({id:k,x})):[{id:k}]);   // 紙のルールブックと同じ11枚（独占契約は産業ごとに6枚）
+  G.players.forEach(p=>{ p.contract={...deck[Math.floor(Math.random()*deck.length)]}; });
+}
+const termUsed = (p,r) => p.used.filter(u=>Math.floor(u.turn/TURNS)===r);
 function settleRound(){
   G.turn=TURNS-1;   // 画面は期の最後のターンのまま、上に決算を出す
   const gains=G.players.map(p=>p.score-(p.roundStart||0)), mx=Math.max(...gains);
-  const rows=G.players.map((p,i)=>{ const bonus = gains[i]===mx ? SETTLE_BONUS : 0;
-    if(bonus){ p.score+=bonus; p.hist[p.hist.length-1]=p.score; }
-    return {i, gain:gains[i], bonus}; });
+  const rows=G.players.map((p,i)=>{
+    const us=termUsed(p,G.round), bonus = gains[i]===mx ? SETTLE_BONUS : 0;
+    const done=contractDone(p.contract, us), cv=done?contractVal(p.contract):0;
+    const before=p.brand, brand=brandOf(us, p.brand);
+    p.score+=bonus+cv; p.hist[p.hist.length-1]=p.score; p.brand=brand;
+    return {i, gain:gains[i], bonus, ct:p.contract?{...p.contract}:null, done, cv, brand, newBrand: brand!=null && brand!==before};
+  });
   G.settles.push({round:G.round, rows});
   G.phase='settle'; G.ov='settle'; G.active=-1;
-  render(); sfx('fanfare'); haptic(30);
+  render(); netSync(); sfx('fanfare'); haptic(30);
   setTimeout(()=>{ if(G && G.ov==='settle') confetti(); },300);
 }
 function startNextRound(){
   if(!G || G.phase!=='settle') return;
+  if(G.online && !G.host) return;
+  if(G.round>=G.rounds-1){ finishGame(); return; }
   sfx('click'); G.ov=null; G.round++; G.turn=0;
   if(G.mkts) applyMarket();
   if(G.fullPool) G.cfg.pool=G.fullPool.slice(G.round*LONG_PER,(G.round+1)*LONG_PER);
   G.deck=buildDeck(G.cfg, Math.random);
   G.players.forEach(p=>{ p.hand=[0,1,2,3,4,5]; p.foreUsed=false; p.foreTurn=-1; p.fut=false; p.roundStart=p.score; });
+  dealContracts();
   scrollTo(0,0); beginTurn();
 }
 function settleOverlay(){
-  const s=G.settles[G.settles.length-1], rk=ranking(G.players,G.cfg), me=myIndex();
-  const rows=rk.map(x=>{ const r=s.rows[x.i]; return `<div class="strow${x.i===me?' me':''}${r.bonus?' top':''}"><b class="sr">${x.rank}</b>
-      <div class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${esc(initial(x.p.name))}</div>
-      <span class="sn">${esc(x.p.name)}</span><span class="sg num ${cls(r.gain)}">今期 ${sgn(r.gain)}</span>${r.bonus?`<span class="sb">決算 +${r.bonus}</span>`:''}<b class="st">${x.p.score}</b></div>`; }).join('');
+  const s=G.settles[G.settles.length-1], rk=ranking(G.players,G.cfg), me=myIndex(), lastTerm=G.round>=G.rounds-1;
+  const rows=rk.map((x,j)=>{ const r=s.rows[x.i]; return `<div class="strow${x.i===me?' me':''}${r.bonus?' top':''}" style="animation-delay:${j*.1}s">
+      <div class="srow1"><b class="sr">${x.rank}</b><div class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${esc(initial(x.p.name))}</div>
+      <span class="sn">${esc(x.p.name)}</span><span class="sg num ${cls(r.gain)}">今期 ${sgn(r.gain)}</span>${r.bonus?`<span class="sb">決算 +${r.bonus}</span>`:''}<b class="st">${x.p.score}</b></div>
+      <div class="srow2">${r.ct?`<span class="ctr${r.done?' ok':''}" style="animation-delay:${.8+j*.25}s"><i>契約</i>${esc(contractText(r.ct))}<b>${r.done?`達成 +${r.cv}`:'未達成'}</b></span>`:''}
+        ${r.brand!=null?`<span class="brd${r.newBrand?' new':''}" style="--c:var(--i${r.brand})"><i>ブランド</i>${IND[r.brand]}${r.newBrand?' NEW':''}</span>`:''}</div></div>`; }).join('');
   const nx=G.round+1;
+  const next = lastTerm ? `<div class="snext"><span class="label">FINAL</span><b>これで全期が終了！</b><span class="note">決算ボーナスと契約を足した合計で順位が決まります</span></div>`
+    : `<div class="snext"><span class="label">NEXT</span><b>${termName(nx)}${termRange(nx)?' · '+termRange(nx):''}</b>${G.mkts?marketCard(G.mkts[nx],"big flip"):""}<span class="note">手札6枚と${FORE[G.cfg.fore].short}が復活。新しい極秘契約が配られます</span></div>`;
+  const btn = G.online && !G.host ? `<p class="note">ホストが次へ進めます<span class="dots"><i></i><i></i><i></i></span></p>`
+    : `<button class="btn gold big pulse" onclick="startNextRound()">${lastTerm?'最終結果へ':termName(nx)+'をはじめる'}</button>`;
   return `<div class="overlay settle"><div class="box">
     <span class="label">${termName(G.round)}${termRange(G.round)?' · '+termRange(G.round):''} 終了</span>
-    <div class="stitle">決算発表</div>
-    <p class="note">今期いちばん稼いだ人に <b style="color:var(--gold)">決算ボーナス +${SETTLE_BONUS}</b></p>
-    <div class="stable">${rows}</div>
-    <div class="snext"><span class="label">NEXT</span><b>${termName(nx)}${termRange(nx)?' · '+termRange(nx):''}</b>${G.mkts?marketCard(G.mkts[nx],"big flip"):""}<span class="note">手札6枚と${FORE[G.cfg.fore].short}が復活します</span></div>
-    <button class="btn gold big pulse" onclick="startNextRound()">${termName(nx)}をはじめる</button></div></div>`;
+    <div class="stitle">${lastTerm?'最終決算':'決算発表'}</div>
+    <p class="note">今期いちばん稼いだ人に <b style="color:var(--gold)">+${SETTLE_BONUS}</b> ・ 極秘契約を公開 ・ いちばん独占した産業が<b style="color:var(--ink)">ブランド</b>に（以後その産業は毎回 +1）</p>
+    <div class="stable">${rows}</div>${next}${btn}</div></div>`;
 }
 function quit(){
   clearTimeout(introTimer);
@@ -1423,16 +1500,17 @@ function emit(topic,data){ if(!NET.room) return; NET.room.emit(topic,data).catch
 // ---- host ----
 function hostBroadcast(){
   if(!NET.host || !NET.room) return;
-  if(!G){ emit('state',{ph:'lobby', hostPeer:NET.myPeer, mode:S.mode, era:S.era, cpus:NET.cpus, r:{b:CFG.bonus,f:CFG.fore}}); return; }
+  if(!G){ emit('state',{ph:'lobby', hostPeer:NET.myPeer, mode:S.mode, era:S.era, len:S.len==='long'?'long':'short', cpus:NET.cpus, r:{b:CFG.bonus,f:CFG.fore}}); return; }
   netSync();
 }
 function netSync(){
   if(!G || !G.online || !G.host) return;
   const C=G.cfg, rev=G.phase==='reveal'||G.phase==='final';
   const st={ph:G.phase, v:++NET.ver, hostPeer:NET.myPeer, mode:C.hist?'history':'classic', era:C.era||'all',
-    r:{b:C.bonus,f:C.fore,tb:C.tiebreak?1:0,c:C.collide,n:TURNS,t:C.hist?null:C.table}, turn:G.turn,
+    r:{b:G.base?G.base.bonus:C.bonus,f:C.fore,tb:C.tiebreak?1:0,c:G.base?G.base.collide:C.collide,n:TURNS,t:C.hist?null:(G.base?G.base.table:C.table)}, turn:G.turn,
+    lg:isLong()?{rd:G.round,rds:G.rounds,mk:G.mkts,fp:G.fullPool,log:G.log,st:G.settles.length?G.settles[G.settles.length-1]:null}:null,
     shown:G.deck.slice(0, G.phase==='final'?TURNS:G.turn+1), remain:C.hist?null:G.deck.slice(G.turn+1).slice().sort((a,b)=>a-b),
-    ps:G.players.map(p=>[p.name,p.type==='human'?'h':p.type==='naive'?'n':'r',p.peer||'',p.score,p.uniq,p.hist,p.used.map(u=>[u.ind,u.total,u.fut?1:0]),p.foreUsed?1:0,p.foreTurn,p.fut?1:0,p.pick!==null?1:0,p.hand]),
+    ps:G.players.map(p=>[p.name,p.type==='human'?'h':p.type==='naive'?'n':'r',p.peer||'',p.score,p.uniq,p.hist,p.used.map(u=>[u.ind,u.total,u.fut?1:0,u.k||0]),p.foreUsed?1:0,p.foreTurn,p.fut?1:0,p.pick!==null?1:0,p.hand,p.brand==null?-1:p.brand,p.contract?[p.contract.id,p.contract.x==null?-1:p.contract.x]:null,p.roundStart||0]),
     last:rev&&G.last?G.last.map(x=>[x.ind,x.base,x.total,x.fut?1:0,x.k]):null, cnt:rev?G.cnt:null,
     peek:G.phase==='choose'?Object.fromEntries(G.players.filter(p=>p.peer&&p.foreUsed&&p.foreTurn===G.turn&&G.turn+1<TURNS).map(p=>[p.peer,G.deck[G.turn+1]])):{},
     divs:G.divs};
@@ -1478,23 +1556,34 @@ function guestApply(st){
   const last=Array.isArray(st.last)?st.last.map(x=>({ind:x[0],base:x[1],total:x[2],fut:!!x[3],k:x[4]})):null;
   G={online:true, host:false, cfg, turn:+st.turn||0, phase:st.ph, deck:st.shown.slice(), remain:st.remain, last, cnt:st.cnt, divs:Array.isArray(st.divs)?st.divs:[], ov:null,
      players:st.ps.map((a,i)=>({seat:i,name:String(a[0]).slice(0,16),type:a[1]==='h'?'human':a[1]==='n'?'naive':'read',peer:a[2]||null,score:+a[3]||0,uniq:+a[4]||0,hist:Array.isArray(a[5])?a[5]:[0],
-       used:(a[6]||[]).map((u,j)=>({ind:u[0],total:u[1],fut:!!u[2],turn:j})),foreUsed:!!a[7],foreTurn:a[8],fut:!!a[9],pick:a[10]?-1:null,hand:Array.isArray(a[11])?a[11]:[],shown:+a[3]||0}))};
-  G.sel = prev && prev.turn===G.turn && prev.phase==='choose' ? prev.sel : null;
+       used:(a[6]||[]).map((u,j)=>({ind:u[0],total:u[1],fut:!!u[2],k:+u[3]||0,turn:j})),foreUsed:!!a[7],foreTurn:a[8],fut:!!a[9],pick:a[10]?-1:null,hand:Array.isArray(a[11])?a[11]:[],shown:+a[3]||0,
+       brand:Number.isInteger(a[12])&&a[12]>=0&&a[12]<6?a[12]:null, contract:Array.isArray(a[13])&&CONTRACTS[a[13][0]]?{id:a[13][0],x:a[13][1]>=0?a[13][1]:undefined}:null, roundStart:+a[14]||0}))};
+  const lg=st.lg;
+  if(lg && Array.isArray(lg.mk)){                 // ロング版：期・市況・決算をホストにそろえる
+    G.round=Math.max(0,+lg.rd||0); G.rounds=Math.max(1,+lg.rds||1); G.mkts=lg.mk.filter(k=>MARKETS[k]);
+    G.fullPool=Array.isArray(lg.fp)?lg.fp:null; G.log=Array.isArray(lg.log)?lg.log:[]; G.settles=lg.st&&Array.isArray(lg.st.rows)?[lg.st]:[];
+    if(G.fullPool) cfg.pool=G.fullPool.slice(G.round*LONG_PER,(G.round+1)*LONG_PER);
+    const m=MARKETS[G.mkts[G.round]]; if(m) m.apply(cfg);
+    if(G.phase==='settle') G.ov='settle';
+  } else { G.rounds=1; G.round=0; G.settles=[]; }
+  G.sel = prev && prev.turn===G.turn && (prev.round||0)===(G.round||0) && prev.phase==='choose' ? prev.sel : null;
   if(prev && prev.phase==='final' && G.phase==='final'){ G.reward=prev.reward; G.recorded=prev.recorded; }
   G.me=G.players.findIndex(p=>p.peer===NET.myPeer); G.active=G.me;
   // 送信済みの自分の手は、ホストの確認が届くまで・届いた後も手元で覚えておく
   if(G.me>=0 && G.phase==='choose' && prev && prev.me===G.me && prev.turn===G.turn && prev.players[G.me] && prev.players[G.me].pick!==null && prev.players[G.me].pick>=0) G.players[G.me].pick=prev.players[G.me].pick;
   const pk=st.peek && G.me>=0 ? st.peek[NET.myPeer] : undefined; if(Number.isInteger(pk)) G.deck[G.turn+1]=pk;
   if(last){ G.players.forEach((p,i)=>{ if(last[i]){ p.pick=last[i].ind; p.shown=p.score-last[i].total; } }); }
-  const key=G.turn+':'+G.phase;
+  const key=(G.round||0)+':'+G.turn+':'+G.phase;
   if(key!==NET.fxKey){
     NET.fxKey=key;
-    if(G.phase==='choose'){ NET.introUntil=Date.now()+(reduced()?300:1500); sfx(G.cfg.hist?'press':'deal'); setTimeout(()=>{ if(G&&G.online&&!G.host) render(); }, reduced()?320:1520); }
+    if(G.phase==='choose'){ const ms=reduced()?300:(isLong()&&G.turn===0?4100:1500); NET.introUntil=Date.now()+ms; sfx(G.cfg.hist?'press':'deal'); setTimeout(()=>{ if(G&&G.online&&!G.host) render(); }, ms+20); }
+    if(G.phase==='settle'){ sfx('fanfare'); setTimeout(()=>{ if(G&&G.ov==='settle') confetti(); },300); }
     if(G.phase==='countdown'){ guestCountdown(); }
     if(G.phase==='reveal'){ if(NET.counting){ NET.pending=true; } else { render(); revealFx(); return; } }
     if(G.phase==='final'){ recordResult(); render(); scrollTo(0,0); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); return; }
   } else if(G.phase==='reveal' || G.phase==='final'){ G.players.forEach(p=>p.shown=p.score); }
   if(Date.now()<NET.introUntil && G.phase==='choose') G.ov='intro';
+  if(G.phase==='settle') G.ov='settle';
   if(NET.counting) G.ov='count';
   render();
 }
@@ -1518,7 +1607,7 @@ function toast(t){ const el=document.getElementById('toast'); if(!el) return; el
 const BOOKS={
   classic:{file:'rulebook-classic.pdf', png:'rulebook-classic.png', pngName:'AZAKEI_MARKET_rulebook.png', name:'AZAKEI_MARKET_rulebook.pdf', md:'AZAKEI_MARKET_rulebook.md', title:'β3 ルールブック', sub:'クラシック · A4 8ページ'},
   history:{file:'rulebook-history.pdf', png:'rulebook-history.png', pngName:'AZAKEI_MARKET_history_rulebook.png', name:'AZAKEI_MARKET_history_rulebook.pdf', md:'AZAKEI_MARKET_history_rulebook.md', title:'歴史モード ルールブック', sub:'1964〜2022 · A4 8ページ'},
-  long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況カード付き · A4 6ページ'}
+  long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況・契約カード付き · A4 8ページ'}
 };
 // 普通のWebサイト（GitHub Pages）では、ふつうのダウンロードリンクで保存する
 function saveByLink(href,name){ const a=document.createElement('a'); a.href=href; a.download=name; a.rel='noopener'; document.body.appendChild(a); a.click(); a.remove(); closeSheet(); toast('ダウンロードを開始しました'); }
@@ -1585,7 +1674,9 @@ ${base}
 - クラシックは6ターン×3期（18ターン）、歴史モードは12の出来事すべてを前半・後半の2期（12ターン）
 - 1期で手札6枚をすべて使い切る。期が変わると手札6枚と先物取引が復活
 - 期のはじめに市況カードを1枚めくり、その期だけルールが加わる（第1期は好景気か先物ブーム）
-- 期の終わりに決算：その期に稼いだPOINTがいちばん多い人に+3（同点は全員）
+- 期の終わりに決算：その期に稼いだPOINTがいちばん多い人に+3（同点は全員）。最後の期も決算してから終了
+- 極秘契約：期のはじめに1人1枚、自分だけのお題が配られる。期末に公開し、達成していれば+3〜+4
+- ブランド：期にいちばん独占した産業が自分のブランドになり、以後その産業を出すと毎回+1
 
 ## 市況カード
 ${Object.values(MARKETS).map(m=>`- **${m.n}**：${m.d}。${m.tip}`).join('\n')}
@@ -1622,7 +1713,12 @@ function renderSheet(){
 }
 
 /* ================= render ================= */
+function setTheme(){   // モードごとに画面全体の色を変える（クラシック＝藍、歴史＝セピア、ロング＝紫）
+  const t = G ? (isLong()?'long':G.cfg.hist?'hist':'classic') : (S.screen==='play' ? (S.len==='long'?'long':S.mode==='history'?'hist':'classic') : 'classic');
+  if(document.body.dataset.theme!==t) document.body.dataset.theme=t;
+}
 function render(){
+  setTheme();
   const app=$('#app');
   const tb=$('#tabbar');
   if(!G){
@@ -1679,7 +1775,8 @@ function hud(){
   if(!G) return `<div class="hud"><button class="logo" style="background:none;border:0;padding:0" onclick="go('home')"><span class="mk"></span>AZAKEI <span>MARKET</span></button>
     <nav class="topnav hide-sm" aria-label="メニュー">${NAV.map(([k,l])=>`<button class="${navOn(k)?'on':''}" onclick="go('${k}')">${l}</button>`).join('')}</nav>
     <div class="row" style="gap:8px">${NET.room?`<span class="codechip" title="ルームコード">${esc(NET.code)}</span>`:''}${profileChip()}${snd}${gear}</div></div>`;
-  const pips=Array.from({length:TURNS},(_,i)=>`<i class="${i<G.turn||G.phase==='final'?'done':i===G.turn?'now':''}"></i>`).join('');
+  const pip=(r,i)=>{ const g=r*TURNS+i, cur=(G.round||0)*TURNS+G.turn; return `<i class="${g<cur||G.phase==='final'||G.phase==='settle'&&r<=G.round?'done':g===cur?'now':''}"></i>`; };
+  const pips = isLong() ? Array.from({length:G.rounds},(_,r)=>`<span class="term${r===G.round?' cur':''}">${Array.from({length:TURNS},(_,i)=>pip(r,i)).join('')}</span>`).join('') : Array.from({length:TURNS},(_,i)=>pip(0,i)).join('');
   const left=G.phase==='final'?0:TURNS-1-G.turn;
   return `<div class="hud"><div class="logo"><span class="mk"></span><span class="hide-sm" style="color:inherit">AZAKEI</span> <span>MARKET</span>${G.cfg.hist?'<span class="modechip">歴史</span>':''}</div>
     <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div><span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${curMarket()&&G.phase!=="final"?`<span class="mktchip" style="--m1:${curMarket().c1};--m2:${curMarket().c2}">${curMarket().ic} ${curMarket().n}</span>`:""}
@@ -1721,7 +1818,7 @@ function seatsView(){
       <div class="ava" style="--s:var(--s${p.seat%6})">${esc(initial(p.name))}</div>
       <div class="nm">${esc(p.name)}${isHuman(p)?'':`<span class="tagx">${p.type==='naive'?'素直':'読み合い'}</span>`}</div>
       <div class="sc" id="sc${i}">${G.phase==='reveal'?p.shown:p.score}${spark(p.hist)}</div>
-      <div class="meta">${p.used.filter(u=>Math.floor(u.turn/TURNS)===(G.round||0)).map(u=>`<span class="dot c${u.ind}" title="${IND[u.ind]}"></span>`).join('')}<span class="eye${p.foreUsed?' on':''}" title="未来予測">${EYE}${p.foreUsed?FORE[G.cfg.fore].short+'済':'未使用'}</span></div>
+      <div class="meta">${p.used.filter(u=>Math.floor(u.turn/TURNS)===(G.round||0)).map(u=>`<span class="dot c${u.ind}" title="${IND[u.ind]}"></span>`).join('')}${p.brand!=null?`<span class="brd sm" style="--c:var(--i${p.brand})" title="ブランド">${IND[p.brand]}</span>`:""}<span class="eye${p.foreUsed?' on':''}" title="未来予測">${EYE}${p.foreUsed?FORE[G.cfg.fore].short+'済':'未使用'}</span></div>
       <div class="play">${play}</div></div>`;
   }).join('');
 }
@@ -1768,8 +1865,8 @@ function handDock(news){
   const C=G.cfg, p=G.players[G.active];
   const known=p.foreUsed && p.foreTurn===G.turn, next=known?G.deck[G.turn+1]:null;
   const row=p.fut?next:news, n=p.hand.length;
-  const ptsOf=c=>p.fut?futBase(C.table[row][c],C):C.table[row][c];
-  const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return cardHTML(c,{click:true,sel:G.sel===c,pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`}); }).join('');
+  const ptsOf=c=>(p.fut?futBase(C.table[row][c],C):C.table[row][c])+(p.brand===c?1:0);
+  const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return cardHTML(c,{click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`}); }).join('');
   const dealKey=G.turn+':'+G.active, deal=G.dealKey!==dealKey; G.dealKey=dealKey;
   const canFore=!p.foreUsed && G.turn<TURNS-1, fdef=FORE[C.fore];
   let preview='<span>カードを選ぶと、独占したときと被ったときの点数が出ます</span>';
@@ -1781,6 +1878,7 @@ function handDock(news){
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span></div>
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>
     ${known?`<div class="peek"><span class="label" style="color:var(--cyan)">${p.fut?'先物取引':'未来予測'} · 次のNEWS（あなただけ）</span><b>${nextLabel}</b></div>`:''}
+    ${isLong()&&(p.contract||p.brand!=null)?`<div class="secret">${p.contract?`<span class="ctchip"><i>極秘契約</i>${esc(contractText(p.contract))}<b>+${contractVal(p.contract)}</b></span>`:""}${p.brand!=null?`<span class="brd" style="--c:var(--i${p.brand})"><i>ブランド</i>${IND[p.brand]} +1</span>`:""}</div>`:""}
     <div class="preview">${preview}</div>
     <div class="actions">
       <button class="btn cyan" onclick="useForesight()" ${canFore?'':'disabled'} title="${fdef.desc}">${EYE.replace('<svg','<svg style="width:18px;height:18px;vertical-align:-4px;margin-right:4px"')}${p.foreUsed?(known?`${fdef.short}中`:'使用済み'):(G.turn>=TURNS-1?'最終ターン':`${fdef.btn}`)}</button>
@@ -1881,7 +1979,7 @@ function homeView(){
     <button class="mcard history" onclick="pickMode('history')"><span class="new">NEW</span><span class="label">HISTORY · 1964→2022</span><b>歴史モード</b><span class="desc">本当の経済の出来事が年代順に起きる。歴史を知っているほど未来が読める。</span><span class="go">このモードであそぶ →</span></button>
   </section>
   <button class="longcard" onclick="pickLong()"><span class="new">NEW</span><span class="lbig">LONG</span>
-    <span class="ltx"><span class="label">MARKET SEASON</span><b>ロング版</b><span class="desc">6ターン×3期の18ターン勝負。期ごとに「市況カード」でルールが変わり、期末には決算ボーナス。歴史モードなら1964→2022を全部たどる。</span><span class="go">じっくり遊ぶ →</span></span>
+    <span class="ltx"><span class="label">MARKET SEASON</span><b>ロング版</b><span class="desc">6ターン×3期の18ターン勝負。期ごとに変わる「市況カード」、自分だけの「極秘契約」、育てる「ブランド」。歴史モードなら1964→2022を全部たどる。</span><span class="go">じっくり遊ぶ →</span></span>
     <span class="terms" aria-hidden="true"><i>第1期</i><i>第2期</i><i>第3期</i></span></button>
   <section class="two">
     <button class="wide online" onclick="go('online')"><span class="label">ONLINE</span><b>オンライン対戦</b><span class="desc">ルームコードで、離れた友だちと同じゲームを。最大6人、CPUも追加できます。</span><span class="go">ルームを作る・参加する →</span></button>
@@ -1919,7 +2017,7 @@ function playView(){
         <button class="len${S.len!=='long'?' on':''}" onclick="setLen('short')"><span class="lt">SHORT</span><b>ショート</b><span class="note">${CFG.turns||4}ターン · 5分 · 文化祭向け</span></button>
         <button class="len long${S.len==='long'?' on':''}" onclick="setLen('long')"><span class="lt">LONG</span><b>ロング版</b><span class="note">${S.mode==='history'?'12ターン · 2期 · 1964→2022 全部':'18ターン · 3期 · じっくり'}</span></button>
       </div>
-      ${S.len==='long'?`<p class="note lnote">6ターンで1期。期が変わると<b style="color:var(--ink)">手札6枚と${FORE[CFG.fore].short}が復活</b>。期のはじめに<b style="color:#ff9ad9">市況カード</b>を1枚めくり、その期だけルールが変わる（好景気・不況・バブル…）。期末の決算で、その期にいちばん稼いだ人に <b style="color:var(--gold)">+${SETTLE_BONUS}</b>。${S.mode==='history'?'歴史モードは12の出来事をすべて、前半・後半に分けて遊びます。':''}</p>`:''}
+      ${S.len==='long'?`<p class="note lnote">6ターンで1期。期が変わると<b style="color:var(--ink)">手札6枚と${FORE[CFG.fore].short}が復活</b>。期のはじめに<b style="color:#ff9ad9">市況カード</b>を1枚めくり、その期だけルールが変わる（好景気・不況・バブル…）。期末の決算で、その期にいちばん稼いだ人に <b style="color:var(--gold)">+${SETTLE_BONUS}</b>。さらに、自分だけが見られるお題<b style="color:#ff9ad9">極秘契約</b>と、いちばん独占した産業が以後+1になる<b style="color:var(--ink)">ブランド</b>も。${S.mode==='history'?'歴史モードは12の出来事をすべて、前半・後半に分けて遊びます。':''}</p>`:''}
       <div class="step"><span class="sn">2</span><b>だれと遊ぶ？</b></div>
       <div class="seg wide" role="group" aria-label="遊び方">
         <button class="${!party?'on':''}" onclick="setSeatPreset('cpu')">1人でCPUと</button>
@@ -2035,7 +2133,7 @@ function dailyCard(){
 }
 /* ---- share a result (Wordle-style squares) ---- */
 function myIndex(){ return !G ? -1 : G.online ? G.me : (G.players.filter(isHuman).length===1 ? G.players.findIndex(isHuman) : -1); }
-function resultGrid(p){ return p.used.map(u=>{ const uniq = u.base!=null ? u.total>u.base : u.total>3; return u.total<0?'🟥':uniq?'🟨':u.total>0?'🟩':'⬜'; }).join(''); }
+function resultGrid(p){ return p.used.map(u=>{ const uniq = u.k ? u.k===1 : u.base!=null ? u.total>u.base : u.total>3; return u.total<0?'🟥':uniq?'🟨':u.total>0?'🟩':'⬜'; }).join(''); }
 function shareText(){
   const me=myIndex(); if(me<0) return '';
   const p=G.players[me], rk=ranking(G.players,G.cfg).find(x=>x.i===me).rank;
@@ -2222,10 +2320,10 @@ async function drawResultCard(){
   x.font=`190px ${D}`; x.fillStyle='#fff'; x.fillText(String(p.score),W/2-40,640);
   const sw=x.measureText(String(p.score)).width; x.font=`64px ${D}`; x.fillStyle=v('--gold'); x.textAlign='left'; x.fillText('pt',W/2-40+sw/2+12,640);
   // 4ターンのカード
-  const items = isLong() ? Array.from({length:G.rounds},(_,r)=>{ const us=p.used.filter(u=>Math.floor(u.turn/TURNS)===r), st=G.settles[r]; return {label:termName(r), ind:null, total:us.reduce((s,u)=>s+u.total,0)+(st?st.rows[me].bonus:0), uq:us.filter(u=>u.base!=null&&u.total>u.base).length}; }) : p.used;
+  const items = isLong() ? Array.from({length:G.rounds},(_,r)=>{ const us=p.used.filter(u=>Math.floor(u.turn/TURNS)===r), st=G.settles[r]; return {label:termName(r), ind:null, total:us.reduce((s,u)=>s+u.total,0)+(st?st.rows[me].bonus+(st.rows[me].cv||0):0), uq:us.filter(u=>u.k?u.k===1:(u.base!=null&&u.total>u.base)).length}; }) : p.used;
   const n=items.length, cw=200, gap=26, tot=n*cw+(n-1)*gap, x0=(W-tot)/2, y0=720, ch=280;
   items.forEach((u,i)=>{
-    const cx=x0+i*(cw+gap), col=u.ind==null?v('--gold-deep'):v('--i'+u.ind), uniq=u.ind!=null && u.base!=null?u.total>u.base:false;
+    const cx=x0+i*(cw+gap), col=u.ind==null?v('--gold-deep'):v('--i'+u.ind), uniq=u.ind!=null && (u.k?u.k===1:(u.base!=null?u.total>u.base:false));
     x.save(); x.shadowColor='rgba(0,0,0,.5)'; x.shadowBlur=30; x.shadowOffsetY=14;
     rr(x,cx,y0,cw,ch,26); const cg=x.createLinearGradient(cx,y0,cx+cw,y0+ch); cg.addColorStop(0,'#ffffff'); cg.addColorStop(.12,col); cg.addColorStop(1,'#1a1033'); x.fillStyle=cg; x.fill(); x.restore();
     rr(x,cx,y0,cw,ch,26); x.lineWidth=6; x.strokeStyle=uniq?v('--gold'):'rgba(255,255,255,.35)'; x.stroke();
@@ -2329,6 +2427,7 @@ function tutorialBody(){
       ${i<TUT.length-1?`<button class="btn gold big" onclick="tutGo(1)">次へ</button>`:`<button class="btn go big" onclick="closeSheet();S.mode='classic';S.seats=defaultSeats('cpu');save('azakei-tut',1);startGame()">練習ゲームをはじめる</button>`}</div>`;
 }
 
+function setOnlineLen(l){ if(!NET.host) return; S.len=l; save('azakei-len',l); sfx('click'); hostBroadcast(); render(); }
 function setOnlineMode(m){ if(!NET.host) return; S.mode=m; sfx('click'); hostBroadcast(); render(); }
 function setOnlineEra(e){ if(!NET.host || !ERAS[e]) return; S.era=e; hostBroadcast(); render(); }
 function setCpus(d){ if(!NET.host) return; NET.cpus=Math.max(0,Math.min(5,NET.cpus+d)); sfx('click'); hostBroadcast(); render(); }
@@ -2366,10 +2465,11 @@ function onlineView(){
   const modeUI = NET.host ? `<div class="modes" role="group" aria-label="ゲームモード">
         <button class="mode${mode==='classic'?' on':''}" onclick="setOnlineMode('classic')"><b>クラシック</b><span class="note">6つのNEWSがランダムな順番で</span></button>
         <button class="mode hist${mode==='history'?' on':''}" onclick="setOnlineMode('history')"><b style="font-family:var(--serif)">歴史モード</b><span class="note">実際の出来事が年代順に</span></button></div>
-      ${mode==='history'?`<div class="field"><label for="oera">時代</label><select id="oera" onchange="setOnlineEra(this.value)">${Object.entries(ERAS).map(([k,e])=>`<option value="${k}" ${era===k?'selected':''}>${e.name}（${e.sub}）</option>`).join('')}</select></div>`:''}
+      ${mode==='history'&&S.len!=='long'?`<div class="field"><label for="oera">時代</label><select id="oera" onchange="setOnlineEra(this.value)">${Object.entries(ERAS).map(([k,e])=>`<option value="${k}" ${era===k?'selected':''}>${e.name}（${e.sub}）</option>`).join('')}</select></div>`:''}
+      <div class="lens" role="group" aria-label="ゲームの長さ"><button class="len${S.len!=='long'?' on':''}" onclick="setOnlineLen('short')"><span class="lt">SHORT</span><b>ショート</b><span class="note">${CFG.turns||4}ターン · 5分</span></button><button class="len long${S.len==='long'?' on':''}" onclick="setOnlineLen('long')"><span class="lt">LONG</span><b>ロング版</b><span class="note">${mode==='history'?'12ターン · 2期':'18ターン · 3期'} · 市況・契約・ブランド</span></button></div>
       <div class="row"><span class="note">CPUを足す</span><button class="btn icon" onclick="setCpus(-1)" aria-label="CPUを減らす">−</button><b style="font-family:var(--display);font-weight:400;font-size:20px;min-width:24px;text-align:center">${cpus}</b><button class="btn icon" onclick="setCpus(1)" aria-label="CPUを増やす">＋</button><span class="note">合計 ${total}人（最大6人）</span></div>
       <button class="btn go huge pulse" onclick="startOnlineGame()" ${total<2?'disabled':''}>ゲームスタート！</button>`
-    : `<p class="note">モード：<b style="color:var(--ink)">${mode==='history'?'歴史モード · '+(ERAS[era]||ERAS.all).name:'クラシック'}</b></p><div class="waitbox"><div class="back${skc()}" style="width:44px"></div><div><b>ホストの開始を待っています</b><p class="note">そろったらホストがゲームを始めます<span class="dots"><i></i><i></i><i></i></span></p></div></div>`;
+    : `<p class="note">モード：<b style="color:var(--ink)">${mode==='history'?'歴史モード · '+(ERAS[era]||ERAS.all).name:'クラシック'}${st&&st.len==='long'?' · ロング版（市況・契約・ブランドあり）':''}</b></p><div class="waitbox"><div class="back${skc()}" style="width:44px"></div><div><b>ホストの開始を待っています</b><p class="note">そろったらホストがゲームを始めます<span class="dots"><i></i><i></i><i></i></span></p></div></div>`;
   return `<div class="grid2"><section class="panel">
       <div class="row spread"><h2 class="ttl">ロビー</h2><span class="note">${NET.host?'あなたがホストです':'参加中'}</span></div>
       <div class="codebox"><span class="label">ルームコード</span><b id="codebig">${esc(NET.code)}</b><button class="btn" onclick="copyCode()">コピー</button></div>
