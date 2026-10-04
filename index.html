@@ -603,6 +603,29 @@ body.calm *{animation:none!important;transition:none!important}
   .podium{gap:8px} .pod .ava{width:46px;height:46px;font-size:19px}
   .intro .yr{font-size:clamp(64px,24vw,110px)}
 }
+/* ---- rank emblem ---- */
+.emb{position:relative;display:inline-grid;place-items:center;flex:0 0 auto;width:var(--z);height:calc(var(--z)*1.12);vertical-align:middle;filter:drop-shadow(0 calc(var(--z)*.06) 0 rgb(0 0 0 / .45))}
+.emb::before,.emb::after{content:"";position:absolute;clip-path:polygon(50% 0,100% 24%,100% 70%,50% 100%,0 70%,0 24%)}
+.emb::before{inset:0;background:linear-gradient(160deg,#fff 0%,var(--e1) 30%,var(--e2) 100%)}
+.emb::after{inset:13%;background:radial-gradient(circle at 40% 25%,rgb(255 255 255 / .55),transparent 45%),linear-gradient(200deg,var(--e2),color-mix(in srgb,var(--e2) 55%,#000))}
+.emb i{position:relative;z-index:1;font-style:normal;font-weight:800;color:var(--e1);font-size:calc(var(--z)*.26);letter-spacing:-.05em;line-height:1;text-shadow:0 1px 0 rgb(0 0 0 / .5)}
+.emb.t-diamond,.emb.t-master{filter:drop-shadow(0 calc(var(--z)*.06) 0 rgb(0 0 0 / .45)) drop-shadow(0 0 calc(var(--z)*.25) var(--e1))}
+.emb.t-master::before{background:conic-gradient(from 0deg,#ff5c9a,#ffc83a,#5cf0a2,#4fe3ff,#a77bff,#ff5c9a)}
+.lvrow .emb{margin-right:2px}
+.vsn span .emb{margin-right:2px;vertical-align:-3px}
+.rankcard{display:flex;align-items:center;gap:18px;border-radius:24px;padding:18px 20px;background:radial-gradient(circle at 8% 50%,color-mix(in srgb,var(--e1) 30%,transparent),transparent 45%),linear-gradient(180deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--e1) 45%,var(--line))}
+.rinfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.rname{font-family:var(--display);font-weight:400;font-size:28px;line-height:1.05;color:var(--e1)}
+.rrate{font-size:14px;color:var(--muted);font-weight:800}
+.rbar{display:block;height:10px;border-radius:5px;background:var(--rail);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line);margin:4px 0}
+.rbar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--e2),var(--e1))}
+.rdelta{display:flex;align-items:center;gap:14px;border-radius:18px;padding:10px 14px;background:linear-gradient(90deg,color-mix(in srgb,var(--e1) 18%,transparent),rgb(7 8 24 / .35));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--e1) 50%,var(--line));animation:achin .55s cubic-bezier(.2,.9,.3,1.3) .9s both}
+.rtx{flex:1;display:flex;flex-direction:column;min-width:0} .rtx b{font-size:17px}
+.rd{font-family:var(--display);font-weight:400;font-size:28px}
+.rd.up{color:var(--up)} .rd.down{color:var(--down)}
+.rdelta.promo{box-shadow:inset 0 0 0 2px var(--e1),0 0 30px -6px var(--e1)}
+.rdelta.promo .emb{animation:lvpop .8s cubic-bezier(.2,.9,.3,1.6) 1.4s both}
+.promo-t{font-family:var(--display);font-size:15px;color:var(--e1);letter-spacing:.04em}
 /* ---- VS screen ---- */
 .overlay.vs{cursor:pointer;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:22px;background:#07081a}
 .vsbg{position:absolute;inset:-20%;background:linear-gradient(105deg,#3a1d6e 0 49.6%,transparent 49.6% 50.4%,#0e3a5c 50.4%);animation:vsbg .5s cubic-bezier(.2,.8,.2,1) both}
@@ -1030,7 +1053,7 @@ function vsOverlay(){
   const mode = G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(initial(p.name))}</div>
-      <div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`Lv.${L.lv} · ${titleOf(L.lv)}`:isHuman(p)?'プレイヤー':(p.type==='naive'?'素直CPU':'読み合いCPU')}</span></div></div>`;
+      <div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${tierOf(rateOf()).n} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':(p.type==='naive'?'素直CPU':'読み合いCPU')}</span></div></div>`;
   const left = me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
   return `<div class="overlay vs" onclick="endVs()"><div class="vsbg"></div>
@@ -1798,7 +1821,8 @@ function recordResult(){
     const ks=Object.keys(P.daily).sort(); while(ks.length>60) delete P.daily[ks.shift()];
     if(dailyStreak()>=3) unlock('daily3'); }
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
-  G.reward={xp:xp+mis.xp, base:xp, mis, skins, before, after, got, won};
+  const r0=rateOf(), r1=Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1;
+  G.reward={xp:xp+mis.xp, base:xp, mis, skins, before, after, got, won, rate:{before:r0, after:r1}};
   saveProfile();
 }
 /* ---- daily challenge: 日付で決まる同じゲームを、全員が同じ条件で遊ぶ ---- */
@@ -1850,7 +1874,7 @@ function resultBanner(){
 function profileChip(){
   const P=S.prof, L=lvInfo(P.xp);
   return `<button class="pchip" onclick="go('me')" aria-label="マイページ"><span class="ava" style="--s:${AVA_COLORS[P.color%6]};width:38px;height:38px;font-size:15px;grid-row:auto">${esc(initial(NET.name||'あなた'))}</span>
-    <span class="pmeta"><b>${esc(NET.name||'あなた')}</b><span class="lvrow"><span class="lv">Lv.${L.lv}</span><span class="xpbar"><i style="width:${Math.round(L.cur/L.need*100)}%"></i></span></span></span></button>`;
+    <span class="pmeta"><b>${esc(NET.name||'あなた')}</b><span class="lvrow">${emblem(rateOf(),18)}<span class="lv">Lv.${L.lv}</span><span class="xpbar"><i style="width:${Math.round(L.cur/L.need*100)}%"></i></span></span></span></button>`;
 }
 function setAvaColor(i){ S.prof.color=i; saveProfile(); sfx('select'); render(); }
 function meView(){
@@ -1863,6 +1887,7 @@ function meView(){
         <div class="colors" role="group" aria-label="アバターの色">${AVA_COLORS.map((c,i)=>`<button style="--c:${c}" class="${P.color%6===i?'on':''}" onclick="setAvaColor(${i})" aria-label="色${i+1}"></button>`).join('')}<button class="btn ghost icon" onclick="openSheet('settings')">名前・設定</button></div>
       </div>
     </section>
+    ${rankCard()}
     <section class="statgrid">
       ${[['対戦',st.games],['勝利',st.wins],['勝率',st.games?Math.round(st.wins/st.games*100)+'%':'—'],['最高点',st.best],['独占',st.mono],['歴史モード',st.hist],['オンライン',st.online],['実績',got+'/'+ACH.length]].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('')}
     </section>
@@ -1882,6 +1907,7 @@ function rewardPanel(){
   const pct=x=>Math.round(x.cur/x.need*100), up=R.after.lv>R.before.lv;
   return `<section class="panel reward"><div class="row spread"><h3>リザルト報酬</h3><b class="xpgain">+${R.xp} XP</b></div>
     <div class="lvline"><span class="lvbadge${up?' up':''}">Lv.${R.after.lv}</span><span class="xpbar big"><i class="fill" style="--from:${up?0:pct(R.before)}%;width:${pct(R.after)}%"></i></span><span class="note num">${R.after.cur}/${R.after.need}</span></div>
+    ${rankDeltaPanel(R)}
     ${R.mis&&R.mis.xp?`<div class="mclear">${R.mis.cleared.map((m,j)=>`<div class="mis ok pop" style="animation-delay:${1.2+j*.25}s"><span class="mic">✓</span><span class="mtx"><span class="label">MISSION CLEAR</span><b>${m.n}</b></span><span class="mxp">+${m.xp}XP</span></div>`).join('')}
       ${R.mis.bonus?`<div class="mis ok pop all" style="animation-delay:${1.2+R.mis.cleared.length*.25}s"><span class="mic">★</span><span class="mtx"><span class="label">COMPLETE</span><b>今日のミッションをぜんぶ達成！</b></span><span class="mxp">+${R.mis.bonus}XP</span></div>`:''}</div>`:''}
     ${up?`<div class="lvup">LEVEL UP!<span>${titleOf(R.after.lv)}</span></div>`:''}
@@ -1945,6 +1971,41 @@ function skinsPanel(){
   return `<section class="panel"><div class="row spread"><h3>カードスキン</h3><span class="note">${SKINS.filter(s=>lv>=s.lv).length} / ${SKINS.length} 解放</span></div>
     <div class="skins">${SKINS.map((s,j)=>{ const ok=lv>=s.lv; return `<button class="skin${s.id===cur?' on':''}${ok?'':' lock'}" ${ok?`onclick="setSkin('${s.id}')"`:'disabled'} aria-pressed="${s.id===cur}">
       <span class="sprev">${cardHTML([2,3,5,0,4][j],{cls:'sk-'+s.id+' pv'})}${ok?'':`<span class="lk">Lv.${s.lv}</span>`}</span><b>${s.n}</b><span class="note">${ok?s.d:`Lv.${s.lv}で解放`}</span></button>`; }).join('')}</div></section>`;
+}
+/* ---- rank (rating): 順位で上下するレート。ティアはブロンズ→マスター ---- */
+const TIERS=[
+  {min:0,    id:'bronze',  n:'ブロンズ',  c1:'#e3a06b', c2:'#8a4f22'},
+  {min:1100, id:'silver',  n:'シルバー',  c1:'#eef2ff', c2:'#7f88b5'},
+  {min:1250, id:'gold',    n:'ゴールド',  c1:'#ffe08a', c2:'#c98e12'},
+  {min:1450, id:'plat',    n:'プラチナ',  c1:'#b9fff1', c2:'#2f9f9a'},
+  {min:1700, id:'diamond', n:'ダイヤ',    c1:'#cfe0ff', c2:'#5f6dff'},
+  {min:2000, id:'master',  n:'マスター',  c1:'#ffb3d9', c2:'#9b2fd6'}
+];
+const rateOf = () => typeof S.prof.rate==='number' ? S.prof.rate : 1000;
+const tierOf = r => TIERS.filter(t=>r>=t.min).pop();
+const nextTier = r => TIERS.find(t=>t.min>r);
+function rateDelta(rank, n, won){
+  const s = n>1 ? (n-rank)/(n-1) : 1;                 // 1位=1、最下位=0
+  return Math.round(44*(s-.5)) + (won?6:0);
+}
+function emblem(r, size){
+  const t=tierOf(r), k=TIERS.indexOf(t);
+  return `<span class="emb t-${t.id}" style="--e1:${t.c1};--e2:${t.c2};--z:${size||28}px" title="${t.n} ${r}"><i>${'★'.repeat(Math.min(3,k%3+1))}</i></span>`;
+}
+function rankCard(){
+  const r=rateOf(), t=tierOf(r), nx=nextTier(r);
+  const pct = nx ? Math.round((r-t.min)/(nx.min-t.min)*100) : 100;
+  return `<section class="rankcard t-${t.id}" style="--e1:${t.c1};--e2:${t.c2}">${emblem(r,74)}
+    <div class="rinfo"><span class="label">RANK</span><b class="rname">${t.n}</b><span class="rrate num">${r}</span>
+      <span class="rbar"><i style="width:${pct}%"></i></span>
+      <span class="note">${nx?`あと <b style="color:var(--ink)">${nx.min-r}</b> で${nx.n}`:'最高ランク到達！'}。1位で大きく上がり、最下位で下がります</span></div></section>`;
+}
+function rankDeltaPanel(R){
+  if(!R || R.rate==null) return '';
+  const d=R.rate.after-R.rate.before, t0=tierOf(R.rate.before), t1=tierOf(R.rate.after), up=TIERS.indexOf(t1)>TIERS.indexOf(t0), down=TIERS.indexOf(t1)<TIERS.indexOf(t0);
+  return `<div class="rdelta${up?' promo':''}" style="--e1:${t1.c1};--e2:${t1.c2}">${emblem(R.rate.after,52)}
+    <span class="rtx"><span class="label">RANK</span><b>${t1.n} <span class="num">${R.rate.after}</span></b>${up?`<span class="promo-t">${t1.n}に昇格！</span>`:down?`<span class="note">${t1.n}に降格…次で取り返そう</span>`:''}</span>
+    <b class="rd ${d>=0?'up':'down'}">${d>=0?'+':'−'}${Math.abs(d)}</b></div>`;
 }
 // ---- splash & card tilt ----
 function splash(){
