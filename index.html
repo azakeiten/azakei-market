@@ -603,6 +603,43 @@ body.calm *{animation:none!important;transition:none!important}
   .podium{gap:8px} .pod .ava{width:46px;height:46px;font-size:19px}
   .intro .yr{font-size:clamp(64px,24vw,110px)}
 }
+/* ---- VS screen ---- */
+.overlay.vs{cursor:pointer;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:22px;background:#07081a}
+.vsbg{position:absolute;inset:-20%;background:linear-gradient(105deg,#3a1d6e 0 49.6%,transparent 49.6% 50.4%,#0e3a5c 50.4%);animation:vsbg .5s cubic-bezier(.2,.8,.2,1) both}
+.vsbg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(105deg,rgb(255 255 255 / .05) 0 2px,transparent 2px 26px),radial-gradient(circle at 50% 50%,rgb(255 200 58 / .35),transparent 40%)}
+@keyframes vsbg{from{transform:scale(1.4) rotate(-4deg);opacity:0}}
+.vsmode{position:relative;font-family:var(--display);letter-spacing:.24em;font-size:clamp(13px,3.2vw,18px);color:var(--gold);padding:5px 18px;border-radius:999px;background:rgb(7 8 24 / .6);box-shadow:inset 0 0 0 1.5px var(--gold-deep);animation:slidein .5s ease both}
+.vsrow{position:relative;width:min(900px,100%);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:clamp(8px,3vw,28px)}
+.vsside{display:flex;flex-direction:column;gap:10px}
+.vsside.l{align-items:flex-end} .vsside.r{align-items:flex-start}
+.vsp{display:flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border-radius:18px;background:linear-gradient(90deg,rgb(7 8 24 / .75),rgb(7 8 24 / .45));box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--s) 70%,transparent),0 10px 24px -12px #000;max-width:100%}
+.vsp.l{flex-direction:row-reverse;padding:8px 8px 8px 14px;text-align:right;animation:vsl .55s cubic-bezier(.2,.9,.3,1.25) both}
+.vsp.r{animation:vsr .55s cubic-bezier(.2,.9,.3,1.25) both}
+@keyframes vsl{from{transform:translateX(-120vw)}} @keyframes vsr{from{transform:translateX(120vw)}}
+.vsp .ava{width:46px;height:46px;font-size:19px;flex:0 0 auto}
+.vsside.l .vsp:only-child .ava{width:72px;height:72px;font-size:30px}
+.vsside.l .vsp:only-child .vsn b{font-size:clamp(18px,4.5vw,28px)}
+.vsn{display:flex;flex-direction:column;min-width:0} .vsn b{font-family:var(--display);font-weight:400;font-size:clamp(14px,3.6vw,18px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vsn span{font-size:11px;color:var(--muted);font-weight:800}
+.vsmark{font-family:var(--display);font-size:clamp(56px,15vw,120px);line-height:1;color:#fff;font-style:italic;text-shadow:0 0 0 transparent,-4px 0 0 var(--red),4px 0 0 var(--cyan),0 8px 0 var(--rail),0 0 60px rgb(255 200 58 / .8);animation:vsmark .6s cubic-bezier(.2,.9,.3,1.6) .45s both}
+@keyframes vsmark{from{transform:scale(3.2) rotate(-14deg);opacity:0}}
+.vsfoot{position:relative;font-weight:800;font-size:13px;color:var(--ink);padding:6px 14px;border-radius:12px;background:rgb(7 8 24 / .55);animation:slidein .5s ease .7s both}
+.overlay.vs > .note{position:relative}
+@media (max-width:560px){
+  .vsrow{grid-template-columns:1fr;justify-items:center;gap:10px}
+  .vsside.l,.vsside.r{align-items:center}
+  .vsside.r{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+  .vsside.r .vsp{padding:6px 10px 6px 6px} .vsside.r .vsp .ava{width:36px;height:36px;font-size:15px}
+  .vsmark{font-size:64px}
+}
+/* ---- cut-in ---- */
+.cutin{position:fixed;inset:0;z-index:29;pointer-events:none;display:grid;place-items:center;overflow:hidden}
+.cutin .band{width:140vw;transform:rotate(-8deg);padding:14px 0;display:flex;align-items:baseline;justify-content:center;gap:16px;background:linear-gradient(90deg,transparent,var(--gold) 12%,#ffe08a 50%,var(--gold) 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 60px rgb(255 200 58 / .7);animation:cutin 1.45s cubic-bezier(.2,.8,.2,1) both}
+.cutin b{font-family:var(--display);font-weight:400;font-size:clamp(44px,11vw,84px);line-height:1;color:#2a1a00;text-shadow:0 4px 0 rgb(255 255 255 / .5)}
+.cutin span{font-family:var(--display);font-size:clamp(18px,4.5vw,30px);color:#5a3a00}
+.cutin.big .band{background:linear-gradient(90deg,transparent,var(--cta) 12%,#b6ffd6 50%,var(--cta) 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 60px rgb(63 224 143 / .7)}
+.cutin.big b{color:#04220f} .cutin.big span{color:#0d4a2a}
+@keyframes cutin{0%{transform:rotate(-8deg) translateX(110%)}18%{transform:rotate(-8deg) translateX(0)}78%{transform:rotate(-8deg) translateX(-3%);opacity:1}100%{transform:rotate(-8deg) translateX(-110%);opacity:0}}
 /* ---- card skins ---- */
 .card.sk-gold{box-shadow:0 0 0 2px var(--rail),0 0 0 4.5px var(--gold),0 0 0 6px var(--rail),0 0 0 7.5px var(--gold-deep),0 16px 26px -12px #000}
 .card.sk-gold .ban{background:linear-gradient(180deg,var(--gold2),var(--gold) 55%,var(--gold-deep));color:#2a1a00}
@@ -930,7 +967,7 @@ function start(data){
   G=data.G || null;
   LAB=data.LAB || { n:4, games:600, result:null, running:false, mode:'classic', era:'all' };
   LAB.running=false;
-  if(G){ if(G.phase==='countdown') G.phase='choose'; if(G.ov==='count'||G.ov==='intro') G.ov=null; }
+  if(G){ if(G.phase==='countdown') G.phase='choose'; if(G.ov==='count'||G.ov==='intro'||G.ov==='vs') G.ov=null; }
   splash();
   fxSize(); bgInit(); render(); renderSheet();
   if(firstRun){ save('azakei-tut',1); setTimeout(openTutorial,600); }
@@ -973,9 +1010,42 @@ function beginTurn(){
   if(C.fore==='dividend' && G.turn>0) G.players.forEach(p=>{ const d=divOf(C,C.table[news][p.last]); if(d){ p.score+=d; G.divs.push({name:p.name,ind:p.last,d}); } });
   G.players.forEach(p=>{ p.pick=null; p.fut=false; p.shown=p.score; });
   G.players.forEach(p=>{ if(!isHuman(p)) p.pick=cpuPick(p,G.players,G.deck,G.turn,C,G.rnd||Math.random); });
-  G.phase='choose'; G.active=-1; G.sel=null; G.ov='intro';
+  G.phase='choose'; G.active=-1; G.sel=null;
+  clearTimeout(introTimer);
+  if(G.turn===0 && !G.online && !G.vsShown && !reduced()){   // 対戦前のVS画面 → NEWSの順
+    G.vsShown=true; G.ov='vs'; render(); sfx('open'); haptic(20);
+    introTimer=setTimeout(endVs, 2400); return;
+  }
+  G.ov='intro';
   render(); sfx(C.hist?'press':'deal'); netSync();
-  clearTimeout(introTimer); introTimer=setTimeout(endIntro, reduced()?350:(C.hist?1900:1500));
+  introTimer=setTimeout(endIntro, reduced()?350:(C.hist?1900:1500));
+}
+function endVs(){
+  if(!G || G.ov!=='vs') return;
+  clearTimeout(introTimer); G.ov='intro'; render(); sfx(G.cfg.hist?'press':'deal');
+  introTimer=setTimeout(endIntro, G.cfg.hist?1900:1500);
+}
+function vsOverlay(){
+  const C=G.cfg, me=myIndex(), L=lvInfo(S.prof.xp);
+  const mode = G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
+  const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
+      <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(initial(p.name))}</div>
+      <div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`Lv.${L.lv} · ${titleOf(L.lv)}`:isHuman(p)?'プレイヤー':(p.type==='naive'?'素直CPU':'読み合いCPU')}</span></div></div>`;
+  const left = me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
+  const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
+  return `<div class="overlay vs" onclick="endVs()"><div class="vsbg"></div>
+    <div class="vsmode">${mode}</div>
+    <div class="vsrow"><div class="vsside l">${left.map((i,j)=>plate(G.players[i],i,'l',j)).join('')}</div>
+      <div class="vsmark">VS</div>
+      <div class="vsside r">${right.map((i,j)=>plate(G.players[i],i,'r',j)).join('')}</div></div>
+    <div class="vsfoot">${TURNS}ターン勝負 · 独占 ${sgn(C.bonus)} · ${FORE[C.fore].name}</div>
+    <div class="note">タップでスキップ</div></div>`;
+}
+function cutIn(text, sub, cls){
+  if(reduced()) return;
+  const el=document.createElement('div'); el.className='cutin '+(cls||''); el.setAttribute('aria-hidden','true');
+  el.innerHTML=`<div class="band"><b>${text}</b>${sub?`<span>${sub}</span>`:''}</div>`;
+  document.body.appendChild(el); setTimeout(()=>el.remove(),1500);
 }
 function endIntro(){
   if(!G || G.ov!=='intro') return;
@@ -1055,6 +1125,9 @@ function revealFx(){
   G.cnt.forEach((k,c)=>{ if(k===1){ anyMono=true; setTimeout(()=>burstAt(document.getElementById('lane'+c),['#ffc83a','#ffe08a','#ffffff',rootCs.getPropertyValue('--i'+c).trim()],phone()?28:44),phone()?700:420); } if(k>1) anyHit=true; });
   if(anyHit) setTimeout(()=>{ sfx('buzz'); haptic(40); },380);
   if(anyMono) setTimeout(()=>sfx('coin'),520);
+  const me=myIndex(), r=me>=0?G.last[me]:null;     // 自分の見せ場はカットインで
+  if(r && r.k===1) setTimeout(()=>cutIn('独占！',`${IND[r.ind]} ${sgn(r.total)}`,'mono'),700);
+  else if(r && r.total>=5) setTimeout(()=>cutIn('大当たり！',`${IND[r.ind]} ${sgn(r.total)}`,'big'),700);
 }
 function nextTurn(){
   if(!G || G.phase!=='reveal') return;   // 連打で2ターン進まないように
@@ -1378,6 +1451,7 @@ function render(){
 }
 function renderOv(){
   const ov=$('#ov'); if(!G || !G.ov){ ov.innerHTML=''; return; }
+  if(G.ov==='vs'){ ov.innerHTML=vsOverlay(); return; }
   if(G.ov==='count'){ ov.innerHTML=`<div class="overlay"><div class="box"><div class="count${G.countText.length>1?' open':''}">${G.countText}</div></div></div>`; return; }
   if(G.ov==='intro'){ const n=G.deck[G.turn];
     ov.innerHTML = G.cfg.hist
