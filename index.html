@@ -655,6 +655,7 @@ body.calm *{animation:none!important;transition:none!important}
   .vsside.r .vsp{padding:6px 10px 6px 6px} .vsside.r .vsp .ava{width:36px;height:36px;font-size:15px}
   .vsmark{font-size:64px}
 }
+.rcard{display:block;width:100%;max-width:420px;margin:0 auto;border-radius:18px;box-shadow:0 0 0 1px var(--line),0 20px 40px -16px #000}
 /* ---- cut-in ---- */
 .cutin{position:fixed;inset:0;z-index:29;pointer-events:none;display:grid;place-items:center;overflow:hidden}
 .cutin .band{width:140vw;transform:rotate(-8deg);padding:14px 0;display:flex;align-items:baseline;justify-content:center;gap:16px;background:linear-gradient(90deg,transparent,var(--gold) 12%,#ffe08a 50%,var(--gold) 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 60px rgb(255 200 58 / .7);animation:cutin 1.45s cubic-bezier(.2,.8,.2,1) both}
@@ -1451,6 +1452,7 @@ function renderSheet(){
   } else if(k==='settings') body=settingsBody();
   else if(k==='share') body=shareBody();
   else if(k==='tutorial') body=tutorialBody();
+  else if(k==='card') body=cardSheetBody();
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
 }
 
@@ -1650,7 +1652,7 @@ function finalView(){
   return `<div class="two"><div class="col">
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · 歴史モード':''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
-      <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="shareResult()">結果をシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
+      <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
     ${rewardPanel()}
     ${aw.length?`<section class="panel"><h3>今回の賞</h3><div class="awards">${aw.map(a=>`<div class="award"><span class="t">${a[0]}</span><span class="w">${esc(a[1])}</span><span class="note">${a[2]}</span></div>`).join('')}</div></section>`:''}
     ${recap}
@@ -2006,6 +2008,93 @@ function rankDeltaPanel(R){
   return `<div class="rdelta${up?' promo':''}" style="--e1:${t1.c1};--e2:${t1.c2}">${emblem(R.rate.after,52)}
     <span class="rtx"><span class="label">RANK</span><b>${t1.n} <span class="num">${R.rate.after}</span></b>${up?`<span class="promo-t">${t1.n}に昇格！</span>`:down?`<span class="note">${t1.n}に降格…次で取り返そう</span>`:''}</span>
     <b class="rd ${d>=0?'up':'down'}">${d>=0?'+':'−'}${Math.abs(d)}</b></div>`;
+}
+/* ---- result card image: リザルトを1枚の画像にして、LINEなどにそのまま送れる ---- */
+let CARD_IMG=null;
+function rr(x,c,y,w,h,r){ x.beginPath(); x.moveTo(c+r,y); x.arcTo(c+w,y,c+w,y+h,r); x.arcTo(c+w,y+h,c,y+h,r); x.arcTo(c,y+h,c,y,r); x.arcTo(c,y,c+w,y,r); x.closePath(); }
+function hexPath(x,cx,cy,s){ const pts=[[0,-.5],[.5,-.26],[.5,.25],[0,.5],[-.5,.25],[-.5,-.26]]; x.beginPath(); pts.forEach(([a,b],i)=>{ const px=cx+a*s, py=cy+b*s*1.12; i?x.lineTo(px,py):x.moveTo(px,py); }); x.closePath(); }
+async function drawResultCard(){
+  const me=myIndex(); if(me<0) return null;
+  try{ await document.fonts.ready; }catch(e){}
+  const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const x=cv.getContext('2d'), css=getComputedStyle(document.documentElement), v=n=>css.getPropertyValue(n).trim();
+  const D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', B='"M PLUS Rounded 1c",sans-serif';
+  const p=G.players[me], C=G.cfg, rk=ranking(G.players,C).find(s=>s.i===me).rank, R=G.reward;
+  // 背景
+  let g=x.createRadialGradient(W/2,-100,50,W/2,300,1300); g.addColorStop(0,'#2a2f86'); g.addColorStop(.5,'#151843'); g.addColorStop(1,'#07081a');
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.save(); x.globalAlpha=.06; x.strokeStyle='#fff'; x.lineWidth=3; for(let i=-H;i<W;i+=46){ x.beginPath(); x.moveTo(i,0); x.lineTo(i+H,H); x.stroke(); } x.restore();
+  const glow=x.createRadialGradient(W/2,330,10,W/2,330,420); glow.addColorStop(0,rk===1?'rgba(255,200,58,.45)':'rgba(79,227,255,.25)'); glow.addColorStop(1,'rgba(0,0,0,0)'); x.fillStyle=glow; x.fillRect(0,0,W,760);
+  // ヘッダー
+  x.textAlign='left'; x.textBaseline='alphabetic';
+  x.font=`52px ${D}`; x.fillStyle='#fff'; x.fillText('AZAKEI',70,120); const aw=x.measureText('AZAKEI ').width; x.fillStyle=v('--gold'); x.fillText('MARKET',70+aw,120);
+  const mode=(G.daily?`DAILY ${dailyLabel(G.daily)} · `:'')+(C.hist?'歴史モード':'クラシック')+(G.online?' · オンライン':'');
+  x.font=`800 30px ${B}`; x.fillStyle=v('--muted'); x.fillText(mode,72,172);
+  x.textAlign='right'; const d=new Date(); x.fillText(`${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()}`,W-70,120);
+  // 順位
+  x.textAlign='center';
+  const place = rk===1 ? 'VICTORY!' : `${rk}${rk===2?'ND':rk===3?'RD':'TH'} PLACE`;
+  x.font=`${rk===1?150:128}px ${D}`; x.lineJoin='round';
+  x.lineWidth=22; x.strokeStyle='#07081a'; x.strokeText(place,W/2,370);
+  const pg=x.createLinearGradient(0,250,0,380); if(rk===1){ pg.addColorStop(0,'#fff6cf'); pg.addColorStop(1,v('--gold')); } else { pg.addColorStop(0,'#ffffff'); pg.addColorStop(1,'#a9addc'); }
+  x.fillStyle=pg; x.fillText(place,W/2,370);
+  x.font=`800 36px ${B}`; x.fillStyle=v('--ink'); x.fillText(`${p.name}  ·  ${G.players.length}人中 ${rk}位`,W/2,440);
+  // スコア
+  x.font=`190px ${D}`; x.fillStyle='#fff'; x.fillText(String(p.score),W/2-40,640);
+  const sw=x.measureText(String(p.score)).width; x.font=`64px ${D}`; x.fillStyle=v('--gold'); x.textAlign='left'; x.fillText('pt',W/2-40+sw/2+12,640);
+  // 4ターンのカード
+  const n=p.used.length, cw=200, gap=26, tot=n*cw+(n-1)*gap, x0=(W-tot)/2, y0=720, ch=280;
+  p.used.forEach((u,i)=>{
+    const cx=x0+i*(cw+gap), col=v('--i'+u.ind), uniq=u.base!=null?u.total>u.base:false;
+    x.save(); x.shadowColor='rgba(0,0,0,.5)'; x.shadowBlur=30; x.shadowOffsetY=14;
+    rr(x,cx,y0,cw,ch,26); const cg=x.createLinearGradient(cx,y0,cx+cw,y0+ch); cg.addColorStop(0,'#ffffff'); cg.addColorStop(.12,col); cg.addColorStop(1,'#1a1033'); x.fillStyle=cg; x.fill(); x.restore();
+    rr(x,cx,y0,cw,ch,26); x.lineWidth=6; x.strokeStyle=uniq?v('--gold'):'rgba(255,255,255,.35)'; x.stroke();
+    x.textAlign='center'; x.fillStyle='rgba(255,255,255,.85)'; x.font=`800 26px ${B}`; x.fillText(C.hist?String(yearOf(G.deck[u.turn])):`TURN ${u.turn+1}`,cx+cw/2,y0+50);
+    x.font=`76px ${D}`; x.fillStyle=u.total<0?'#ffd0d0':'#fff'; x.fillText(sgn(u.total).replace('±','±'),cx+cw/2,y0+160);
+    x.fillStyle='rgba(0,0,0,.35)'; x.save(); rr(x,cx,y0,cw,ch,26); x.clip(); x.fillRect(cx,y0+ch-62,cw,62); x.restore();
+    x.fillStyle='#fff'; x.font=`800 30px ${B}`; x.fillText(IND[u.ind],cx+cw/2,y0+ch-20);
+    if(uniq||u.fut){ const t=uniq?'独占':'先物'; x.font=`800 24px ${B}`; const tw=x.measureText(t).width+28; rr(x,cx+cw/2-tw/2,y0+186,tw,40,20); x.fillStyle=uniq?v('--gold'):v('--cyan'); x.fill(); x.fillStyle='#1a1033'; x.fillText(t,cx+cw/2,y0+215); }
+  });
+  // ランクとレベル
+  const by=1080, rate=R&&R.rate?R.rate.after:rateOf(), t=tierOf(rate), L=lvInfo(S.prof.xp);
+  rr(x,70,by,W-140,150,30); x.fillStyle='rgba(7,8,26,.6)'; x.fill(); x.lineWidth=3; x.strokeStyle='rgba(255,255,255,.12)'; x.stroke();
+  hexPath(x,160,by+75,96); const eg=x.createLinearGradient(110,by+20,210,by+130); eg.addColorStop(0,'#fff'); eg.addColorStop(.3,t.c1); eg.addColorStop(1,t.c2); x.fillStyle=eg; x.fill();
+  hexPath(x,160,by+75,70); x.fillStyle=t.c2; x.fill();
+  x.textAlign='center'; x.fillStyle=t.c1; x.font=`800 24px ${B}`; x.fillText('★'.repeat(Math.min(3,TIERS.indexOf(t)%3+1)),160,by+84);
+  x.textAlign='left'; x.font=`46px ${D}`; x.fillStyle=t.c1; x.fillText(t.n,236,by+72);
+  x.font=`800 30px ${B}`; x.fillStyle=v('--muted'); x.fillText(`RATE ${rate}`+(R&&R.rate?`  (${R.rate.after-R.rate.before>=0?'+':'−'}${Math.abs(R.rate.after-R.rate.before)})`:''),238,by+118);
+  x.textAlign='right'; x.font=`44px ${D}`; x.fillStyle=v('--gold'); x.fillText(`Lv.${L.lv}`,W-110,by+72);
+  x.font=`800 28px ${B}`; x.fillStyle=v('--muted'); x.fillText(titleOf(L.lv),W-110,by+116);
+  // フッター
+  x.textAlign='center'; x.font=`800 30px ${B}`; x.fillStyle=v('--ink'); x.fillText('経済を読み、相手を読み、未来を読むカードゲーム',W/2,1285);
+  x.font=`500 26px ${B}`; x.fillStyle=v('--cyan'); x.fillText(PUBLIC_URL.replace(/^https:\/\//,''),W/2,1322);
+  return cv;
+}
+async function openResultCard(){
+  sfx('click'); toast('画像を作っています…');
+  const cv=await drawResultCard(); if(!cv) return;
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png'))};
+  openSheet('card');
+}
+function cardSheetBody(){
+  if(!CARD_IMG) return '';
+  const canFile = !IN_CLAUDE && navigator.canShare && (()=>{ try{ return navigator.canShare({files:[new File([CARD_IMG.blob],'a.png',{type:'image/png'})]}); }catch(e){ return false; } })();
+  return `<h3 class="ttl" style="font-size:20px">リザルトカード</h3>
+    <img class="rcard" src="${CARD_IMG.url}" alt="今回の結果をまとめた画像">
+    <div class="col" style="gap:10px">${canFile?'<button class="btn gold big" onclick="shareCardImg()">画像を送る（LINEなど）</button>':''}
+      <button class="btn ${canFile?'':'gold '}big" onclick="saveCardImg()">画像を保存する</button></div>
+    <p class="note">友だちに送ると、点数とターンごとの結果、ランクがひと目で伝わります。</p>`;
+}
+const cardName = () => `azakei-result-${todayKey()}.png`;
+async function shareCardImg(){
+  const f=new File([CARD_IMG.blob],cardName(),{type:'image/png'});
+  try{ await navigator.share({files:[f], text:shareText()}); }catch(e){ if(!e || e.name!=='AbortError') saveCardImg(); }
+}
+async function saveCardImg(){
+  if(!IN_CLAUDE){ const u=URL.createObjectURL(CARD_IMG.blob); saveByLink(u,cardName()); setTimeout(()=>URL.revokeObjectURL(u),5000); return; }
+  const dl=await getDownloads(); if(!dl){ toast('この画面では保存機能が使えません。画像を長押しして保存してね'); return; }
+  try{ await dl.save({filename:cardName(), data:await CARD_IMG.blob.arrayBuffer()}); closeSheet(); toast('画像を保存しました'); }
+  catch(e){ if(e && e.code==='declined') return; toast('保存できませんでした（'+(e&&e.code||'unknown')+'）'); }
 }
 // ---- splash & card tilt ----
 function splash(){
