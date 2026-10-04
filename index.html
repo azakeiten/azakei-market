@@ -389,6 +389,7 @@ td.n,th.n{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:r
 .dl b{display:block;font-size:16px}
 .dl.hist{background:linear-gradient(150deg,var(--paper),var(--paper2));color:var(--paper-ink);box-shadow:0 5px 0 #8a6a2a}
 .dl.hist .note{color:#6a5634}
+.dl.long{background:linear-gradient(130deg,#2b0f4f,#7a1f74 60%,#d6336c);color:#fff;box-shadow:0 5px 0 #1c0833} .dl.long .note{color:#ffc4e6} .dl.long .dlic{background:#ffc83a;color:#2b0f4f}
 .dlic{flex:0 0 auto;width:44px;height:54px;border-radius:6px;background:#e2412f;color:#fff;display:grid;place-items:end center;padding-bottom:6px;font-family:var(--display);font-size:12px;clip-path:polygon(0 0,72% 0,100% 22%,100% 100%,0 100%)}
 
 /* app shell: nav, sheets, tutorial */
@@ -640,6 +641,29 @@ body.calm *{animation:none!important;transition:none!important}
 .snext{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px}
 .snext b{font-family:var(--display);font-weight:400;font-size:22px}
 @media (max-width:560px){ .strow{gap:8px;padding:8px 10px} .strow .sg{font-size:11px} .strow .ava{display:none} }
+/* ---- market cards (long only) ---- */
+.mkt{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;color:#fff;border-radius:20px;padding:16px 14px 14px;overflow:hidden;
+  background:radial-gradient(circle at 50% 28%,rgb(255 255 255 / .35),transparent 45%),linear-gradient(165deg,var(--m1),var(--m2) 70%,color-mix(in srgb,var(--m2) 60%,#000));
+  box-shadow:0 0 0 3px var(--rail),0 0 0 5px color-mix(in srgb,var(--m1) 70%,#fff),0 18px 30px -14px #000}
+.mkt::before{content:"";position:absolute;inset:8px;border-radius:14px;border:1.5px solid rgb(255 255 255 / .45);pointer-events:none}
+.mkt::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgb(255 255 255 / .07) 0 6px,transparent 6px 14px);pointer-events:none}
+.mkt .mlab{font-size:10px;font-weight:800;letter-spacing:.24em;opacity:.9;position:relative}
+.mkt .mic{position:relative;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:34px;line-height:1;background:rgb(0 0 0 / .22);box-shadow:inset 0 0 0 2px rgb(255 255 255 / .5),0 4px 0 rgb(0 0 0 / .25);text-shadow:0 2px 0 rgb(0 0 0 / .3)}
+.mkt .mn{position:relative;font-family:var(--display);font-weight:400;font-size:28px;line-height:1.1;text-shadow:0 3px 0 rgb(0 0 0 / .3)}
+.mkt .men{position:relative;font-family:var(--display);font-size:10px;letter-spacing:.3em;opacity:.8}
+.mkt .md{position:relative;font-weight:800;font-size:14px;border-radius:12px;padding:6px 10px;background:rgb(0 0 0 / .3);margin-top:4px}
+.mkt .mtip{position:relative;font-size:12px;opacity:.95;max-width:26ch;line-height:1.5}
+.mkt.big{width:min(260px,72vw);padding:20px 16px 18px}
+.mkt.big .mic{width:84px;height:84px;font-size:46px} .mkt.big .mn{font-size:36px}
+.mkt.flip{animation:mktflip .8s cubic-bezier(.2,.9,.3,1.2) .35s both}
+@keyframes mktflip{0%{transform:perspective(800px) rotateY(180deg) scale(.7);filter:brightness(.3)}60%{filter:brightness(1.4)}100%{transform:none;filter:none}}
+.mkt.wide{flex-direction:row;flex-wrap:wrap;justify-content:flex-start;text-align:left;gap:4px 12px;padding:12px 14px;border-radius:16px}
+.mkt.wide .mlab,.mkt.wide .men{display:none}
+.mkt.wide .mic{width:44px;height:44px;font-size:24px} .mkt.wide .mn{font-size:22px} .mkt.wide .md{flex-basis:100%;font-size:13px;margin:0}
+.mktwrap{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:6px}
+.mktchip{display:inline-flex;align-items:center;gap:4px;font-weight:800;font-size:12px;border-radius:999px;padding:3px 10px;color:#fff;background:linear-gradient(135deg,var(--m1),var(--m2));box-shadow:0 2px 0 rgb(0 0 0 / .35);white-space:nowrap;text-shadow:0 1px 0 rgb(0 0 0 / .3)}
+.snext .mkt{margin:8px 0 2px}
+@media (max-width:560px){ .mkt.big{width:min(220px,64vw)} .mkt.big .mic{width:64px;height:64px;font-size:34px} .mkt.big .mn{font-size:28px} .overlay.intro .box{gap:10px} }
 /* ---- rank emblem ---- */
 .emb{position:relative;display:inline-grid;place-items:center;flex:0 0 auto;width:var(--z);height:calc(var(--z)*1.12);vertical-align:middle;filter:drop-shadow(0 calc(var(--z)*.06) 0 rgb(0 0 0 / .45))}
 .emb::before,.emb::after{content:"";position:absolute;clip-path:polygon(50% 0,100% 24%,100% 70%,50% 100%,0 70%,0 24%)}
@@ -854,16 +878,20 @@ const yearOf = i => HIST[i].y;
 
 /* ================= engine（対戦と検証で共通） ================= */
 function gain(cfg,b,k){
-  if(k===1) return b+cfg.bonus;
-  if(cfg.collide==='minus') return b>0 ? Math.max(0,b-(k-1)) : b;
-  if(cfg.collide==='split') return b>0 ? Math.floor(b/k) : b;
-  return b;
+  let r;
+  if(k===1) r=b+cfg.bonus;
+  else if(cfg.collide==='minus') r = b>0 ? Math.max(0,b-(k-1)) : b;
+  else if(cfg.collide==='split') r = b>0 ? Math.floor(b/k) : b;
+  else r=b;
+  if(k>1 && cfg.hitPen) r-=cfg.hitPen;          // 市況「規制強化」
+  if(r<0 && cfg.negMul) r*=cfg.negMul;          // 市況「不況」
+  return r;
 }
 const divOf = (cfg,v) => cfg.fore==='dividend' && v>=3 ? 1 : 0;
 const rowFor = (p,deck,t) => p.fut ? deck[t+1] : deck[t];
 // 先物は次のNEWSの点数から手数料1を引く（プラスのときだけ）
-const futBase = v => v>0 ? v-1 : v;
-const baseFor = (cfg,p,deck,t,c) => p.fut ? futBase(cfg.table[deck[t+1]][c]) : cfg.table[deck[t]][c];
+const futBase = (v,cfg) => v>0 ? v-(cfg && cfg.fee!=null ? cfg.fee : 1) : v;   // 市況「先物ブーム」では手数料0
+const baseFor = (cfg,p,deck,t,c) => p.fut ? futBase(cfg.table[deck[t+1]][c],cfg) : cfg.table[deck[t]][c];
 // まだ起こりうるNEWS（公開情報）。歴史モードでは「今より後の年の出来事」
 function unseen(cfg,deck,t){
   if(cfg.hist){ const y=yearOf(deck[t]); return cfg.pool.filter(i=>yearOf(i)>y); }
@@ -897,7 +925,7 @@ function cardValues(cfg,p,players,deck,t,row,known,adj){
   for(const c of p.hand){
     let dist=[1];
     for(const od of opp){ const q=od[c], nd=new Array(dist.length+1).fill(0); for(let k=0;k<dist.length;k++){ nd[k]+=dist[k]*(1-q); nd[k+1]+=dist[k]*q; } dist=nd; }
-    const b0=adj?adj(T[row][c]):T[row][c];
+    const b0=adj?adj(T[row][c],cfg):T[row][c];
     let ev=0; for(let k=0;k<dist.length;k++) ev+=dist[k]*gain(cfg,b0,k+1);
     let carry=0;
     if(cfg.fore==='dividend' && left>0 && fut.length){ if(known) carry=divOf(cfg,T[deck[t+1]][c]); else { for(const u of pool) carry+=divOf(cfg,T[u][c]); carry/=pool.length; } }
@@ -1063,6 +1091,7 @@ function startGame(online, daily){
       deck:buildDeck(cfg, daily?mulberry(daily):Math.random), rnd:daily?mulberry(daily*7+13):null, daily:daily||null, turn:0, phase:'choose', active:-1, sel:null, last:null, divs:[], ov:null,
       rounds: long ? (cfg.hist ? Math.ceil(fullPool.length/LONG_PER) : LONG_ROUNDS) : 1, round:0, fullPool, log:[], settles:[] };
   G.players.forEach(p=>p.roundStart=0);
+  if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); }
   G.me = online ? G.players.findIndex(p=>p.peer===NET.myPeer) : -1;
   scrollTo(0,0);
   beginTurn();
@@ -1085,12 +1114,12 @@ function beginTurn(){
   }
   G.ov='intro';
   render(); sfx(C.hist?'press':'deal'); netSync();
-  introTimer=setTimeout(endIntro, reduced()?350:(C.hist?1900:1500));
+  introTimer=setTimeout(endIntro, reduced()?350:introMs());
 }
 function endVs(){
   if(!G || G.ov!=='vs') return;
   clearTimeout(introTimer); G.ov='intro'; render(); sfx(G.cfg.hist?'press':'deal');
-  introTimer=setTimeout(endIntro, G.cfg.hist?1900:1500);
+  introTimer=setTimeout(endIntro, introMs());
 }
 function vsOverlay(){
   const C=G.cfg, me=myIndex(), L=lvInfo(S.prof.xp);
@@ -1105,7 +1134,7 @@ function vsOverlay(){
     <div class="vsrow"><div class="vsside l">${left.map((i,j)=>plate(G.players[i],i,'l',j)).join('')}</div>
       <div class="vsmark">VS</div>
       <div class="vsside r">${right.map((i,j)=>plate(G.players[i],i,'r',j)).join('')}</div></div>
-    <div class="vsfoot">${totalTurns()}ターン勝負${isLong()?`（${G.rounds}期）`:""} · 独占 ${sgn(C.bonus)} · ${FORE[C.fore].name}</div>
+    <div class="vsfoot">${totalTurns()}ターン勝負${isLong()?`（${G.rounds}期・市況カードあり）`:""} · 独占 ${sgn(C.bonus)} · ${FORE[C.fore].name}</div>
     <div class="note">タップでスキップ</div></div>`;
 }
 function cutIn(text, sub, cls){
@@ -1207,6 +1236,36 @@ function nextTurn(){
 }
 /* ---- long game: 6ターン×数期。期が変わると手札と未来予測が戻り、期末に決算ボーナス ---- */
 const LONG_PER=6, LONG_ROUNDS=3, SETTLE_BONUS=3;
+/* 市況カード：ロング版だけ。期のはじめに1枚めくり、その期だけルールが変わる */
+const MARKETS={
+  boom:   {n:'好景気',     en:'BOOM',       ic:'☀', c1:'#ffd35c', c2:'#e0730f', d:'独占ボーナスが +1 増える', tip:'独占をねらう価値がいちばん高い期。', mild:true, apply:c=>{ c.bonus+=1; }},
+  futfree:{n:'先物ブーム', en:'FUTURES',    ic:'⇢', c1:'#7af0ff', c2:'#1a6fd6', d:'先物取引の手数料が 0 になる', tip:'次のNEWSを見て、そのままの点数で勝負できる。', mild:true, fut:true, apply:c=>{ c.fee=0; }},
+  bubble: {n:'バブル相場', en:'BUBBLE',     ic:'◎', c1:'#ff9ad9', c2:'#b02ea0', d:'+3 以上の点数がさらに +1', tip:'当たりの産業がもっと当たる。みんなが同じ産業に集まりやすい。', apply:c=>{ c.table=c.table.map(r=>r.map(v=>v>=3?v+1:v)); }},
+  slump:  {n:'不況',       en:'RECESSION',  ic:'☂', c1:'#c3c8ff', c2:'#3b3f8f', d:'マイナス点が 2 倍になる', tip:'攻めるより守る期。マイナスのカードの切り方が勝負。', apply:c=>{ c.negMul=2; }},
+  reg:    {n:'規制強化',   en:'REGULATION', ic:'⚖', c1:'#9dffc6', c2:'#16805a', d:'ほかの人と被ったら さらに −1', tip:'人と同じことをすると損。読み合いがいちばん熱い期。', apply:c=>{ c.hitPen=1; }},
+  crowd:  {n:'過当競争',   en:'COMPETITION',ic:'⚔', c1:'#ffb38a', c2:'#c2261b', d:'被ったときのプラス点は 人数で割る', tip:'人気の産業ほどうま味が減る。あえて外すのもあり。', apply:c=>{ c.collide='split'; }}
+};
+function drawMarkets(n, cfg){
+  const ok=Object.keys(MARKETS).filter(k=>!MARKETS[k].fut || cfg.fore==='futures');
+  const mild=shuffle(ok.filter(k=>MARKETS[k].mild),Math.random), rest=shuffle(ok.filter(k=>!MARKETS[k].mild),Math.random);
+  const out=[mild.shift()];                      // 第1期はやさしい市況から
+  const pool=shuffle(rest.concat(mild),Math.random);
+  while(out.length<n) out.push(pool.shift());
+  return out;
+}
+function applyMarket(){
+  const C=G.cfg, B=G.base, m=MARKETS[G.mkts[G.round]];
+  C.table=clone(B.table); C.bonus=B.bonus; C.collide=B.collide; delete C.fee; delete C.negMul; delete C.hitPen;
+  if(m) m.apply(C);
+}
+const introMs = () => (G.cfg.hist?1900:1500) + (isLong() && G.turn===0 && G.mkts ? 2600 : 0);
+const introMkt = () => isLong() && G.turn===0 && G.mkts ? `<div class="mktwrap"><span class="label">${termName(G.round)}の市況</span>${marketCard(G.mkts[G.round],"big flip")}</div>` : "";
+const curMarket = () => isLong() && G.mkts ? MARKETS[G.mkts[G.round]] : null;
+function marketCard(id, cls){
+  const m=MARKETS[id]; if(!m) return '';
+  return `<div class="mkt ${cls||''}" style="--m1:${m.c1};--m2:${m.c2}"><span class="mlab">市況カード</span><span class="mic">${m.ic}</span>
+    <b class="mn">${m.n}</b><span class="men">${m.en}</span><span class="md">${m.d}</span>${cls&&cls.includes('big')?`<span class="mtip">${m.tip}</span>`:''}</div>`;
+}
 const isLong = () => !!G && (G.rounds||1)>1;
 const totalTurns = () => TURNS*((G&&G.rounds)||1);
 const logDeck = () => G.log && G.log.length ? G.log : G.deck.slice(0,TURNS);
@@ -1227,6 +1286,7 @@ function settleRound(){
 function startNextRound(){
   if(!G || G.phase!=='settle') return;
   sfx('click'); G.ov=null; G.round++; G.turn=0;
+  if(G.mkts) applyMarket();
   if(G.fullPool) G.cfg.pool=G.fullPool.slice(G.round*LONG_PER,(G.round+1)*LONG_PER);
   G.deck=buildDeck(G.cfg, Math.random);
   G.players.forEach(p=>{ p.hand=[0,1,2,3,4,5]; p.foreUsed=false; p.foreTurn=-1; p.fut=false; p.roundStart=p.score; });
@@ -1243,7 +1303,7 @@ function settleOverlay(){
     <div class="stitle">決算発表</div>
     <p class="note">今期いちばん稼いだ人に <b style="color:var(--gold)">決算ボーナス +${SETTLE_BONUS}</b></p>
     <div class="stable">${rows}</div>
-    <div class="snext"><span class="label">NEXT</span><b>${termName(nx)}${termRange(nx)?' · '+termRange(nx):''}</b><span class="note">手札6枚と${FORE[G.cfg.fore].short}が復活します</span></div>
+    <div class="snext"><span class="label">NEXT</span><b>${termName(nx)}${termRange(nx)?' · '+termRange(nx):''}</b>${G.mkts?marketCard(G.mkts[nx],"big flip"):""}<span class="note">手札6枚と${FORE[G.cfg.fore].short}が復活します</span></div>
     <button class="btn gold big pulse" onclick="startNextRound()">${termName(nx)}をはじめる</button></div></div>`;
 }
 function quit(){
@@ -1457,7 +1517,8 @@ function toast(t){ const el=document.getElementById('toast'); if(!el) return; el
 // ---- rulebook downloads ----
 const BOOKS={
   classic:{file:'rulebook-classic.pdf', png:'rulebook-classic.png', pngName:'AZAKEI_MARKET_rulebook.png', name:'AZAKEI_MARKET_rulebook.pdf', md:'AZAKEI_MARKET_rulebook.md', title:'β3 ルールブック', sub:'クラシック · A4 8ページ'},
-  history:{file:'rulebook-history.pdf', png:'rulebook-history.png', pngName:'AZAKEI_MARKET_history_rulebook.png', name:'AZAKEI_MARKET_history_rulebook.pdf', md:'AZAKEI_MARKET_history_rulebook.md', title:'歴史モード ルールブック', sub:'1964〜2022 · A4 8ページ'}
+  history:{file:'rulebook-history.pdf', png:'rulebook-history.png', pngName:'AZAKEI_MARKET_history_rulebook.png', name:'AZAKEI_MARKET_history_rulebook.pdf', md:'AZAKEI_MARKET_history_rulebook.md', title:'歴史モード ルールブック', sub:'1964〜2022 · A4 8ページ'},
+  long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況カード付き · A4 6ページ'}
 };
 // 普通のWebサイト（GitHub Pages）では、ふつうのダウンロードリンクで保存する
 function saveByLink(href,name){ const a=document.createElement('a'); a.href=href; a.download=name; a.rel='noopener'; document.body.appendChild(a); a.click(); a.remove(); closeSheet(); toast('ダウンロードを開始しました'); }
@@ -1514,6 +1575,24 @@ function mdBook(k){
   const t=v=>v>0?'+'+v:String(v);
   const rows=(names,table)=>'| | '+IND.join(' | ')+' |\n|---|'+IND.map(()=>'---').join('|')+'|\n'+table.map((r,i)=>`| ${names[i]} | ${r.map(t).join(' | ')} |`).join('\n');
   const base=`- 全員が同じ6枚の産業カード（${IND.join('・')}）を持ってスタート\n- 毎ターンNEWSを1枚公開し、産業カードを1枚選んで裏向きで出す。全員そろったら一斉にOPEN\n- 出したカードの基本POINTをもらう。一度使った産業はもう使えない\n- MARKET BONUS：ほかの誰とも産業が被らなかったら +2 POINT\n- 先物取引（ゲーム中1回）：次のNEWSを自分だけ見て、このターンに出すカードを「次のNEWSの点数−1（手数料）」で計算できる。手数料はプラスのときだけ。独占ボーナスは今ターンの被りで判定。最終ターンは使えない\n- 4ターン終了時に合計POINTが最も高い人の勝ち。同点はMARKET BONUSの回数が多い人が上位\n`;
+  if(k==='long') return `# AZAKEI MARKET β3 ロング版 ルールブック
+
+6ターンを1期として何期も遊ぶ、じっくり版です。
+
+## 基本ルール
+${base}
+## ロング版のルール
+- クラシックは6ターン×3期（18ターン）、歴史モードは12の出来事すべてを前半・後半の2期（12ターン）
+- 1期で手札6枚をすべて使い切る。期が変わると手札6枚と先物取引が復活
+- 期のはじめに市況カードを1枚めくり、その期だけルールが加わる（第1期は好景気か先物ブーム）
+- 期の終わりに決算：その期に稼いだPOINTがいちばん多い人に+3（同点は全員）
+
+## 市況カード
+${Object.values(MARKETS).map(m=>`- **${m.n}**：${m.d}。${m.tip}`).join('\n')}
+
+## 得点表（NEWS × 産業）
+${rows(NEWS,T2)}
+`;
   if(k==='history') return `# AZAKEI MARKET β3 歴史モード ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。NEWSが本当の歴史どおりに動くモードです。\n\n## ルール\n${base}- 歴史モードでは、選んだ時代の出来事から4つが**年代順**に起きる。いまより前の年の出来事はもう起きない\n- 時代：全時代（1964〜2022・12の出来事）／昭和〜バブル崩壊（5）／平成・令和（7）\n\n## 出来事\n${HIST.map(h=>`### ${h.y} ${h.n}\n${h.d}\n\n${IND.map((d,i)=>d+' '+t(h.r[i])).join(' / ')}\n`).join('\n')}\n## 早見表\n${rows(HIST.map(h=>h.y+' '+h.n),HIST.map(h=>h.r))}\n`;
   return `# AZAKEI MARKET β3 ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。2〜6人・全4ターン。\n\n## ルール\n${base}\n## 得点表（NEWS × 産業）\n${rows(NEWS,T2)}\n`;
 }
@@ -1567,8 +1646,8 @@ function renderOv(){
   if(G.ov==='count'){ ov.innerHTML=`<div class="overlay"><div class="box"><div class="count${G.countText.length>1?' open':''}">${G.countText}</div></div></div>`; return; }
   if(G.ov==='intro'){ const n=G.deck[G.turn];
     ov.innerHTML = G.cfg.hist
-      ? `<div class="overlay intro" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="yr">${yearOf(n)}</div><div class="bar"></div><div class="nw serif">${nm(n)}</div><div class="note">タップでスキップ</div></div></div>`
-      : `<div class="overlay intro" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="bar"></div><div class="nw">${nm(n)}！</div><div class="note">タップでスキップ</div></div></div>`;
+      ? `<div class="overlay intro" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="yr">${yearOf(n)}</div><div class="bar"></div><div class="nw serif">${nm(n)}</div>${introMkt()}<div class="note">タップでスキップ</div></div></div>`
+      : `<div class="overlay intro" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="bar"></div><div class="nw">${nm(n)}！</div>${introMkt()}<div class="note">タップでスキップ</div></div></div>`;
     return; }
   if(G.ov==='handoff'){ const p=G.players[G.active]; ov.innerHTML=`<div class="overlay"><div class="box"><div class="ava" style="--s:var(--s${p.seat%6});width:80px;height:80px;font-size:34px;grid-row:auto">${esc(initial(p.name))}</div>
     <span class="label">TURN ${G.turn+1} · 次のプレイヤー</span><div class="hand-name">${esc(p.name)}</div>
@@ -1603,7 +1682,7 @@ function hud(){
   const pips=Array.from({length:TURNS},(_,i)=>`<i class="${i<G.turn||G.phase==='final'?'done':i===G.turn?'now':''}"></i>`).join('');
   const left=G.phase==='final'?0:TURNS-1-G.turn;
   return `<div class="hud"><div class="logo"><span class="mk"></span><span class="hide-sm" style="color:inherit">AZAKEI</span> <span>MARKET</span>${G.cfg.hist?'<span class="modechip">歴史</span>':''}</div>
-    <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div><span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>
+    <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div><span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${curMarket()&&G.phase!=="final"?`<span class="mktchip" style="--m1:${curMarket().c1};--m2:${curMarket().c2}">${curMarket().ic} ${curMarket().n}</span>`:""}
     ${G.phase==='final'?'':`<span class="deckchip hide-sm" title="このあと出るNEWSの数"><span class="mini-back"></span>残り${left}</span>`}
     ${G.online?`<span class="codechip hide-sm">${esc(NET.code||'')}</span>`:''}${snd}<button class="btn ghost icon" onclick="quit()">${G.online?(G.host?'ロビーへ':'退出'):'やめる'}</button></div></div>`;
 }
@@ -1671,7 +1750,7 @@ function sideInfo(){
   const C=G.cfg;
   const remain=Array.isArray(G.remain)?G.remain:G.deck.slice(G.turn+1).slice().sort((a,b)=>a-b);
   const deckInfo = C.hist ? timeline() : `<div class="info"><span class="label">山札に残っているNEWS（順番は秘密）</span><div class="chips">${remain.map(n=>`<span>${nm(n)}</span>`).join('')||'<span>なし</span>'}</div></div>`;
-  return `<div class="side">${deckInfo}
+  return `<div class="side">${curMarket()?`<div class="info"><span class="label">${termName(G.round)}の市況</span>${marketCard(G.mkts[G.round],"wide")}</div>`:""}${deckInfo}
     ${C.fore==='dividend'&&G.turn>0?`<div class="info"><span class="label">今ターンの配当</span><div class="chips div">${G.divs.length?G.divs.map(d=>`<span>${esc(d.name)} ${IND[d.ind]} +${d.d}</span>`).join(''):'<span style="background:none;color:var(--muted)">なし</span>'}</div></div>`:''}
     <div class="info"><span class="label">ルール</span><span class="note">独占ボーナス <b style="color:var(--gold)">${sgn(C.bonus)}</b> · 未来予測は「${FORE[C.fore].name}」</span>
       ${C.hist?'':`<details><summary class="note">得点表を見る</summary>${scoreTable(false)}</details>`}</div>
@@ -1689,7 +1768,7 @@ function handDock(news){
   const C=G.cfg, p=G.players[G.active];
   const known=p.foreUsed && p.foreTurn===G.turn, next=known?G.deck[G.turn+1]:null;
   const row=p.fut?next:news, n=p.hand.length;
-  const ptsOf=c=>p.fut?futBase(C.table[row][c]):C.table[row][c];
+  const ptsOf=c=>p.fut?futBase(C.table[row][c],C):C.table[row][c];
   const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return cardHTML(c,{click:true,sel:G.sel===c,pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`}); }).join('');
   const dealKey=G.turn+':'+G.active, deal=G.dealKey!==dealKey; G.dealKey=dealKey;
   const canFore=!p.foreUsed && G.turn<TURNS-1, fdef=FORE[C.fore];
@@ -1786,7 +1865,7 @@ function homeView(){
   const show=[0,1,2,3,4,5].map((c,j)=>cardHTML(c,{no:true,style:`transform:translateX(-50%) rotate(${(j-2.5)*12}deg);margin-left:${(j-2.5)*(phone()?20:28)}px;z-index:${j};animation-delay:${j*.25}s`})).join('');
   const R=S.rec||{games:0,wins:0,best:0};
   const stats = R.games ? `<div class="stats"><div><b>${R.games}</b><span>対戦</span></div><div><b>${R.wins}</b><span>勝利</span></div><div><b>${R.games?Math.round(R.wins/R.games*100):0}%</b><span>勝率</span></div><div><b>${R.best}</b><span>最高点</span></div></div>` : '';
-  const book=(k)=>`<button class="dl${k==='history'?' hist':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`;
+  const book=(k)=>`<button class="dl${k==='history'?' hist':k==='long'?' long':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`;
   return `<section class="hero"><div>
       <div class="ver">CARD GAME <b>β3</b></div>
       <h1 class="title">AZAKEI<span class="m">MARKET</span></h1>
@@ -1802,11 +1881,11 @@ function homeView(){
     <button class="mcard history" onclick="pickMode('history')"><span class="new">NEW</span><span class="label">HISTORY · 1964→2022</span><b>歴史モード</b><span class="desc">本当の経済の出来事が年代順に起きる。歴史を知っているほど未来が読める。</span><span class="go">このモードであそぶ →</span></button>
   </section>
   <button class="longcard" onclick="pickLong()"><span class="new">NEW</span><span class="lbig">LONG</span>
-    <span class="ltx"><span class="label">MARKET SEASON</span><b>ロング版</b><span class="desc">6ターン×3期の18ターン勝負。期が変わると手札が戻り、期末には決算ボーナス。歴史モードなら1964→2022を全部たどる。</span><span class="go">じっくり遊ぶ →</span></span>
+    <span class="ltx"><span class="label">MARKET SEASON</span><b>ロング版</b><span class="desc">6ターン×3期の18ターン勝負。期ごとに「市況カード」でルールが変わり、期末には決算ボーナス。歴史モードなら1964→2022を全部たどる。</span><span class="go">じっくり遊ぶ →</span></span>
     <span class="terms" aria-hidden="true"><i>第1期</i><i>第2期</i><i>第3期</i></span></button>
   <section class="two">
     <button class="wide online" onclick="go('online')"><span class="label">ONLINE</span><b>オンライン対戦</b><span class="desc">ルームコードで、離れた友だちと同じゲームを。最大6人、CPUも追加できます。</span><span class="go">ルームを作る・参加する →</span></button>
-    <div class="panel"><span class="label">ルールブック（PDF）</span><div class="dlrow">${book('classic')}${book('history')}</div><p class="note">印刷してカードを手作りするときにどうぞ。</p></div>
+    <div class="panel"><span class="label">ルールブック（PDF）</span><div class="dlrow">${book('classic')}${book('history')}${book('long')}</div><p class="note">印刷してカードを手作りするときにどうぞ。</p></div>
   </section>
   <section class="row" style="justify-content:center;gap:8px">
     <button class="btn ghost" onclick="openSheet('share')">友だちにもこのアプリを使ってもらう</button>
@@ -1840,7 +1919,7 @@ function playView(){
         <button class="len${S.len!=='long'?' on':''}" onclick="setLen('short')"><span class="lt">SHORT</span><b>ショート</b><span class="note">${CFG.turns||4}ターン · 5分 · 文化祭向け</span></button>
         <button class="len long${S.len==='long'?' on':''}" onclick="setLen('long')"><span class="lt">LONG</span><b>ロング版</b><span class="note">${S.mode==='history'?'12ターン · 2期 · 1964→2022 全部':'18ターン · 3期 · じっくり'}</span></button>
       </div>
-      ${S.len==='long'?`<p class="note lnote">6ターンで1期。期が変わると<b style="color:var(--ink)">手札6枚と${FORE[CFG.fore].short}が復活</b>。期末の決算で、その期にいちばん稼いだ人に <b style="color:var(--gold)">+${SETTLE_BONUS}</b>。${S.mode==='history'?'歴史モードは12の出来事をすべて、前半・後半に分けて遊びます。':''}</p>`:''}
+      ${S.len==='long'?`<p class="note lnote">6ターンで1期。期が変わると<b style="color:var(--ink)">手札6枚と${FORE[CFG.fore].short}が復活</b>。期のはじめに<b style="color:#ff9ad9">市況カード</b>を1枚めくり、その期だけルールが変わる（好景気・不況・バブル…）。期末の決算で、その期にいちばん稼いだ人に <b style="color:var(--gold)">+${SETTLE_BONUS}</b>。${S.mode==='history'?'歴史モードは12の出来事をすべて、前半・後半に分けて遊びます。':''}</p>`:''}
       <div class="step"><span class="sn">2</span><b>だれと遊ぶ？</b></div>
       <div class="seg wide" role="group" aria-label="遊び方">
         <button class="${!party?'on':''}" onclick="setSeatPreset('cpu')">1人でCPUと</button>
@@ -2329,8 +2408,8 @@ function rulesView(){
     <section class="panel"><div class="row spread"><h3>クラシックの得点表を編集</h3><span class="note">金色の枠はβ2原案から変えたマス</span></div>
       ${scoreTable(true)}<p class="note">変更はこのブラウザに保存されます。変えたら「ラボ」で確かめられます。</p></section>`;
   if(tab==='book') body=`<section class="panel"><h3>ルールブック（PDF）</h3><p class="note">印刷して遊べるPDFです。カードを手作りするときの得点表や、歴史モードの年表チェックシートも入っています。</p>
-      <div class="dlrow">${['classic','history'].map(k=>`<button class="dl${k==='history'?' hist':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`).join('')}</div>
-      <div class="row" style="gap:8px">${['classic','history'].map(k=>`<button class="btn" onclick="downloadPng('${k}')">${k==='classic'?'クラシック':'歴史モード'}を画像（PNG）で保存</button>`).join('')}${['classic','history'].map(k=>`<a class="btn ghost" href="${BOOKS[k].file}" target="_blank" rel="noopener" style="text-decoration:none">${k==='classic'?'クラシック':'歴史モード'}のPDFを開く</a>`).join('')}${['classic','history'].map(k=>`<button class="btn ghost" onclick="downloadMd('${k}')">${k==='classic'?'クラシック':'歴史モード'}のテキスト版（.md）</button>`).join('')}</div>
+      <div class="dlrow">${['classic','history','long'].map(k=>`<button class="dl${k==='history'?' hist':k==='long'?' long':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`).join('')}</div>
+      <div class="row" style="gap:8px">${['classic','history','long'].map(k=>`<button class="btn" onclick="downloadPng('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':'歴史モード'}を画像（PNG）で保存</button>`).join('')}${['classic','history','long'].map(k=>`<a class="btn ghost" href="${BOOKS[k].file}" target="_blank" rel="noopener" style="text-decoration:none">${k==='classic'?'クラシック':k==='long'?'ロング版':'歴史モード'}のPDFを開く</a>`).join('')}${['classic','history','long'].map(k=>`<button class="btn ghost" onclick="downloadMd('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':'歴史モード'}のテキスト版（.md）</button>`).join('')}</div>
       <p class="note">PDFが保存できないときは「画像（PNG）で保存」を使ってください。画像は8ページを縦につないだ1枚で、どの画面でも保存できる形式です。</p></section>`;
   return `<div class="col"><div class="row spread"><h2 class="ttl">ルール</h2></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="S.rtab='${k}';sfx('click');render();scrollTo(0,0)">${l}</button>`).join('')}</div>${body}</div>`;
