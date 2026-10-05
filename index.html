@@ -672,6 +672,40 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- challenge mode ---- */
+.stars{display:inline-flex;gap:2px;vertical-align:middle}
+.stars i{font-style:normal;font-size:18px;line-height:1;color:var(--rail);text-shadow:0 0 0 transparent,0 1px 0 var(--line)}
+.stars i.on{color:var(--gold);text-shadow:0 2px 0 var(--gold-deep),0 0 10px rgb(255 200 58 / .6)}
+.stars.big{gap:8px} .stars.big i{font-size:46px}
+.stars.big i.on{animation:stampin .5s cubic-bezier(.2,.9,.3,1.6) both}
+.chalhead{position:relative;border-radius:24px;padding:20px;overflow:hidden;background:radial-gradient(circle at 90% 0%,rgb(255 200 58 / .25),transparent 50%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line)}
+.chaltotal{display:flex;align-items:baseline;gap:8px;margin-top:8px}
+.chaltotal b{font-family:var(--display);font-weight:400;font-size:40px;color:var(--gold);line-height:1} .chaltotal > span:last-child{color:var(--muted);font-weight:800}
+.path{position:relative;display:flex;flex-direction:column;gap:14px;padding-left:28px}
+.path::before{content:"";position:absolute;left:46px;top:20px;bottom:20px;width:6px;border-radius:3px;background:repeating-linear-gradient(180deg,var(--line) 0 10px,transparent 10px 18px)}
+.stage{position:relative;display:flex;align-items:center;gap:14px;text-align:left;border:0;color:var(--ink);border-radius:20px;padding:12px 14px 12px 12px;background:linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px var(--line);margin-left:calc(var(--k) % 2 * 18px);animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--k) * 50ms);transition:transform .15s ease}
+.stage:hover:not(.lock){transform:translateY(-2px)}
+.stage .snum{flex:0 0 auto;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:22px;color:#2a1a00;background:radial-gradient(circle at 35% 30%,#fff1b8,var(--gold));box-shadow:0 4px 0 var(--gold-deep),0 0 0 4px var(--rail);position:relative;z-index:1}
+.stage.hist .snum{background:radial-gradient(circle at 35% 30%,#fffaf0,var(--paper2));color:var(--paper-red);font-family:var(--serif);font-weight:800}
+.stage.long .snum{background:radial-gradient(circle at 35% 30%,#ffd6ee,#ff7ad1);color:#2b0f4f;box-shadow:0 4px 0 #7a1f74,0 0 0 4px var(--rail)}
+.stage .sinfo{flex:1;min-width:0;display:flex;flex-direction:column} .stage .sinfo b{font-size:16px}
+.stage.lock{opacity:.5;cursor:not-allowed} .stage.lock .snum{background:var(--panel2);box-shadow:0 0 0 4px var(--rail);font-size:18px}
+.stage.perfect{box-shadow:0 5px 0 var(--gold-deep),inset 0 0 0 2px var(--gold),0 0 24px -8px var(--gold)}
+.goals{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.goal{display:flex;align-items:center;gap:10px;border-radius:12px;padding:8px 12px;background:rgb(7 8 24 / .4);box-shadow:inset 0 0 0 1px var(--line);font-weight:800;font-size:14px;color:var(--muted)}
+.goal i{font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--rail);color:var(--dim);flex:0 0 auto}
+.goal.on{color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--gold)} .goal.on i{background:var(--gold);color:#2a1a00}
+.chalres{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;background:radial-gradient(circle at 50% 0%,rgb(255 200 58 / .22),transparent 60%),linear-gradient(180deg,var(--panel2),var(--panel))}
+.chalres .goals{width:100%;text-align:left}
+.chalbig{font-family:var(--display);font-size:clamp(40px,10vw,60px);line-height:1;color:var(--muted);text-shadow:0 5px 0 var(--rail);animation:bang .6s cubic-bezier(.2,.9,.3,1.5) .3s both}
+.chalres.clear .chalbig{color:var(--gold);text-shadow:0 5px 0 var(--rail),0 0 40px rgb(255 200 58 / .6)}
+.chalcard{position:relative;display:flex;align-items:center;gap:16px;border:0;border-radius:24px;padding:16px 18px;text-align:left;color:#fff;overflow:hidden;background:radial-gradient(circle at 15% 50%,rgb(255 255 255 / .2),transparent 40%),linear-gradient(120deg,#b97f0c,#e0730f 50%,#c2261b);box-shadow:0 6px 0 #5a2a06,0 20px 40px -18px #000;transition:transform .15s ease}
+.chalcard:hover{transform:translateY(-3px)}
+.chalcard .cstars{font-size:46px;line-height:1;color:#fff1b8;text-shadow:0 3px 0 rgb(0 0 0 / .3),0 0 20px rgb(255 241 184 / .7);animation:pulse 2s ease-in-out infinite}
+.chalcard .ctx{flex:1;min-width:0;display:flex;flex-direction:column}
+.chalcard .ctx .label{color:#ffe7b0} .chalcard .ctx b{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.1} .chalcard .desc{font-size:13px;opacity:.95}
+.chalcard .cnum{display:flex;flex-direction:column;align-items:center;border-radius:16px;padding:6px 12px;background:rgb(0 0 0 / .25)}
+.chalcard .cnum b{font-family:var(--display);font-weight:400;font-size:28px;line-height:1} .chalcard .cnum small{font-size:11px;font-weight:800;opacity:.9}
 /* ---- CPU speech bubbles ---- */
 .say{position:absolute;left:50%;top:-8px;z-index:6;transform:translate(-50%,-100%);max-width:180px;white-space:nowrap;font-weight:800;font-size:12.5px;color:#1a1033;background:#fff;border-radius:14px;padding:5px 11px;box-shadow:0 6px 16px -6px #000,0 0 0 2px var(--rail);pointer-events:none;animation:say 2.6s cubic-bezier(.2,.9,.3,1.4) both}
 .say::after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:12px;background:#fff;transform:translateX(-50%) rotate(45deg);border-radius:2px}
@@ -1169,16 +1203,19 @@ function toggleSound(){ S.sound=!S.sound; save('azakei-sound',S.sound); if(S.sou
 
 /* ================= game flow ================= */
 let introTimer=null;
-function startGame(online, daily){
+function startGame(online, daily, chalId){
   sfx('open');
-  const long = !daily && S.len==='long';   // オンラインはホストの設定（S.len）に従う
-  TURNS=daily ? 4 : long ? LONG_PER : (CFG.turns||4);
-  let cfg=daily ? dailyCfg(daily) : cfgFor(S.mode, long?'all':S.era);
+  const ch = chalId ? CHALLENGES.find(c=>c.id===chalId) : null;
+  const long = ch ? !!ch.long : (!daily && S.len==='long');   // オンラインはホストの設定（S.len）に従う
+  TURNS=daily||ch&&!long ? 4 : long ? LONG_PER : (CFG.turns||4);
+  let cfg=daily ? dailyCfg(daily) : ch ? chalCfg(ch, long) : cfgFor(S.mode, long?'all':S.era);
+  const seats = ch ? ch.seats.map((t,i)=>({name:i===0?(NET.name||'あなた'):'CPU '+CHAL_NAMES[i-1], type:t})) : S.seats;
+  const seed = daily || (ch && ch.seed) || 0;
   let fullPool=null;
   if(long && cfg.hist){ fullPool=cfg.pool.slice().sort((a,b)=>yearOf(a)-yearOf(b)); cfg={...cfg, pool:fullPool.slice(0,LONG_PER)}; }
   if(cfg.hist && cfg.pool.length<TURNS) TURNS=cfg.pool.length;
-  G={ cfg, online:!!online, host:!!online, players:S.seats.map((s,i)=>({seat:i,name:(s.name||'').trim()||'名無し',type:s.type,peer:online?(s.peer||null):null,fore:'auto',hand:[0,1,2,3,4,5],used:[],score:0,uniq:0,hist:[0],foreUsed:false,foreTurn:-1,fut:false,pick:null,last:null,shown:0})),
-      deck:buildDeck(cfg, daily?mulberry(daily):Math.random), rnd:daily?mulberry(daily*7+13):null, daily:daily||null, turn:0, phase:'choose', active:-1, sel:null, last:null, divs:[], ov:null,
+  G={ cfg, online:!!online, host:!!online, players:seats.map((s,i)=>({seat:i,name:(s.name||'').trim()||'名無し',type:s.type,peer:online?(s.peer||null):null,fore:'auto',hand:[0,1,2,3,4,5],used:[],score:0,uniq:0,hist:[0],foreUsed:false,foreTurn:-1,fut:false,pick:null,last:null,shown:0})),
+      deck:buildDeck(cfg, seed?mulberry(seed):Math.random), rnd:seed?mulberry(seed*7+13):null, daily:daily||null, chal:ch?ch.id:null, turn:0, phase:'choose', active:-1, sel:null, last:null, divs:[], ov:null,
       rounds: long ? (cfg.hist ? Math.ceil(fullPool.length/LONG_PER) : LONG_ROUNDS) : 1, round:0, fullPool, log:[], settles:[] };
   G.players.forEach(p=>p.roundStart=0);
   if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); G.players.forEach(p=>p.brand=null); dealContracts(); }
@@ -1186,7 +1223,7 @@ function startGame(online, daily){
   scrollTo(0,0);
   beginTurn();
 }
-function restartGame(){ if(G && G.online){ if(G.host) startOnlineGame(); } else if(G && G.daily) startDaily(); else startGame(); }
+function restartGame(){ if(G && G.online){ if(G.host) startOnlineGame(); } else if(G && G.daily) startDaily(); else if(G && G.chal) startGame(false,null,G.chal); else startGame(); }
 const isHuman = p => p.type==='human';
 const humans = () => G.players.filter(isHuman).length;
 const nm = i => G.cfg.names[i];
@@ -1449,7 +1486,8 @@ function settleOverlay(){
 function quit(){
   clearTimeout(introTimer);
   if(G && G.online){ if(G.host){ G=null; hostBroadcast(); render(); } else leaveRoom(); return; }
-  G=null; S.screen='home'; render();
+  const back = G && G.chal ? 'chal' : 'home';   // チャレンジ中はステージ一覧へ戻る
+  G=null; S.screen=back; render();
 }
 
 /* ================= online (room capability) =================
@@ -1773,6 +1811,7 @@ function renderSheet(){
   else if(k==='tutorial') body=tutorialBody();
   else if(k==='card') body=cardSheetBody();
   else if(k==='longtut') body=longTutBody();
+  else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
 }
 
@@ -1788,7 +1827,7 @@ function render(){
   if(!G){
     if(S.screen==='lobby') S.screen='play';
     const fresh=S.screen!==render.last; render.last=S.screen;
-    app.innerHTML=hud()+`<div class="screen${fresh?' in':''}">`+({home:homeView,play:playView,rules:rulesView,lab:labView,online:onlineView,me:meView}[S.screen]||homeView)()+`</div>`;
+    app.innerHTML=hud()+`<div class="screen${fresh?' in':''}">`+({home:homeView,play:playView,rules:rulesView,lab:labView,online:onlineView,me:meView,chal:chalView}[S.screen]||homeView)()+`</div>`;
     $('#ov').innerHTML=''; if(tb) tb.innerHTML=tabbar(); document.body.classList.add('has-tabbar'); return;
   }
   if(tb) tb.innerHTML=''; document.body.classList.remove('has-tabbar');
@@ -1831,7 +1870,7 @@ const NAVIC={
   lab:'<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="M7.5 15h9"/>',
   me:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>'
 };
-const navOn = k => S.screen===k || (k==='play' && S.screen==='lobby') || (k==='me' && S.screen==='lab');
+const navOn = k => S.screen===k || (k==='play' && (S.screen==='lobby'||S.screen==='chal')) || (k==='me' && S.screen==='lab');
 function tabbar(){ return `<nav class="tabbar" aria-label="メニュー">${NAV.map(([k,l])=>`<button class="${navOn(k)?'on':''}" onclick="go('${k}')" aria-current="${navOn(k)?'page':'false'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${NAVIC[k]}</svg><span>${l}</span></button>`).join('')}</nav>`; }
 function hud(){
   const snd=`<button class="btn ghost icon" onclick="toggleSound()" aria-label="効果音 ${S.sound?'オン':'オフ'}" title="効果音">${SPK(S.sound)}</button>`;
@@ -1981,6 +2020,7 @@ function finalView(){
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · 歴史モード':''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
+    ${chalPanel()}
     ${rewardPanel()}
     ${aw.length?`<section class="panel"><h3>今回の賞</h3><div class="awards">${aw.map(a=>`<div class="award"><span class="t">${a[0]}</span><span class="w">${esc(a[1])}</span><span class="note">${a[2]}</span></div>`).join('')}</div></section>`:''}
     ${recap}
@@ -2038,6 +2078,7 @@ function homeView(){
     <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>
   ${dailyCard()}
   ${missionsPanel()}
+  ${chalCard()}
   <section class="modecards">
     <button class="mcard classic" onclick="pickMode('classic')"><span class="label">CLASSIC</span><b>クラシック</b><span class="desc">6つのNEWSがランダムな順番で起きる、基本のルール。</span><span class="go">このモードであそぶ →</span></button>
     <button class="mcard history" onclick="pickMode('history')"><span class="new">NEW</span><span class="label">HISTORY · 1964→2022</span><b>歴史モード</b><span class="desc">本当の経済の出来事が年代順に起きる。歴史を知っているほど未来が読める。</span><span class="go">このモードであそぶ →</span></button>
@@ -2071,7 +2112,7 @@ function playView(){
   const hc=S.seats.filter(s=>s.type==='human').length, party=hc>1;
   const eraSel = S.mode==='history' ? `<div class="field"><label for="era">時代</label><select id="era" onchange="S.era=this.value;sfx('click');render()">${Object.entries(ERAS).map(([k,e])=>`<option value="${k}" ${S.era===k?'selected':''}>${e.name}（${e.sub}・${e.ids.length}の出来事）</option>`).join('')}</select></div>` : '';
   return `<div class="grid2"><section class="panel">
-      <h2 class="ttl">あそぶ</h2>
+      <div class="row spread"><h2 class="ttl">あそぶ</h2><button class="btn ghost icon" onclick="go('chal')">★ チャレンジ</button></div>
       <div class="step"><span class="sn">1</span><b>モード</b></div>
       <div class="modes" role="group" aria-label="ゲームモード">
         <button class="mode${S.mode==='classic'?' on':''}" onclick="S.mode='classic';sfx('click');render()"><b>クラシック</b><span class="note">6つのNEWSがランダムな順番で</span></button>
@@ -2135,7 +2176,8 @@ const ACH=[
   {id:'mkall',  n:'市況ハンター',   d:'6種類すべての市況カードを経験する',    ic:'☂'},
   {id:'beatpro',n:'達人を超えて',   d:'達人CPUがいる対戦で1位になる',        ic:'⚑'},
   {id:'gold',   n:'ゴールド到達',   d:'ランクがゴールドになる',              ic:'⬢'},
-  {id:'daily7', n:'皆勤トレーダー', d:'デイリーに7日連続で挑戦する',          ic:'☼'}
+  {id:'daily7', n:'皆勤トレーダー', d:'デイリーに7日連続で挑戦する',          ic:'☼'},
+  {id:'chal24', n:'完全制覇',       d:'チャレンジの★をすべて集める',          ic:'✪'}
 ];
 function loadProfile(){
   const p=load('azakei-prof');
@@ -2177,7 +2219,8 @@ function recordResult(){
   P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-30);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
   const r0=rateOf(), r1=Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold');
-  G.reward={xp:xp+mis.xp, base:xp, mis, skins, before, after, got, won, rate:{before:r0, after:r1}};
+  const chal=G.chal?chalResult():null; if(chal && CHALLENGES.every(c=>chalStars(c.id)===3)) unlock('chal24');
+  G.reward={xp:xp+mis.xp, base:xp, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal};
   saveProfile();
 }
 /* ---- daily challenge: 日付で決まる同じゲームを、全員が同じ条件で遊ぶ ---- */
@@ -2214,7 +2257,7 @@ function shareText(){
   const me=myIndex(); if(me<0) return '';
   const p=G.players[me], rk=ranking(G.players,G.cfg).find(x=>x.i===me).rank;
   const head = G.daily ? `AZAKEI MARKET デイリー ${dailyLabel(G.daily)}（${G.cfg.hist?'歴史モード':'クラシック'}）` : `AZAKEI MARKET ${G.cfg.hist?'歴史モード':'クラシック'}${isLong()?' ロング版':''}${G.online?' オンライン':''}`;
-  return `${head}\n${resultGrid(p)} ${p.score}pt ${rk}位/${G.players.length}人\n${PUBLIC_URL}`;
+  return `${head}\n${resultGrid(p)} ${p.score}pt ${rk}位/${G.players.length}人\n${SHARE_URL}`;
 }
 function shareResult(){
   const t=shareText(); if(!t) return; sfx('click');
@@ -2451,6 +2494,79 @@ async function saveCardImg(){
   try{ await dl.save({filename:cardName(), data:await CARD_IMG.blob.arrayBuffer()}); closeSheet(); toast('画像を保存しました'); }
   catch(e){ if(e && e.code==='declined') return; toast('保存できませんでした（'+(e&&e.code||'unknown')+'）'); }
 }
+/* ---- challenge mode: 決まった山札・決まった相手で、条件をクリアして★を集める ---- */
+const CHAL_NAMES=['ミナト','アオイ','ソラ'];
+const mySettles = r => (r.G.settles||[]).map(s=>s.rows[r.me]).filter(Boolean);
+const CHALLENGES=[
+  {id:'c1', n:'はじめての市場', d:'素直CPU2人と対戦。まずは1位をめざそう。', mode:'classic', seats:['human','naive','naive'], seed:1101,
+    goals:[['1位になる',r=>r.rank===1],['10点以上',r=>r.p.score>=10],['14点以上',r=>r.p.score>=14]]},
+  {id:'c2', n:'独占のコツ', d:'人と被らないカードを選ぶ練習。', mode:'classic', seats:['human','read','read','read'], seed:2202,
+    goals:[['独占を2回以上',r=>r.p.uniq>=2],['1位になる',r=>r.rank===1],['独占を3回以上',r=>r.p.uniq>=3]]},
+  {id:'c3', n:'先物で勝負', d:'次のNEWSを読んで、先物で大きく取ろう。', mode:'classic', seats:['human','read','read','read'], seed:3303,
+    goals:[['先物で+3以上',r=>r.p.used.some(u=>u.fut&&u.total>=3)],['1位になる',r=>r.rank===1],['15点以上',r=>r.p.score>=15]]},
+  {id:'c4', n:'昭和の大波', d:'オイルショックからバブル崩壊まで。歴史を読んで勝ち抜け。', mode:'history', era:'showa', seats:['human','read','read','read'], seed:4404,
+    goals:[['1位になる',r=>r.rank===1],['10点以上',r=>r.p.score>=10],['マイナスを1回も取らない',r=>r.p.used.every(u=>u.total>=0)]]},
+  {id:'c5', n:'平成・令和サバイバル', d:'リーマン・ショックも巣ごもりも。荒れる時代を生き抜け。', mode:'history', era:'heisei', seats:['human','read','read','read'], seed:5505,
+    goals:[['マイナスを1回も取らない',r=>r.p.used.every(u=>u.total>=0)],['1位になる',r=>r.rank===1],['12点以上',r=>r.p.score>=12]]},
+  {id:'c6', n:'達人あらわる', d:'相手の考えを読む達人CPUと対決。', mode:'classic', seats:['human','pro','read','read'], seed:6606,
+    goals:[['達人より上の順位',r=>{ const pro=r.G.players.findIndex(q=>q.type==='pro'); const rk=ranking(r.G.players,r.G.cfg); return rk.find(x=>x.i===r.me).rank<rk.find(x=>x.i===pro).rank; }],['1位になる',r=>r.rank===1],['15点以上',r=>r.p.score>=15]]},
+  {id:'c7', n:'シーズン開幕', d:'ロング版のデビュー戦。市況・契約・ブランドを使いこなせ。', mode:'classic', long:true, seats:['human','read','read','read'], seed:7707,
+    goals:[['1位になる',r=>r.rank===1],['極秘契約を2回達成',r=>mySettles(r).filter(x=>x.done).length>=2],['決算ボーナスを2回取る',r=>mySettles(r).filter(x=>x.bonus>0).length>=2]]},
+  {id:'c8', n:'最強決定戦', d:'達人CPU3人とロング版で勝負。最後の試練。', mode:'classic', long:true, seats:['human','pro','pro','pro'], seed:8808,
+    goals:[['3位以内',r=>r.rank<=3],['1位になる',r=>r.rank===1],['全部の期で決算ボーナス',r=>{ const s=mySettles(r); return s.length===r.G.rounds && s.every(x=>x.bonus>0); }]]}
+];
+function chalCfg(ch, long){
+  const b=presetCfg('rec');
+  if(ch.mode==='history'){ const e=long?ERAS.all:(ERAS[ch.era]||ERAS.all); return {...b, table:HIST.map(h=>h.r), names:HIST.map(h=>h.n), hist:true, pool:e.ids.slice(), era:long?'all':(ch.era||'all')}; }
+  return {...b, names:NEWS, hist:false};
+}
+const chalStars = id => (S.prof.chal||{})[id]||0;
+const chalOpen = i => i===0 || chalStars(CHALLENGES[i-1].id)>0;
+const chalTotal = () => CHALLENGES.reduce((s,c)=>s+chalStars(c.id),0);
+function startChallenge(id){ closeSheet(); startGame(false,null,id); }
+function chalResult(){   // recordResult から呼ぶ
+  const ch=CHALLENGES.find(c=>c.id===G.chal); if(!ch) return null;
+  const me=myIndex(); if(me<0) return null;
+  const rk=ranking(G.players,G.cfg).find(x=>x.i===me);
+  const r={p:G.players[me], rank:rk?rk.rank:9, G, me};
+  const got=ch.goals.map(g=>{ try{ return !!g[1](r); }catch(e){ return false; } });
+  const stars = got[0] ? 1+(got[1]?1:0)+(got[2]?1:0) : 0;    // ★1は1つ目の条件、残りは追加の★
+  const P=S.prof; P.chal=P.chal||{}; const prev=P.chal[ch.id]||0; if(stars>prev) P.chal[ch.id]=stars;
+  return {id:ch.id, got, stars, prev, best:Math.max(prev,stars)};
+}
+const starRow = (n,big) => `<span class="stars${big?' big':''}">${[0,1,2].map(i=>`<i class="${i<n?'on':''}" style="animation-delay:${.9+i*.25}s">★</i>`).join('')}</span>`;
+function chalCard(){
+  const total=chalTotal(), next=CHALLENGES.findIndex((c,i)=>chalOpen(i)&&chalStars(c.id)===0);
+  return `<button class="chalcard" onclick="go('chal')"><span class="cstars">★</span><span class="ctx"><span class="label">CHALLENGE · 全8ステージ</span><b>チャレンジ</b><span class="desc">${next>=0?`次は STAGE ${next+1}「${CHALLENGES[next].n}」`:'全ステージクリア！★をそろえよう'}</span></span><span class="cnum"><b>${total}</b><small>/ ${CHALLENGES.length*3} ★</small></span></button>`;
+}
+function chalView(){
+  const total=chalTotal();
+  return `<div class="col"><section class="chalhead"><span class="label">CHALLENGE</span><h2 class="ttl">チャレンジ</h2>
+      <p class="note">山札と相手が決まった8つのステージ。条件をクリアして★を集めよう。1つクリアすると次が開きます。</p>
+      <div class="chaltotal"><span class="stars"><i class="on" style="font-size:34px">★</i></span><b>${total}</b><span>/ ${CHALLENGES.length*3}</span></div></section>
+    <div class="path">${CHALLENGES.map((c,i)=>{ const st=chalStars(c.id), open=chalOpen(i);
+      return `<button class="stage${open?'':' lock'}${st===3?' perfect':''}${c.long?' long':''}${c.mode==='history'?' hist':''}" ${open?`onclick="openSheet('chal:${c.id}')"`:'disabled'} style="--k:${i}">
+        <span class="snum">${open?i+1:'🔒'}</span><span class="sinfo"><b>${c.n}</b><span class="note">${open?c.d:'前のステージをクリアすると開きます'}</span></span>${open?starRow(st):''}</button>`; }).join('')}</div></div>`;
+}
+function chalSheetBody(id){
+  const c=CHALLENGES.find(x=>x.id===id); if(!c) return '';
+  const i=CHALLENGES.indexOf(c), st=chalStars(id);
+  const foes=c.seats.slice(1).map((t,j)=>`<span class="tagx${t==='pro'?' pro':''}">CPU ${CHAL_NAMES[j]}・${t==='naive'?'素直':t==='pro'?'達人':'読み合い'}</span>`).join(' ');
+  return `<span class="label">STAGE ${i+1}${c.long?' · ロング版':''}${c.mode==='history'?' · 歴史モード':''}</span><h3 class="ttl" style="font-size:24px">${c.n}</h3>
+    <p class="note">${c.d}</p><div class="row" style="gap:6px">${foes}</div>
+    <div class="goals">${c.goals.map((g,k)=>`<div class="goal${k<st?' on':''}"><i>★</i><span>${k===0?'クリア条件：':'追加の★：'}${g[0]}</span></div>`).join('')}</div>
+    <p class="note">ベスト：${starRow(st)}</p>
+    <button class="btn gold big" onclick="startChallenge('${id}')">挑戦する！</button>`;
+}
+function chalPanel(){
+  const R=G.reward&&G.reward.chal; if(!R) return '';
+  const c=CHALLENGES.find(x=>x.id===R.id), i=CHALLENGES.indexOf(c), next=CHALLENGES[i+1];
+  return `<section class="panel chalres${R.stars?' clear':''}"><span class="label">STAGE ${i+1} · ${c.n}</span>
+    <div class="chalbig">${R.stars?'CLEAR!':'FAILED…'}</div>${starRow(R.stars,true)}
+    <div class="goals">${c.goals.map((g,k)=>`<div class="goal${R.got[k]?' on':''}"><i>${R.got[k]?'✓':'✕'}</i><span>${g[0]}</span></div>`).join('')}</div>
+    ${R.stars>R.prev&&R.prev>0?'<p class="note" style="text-align:center">ベスト記録を更新！</p>':''}
+    <div class="row" style="justify-content:center"><button class="btn big" onclick="quit();go('chal')">ステージ一覧</button>${R.stars&&next?`<button class="btn gold big" onclick="startChallenge('${next.id}')">次のステージへ</button>`:''}</div></section>`;
+}
 /* ---- CPU chatter: 公開のたびに、CPUがキャラに合ったひとことを言う ---- */
 const CPU_TALK={
   'ミナト':{mono:['読みどおり。','計算済みだよ。','ここは僕だけの市場だ。'], hit:['……想定外だ。','読まれていたか。','被るとはね。'], big:['期待値どおり。','効率よく稼げた。'], neg:['必要な損切りさ。','次で取り返す。'], lead:['このまま逃げ切る。']},
@@ -2521,10 +2637,10 @@ if(matchMedia('(hover:hover) and (pointer:fine)').matches){
 function shareBody(){
   if(!IN_CLAUDE) return `<h3 class="ttl" style="font-size:22px">友だちにも遊んでもらう</h3>
     <p>このページのURLを送るだけで、だれでもすぐに遊べます。ログインもインストールも要りません。</p>
-    <div class="codebox"><span class="label">このページのURL</span><b id="codebig" style="font-size:15px;white-space:normal;overflow-wrap:anywhere">${esc(location.href.split('#')[0])}</b><button class="btn" onclick="copyText(location.href.split('#')[0])">コピー</button></div>
+    <div class="codebox"><span class="label">このページのURL</span><b id="codebig" style="font-size:15px;white-space:normal;overflow-wrap:anywhere">${SHARE_URL}</b><button class="btn" onclick="copyText(SHARE_URL)">コピー</button></div>
     <p class="note">スマホでは、ブラウザのメニューから「ホーム画面に追加」すると、アプリのように開けます。</p>`;
   return `<h3 class="ttl" style="font-size:22px">友だちにも使ってもらう</h3>
-    <div class="codebox"><span class="label">だれでも遊べる公開版（GitHub）</span><b id="codebig" style="font-size:15px;white-space:normal;overflow-wrap:anywhere">${PUBLIC_URL}</b><button class="btn" onclick="copyText(PUBLIC_URL)">コピー</button></div>
+    <div class="codebox"><span class="label">だれでも遊べる公開版（GitHub）</span><b id="codebig" style="font-size:15px;white-space:normal;overflow-wrap:anywhere">${SHARE_URL}</b><button class="btn" onclick="copyText(SHARE_URL)">コピー</button></div>
     <p class="note">公開版はURLを送るだけで、ログインなしで遊べます。オンライン対戦も使えます。以下は、このclaude.ai版を共有する方法です。</p>
     <p>このアプリは、作った人（あなた）の claude.ai に置かれています。ほかの人が使うには、あなたが<b>共有</b>する必要があります。</p>
     <div class="rules">
@@ -2558,6 +2674,7 @@ function setOnlineMode(m){ if(!NET.host) return; S.mode=m; sfx('click'); hostBro
 function setOnlineEra(e){ if(!NET.host || !ERAS[e]) return; S.era=e; hostBroadcast(); render(); }
 function setCpus(d){ if(!NET.host) return; NET.cpus=Math.max(0,Math.min(5,NET.cpus+d)); sfx('click'); hostBroadcast(); render(); }
 const PUBLIC_URL='https://azakeiten.github.io/azakei-market/';
+const SHARE_URL=PUBLIC_URL+'?s=2';   // LINEなどは同じURLのプレビューを長く覚えるので、共有用は印つきにする
 function copyText(t){ try{ navigator.clipboard.writeText(t).then(()=>toast('コピーしました')).catch(()=>selectCode()); }catch(e){ selectCode(); } }
 function copyCode(){
   const t=NET.code||''; const done=()=>toast('ルームコードをコピーしました');
