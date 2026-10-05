@@ -206,15 +206,24 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .pay .ic{width:28px;height:28px;border-radius:9px;color:#fff;display:grid;place-items:center;box-shadow:0 2px 0 rgb(0 0 0 / .2)}
 .pay .ic svg{width:18px;height:18px}
 .pay .n{font-size:10.5px;font-weight:800;white-space:nowrap;margin-top:2px}
-.pay .v{font-family:var(--display);font-size:21px;line-height:1.15}
+.pay .v{font-family:var(--display);font-size:26px;line-height:1.1}
 .pay .v.up{color:#0b7a42} .pay .v.down{color:#c0322a}
 .pay.top{background:var(--paper-ink);color:#fff}
 .pay.top .v{color:var(--gold)}
+.pay .pbar{position:relative;width:14px;height:34px;margin:4px 0 2px;border-radius:4px;background:rgb(36 24 10 / .1)}
+.pay .pbar::after{content:"";position:absolute;left:-3px;right:-3px;top:50%;height:2px;margin-top:-1px;background:rgb(36 24 10 / .45);border-radius:1px}
+.pay .pbar i{position:absolute;left:0;right:0;border-radius:3px}
+.pay .pbar i.u{bottom:50%;background:linear-gradient(0deg,#0b7a42,#3fe08f)} .pay .pbar i.d{top:50%;background:linear-gradient(180deg,#c0322a,#ff7f7f)}
+.pay.top .pbar{background:rgb(255 255 255 / .15)} .pay.top .pbar::after{background:rgb(255 255 255 / .5)} .pay.top .pbar i.u{background:linear-gradient(0deg,var(--gold-deep),var(--gold))}
+.pay .mono{margin-top:2px;font-size:10px;font-weight:800;border-radius:6px;padding:0 5px;background:rgb(36 24 10 / .1);white-space:nowrap}
+.pay.top .mono{background:var(--gold);color:#2a1a00}
+.pay.neg{background:rgb(192 50 42 / .08)}
 .side{display:flex;flex-direction:column;gap:12px;min-width:0}
 .info{border-radius:18px;padding:12px 14px;background:rgb(7 8 24 / .45);box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;gap:8px;min-width:0}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips span{font-size:12px;font-weight:800;border-radius:9px;padding:3px 9px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
 .chips.div span{background:rgb(92 240 162 / .14);color:var(--up);box-shadow:none}
+.chips.nx span{display:inline-flex;align-items:center;gap:6px;padding:3px 4px 3px 9px} .chips .tops{display:inline-flex;align-items:center;gap:2px;font-style:normal;border-radius:7px;padding:1px 4px;background:rgb(0 0 0 / .25)} .chips .tops em{width:16px;height:16px;border-radius:5px;display:grid;place-items:center;color:#fff} .chips .tops em svg{width:11px;height:11px} .chips .tops b{font-family:var(--display);font-weight:400;font-size:11px;color:var(--up);margin-left:2px}
 /* history timeline */
 .tl{position:relative;display:flex;gap:6px;overflow-x:auto;padding:4px 2px 6px;scroll-snap-type:x proximity}
 .ev{flex:0 0 auto;scroll-snap-align:start;border-radius:12px;padding:6px 9px;min-width:86px;background:rgb(251 243 220 / .1);box-shadow:inset 0 0 0 1px rgb(251 243 220 / .25);display:flex;flex-direction:column;gap:1px}
@@ -412,7 +421,7 @@ td.n,th.n{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:r
 .tabbar{display:none}
 .sheet-bg{position:fixed;inset:0;z-index:35;background:rgb(5 6 18 / .7);animation:fadein .2s ease both}
 @keyframes fadein{from{opacity:0}}
-.sheet{position:fixed;z-index:36;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px));max-height:calc(100dvh - 48px);overflow:auto;border-radius:24px;padding:22px 20px 20px;background:linear-gradient(180deg,var(--panel2),var(--panel));box-shadow:0 30px 80px -20px #000,inset 0 0 0 1px var(--line);display:flex;flex-direction:column;gap:14px;animation:sheetin .25s cubic-bezier(.2,.9,.3,1.2) both}
+#sheet .sheet{position:fixed;z-index:36;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px));max-height:calc(100dvh - 48px);overflow:auto;border-radius:24px;padding:22px 20px 20px;background:linear-gradient(180deg,var(--panel2),var(--panel));box-shadow:0 30px 80px -20px #000,inset 0 0 0 1px var(--line);display:flex;flex-direction:column;gap:14px;animation:sheetin .25s cubic-bezier(.2,.9,.3,1.2) both}
 @keyframes sheetin{from{transform:translate(-50%,-46%) scale(.97)}}
 .sheet-x{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:12px;border:0;background:rgb(7 8 24 / .5);color:var(--muted)}
 .swrow{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;border:0;background:rgb(7 8 24 / .35);border-radius:16px;padding:12px 14px;color:var(--ink)}
@@ -551,7 +560,7 @@ body.calm *{animation:none!important;transition:none!important}
   .tabbar button{flex:1 1 0;border:0;background:transparent;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;min-height:52px;font-size:10.5px;font-weight:800;border-radius:12px}
   .tabbar svg{width:23px;height:23px}
   .tabbar button.on{color:var(--gold)} .tabbar button.on svg{filter:drop-shadow(0 0 6px rgb(255 200 58 / .6))}
-  .sheet{left:0;right:0;top:auto;bottom:0;transform:none;width:auto;max-height:88dvh;border-radius:24px 24px 0 0;padding:22px 16px calc(18px + env(safe-area-inset-bottom,0px));animation:sheetup .28s cubic-bezier(.2,.9,.3,1.1) both}
+  #sheet .sheet{left:0;right:0;top:auto;bottom:0;transform:none;width:auto;max-height:88dvh;border-radius:24px 24px 0 0;padding:22px 16px calc(18px + env(safe-area-inset-bottom,0px));animation:sheetup .28s cubic-bezier(.2,.9,.3,1.1) both}
   @keyframes sheetup{from{transform:translateY(40%)}}
   .modecards{grid-template-columns:1fr} .mcard,.wide{min-height:140px;padding:16px 18px} .mcard b,.wide b{font-size:24px}
   .tut-art{min-height:160px} .tut-fan .card{width:48px}
@@ -590,7 +599,7 @@ body.calm *{animation:none!important;transition:none!important}
   .payout{gap:4px}
   .pay{padding:4px 1px;border-radius:9px}
   .pay .ic{width:22px;height:22px;border-radius:7px} .pay .ic svg{width:14px;height:14px}
-  .pay .n{font-size:8.5px} .pay .v{font-size:16px}
+  .pay .n{font-size:9.5px} .pay .v{font-size:21px} .pay .pbar{height:26px;width:12px} .pay .mono{font-size:8.5px;padding:0 3px}
   .info{padding:10px 12px}
   /* the hand is a sticky bottom sheet within thumb reach */
   .dock{padding:12px}
@@ -683,14 +692,14 @@ body.calm *{animation:none!important;transition:none!important}
 .chaltotal b{font-family:var(--display);font-weight:400;font-size:40px;color:var(--gold);line-height:1} .chaltotal > span:last-child{color:var(--muted);font-weight:800}
 .path{position:relative;display:flex;flex-direction:column;gap:14px;padding-left:28px}
 .path::before{content:"";position:absolute;left:46px;top:20px;bottom:20px;width:6px;border-radius:3px;background:repeating-linear-gradient(180deg,var(--line) 0 10px,transparent 10px 18px)}
-.stage{position:relative;display:flex;align-items:center;gap:14px;text-align:left;border:0;color:var(--ink);border-radius:20px;padding:12px 14px 12px 12px;background:linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px var(--line);margin-left:calc(var(--k) % 2 * 18px);animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--k) * 50ms);transition:transform .15s ease}
-.stage:hover:not(.lock){transform:translateY(-2px)}
-.stage .snum{flex:0 0 auto;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:22px;color:#2a1a00;background:radial-gradient(circle at 35% 30%,#fff1b8,var(--gold));box-shadow:0 4px 0 var(--gold-deep),0 0 0 4px var(--rail);position:relative;z-index:1}
-.stage.hist .snum{background:radial-gradient(circle at 35% 30%,#fffaf0,var(--paper2));color:var(--paper-red);font-family:var(--serif);font-weight:800}
-.stage.long .snum{background:radial-gradient(circle at 35% 30%,#ffd6ee,#ff7ad1);color:#2b0f4f;box-shadow:0 4px 0 #7a1f74,0 0 0 4px var(--rail)}
-.stage .sinfo{flex:1;min-width:0;display:flex;flex-direction:column} .stage .sinfo b{font-size:16px}
-.stage.lock{opacity:.5;cursor:not-allowed} .stage.lock .snum{background:var(--panel2);box-shadow:0 0 0 4px var(--rail);font-size:18px}
-.stage.perfect{box-shadow:0 5px 0 var(--gold-deep),inset 0 0 0 2px var(--gold),0 0 24px -8px var(--gold)}
+.stg{position:relative;display:flex;align-items:center;gap:14px;text-align:left;border:0;color:var(--ink);border-radius:20px;padding:12px 14px 12px 12px;background:linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px var(--line);margin-left:calc(var(--k) % 2 * 18px);animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--k) * 50ms);transition:transform .15s ease}
+.stg:hover:not(.lock){transform:translateY(-2px)}
+.stg .snum{flex:0 0 auto;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:22px;color:#2a1a00;background:radial-gradient(circle at 35% 30%,#fff1b8,var(--gold));box-shadow:0 4px 0 var(--gold-deep),0 0 0 4px var(--rail);position:relative;z-index:1}
+.stg.hist .snum{background:radial-gradient(circle at 35% 30%,#fffaf0,var(--paper2));color:var(--paper-red);font-family:var(--serif);font-weight:800}
+.stg.long .snum{background:radial-gradient(circle at 35% 30%,#ffd6ee,#ff7ad1);color:#2b0f4f;box-shadow:0 4px 0 #7a1f74,0 0 0 4px var(--rail)}
+.stg .sinfo{flex:1;min-width:0;display:flex;flex-direction:column} .stage .sinfo b{font-size:16px}
+.stg.lock{opacity:.5;cursor:not-allowed} .stg.lock .snum{background:var(--panel2);box-shadow:0 0 0 4px var(--rail);font-size:18px}
+.stg.perfect{box-shadow:0 5px 0 var(--gold-deep),inset 0 0 0 2px var(--gold),0 0 24px -8px var(--gold)}
 .goals{display:flex;flex-direction:column;gap:6px;margin:10px 0}
 .goal{display:flex;align-items:center;gap:10px;border-radius:12px;padding:8px 12px;background:rgb(7 8 24 / .4);box-shadow:inset 0 0 0 1px var(--line);font-weight:800;font-size:14px;color:var(--muted)}
 .goal i{font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--rail);color:var(--dim);flex:0 0 auto}
@@ -1927,7 +1936,11 @@ function seatsView(){
 }
 function paperCard(news){
   const C=G.cfg, row=C.table[news], mx=Math.max(...row);
-  const pays=`<div class="payout">${IND.map((d,i)=>`<div class="pay${row[i]===mx?' top':''}"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span class="n">${d}</span><span class="v ${row[i]===mx?'':cls(row[i])}">${sgn(row[i])}</span></div>`).join('')}</div>`;
+  // 得点表：大きい数字＋ゼロを真ん中にした棒グラフ＋「独占ならいくつ」
+  const pays=`<div class="payout">${IND.map((d,i)=>{ const v=row[i], h=Math.min(100,Math.abs(v)/4*100);
+    return `<div class="pay${v===mx?' top':''}${v<0?' neg':''}"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span class="n">${d}</span>
+      <span class="pbar" aria-hidden="true"><i class="${v>=0?'u':'d'}" style="height:${h/2}%"></i></span>
+      <span class="v ${v===mx?'':cls(v)}">${sgn(v)}</span><span class="mono">独占 ${sgn(gain(C,v,1))}</span></div>`; }).join('')}</div>`;
   if(C.hist) return `<section class="paper" aria-label="今ターンの出来事">
     <div class="mast"><span class="t">AZAKEI 経済新聞</span><span class="d">${turnLabel()}<span class="gogai">号外</span></span></div>
     <div class="head"><div class="yr"><small>西暦</small>${yearOf(news)}</div><h2>${nm(news)}</h2></div>
@@ -1949,7 +1962,7 @@ function timeline(){
 function sideInfo(){
   const C=G.cfg;
   const remain=Array.isArray(G.remain)?G.remain:G.deck.slice(G.turn+1).slice().sort((a,b)=>a-b);
-  const deckInfo = C.hist ? timeline() : `<div class="info"><span class="label">山札に残っているNEWS（順番は秘密）</span><div class="chips">${remain.map(n=>`<span>${nm(n)}</span>`).join('')||'<span>なし</span>'}</div></div>`;
+  const deckInfo = C.hist ? timeline() : `<div class="info"><span class="label">山札に残っているNEWS（順番は秘密）· いちばん高い産業</span><div class="chips nx">${remain.map(n=>{ const r=C.table[n], mx=Math.max(...r); return `<span>${nm(n)}<i class="tops">${r.map((v,c)=>v===mx?`<em style="background:var(--i${c})" title="${IND[c]}">${svg(c,2.6)}</em>`:'').join('')}<b>${sgn(mx)}</b></i></span>`; }).join('')||'<span>なし</span>'}</div></div>`;
   return `<div class="side">${curMarket()?`<div class="info"><span class="label">${termName(G.round)}の市況</span>${marketCard(G.mkts[G.round],"wide")}</div>`:""}${deckInfo}
     ${C.fore==='dividend'&&G.turn>0?`<div class="info"><span class="label">今ターンの配当</span><div class="chips div">${G.divs.length?G.divs.map(d=>`<span>${esc(d.name)} ${IND[d.ind]} +${d.d}</span>`).join(''):'<span style="background:none;color:var(--muted)">なし</span>'}</div></div>`:''}
     <div class="info"><span class="label">ルール</span><span class="note">独占ボーナス <b style="color:var(--gold)">${sgn(C.bonus)}</b> · 未来予測は「${FORE[C.fore].name}」</span>
@@ -2545,7 +2558,7 @@ function chalView(){
       <p class="note">山札と相手が決まった8つのステージ。条件をクリアして★を集めよう。1つクリアすると次が開きます。</p>
       <div class="chaltotal"><span class="stars"><i class="on" style="font-size:34px">★</i></span><b>${total}</b><span>/ ${CHALLENGES.length*3}</span></div></section>
     <div class="path">${CHALLENGES.map((c,i)=>{ const st=chalStars(c.id), open=chalOpen(i);
-      return `<button class="stage${open?'':' lock'}${st===3?' perfect':''}${c.long?' long':''}${c.mode==='history'?' hist':''}" ${open?`onclick="openSheet('chal:${c.id}')"`:'disabled'} style="--k:${i}">
+      return `<button class="stg${open?'':' lock'}${st===3?' perfect':''}${c.long?' long':''}${c.mode==='history'?' hist':''}" ${open?`onclick="openSheet('chal:${c.id}')"`:'disabled'} style="--k:${i}">
         <span class="snum">${open?i+1:'🔒'}</span><span class="sinfo"><b>${c.n}</b><span class="note">${open?c.d:'前のステージをクリアすると開きます'}</span></span>${open?starRow(st):''}</button>`; }).join('')}</div></div>`;
 }
 function chalSheetBody(id){
