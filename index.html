@@ -681,6 +681,30 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- market dex ---- */
+.dexbar{display:block;height:8px;border-radius:4px;background:var(--rail);overflow:hidden;margin:8px 0 4px;box-shadow:inset 0 0 0 1px var(--line)}
+.dexbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold))}
+.dexsec{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.dexgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+.dx{position:relative;display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;border:0;border-radius:12px;padding:8px 10px;min-height:58px;color:var(--ink);background:var(--panel2);box-shadow:0 3px 0 var(--rail),inset 0 0 0 1px var(--line);transition:transform .12s ease}
+.dx:hover:not(.lock){transform:translateY(-2px)}
+.dx b{font-size:12.5px;line-height:1.3} .dx .dxk{font-family:var(--display);font-size:11px;color:var(--gold);letter-spacing:.06em}
+.dx.hist{background:linear-gradient(170deg,var(--paper),var(--paper2));color:var(--paper-ink);box-shadow:0 3px 0 #8a6a2a} .dx.hist .dxk{font-family:var(--serif);font-weight:800;color:var(--paper-red);font-size:14px} .dx.hist b{font-family:var(--serif)}
+.dx.mk{background:linear-gradient(150deg,var(--m1),var(--m2));color:#fff;box-shadow:0 3px 0 rgb(0 0 0 / .4)} .dx.mk .dxk{color:#fff;font-size:16px;font-family:var(--body)} .dx.mk b{text-shadow:0 1px 0 rgb(0 0 0 / .3)}
+.dx.lock{background:repeating-linear-gradient(135deg,rgb(255 255 255 / .03) 0 6px,transparent 6px 12px),var(--rail);color:var(--dim);box-shadow:inset 0 0 0 1px var(--line);cursor:default}
+.dx.lock .dxk{color:var(--dim);font-family:var(--display)}
+.dexnew{border-radius:16px;padding:10px 12px;background:rgb(255 200 58 / .08);box-shadow:inset 0 0 0 1.5px var(--gold);animation:achin .5s cubic-bezier(.2,.9,.3,1.3) 1.5s both}
+.dexchip{font-size:12px;font-weight:800;border-radius:8px;padding:2px 8px;background:var(--panel2)}
+.dexchip.h{background:var(--paper);color:var(--paper-ink);font-family:var(--serif)} .dexchip.m{background:#ff7ad1;color:#2b0f4f}
+.dexpaper{position:relative;border-radius:16px;padding:14px 16px;margin:6px 0 12px;background:linear-gradient(170deg,var(--paper),var(--paper2));color:var(--paper-ink);box-shadow:0 0 0 3px var(--rail)}
+.dexpaper .mast{display:flex;justify-content:space-between;font-size:11px;font-weight:800;border-bottom:3px double var(--paper-ink);padding-bottom:4px;font-family:var(--serif)}
+.dexpaper .yr{font-family:var(--serif);font-weight:800;color:var(--paper-red);font-size:40px;line-height:1;margin-top:8px}
+.dexpaper h3{font-family:var(--serif);font-weight:800;font-size:24px;margin-top:4px} .dexpaper p{font-size:13px;line-height:1.6;margin-top:4px}
+.dexpay{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-top:10px}
+.dexpay div{display:flex;flex-direction:column;align-items:center;gap:2px;border-radius:9px;padding:5px 0;background:rgb(36 24 10 / .07);font-size:9.5px;font-weight:800}
+.dexpay .ic{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;color:#fff} .dexpay .ic svg{width:14px;height:14px}
+.dexpay b{font-family:var(--display);font-weight:400;font-size:17px} .dexpay b.up{color:#0b7a42} .dexpay b.down{color:#c0322a}
+.dexpay .top{background:var(--paper-ink);color:#fff} .dexpay .top b{color:var(--gold)}
 /* ---- quick menu ---- */
 .qmenu{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
 .qt{--q:var(--gold);position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;border-radius:20px;padding:14px 6px 12px;color:var(--ink);text-align:center;background:linear-gradient(170deg,color-mix(in srgb,var(--q) 22%,var(--panel2)),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--q) 45%,var(--line));transition:transform .12s ease}
@@ -1875,6 +1899,7 @@ function renderSheet(){
   else if(k==='card') body=cardSheetBody();
   else if(k==='longtut') body=longTutBody();
   else if(k==='login') body=loginBody();
+  else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
 }
@@ -2247,7 +2272,8 @@ const ACH=[
   {id:'beatpro',n:'達人を超えて',   d:'達人CPUがいる対戦で1位になる',        ic:'⚑'},
   {id:'gold',   n:'ゴールド到達',   d:'ランクがゴールドになる',              ic:'⬢'},
   {id:'daily7', n:'皆勤トレーダー', d:'デイリーに7日連続で挑戦する',          ic:'☼'},
-  {id:'chal24', n:'完全制覇',       d:'チャレンジの★をすべて集める',          ic:'✪'}
+  {id:'chal24', n:'完全制覇',       d:'チャレンジの★をすべて集める',          ic:'✪'},
+  {id:'dexall', n:'図鑑コンプリート', d:'マーケット図鑑を24種すべて集める',      ic:'❏'}
 ];
 function loadProfile(){
   const p=load('azakei-prof');
@@ -2289,8 +2315,9 @@ function recordResult(){
   P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-30);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
   const r0=rateOf(), r1=Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold');
+  const dex=dexRecord(); if(dexCount()>=DEX_TOTAL()) unlock('dexall');
   const chal=G.chal?chalResult():null; if(chal && CHALLENGES.every(c=>chalStars(c.id)===3)) unlock('chal24');
-  G.reward={xp:xp+mis.xp, base:xp, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal};
+  G.reward={xp:xp+mis.xp, base:xp, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, dex};
   saveProfile();
 }
 /* ---- daily challenge: 日付で決まる同じゲームを、全員が同じ条件で遊ぶ ---- */
@@ -2360,6 +2387,7 @@ function meView(){
       ${[['対戦',st.games],['勝利',st.wins],['勝率',st.games?Math.round(st.wins/st.games*100)+'%':'—'],['最高点',st.best],['独占',st.mono],['歴史モード',st.hist],['オンライン',st.online],['実績',got+'/'+ACH.length]].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('')}
     </section>
     ${skinsPanel()}
+    ${dexPanel()}
     ${historyPanel()}
     <section class="panel"><div class="row spread"><h3>実績</h3><span class="note">${got} / ${ACH.length} 解除</span></div>
       <div class="achgrid">${ACH.map(a=>{ const t=P.ach[a.id]; return `<div class="ach${t?' on':''}"><span class="aic">${t?a.ic:'?'}</span><span><b>${a.n}</b><span class="note">${a.d}</span></span></div>`; }).join('')}</div></section>
@@ -2380,6 +2408,7 @@ function rewardPanel(){
     ${R.mis&&R.mis.xp?`<div class="mclear">${R.mis.cleared.map((m,j)=>`<div class="mis ok pop" style="animation-delay:${1.2+j*.25}s"><span class="mic">✓</span><span class="mtx"><span class="label">MISSION CLEAR</span><b>${m.n}</b></span><span class="mxp">+${m.xp}XP</span></div>`).join('')}
       ${R.mis.bonus?`<div class="mis ok pop all" style="animation-delay:${1.2+R.mis.cleared.length*.25}s"><span class="mic">★</span><span class="mtx"><span class="label">COMPLETE</span><b>今日のミッションをぜんぶ達成！</b></span><span class="mxp">+${R.mis.bonus}XP</span></div>`:''}</div>`:''}
     ${up?`<div class="lvup">LEVEL UP!<span>${titleOf(R.after.lv)}</span></div>`:''}
+    ${(R.dex||[]).length?`<div class="dexnew"><span class="label">NEW · マーケット図鑑に追加</span><div class="row" style="gap:6px">${R.dex.map(x=>`<span class="dexchip ${x.k}">${esc(x.n)}</span>`).join("")}</div></div>`:""}
     ${(R.skins||[]).map(s=>`<div class="newskin"><span class="sprev">${cardHTML(3,{cls:'sk-'+s.id+' pv'})}</span><span><span class="label">NEW CARD SKIN</span><b>「${s.n}」を解放！</b><span class="note">マイページで着せ替えできます</span></span><button class="btn gold" onclick="setSkin('${s.id}')">使う</button></div>`).join('')}
     ${R.got.length?`<div class="achgrid">${R.got.map(id=>{ const a=ACH.find(x=>x.id===id); return `<div class="ach on new"><span class="aic">${a.ic}</span><span><b>実績解除：${a.n}</b><span class="note">${a.d}</span></span></div>`; }).join('')}</div>`:''}
   </section>`;
@@ -2563,6 +2592,35 @@ async function saveCardImg(){
   const dl=await getDownloads(); if(!dl){ toast('この画面では保存機能が使えません。画像を長押しして保存してね'); return; }
   try{ await dl.save({filename:cardName(), data:await CARD_IMG.blob.arrayBuffer()}); closeSheet(); toast('画像を保存しました'); }
   catch(e){ if(e && e.code==='declined') return; toast('保存できませんでした（'+(e&&e.code||'unknown')+'）'); }
+}
+/* ---- market dex: 出会ったNEWS・歴史の出来事・市況カードを集める図鑑（全24種） ---- */
+const DEX_TOTAL = () => NEWS.length + HIST.length + Object.keys(MARKETS).length;
+function dexRecord(){   // recordResult から。新しく見つけたものを返す
+  const P=S.prof; P.dex=P.dex||{n:[],h:[],m:[]}; const D=P.dex, found=[];
+  const add=(arr,id,k,n)=>{ if(!arr.includes(id)){ arr.push(id); found.push({k,n}); } };
+  const seen=logDeck();
+  seen.forEach(id=>{ if(G.cfg.hist) add(D.h,id,'h',`${HIST[id].y} ${HIST[id].n}`); else add(D.n,id,'n',NEWS[id]); });
+  (G.mkts||[]).slice(0,(G.round||0)+1).forEach(id=>add(D.m,id,'m',MARKETS[id].n));
+  return found;
+}
+const dexCount = () => { const D=S.prof.dex||{n:[],h:[],m:[]}; return D.n.length+D.h.length+D.m.length; };
+function dexPanel(){
+  const D=S.prof.dex||{n:[],h:[],m:[]}, total=DEX_TOTAL(), got=dexCount();
+  const sec=(t,items)=>`<div class="dexsec"><span class="label">${t}</span><div class="dexgrid">${items}</div></div>`;
+  const news=NEWS.map((n,i)=>{ const ok=D.n.includes(i); return `<button class="dx news${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:n${i}')"`:'disabled'}><span class="dxk">NEWS</span><b>${ok?n:'？？？'}</b></button>`; }).join('');
+  const hist=HIST.map((h,i)=>{ const ok=D.h.includes(i); return `<button class="dx hist${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:h${i}')"`:'disabled'}><span class="dxk">${ok?h.y:'19XX'}</span><b>${ok?h.n:'？？？'}</b></button>`; }).join('');
+  const mk=Object.entries(MARKETS).map(([k,m])=>{ const ok=D.m.includes(k); return `<button class="dx mk${ok?'':' lock'}" style="--m1:${m.c1};--m2:${m.c2}" ${ok?`onclick="openSheet('dex:m${k}')"`:'disabled'}><span class="dxk">${ok?m.ic:'?'}</span><b>${ok?m.n:'？？？'}</b></button>`; }).join('');
+  return `<section class="panel"><div class="row spread"><h3>マーケット図鑑</h3><span class="note">${got} / ${total} 発見</span></div>
+    <span class="dexbar"><i style="width:${Math.round(got/total*100)}%"></i></span>
+    ${sec('経済NEWS（クラシック）',news)}${sec('歴史の出来事（歴史モード）',hist)}${sec('市況カード（ロング版）',mk)}
+    <p class="note">ゲームの中で出会うと図鑑に登録されます。タップするとくわしく見られます。</p></section>`;
+}
+function dexSheetBody(key){
+  const k=key[0], id=key.slice(1);
+  const payRow=r=>{ const mx=Math.max(...r); return `<div class="dexpay">${IND.map((d,i)=>`<div class="${r[i]===mx?'top':''}"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span>${d}</span><b class="${cls(r[i])}">${sgn(r[i])}</b></div>`).join('')}</div>`; };
+  if(k==='m'){ const m=MARKETS[id]; return `<span class="label">マーケット図鑑 · 市況カード</span>${marketCard(id,'big')}<button class="btn gold big" onclick="closeSheet()">とじる</button>`; }
+  if(k==='h'){ const h=HIST[+id]; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${+id+7}</span></div><div class="yr">${h.y}</div><h3>${h.n}</h3><p>${h.d}</p>${payRow(h.r)}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`; }
+  const i=+id; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${i+1}</span></div><h3>${NEWS[i]}！</h3><p>クラシックの経済NEWS。いちばん高いのは${(()=>{ const r=T2[i], mx=Math.max(...r); return r.map((v,c)=>v===mx?IND[c]:'').filter(Boolean).join('・'); })()}。</p>${payRow(CFG.table[i]||T2[i])}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`;
 }
 /* ---- login bonus: 1日1回、7日周期でXP。7日目は特大 ---- */
 const LOGIN_XP=[20,20,30,30,40,40,120];
