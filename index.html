@@ -9,7 +9,7 @@
 <meta property="og:description" content="邨梧ｸ医ｒ隱ｭ縺ｿ縲∫嶌謇九ｒ隱ｭ縺ｿ縲∵悴譚･繧定ｪｭ繧繧ｫ繝ｼ繝峨ご繝ｼ繝縲ゅヶ繝ｩ繧ｦ繧ｶ縺ｧ縺吶＄驕翫∋縺ｾ縺吶・>
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%230a0c22%22%2F%3E%3Cpath%20d%3D%22M32%2032%2032%208A24%2024%200%200%201%2052.8%2020Z%22%20fill%3D%22%23ff7a3d%22%2F%3E%3Cpath%20d%3D%22M32%2032%2052.8%2020A24%2024%200%200%201%2052.8%2044Z%22%20fill%3D%22%23eab520%22%2F%3E%3Cpath%20d%3D%22M32%2032%2052.8%2044A24%2024%200%200%201%2032%2056Z%22%20fill%3D%22%235f86ff%22%2F%3E%3Cpath%20d%3D%22M32%2032%2032%2056A24%2024%200%200%201%2011.2%2044Z%22%20fill%3D%22%23ff5c9a%22%2F%3E%3Cpath%20d%3D%22M32%2032%2011.2%2044A24%2024%200%200%201%2011.2%2020Z%22%20fill%3D%22%2320c6d1%22%2F%3E%3Cpath%20d%3D%22M32%2032%2011.2%2020A24%2024%200%200%201%2032%208Z%22%20fill%3D%22%23a77bff%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%229%22%20fill%3D%22%230a0c22%22%2F%3E%3C%2Fsvg%3E">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
+<style>[hidden]{display:none!important}</style>
 </head>
 <body><title>AZAKEI MARKET</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,8 +34,9 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{min-height:100%}
-body{margin:0;background:radial-gradient(130% 70% at 50% -10%,var(--felt2) 0%,var(--felt) 45%,var(--night) 100%) fixed;background-color:var(--night);color:var(--ink);font-family:var(--body);font-weight:500;font-size:15px;line-height:1.55;padding-inline:16px;padding-block:0 48px;overflow-x:hidden}
-#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+body{margin:0;background:var(--night);min-height:100dvh;color:var(--ink);font-family:var(--body);font-weight:500;font-size:15px;line-height:1.55;padding-inline:16px;padding-block:env(safe-area-inset-top,0px) calc(48px + env(safe-area-inset-bottom,0px));overflow-x:hidden}
+body::before{content:"";position:fixed;left:0;right:0;top:0;height:100lvh;z-index:-1;pointer-events:none;background:radial-gradient(130% 70% at 50% -10%,var(--felt2) 0%,var(--felt) 45%,var(--night) 100%)}   /* 背景はfixedの擬似要素に（iPhoneでbackground-attachment:fixedが崩れるため） */
+#bg{position:fixed;left:0;top:0;width:100%;height:100lvh;z-index:0;pointer-events:none}
 #fx{position:fixed;inset:0;width:100%;height:100%;z-index:30;pointer-events:none}
 .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
 h1,h2,h3,p{margin:0}
@@ -537,7 +538,7 @@ body.calm *{animation:none!important;transition:none!important}
 @media (max-width:640px){
   body{font-size:14px;padding-block-end:0}
   body.has-tabbar{padding-block-end:calc(84px + env(safe-area-inset-bottom,0px))}
-  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;justify-content:space-around;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:rgb(10 12 34 / .96);box-shadow:0 -1px 0 var(--line),0 -14px 30px -12px #000;backdrop-filter:blur(8px)}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;justify-content:space-around;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:rgb(10 12 34 / .96);box-shadow:0 -1px 0 var(--line),0 -14px 30px -12px #000;transform:translateZ(0)}
   .tabbar button{flex:1 1 0;border:0;background:transparent;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;min-height:52px;font-size:10.5px;font-weight:800;border-radius:12px}
   .tabbar svg{width:23px;height:23px}
   .tabbar button.on{color:var(--gold)} .tabbar button.on svg{filter:drop-shadow(0 0 6px rgb(255 200 58 / .6))}
