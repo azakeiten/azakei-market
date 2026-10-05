@@ -565,6 +565,7 @@ body.calm *{animation:none!important;transition:none!important}
   /* seats become a swipe row of compact chips */
   .rivals{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;margin-inline:-16px;padding:12px 16px 4px;scrollbar-width:none}
   .rivals::-webkit-scrollbar{display:none}
+  .say{top:auto;bottom:6px;transform:translate(-50%,0);animation-name:say2;font-size:11.5px} .say::after{display:none}
   .seat{flex:0 0 auto;width:min(66vw,210px);scroll-snap-align:start;padding:9px 10px;gap:2px 8px}
   .seat .ava{width:34px;height:34px;font-size:14px}
   .seat .sc{font-size:22px;min-width:38px}
@@ -661,6 +662,30 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- CPU speech bubbles ---- */
+.say{position:absolute;left:50%;top:-8px;z-index:6;transform:translate(-50%,-100%);max-width:180px;white-space:nowrap;font-weight:800;font-size:12.5px;color:#1a1033;background:#fff;border-radius:14px;padding:5px 11px;box-shadow:0 6px 16px -6px #000,0 0 0 2px var(--rail);pointer-events:none;animation:say 2.6s cubic-bezier(.2,.9,.3,1.4) both}
+.say::after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:12px;background:#fff;transform:translateX(-50%) rotate(45deg);border-radius:2px}
+@keyframes say{0%{opacity:0;transform:translate(-50%,-80%) scale(.6)}12%{opacity:1;transform:translate(-50%,-100%) scale(1)}85%{opacity:1;transform:translate(-50%,-100%)}100%{opacity:0;transform:translate(-50%,-115%)}}
+@keyframes say2{0%{opacity:0;transform:translate(-50%,20%) scale(.6)}12%{opacity:1;transform:translate(-50%,0) scale(1)}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-20%)}}
+/* ---- match history ---- */
+.hlist{display:flex;flex-direction:column;gap:6px}
+.hrow{display:flex;align-items:center;gap:12px;border-radius:14px;padding:8px 12px;background:rgb(7 8 24 / .4);box-shadow:inset 0 0 0 1px var(--line)}
+.hplace{flex:0 0 auto;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-size:22px;line-height:1;background:var(--panel2);color:var(--muted)}
+.hplace small{font-size:10px;margin-top:-6px;opacity:.7}
+.hplace.p1{background:radial-gradient(circle at 35% 30%,#fff1b8,var(--gold));color:#2a1a00;box-shadow:0 3px 0 var(--gold-deep)}
+.hplace.p2{background:linear-gradient(160deg,#eef2ff,#9aa3cf);color:#20244f} .hplace.p3{background:linear-gradient(160deg,#ffd2b0,#b5713e);color:#3a1d06}
+.hmeta{flex:1;min-width:0;display:flex;flex-direction:column} .hmeta b{font-size:14px}
+.htag{display:inline-block;font-size:10px;font-weight:800;border-radius:6px;padding:0 6px;vertical-align:2px;background:var(--panel2);color:var(--muted)}
+.htag.long{background:#ff7ad1;color:#2b0f4f} .htag.cy{color:var(--cyan)}
+.hgrid{font-size:12px;letter-spacing:1px;white-space:nowrap;overflow:hidden;max-width:40%}
+.hs{font-family:var(--display);font-weight:400;font-size:20px;min-width:52px;text-align:right} .hs small{font-size:11px;color:var(--muted);margin-left:2px}
+@media (max-width:560px){ .hgrid{display:none} }
+/* ---- long guide ---- */
+.lsteps{display:flex;flex-direction:column;gap:10px;margin:8px 0 14px}
+.lstep{display:flex;align-items:center;gap:12px;border-radius:16px;padding:12px;background:rgb(7 8 24 / .4);box-shadow:inset 0 0 0 1px var(--line)}
+.lstep > div{flex:1;min-width:0} .lstep b{font-size:15px}
+.ln{flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);background:#ff7ad1;color:#2b0f4f}
+.lstep .mkt{flex:0 0 auto;width:92px;padding:8px 6px;gap:2px;border-radius:14px} .lstep .mkt .mic{width:36px;height:36px;font-size:20px} .lstep .mkt .mn{font-size:15px} .lstep .mkt .md,.lstep .mkt .men{display:none} .lstep .mkt .mlab{font-size:8px}
 /* ---- mode themes: the same world, re-lit per mode ---- */
 body[data-theme="hist"]{--night:#140c07;--felt:#2a1910;--felt2:#55331b;--rail:#0c0704;--panel:#2f1f14;--panel2:#3f2a1a;--line:#5e4129;--muted:#d6c1a2;--dim:#9c8467}
 body[data-theme="long"]{--night:#11052a;--felt:#230a40;--felt2:#53146a;--rail:#09021a;--panel:#2a0f4c;--panel2:#3b1663;--line:#5c2b86;--muted:#dcbcec;--dim:#9d7abd}
@@ -1250,6 +1275,7 @@ function revealFx(){
   G.cnt.forEach((k,c)=>{ if(k===1){ anyMono=true; setTimeout(()=>burstAt(document.getElementById('lane'+c),['#ffc83a','#ffe08a','#ffffff',rootCs.getPropertyValue('--i'+c).trim()],phone()?28:44),phone()?700:420); } if(k>1) anyHit=true; });
   if(anyHit) setTimeout(()=>{ sfx('buzz'); haptic(40); },380);
   if(anyMono) setTimeout(()=>sfx('coin'),520);
+  cpuChatter();
   const me=myIndex(), r=me>=0?G.last[me]:null;     // 自分の見せ場はカットインで
   if(r && r.k===1) setTimeout(()=>cutIn('独占！',`${IND[r.ind]} ${sgn(r.total)}`,'mono'),700);
   else if(r && r.total>=5) setTimeout(()=>cutIn('大当たり！',`${IND[r.ind]} ${sgn(r.total)}`,'big'),700);
@@ -1709,6 +1735,7 @@ function renderSheet(){
   else if(k==='share') body=shareBody();
   else if(k==='tutorial') body=tutorialBody();
   else if(k==='card') body=cardSheetBody();
+  else if(k==='longtut') body=longTutBody();
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
 }
 
@@ -1989,8 +2016,8 @@ function homeView(){
     <button class="btn ghost" onclick="openSheet('share')">友だちにもこのアプリを使ってもらう</button>
   </section>`;
 }
-function setLen(l){ S.len=l; save('azakei-len',l); sfx('click'); render(); }
-function pickLong(){ S.len='long'; save('azakei-len','long'); if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); }
+function setLen(l){ S.len=l; save('azakei-len',l); sfx('click'); render(); if(l==='long') longTutOnce(); }
+function pickLong(){ S.len='long'; save('azakei-len','long'); if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); longTutOnce(); }
 function pickMode(m){ S.len='short'; save('azakei-len','short'); S.mode=m; if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); }
 function ruleList(){
   const f=FORE[CFG.fore];
@@ -2099,6 +2126,7 @@ function recordResult(){
   if(G.daily){ P.daily=P.daily||{}; if(!P.daily[G.daily]) P.daily[G.daily]={score:p.score, rank:mine?mine.rank:0, grid:resultGrid(p)};
     const ks=Object.keys(P.daily).sort(); while(ks.length>60) delete P.daily[ks.shift()];
     if(dailyStreak()>=3) unlock('daily3'); }
+  P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-30);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
   const r0=rateOf(), r1=Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1;
   G.reward={xp:xp+mis.xp, base:xp, mis, skins, before, after, got, won, rate:{before:r0, after:r1}};
@@ -2171,6 +2199,7 @@ function meView(){
       ${[['対戦',st.games],['勝利',st.wins],['勝率',st.games?Math.round(st.wins/st.games*100)+'%':'—'],['最高点',st.best],['独占',st.mono],['歴史モード',st.hist],['オンライン',st.online],['実績',got+'/'+ACH.length]].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('')}
     </section>
     ${skinsPanel()}
+    ${historyPanel()}
     <section class="panel"><div class="row spread"><h3>実績</h3><span class="note">${got} / ${ACH.length} 解除</span></div>
       <div class="achgrid">${ACH.map(a=>{ const t=P.ach[a.id]; return `<div class="ach${t?' on':''}"><span class="aic">${t?a.ic:'?'}</span><span><b>${a.n}</b><span class="note">${a.d}</span></span></div>`; }).join('')}</div></section>
     <section class="two">
@@ -2373,6 +2402,55 @@ async function saveCardImg(){
   const dl=await getDownloads(); if(!dl){ toast('この画面では保存機能が使えません。画像を長押しして保存してね'); return; }
   try{ await dl.save({filename:cardName(), data:await CARD_IMG.blob.arrayBuffer()}); closeSheet(); toast('画像を保存しました'); }
   catch(e){ if(e && e.code==='declined') return; toast('保存できませんでした（'+(e&&e.code||'unknown')+'）'); }
+}
+/* ---- CPU chatter: 公開のたびに、CPUがキャラに合ったひとことを言う ---- */
+const CPU_TALK={
+  'ミナト':{mono:['読みどおり。','計算済みだよ。','ここは僕だけの市場だ。'], hit:['……想定外だ。','読まれていたか。','被るとはね。'], big:['期待値どおり。','効率よく稼げた。'], neg:['必要な損切りさ。','次で取り返す。'], lead:['このまま逃げ切る。']},
+  'アオイ':{mono:['いただきっ！','やったー独占！','ひとり勝ち〜！'], hit:['えー被ったー！','ちょっと真似しないでよ！','うそでしょ！？'], big:['大当たり〜！','見て見て、この点！'], neg:['いったーい…','まだまだこれから！'], lead:['トップいただき！']},
+  'ソラ':{mono:['あれ、ひとりだ〜','のんびり独占〜'], hit:['みんな一緒だね〜','にぎやかだ〜'], big:['お、いい感じ〜','ラッキー〜'], neg:['まあいっか〜','そういう日もあるよ〜'], lead:['あれ、1位だ〜']},
+  'ハル':{mono:['よっしゃ独占！','狙いどおり！'], hit:['かぶったかー！','やるじゃん！'], big:['でかいの来た！'], neg:['くっそー！'], lead:['トップは渡さない！']},
+  'ユイ':{mono:['ふふ、ひとりじめ。','静かに稼ぎます。'], hit:['あら、同じ考え。','ふーん、そう来る。'], big:['悪くないわね。'], neg:['…今のは忘れて。'], lead:['このまま行くわ。']},
+  'レン':{mono:['オレの市場だ！','独占ぉ！'], hit:['マジかよ！','ついてくんなって！'], big:['爆益！'], neg:['ぐぬぬ…'], lead:['頂点はオレだ！']}
+};
+const talkOf = p => CPU_TALK[String(p.name).replace(/^CPU\s*/,'').replace(/（.*$/,'')] || CPU_TALK['ソラ'];
+function cpuChatter(){
+  if(!G || !G.last || reduced()) return;
+  const top=Math.max(...G.players.map(p=>p.score));
+  const lines=[];
+  G.players.forEach((p,i)=>{
+    if(isHuman(p)) return;
+    const r=G.last[i], T=talkOf(p);
+    const kind = r.k===1 ? 'mono' : r.total<0 ? 'neg' : r.total>=5 ? 'big' : (r.k>=2 && Math.random()<.6) ? 'hit' : (p.score===top && Math.random()<.5) ? 'lead' : null;
+    if(kind && T[kind]) lines.push({i, text:T[kind][Math.floor(Math.random()*T[kind].length)], w:kind==='mono'||kind==='neg'?2:1});
+  });
+  lines.sort((a,b)=>b.w-a.w || Math.random()-.5).slice(0,2).forEach((l,j)=>setTimeout(()=>say(l.i,l.text),1100+j*700));
+}
+function say(i,text){
+  const el=document.querySelector(`.seat[data-i="${i}"]`); if(!el) return;
+  const s=document.createElement('span'); s.className='say'; s.textContent=text; el.appendChild(s); setTimeout(()=>s.remove(),2600);
+}
+/* ---- match history (My page) ---- */
+function historyPanel(){
+  const L=(S.prof.log||[]).slice().reverse();
+  if(!L.length) return `<section class="panel"><h3>対戦履歴</h3><p class="note">まだ記録がありません。1ゲーム遊ぶとここに残ります。</p></section>`;
+  const d=t=>{ const x=new Date(t); return `${x.getMonth()+1}/${x.getDate()} ${String(x.getHours()).padStart(2,'0')}:${String(x.getMinutes()).padStart(2,'0')}`; };
+  const wins=L.filter(x=>x.r===1).length, avg=Math.round(L.reduce((s,x)=>s+x.r,0)/L.length*10)/10;
+  return `<section class="panel"><div class="row spread"><h3>対戦履歴</h3><span class="note">最近${L.length}戦 · 1位 ${wins}回 · 平均 ${avg}位</span></div>
+    <div class="hlist">${L.slice(0,12).map(x=>`<div class="hrow">
+      <span class="hplace p${Math.min(x.r,4)}">${x.r}<small>/${x.n}</small></span>
+      <span class="hmeta"><b>${x.m==='h'?'歴史モード':'クラシック'}${x.l?' <span class="htag long">ロング</span>':''}${x.d?' <span class="htag">デイリー</span>':''}${x.o?' <span class="htag cy">オンライン</span>':''}</b><span class="note">${d(x.t)}</span></span>
+      <span class="hgrid">${x.g||''}</span><b class="hs">${x.s}<small>pt</small></b></div>`).join('')}</div></section>`;
+}
+/* ---- first-time guide for the long game ---- */
+function longTutOnce(){ if(load('azakei-longtut')) return; save('azakei-longtut',1); setTimeout(()=>openSheet('longtut'),250); }
+function longTutBody(){
+  return `<span class="label" style="color:#ff9ad9">LONG · はじめての人へ</span><h3 class="ttl" style="font-size:22px">ロング版の3つのポイント</h3>
+    <div class="lsteps">
+      <div class="lstep"><span class="ln">1</span><div><b>6ターンで1期、期ごとに決算</b><p class="note">1期で手札6枚を使い切ります。期末にいちばん稼いだ人へ +${SETTLE_BONUS}。手札と先物は期ごとに復活。</p></div></div>
+      <div class="lstep"><span class="ln">2</span><div><b>市況カードでルールが変わる</b><p class="note">期のはじめに1枚。好景気・不況・バブル…その期だけの特別ルールです。</p></div>${marketCard('bubble','')}</div>
+      <div class="lstep"><span class="ln">3</span><div><b>極秘契約とブランド</b><p class="note">自分だけのお題を達成すると +3。期にいちばん独占した産業が「ブランド」になり、以後その産業は毎回 +1。</p><div class="row" style="gap:6px;margin-top:6px"><span class="ctchip"><i>極秘契約</i>金融で独占する<b>+3</b></span><span class="brd" style="--c:var(--i5)"><i>ブランド</i>メディア +1</span></div></div></div>
+    </div>
+    <button class="btn gold big" onclick="closeSheet()">わかった！</button>`;
 }
 // ---- splash & card tilt ----
 function splash(){
