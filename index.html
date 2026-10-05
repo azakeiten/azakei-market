@@ -168,6 +168,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .seat .nm{font-weight:800;font-size:14px;line-height:1.25;display:flex;gap:6px;align-items:center;flex-wrap:wrap;overflow-wrap:anywhere;padding-right:14px}
 .tagx{font-size:10px;font-weight:800;border-radius:6px;padding:0 6px;background:var(--rail);color:var(--muted);white-space:nowrap}
 .tagx.cy{color:var(--cyan)}
+.tagx.pro{background:linear-gradient(90deg,#ff7a3d,#ffc83a);color:#2a1a00}
 .seat .sc{font-family:var(--display);font-size:28px;line-height:1;grid-row:span 2;text-align:right;min-width:48px;text-shadow:0 3px 0 var(--rail);display:flex;flex-direction:column;align-items:flex-end;gap:3px}
 .spark{width:44px;height:16px;display:block}
 .seat .meta{display:flex;gap:4px;align-items:center;flex-wrap:wrap;min-height:16px}
@@ -570,7 +571,7 @@ body.calm *{animation:none!important;transition:none!important}
   .tile{min-height:120px;padding:14px} .tile b{font-size:17px} .tile .ic{width:58px;height:58px;right:-6px;top:-6px}
   .feature{grid-template-columns:minmax(0,1fr);padding:16px} .feature .yrs{text-align:left}
   .modes{grid-template-columns:1fr}
-  .seatrow{grid-template-columns:auto minmax(0,1fr) auto} .seatrow .seg{grid-column:1 / -1;justify-self:start}
+  .seatrow{grid-template-columns:auto minmax(0,1fr) auto} .seatrow .seg{grid-column:1 / -1;grid-row:2;justify-self:start} .seatrow .x{grid-row:1;grid-column:3}
   /* seats become a swipe row of compact chips */
   .rivals{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;margin-inline:-16px;padding:12px 16px 4px;scrollbar-width:none}
   .rivals::-webkit-scrollbar{display:none}
@@ -911,7 +912,8 @@ const PRESETS = {
   b2:{name:'β2 原案', desc:'PDFどおりの得点表・独占+1', table:B2, bonus:1, collide:'none', tiebreak:false, fore:'peek', turns:4}
 };
 const COLLIDE = {none:'被っても基本POINTはそのまま', minus:'被った人数−1を減点（0未満にはしない）', split:'プラス点を被った人数で割る（切り捨て）'};
-const TYPES = {human:'人', read:'読み合い', naive:'素直'};
+const TYPES = {human:'人', read:'読み合い', pro:'達人', naive:'素直'};
+const cpuLabel = p => p.type==='naive'?'素直':p.type==='pro'?'達人':'読み合い';
 const KEY = 'azakei-market-cfg-v5';
 let TURNS = 4;
 
@@ -996,7 +998,7 @@ function cardValues(cfg,p,players,deck,t,row,known,adj){
 const maxOf = o => Math.max(...Object.values(o));
 function cpuForesight(cfg,p,players,deck,t,rnd){
   const left=TURNS-1-t;
-  if(p.foreUsed || left<=0 || p.type!=='read' || p.fore==='never') return;
+  if(p.foreUsed || left<=0 || (p.type!=='read' && p.type!=='pro') || p.fore==='never') return;
   let use=false;
   if(p.fore==='early') use = t===0;
   else {
@@ -1014,9 +1016,35 @@ function cpuPick(p,players,deck,turn,cfg,rnd){
   if(p.type==='naive'){ const mx=Math.max(...p.hand.map(c=>T[news][c])); const cs=p.hand.filter(c=>T[news][c]===mx); return cs[Math.floor(rnd()*cs.length)]; }
   cpuForesight(cfg,p,players,deck,turn,rnd);
   const known=p.foreUsed && p.foreTurn===turn;
+  if(p.type==='pro') return proPick(p,players,deck,turn,cfg,rnd,known);
   const v=cardValues(cfg,p,players,deck,turn,rowFor(p,deck,turn),known,p.fut?futBase:null);
   let best=p.hand[0], bv=-1e9;
   for(const c of p.hand){ const x=v[c]+rnd()*0.5; if(x>bv){ bv=x; best=c; } }
+  return best;
+}
+// 達人：相手それぞれの考え方をまねして「何を出しそうか」を見積もってから選ぶ。極秘契約も狙う
+function proPick(p,players,deck,turn,cfg,rnd,known){
+  const T=cfg.table, left=TURNS-1-turn, pool=unseen(cfg,deck,turn), fut=known?[deck[turn+1]]:pool;
+  const opp=players.filter(o=>o!==p).map(o=>{
+    if(o.type==='human' || o.type==='random') return oppDist(T,o,deck[turn],pool,left);
+    const vals={}; if(o.type==='naive') o.hand.forEach(c=>vals[c]=T[deck[turn]][c]*3);
+    else Object.assign(vals, cardValues(cfg,o,players,deck,turn,deck[turn],false,null));
+    const d=[0,0,0,0,0,0]; const mx=Math.max(...o.hand.map(c=>vals[c])); let z=0;
+    o.hand.forEach(c=>{ d[c]=Math.exp((vals[c]-mx)/0.3); z+=d[c]; });
+    return d.map(x=>x/z);
+  });
+  const row=rowFor(p,deck,turn), ct=p.contract;
+  let best=p.hand[0], bv=-1e9;
+  for(const c of p.hand){
+    let dist=[1];
+    for(const od of opp){ const q=od[c], nd=new Array(dist.length+1).fill(0); for(let k=0;k<dist.length;k++){ nd[k]+=dist[k]*(1-q); nd[k+1]+=dist[k]*q; } dist=nd; }
+    const b0=(p.fut?futBase(T[row][c],cfg):T[row][c])+(p.brand===c?1:0);
+    let ev=0; for(let k=0;k<dist.length;k++) ev+=dist[k]*gain(cfg,b0,k+1);
+    let x=ev-futureCost(T,p.hand,c,fut,left,known)+rnd()*0.1;
+    if(ct && ct.id==='mono' && ct.x===c) x+=dist[0]*contractVal(ct)*.6;   // 独占できそうなら契約ぶんも上乗せ
+    if(ct && ct.id==='clean' && ev<0) x-=1;
+    if(x>bv){ bv=x; best=c; }
+  }
   return best;
 }
 function ranking(players,cfg){
@@ -1188,7 +1216,7 @@ function vsOverlay(){
   const mode = G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(initial(p.name))}</div>
-      <div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${tierOf(rateOf()).n} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':(p.type==='naive'?'素直CPU':'読み合いCPU')}</span></div></div>`;
+      <div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${tierOf(rateOf()).n} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
   return `<div class="overlay vs" onclick="endVs()"><div class="vsbg"></div>
@@ -1545,7 +1573,7 @@ function netSync(){
     r:{b:G.base?G.base.bonus:C.bonus,f:C.fore,tb:C.tiebreak?1:0,c:G.base?G.base.collide:C.collide,n:TURNS,t:C.hist?null:(G.base?G.base.table:C.table)}, turn:G.turn,
     lg:isLong()?{rd:G.round,rds:G.rounds,mk:G.mkts,fp:G.fullPool,log:G.log,st:G.settles.length?G.settles[G.settles.length-1]:null}:null,
     shown:G.deck.slice(0, G.phase==='final'?TURNS:G.turn+1), remain:C.hist?null:G.deck.slice(G.turn+1).slice().sort((a,b)=>a-b),
-    ps:G.players.map(p=>[p.name,p.type==='human'?'h':p.type==='naive'?'n':'r',p.peer||'',p.score,p.uniq,p.hist,p.used.map(u=>[u.ind,u.total,u.fut?1:0,u.k||0]),p.foreUsed?1:0,p.foreTurn,p.fut?1:0,p.pick!==null?1:0,p.hand,p.brand==null?-1:p.brand,p.contract?[p.contract.id,p.contract.x==null?-1:p.contract.x]:null,p.roundStart||0]),
+    ps:G.players.map(p=>[p.name,p.type==='human'?'h':p.type==='naive'?'n':p.type==='pro'?'p':'r',p.peer||'',p.score,p.uniq,p.hist,p.used.map(u=>[u.ind,u.total,u.fut?1:0,u.k||0]),p.foreUsed?1:0,p.foreTurn,p.fut?1:0,p.pick!==null?1:0,p.hand,p.brand==null?-1:p.brand,p.contract?[p.contract.id,p.contract.x==null?-1:p.contract.x]:null,p.roundStart||0]),
     last:rev&&G.last?G.last.map(x=>[x.ind,x.base,x.total,x.fut?1:0,x.k]):null, cnt:rev?G.cnt:null,
     peek:G.phase==='choose'?Object.fromEntries(G.players.filter(p=>p.peer&&p.foreUsed&&p.foreTurn===G.turn&&G.turn+1<TURNS).map(p=>[p.peer,G.deck[G.turn+1]])):{},
     divs:G.divs};
@@ -1590,7 +1618,7 @@ function guestApply(st){
   TURNS=Math.max(1,Math.min(6,+st.r.n||4));
   const last=Array.isArray(st.last)?st.last.map(x=>({ind:x[0],base:x[1],total:x[2],fut:!!x[3],k:x[4]})):null;
   G={online:true, host:false, cfg, turn:+st.turn||0, phase:st.ph, deck:st.shown.slice(), remain:st.remain, last, cnt:st.cnt, divs:Array.isArray(st.divs)?st.divs:[], ov:null,
-     players:st.ps.map((a,i)=>({seat:i,name:String(a[0]).slice(0,16),type:a[1]==='h'?'human':a[1]==='n'?'naive':'read',peer:a[2]||null,score:+a[3]||0,uniq:+a[4]||0,hist:Array.isArray(a[5])?a[5]:[0],
+     players:st.ps.map((a,i)=>({seat:i,name:String(a[0]).slice(0,16),type:a[1]==='h'?'human':a[1]==='n'?'naive':a[1]==='p'?'pro':'read',peer:a[2]||null,score:+a[3]||0,uniq:+a[4]||0,hist:Array.isArray(a[5])?a[5]:[0],
        used:(a[6]||[]).map((u,j)=>({ind:u[0],total:u[1],fut:!!u[2],k:+u[3]||0,turn:j})),foreUsed:!!a[7],foreTurn:a[8],fut:!!a[9],pick:a[10]?-1:null,hand:Array.isArray(a[11])?a[11]:[],shown:+a[3]||0,
        brand:Number.isInteger(a[12])&&a[12]>=0&&a[12]<6?a[12]:null, contract:Array.isArray(a[13])&&CONTRACTS[a[13][0]]?{id:a[13][0],x:a[13][1]>=0?a[13][1]:undefined}:null, roundStart:+a[14]||0}))};
   const lg=st.lg;
@@ -1852,7 +1880,7 @@ function seatsView(){
     const lead = p.score===top && top>0 && G.phase!=='reveal';
     return `<div class="seat${(G.online?i===G.me:isHuman(p)&&humans()===1)?' me':''}${i===G.active?' active':''}" data-i="${i}">${lead?CROWN('crown'):''}<span class="rk">#${rk[i]}</span>
       <div class="ava" style="--s:var(--s${p.seat%6})">${esc(initial(p.name))}</div>
-      <div class="nm">${esc(p.name)}${isHuman(p)?'':`<span class="tagx">${p.type==='naive'?'素直':'読み合い'}</span>`}</div>
+      <div class="nm">${esc(p.name)}${isHuman(p)?'':`<span class="tagx${p.type==='pro'?' pro':''}">${cpuLabel(p)}</span>`}</div>
       <div class="sc" id="sc${i}">${G.phase==='reveal'?p.shown:p.score}${spark(p.hist)}</div>
       <div class="meta">${p.used.filter(u=>Math.floor(u.turn/TURNS)===(G.round||0)).map(u=>`<span class="dot c${u.ind}" title="${IND[u.ind]}"></span>`).join('')}${p.brand!=null?`<span class="brd sm" style="--c:var(--i${p.brand})" title="ブランド">${IND[p.brand]}</span>`:""}<span class="eye${p.foreUsed?' on':''}" title="未来予測">${EYE}${p.foreUsed?FORE[G.cfg.fore].short+'済':'未使用'}</span></div>
       <div class="play">${play}</div></div>`;
@@ -2062,7 +2090,7 @@ function playView(){
       </div>
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
-      <p class="note">${hc===0?'全員CPUの観戦モードです。':hc===1?'あなたとCPUで対戦します。読み合いCPUは相手と先を読み、素直CPUはいちばん高い点を出します。':`${hc}人で1台の端末を回します。順番に手札を見る画面が出ます。`}${S.seats.length===2?' 2人戦は同点になりやすいので3人以上がおすすめ。':''}</p>
+      <p class="note">${hc===0?'全員CPUの観戦モードです。':hc===1?'あなたとCPUで対戦します。読み合いCPUは相手と先を読み、素直CPUはいちばん高い点を出します。達人CPUは相手ひとりひとりの考えを読み、極秘契約も狙う強敵（ロング版でとくに強い）。':`${hc}人で1台の端末を回します。順番に手札を見る画面が出ます。`}${S.seats.length===2?' 2人戦は同点になりやすいので3人以上がおすすめ。':''}</p>
       <div class="step"><span class="sn">3</span><b>スタート</b></div>
       <button class="btn go huge pulse" onclick="startGame()">ゲームスタート！</button></section>
     <aside class="panel"><div class="row spread"><span class="label">いまのルール</span><button class="btn ghost icon" onclick="go('rules','set')">変更</button></div>${ruleList()}<button class="btn ghost" onclick="openTutorial()">遊び方をおさらいする</button></aside></div>`;
@@ -2101,7 +2129,13 @@ const ACH=[
   {id:'games20',n:'常連トレーダー', d:'20ゲーム遊ぶ',                     ic:'✦'},
   {id:'daily3', n:'毎日トレーダー', d:'デイリーに3日連続で挑戦する',          ic:'☀'},
   {id:'long1',  n:'長期投資家',     d:'ロング版を最後まで遊ぶ',              ic:'∞'},
-  {id:'longwin',n:'市場の覇王',     d:'ロング版で1位になる',                ic:'♚'}
+  {id:'longwin',n:'市場の覇王',     d:'ロング版で1位になる',                ic:'♚'},
+  {id:'ct5',    n:'契約の達人',     d:'極秘契約を累計5回達成する',          ic:'✎'},
+  {id:'sweep',  n:'決算総なめ',     d:'ロング版で全部の期の決算ボーナスを取る', ic:'❖'},
+  {id:'mkall',  n:'市況ハンター',   d:'6種類すべての市況カードを経験する',    ic:'☂'},
+  {id:'beatpro',n:'達人を超えて',   d:'達人CPUがいる対戦で1位になる',        ic:'⚑'},
+  {id:'gold',   n:'ゴールド到達',   d:'ランクがゴールドになる',              ic:'⬢'},
+  {id:'daily7', n:'皆勤トレーダー', d:'デイリーに7日連続で挑戦する',          ic:'☼'}
 ];
 function loadProfile(){
   const p=load('azakei-prof');
@@ -2128,16 +2162,21 @@ function recordResult(){
   const got=[]; const unlock=id=>{ if(!P.ach[id]){ P.ach[id]=Date.now(); got.push(id); } };
   unlock('first');
   if(won) unlock('win1'); if(st.wins>=10) unlock('win10');
-  if(isLong()){ unlock('long1'); if(won) unlock('longwin'); }
+  if(isLong()){ unlock('long1'); if(won) unlock('longwin');
+    const mine2=G.settles.map(s=>s.rows[me]).filter(Boolean);
+    st.ct=(st.ct||0)+mine2.filter(r=>r.done).length; if(st.ct>=5) unlock('ct5');
+    if(mine2.length===G.rounds && mine2.every(r=>r.bonus>0)) unlock('sweep');
+    P.mk=[...new Set([...(P.mk||[]),...(G.mkts||[])])]; if(P.mk.length>=Object.keys(MARKETS).length) unlock('mkall'); }
+  if(won && G.players.some(q=>q.type==='pro')) unlock('beatpro');
   if(p.uniq>=3) unlock('mono3'); if(futBest>=4) unlock('fut4');
   if(won && G.cfg.hist) unlock('hist'); if(G.online) unlock('online');
   if(p.score>=15) unlock('big15'); if(won && lastAt3) unlock('comeback'); if(st.games>=20) unlock('games20');
   if(G.daily){ P.daily=P.daily||{}; if(!P.daily[G.daily]) P.daily[G.daily]={score:p.score, rank:mine?mine.rank:0, grid:resultGrid(p)};
     const ks=Object.keys(P.daily).sort(); while(ks.length>60) delete P.daily[ks.shift()];
-    if(dailyStreak()>=3) unlock('daily3'); }
+    if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
   P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-30);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
-  const r0=rateOf(), r1=Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1;
+  const r0=rateOf(), r1=Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold');
   G.reward={xp:xp+mis.xp, base:xp, mis, skins, before, after, got, won, rate:{before:r0, after:r1}};
   saveProfile();
 }
