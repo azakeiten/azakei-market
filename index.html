@@ -681,6 +681,25 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- quick menu ---- */
+.qmenu{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.qt{--q:var(--gold);position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;border-radius:20px;padding:14px 6px 12px;color:var(--ink);text-align:center;background:linear-gradient(170deg,color-mix(in srgb,var(--q) 22%,var(--panel2)),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--q) 45%,var(--line));transition:transform .12s ease}
+.qt:hover{transform:translateY(-3px)} .qt:active{transform:translateY(3px);box-shadow:0 2px 0 var(--rail),inset 0 0 0 1px var(--line)}
+.qt .qi{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-size:22px;font-weight:800;color:#1a1033;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--q) 40%,#fff),var(--q));box-shadow:0 3px 0 color-mix(in srgb,var(--q) 50%,#000);margin-bottom:4px}
+.qt b{font-size:14px} .qt .qs{font-size:10.5px;color:var(--muted);font-weight:800;white-space:nowrap}
+.q-cpu{--q:#3fe08f} .q-daily{--q:#ff8a3d} .q-chal{--q:#ffc83a} .q-long{--q:#ff7ad1} .q-online{--q:#4fe3ff} .q-me{--q:#a77bff}
+.qt.hot::after{content:"!";position:absolute;top:6px;right:8px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;background:var(--red);color:#fff;box-shadow:0 0 0 2px var(--rail);animation:pulse 1.4s ease-in-out infinite}
+@media (max-width:760px){ .qmenu{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px} .qt{padding:12px 4px 10px;border-radius:18px} .qt .qi{width:40px;height:40px;font-size:19px;border-radius:13px} .qt b{font-size:13px} .qt .qs{font-size:10px} }
+/* ---- login bonus ---- */
+.lcal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:12px 0}
+.lday{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;border-radius:14px;padding:8px 2px;background:rgb(7 8 24 / .45);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.lday .ld{font-size:9.5px;font-weight:800;color:var(--muted)} .lday b{font-family:var(--display);font-weight:400;font-size:15px;color:var(--gold)} .lday .lx{font-size:9px;font-weight:800;color:var(--muted)}
+.lday.big{background:radial-gradient(circle at 50% 0%,rgb(255 200 58 / .35),transparent 70%),rgb(7 8 24 / .45);box-shadow:inset 0 0 0 1.5px var(--gold)}
+.lday.now{box-shadow:inset 0 0 0 2px var(--gold),0 0 20px -6px var(--gold);transform:scale(1.06)}
+.lday.got{opacity:.7}
+.lstamp{position:absolute;inset:auto -10% 30% -10%;transform:rotate(-14deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.1em;color:#fff;background:var(--red);padding:1px 0;box-shadow:0 2px 6px rgb(0 0 0 / .4)}
+.lday.now .lstamp{animation:stampin .5s cubic-bezier(.2,.9,.3,1.6) .35s both}
+@media (max-width:560px){ .lcal{gap:4px} .lday{padding:6px 1px;border-radius:10px} .lday b{font-size:12px} .lday .ld{font-size:8px} }
 /* ---- challenge mode ---- */
 .stars{display:inline-flex;gap:2px;vertical-align:middle}
 .stars i{font-style:normal;font-size:18px;line-height:1;color:var(--rail);text-shadow:0 0 0 transparent,0 1px 0 var(--line)}
@@ -1122,6 +1141,39 @@ const SFX = {
   fanfare:()=>[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i===5?.6:.18,'triangle',.07,i*.13))
 };
 function sfx(n){ try{ SFX[n] && SFX[n](); }catch(e){} }
+/* ---- BGM：WebAudioで鳴らす軽いループ（設定でオン・オフ、初期はオフ） ---- */
+const BGM={on:false, timer:null, bar:0, next:0, master:null};
+const BGM_PROG=[[261.63,329.63,392.00],[220.00,261.63,329.63],[174.61,220.00,261.63],[196.00,246.94,293.66]];   // C - Am - F - G
+function bgmNote(f,t,d,type,v){
+  const a=ac(); if(!a || !BGM.master) return;
+  const o=a.createOscillator(), g=a.createGain();
+  o.type=type; o.frequency.setValueAtTime(f,t);
+  g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(v,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g).connect(BGM.master); o.start(t); o.stop(t+d+.05);
+}
+function bgmTick(){
+  const a=ac(); if(!a || !BGM.on) return;
+  if(document.hidden){ BGM.next=0; return; }
+  const beat=60/104, barLen=beat*4;
+  if(!BGM.next || BGM.next<a.currentTime) BGM.next=a.currentTime+.08;
+  while(BGM.next < a.currentTime+1.2){            // 少し先まで予約しておく
+    const ch=BGM_PROG[BGM.bar%4], t0=BGM.next;
+    bgmNote(ch[0]/2,t0,barLen*.9,'triangle',.09);                       // ベース
+    [0,1,2,1,0,2,1,2].forEach((k,i)=>bgmNote(ch[k]*(i%4===3?2:1),t0+i*beat/2,beat*.45,'sine',.035));   // アルペジオ
+    if(BGM.bar%2===1) bgmNote(ch[2]*2,t0+beat*3,beat*.9,'triangle',.025);
+    BGM.next+=barLen; BGM.bar++;
+  }
+}
+function bgmStart(){
+  const a=ac(); if(!a) return;
+  if(a.state==='suspended') a.resume().catch(()=>{});
+  if(!BGM.master){ BGM.master=a.createGain(); BGM.master.gain.value=.55; BGM.master.connect(a.destination); }
+  BGM.on=true; BGM.next=0; clearInterval(BGM.timer); BGM.timer=setInterval(bgmTick,400); bgmTick();
+}
+function bgmStop(){ BGM.on=false; clearInterval(BGM.timer); BGM.timer=null; }
+function toggleBgm(){ S.bgm=!S.bgm; save('azakei-bgm',S.bgm); S.bgm?bgmStart():bgmStop(); renderSheet(); }
+// ブラウザは最初のタップまで音を出せないので、BGMオンなら最初の操作で鳴らし始める
+document.addEventListener('pointerdown',()=>{ if(S && S.bgm && !BGM.on) bgmStart(); },{passive:true});
 function haptic(ms){ if(S && S.vib===false) return; try{ navigator.vibrate && navigator.vibrate(ms); }catch(e){} }
 
 const FX={p:[],run:false};
@@ -1185,6 +1237,7 @@ function start(data){
   if(S.vib===undefined){ const v=load('azakei-vib'); S.vib = v===null ? true : !!v; }
   if(S.calm===undefined) S.calm=!!load('azakei-calm');
   if(!S.len) S.len=load('azakei-len')==='long'?'long':'short';
+  if(S.bgm===undefined) S.bgm=!!load('azakei-bgm');
   document.body.classList.toggle('calm',!!S.calm);
   const firstRun = !data.S && !load('azakei-tut');
   G=data.G || null;
@@ -1194,6 +1247,7 @@ function start(data){
   splash();
   fxSize(); bgInit(); render(); renderSheet();
   if(firstRun){ save('azakei-tut',1); setTimeout(openTutorial,600); }
+  else if(!G) setTimeout(loginBonus,700);
 }
 window.addEventListener('resize', fxSize);
 window.claude?.hot?.snapshot?.(() => ({CFG,S,G,LAB}));
@@ -1820,6 +1874,7 @@ function renderSheet(){
   else if(k==='tutorial') body=tutorialBody();
   else if(k==='card') body=cardSheetBody();
   else if(k==='longtut') body=longTutBody();
+  else if(k==='login') body=loginBody();
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
 }
@@ -2089,6 +2144,7 @@ function homeView(){
       <div class="row" style="margin-top:20px"><button class="btn gold huge pulse" onclick="go('play','cpu')">あそぶ</button><button class="btn big" onclick="openTutorial()">遊び方（1分）</button></div>
     </div>
     <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>
+  ${quickMenu()}
   ${dailyCard()}
   ${missionsPanel()}
   ${chalCard()}
@@ -2155,6 +2211,7 @@ function settingsBody(){
   return `<h3 class="ttl" style="font-size:22px">設定</h3>
     <div class="field"><label for="setname">あなたの名前（オンラインやCPU対戦で使います）</label><input id="setname" class="inp" maxlength="12" value="${esc(NET.name||'')}" oninput="setMyName(this.value)" placeholder="例：リョウ"></div>
     ${sw(S.sound,'toggleSound()','効果音','カードを選ぶ音やファンファーレ')}
+    ${sw(!!S.bgm,'toggleBgm()','BGM','ゲーム中に軽い音楽を流す')}
     ${sw(S.vib!==false,'toggleVib()','振動','スマホで選んだときや被ったときに軽く振動')}
     ${sw(!!S.calm,'toggleCalm()','動きを減らす','アニメーションや紙吹雪を止めて静かに表示')}
     <div class="row" style="gap:8px"><button class="btn ghost" onclick="closeSheet();openTutorial()">遊び方を見る</button><button class="btn ghost" onclick="openSheet('share')">友だちに使ってもらう</button><button class="btn ghost" onclick="resetRecord()">戦績をリセット</button></div>
@@ -2506,6 +2563,38 @@ async function saveCardImg(){
   const dl=await getDownloads(); if(!dl){ toast('この画面では保存機能が使えません。画像を長押しして保存してね'); return; }
   try{ await dl.save({filename:cardName(), data:await CARD_IMG.blob.arrayBuffer()}); closeSheet(); toast('画像を保存しました'); }
   catch(e){ if(e && e.code==='declined') return; toast('保存できませんでした（'+(e&&e.code||'unknown')+'）'); }
+}
+/* ---- login bonus: 1日1回、7日周期でXP。7日目は特大 ---- */
+const LOGIN_XP=[20,20,30,30,40,40,120];
+function loginBonus(){
+  if(!S || !S.prof || G) return;
+  const P=S.prof, k=todayKey(); P.login=P.login||{last:0, day:0};
+  if(P.login.last===k) return;
+  const y=new Date(); y.setDate(y.getDate()-1);
+  P.login.day = P.login.last===todayKey(y) ? P.login.day%7+1 : 1;   // 連続なら次の日、途切れたら1日目から
+  P.login.last=k;
+  const xp=LOGIN_XP[P.login.day-1], before=lvInfo(P.xp); P.xp+=xp; P.login.got={xp, up:lvInfo(P.xp).lv>before.lv};
+  saveProfile(); render(); openSheet('login'); sfx('coin');
+}
+function loginBody(){
+  const L=S.prof.login||{day:1,got:{xp:0}}, d=L.day;
+  return `<span class="label">LOGIN BONUS</span><h3 class="ttl" style="font-size:24px">ログインボーナス ${d}日目</h3>
+    <div class="lcal">${LOGIN_XP.map((x,i)=>`<div class="lday${i<d-1?' got':''}${i===d-1?' now':''}${i===6?' big':''}"><span class="ld">${i+1}日目</span><b>${i===6?'★':'+'}${i===6?'':''}${x}</b><span class="lx">XP</span>${i<d?'<span class="lstamp">GET</span>':''}</div>`).join('')}</div>
+    <p class="note" style="text-align:center">${d<7?`毎日開くと、7日目に <b style="color:var(--gold)">+${LOGIN_XP[6]} XP</b>。途切れると1日目に戻ります。`:'7日達成！ 明日からまた1日目です。'}${L.got&&L.got.up?' <b style="color:var(--gold)">レベルアップ！</b>':''}</p>
+    <button class="btn gold big" onclick="closeSheet()">受け取る！</button>`;
+}
+/* ---- home quick menu: スマホでも親指ひとつで目的の遊び方へ ---- */
+function quickMenu(){
+  const k=todayKey(), done=!!((S.prof.daily||{})[k]), M=S.prof.mis, mDone=M&&M.day===k?Object.keys(M.done||{}).length:0;
+  const tiles=[
+    ['cpu','▶','CPU対戦','すぐ1ゲーム',"go('play','cpu')"],
+    ['daily','☀','デイリー',done?'挑戦済み ✓':'今日まだ！','startDaily()'],
+    ['chal','★','チャレンジ',`★ ${chalTotal()} / ${CHALLENGES.length*3}`,"go('chal')"],
+    ['long','∞','ロング版','市況・契約・ブランド','pickLong()'],
+    ['online','◎','オンライン','友だちと対戦',"go('online')"],
+    ['me','◆','ミッション',`今日 ${mDone}/3 達成`,"document.querySelector('.missions')?.scrollIntoView({behavior:'smooth',block:'center'})"]
+  ];
+  return `<nav class="qmenu" aria-label="遊び方を選ぶ">${tiles.map(([c,ic,n,s,fn])=>`<button class="qt q-${c}${c==='daily'&&!done?' hot':''}" onclick="${fn}"><span class="qi">${ic}</span><b>${n}</b><span class="qs">${s}</span></button>`).join('')}</nav>`;
 }
 /* ---- challenge mode: 決まった山札・決まった相手で、条件をクリアして★を集める ---- */
 const CHAL_NAMES=['ミナト','アオイ','ソラ'];
