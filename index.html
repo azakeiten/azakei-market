@@ -681,6 +681,44 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- avatar / title ---- */
+.titlechip{align-self:flex-start;border:0;font:inherit;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--gold);background:rgb(255 200 58 / .12);border-radius:999px;padding:3px 10px;box-shadow:inset 0 0 0 1px rgb(255 200 58 / .4)}
+.titlechip span{color:var(--muted);font-size:10px;margin-left:4px}
+.avgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:8px}
+.avopt{position:relative;aspect-ratio:1;border:0;border-radius:50%;display:grid;place-items:center;font-size:26px;font-weight:800;color:#1a1033;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--s) 35%,#fff),var(--s));box-shadow:0 3px 0 color-mix(in srgb,var(--s) 50%,#000),0 0 0 3px var(--rail);transition:transform .12s ease}
+.avopt:hover:not(.lock){transform:translateY(-2px) scale(1.04)}
+.avopt.on{box-shadow:0 3px 0 color-mix(in srgb,var(--s) 50%,#000),0 0 0 3px var(--rail),0 0 0 6px var(--gold),0 0 18px var(--gold)}
+.avopt.lock{background:var(--panel2);color:var(--dim);cursor:not-allowed} .avopt.lock span{opacity:.25;filter:grayscale(1)}
+.avopt small{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;color:var(--ink);background:var(--rail);border-radius:6px;padding:0 5px;white-space:nowrap}
+.tlist{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.topt{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;border:0;border-radius:14px;padding:10px 12px;color:var(--ink);background:rgb(7 8 24 / .45);box-shadow:inset 0 0 0 1px var(--line)}
+.topt.on{box-shadow:inset 0 0 0 2px var(--gold),0 0 18px -8px var(--gold)} .topt b{font-size:15px}
+/* ---- coach ---- */
+.coach{display:flex;align-items:flex-start;gap:10px;border-radius:16px;padding:10px 12px;background:linear-gradient(90deg,rgb(63 224 143 / .14),rgb(7 8 24 / .35));box-shadow:inset 0 0 0 1.5px rgb(63 224 143 / .55);animation:achin .4s cubic-bezier(.2,.9,.3,1.3) both}
+.coach .ci{font-size:22px;line-height:1} .coach .ct{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.coach .ct b{font-size:14px;color:var(--up)} .coach .cp{font-size:12px;font-weight:800;color:var(--ink)} .coach .note{font-size:12px;line-height:1.5}
+.coach .cx{border:0;background:none;color:var(--muted);font-size:14px;padding:2px 4px}
+/* ---- stats charts ---- */
+.schart{width:100%;height:auto;margin-top:6px;overflow:visible}
+.schart text{font-size:11px;fill:var(--muted);font-family:var(--mono)} .schart .lab{fill:var(--gold);font-weight:800;font-family:var(--body)}
+.schart .pt:hover circle:last-of-type{r:7}
+.wlist{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.wrow{display:grid;grid-template-columns:84px 1fr 44px 40px;align-items:center;gap:8px}
+.wrow .wn{font-size:13px;font-weight:800} .wrow b{text-align:right;font-size:14px} .wrow .note{font-size:11px;text-align:right}
+.wbar{height:12px;border-radius:6px;background:var(--rail);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.wbar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--gold-deep),var(--gold))}
+/* ---- party handoff ---- */
+.overlay.handoff{overflow:hidden;background:#07081a}
+.hbg{position:absolute;inset:-30%;background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--s) 45%,transparent),transparent 55%),repeating-conic-gradient(from 0deg at 50% 45%,rgb(255 255 255 / .05) 0 8deg,transparent 8deg 16deg);animation:hspin 18s linear infinite}
+@keyframes hspin{to{transform:rotate(360deg)}}
+.overlay.handoff .box{position:relative}
+.hpass{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(40px,11vw,64px);line-height:1;color:var(--s);text-shadow:0 5px 0 var(--rail);animation:bang .6s cubic-bezier(.2,.9,.3,1.5) both}
+.hpass i{font-style:normal;font-size:.7em;animation:hwob 1s ease-in-out infinite alternate}
+@keyframes hwob{from{transform:translateX(-8px) rotate(-10deg)}to{transform:translateX(8px) rotate(10deg)}}
+.overlay.handoff .ava{box-shadow:0 0 0 5px var(--rail),0 0 0 8px var(--s),0 0 40px var(--s);animation:bang .6s cubic-bezier(.2,.9,.3,1.5) .15s both}
+.hand-name small{font-family:var(--body);font-size:18px;color:var(--muted)}
+.hdots{display:flex;gap:8px} .hdots i{width:14px;height:14px;border-radius:50%;background:var(--rail);box-shadow:inset 0 0 0 2px var(--line)}
+.hdots i.done{background:var(--up);box-shadow:none} .hdots i.now{background:var(--s);box-shadow:0 0 12px var(--s)}
 /* ---- market dex ---- */
 .dexbar{display:block;height:8px;border-radius:4px;background:var(--rail);overflow:hidden;margin:8px 0 4px;box-shadow:inset 0 0 0 1px var(--line)}
 .dexbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold))}
@@ -1010,6 +1048,10 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':
 const chip = i => `<span class="chip c${i}"><i></i>${IND[i]}</span>`;
 const $ = s => document.querySelector(s);
 const initial = n => (String(n).replace(/^CPU\s*/,'').trim()[0] || '?');
+const AVATARS=[[null,1],["🦊",1],["🐼",1],["🐯",2],["🐸",3],["🐧",4],["🦉",5],["🐙",6],["🦁",8],["🐲",10],["🤖",12],["👑",15]];   // [絵,解放レベル]、nullは名前の頭文字
+const myAvatar = () => { const P=S&&S.prof; if(!P||!P.av) return null; const a=AVATARS.find(x=>x[0]===P.av); return a && lvInfo(P.xp).lv>=a[1] ? a[0] : null; };
+const avOf = p => (G && G.players.indexOf(p)===myIndex() && myAvatar()) || initial(p.name);
+const myTitle = () => { const P=S.prof, a=P.title && P.ach[P.title] && ACH.find(x=>x.id===P.title); return a ? a.n : titleOf(lvInfo(P.xp).lv); };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || !!(typeof S!=='undefined' && S && S.calm);
 const phone = () => matchMedia('(max-width:640px)').matches;
 function presetCfg(k){ const p=PRESETS[k]; return {preset:k, table:clone(p.table), bonus:p.bonus, collide:p.collide, tiebreak:p.tiebreak, fore:p.fore, turns:p.turns}; }
@@ -1262,6 +1304,7 @@ function start(data){
   if(S.calm===undefined) S.calm=!!load('azakei-calm');
   if(!S.len) S.len=load('azakei-len')==='long'?'long':'short';
   if(S.bgm===undefined) S.bgm=!!load('azakei-bgm');
+  if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
   const firstRun = !data.S && !load('azakei-tut');
   G=data.G || null;
@@ -1339,8 +1382,8 @@ function vsOverlay(){
   const C=G.cfg, me=myIndex(), L=lvInfo(S.prof.xp);
   const mode = G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
-      <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(initial(p.name))}</div>
-      <div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${tierOf(rateOf()).n} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
+      <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
+      <div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
   return `<div class="overlay vs" onclick="endVs()"><div class="vsbg"></div>
@@ -1555,7 +1598,7 @@ function startNextRound(){
 function settleOverlay(){
   const s=G.settles[G.settles.length-1], rk=ranking(G.players,G.cfg), me=myIndex(), lastTerm=G.round>=G.rounds-1;
   const rows=rk.map((x,j)=>{ const r=s.rows[x.i]; return `<div class="strow${x.i===me?' me':''}${r.bonus?' top':''}" style="animation-delay:${j*.1}s">
-      <div class="srow1"><b class="sr">${x.rank}</b><div class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${esc(initial(x.p.name))}</div>
+      <div class="srow1"><b class="sr">${x.rank}</b><div class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${esc(avOf(x.p))}</div>
       <span class="sn">${esc(x.p.name)}</span><span class="sg num ${cls(r.gain)}">今期 ${sgn(r.gain)}</span>${r.bonus?`<span class="sb">決算 +${r.bonus}</span>`:''}<b class="st">${x.p.score}</b></div>
       <div class="srow2">${r.ct?`<span class="ctr${r.done?' ok':''}" style="animation-delay:${.8+j*.25}s"><i>契約</i>${esc(contractText(r.ct))}<b>${r.done?`達成 +${r.cv}`:'未達成'}</b></span>`:''}
         ${r.brand!=null?`<span class="brd${r.newBrand?' new':''}" style="--c:var(--i${r.brand})"><i>ブランド</i>${IND[r.brand]}${r.newBrand?' NEW':''}</span>`:''}</div></div>`; }).join('');
@@ -1899,6 +1942,7 @@ function renderSheet(){
   else if(k==='card') body=cardSheetBody();
   else if(k==='longtut') body=longTutBody();
   else if(k==='login') body=loginBody();
+  else if(k==='title') body=titleBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
@@ -1937,8 +1981,9 @@ function renderOv(){
       ? `<div class="overlay intro" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="yr">${yearOf(n)}</div><div class="bar"></div><div class="nw serif">${nm(n)}</div>${introMkt()}<div class="note">タップでスキップ</div></div></div>`
       : `<div class="overlay intro" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="bar"></div><div class="nw">${nm(n)}！</div>${introMkt()}<div class="note">タップでスキップ</div></div></div>`;
     return; }
-  if(G.ov==='handoff'){ const p=G.players[G.active]; ov.innerHTML=`<div class="overlay"><div class="box"><div class="ava" style="--s:var(--s${p.seat%6});width:80px;height:80px;font-size:34px;grid-row:auto">${esc(initial(p.name))}</div>
-    <span class="label">TURN ${G.turn+1} · 次のプレイヤー</span><div class="hand-name">${esc(p.name)}</div>
+  if(G.ov==='handoff'){ const p=G.players[G.active]; const done=G.players.filter(q=>isHuman(q)&&q.pick!==null).length, hn=humans();
+    ov.innerHTML=`<div class="overlay handoff" style="--s:var(--s${p.seat%6})"><div class="hbg"></div><div class="box"><div class="hpass"><span>PASS</span><i>📱</i></div><div class="ava" style="--s:var(--s${p.seat%6});width:96px;height:96px;font-size:40px;grid-row:auto">${esc(avOf(p))}</div>
+    <span class="label">TURN ${G.turn+1} · 次のプレイヤー</span><div class="hand-name">${esc(p.name)}<small> さんの番</small></div><div class="hdots">${G.players.filter(isHuman).map(q=>`<i class="${q===p?"now":q.pick!==null?"done":""}"></i>`).join("")}</div><span class="note">人間 ${done+1} / ${hn} 人目</span>
     <p class="note">端末を${esc(p.name)}さんに渡してください。ほかの人は画面を見ないでね。</p>
     <button class="btn gold big pulse" onclick="G.ov=null;sfx('click');render()">手札を見る</button></div></div>`; }
 }
@@ -2007,7 +2052,7 @@ function seatsView(){
     }
     const lead = p.score===top && top>0 && G.phase!=='reveal';
     return `<div class="seat${(G.online?i===G.me:isHuman(p)&&humans()===1)?' me':''}${i===G.active?' active':''}" data-i="${i}">${lead?CROWN('crown'):''}<span class="rk">#${rk[i]}</span>
-      <div class="ava" style="--s:var(--s${p.seat%6})">${esc(initial(p.name))}</div>
+      <div class="ava" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</div>
       <div class="nm">${esc(p.name)}${isHuman(p)?'':`<span class="tagx${p.type==='pro'?' pro':''}">${cpuLabel(p)}</span>`}</div>
       <div class="sc" id="sc${i}">${G.phase==='reveal'?p.shown:p.score}${spark(p.hist)}</div>
       <div class="meta">${p.used.filter(u=>Math.floor(u.turn/TURNS)===(G.round||0)).map(u=>`<span class="dot c${u.ind}" title="${IND[u.ind]}"></span>`).join('')}${p.brand!=null?`<span class="brd sm" style="--c:var(--i${p.brand})" title="ブランド">${IND[p.brand]}</span>`:""}<span class="eye${p.foreUsed?' on':''}" title="未来予測">${EYE}${p.foreUsed?FORE[G.cfg.fore].short+'済':'未使用'}</span></div>
@@ -2075,6 +2120,7 @@ function handDock(news){
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>
     ${known?`<div class="peek"><span class="label" style="color:var(--cyan)">${p.fut?'先物取引':'未来予測'} · 次のNEWS（あなただけ）</span><b>${nextLabel}</b></div>`:''}
     ${isLong()&&(p.contract||p.brand!=null)?`<div class="secret">${p.contract?`<span class="ctchip"><i>極秘契約</i>${esc(contractText(p.contract))}<b>+${contractVal(p.contract)}</b></span>`:""}${p.brand!=null?`<span class="brd" style="--c:var(--i${p.brand})"><i>ブランド</i>${IND[p.brand]} +1</span>`:""}</div>`:""}
+    ${G.online?"":coachHTML(p)}
     <div class="preview">${preview}</div>
     <div class="actions">
       <button class="btn cyan" onclick="useForesight()" ${canFore?'':'disabled'} title="${fdef.desc}">${EYE.replace('<svg','<svg style="width:18px;height:18px;vertical-align:-4px;margin-right:4px"')}${p.foreUsed?(known?`${fdef.short}中`:'使用済み'):(G.turn>=TURNS-1?'最終ターン':`${fdef.btn}`)}</button>
@@ -2099,7 +2145,7 @@ function finalView(){
   const C=G.cfg, rk=ranking(G.players,C);
   const winners=rk.filter(s=>s.rank===1).map(s=>esc(s.p.name)).join('・');
   const order=[rk[1],rk[0],rk[2]].filter(Boolean), h={1:160,2:118,3:86};
-  const pod=order.map((s,j)=>`<div class="pod p${s.rank}">${s.rank===1?CROWN('crownbig'):''}<div class="ava" style="--s:var(--s${s.p.seat%6})">${esc(initial(s.p.name))}</div><span class="nm">${esc(s.p.name)}</span><div class="blk" style="height:${h[s.rank]||70}px;animation-delay:${[200,0,400][j]}ms"><span class="r">${s.rank}</span><span class="pts">${s.p.score}pt</span></div></div>`).join('');
+  const pod=order.map((s,j)=>`<div class="pod p${s.rank}">${s.rank===1?CROWN('crownbig'):''}<div class="ava" style="--s:var(--s${s.p.seat%6})">${esc(avOf(s.p))}</div><span class="nm">${esc(s.p.name)}</span><div class="blk" style="height:${h[s.rank]||70}px;animation-delay:${[200,0,400][j]}ms"><span class="r">${s.rank}</span><span class="pts">${s.p.score}pt</span></div></div>`).join('');
   const rest=rk.slice(3).map(s=>`<div class="row spread" style="padding:7px 4px;border-top:1px solid var(--line)"><span><b>${s.rank}位</b> ${esc(s.p.name)}</span><b style="font-family:var(--display);font-weight:400">${s.p.score}</b></div>`).join('');
   const aw=[];
   const mu=Math.max(...G.players.map(p=>p.uniq)); if(mu>0) aw.push(['独占王',G.players.filter(p=>p.uniq===mu).map(p=>p.name).join('・'),`独占 ${mu}回`]);
@@ -2237,6 +2283,7 @@ function settingsBody(){
     <div class="field"><label for="setname">あなたの名前（オンラインやCPU対戦で使います）</label><input id="setname" class="inp" maxlength="12" value="${esc(NET.name||'')}" oninput="setMyName(this.value)" placeholder="例：リョウ"></div>
     ${sw(S.sound,'toggleSound()','効果音','カードを選ぶ音やファンファーレ')}
     ${sw(!!S.bgm,'toggleBgm()','BGM','ゲーム中に軽い音楽を流す')}
+    ${sw(!!S.coach,'toggleCoach()','コーチ（初心者向け）','手札の画面に「おすすめ」と理由を出す')}
     ${sw(S.vib!==false,'toggleVib()','振動','スマホで選んだときや被ったときに軽く振動')}
     ${sw(!!S.calm,'toggleCalm()','動きを減らす','アニメーションや紙吹雪を止めて静かに表示')}
     <div class="row" style="gap:8px"><button class="btn ghost" onclick="closeSheet();openTutorial()">遊び方を見る</button><button class="btn ghost" onclick="openSheet('share')">友だちに使ってもらう</button><button class="btn ghost" onclick="resetRecord()">戦績をリセット</button></div>
@@ -2368,26 +2415,76 @@ function resultBanner(){
 }
 function profileChip(){
   const P=S.prof, L=lvInfo(P.xp);
-  return `<button class="pchip" onclick="go('me')" aria-label="マイページ"><span class="ava" style="--s:${AVA_COLORS[P.color%6]};width:38px;height:38px;font-size:15px;grid-row:auto">${esc(initial(NET.name||'あなた'))}</span>
+  return `<button class="pchip" onclick="go('me')" aria-label="マイページ"><span class="ava" style="--s:${AVA_COLORS[P.color%6]};width:38px;height:38px;font-size:15px;grid-row:auto">${esc(myAvatar()||initial(NET.name||"あなた"))}</span>
     <span class="pmeta"><b>${esc(NET.name||'あなた')}</b><span class="lvrow">${emblem(rateOf(),18)}<span class="lv">Lv.${L.lv}</span><span class="xpbar"><i style="width:${Math.round(L.cur/L.need*100)}%"></i></span></span></span></button>`;
+}
+/* ---- stats charts (My page): 得点の推移（1系列の折れ線）と、遊び方別の勝率（横棒） ---- */
+function statsCharts(){
+  const L=(S.prof.log||[]).slice(-20);
+  if(L.length<2) return '';
+  const W=560,H=150,pl=30,pr=10,pt=12,pb=22, hi=Math.max(10,...L.map(x=>x.s)), lo=Math.min(0,...L.map(x=>x.s));
+  const x=i=>pl+i*(W-pl-pr)/(L.length-1), y=v=>pt+(hi-v)*(H-pt-pb)/(hi-lo||1);
+  let grid=''; const step=Math.max(5,Math.ceil((hi-lo)/4/5)*5);
+  for(let v=Math.ceil(lo/step)*step; v<=hi; v+=step) grid+=`<line x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${pl-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`;
+  const pts=L.map((g,i)=>`${x(i).toFixed(1)},${y(g.s).toFixed(1)}`).join(' ');
+  const best=Math.max(...L.map(g=>g.s)), bi=L.map(g=>g.s).lastIndexOf(best);
+  const dots=L.map((g,i)=>`<g class="pt"><circle cx="${x(i)}" cy="${y(g.s)}" r="12" fill="transparent"/><circle cx="${x(i)}" cy="${y(g.s)}" r="${g.r===1?5:4}" fill="${g.r===1?'var(--gold)':'var(--panel)'}" stroke="var(--gold)" stroke-width="2"/><title>${g.s}pt · ${g.r}位/${g.n}人 · ${g.m==='h'?'歴史':'クラシック'}${g.l?'ロング':''}</title></g>`).join('');
+  const line=`<svg viewBox="0 0 ${W} ${H}" class="schart" role="img" aria-label="最近${L.length}戦の得点の推移。最高${best}点">${grid}<polyline points="${pts}" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>${dots}<text x="${x(bi)}" y="${y(best)-10}" text-anchor="middle" class="lab">最高 ${best}</text><text x="${pl}" y="${H-4}">${L.length}戦前</text><text x="${W-pr}" y="${H-4}" text-anchor="end">最新</text></svg>`;
+  const A=S.prof.log||[], cats=[['クラシック',g=>g.m==='c'&&!g.l&&!g.d&&!g.o],['歴史モード',g=>g.m==='h'&&!g.l&&!g.d&&!g.o],['ロング版',g=>g.l],['デイリー',g=>g.d],['オンライン',g=>g.o]];
+  const bars=cats.map(([n,f])=>{ const gs=A.filter(f), w=gs.filter(g=>g.r===1).length, pct=gs.length?Math.round(w/gs.length*100):0;
+    return `<div class="wrow" title="${n}：${gs.length}戦 ${w}勝"><span class="wn">${n}</span><span class="wbar"><i style="width:${pct}%"></i></span><b class="num">${gs.length?pct+'%':'—'}</b><span class="note">${gs.length}戦</span></div>`; }).join('');
+  return `<section class="panel"><div class="row spread"><h3>最近の得点</h3><span class="note">金の点は1位の回</span></div>${line}
+    <h3 style="margin-top:12px">遊び方ごとの1位率</h3><div class="wlist">${bars}</div><p class="note">最近30戦の記録から計算しています。</p></section>`;
+}
+/* ---- coach: 初心者向けに「おすすめ」と理由を出す（設定でオフにできる） ---- */
+function coachHTML(p){
+  if(!S.coach || !G || G.phase!=='choose') return '';
+  try{
+    const C=G.cfg, T=C.table, t=G.turn, known=p.foreUsed&&p.foreTurn===t, row=rowFor(p,G.deck,t);
+    const vals=cardValues(C,p,G.players,G.deck,t,row,known,p.fut?futBase:null);
+    const pool=unseen(C,G.deck,t), left=TURNS-1-t;
+    const opp=G.players.filter(o=>o!==p).map(o=>oppDist(T,o,G.deck[t],pool,left));
+    const alone=c=>Math.round(opp.reduce((a,d)=>a*(1-d[c]),1)*100);
+    const base=c=>(p.fut?futBase(T[row][c],C):T[row][c])+(p.brand===c?1:0);
+    const best=p.hand.slice().sort((a,b)=>vals[b]-vals[a])[0];
+    const top=p.hand.reduce((a,c)=>base(c)>base(a)?c:a,p.hand[0]);
+    let tip;
+    if(top!==best) tip=`いちばん点が高い${IND[top]}（${sgn(base(top))}）は、ほかの人も出しそう。独占できる確率は${alone(top)}%。`;
+    else tip = alone(best)>=50 ? `点がいちばん高く、独占できる確率も${alone(best)}%。` : `いちばん高い点。被っても${sgn(base(best))}は入るので安全（独占できる確率は${alone(best)}%）。`;
+    if(top!==best && futureCost(T,p.hand,top,known?[G.deck[t+1]]:pool,left,known)>1) tip+=`${IND[top]}はこの先のNEWSでも強いので、取っておくのもあり。`;
+    if(!p.foreUsed && t<TURNS-1 && C.fore==='futures'){ const nx=G.deck[t+1]; if(known===false && left>0) tip+=' 迷ったら「先物取引」で次のNEWSを見てから決めるのも手。'; }
+    return `<div class="coach"><span class="ci">💡</span><span class="ct"><b>コーチのおすすめ：${IND[best]}</b><span class="cp">${sgn(base(best))} · 独占できそう ${alone(best)}%</span><span class="note">${tip}</span></span><button class="cx" onclick="toggleCoach()" aria-label="コーチを非表示">✕</button></div>`;
+  }catch(e){ return ''; }
+}
+function toggleCoach(){ S.coach=!S.coach; save('azakei-coach',S.coach); if(!S.coach) toast('コーチをオフにしました（設定でいつでも戻せます）'); renderSheet(); render(); }
+function setAvatar(i){ const a=AVATARS[i]; if(!a || lvInfo(S.prof.xp).lv<a[1]) return; S.prof.av=a[0]; saveProfile(); sfx('select'); haptic(12); render(); }
+function setTitle(id){ S.prof.title=id||null; saveProfile(); sfx('select'); closeSheet(); render(); toast('称号を「'+myTitle()+'」にしました'); }
+function titleBody(){
+  const P=S.prof, got=ACH.filter(a=>P.ach[a.id]), cur=P.title&&P.ach[P.title]?P.title:null;
+  return `<span class="label">TITLE</span><h3 class="ttl" style="font-size:22px">称号をえらぶ</h3><p class="note">実績を解除すると、その名前を称号にできます。VS画面やマイページに出ます。</p>
+    <div class="tlist"><button class="topt${cur?'':' on'}" onclick="setTitle(null)"><b>${titleOf(lvInfo(P.xp).lv)}</b><span class="note">レベルの称号（自動で変わる）</span></button>${got.map(a=>`<button class="topt${cur===a.id?' on':''}" onclick="setTitle('${a.id}')"><b>${a.ic} ${a.n}</b><span class="note">${a.d}</span></button>`).join('')}</div>
+    ${got.length?'':'<p class="note">まだ実績がありません。1ゲーム遊ぶと「はじめの一歩」が手に入ります。</p>'}`;
 }
 function setAvaColor(i){ S.prof.color=i; saveProfile(); sfx('select'); render(); }
 function meView(){
   const P=S.prof, st=P.st, L=lvInfo(P.xp), got=ACH.filter(a=>P.ach[a.id]).length;
   return `<div class="col">
     <section class="profile">
-      <div class="ava big" style="--s:${AVA_COLORS[P.color%6]};grid-row:auto">${esc(initial(NET.name||'あなた'))}</div>
-      <div class="pinfo"><span class="label">${titleOf(L.lv)}</span><h2 class="ttl">${esc(NET.name||'あなた')}</h2>
+      <div class="ava big" style="--s:${AVA_COLORS[P.color%6]};grid-row:auto">${esc(myAvatar()||initial(NET.name||"あなた"))}</div>
+      <div class="pinfo"><button class="titlechip" onclick="openSheet('title')" aria-label="称号を変える">${esc(myTitle())} <span>変更</span></button><h2 class="ttl">${esc(NET.name||'あなた')}</h2>
         <div class="lvline"><span class="lvbadge">Lv.${L.lv}</span><span class="xpbar big"><i style="width:${Math.round(L.cur/L.need*100)}%"></i></span><span class="note num">${L.cur}/${L.need} XP</span></div>
         <div class="colors" role="group" aria-label="アバターの色">${AVA_COLORS.map((c,i)=>`<button style="--c:${c}" class="${P.color%6===i?'on':''}" onclick="setAvaColor(${i})" aria-label="色${i+1}"></button>`).join('')}<button class="btn ghost icon" onclick="openSheet('settings')">名前・設定</button></div>
       </div>
     </section>
+    <section class="panel"><div class="row spread"><h3>アバター</h3><span class="note">レベルが上がると増えます</span></div>
+      <div class="avgrid">${AVATARS.map(([a,lv],i)=>{ const ok=L.lv>=lv, on=(P.av||null)===a; return `<button class="avopt${on?' on':''}${ok?'':' lock'}" ${ok?`onclick="setAvatar(${i})"`:'disabled'} style="--s:${AVA_COLORS[P.color%6]}" aria-label="${a||'頭文字'}"><span>${a||esc(initial(NET.name||'あなた'))}</span>${ok?'':`<small>Lv.${lv}</small>`}</button>`; }).join('')}</div></section>
     ${rankCard()}
     <section class="statgrid">
       ${[['対戦',st.games],['勝利',st.wins],['勝率',st.games?Math.round(st.wins/st.games*100)+'%':'—'],['最高点',st.best],['独占',st.mono],['歴史モード',st.hist],['オンライン',st.online],['実績',got+'/'+ACH.length]].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('')}
     </section>
     ${skinsPanel()}
     ${dexPanel()}
+    ${statsCharts()}
     ${historyPanel()}
     <section class="panel"><div class="row spread"><h3>実績</h3><span class="note">${got} / ${ACH.length} 解除</span></div>
       <div class="achgrid">${ACH.map(a=>{ const t=P.ach[a.id]; return `<div class="ach${t?' on':''}"><span class="aic">${t?a.ic:'?'}</span><span><b>${a.n}</b><span class="note">${a.d}</span></span></div>`; }).join('')}</div></section>
