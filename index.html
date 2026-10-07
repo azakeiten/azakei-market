@@ -410,6 +410,7 @@ td.n,th.n{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:r
 .dl b{display:block;font-size:16px}
 .dl.hist{background:linear-gradient(150deg,var(--paper),var(--paper2));color:var(--paper-ink);box-shadow:0 5px 0 #8a6a2a}
 .dl.hist .note{color:#6a5634}
+.dl.fut{background:linear-gradient(130deg,#062033,#0b3a55);color:#dff8ff;box-shadow:0 5px 0 #020a12} .dl.fut .note{color:#9fd8ea} .dl.fut .dlic{background:#7af0ff;color:#04202a}
 .dl.long{background:linear-gradient(130deg,#2b0f4f,#7a1f74 60%,#d6336c);color:#fff;box-shadow:0 5px 0 #1c0833} .dl.long .note{color:#ffc4e6} .dl.long .dlic{background:#ffc83a;color:#2b0f4f}
 .dlic{flex:0 0 auto;width:44px;height:54px;border-radius:6px;background:#e2412f;color:#fff;display:grid;place-items:end center;padding-bottom:6px;font-family:var(--display);font-size:12px;clip-path:polygon(0 0,72% 0,100% 22%,100% 100%,0 100%)}
 
@@ -1900,7 +1901,8 @@ function toast(t){ const el=document.getElementById('toast'); if(!el) return; el
 const BOOKS={
   classic:{file:'rulebook-classic.pdf', png:'rulebook-classic.png', pngName:'AZAKEI_MARKET_rulebook.png', name:'AZAKEI_MARKET_rulebook.pdf', md:'AZAKEI_MARKET_rulebook.md', title:'β3 ルールブック', sub:'クラシック · A4 8ページ'},
   history:{file:'rulebook-history.pdf', png:'rulebook-history.png', pngName:'AZAKEI_MARKET_history_rulebook.png', name:'AZAKEI_MARKET_history_rulebook.pdf', md:'AZAKEI_MARKET_history_rulebook.md', title:'歴史モード ルールブック', sub:'1964〜2022 · A4 8ページ'},
-  long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況・契約カード付き · A4 8ページ'}
+  long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況・契約カード付き · A4 8ページ'},
+  future:{file:'rulebook-future.pdf', png:'rulebook-future.png', pngName:'AZAKEI_MARKET_future_rulebook.png', name:'AZAKEI_MARKET_future_rulebook.pdf', md:'AZAKEI_MARKET_future_rulebook.md', title:'未来編 ルールブック', sub:'2027〜2060 · A4 4ページ'}
 };
 // 普通のWebサイト（GitHub Pages）では、ふつうのダウンロードリンクで保存する
 function saveByLink(href,name){ const a=document.createElement('a'); a.href=href; a.download=name; a.rel='noopener'; document.body.appendChild(a); a.click(); a.remove(); closeSheet(); toast('ダウンロードを開始しました'); }
@@ -1957,6 +1959,18 @@ function mdBook(k){
   const t=v=>v>0?'+'+v:String(v);
   const rows=(names,table)=>'| | '+IND.join(' | ')+' |\n|---|'+IND.map(()=>'---').join('|')+'|\n'+table.map((r,i)=>`| ${names[i]} | ${r.map(t).join(' | ')} |`).join('\n');
   const base=`- 全員が同じ6枚の産業カード（${IND.join('・')}）を持ってスタート\n- 毎ターンNEWSを1枚公開し、産業カードを1枚選んで裏向きで出す。全員そろったら一斉にOPEN\n- 出したカードの基本POINTをもらう。一度使った産業はもう使えない\n- MARKET BONUS：ほかの誰とも産業が被らなかったら +2 POINT\n- 先物取引（ゲーム中1回）：次のNEWSを自分だけ見て、このターンに出すカードを「次のNEWSの点数−1（手数料）」で計算できる。手数料はプラスのときだけ。独占ボーナスは今ターンの被りで判定。最終ターンは使えない\n- 4ターン終了時に合計POINTが最も高い人の勝ち。同点はMARKET BONUSの回数が多い人が上位\n`;
+  if(k==='future') return `# AZAKEI MARKET β3 未来編 ルールブック
+
+歴史モードと同じ遊び方で、2027〜2060年の架空の未来の出来事が年代順に起きます（ゲーム用のシナリオで、予測ではありません）。
+
+## ルール
+${base}
+## 未来の出来事
+${HIST.filter(h=>h.f).map(h=>`### ${h.y} ${h.n}
+${h.d}
+
+${IND.map((d,i)=>d+' '+(h.r[i]>0?'+':'')+h.r[i]).join(' / ')}`).join('\n\n')}
+`;
   if(k==='long') return `# AZAKEI MARKET β3 ロング版 ルールブック
 
 6ターンを1期として何期も遊ぶ、じっくり版です。
@@ -3075,8 +3089,8 @@ function rulesView(){
     <section class="panel"><div class="row spread"><h3>クラシックの得点表を編集</h3><span class="note">金色の枠はβ2原案から変えたマス</span></div>
       ${scoreTable(true)}<p class="note">変更はこのブラウザに保存されます。変えたら「ラボ」で確かめられます。</p></section>`;
   if(tab==='book') body=`<section class="panel"><h3>ルールブック（PDF）</h3><p class="note">印刷して遊べるPDFです。カードを手作りするときの得点表や、歴史モードの年表チェックシートも入っています。</p>
-      <div class="dlrow">${['classic','history','long'].map(k=>`<button class="dl${k==='history'?' hist':k==='long'?' long':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`).join('')}</div>
-      <div class="row" style="gap:8px">${['classic','history','long'].map(k=>`<button class="btn" onclick="downloadPng('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':'歴史モード'}を画像（PNG）で保存</button>`).join('')}${['classic','history','long'].map(k=>`<a class="btn ghost" href="${BOOKS[k].file}" target="_blank" rel="noopener" style="text-decoration:none">${k==='classic'?'クラシック':k==='long'?'ロング版':'歴史モード'}のPDFを開く</a>`).join('')}${['classic','history','long'].map(k=>`<button class="btn ghost" onclick="downloadMd('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':'歴史モード'}のテキスト版（.md）</button>`).join('')}</div>
+      <div class="dlrow">${['classic','history','long','future'].map(k=>`<button class="dl${k==='history'?' hist':k==='long'?' long':k==='future'?' fut':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`).join('')}</div>
+      <div class="row" style="gap:8px">${['classic','history','long','future'].map(k=>`<button class="btn" onclick="downloadPng('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}を画像（PNG）で保存</button>`).join('')}${['classic','history','long','future'].map(k=>`<a class="btn ghost" href="${BOOKS[k].file}" target="_blank" rel="noopener" style="text-decoration:none">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}のPDFを開く</a>`).join('')}${['classic','history','long','future'].map(k=>`<button class="btn ghost" onclick="downloadMd('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}のテキスト版（.md）</button>`).join('')}</div>
       <p class="note">PDFが保存できないときは「画像（PNG）で保存」を使ってください。画像は8ページを縦につないだ1枚で、どの画面でも保存できる形式です。</p></section>`;
   return `<div class="col"><div class="row spread"><h2 class="ttl">ルール</h2></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="S.rtab='${k}';sfx('click');render();scrollTo(0,0)">${l}</button>`).join('')}</div>${body}</div>`;
