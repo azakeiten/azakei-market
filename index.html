@@ -681,6 +681,52 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- simple home ---- */
+.heroact{margin-top:20px}
+.todayhead{display:flex;align-items:baseline;gap:10px;margin-top:6px} .todayhead b{font-family:var(--display);font-weight:400;font-size:22px}
+.homelinks{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:4px 0 10px}
+.homelinks button{border:0;font:inherit;font-size:13px;font-weight:800;color:var(--muted);background:rgb(7 8 24 / .4);border-radius:999px;padding:8px 14px;box-shadow:inset 0 0 0 1px var(--line)}
+.homelinks button:hover{color:var(--ink)}
+@media (max-width:560px){ .hero .showcase{display:none} .hero{padding-bottom:4px} .heroact .btn.huge{flex:1} }
+.q-fut{--q:#7af0ff} .q-fut .qs{color:#7af0ff}
+/* ---- my result on reveal ---- */
+.myres{display:flex;align-items:center;gap:12px;border-radius:18px;padding:10px 14px;background:linear-gradient(90deg,rgb(255 255 255 / .08),rgb(7 8 24 / .3));box-shadow:inset 0 0 0 1.5px var(--line);animation:achin .5s cubic-bezier(.2,.9,.3,1.3) .5s both}
+.myres.mono{box-shadow:inset 0 0 0 2px var(--gold),0 0 26px -8px var(--gold);background:linear-gradient(90deg,rgb(255 200 58 / .18),rgb(7 8 24 / .3))}
+.myres.neg{box-shadow:inset 0 0 0 1.5px rgb(255 93 93 / .6)}
+.mr-ind{flex:0 0 auto;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#fff} .mr-ind svg{width:24px;height:24px}
+.mr-t{flex:1;min-width:0;display:flex;flex-direction:column} .mr-t b{font-size:14px}
+.mr-v{font-family:var(--display);font-weight:400;font-size:34px;line-height:1;color:var(--ink)}
+.myres.mono .mr-v{color:var(--gold)} .myres.neg .mr-v{color:var(--down)}
+.mr-rk{font-weight:800;font-size:13px;border-radius:10px;padding:3px 8px;background:var(--rail);white-space:nowrap}
+.mr-rk.up{color:var(--up)} .mr-rk.down{color:var(--down)}
+/* ---- CPU difficulty ---- */
+.diff{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.diff .label{margin-right:4px}
+.dchip{display:inline-flex;align-items:center;gap:5px;border:0;font:inherit;font-size:13px;font-weight:800;color:var(--muted);background:rgb(7 8 24 / .45);border-radius:999px;padding:6px 12px;box-shadow:inset 0 0 0 1px var(--line)}
+.dchip i{font-style:normal}
+.dchip.on{color:#2a1a00;background:var(--gold);box-shadow:0 3px 0 var(--gold-deep)}
+.dchip.d-oni.on{background:linear-gradient(90deg,#ff5d5d,#ff7a3d);color:#fff;box-shadow:0 3px 0 #7a1d1d}
+/* ---- future edition ---- */
+.modes{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))!important}
+.mode.fut{position:relative;background:radial-gradient(circle at 80% 0%,rgb(122 240 255 / .25),transparent 60%),#0a1a2e}
+.mode.fut.on{box-shadow:inset 0 0 0 2px #7af0ff,0 0 22px -6px #7af0ff}
+.modechip.fut{background:#7af0ff;color:#04202a}
+.futb{font-family:var(--display);font-weight:400;color:#7af0ff;letter-spacing:.06em;text-shadow:0 0 12px rgb(122 240 255 / .6)}
+.newtag{position:absolute;top:8px;right:8px;font-size:10px;font-weight:800;border-radius:999px;padding:1px 7px;background:#7af0ff;color:#04202a}
+body[data-theme="future"]{--night:#03101a;--felt:#062033;--felt2:#0b3a55;--rail:#020a12;--panel:#0a2238;--panel2:#103150;--line:#1d5578;--muted:#9fd8ea;--dim:#5b8ea6}
+body[data-theme="future"] #bg{filter:hue-rotate(-60deg) saturate(1.4)}
+.paper.fut{background:linear-gradient(170deg,#0b2236,#061522);color:#dff8ff;box-shadow:0 0 0 4px var(--rail),0 0 0 6px #7af0ff,0 0 30px -6px #7af0ff}
+.paper.fut::before{background:repeating-linear-gradient(0deg,rgb(122 240 255 / .05) 0 1px,transparent 1px 4px)}
+.paper.fut .mast{border-color:#7af0ff;color:#7af0ff}
+.paper.fut .yr{color:#7af0ff;font-family:var(--display);text-shadow:0 0 18px rgb(122 240 255 / .7)}
+.paper.fut h2{font-family:var(--display);font-weight:400;color:#fff}
+.paper.fut .lede{color:#bfeefb}
+.paper.fut .pay{background:rgb(122 240 255 / .08)} .paper.fut .pay .v.up{color:#5cf0a2} .paper.fut .pay .v.down{color:#ff8a8a}
+.paper.fut .pay .mono{background:rgb(122 240 255 / .15)} .paper.fut .pay .pbar{background:rgb(122 240 255 / .12)} .paper.fut .pay .pbar::after{background:rgb(122 240 255 / .5)}
+.paper.fut .pay.top{background:#7af0ff;color:#04202a} .paper.fut .pay.top .v{color:#04202a} .paper.fut .pay.top .mono{background:#04202a;color:#7af0ff}
+.overlay.intro.fut .yr{font-family:var(--display);color:#7af0ff;text-shadow:0 0 30px rgb(122 240 255 / .8),0 6px 0 var(--rail)}
+.overlay.intro.fut .nw.serif{font-family:var(--display);color:#fff}
+.dx.fut{background:linear-gradient(160deg,#0b2236,#061522);color:#dff8ff;box-shadow:0 3px 0 #02101a,inset 0 0 0 1px #1d5578} .dx.fut .dxk{color:#7af0ff}
 /* ---- avatar / title ---- */
 .titlechip{align-self:flex-start;border:0;font:inherit;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--gold);background:rgb(255 200 58 / .12);border-radius:999px;padding:3px 10px;box-shadow:inset 0 0 0 1px rgb(255 200 58 / .4)}
 .titlechip span{color:var(--muted);font-size:10px;margin-left:4px}
@@ -1018,12 +1064,26 @@ const HIST = [
   {y:2010, n:'スマートフォン普及', d:'スマートフォンが急速に広まり、ネット通販やアプリ、動画が日常になった。', r:[0,1,2,1,1,3]},
   {y:2013, n:'アベノミクスと訪日客急増', d:'大胆な金融緩和で円安・株高に。訪日外国人観光客も急増した。', r:[0,3,1,1,3,0]},
   {y:2020, n:'巣ごもり需要', d:'感染症の流行で外出自粛が広がり、旅行は激減。動画配信やネット通販、スーパーが伸びた。', r:[-1,1,0,3,-3,3]},
-  {y:2022, n:'資源高と円安', d:'資源価格の高騰と急速な円安が重なり、値上げが相次いだ。輸出企業は円安で利益を伸ばした。', r:[3,2,3,-2,-1,0]}
+  {y:2022, n:'資源高と円安', d:'資源価格の高騰と急速な円安が重なり、値上げが相次いだ。輸出企業は円安で利益を伸ばした。', r:[3,2,3,-2,-1,0]},
+  // ---- 未来編（架空のシナリオ。f:trueで区別） ----
+  {f:true, y:2027, n:'生成AIが仕事の相棒に', d:'文章も絵も動画もAIが手伝う時代に。コンテンツが爆発的に増え、データセンターの電力需要も伸びる。', r:[1,1,1,0,0,3]},
+  {f:true, y:2029, n:'自動運転タクシー解禁', d:'ハンドルのない車が街を走りはじめる。運ぶ仕事の形が変わり、車づくりも新しい競争へ。', r:[1,0,2,1,3,0]},
+  {f:true, y:2031, n:'再エネが電気の主役に', d:'太陽光と風力が最大の電源に。発電設備をつくる工場もフル稼働。', r:[3,1,2,0,0,0]},
+  {f:true, y:2033, n:'デジタル通貨で買い物', d:'国のデジタル通貨がスマホで使えるように。お金の流れがすべて見える化され、店は便利に、工場は値下げ競争に。', r:[0,3,-1,2,0,1]},
+  {f:true, y:2035, n:'世界的な水不足', d:'気候変動で水が足りなくなる地域が増加。海水を真水にする電力が欠かせなくなる。', r:[3,0,-2,-1,-1,0]},
+  {f:true, y:2038, n:'宇宙旅行ブーム', d:'週末に宇宙へ行ける時代。旅行会社とライブ配信が大にぎわい。', r:[0,1,1,0,3,3]},
+  {f:true, y:2041, n:'ロボットが家事と介護', d:'家庭用ロボットが一家に一台。部品も販売も大きな市場に。', r:[0,1,2,2,0,1]},
+  {f:true, y:2044, n:'量子コンピュータ実用化', d:'これまで何年もかかった計算が一瞬に。金融やシミュレーションが一変する。', r:[0,3,1,0,0,2]},
+  {f:true, y:2047, n:'巨大サイバー攻撃', d:'世界中の銀行とネットが一時停止。現金とお店の買いだめが復活した。', r:[-1,-3,0,2,-1,-2]},
+  {f:true, y:2050, n:'カーボンニュートラル達成', d:'温室効果ガスの排出が実質ゼロに。新しいエネルギーと工場の技術が世界を支える。', r:[3,1,2,0,1,0]},
+  {f:true, y:2055, n:'月面都市の建設', d:'月に人が住む街ができはじめる。ロケットで運び、月で作り、地球へ中継する。', r:[1,1,2,0,3,1]},
+  {f:true, y:2060, n:'分身ロボで暮らす社会', d:'遠くの分身ロボを動かして、家にいながら買い物も旅行も。届ける仕事と配信が主役。', r:[0,0,1,3,1,2]}
 ];
 const ERAS = {
   all:{name:'全時代', sub:'1964〜2022', ids:[0,1,2,3,4,5,6,7,8,9,10,11]},
   showa:{name:'昭和〜バブル崩壊', sub:'1964〜1991', ids:[0,1,2,3,4]},
-  heisei:{name:'平成・令和', sub:'1995〜2022', ids:[5,6,7,8,9,10,11]}
+  heisei:{name:'平成・令和', sub:'1995〜2022', ids:[5,6,7,8,9,10,11]},
+  future:{name:'未来編', sub:'2027〜2060', ids:[12,13,14,15,16,17,18,19,20,21,22,23], hidden:true}
 };
 const FORE = {
   futures:{name:'先物取引', short:'先物', desc:'次のNEWSを自分だけ見て、このターンに出すカードを「次のNEWSの点数−1（手数料）」で計算できる。', btn:'先物取引'},
@@ -1061,10 +1121,12 @@ function loadCfg(){ const c=load(KEY); return (c && c.table && c.table.length===
 function saveCfg(){ save(KEY,CFG); }
 // モードごとの実行用設定（NEWSの名前・得点表・歴史の年）
 function cfgFor(mode,era){
+  if(mode==='future') return {...CFG, table:HIST.map(h=>h.r), names:HIST.map(h=>h.n), hist:true, fut:true, pool:ERAS.future.ids.slice(), era:'future'};   // 未来編は歴史モードのしくみで、未来の出来事を使う
   if(mode==='history'){ const e=ERAS[era]||ERAS.all; return {...CFG, table:HIST.map(h=>h.r), names:HIST.map(h=>h.n), hist:true, pool:e.ids, era}; }
   return {...CFG, names:NEWS, hist:false};
 }
 const yearOf = i => HIST[i].y;
+const modeName = c => c&&c.fut ? '未来編' : c&&c.hist ? '歴史モード' : 'クラシック';
 
 /* ================= engine（対戦と検証で共通） ================= */
 function gain(cfg,b,k){
@@ -1380,7 +1442,7 @@ function endVs(){
 }
 function vsOverlay(){
   const C=G.cfg, me=myIndex(), L=lvInfo(S.prof.xp);
-  const mode = G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
+  const mode = G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
       <div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
@@ -1737,7 +1799,7 @@ function hostBroadcast(){
 function netSync(){
   if(!G || !G.online || !G.host) return;
   const C=G.cfg, rev=G.phase==='reveal'||G.phase==='final';
-  const st={ph:G.phase, v:++NET.ver, hostPeer:NET.myPeer, mode:C.hist?'history':'classic', era:C.era||'all',
+  const st={ph:G.phase, v:++NET.ver, hostPeer:NET.myPeer, mode:C.fut?'future':C.hist?'history':'classic', era:C.era||'all',
     r:{b:G.base?G.base.bonus:C.bonus,f:C.fore,tb:C.tiebreak?1:0,c:G.base?G.base.collide:C.collide,n:TURNS,t:C.hist?null:(G.base?G.base.table:C.table)}, turn:G.turn,
     lg:isLong()?{rd:G.round,rds:G.rounds,mk:G.mkts,fp:G.fullPool,log:G.log,st:G.settles.length?G.settles[G.settles.length-1]:null}:null,
     shown:G.deck.slice(0, G.phase==='final'?TURNS:G.turn+1), remain:C.hist?null:G.deck.slice(G.turn+1).slice().sort((a,b)=>a-b),
@@ -1772,7 +1834,7 @@ function hostPeersLeft(left){
 function checkAllPicked(){ if(G && G.phase==='choose' && G.ov!=='intro' && G.players.every(p=>p.pick!==null)) startReveal(); }
 // ---- guest ----
 function guestCfg(st){
-  const base=cfgFor(st.mode==='history'?'history':'classic', st.era||'all');
+  const base=cfgFor(st.mode==='history'||st.mode==='future'?st.mode:'classic', st.era||'all');
   const c={...base, bonus:+st.r.b||0, fore:FORE[st.r.f]?st.r.f:'futures', tiebreak:!!st.r.tb, collide:COLLIDE[st.r.c]?st.r.c:'none'};
   if(!c.hist && Array.isArray(st.r.t) && st.r.t.length===6) c.table=st.r.t;
   return c;
@@ -1915,7 +1977,7 @@ ${Object.values(MARKETS).map(m=>`- **${m.n}**：${m.d}。${m.tip}`).join('\n')}
 ## 得点表（NEWS × 産業）
 ${rows(NEWS,T2)}
 `;
-  if(k==='history') return `# AZAKEI MARKET β3 歴史モード ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。NEWSが本当の歴史どおりに動くモードです。\n\n## ルール\n${base}- 歴史モードでは、選んだ時代の出来事から4つが**年代順**に起きる。いまより前の年の出来事はもう起きない\n- 時代：全時代（1964〜2022・12の出来事）／昭和〜バブル崩壊（5）／平成・令和（7）\n\n## 出来事\n${HIST.map(h=>`### ${h.y} ${h.n}\n${h.d}\n\n${IND.map((d,i)=>d+' '+t(h.r[i])).join(' / ')}\n`).join('\n')}\n## 早見表\n${rows(HIST.map(h=>h.y+' '+h.n),HIST.map(h=>h.r))}\n`;
+  if(k==='history') return `# AZAKEI MARKET β3 歴史モード ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。NEWSが本当の歴史どおりに動くモードです。\n\n## ルール\n${base}- 歴史モードでは、選んだ時代の出来事から4つが**年代順**に起きる。いまより前の年の出来事はもう起きない\n- 時代：全時代（1964〜2022・12の出来事）／昭和〜バブル崩壊（5）／平成・令和（7）\n\n## 出来事\n${HIST.filter(h=>!h.f).map(h=>`### ${h.y} ${h.n}\n${h.d}\n\n${IND.map((d,i)=>d+' '+t(h.r[i])).join(' / ')}\n`).join('\n')}\n## 早見表\n${rows(HIST.filter(h=>!h.f).map(h=>h.y+' '+h.n),HIST.filter(h=>!h.f).map(h=>h.r))}\n`;
   return `# AZAKEI MARKET β3 ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。2〜6人・全4ターン。\n\n## ルール\n${base}\n## 得点表（NEWS × 産業）\n${rows(NEWS,T2)}\n`;
 }
 // ---- sheets (bottom sheet on phones / modal on desktop) ----
@@ -1950,7 +2012,7 @@ function renderSheet(){
 
 /* ================= render ================= */
 function setTheme(){   // モードごとに画面全体の色を変える（クラシック＝藍、歴史＝セピア、ロング＝紫）
-  const t = G ? (isLong()?'long':G.cfg.hist?'hist':'classic') : (S.screen==='play' ? (S.len==='long'?'long':S.mode==='history'?'hist':'classic') : 'classic');
+  const t = G ? (G.cfg.fut?'future':isLong()?'long':G.cfg.hist?'hist':'classic') : (S.screen==='play' ? (S.mode==='future'?'future':S.len==='long'?'long':S.mode==='history'?'hist':'classic') : 'classic');
   if(document.body.dataset.theme!==t) document.body.dataset.theme=t;
 }
 function render(){
@@ -1978,7 +2040,7 @@ function renderOv(){
   if(G.ov==='count'){ ov.innerHTML=`<div class="overlay"><div class="box"><div class="count${G.countText.length>1?' open':''}">${G.countText}</div></div></div>`; return; }
   if(G.ov==='intro'){ const n=G.deck[G.turn];
     ov.innerHTML = G.cfg.hist
-      ? `<div class="overlay intro" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="yr">${yearOf(n)}</div><div class="bar"></div><div class="nw serif">${nm(n)}</div>${introMkt()}<div class="note">タップでスキップ</div></div></div>`
+      ? `<div class="overlay intro${G.cfg.fut?" fut":""}" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="yr">${yearOf(n)}</div><div class="bar"></div><div class="nw serif">${nm(n)}</div>${introMkt()}<div class="note">タップでスキップ</div></div></div>`
       : `<div class="overlay intro" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="bar"></div><div class="nw">${nm(n)}！</div>${introMkt()}<div class="note">タップでスキップ</div></div></div>`;
     return; }
   if(G.ov==='handoff'){ const p=G.players[G.active]; const done=G.players.filter(q=>isHuman(q)&&q.pick!==null).length, hn=humans();
@@ -2015,7 +2077,7 @@ function hud(){
   const pip=(r,i)=>{ const g=r*TURNS+i, cur=(G.round||0)*TURNS+G.turn; return `<i class="${g<cur||G.phase==='final'||G.phase==='settle'&&r<=G.round?'done':g===cur?'now':''}"></i>`; };
   const pips = isLong() ? Array.from({length:G.rounds},(_,r)=>`<span class="term${r===G.round?' cur':''}">${Array.from({length:TURNS},(_,i)=>pip(r,i)).join('')}</span>`).join('') : Array.from({length:TURNS},(_,i)=>pip(0,i)).join('');
   const left=G.phase==='final'?0:TURNS-1-G.turn;
-  return `<div class="hud"><div class="logo"><span class="mk"></span><span class="hide-sm" style="color:inherit">AZAKEI</span> <span>MARKET</span>${G.cfg.hist?'<span class="modechip">歴史</span>':''}</div>
+  return `<div class="hud"><div class="logo"><span class="mk"></span><span class="hide-sm" style="color:inherit">AZAKEI</span> <span>MARKET</span>${G.cfg.fut?'<span class="modechip fut">未来</span>':G.cfg.hist?'<span class="modechip">歴史</span>':''}</div>
     <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div><span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${curMarket()&&G.phase!=="final"?`<span class="mktchip" style="--m1:${curMarket().c1};--m2:${curMarket().c2}">${curMarket().ic} ${curMarket().n}</span>`:""}
     ${G.phase==='final'?'':`<span class="deckchip hide-sm" title="このあと出るNEWSの数"><span class="mini-back"></span>残り${left}</span>`}
     ${G.online?`<span class="codechip hide-sm">${esc(NET.code||'')}</span>`:''}${snd}<button class="btn ghost icon" onclick="quit()">${G.online?(G.host?'ロビーへ':'退出'):'やめる'}</button></div></div>`;
@@ -2066,8 +2128,8 @@ function paperCard(news){
     return `<div class="pay${v===mx?' top':''}${v<0?' neg':''}"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span class="n">${d}</span>
       <span class="pbar" aria-hidden="true"><i class="${v>=0?'u':'d'}" style="height:${h/2}%"></i></span>
       <span class="v ${v===mx?'':cls(v)}">${sgn(v)}</span><span class="mono">独占 ${sgn(gain(C,v,1))}</span></div>`; }).join('')}</div>`;
-  if(C.hist) return `<section class="paper" aria-label="今ターンの出来事">
-    <div class="mast"><span class="t">AZAKEI 経済新聞</span><span class="d">${turnLabel()}<span class="gogai">号外</span></span></div>
+  if(C.hist) return `<section class="paper${C.fut?" fut":""}" aria-label="今ターンの出来事">
+    <div class="mast"><span class="t">${C.fut?"AZAKEI 未来新聞 · FORECAST":"AZAKEI 経済新聞"}</span><span class="d">${turnLabel()}<span class="gogai">号外</span></span></div>
     <div class="head"><div class="yr"><small>西暦</small>${yearOf(news)}</div><h2>${nm(news)}</h2></div>
     <p class="lede">${HIST[news].d}</p>${pays}</section>`;
   return `<section class="paper" aria-label="今ターンの経済NEWS">
@@ -2127,6 +2189,18 @@ function handDock(news){
       <button class="btn go big${G.sel!==null?' pulse':''}" onclick="confirmPick()" ${G.sel===null?'disabled':''}>${G.sel===null?'カードを選んでね':`${IND[G.sel]}を出す！`}</button>
     </div>${emoteBar()}</div>`;
 }
+// 公開時、自分のそのターンの収支と順位の上下を大きく出す
+function myResultBar(){
+  const me=myIndex(); if(me<0 || !G.last) return '';
+  const r=G.last[me], p=G.players[me];
+  const before=G.players.map(q=>q.score-G.last[G.players.indexOf(q)].total);
+  const rankAt=arr=>1+arr.filter(v=>v>arr[me]).length;
+  const r0=rankAt(before), r1=rankAt(G.players.map(q=>q.score)), mv=r0-r1;
+  const kind = r.k===1 ? '独占！' : `${r.k}人で被り`;
+  return `<div class="myres${r.k===1?' mono':''}${r.total<0?' neg':''}"><span class="mr-ind" style="background:var(--i${r.ind})">${svg(r.ind,2.2)}</span>
+    <span class="mr-t"><b>${IND[r.ind]} · ${kind}${r.fut?' · 先物':''}</b><span class="note">合計 ${p.score}pt</span></span>
+    <b class="mr-v">${sgn(r.total)}</b><span class="mr-rk${G.turn+(G.round||0)>0&&mv>0?" up":G.turn+(G.round||0)>0&&mv<0?" down":""}">${r1}位${G.turn+(G.round||0)===0?"":mv>0?` ▲${mv}`:mv<0?` ▼${-mv}`:''}</span></div>`;
+}
 function revealDock(){
   const best=Math.max(...G.last.map(r=>r.total));
   const mvp=G.players.filter((p,i)=>G.last[i].total===best).map(p=>esc(p.name)).join('・');
@@ -2137,7 +2211,7 @@ function revealDock(){
       <div class="lb">${who.map(x=>`<div class="who" style="--s:var(--s${x.p.seat%6});animation-delay:${x.i*130}ms"><span class="d"></span>${esc(x.p.name)}${G.last[x.i].fut?' <span class="tagx cy">先物</span>':''}</div>`).join('')}</div>
       <div class="lf">${foot}</div>${k>1?'<span class="stamp">被り！</span>':k===1?'<span class="stamp g">独占</span>':''}</div>`;
   }).join('');
-  return `<div class="dock"><div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold)">${mvp} ${sgn(best)}</b></span></div>
+  return `<div class="dock">${myResultBar()}<div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold)">${mvp} ${sgn(best)}</b></span></div>
     <div class="board">${lanes}</div>${emoteBar()}
     <div class="actions" style="justify-content:flex-end">${G.online&&!G.host?'<span class="note">ホストが次へ進めます…</span>':`<button class="btn gold big pulse" style="flex:1 1 auto;max-width:360px" onclick="nextTurn()">${G.turn===TURNS-1?'最終結果へ':'次のターンへ'}</button>`}</div></div>`;
 }
@@ -2156,7 +2230,7 @@ function finalView(){
   const hist=G.players.map(p=>`<tr><td>${esc(p.name)}</td>${p.used.map(u=>`<td>${chip(u.ind)} <span class="num ${cls(u.total)}">${sgn(u.total)}</span>${u.fut?' <span class="tagx cy">先物</span>':''}</td>`).join('')}<td class="n">${p.uniq}</td><td class="n"><b>${p.score}</b></td></tr>`).join('');
   const recap = C.hist ? `<section class="panel"><h3>あなたたちが生きた時代</h3><div class="recap">${logDeck().map(i=>`<div><b>${yearOf(i)}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${HIST[i].n}</b><br>${HIST[i].d}</p></div>`).join('')}</div></section>` : '';
   return `<div class="two"><div class="col">
-    <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · 歴史モード':''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
+    <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
     ${chalPanel()}
@@ -2197,43 +2271,31 @@ function scoreTable(editable){
 }
 function histTable(){
   return `<div class="tbl-wrap"><table class="st"><thead><tr><th>年</th><th>出来事</th>${IND.map((d,i)=>`<th>${chip(i)}</th>`).join('')}</tr></thead><tbody>
-    ${HIST.map(h=>{ const mx=Math.max(...h.r); return `<tr><td class="yrcell">${h.y}</td><th>${h.n}</th>${h.r.map(v=>`<td class="v ${v===mx?'p3':v<0?'neg':v>0?'pos':''}">${sgn(v)}</td>`).join('')}</tr>`; }).join('')}
+    ${HIST.filter(h=>!h.f).map(h=>{ const mx=Math.max(...h.r); return `<tr><td class="yrcell">${h.y}</td><th>${h.n}</th>${h.r.map(v=>`<td class="v ${v===mx?'p3':v<0?'neg':v>0?'pos':''}">${sgn(v)}</td>`).join('')}</tr>`; }).join('')}
     </tbody></table></div>`;
 }
 
 /* ================= screens ================= */
+// ホームはシンプルに：「あそぶ」→ 6つの入口 → 今日やること。説明やPDFはそれぞれの画面へ
 function homeView(){
   const show=[0,1,2,3,4,5].map((c,j)=>cardHTML(c,{no:true,style:`transform:translateX(-50%) rotate(${(j-2.5)*12}deg);margin-left:${(j-2.5)*(phone()?20:28)}px;z-index:${j};animation-delay:${j*.25}s`})).join('');
-  const R=S.rec||{games:0,wins:0,best:0};
-  const stats = R.games ? `<div class="stats"><div><b>${R.games}</b><span>対戦</span></div><div><b>${R.wins}</b><span>勝利</span></div><div><b>${R.games?Math.round(R.wins/R.games*100):0}%</b><span>勝率</span></div><div><b>${R.best}</b><span>最高点</span></div></div>` : '';
-  const book=(k)=>`<button class="dl${k==='history'?' hist':k==='long'?' long':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`;
-  return `<section class="hero"><div>
-      <div class="ver">CARD GAME <b>β3</b></div>
-      <h1 class="title">AZAKEI<span class="m">MARKET</span></h1>
-      <p class="tagline">経済を読み、相手を読み、未来を読むカードゲーム</p>
-      <div class="trio"><span>ECONOMY</span><span>MARKET</span><span>FUTURE</span></div>
-      <div class="row" style="margin-top:20px"><button class="btn gold huge pulse" onclick="go('play','cpu')">あそぶ</button><button class="btn big" onclick="openTutorial()">遊び方（1分）</button></div>
-    </div>
-    <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>
+  return `<section class="hero">
+      <div><div class="ver">CARD GAME <b>β3</b></div>
+        <h1 class="title">AZAKEI<span class="m">MARKET</span></h1>
+        <p class="tagline">経済を読み、相手を読み、未来を読むカードゲーム</p>
+        <div class="row heroact"><button class="btn gold huge pulse" onclick="go('play','cpu')">あそぶ</button><button class="btn ghost" onclick="openTutorial()">遊び方（1分）</button></div>
+      </div>
+      <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>
   ${quickMenu()}
+  <div class="todayhead"><span class="label">TODAY</span><b>今日やること</b></div>
   ${dailyCard()}
   ${missionsPanel()}
-  ${chalCard()}
-  <section class="modecards">
-    <button class="mcard classic" onclick="pickMode('classic')"><span class="label">CLASSIC</span><b>クラシック</b><span class="desc">6つのNEWSがランダムな順番で起きる、基本のルール。</span><span class="go">このモードであそぶ →</span></button>
-    <button class="mcard history" onclick="pickMode('history')"><span class="new">NEW</span><span class="label">HISTORY · 1964→2022</span><b>歴史モード</b><span class="desc">本当の経済の出来事が年代順に起きる。歴史を知っているほど未来が読める。</span><span class="go">このモードであそぶ →</span></button>
-  </section>
-  <button class="longcard" onclick="pickLong()"><span class="new">NEW</span><span class="lbig">LONG</span>
-    <span class="ltx"><span class="label">MARKET SEASON</span><b>ロング版</b><span class="desc">6ターン×3期の18ターン勝負。期ごとに変わる「市況カード」、自分だけの「極秘契約」、育てる「ブランド」。歴史モードなら1964→2022を全部たどる。</span><span class="go">じっくり遊ぶ →</span></span>
-    <span class="terms" aria-hidden="true"><i>第1期</i><i>第2期</i><i>第3期</i></span></button>
-  <section class="two">
-    <button class="wide online" onclick="go('online')"><span class="label">ONLINE</span><b>オンライン対戦</b><span class="desc">ルームコードで、離れた友だちと同じゲームを。最大6人、CPUも追加できます。</span><span class="go">ルームを作る・参加する →</span></button>
-    <div class="panel"><span class="label">ルールブック（PDF）</span><div class="dlrow">${book('classic')}${book('history')}${book('long')}</div><p class="note">印刷してカードを手作りするときにどうぞ。</p></div>
-  </section>
-  <section class="row" style="justify-content:center;gap:8px">
-    <button class="btn ghost" onclick="openSheet('share')">友だちにもこのアプリを使ってもらう</button>
-  </section>`;
+  <nav class="homelinks"><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
+const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
+function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
+function setDifficulty(k){ const d=DIFFS.find(x=>x[0]===k); if(!d) return; let j=0; S.seats.forEach(s=>{ if(s.type!=='human') s.type=d[3][j++]; }); sfx('select'); haptic(10); render(); }
+function pickFuture(){ S.mode='future'; S.len='short'; save('azakei-len','short'); if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); }
 function setLen(l){ S.len=l; save('azakei-len',l); sfx('click'); render(); if(l==='long') longTutOnce(); }
 function pickLong(){ S.len='long'; save('azakei-len','long'); if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); longTutOnce(); }
 function pickMode(m){ S.len='short'; save('azakei-len','short'); S.mode=m; if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); }
@@ -2250,17 +2312,18 @@ function playView(){
     <div class="seg" role="group" aria-label="プレイヤー${i+1}の種類">${Object.entries(TYPES).map(([k,l])=>`<button class="${s.type===k?'on':''}" onclick="S.seats[${i}].type='${k}';sfx('click');render()">${l}</button>`).join('')}</div>
     <button class="x" aria-label="削除" onclick="removeSeat(${i})" ${S.seats.length<=2?'disabled':''}>✕</button></div>`).join('');
   const hc=S.seats.filter(s=>s.type==='human').length, party=hc>1;
-  const eraSel = S.mode==='history' ? `<div class="field"><label for="era">時代</label><select id="era" onchange="S.era=this.value;sfx('click');render()">${Object.entries(ERAS).map(([k,e])=>`<option value="${k}" ${S.era===k?'selected':''}>${e.name}（${e.sub}・${e.ids.length}の出来事）</option>`).join('')}</select></div>` : '';
+  const eraSel = S.mode==='history' ? `<div class="field"><label for="era">時代</label><select id="era" onchange="S.era=this.value;sfx('click');render()">${Object.entries(ERAS).filter(([k,e])=>!e.hidden).map(([k,e])=>`<option value="${k}" ${S.era===k?'selected':''}>${e.name}（${e.sub}・${e.ids.length}の出来事）</option>`).join('')}</select></div>` : '';
   return `<div class="grid2"><section class="panel">
       <div class="row spread"><h2 class="ttl">あそぶ</h2><button class="btn ghost icon" onclick="go('chal')">★ チャレンジ</button></div>
       <div class="step"><span class="sn">1</span><b>モード</b></div>
       <div class="modes" role="group" aria-label="ゲームモード">
         <button class="mode${S.mode==='classic'?' on':''}" onclick="S.mode='classic';sfx('click');render()"><b>クラシック</b><span class="note">6つのNEWSがランダムな順番で</span></button>
         <button class="mode hist${S.mode==='history'?' on':''}" onclick="S.mode='history';sfx('click');render()"><b style="font-family:var(--serif)">歴史モード</b><span class="note">実際の出来事が年代順に起きる</span></button>
+        <button class="mode fut${S.mode==='future'?' on':''}" onclick="S.mode='future';sfx('click');render()"><span class="newtag">NEW</span><b class="futb">未来編</b><span class="note">2027→2060 の未来シナリオ</span></button>
       </div>${S.len==='long'&&S.mode==='history'?'':eraSel}
       <div class="lens" role="group" aria-label="ゲームの長さ">
         <button class="len${S.len!=='long'?' on':''}" onclick="setLen('short')"><span class="lt">SHORT</span><b>ショート</b><span class="note">${CFG.turns||4}ターン · 5分 · 文化祭向け</span></button>
-        <button class="len long${S.len==='long'?' on':''}" onclick="setLen('long')"><span class="lt">LONG</span><b>ロング版</b><span class="note">${S.mode==='history'?'12ターン · 2期 · 1964→2022 全部':'18ターン · 3期 · じっくり'}</span></button>
+        <button class="len long${S.len==='long'?' on':''}" onclick="setLen('long')"><span class="lt">LONG</span><b>ロング版</b><span class="note">${S.mode==='future'?'12ターン · 2期 · 2027→2060 全部':S.mode==='history'?'12ターン · 2期 · 1964→2022 全部':'18ターン · 3期 · じっくり'}</span></button>
       </div>
       ${S.len==='long'?`<p class="note lnote">6ターンで1期。期が変わると<b style="color:var(--ink)">手札6枚と${FORE[CFG.fore].short}が復活</b>。期のはじめに<b style="color:#ff9ad9">市況カード</b>を1枚めくり、その期だけルールが変わる（好景気・不況・バブル…）。期末の決算で、その期にいちばん稼いだ人に <b style="color:var(--gold)">+${SETTLE_BONUS}</b>。さらに、自分だけが見られるお題<b style="color:#ff9ad9">極秘契約</b>と、いちばん独占した産業が以後+1になる<b style="color:var(--ink)">ブランド</b>も。${S.mode==='history'?'歴史モードは12の出来事をすべて、前半・後半に分けて遊びます。':''}</p>`:''}
       <div class="step"><span class="sn">2</span><b>だれと遊ぶ？</b></div>
@@ -2269,6 +2332,7 @@ function playView(){
         <button class="${party?'on':''}" onclick="setSeatPreset('party')">1台をみんなで回す</button>
         <button onclick="go('online')">オンラインで →</button>
       </div>
+      ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${diffNow()===k?" on":""}" onclick="setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>`:""}
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
       <p class="note">${hc===0?'全員CPUの観戦モードです。':hc===1?'あなたとCPUで対戦します。読み合いCPUは相手と先を読み、素直CPUはいちばん高い点を出します。達人CPUは相手ひとりひとりの考えを読み、極秘契約も狙う強敵（ロング版でとくに強い）。':`${hc}人で1台の端末を回します。順番に手札を見る画面が出ます。`}${S.seats.length===2?' 2人戦は同点になりやすいので3人以上がおすすめ。':''}</p>
@@ -2320,7 +2384,8 @@ const ACH=[
   {id:'gold',   n:'ゴールド到達',   d:'ランクがゴールドになる',              ic:'⬢'},
   {id:'daily7', n:'皆勤トレーダー', d:'デイリーに7日連続で挑戦する',          ic:'☼'},
   {id:'chal24', n:'完全制覇',       d:'チャレンジの★をすべて集める',          ic:'✪'},
-  {id:'dexall', n:'図鑑コンプリート', d:'マーケット図鑑を24種すべて集める',      ic:'❏'}
+  {id:'futwin', n:'未来予報士',     d:'未来編で1位になる',                  ic:'✦'},
+  {id:'dexall', n:'図鑑コンプリート', d:'マーケット図鑑をすべて集める',      ic:'❏'}
 ];
 function loadProfile(){
   const p=load('azakei-prof');
@@ -2340,13 +2405,14 @@ function recordResult(){
   if((G.rounds||1)===1 && TURNS>=4 && p.hist.length>3){ const s3=G.players.map(q=>q.hist[3]); lastAt3 = s3[me]===Math.min(...s3) && s3.some(v=>v>s3[me]); }
   const futBest=Math.max(-99,...p.used.filter(u=>u.fut).map(u=>u.total));
   st.games++; if(won) st.wins++; st.best=Math.max(st.best,p.score); st.mono+=p.uniq; if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
-  const xp = 20 + Math.max(0,p.score)*3 + p.uniq*5 + (won?40:0) + (G.online?15:0);
+  const xp = Math.round((20 + Math.max(0,p.score)*3 + p.uniq*5 + (won?40:0) + (G.online?15:0)) * (G.evt?1.5:1));   // 今週のイベント参加中はXP1.5倍
   const mis = progressMissions({p, won, rank:mine?mine.rank:9, hist:!!G.cfg.hist, daily:!!G.daily});
   const before=lvInfo(P.xp); P.xp+=xp+mis.xp; const after=lvInfo(P.xp);
   const skins=SKINS.filter(s=>s.lv>before.lv && s.lv<=after.lv);
   const got=[]; const unlock=id=>{ if(!P.ach[id]){ P.ach[id]=Date.now(); got.push(id); } };
   unlock('first');
   if(won) unlock('win1'); if(st.wins>=10) unlock('win10');
+  if(won && G.cfg.fut) unlock('futwin');
   if(isLong()){ unlock('long1'); if(won) unlock('longwin');
     const mine2=G.settles.map(s=>s.rows[me]).filter(Boolean);
     st.ct=(st.ct||0)+mine2.filter(r=>r.done).length; if(st.ct>=5) unlock('ct5');
@@ -2359,7 +2425,7 @@ function recordResult(){
   if(G.daily){ P.daily=P.daily||{}; if(!P.daily[G.daily]) P.daily[G.daily]={score:p.score, rank:mine?mine.rank:0, grid:resultGrid(p)};
     const ks=Object.keys(P.daily).sort(); while(ks.length>60) delete P.daily[ks.shift()];
     if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
-  P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-30);
+  P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-30);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
   const r0=rateOf(), r1=Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold');
   const dex=dexRecord(); if(dexCount()>=DEX_TOTAL()) unlock('dexall');
@@ -2400,7 +2466,7 @@ function resultGrid(p){ return p.used.map(u=>{ const uniq = u.k ? u.k===1 : u.ba
 function shareText(){
   const me=myIndex(); if(me<0) return '';
   const p=G.players[me], rk=ranking(G.players,G.cfg).find(x=>x.i===me).rank;
-  const head = G.daily ? `AZAKEI MARKET デイリー ${dailyLabel(G.daily)}（${G.cfg.hist?'歴史モード':'クラシック'}）` : `AZAKEI MARKET ${G.cfg.hist?'歴史モード':'クラシック'}${isLong()?' ロング版':''}${G.online?' オンライン':''}`;
+  const head = G.daily ? `AZAKEI MARKET デイリー ${dailyLabel(G.daily)}（${modeName(G.cfg)}）` : `AZAKEI MARKET ${modeName(G.cfg)}${isLong()?' ロング版':''}${G.online?' オンライン':''}`;
   return `${head}\n${resultGrid(p)} ${p.score}pt ${rk}位/${G.players.length}人\n${SHARE_URL}`;
 }
 function shareResult(){
@@ -2430,7 +2496,7 @@ function statsCharts(){
   const best=Math.max(...L.map(g=>g.s)), bi=L.map(g=>g.s).lastIndexOf(best);
   const dots=L.map((g,i)=>`<g class="pt"><circle cx="${x(i)}" cy="${y(g.s)}" r="12" fill="transparent"/><circle cx="${x(i)}" cy="${y(g.s)}" r="${g.r===1?5:4}" fill="${g.r===1?'var(--gold)':'var(--panel)'}" stroke="var(--gold)" stroke-width="2"/><title>${g.s}pt · ${g.r}位/${g.n}人 · ${g.m==='h'?'歴史':'クラシック'}${g.l?'ロング':''}</title></g>`).join('');
   const line=`<svg viewBox="0 0 ${W} ${H}" class="schart" role="img" aria-label="最近${L.length}戦の得点の推移。最高${best}点">${grid}<polyline points="${pts}" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>${dots}<text x="${x(bi)}" y="${y(best)-10}" text-anchor="middle" class="lab">最高 ${best}</text><text x="${pl}" y="${H-4}">${L.length}戦前</text><text x="${W-pr}" y="${H-4}" text-anchor="end">最新</text></svg>`;
-  const A=S.prof.log||[], cats=[['クラシック',g=>g.m==='c'&&!g.l&&!g.d&&!g.o],['歴史モード',g=>g.m==='h'&&!g.l&&!g.d&&!g.o],['ロング版',g=>g.l],['デイリー',g=>g.d],['オンライン',g=>g.o]];
+  const A=S.prof.log||[], cats=[['クラシック',g=>g.m==='c'&&!g.l&&!g.d&&!g.o],['歴史モード',g=>g.m==='h'&&!g.l&&!g.d&&!g.o],['未来編',g=>g.m==='f'&&!g.d&&!g.o],['ロング版',g=>g.l],['デイリー',g=>g.d],['オンライン',g=>g.o]];
   const bars=cats.map(([n,f])=>{ const gs=A.filter(f), w=gs.filter(g=>g.r===1).length, pct=gs.length?Math.round(w/gs.length*100):0;
     return `<div class="wrow" title="${n}：${gs.length}戦 ${w}勝"><span class="wn">${n}</span><span class="wbar"><i style="width:${pct}%"></i></span><b class="num">${gs.length?pct+'%':'—'}</b><span class="note">${gs.length}戦</span></div>`; }).join('');
   return `<section class="panel"><div class="row spread"><h3>最近の得点</h3><span class="note">金の点は1位の回</span></div>${line}
@@ -2621,7 +2687,7 @@ async function drawResultCard(){
   // ヘッダー
   x.textAlign='left'; x.textBaseline='alphabetic';
   x.font=`52px ${D}`; x.fillStyle='#fff'; x.fillText('AZAKEI',70,120); const aw=x.measureText('AZAKEI ').width; x.fillStyle=v('--gold'); x.fillText('MARKET',70+aw,120);
-  const mode=(G.daily?`DAILY ${dailyLabel(G.daily)} · `:'')+(C.hist?'歴史モード':'クラシック')+(isLong()?' ロング版':'')+(G.online?' · オンライン':'');
+  const mode=(G.daily?`DAILY ${dailyLabel(G.daily)} · `:'')+modeName(C)+(isLong()?' ロング版':'')+(G.online?' · オンライン':'');
   x.font=`800 30px ${B}`; x.fillStyle=v('--muted'); x.fillText(mode,72,172);
   x.textAlign='right'; const d=new Date(); x.fillText(`${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()}`,W-70,120);
   // 順位
@@ -2705,11 +2771,11 @@ function dexPanel(){
   const D=S.prof.dex||{n:[],h:[],m:[]}, total=DEX_TOTAL(), got=dexCount();
   const sec=(t,items)=>`<div class="dexsec"><span class="label">${t}</span><div class="dexgrid">${items}</div></div>`;
   const news=NEWS.map((n,i)=>{ const ok=D.n.includes(i); return `<button class="dx news${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:n${i}')"`:'disabled'}><span class="dxk">NEWS</span><b>${ok?n:'？？？'}</b></button>`; }).join('');
-  const hist=HIST.map((h,i)=>{ const ok=D.h.includes(i); return `<button class="dx hist${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:h${i}')"`:'disabled'}><span class="dxk">${ok?h.y:'19XX'}</span><b>${ok?h.n:'？？？'}</b></button>`; }).join('');
+  const histBtn=(h,i)=>{ const ok=D.h.includes(i); return `<button class="dx ${h.f?"fut":"hist"}${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:h${i}')"`:'disabled'}><span class="dxk">${ok?h.y:(h.f?'20XX':'19XX')}</span><b>${ok?h.n:'？？？'}</b></button>`; }; const hist=HIST.map((h,i)=>h.f?'':histBtn(h,i)).join(''), fut=HIST.map((h,i)=>h.f?histBtn(h,i):'').join('');
   const mk=Object.entries(MARKETS).map(([k,m])=>{ const ok=D.m.includes(k); return `<button class="dx mk${ok?'':' lock'}" style="--m1:${m.c1};--m2:${m.c2}" ${ok?`onclick="openSheet('dex:m${k}')"`:'disabled'}><span class="dxk">${ok?m.ic:'?'}</span><b>${ok?m.n:'？？？'}</b></button>`; }).join('');
   return `<section class="panel"><div class="row spread"><h3>マーケット図鑑</h3><span class="note">${got} / ${total} 発見</span></div>
     <span class="dexbar"><i style="width:${Math.round(got/total*100)}%"></i></span>
-    ${sec('経済NEWS（クラシック）',news)}${sec('歴史の出来事（歴史モード）',hist)}${sec('市況カード（ロング版）',mk)}
+    ${sec('経済NEWS（クラシック）',news)}${sec('歴史の出来事（歴史モード）',hist)}${sec('未来の出来事（未来編）',fut)}${sec('市況カード（ロング版）',mk)}
     <p class="note">ゲームの中で出会うと図鑑に登録されます。タップするとくわしく見られます。</p></section>`;
 }
 function dexSheetBody(key){
@@ -2747,7 +2813,7 @@ function quickMenu(){
     ['chal','★','チャレンジ',`★ ${chalTotal()} / ${CHALLENGES.length*3}`,"go('chal')"],
     ['long','∞','ロング版','市況・契約・ブランド','pickLong()'],
     ['online','◎','オンライン','友だちと対戦',"go('online')"],
-    ['me','◆','ミッション',`今日 ${mDone}/3 達成`,"document.querySelector('.missions')?.scrollIntoView({behavior:'smooth',block:'center'})"]
+    ['fut','✦','未来編','2027→2060 NEW','pickFuture()']
   ];
   return `<nav class="qmenu" aria-label="遊び方を選ぶ">${tiles.map(([c,ic,n,s,fn])=>`<button class="qt q-${c}${c==='daily'&&!done?' hot':''}" onclick="${fn}"><span class="qi">${ic}</span><b>${n}</b><span class="qs">${s}</span></button>`).join('')}</nav>`;
 }
@@ -2859,7 +2925,7 @@ function historyPanel(){
   return `<section class="panel"><div class="row spread"><h3>対戦履歴</h3><span class="note">最近${L.length}戦 · 1位 ${wins}回 · 平均 ${avg}位</span></div>
     <div class="hlist">${L.slice(0,12).map(x=>`<div class="hrow">
       <span class="hplace p${Math.min(x.r,4)}">${x.r}<small>/${x.n}</small></span>
-      <span class="hmeta"><b>${x.m==='h'?'歴史モード':'クラシック'}${x.l?' <span class="htag long">ロング</span>':''}${x.d?' <span class="htag">デイリー</span>':''}${x.o?' <span class="htag cy">オンライン</span>':''}</b><span class="note">${d(x.t)}</span></span>
+      <span class="hmeta"><b>${x.m==='f'?'未来編':x.m==='h'?'歴史モード':'クラシック'}${x.l?' <span class="htag long">ロング</span>':''}${x.d?' <span class="htag">デイリー</span>':''}${x.o?' <span class="htag cy">オンライン</span>':''}</b><span class="note">${d(x.t)}</span></span>
       <span class="hgrid">${x.g||''}</span><b class="hs">${x.s}<small>pt</small></b></div>`).join('')}</div></section>`;
 }
 /* ---- first-time guide for the long game ---- */
@@ -2964,12 +3030,13 @@ function onlineView(){
   const total=Math.min(6,ps.length+cpus);
   const modeUI = NET.host ? `<div class="modes" role="group" aria-label="ゲームモード">
         <button class="mode${mode==='classic'?' on':''}" onclick="setOnlineMode('classic')"><b>クラシック</b><span class="note">6つのNEWSがランダムな順番で</span></button>
-        <button class="mode hist${mode==='history'?' on':''}" onclick="setOnlineMode('history')"><b style="font-family:var(--serif)">歴史モード</b><span class="note">実際の出来事が年代順に</span></button></div>
-      ${mode==='history'&&S.len!=='long'?`<div class="field"><label for="oera">時代</label><select id="oera" onchange="setOnlineEra(this.value)">${Object.entries(ERAS).map(([k,e])=>`<option value="${k}" ${era===k?'selected':''}>${e.name}（${e.sub}）</option>`).join('')}</select></div>`:''}
-      <div class="lens" role="group" aria-label="ゲームの長さ"><button class="len${S.len!=='long'?' on':''}" onclick="setOnlineLen('short')"><span class="lt">SHORT</span><b>ショート</b><span class="note">${CFG.turns||4}ターン · 5分</span></button><button class="len long${S.len==='long'?' on':''}" onclick="setOnlineLen('long')"><span class="lt">LONG</span><b>ロング版</b><span class="note">${mode==='history'?'12ターン · 2期':'18ターン · 3期'} · 市況・契約・ブランド</span></button></div>
+        <button class="mode hist${mode==='history'?' on':''}" onclick="setOnlineMode('history')"><b style="font-family:var(--serif)">歴史モード</b><span class="note">実際の出来事が年代順に</span></button>
+        <button class="mode fut${mode==='future'?' on':''}" onclick="setOnlineMode('future')"><b class="futb">未来編</b><span class="note">2027→2060</span></button></div>
+      ${mode==='history'&&S.len!=='long'?`<div class="field"><label for="oera">時代</label><select id="oera" onchange="setOnlineEra(this.value)">${Object.entries(ERAS).filter(([k,e])=>!e.hidden).map(([k,e])=>`<option value="${k}" ${era===k?'selected':''}>${e.name}（${e.sub}）</option>`).join('')}</select></div>`:''}
+      <div class="lens" role="group" aria-label="ゲームの長さ"><button class="len${S.len!=='long'?' on':''}" onclick="setOnlineLen('short')"><span class="lt">SHORT</span><b>ショート</b><span class="note">${CFG.turns||4}ターン · 5分</span></button><button class="len long${S.len==='long'?' on':''}" onclick="setOnlineLen('long')"><span class="lt">LONG</span><b>ロング版</b><span class="note">${mode==='classic'?'18ターン · 3期':'12ターン · 2期'} · 市況・契約・ブランド</span></button></div>
       <div class="row"><span class="note">CPUを足す</span><button class="btn icon" onclick="setCpus(-1)" aria-label="CPUを減らす">−</button><b style="font-family:var(--display);font-weight:400;font-size:20px;min-width:24px;text-align:center">${cpus}</b><button class="btn icon" onclick="setCpus(1)" aria-label="CPUを増やす">＋</button><span class="note">合計 ${total}人（最大6人）</span></div>
       <button class="btn go huge pulse" onclick="startOnlineGame()" ${total<2?'disabled':''}>ゲームスタート！</button>`
-    : `<p class="note">モード：<b style="color:var(--ink)">${mode==='history'?'歴史モード · '+(ERAS[era]||ERAS.all).name:'クラシック'}${st&&st.len==='long'?' · ロング版（市況・契約・ブランドあり）':''}</b></p><div class="waitbox"><div class="back${skc()}" style="width:44px"></div><div><b>ホストの開始を待っています</b><p class="note">そろったらホストがゲームを始めます<span class="dots"><i></i><i></i><i></i></span></p></div></div>`;
+    : `<p class="note">モード：<b style="color:var(--ink)">${mode==='future'?'未来編':mode==='history'?'歴史モード · '+(ERAS[era]||ERAS.all).name:'クラシック'}${st&&st.len==='long'?' · ロング版（市況・契約・ブランドあり）':''}</b></p><div class="waitbox"><div class="back${skc()}" style="width:44px"></div><div><b>ホストの開始を待っています</b><p class="note">そろったらホストがゲームを始めます<span class="dots"><i></i><i></i><i></i></span></p></div></div>`;
   return `<div class="grid2"><section class="panel">
       <div class="row spread"><h2 class="ttl">ロビー</h2><span class="note">${NET.host?'あなたがホストです':'参加中'}</span></div>
       <div class="codebox"><span class="label">ルームコード</span><b id="codebig">${esc(NET.code)}</b><button class="btn" onclick="copyCode()">コピー</button></div>
@@ -2991,7 +3058,7 @@ function rulesView(){
     </div>`;
   if(tab==='table') body=`<section class="panel"><div class="row spread"><h3>クラシックの得点表</h3><span class="note">金色が各NEWSの最高点</span></div>${scoreTable(false)}<p class="note">数値を変えたいときは「ルール設定」から。</p></section>`;
   if(tab==='hist') body=`<section class="panel"><div class="row spread"><h3 style="font-family:var(--serif);font-size:20px">歴史モードの出来事</h3><span class="note">年代順に起きる12の出来事</span></div>${histTable()}<p class="note">点数は、実際の出来事でその産業が追い風か向かい風かをもとに、ゲーム用に決めたものです。</p></section>
-    <section class="panel"><h3>解説</h3><div class="recap">${HIST.map(h=>`<div><b>${h.y}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${h.n}</b><br>${h.d}</p></div>`).join('')}</div></section>`;
+    <section class="panel"><h3>解説</h3><div class="recap">${HIST.filter(h=>!h.f).map(h=>`<div><b>${h.y}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${h.n}</b><br>${h.d}</p></div>`).join('')}</div></section>`;
   if(tab==='set') body=`<section class="panel"><h3>プリセット</h3>
       <div class="choices">${Object.entries(PRESETS).map(([k,p])=>`<button class="choice${CFG.preset===k?' on':''}" onclick="applyPreset('${k}')"><b>${p.name}${p.badge?`<span class="badge">${p.badge}</span>`:''}</b><span class="note">${p.desc}</span></button>`).join('')}</div>
       ${CFG.preset==='custom'?'<p class="note">いまは手で変えたカスタム設定です。</p>':''}</section>
@@ -3079,7 +3146,7 @@ const pill=([c,l])=>`<span class="pill ${c}">${c==='good'?'●':c==='warn'?'▲'
 const pct=v=>(v*100).toFixed(0)+'%';
 function labView(){
   const R=LAB.result;
-  const modeSel=`<div class="field"><label for="l-m">モード</label><select id="l-m"><option value="classic" ${LAB.mode==='classic'?'selected':''}>クラシック</option>${Object.entries(ERAS).map(([k,e])=>`<option value="history:${k}" ${LAB.mode==='history'&&LAB.era===k?'selected':''}>歴史モード · ${e.name}</option>`).join('')}</select></div>`;
+  const modeSel=`<div class="field"><label for="l-m">モード</label><select id="l-m"><option value="classic" ${LAB.mode==='classic'?'selected':''}>クラシック</option>${Object.entries(ERAS).filter(([k,e])=>!e.hidden).map(([k,e])=>`<option value="history:${k}" ${LAB.mode==='history'&&LAB.era===k?'selected':''}>歴史モード · ${e.name}</option>`).join('')}</select></div>`;
   const setup=`<section class="panel"><div class="row spread"><h2 class="ttl">バランス検証</h2><span class="note">${CFG.preset==='custom'?'カスタム':PRESETS[CFG.preset].name} · 未来予測「${FORE[CFG.fore].name}」</span></div>
     <p class="note">いまのルールで読み合いCPU同士をたくさん戦わせて、同点の多さ、考える意味があるか、未来予測が効くか、産業ごとの偏りを調べます。</p>
     <div class="fields">${modeSel}
