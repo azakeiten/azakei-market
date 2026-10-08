@@ -682,6 +682,53 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- 演出①：カードめくり ---- */
+.overlay.flipov{cursor:pointer;background:radial-gradient(circle at 50% 40%,rgb(34 39 106 / .97),rgb(7 8 24 / .99))}
+.flipov .box{max-width:900px;gap:18px}
+.fl-open{font-family:var(--display);font-size:clamp(44px,12vw,84px);line-height:1;color:#fff;text-shadow:0 8px 0 var(--red-deep),0 0 60px rgb(255 93 93 / .6);animation:bang .5s cubic-bezier(.2,.9,.3,1.5) both}
+.fl-row{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(8px,2.5vw,18px);perspective:900px}
+.fl{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;width:clamp(72px,20vw,112px);animation:flin .4s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--d) - 300ms)}
+@keyframes flin{from{transform:translateY(40px) scale(.8);opacity:0}}
+.fl-in{position:relative;width:100%;aspect-ratio:5/7;transform-style:preserve-3d;animation:flflip .55s cubic-bezier(.3,1.4,.5,1) both;animation-delay:var(--d)}
+@keyframes flflip{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
+.fl-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px}
+.fl-back{width:100%!important;height:100%;aspect-ratio:auto}
+.fl-back::after{font-size:clamp(22px,6vw,34px)}
+.fl-front{transform:rotateY(180deg)} .fl-front .card{width:100%;height:100%}
+.fl-front .card .ban{font-size:clamp(9px,2.6vw,13px)}
+.fl.me .fl-face{box-shadow:0 0 0 3px var(--cyan),0 0 20px rgb(79 227 255 / .7)} .fl.me .fl-name{color:var(--cyan)}
+.fl.hit .fl-in{animation:flflip .55s cubic-bezier(.3,1.4,.5,1) both var(--d),flshake .45s ease both var(--s2)}
+@keyframes flshake{0%,100%{transform:rotateY(180deg)}20%{transform:rotateY(180deg) translateX(-7px) rotate(-4deg)}40%{transform:rotateY(180deg) translateX(7px) rotate(4deg)}60%{transform:rotateY(180deg) translateX(-5px)}80%{transform:rotateY(180deg) translateX(4px)}}
+.fl.mono .fl-front{animation:flglow 1.2s ease-in-out both var(--s2)}
+@keyframes flglow{0%{box-shadow:0 0 0 0 transparent}40%{box-shadow:0 0 0 4px var(--gold),0 0 40px 6px var(--gold)}100%{box-shadow:0 0 0 3px var(--gold),0 0 24px 2px rgb(255 200 58 / .6)}}
+.fl-tag{min-height:20px;font-family:var(--display);font-size:clamp(12px,3.4vw,16px);opacity:0;animation:fltag .4s cubic-bezier(.2,.9,.3,1.6) both var(--s2)}
+.fl.mono .fl-tag{color:var(--gold);text-shadow:0 0 12px rgb(255 200 58 / .7)} .fl.hit .fl-tag{color:var(--down)}
+@keyframes fltag{from{opacity:0;transform:scale(2.2)}to{opacity:1;transform:none}}
+.fl-name{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:800;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl-name .ava{width:22px;height:22px;font-size:11px;flex:0 0 auto}
+.fl-pts{font-family:var(--display);font-weight:400;font-size:clamp(20px,5.5vw,28px);color:var(--up);opacity:0;animation:fltag .4s cubic-bezier(.2,.9,.3,1.6) both;animation-delay:calc(var(--s2) + 250ms)}
+.fl-pts.neg{color:var(--down)}
+/* ---- 演出②：結果発表 ---- */
+.overlay.ceremony{cursor:pointer;overflow:hidden;background:#05061a}
+.cr-spot{position:absolute;left:50%;top:-20%;width:140vmax;height:140vmax;transform:translateX(-50%);background:conic-gradient(from 160deg at 50% 0%,transparent 0deg,rgb(255 230 150 / .22) 18deg,transparent 40deg);opacity:0;animation:crspot 1s ease both var(--d);pointer-events:none}
+@keyframes crspot{from{opacity:0}to{opacity:1}}
+.ceremony .box{position:relative;max-width:520px;gap:12px}
+.cr-title{font-family:var(--display);font-size:clamp(40px,11vw,66px);line-height:1;color:var(--gold);text-shadow:0 6px 0 var(--rail),0 0 40px rgb(255 200 58 / .5);animation:bang .6s cubic-bezier(.2,.9,.3,1.5) both}
+.cr-drum{display:flex;gap:8px} .cr-drum i{width:12px;height:12px;border-radius:50%;background:var(--gold);animation:crdot .5s ease-in-out infinite alternate}
+.cr-drum i:nth-child(2){animation-delay:.15s} .cr-drum i:nth-child(3){animation-delay:.3s}
+@keyframes crdot{to{transform:translateY(-10px);opacity:.4}}
+.cr-list{width:100%;display:flex;flex-direction:column-reverse;gap:8px}
+.cr{position:relative;display:flex;align-items:center;gap:12px;border-radius:18px;padding:10px 16px;background:rgb(26 30 79 / .9);box-shadow:inset 0 0 0 1px var(--line);opacity:0;animation:crin .5s cubic-bezier(.2,.9,.3,1.3) both var(--d)}
+@keyframes crin{from{opacity:0;transform:translateX(-60px) scale(.9)}to{opacity:1;transform:none}}
+.cr .ava{width:40px;height:40px;font-size:17px}
+.cr-rk{font-family:var(--display);font-size:26px;line-height:1;color:var(--muted);min-width:44px} .cr-rk small{font-size:12px;margin-left:2px}
+.cr-n{flex:1;min-width:0;text-align:left;font-weight:800;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr-s{font-family:var(--display);font-weight:400;font-size:24px} .cr-s small{font-size:12px;color:var(--muted);margin-left:2px}
+.cr.me{box-shadow:inset 0 0 0 2px var(--cyan)}
+.cr.win{padding:18px 18px;background:linear-gradient(90deg,rgb(255 200 58 / .3),rgb(26 30 79 / .95));box-shadow:inset 0 0 0 3px var(--gold),0 0 50px -6px var(--gold);animation:crwin .7s cubic-bezier(.2,.9,.3,1.5) both var(--d)}
+@keyframes crwin{from{opacity:0;transform:scale(1.8)}to{opacity:1;transform:none}}
+.cr.win .cr-rk{color:var(--gold);font-size:40px} .cr.win .cr-n{font-size:22px} .cr.win .cr-s{font-size:34px;color:var(--gold)} .cr.win .ava{width:56px;height:56px;font-size:24px}
+.crr{position:absolute;left:50%;top:-24px;width:46px;transform:translateX(-50%);color:var(--gold);filter:drop-shadow(0 0 10px var(--gold))}
 /* ---- simple home ---- */
 .heroact{margin-top:20px}
 .todayhead{display:flex;align-items:baseline;gap:10px;margin-top:6px} .todayhead b{font-family:var(--display);font-weight:400;font-size:22px}
@@ -1267,7 +1314,10 @@ const SFX = {
   coin:()=>{ tone(988,.07,'square',.035); tone(1319,.2,'square',.035,.07); },
   buzz:()=>tone(150,.28,'sawtooth',.05,0,80),
   future:()=>{ tone(380,.4,'sine',.06,0,1400); tone(760,.4,'sine',.03,.05,2000); },
-  fanfare:()=>[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i===5?.6:.18,'triangle',.07,i*.13))
+  fanfare:()=>[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i===5?.6:.18,'triangle',.07,i*.13)),
+  flip:()=>{ tone(1200,.05,'triangle',.04,0,700); tone(500,.06,'sine',.03,.03); },
+  slam:()=>{ tone(110,.25,'sine',.12,0,55); tone(220,.08,'square',.03); },
+  drum:()=>{ for(let i=0;i<22;i++) tone(90+Math.random()*30,.05,'square',.018+i*.0012,i*.055); }
 };
 function sfx(n){ try{ SFX[n] && SFX[n](); }catch(e){} }
 /* ---- BGM：WebAudioで鳴らす軽いループ（設定でオン・オフ、初期はオフ） ---- */
@@ -1373,7 +1423,7 @@ function start(data){
   G=data.G || null;
   LAB=data.LAB || { n:4, games:600, result:null, running:false, mode:'classic', era:'all' };
   LAB.running=false;
-  if(G){ if(G.phase==='countdown') G.phase='choose'; if(G.ov==='count'||G.ov==='intro'||G.ov==='vs') G.ov=null; }
+  if(G){ if(G.phase==='countdown') G.phase='choose'; if(['count','intro','vs','flip','ceremony'].includes(G.ov)) G.ov=null; }
   splash();
   fxSize(); bgInit(); render(); renderSheet();
   if(firstRun){ save('azakei-tut',1); setTimeout(openTutorial,600); }
@@ -1523,8 +1573,61 @@ function resolveTurn(){
   });
   if(G.log) G.log.push(G.deck[G.turn]);
   G.cnt=cnt; G.phase='reveal'; G.active=G.online?G.me:-1; render(); netSync();
-  if(phone()){ const b=document.querySelector('.board'); if(b) b.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); }
-  revealFx();
+  playFlip(()=>{
+    if(phone()){ const b=document.querySelector('.board'); if(b) b.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); }
+    revealFx();
+  });
+}
+/* ---- 演出①：カードめくり。全員のカードが裏向きで並び、1枚ずつ表に。被りは震え、独占は光る ---- */
+let FLIP_DONE=null, FLIP_T=null;
+function playFlip(done){
+  if(reduced() || !G || !G.last){ done&&done(); return; }
+  FLIP_DONE=done; G.ov='flip'; renderOv();
+  const n=G.players.length;
+  G.players.forEach((p,i)=>setTimeout(()=>{ if(G&&G.ov==='flip'){ sfx('flip'); haptic(6); } }, 350+i*170));
+  setTimeout(()=>{ if(G&&G.ov==='flip'){ const any=G.last.some(r=>r.k>1), mono=G.last.some(r=>r.k===1); if(any) sfx('slam'); if(mono) setTimeout(()=>sfx('coin'),180); haptic(any?30:12); } }, 350+n*170+250);
+  clearTimeout(FLIP_T); FLIP_T=setTimeout(endFlip, 350+n*170+1300);
+}
+function endFlip(){
+  clearTimeout(FLIP_T);
+  if(!G || G.ov!=='flip') return;
+  G.ov=null; renderOv();
+  const f=FLIP_DONE; FLIP_DONE=null; f&&f();
+}
+function flipOverlay(){
+  const n=G.players.length, me=myIndex();
+  const cards=G.players.map((p,i)=>{ const r=G.last[i], st=r.k===1?'mono':r.k>1?'hit':''; const d=350+i*170, settle=350+n*170+250;
+    return `<div class="fl ${st}${i===me?' me':''}" style="--d:${d}ms;--s2:${settle}ms">
+      <div class="fl-in"><div class="fl-face fl-back${skc()}"></div><div class="fl-face fl-front">${cardHTML(r.ind,{cls:'flc'})}</div></div>
+      <span class="fl-tag">${r.k===1?'独占！':r.k>1?`${r.k}人被り`:''}</span>
+      <span class="fl-name"><span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</span>${esc(p.name)}</span>
+      <b class="fl-pts${r.total<0?' neg':''}">${sgn(r.total)}</b></div>`; }).join('');
+  return `<div class="overlay flipov" onclick="endFlip()"><div class="box"><div class="fl-open">OPEN!</div><div class="fl-row">${cards}</div><div class="note">タップでスキップ</div></div></div>`;
+}
+/* ---- 演出②：結果発表セレモニー。最下位から順に発表し、最後に1位をスポットライトで ---- */
+let CER_T=[];
+function startCeremony(){
+  CER_T.forEach(clearTimeout); CER_T=[];
+  if(reduced() || !G){ setTimeout(()=>{ confetti(); sfx('fanfare'); },250); return; }
+  G.ov='ceremony'; renderOv(); sfx('drum');
+  const n=G.players.length, winAt=900+(n-1)*650;
+  for(let k=0;k<n-1;k++) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('flip'); haptic(8); } }, 900+k*650));
+  CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('slam'); haptic(40); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); } }, winAt));
+  CER_T.push(setTimeout(endCeremony, winAt+3200));
+}
+function endCeremony(){
+  CER_T.forEach(clearTimeout); CER_T=[];
+  if(!G || G.ov!=='ceremony') return;
+  G.ov=null; renderOv(); scrollTo(0,0);
+}
+function ceremonyOverlay(){
+  const rk=ranking(G.players,G.cfg), n=rk.length, me=myIndex();
+  const rows=rk.slice().reverse().map((x,j)=>{ const win=x.rank===1, d=win?900+(n-1)*650:900+j*650;
+    return `<div class="cr${win?' win':''}${x.i===me?' me':''}" style="--d:${d}ms">${win?CROWN('crr'):''}<span class="cr-rk">${x.rank}<small>位</small></span>
+      <span class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${esc(avOf(x.p))}</span><span class="cr-n">${esc(x.p.name)}</span><b class="cr-s">${x.p.score}<small>pt</small></b></div>`; }).join('');
+  return `<div class="overlay ceremony" onclick="endCeremony()"><div class="cr-spot" style="--d:${900+(n-1)*650}ms"></div><div class="box">
+    <div class="cr-title">結果発表</div><div class="cr-drum"><i></i><i></i><i></i></div>
+    <div class="cr-list">${rows}</div><div class="note">タップで結果画面へ</div></div></div>`;
 }
 function revealFx(){
   const fast=reduced();
@@ -1593,7 +1696,7 @@ const logDeck = () => G.log && G.log.length ? G.log : G.deck.slice(0,TURNS);
 const termName = r => G.cfg.hist && G.fullPool ? `${r===0?'前半':'後半'}` : `第${r+1}期`;
 function termRange(r){ if(!G.fullPool) return ''; const ids=G.fullPool.slice(r*LONG_PER,(r+1)*LONG_PER); return `${yearOf(ids[0])}–${yearOf(ids[ids.length-1])}`; }
 const turnLabel = () => (isLong()?`${termName(G.round)} · `:'')+`TURN ${G.turn+1}/${TURNS}`;
-function finishGame(){ G.phase='final'; G.ov=null; recordResult(); render(); netSync(); scrollTo(0,0); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); }
+function finishGame(){ G.phase='final'; G.ov=null; recordResult(); render(); netSync(); scrollTo(0,0); startCeremony(); }
 /* ブランド：期の決算で、その期にいちばん独占した産業が自分のブランドになり、以後その産業は毎回+1 */
 function brandOf(us, prev){
   const n=[0,0,0,0,0,0]; let lastMono=-1;
@@ -1873,19 +1976,20 @@ function guestApply(st){
     if(G.phase==='choose'){ const ms=reduced()?300:(isLong()&&G.turn===0?4100:1500); NET.introUntil=Date.now()+ms; sfx(G.cfg.hist?'press':'deal'); setTimeout(()=>{ if(G&&G.online&&!G.host) render(); }, ms+20); }
     if(G.phase==='settle'){ sfx('fanfare'); setTimeout(()=>{ if(G&&G.ov==='settle') confetti(); },300); }
     if(G.phase==='countdown'){ guestCountdown(); }
-    if(G.phase==='reveal'){ if(NET.counting){ NET.pending=true; } else { render(); revealFx(); return; } }
-    if(G.phase==='final'){ recordResult(); render(); scrollTo(0,0); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); return; }
+    if(G.phase==='reveal'){ if(NET.counting){ NET.pending=true; } else { render(); playFlip(revealFx); return; } }
+    if(G.phase==='final'){ recordResult(); render(); scrollTo(0,0); startCeremony(); return; }
   } else if(G.phase==='reveal' || G.phase==='final'){ G.players.forEach(p=>p.shown=p.score); }
   if(Date.now()<NET.introUntil && G.phase==='choose') G.ov='intro';
   if(G.phase==='settle') G.ov='settle';
   if(NET.counting) G.ov='count';
+  if(FLIP_DONE && G.phase==='reveal') G.ov='flip';
   render();
 }
 function guestCountdown(){
   NET.counting=true; const steps=['3','2','1','OPEN!']; let k=0;
   const tick=()=>{ if(!G){ NET.counting=false; return; }
     if(k<steps.length){ G.ov='count'; G.countText=steps[k]; renderOv(); sfx(k===3?'open':'tick'); if(k===3) haptic(30); k++; setTimeout(tick, reduced()?220:560); }
-    else { NET.counting=false; G.ov=null; if(NET.pending){ NET.pending=false; render(); revealFx(); } else render(); } };
+    else { NET.counting=false; G.ov=null; if(NET.pending){ NET.pending=false; render(); playFlip(revealFx); } else render(); } };
   tick();
 }
 // ---- reactions ----
@@ -2040,7 +2144,7 @@ function render(){
     $('#ov').innerHTML=''; if(tb) tb.innerHTML=tabbar(); document.body.classList.add('has-tabbar'); return;
   }
   if(tb) tb.innerHTML=''; document.body.classList.remove('has-tabbar');
-  if(G.phase==='final'){ app.innerHTML=tape(null)+hud()+finalView(); $('#ov').innerHTML=''; return; }
+  if(G.phase==='final'){ app.innerHTML=tape(null)+hud()+finalView(); renderOv(); return; }
   const news=G.deck[G.turn];
   app.innerHTML=tape(news)+hud()+`<section class="rivals" aria-label="プレイヤー">${seatsView()}</section><section class="stage">${paperCard(news)}${sideInfo()}</section>${G.phase==='reveal'?revealDock():handDock(news)}`;
   renderOv();
@@ -2050,6 +2154,8 @@ function render(){
 function renderOv(){
   const ov=$('#ov'); if(!G || !G.ov){ ov.innerHTML=''; return; }
   if(G.ov==='vs'){ ov.innerHTML=vsOverlay(); return; }
+  if(G.ov==='flip'){ ov.innerHTML=flipOverlay(); return; }
+  if(G.ov==='ceremony'){ ov.innerHTML=ceremonyOverlay(); return; }
   if(G.ov==='settle'){ ov.innerHTML=settleOverlay(); return; }
   if(G.ov==='count'){ ov.innerHTML=`<div class="overlay"><div class="box"><div class="count${G.countText.length>1?' open':''}">${G.countText}</div></div></div>`; return; }
   if(G.ov==='intro'){ const n=G.deck[G.turn];
