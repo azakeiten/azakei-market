@@ -682,6 +682,29 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- チーム戦・スピード ---- */
+.seat.team{border-top:4px solid var(--tc)} .seat.t0{--tc:#ff7a3d} .seat.t1{--tc:#4fe3ff}
+.opts{display:flex;flex-wrap:wrap;align-items:center;gap:6px} .opts .label{margin-right:4px}
+.tagnote{border-radius:12px;padding:8px 10px;background:rgb(255 122 61 / .1);box-shadow:inset 0 0 0 1px rgb(255 122 61 / .4)}
+.partner{display:flex;flex-wrap:wrap;align-items:center;gap:6px;border-radius:14px;padding:8px 12px;font-size:13px;font-weight:800;background:linear-gradient(90deg,rgb(255 122 61 / .16),rgb(7 8 24 / .35));box-shadow:inset 0 0 0 1.5px rgb(255 122 61 / .5);animation:achin .4s cubic-bezier(.2,.9,.3,1.3) both}
+.partner .pc{display:inline-flex;align-items:center;gap:4px;border-radius:8px;padding:2px 8px;color:#fff;background:var(--c)} .partner .pc svg{width:14px;height:14px}
+.partner .note{font-size:11px;width:100%}
+.spd{display:flex;align-items:center;gap:8px;font-weight:800}
+.spd-bar{flex:1;height:10px;border-radius:5px;background:var(--rail);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.spd-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cta),var(--up));transition:width .2s linear}
+.spd b{font-family:var(--display);font-weight:400;font-size:20px;min-width:28px;text-align:right}
+.spd.hurry .spd-bar i{background:linear-gradient(90deg,var(--red),#ff9a5a)} .spd.hurry b{color:var(--down);animation:pulse .5s ease-in-out infinite}
+.teampanel{background:radial-gradient(circle at 0% 0%,rgb(255 122 61 / .2),transparent 50%),radial-gradient(circle at 100% 0%,rgb(79 227 255 / .2),transparent 50%),linear-gradient(180deg,var(--panel2),var(--panel))}
+.tm-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin-top:6px}
+.tm-col{display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:18px;padding:12px 8px;background:rgb(7 8 24 / .4);box-shadow:inset 0 0 0 1.5px var(--tc)} .tm-col.t0{--tc:#ff7a3d} .tm-col.t1{--tc:#4fe3ff}
+.tm-col.win{box-shadow:inset 0 0 0 3px var(--tc),0 0 30px -8px var(--tc)}
+.tm-s{font-family:var(--display);font-weight:400;font-size:38px;line-height:1;color:var(--tc)} .tm-s small{font-size:14px;color:var(--muted)}
+.tm-m{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px;font-size:12px;font-weight:800;text-align:center}
+.tm-m .ava{width:22px;height:22px;font-size:10px}
+.tm-vs{font-family:var(--display);font-size:24px;color:var(--muted)}
+.cr-team{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(18px,5vw,26px);opacity:0;animation:crwin .6s cubic-bezier(.2,.9,.3,1.5) both var(--d)}
+.cr-team span:first-child{color:#ff7a3d} .cr-team span:last-child{color:#4fe3ff} .cr-team i{font-style:normal;font-size:.7em;color:var(--muted)}
+.cr-team span.win{text-shadow:0 0 18px currentColor;font-size:1.15em}
 /* ---- NEWSごとの専用演出（パーティクル） ---- */
 .nfx{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .overlay.intro .box{position:relative;z-index:1}
@@ -1523,6 +1546,7 @@ function start(data){
   if(S.calm===undefined) S.calm=!!load('azakei-calm');
   if(!S.len) S.len=load('azakei-len')==='long'?'long':'short';
   if(S.bgm===undefined) S.bgm=!!load('azakei-bgm');
+  if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
   const firstRun = !data.S && !load('azakei-tut');
@@ -1567,6 +1591,8 @@ function startGame(online, daily, chalId){
       deck:buildDeck(cfg, seed?mulberry(seed):Math.random), rnd:seed?mulberry(seed*7+13):null, daily:daily||null, chal:ch?ch.id:null, turn:0, phase:'choose', active:-1, sel:null, last:null, divs:[], ov:null,
       rounds: long ? (cfg.hist ? Math.ceil(fullPool.length/LONG_PER) : LONG_ROUNDS) : 1, round:0, fullPool, log:[], settles:[] };
   G.players.forEach(p=>p.roundStart=0);
+  G.gid=Date.now();
+  G.teams = (!online && !daily && !ch && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
   if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); G.players.forEach(p=>p.brand=null); dealContracts(); }
   G.me = online ? G.players.findIndex(p=>p.peer===NET.myPeer) : -1;
   scrollTo(0,0);
@@ -1599,11 +1625,11 @@ function endVs(){
 }
 function vsOverlay(){
   const C=G.cfg, me=myIndex(), L=lvInfo(S.prof.xp);
-  const mode = G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
+  const mode = G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
       <div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
-  const left = me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
+  const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
   return `<div class="overlay vs" onclick="endVs()"><div class="vsbg"></div>
     <div class="vsmode">${mode}</div>
@@ -1733,6 +1759,7 @@ function ceremonyOverlay(){
       <span class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${esc(avOf(x.p))}</span><span class="cr-n">${esc(x.p.name)}</span><b class="cr-s">${x.p.score}<small>pt</small></b></div>`; }).join('');
   return `<div class="overlay ceremony" onclick="endCeremony()"><div class="cr-spot" style="--d:${900+(n-1)*650}ms"></div><div class="box">
     <div class="cr-title">結果発表</div><div class="cr-drum"><i></i><i></i><i></i></div>
+    ${G.teams?(()=>{ const {s}=teamScores(), w=s[0]===s[1]?-1:s[0]>s[1]?0:1; return `<div class="cr-team" style="--d:${900+(n-1)*650+500}ms"><span class="${w===0?"win":""}">${TEAM_NAMES[0]} ${s[0]}</span><i>VS</i><span class="${w===1?"win":""}">${s[1]} ${TEAM_NAMES[1]}</span></div>`; })():""}
     <div class="cr-list">${rows}</div><div class="note">タップで結果画面へ</div></div></div>`;
 }
 function revealFx(){
@@ -2258,6 +2285,62 @@ function render(){
   if(phone()){ const r=document.querySelector('.rivals'); const a=document.querySelector('.seat.active'); if(r&&a) r.scrollLeft=Math.max(0,a.offsetLeft-16); }
   const tl=document.getElementById('tl'), now=tl&&tl.querySelector('.now'); if(now) tl.scrollLeft=Math.max(0,now.offsetLeft-60);
 }
+/* ---- チーム戦（2対2）：合計点で勝負。相棒CPUは出すつもりのカードを教えてくれる ---- */
+const TEAM_NAMES=['チームA','チームB'];
+function teamScores(){ const s=[0,0], u=[0,0]; G.players.forEach((p,i)=>{ s[G.teams[i]]+=p.score; u[G.teams[i]]+=p.uniq; }); return {s,u}; }
+function teamWon(me){ const {s,u}=teamScores(), t=G.teams[me], o=1-t; return s[t]>s[o] || (s[t]===s[o] && G.cfg.tiebreak && u[t]>u[o]); }
+function teamPanel(){
+  if(!G.teams) return '';
+  const {s}=teamScores(), me=myIndex(), w=s[0]===s[1]?-1:s[0]>s[1]?0:1;
+  const col=t=>`<div class="tm-col t${t}${w===t?' win':''}"><span class="label">${TEAM_NAMES[t]}${w===t?' · WIN':''}</span><b class="tm-s">${s[t]}<small>pt</small></b>
+    <span class="tm-m">${G.players.map((p,i)=>G.teams[i]===t?`<span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</span>${esc(p.name)}`:'').filter(Boolean).join(' ＋ ')}</span></div>`;
+  return `<section class="panel teampanel"><span class="label">TAG MATCH · チーム戦</span><div class="tm-row">${col(0)}<span class="tm-vs">VS</span>${col(1)}</div>${w<0?'<p class="note" style="text-align:center">合計点は同点！</p>':''}</section>`;
+}
+function partnerHint(p){
+  if(!G.teams) return '';
+  const i=G.players.indexOf(p), j=G.players.findIndex((q,k)=>k!==i && G.teams[k]===G.teams[i]);
+  const q=G.players[j]; if(!q) return '';
+  if(isHuman(q)) return q.pick!==null && q.pick>=0 ? `<div class="partner">🤝 相棒の${esc(q.name)}は出しました（内容は秘密）</div>` : '';
+  if(q.pick===null || q.pick<0) return '';
+  return `<div class="partner">🤝 相棒 <b>${esc(q.name)}</b> は <span class="pc" style="--c:var(--i${q.pick})">${svg(q.pick,2.4)} ${IND[q.pick]}</span> を出すつもり。<span class="note">同じのを出すと被ります</span></div>`;
+}
+function setTeam(on){ S.team=!!on; save('azakei-team',S.team); sfx('click'); render(); }
+/* ---- ニュース読み上げ（ブラウザの音声合成。設定でオン） ---- */
+function speakNews(n){
+  if(!S.tts || !('speechSynthesis' in window) || !G) return;
+  try{
+    speechSynthesis.cancel();
+    const txt = G.cfg.fut ? `未来予報。${yearOf(n)}年、${nm(n)}。` : G.cfg.hist ? `号外です。${yearOf(n)}年、${nm(n)}。` : `速報です。${nm(n)}。`;
+    const u=new SpeechSynthesisUtterance(txt); u.lang='ja-JP'; u.rate=1.08; u.pitch=G.cfg.fut?1.15:1;
+    const v=speechSynthesis.getVoices().find(v=>/ja/i.test(v.lang)); if(v) u.voice=v;
+    setTimeout(()=>{ if(G && G.ov==='intro') speechSynthesis.speak(u); },450);
+  }catch(e){}
+}
+function toggleTts(){ S.tts=!S.tts; save('azakei-tts',S.tts); if(S.tts && 'speechSynthesis' in window){ try{ const u=new SpeechSynthesisUtterance('ニュース読み上げをオンにしました'); u.lang='ja-JP'; speechSynthesis.speak(u); }catch(e){} } renderSheet(); }
+/* ---- スピードモード：1人15秒。時間切れなら選んでいるカード（なければおすすめ）を自動で出す ---- */
+const SPEED_SEC=15;
+let SPD={key:'', until:0, timer:null};
+function speedArm(p){
+  if(!S.speed || !G || G.online || G.phase!=='choose' || G.ov) return '';
+  const key=(G.gid||0)+':'+(G.round||0)+':'+G.turn+':'+G.active;
+  if(SPD.key!==key){ SPD.key=key; SPD.until=Date.now()+SPEED_SEC*1000; clearInterval(SPD.timer); SPD.timer=setInterval(speedTick,200); }
+  const left=Math.max(0,(SPD.until-Date.now())/1000);
+  return `<div class="spd${left<=5?' hurry':''}"><span>⏱</span><span class="spd-bar"><i style="width:${left/SPEED_SEC*100}%"></i></span><b>${Math.ceil(left)}</b></div>`;
+}
+function speedTick(){
+  if(!G || G.phase!=='choose' || !S.speed || G.online){ clearInterval(SPD.timer); return; }
+  if(G.ov) { SPD.until+=200; return; }   // 交代画面などのあいだは止める
+  const left=(SPD.until-Date.now())/1000, el=document.querySelector('.spd');
+  if(el){ el.querySelector('i').style.width=Math.max(0,left/SPEED_SEC*100)+'%'; el.querySelector('b').textContent=Math.max(0,Math.ceil(left)); el.classList.toggle('hurry',left<=5); }
+  if(left<=5 && left>4.8) sfx('tick');
+  if(left<=0){
+    clearInterval(SPD.timer);
+    const p=G.players[G.active]; if(!p || p.pick!==null) return;
+    if(G.sel===null){ const v=cardValues(G.cfg,p,G.players,G.deck,G.turn,rowFor(p,G.deck,G.turn),false,p.fut?futBase:null); const pi=G.teams?G.players.findIndex((q,k)=>q!==p&&G.teams[k]===G.teams[G.active]):-1, pp=pi>=0&&!isHuman(G.players[pi])?G.players[pi].pick:null; G.sel=p.hand.slice().sort((a,b)=>(v[b]-(b===pp?9:0))-(v[a]-(a===pp?9:0)))[0]; toast("時間切れ！おすすめのカードを出しました"); }
+    confirmPick();
+  }
+}
+function setSpeed(on){ S.speed=!!on; save('azakei-speed',S.speed); sfx('click'); render(); }
 /* ---- 全体の点数表（ゲーム中いつでも開ける）。今・済み・これからが一目で分かる ---- */
 function fullTableBody(){
   const inGame=!!(G && G.phase!=='final' && G.deck);
@@ -2350,6 +2433,7 @@ function newsIntro(n){
     <div class="tv-ticker"><div>${tick}${tick}</div></div></div>`;
 }
 function newsSfx(){
+  try{ speakNews(G.deck[G.turn]); }catch(e){}
   try{ newsFxSfx(G.deck[G.turn]); }catch(e){}
   if(!G) return;
   const chips=()=>{ for(let i=0;i<6;i++) tone(500+i*90,.05,'triangle',.025,1.15+i*.12); };
@@ -2440,7 +2524,7 @@ function seatsView(){
         : `<div class="slot"></div><span class="st">${i===G.active?'<span style="color:var(--gold)">選んでいます</span>':'考え中'} <span class="dots"><i></i><i></i><i></i></span></span>`;
     }
     const lead = p.score===top && top>0 && G.phase!=='reveal';
-    return `<div class="seat${(G.online?i===G.me:isHuman(p)&&humans()===1)?' me':''}${i===G.active?' active':''}" data-i="${i}">${lead?CROWN('crown'):''}<span class="rk">#${rk[i]}</span>
+    return `<div class="seat${G.teams?' team t'+G.teams[i]:''}${(G.online?i===G.me:isHuman(p)&&humans()===1)?' me':''}${i===G.active?' active':''}" data-i="${i}">${lead?CROWN('crown'):''}<span class="rk">#${rk[i]}</span>
       <div class="ava" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</div>
       <div class="nm">${esc(p.name)}${isHuman(p)?'':`<span class="tagx${p.type==='pro'?' pro':''}">${cpuLabel(p)}</span>`}</div>
       <div class="sc" id="sc${i}">${G.phase==='reveal'?p.shown:p.score}${spark(p.hist)}</div>
@@ -2509,6 +2593,7 @@ function handDock(news){
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>
     ${known?`<div class="peek"><span class="label" style="color:var(--cyan)">${p.fut?'先物取引':'未来予測'} · 次のNEWS（あなただけ）</span><b>${nextLabel}</b></div>`:''}
     ${isLong()&&(p.contract||p.brand!=null)?`<div class="secret">${p.contract?`<span class="ctchip"><i>極秘契約</i>${esc(contractText(p.contract))}<b>+${contractVal(p.contract)}</b></span>`:""}${p.brand!=null?`<span class="brd" style="--c:var(--i${p.brand})"><i>ブランド</i>${IND[p.brand]} +1</span>`:""}</div>`:""}
+    ${speedArm(p)}${partnerHint(p)}
     ${G.online?"":coachHTML(p)}
     <div class="preview">${preview}</div>
     <div class="actions">
@@ -2560,6 +2645,7 @@ function finalView(){
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
+    ${teamPanel()}
     ${chalPanel()}
     ${rewardPanel()}
     ${aw.length?`<section class="panel"><h3>今回の賞</h3><div class="awards">${aw.map(a=>`<div class="award"><span class="t">${a[0]}</span><span class="w">${esc(a[1])}</span><span class="note">${a[2]}</span></div>`).join('')}</div></section>`:''}
@@ -2660,6 +2746,7 @@ function playView(){
         <button onclick="go('online')">オンラインで →</button>
       </div>
       ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${diffNow()===k?" on":""}" onclick="setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>`:""}
+      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button></div>${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
       <p class="note">${hc===0?'全員CPUの観戦モードです。':hc===1?'あなたとCPUで対戦します。読み合いCPUは相手と先を読み、素直CPUはいちばん高い点を出します。達人CPUは相手ひとりひとりの考えを読み、極秘契約も狙う強敵（ロング版でとくに強い）。':`${hc}人で1台の端末を回します。順番に手札を見る画面が出ます。`}${S.seats.length===2?' 2人戦は同点になりやすいので3人以上がおすすめ。':''}</p>
@@ -2674,6 +2761,7 @@ function settingsBody(){
     <div class="field"><label for="setname">あなたの名前（オンラインやCPU対戦で使います）</label><input id="setname" class="inp" maxlength="12" value="${esc(NET.name||'')}" oninput="setMyName(this.value)" placeholder="例：リョウ"></div>
     ${sw(S.sound,'toggleSound()','効果音','カードを選ぶ音やファンファーレ')}
     ${sw(!!S.bgm,'toggleBgm()','BGM','ゲーム中に軽い音楽を流す')}
+    ${sw(!!S.tts,'toggleTts()','ニュース読み上げ','NEWSの見出しをアナウンサーのように声で読む')}
     ${sw(!!S.coach,'toggleCoach()','コーチ（初心者向け）','手札の画面に「おすすめ」と理由を出す')}
     ${sw(S.vib!==false,'toggleVib()','振動','スマホで選んだときや被ったときに軽く振動')}
     ${sw(!!S.calm,'toggleCalm()','動きを減らす','アニメーションや紙吹雪を止めて静かに表示')}
@@ -2726,7 +2814,7 @@ function recordResult(){
   const me = G.online ? G.me : (G.players.filter(isHuman).length===1 ? G.players.findIndex(isHuman) : -1);
   if(me<0) return;
   const P=S.prof, st=P.st, p=G.players[me];
-  const rk=ranking(G.players,G.cfg), mine=rk.find(x=>x.i===me), won=!!(mine && mine.rank===1);
+  const rk=ranking(G.players,G.cfg), mine=rk.find(x=>x.i===me), won=G.teams ? teamWon(me) : !!(mine && mine.rank===1);
   // 3ターン目終了時点の順位（逆転劇の判定）
   let lastAt3=false;
   if((G.rounds||1)===1 && TURNS>=4 && p.hist.length>3){ const s3=G.players.map(q=>q.hist[3]); lastAt3 = s3[me]===Math.min(...s3) && s3.some(v=>v>s3[me]); }
@@ -2804,6 +2892,7 @@ function shareResult(){
 function resultBanner(){
   const me=myIndex(); if(me<0) return '';
   const r=ranking(G.players,G.cfg).find(x=>x.i===me).rank;
+  if(G.teams){ const w=teamWon(me); return w ? `<div class="banner win">TEAM WIN!</div>` : `<div class="banner">TEAM LOSE…</div>`; }
   return r===1 ? `<div class="banner win">VICTORY!</div>` : `<div class="banner"><span>${r}</span>${r===2?'ND':r===3?'RD':'TH'} PLACE</div>`;
 }
 function profileChip(){
@@ -2837,9 +2926,10 @@ function coachHTML(p){
     const vals=cardValues(C,p,G.players,G.deck,t,row,known,p.fut?futBase:null);
     const pool=unseen(C,G.deck,t), left=TURNS-1-t;
     const opp=G.players.filter(o=>o!==p).map(o=>oppDist(T,o,G.deck[t],pool,left));
-    const alone=c=>Math.round(opp.reduce((a,d)=>a*(1-d[c]),1)*100);
+    const pi=G.teams?G.players.findIndex((q,k)=>q!==p&&G.teams[k]===G.teams[G.players.indexOf(p)]):-1, pp=pi>=0&&!isHuman(G.players[pi])?G.players[pi].pick:null;   // チーム戦：相棒の予定カードは被る前提
+    const alone=c=>c===pp?0:Math.round(opp.reduce((a,d)=>a*(1-d[c]),1)*100);
     const base=c=>(p.fut?futBase(T[row][c],C):T[row][c])+(p.brand===c?1:0);
-    const best=p.hand.slice().sort((a,b)=>vals[b]-vals[a])[0];
+    const best=p.hand.slice().sort((a,b)=>(vals[b]-(b===pp?9:0))-(vals[a]-(a===pp?9:0)))[0];
     const top=p.hand.reduce((a,c)=>base(c)>base(a)?c:a,p.hand[0]);
     let tip;
     if(top!==best) tip=`いちばん点が高い${IND[top]}（${sgn(base(top))}）は、ほかの人も出しそう。独占できる確率は${alone(top)}%。`;
