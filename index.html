@@ -682,6 +682,72 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- NEWS演出：共通の「影響チップ」 ---- */
+.impact{width:100%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.ni{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;border-radius:14px;padding:8px 2px 7px;background:rgb(7 8 24 / .55);box-shadow:inset 0 0 0 1px var(--line);opacity:0;animation:nipop .45s cubic-bezier(.2,.9,.3,1.6) both var(--d)}
+@keyframes nipop{from{opacity:0;transform:translateY(18px) scale(.6)}to{opacity:1;transform:none}}
+.ni .ic{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;color:#fff;background:var(--c)} .ni .ic svg{width:17px;height:17px}
+.ni .nn{font-size:10.5px;font-weight:800;white-space:nowrap}
+.ni b{font-family:var(--display);font-weight:400;font-size:18px;line-height:1;color:var(--muted)}
+.ni.pos b{color:var(--up)} .ni.neg b{color:var(--down)}
+.ni.top{background:radial-gradient(circle at 50% 0%,rgb(255 200 58 / .35),rgb(7 8 24 / .6) 70%);box-shadow:inset 0 0 0 2px var(--gold),0 0 22px -4px var(--gold)}
+.ni.top b{color:var(--gold);font-size:22px}
+.ni .nt{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-style:normal;font-size:10px;font-weight:800;border-radius:999px;padding:1px 7px;background:var(--gold);color:#2a1a00;white-space:nowrap;animation:stampin .45s cubic-bezier(.2,.9,.3,1.6) both;animation-delay:calc(var(--d) + 1000ms)}
+.ni.top{animation:nipop .45s cubic-bezier(.2,.9,.3,1.6) both var(--d),nitop 1.6s ease-in-out infinite calc(var(--d) + 900ms)}
+@keyframes nitop{50%{transform:translateY(-4px)}}
+@media (max-width:560px){ .impact{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px} }
+/* ---- NEWS演出：クラシック＝テレビの臨時ニュース ---- */
+.overlay.news-tv{cursor:pointer;overflow:hidden;background:radial-gradient(circle at 50% 30%,#2a1050,#0a0820 70%)}
+.tv-flash{position:absolute;inset:0;background:#fff;opacity:0;animation:tvflash .5s ease-out both;pointer-events:none}
+@keyframes tvflash{0%{opacity:.85}100%{opacity:0}}
+.news-tv .box{max-width:720px;gap:16px}
+.tv-top{width:100%;display:flex;align-items:center;gap:10px;font-weight:800;font-size:13px;letter-spacing:.08em;animation:slidein .4s ease both}
+.tv-live{color:#fff;background:var(--red);border-radius:6px;padding:2px 8px;animation:pulse 1.2s ease-in-out infinite}
+.tv-ch{font-family:var(--display);font-weight:400;letter-spacing:.12em;color:var(--gold)} .tv-turn{margin-left:auto;color:var(--muted)}
+.tv-band{width:100%;display:flex;align-items:stretch;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px -8px #000,0 0 0 3px rgb(255 255 255 / .15);animation:tvband .55s cubic-bezier(.2,.9,.3,1.2) .15s both}
+@keyframes tvband{from{transform:translateX(-110%) skewX(-12deg)}to{transform:none}}
+.tv-tag{flex:0 0 auto;display:grid;place-items:center;padding:0 16px;font-family:var(--display);font-size:clamp(22px,6vw,34px);color:#fff;background:linear-gradient(180deg,#ff5d5d,#c2261b);writing-mode:horizontal-tb}
+.tv-head{flex:1;padding:14px 16px;font-family:var(--display);font-size:clamp(26px,7.5vw,52px);line-height:1.1;color:#1a1033;background:linear-gradient(180deg,#fff,#e9e6ff);text-align:left;animation:tvhead .5s ease .45s both}
+@keyframes tvhead{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.tv-ticker{position:absolute;left:0;right:0;bottom:0;height:34px;display:flex;align-items:center;overflow:hidden;background:var(--gold);color:#2a1a00;font-weight:800;font-size:13px}
+.tv-ticker div{display:inline-flex;gap:40px;white-space:nowrap;padding-left:20px;animation:tape 14s linear infinite}
+.tv-ticker span::before{content:"▶ "}
+/* ---- NEWS演出：歴史＝号外が回って飛んでくる ---- */
+.overlay.news-paper{cursor:pointer;overflow:hidden;background:radial-gradient(circle at 50% 40%,#3a2614,#0e0805 75%)}
+.np-rays{position:absolute;left:50%;top:40%;width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;background:repeating-conic-gradient(rgb(255 220 160 / .06) 0 7deg,transparent 7deg 14deg);animation:hspin 30s linear infinite;pointer-events:none}
+.news-paper .box{position:relative;max-width:620px;gap:14px}
+.np-turn{font-family:var(--display);letter-spacing:.24em;font-size:14px;color:#e8d3a8}
+.np{position:relative;width:100%;border-radius:8px;padding:16px 20px 18px;text-align:left;color:var(--paper-ink);background:linear-gradient(170deg,var(--paper),var(--paper2));box-shadow:0 0 0 4px var(--rail),0 30px 50px -20px #000;animation:npspin .9s cubic-bezier(.2,.8,.3,1.1) both}
+@keyframes npspin{0%{transform:scale(.05) rotate(-720deg);opacity:0}70%{transform:scale(1.06) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(-1.5deg)}}
+.np::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgb(36 24 10 / .04) 0 1px,transparent 1px 3px);border-radius:8px;pointer-events:none}
+.np-mast{display:flex;justify-content:space-between;align-items:center;border-bottom:3px double var(--paper-ink);padding-bottom:4px;font-family:var(--serif);font-weight:800;font-size:13px}
+.np-mast .gogai{background:var(--paper-red);color:#fff;border-radius:4px;padding:0 8px}
+.np-yr{position:absolute;right:16px;top:44px;font-family:var(--serif);font-weight:800;font-size:clamp(34px,10vw,56px);line-height:1;color:var(--paper-red);border:4px solid var(--paper-red);border-radius:10px;padding:2px 10px;transform:rotate(8deg);opacity:0;animation:npstamp .4s cubic-bezier(.2,.9,.3,1.6) .85s both;mix-blend-mode:multiply}
+.np-yr small{font-size:.4em}
+@keyframes npstamp{from{opacity:0;transform:rotate(8deg) scale(2.6)}to{opacity:.92;transform:rotate(8deg) scale(1)}}
+.np-h{font-family:var(--serif);font-weight:800;font-size:clamp(28px,8vw,48px);line-height:1.1;margin-top:12px;padding-right:clamp(130px,42vw,210px)}
+.np-d{font-size:13px;line-height:1.6;margin:8px 0 0}
+.impact.ip-paper{padding:10px;border-radius:12px;background:linear-gradient(170deg,var(--paper),var(--paper2));box-shadow:0 0 0 3px var(--rail),0 18px 30px -16px #000;color:var(--paper-ink)}
+.impact.ip-paper .ni{background:rgb(36 24 10 / .06);box-shadow:inset 0 0 0 1px rgb(36 24 10 / .12)} .impact.ip-paper .ni.pos b{color:#0b7a42} .impact.ip-paper .ni.neg b{color:#c0322a} .impact.ip-paper .ni.top{background:var(--paper-ink);color:#fff;box-shadow:0 0 0 2px var(--gold)}
+/* ---- NEWS演出：未来編＝ホログラムの予報 ---- */
+.overlay.news-holo{cursor:pointer;overflow:hidden;background:radial-gradient(circle at 50% 35%,#0b3a55,#020a12 75%)}
+.holo-grid{position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(transparent 0 calc(100% - 1px),rgb(122 240 255 / .25) 0) 0 0/100% 40px,linear-gradient(90deg,transparent 0 calc(100% - 1px),rgb(122 240 255 / .25) 0) 0 0/40px 100%;transform:perspective(500px) rotateX(60deg);transform-origin:bottom;animation:hogrid 2s linear infinite;pointer-events:none}
+@keyframes hogrid{to{background-position:0 40px,0 0}}
+.holo-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgb(122 240 255 / .06) 0 2px,transparent 2px 5px);pointer-events:none;animation:hoflick 3s steps(2) infinite}
+@keyframes hoflick{50%{opacity:.6}}
+.news-holo .box{position:relative;max-width:640px;gap:12px;color:#dff8ff}
+.ho-top{width:100%;display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:#7af0ff;animation:slidein .4s ease both}
+.ho-yr{position:relative;font-family:var(--display);font-size:clamp(70px,22vw,140px);line-height:.9;color:#7af0ff;text-shadow:0 0 30px rgb(122 240 255 / .8);animation:hoin .7s steps(6) both}
+.ho-yr::before,.ho-yr::after{content:attr(data-t);position:absolute;inset:0;opacity:.8}
+.ho-yr::before{color:#ff5c9a;transform:translate(-4px,0);clip-path:inset(0 0 55% 0);animation:hoglitch 1.6s steps(2) infinite}
+.ho-yr::after{color:#5cf0a2;transform:translate(4px,0);clip-path:inset(55% 0 0 0);animation:hoglitch 1.3s steps(2) infinite reverse}
+@keyframes hoin{0%{opacity:0;filter:blur(8px)}50%{opacity:1}100%{opacity:1;filter:none}}
+@keyframes hoglitch{0%,80%{transform:translate(0,0)}85%{transform:translate(-6px,2px)}90%{transform:translate(5px,-2px)}100%{transform:translate(0,0)}}
+.ho-h{font-family:var(--display);font-size:clamp(26px,7.5vw,46px);line-height:1.1;color:#fff;text-shadow:0 0 18px rgb(122 240 255 / .6);animation:tvhead .6s ease .5s both}
+.ho-d{font-size:13px;line-height:1.6;color:#bfeefb;max-width:52ch;margin:0;animation:slidein .5s ease .7s both}
+.impact.ip-holo .ni{background:rgb(122 240 255 / .08);box-shadow:inset 0 0 0 1px rgb(122 240 255 / .35)}
+.impact.ip-holo .ni.top{background:radial-gradient(circle at 50% 0%,rgb(122 240 255 / .35),rgb(2 10 18 / .6) 70%);box-shadow:inset 0 0 0 2px #7af0ff,0 0 22px -4px #7af0ff} .impact.ip-holo .ni.top b{color:#7af0ff} .impact.ip-holo .ni .nt{background:#7af0ff;color:#04202a}
+@media (max-width:560px){ .news-tv .box,.news-paper .box,.news-holo .box{gap:10px} .tv-top{font-size:11px} .tv-ticker{height:28px;font-size:12px} .np{padding:12px 14px 14px} .np-d,.ho-d{font-size:12px} }
 /* ---- 演出①：カードめくり ---- */
 .overlay.flipov{cursor:pointer;background:radial-gradient(circle at 50% 40%,rgb(34 39 106 / .97),rgb(7 8 24 / .99))}
 .flipov .box{max-width:900px;gap:18px}
@@ -1483,12 +1549,12 @@ function beginTurn(){
     introTimer=setTimeout(endVs, 2400); return;
   }
   G.ov='intro';
-  render(); sfx(C.hist?'press':'deal'); netSync();
+  render(); newsSfx(); netSync();
   introTimer=setTimeout(endIntro, reduced()?350:introMs());
 }
 function endVs(){
   if(!G || G.ov!=='vs') return;
-  clearTimeout(introTimer); G.ov='intro'; render(); sfx(G.cfg.hist?'press':'deal');
+  clearTimeout(introTimer); G.ov='intro'; render(); newsSfx();
   introTimer=setTimeout(endIntro, introMs());
 }
 function vsOverlay(){
@@ -1682,7 +1748,7 @@ function applyMarket(){
   C.table=clone(B.table); C.bonus=B.bonus; C.collide=B.collide; delete C.fee; delete C.negMul; delete C.hitPen;
   if(m) m.apply(C);
 }
-const introMs = () => (G.cfg.hist?1900:1500) + (isLong() && G.turn===0 && G.mkts ? 2600 : 0);
+const introMs = () => (G.cfg.fut?3000:G.cfg.hist?3100:2800) + (isLong() && G.turn===0 && G.mkts ? 2600 : 0);   // NEWS演出の長さ（タップで飛ばせる）
 const introMkt = () => isLong() && G.turn===0 && G.mkts ? `<div class="mktwrap"><span class="label">${termName(G.round)}の市況</span>${marketCard(G.mkts[G.round],"big flip")}</div>` : "";
 const curMarket = () => isLong() && G.mkts ? MARKETS[G.mkts[G.round]] : null;
 function marketCard(id, cls){
@@ -1973,7 +2039,7 @@ function guestApply(st){
   const key=(G.round||0)+':'+G.turn+':'+G.phase;
   if(key!==NET.fxKey){
     NET.fxKey=key;
-    if(G.phase==='choose'){ const ms=reduced()?300:(isLong()&&G.turn===0?4100:1500); NET.introUntil=Date.now()+ms; sfx(G.cfg.hist?'press':'deal'); setTimeout(()=>{ if(G&&G.online&&!G.host) render(); }, ms+20); }
+    if(G.phase==='choose'){ const ms=reduced()?300:introMs(); NET.introUntil=Date.now()+ms; newsSfx(); setTimeout(()=>{ if(G&&G.online&&!G.host) render(); }, ms+20); }
     if(G.phase==='settle'){ sfx('fanfare'); setTimeout(()=>{ if(G&&G.ov==='settle') confetti(); },300); }
     if(G.phase==='countdown'){ guestCountdown(); }
     if(G.phase==='reveal'){ if(NET.counting){ NET.pending=true; } else { render(); playFlip(revealFx); return; } }
@@ -2151,17 +2217,55 @@ function render(){
   if(phone()){ const r=document.querySelector('.rivals'); const a=document.querySelector('.seat.active'); if(r&&a) r.scrollLeft=Math.max(0,a.offsetLeft-16); }
   const tl=document.getElementById('tl'), now=tl&&tl.querySelector('.now'); if(now) tl.scrollLeft=Math.max(0,now.offsetLeft-60);
 }
+/* ---- NEWS演出：モードごとに「ニュースが飛び込んでくる」見せ方を変える ---- */
+function impactChips(n, cls){
+  const row=G.cfg.table[n], mx=Math.max(...row);
+  return `<div class="impact ${cls||''}">${IND.map((d,i)=>{ const v=row[i];
+    return `<div class="ni${v===mx?' top':''}${v<0?' neg':v>0?' pos':''}" style="--d:${1150+i*120}ms;--c:var(--i${i})"><span class="ic">${svg(i,2.2)}</span><span class="nn">${d}</span><b>${v>0?'▲':v<0?'▼':'■'}${sgn(v)}</b>${v===mx?'<i class="nt">注目</i>':''}</div>`; }).join('')}</div>`;
+}
+function newsIntro(n){
+  const skip='<div class="note">タップでスキップ</div>';
+  if(G.cfg.fut){   // 未来編：ホログラムの予報
+    return `<div class="overlay intro news-holo" onclick="endIntro()"><div class="holo-scan"></div><div class="holo-grid"></div><div class="box">
+      <div class="ho-top"><span>◉ FORECAST</span><span>${turnLabel()}</span></div>
+      <div class="ho-yr" data-t="${yearOf(n)}">${yearOf(n)}</div>
+      <div class="ho-h">${nm(n)}</div><p class="ho-d">${HIST[n].d}</p>
+      ${impactChips(n,'ip-holo')}${introMkt()}${skip}</div></div>`;
+  }
+  if(G.cfg.hist){  // 歴史モード：号外の新聞が回って飛んでくる
+    return `<div class="overlay intro news-paper" onclick="endIntro()"><div class="np-rays"></div><div class="box">
+      <div class="np-turn">${turnLabel()}</div>
+      <div class="np"><div class="np-mast"><span>AZAKEI 経済新聞</span><span class="gogai">号外</span></div>
+        <div class="np-yr">${yearOf(n)}<small>年</small></div><div class="np-h">${nm(n)}</div><p class="np-d">${HIST[n].d}</p></div>
+      ${impactChips(n,'ip-paper')}${introMkt()}${skip}</div></div>`;
+  }
+  // クラシック：テレビの臨時ニュース
+  const tick=NEWS.map(x=>`<span>${x}</span>`).join('');
+  return `<div class="overlay intro news-tv" onclick="endIntro()"><div class="tv-flash"></div><div class="box">
+    <div class="tv-top"><span class="tv-live">● LIVE</span><span class="tv-ch">AZAKEI NEWS</span><span class="tv-turn">${turnLabel()}</span></div>
+    <div class="tv-band"><span class="tv-tag">速報</span><span class="tv-head">${nm(n)}！</span></div>
+    ${impactChips(n,'ip-tv')}${introMkt()}${skip}</div>
+    <div class="tv-ticker"><div>${tick}${tick}</div></div></div>`;
+}
+function newsSfx(){
+  if(!G) return;
+  const chips=()=>{ for(let i=0;i<6;i++) tone(500+i*90,.05,'triangle',.025,1.15+i*.12); };
+  if(G.cfg.fut){ tone(260,.5,'sine',.06,0,1500); tone(1800,.04,'square',.02,.35); tone(1500,.04,'square',.02,.42); tone(2200,.05,'square',.02,.5); chips(); return; }
+  if(G.cfg.hist){ tone(180,.35,'sawtooth',.03,0,900); setTimeout(()=>sfx('slam'),850); chips(); return; }
+  [659,830,988,1319].forEach((f,i)=>tone(f,.22,'triangle',.06,i*.16)); chips();   // 速報チャイム
+}
 function renderOv(){
-  const ov=$('#ov'); if(!G || !G.ov){ ov.innerHTML=''; return; }
+  const ov=$('#ov'); if(!G || !G.ov){ ov.innerHTML=''; ov.dataset.k=''; return; }
+  const ik = G.ov==='intro' ? 'i'+(G.round||0)+':'+G.turn : '';   // NEWS演出は途中で描き直すと最初から再生されるので、同じターンなら触らない
+  if(ik && ov.dataset.k===ik && ov.firstElementChild) return;
+  ov.dataset.k=ik;
   if(G.ov==='vs'){ ov.innerHTML=vsOverlay(); return; }
   if(G.ov==='flip'){ ov.innerHTML=flipOverlay(); return; }
   if(G.ov==='ceremony'){ ov.innerHTML=ceremonyOverlay(); return; }
   if(G.ov==='settle'){ ov.innerHTML=settleOverlay(); return; }
   if(G.ov==='count'){ ov.innerHTML=`<div class="overlay"><div class="box"><div class="count${G.countText.length>1?' open':''}">${G.countText}</div></div></div>`; return; }
   if(G.ov==='intro'){ const n=G.deck[G.turn];
-    ov.innerHTML = G.cfg.hist
-      ? `<div class="overlay intro${G.cfg.fut?" fut":""}" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="yr">${yearOf(n)}</div><div class="bar"></div><div class="nw serif">${nm(n)}</div>${introMkt()}<div class="note">タップでスキップ</div></div></div>`
-      : `<div class="overlay intro" onclick="endIntro()"><div class="box"><div class="tn">${turnLabel()}</div><div class="bar"></div><div class="nw">${nm(n)}！</div>${introMkt()}<div class="note">タップでスキップ</div></div></div>`;
+    ov.innerHTML = newsIntro(n);
     return; }
   if(G.ov==='handoff'){ const p=G.players[G.active]; const done=G.players.filter(q=>isHuman(q)&&q.pick!==null).length, hn=humans();
     ov.innerHTML=`<div class="overlay handoff" style="--s:var(--s${p.seat%6})"><div class="hbg"></div><div class="box"><div class="hpass"><span>PASS</span><i>📱</i></div><div class="ava" style="--s:var(--s${p.seat%6});width:96px;height:96px;font-size:40px;grid-row:auto">${esc(avOf(p))}</div>
