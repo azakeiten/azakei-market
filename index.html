@@ -682,6 +682,46 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- NEWSごとの専用演出（パーティクル） ---- */
+.nfx{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.overlay.intro .box{position:relative;z-index:1}
+.nfx-glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 55%,color-mix(in srgb,var(--nt) 45%,transparent),transparent 62%);animation:nfglow 2.4s ease-in-out both}
+@keyframes nfglow{0%{opacity:0}30%{opacity:1}100%{opacity:.6}}
+.nf{position:absolute;left:var(--x);top:var(--y);font-style:normal;font-size:calc(30px * var(--s));line-height:1;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 4px 6px rgb(0 0 0 / .45))}
+.nf.rise{top:auto;bottom:-12%;animation:nfrise var(--dur) cubic-bezier(.3,.6,.4,1) var(--d) both}
+@keyframes nfrise{0%{opacity:0;transform:translateY(0) rotate(-8deg)}15%{opacity:.95}100%{opacity:0;transform:translateY(-115vh) rotate(12deg)}}
+.nf.fall{top:-12%;animation:nffall var(--dur) cubic-bezier(.5,0,.7,1) var(--d) both}
+@keyframes nffall{0%{opacity:0;transform:translateY(0) rotate(0)}12%{opacity:.95}100%{opacity:0;transform:translateY(118vh) rotate(160deg)}}
+.nf.fly{left:-14%;animation:nffly var(--dur) linear var(--d) both}
+@keyframes nffly{0%{opacity:0;transform:translateX(0)}10%{opacity:.95}50%{transform:translateX(60vw) translateY(-14px)}90%{opacity:.95}100%{opacity:0;transform:translateX(125vw)}}
+.nf.pop{left:50%;top:50%;animation:nfpop var(--dur) cubic-bezier(.2,.8,.3,1) var(--d) both}
+@keyframes nfpop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.2) rotate(30deg)}}
+.nf.spin{animation:nfspin var(--dur) ease-in-out var(--d) both}
+@keyframes nfspin{0%{opacity:0;transform:scale(.3) rotate(0)}40%{opacity:1;transform:scale(1.1) rotate(200deg)}100%{opacity:0;transform:scale(.6) rotate(400deg)}}
+.nf.dg{font-family:var(--mono);font-weight:800;color:#5cf0a2;text-shadow:0 0 10px #5cf0a2;filter:none}
+.overlay.quake{animation:quake .6s cubic-bezier(.36,.07,.19,.97) .45s both}
+@keyframes quake{10%,90%{transform:translate(-2px,1px)}20%,80%{transform:translate(4px,-2px)}30%,50%,70%{transform:translate(-7px,3px)}40%,60%{transform:translate(7px,-3px)}}
+.overlay.quake .tv-tag,.overlay.quake .gogai{background:linear-gradient(180deg,#ff3b3b,#8a0f0f)}
+/* ---- 全体の点数表 ---- */
+.ftwrap{overflow-x:auto;margin:10px -4px;padding:0 4px}
+.ftbl{width:100%;border-collapse:separate;border-spacing:3px;font-size:13px}
+.ftbl th{font-weight:800;font-size:10px;color:var(--muted);vertical-align:bottom}
+.ftbl th .ic{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;color:#fff;margin:0 auto 2px} .ftbl th .ic svg{width:15px;height:15px}
+.ftbl th span{display:block;white-space:nowrap}
+.ftbl th.used{opacity:.35}
+.ftbl .ft-n{text-align:left;font-size:12px;color:var(--ink);min-width:120px;padding:6px 8px;border-radius:10px;background:rgb(7 8 24 / .4)}
+.ftbl .ft-st{display:inline-block;width:16px;color:var(--muted)} .ftbl .ft-y{font-family:var(--display);font-weight:400;color:var(--gold);margin-right:5px}
+.ftbl td{text-align:center;font-family:var(--display);font-size:17px;padding:6px 0;border-radius:9px;background:rgb(7 8 24 / .35);min-width:38px}
+.ftbl td.pos{color:var(--up)} .ftbl td.neg{color:var(--down)} .ftbl td.mx{background:var(--gold);color:#2a1a00}
+.ftbl td.used{opacity:.35}
+.ftbl tr.now .ft-n{background:var(--gold);color:#2a1a00} .ftbl tr.now .ft-st,.ftbl tr.now .ft-y{color:#2a1a00}
+.ftbl tr.now td{box-shadow:inset 0 0 0 2px var(--gold)}
+.ftbl tr.done{opacity:.4} .ftbl tr.done .ft-n{text-decoration:line-through}
+.ftleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin-bottom:12px} .ftleg b{color:var(--gold)}
+.ftbl th.ft-n,.ftbl tr .ft-n{position:sticky;left:0;z-index:1;background:var(--panel)}
+.ftbl tr.now .ft-n{background:var(--gold)}
+@media (max-width:560px){ .ftbl .ft-n{min-width:0;width:96px;max-width:96px;font-size:10.5px;line-height:1.25;padding:5px 6px;white-space:normal} .ftbl td{font-size:15px;min-width:30px;padding:5px 0} .ftbl th{font-size:9px} .ftbl th .ic{width:20px;height:20px} .hud .btn.icon{padding:6px 8px;min-height:36px} .hud .row{gap:5px!important} .hud .turnlbl{font-size:12px} }
+.usedsw{display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--panel2);opacity:.4;vertical-align:-1px}
 /* ---- NEWS演出：共通の「影響チップ」 ---- */
 .impact{width:100%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
 .ni{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;border-radius:14px;padding:8px 2px 7px;background:rgb(7 8 24 / .55);box-shadow:inset 0 0 0 1px var(--line);opacity:0;animation:nipop .45s cubic-bezier(.2,.9,.3,1.6) both var(--d)}
@@ -2189,6 +2229,7 @@ function renderSheet(){
   else if(k==='longtut') body=longTutBody();
   else if(k==='login') body=loginBody();
   else if(k==='title') body=titleBody();
+  else if(k==='table') body=fullTableBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
@@ -2217,23 +2258,84 @@ function render(){
   if(phone()){ const r=document.querySelector('.rivals'); const a=document.querySelector('.seat.active'); if(r&&a) r.scrollLeft=Math.max(0,a.offsetLeft-16); }
   const tl=document.getElementById('tl'), now=tl&&tl.querySelector('.now'); if(now) tl.scrollLeft=Math.max(0,now.offsetLeft-60);
 }
+/* ---- 全体の点数表（ゲーム中いつでも開ける）。今・済み・これからが一目で分かる ---- */
+function fullTableBody(){
+  const inGame=!!(G && G.phase!=='final' && G.deck);
+  const C=inGame?G.cfg:{...CFG, names:NEWS, hist:false}, T=C.table;
+  let ids, cur=-1, done=[];
+  if(inGame && C.hist){ ids=C.pool.slice().sort((a,b)=>yearOf(a)-yearOf(b)); cur=G.deck[G.turn]; done=ids.filter(i=>yearOf(i)<yearOf(cur)); }
+  else if(inGame){ ids=[0,1,2,3,4,5]; cur=G.deck[G.turn]; done=G.deck.slice(0,G.turn); }
+  else ids=[0,1,2,3,4,5];
+  const me=inGame?(myIndex()>=0?myIndex():G.active):-1, p=me>=0?G.players[me]:null, hand=p?p.hand:[0,1,2,3,4,5];
+  const m=inGame?curMarket():null;
+  const head=`<tr><th class="ft-n">${C.hist?'出来事':'NEWS'}</th>${IND.map((d,i)=>`<th class="${hand.includes(i)?'':'used'}"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span>${d}</span></th>`).join('')}</tr>`;
+  const rows=ids.map(id=>{ const r=T[id], mx=Math.max(...r), st=id===cur?'now':done.includes(id)?'done':'next';
+    return `<tr class="${st}"><th class="ft-n"><span class="ft-st">${st==='now'?'▶':st==='done'?'✓':'？'}</span>${C.hist?`<b class="ft-y">${yearOf(id)}</b>`:''}${esc(C.names[id])}</th>${r.map((v,i)=>`<td class="${v===mx?'mx':v<0?'neg':v>0?'pos':''}${hand.includes(i)?'':' used'}">${sgn(v)}</td>`).join('')}</tr>`; }).join('');
+  return `<span class="label">SCORE TABLE</span><h3 class="ttl" style="font-size:22px">全体の点数表</h3>
+    <p class="note">${inGame?`${modeName(C)}${isLong()?' · '+termName(G.round):''} · 独占ボーナス <b style="color:var(--gold)">${sgn(C.bonus)}</b>${m?` · 市況「${m.n}」反映ずみ`:''}`:'クラシックの得点表'}</p>
+    <div class="ftwrap"><table class="ftbl">${head}${rows}</table></div>
+    <div class="ftleg"><span><b>▶</b> 今のNEWS</span><span><b>✓</b> もう出た</span><span><b>？</b> これから出るかも</span>${p?'<span><i class="usedsw"></i> 使ったカード</span>':''}</div>
+    <button class="btn gold big" onclick="closeSheet()">とじる</button>`;
+}
 /* ---- NEWS演出：モードごとに「ニュースが飛び込んでくる」見せ方を変える ---- */
+/* NEWSごとの専用演出：モチーフ（絵）・動き・色・音。n＝クラシック、h＝歴史・未来の出来事 */
+const NEWS_FX={
+  n0:{e:['🔥','🛢️','⚡'],m:'rise',t:'#ff5a1f',s:'fire'},   n1:{e:['🫧','💰','📈'],m:'rise',t:'#ffc83a',s:'bubble'},
+  n2:{e:['🏗️','🚧','🔩'],m:'fall',t:'#5f86ff',s:'build'},  n3:{e:['🛍️','💳','🎁'],m:'pop',t:'#ff5c9a',s:'coin'},
+  n4:{e:['✈️','🧳','🏝️'],m:'fly',t:'#20c6d1',s:'jet'},    n5:{e:['0','1','📱','💾'],m:'fall',t:'#a77bff',s:'digi',digit:true},
+  h0:{e:['🏅','🚄','📺'],m:'rise',t:'#ffc83a',s:'coin'},    h1:{e:['🛢️','⛽','🧻'],m:'fall',t:'#ff5a1f',s:'crash'},
+  h2:{e:['💴','💵','✈️'],m:'fly',t:'#3fe08f',s:'jet'},     h3:{e:['🫧','🍾','💰'],m:'rise',t:'#ffc83a',s:'bubble'},
+  h4:{e:['💥','📉','🫧'],m:'fall',t:'#ff3b3b',s:'crash',quake:true}, h5:{e:['💻','🌐','📧'],m:'pop',t:'#5f86ff',s:'digi'},
+  h6:{e:['🚀','📈','💻'],m:'rise',t:'#a77bff',s:'jet'},     h7:{e:['📉','💥','🏦'],m:'fall',t:'#ff3b3b',s:'crash',quake:true},
+  h8:{e:['📱','📶','🛒'],m:'pop',t:'#20c6d1',s:'digi'},     h9:{e:['🗻','✈️','💴'],m:'fly',t:'#ff5c9a',s:'jet'},
+  h10:{e:['🏠','📦','🎮'],m:'pop',t:'#3fe08f',s:'coin'},   h11:{e:['⛽','💹','🌾'],m:'rise',t:'#ff8a3d',s:'fire'},
+  h12:{e:['🤖','✨','💬'],m:'pop',t:'#7af0ff',s:'digi'},   h13:{e:['🚕','🛣️','📡'],m:'fly',t:'#ffc83a',s:'jet'},
+  h14:{e:['☀️','🌬️','🔋'],m:'rise',t:'#3fe08f',s:'bubble'}, h15:{e:['🪙','📲','💠'],m:'fall',t:'#7af0ff',s:'coin'},
+  h16:{e:['💧','🏜️','🚰'],m:'fall',t:'#4fe3ff',s:'bubble'}, h17:{e:['🚀','🪐','✨'],m:'rise',t:'#a77bff',s:'jet'},
+  h18:{e:['🤖','🧹','🦾'],m:'pop',t:'#ff8ab4',s:'build'},  h19:{e:['⚛️','🔮','✨'],m:'spin',t:'#a77bff',s:'digi'},
+  h20:{e:['⚠️','🔒','💀'],m:'fall',t:'#ff3b3b',s:'crash',quake:true}, h21:{e:['🌱','🌍','♻️'],m:'rise',t:'#3fe08f',s:'bubble'},
+  h22:{e:['🌕','🚀','🏙️'],m:'spin',t:'#ffe08a',s:'jet'},  h23:{e:['🦾','🕶️','📦'],m:'fly',t:'#ff8ab4',s:'digi'}
+};
+const fxKey = n => (G.cfg.hist?'h':'n')+n;
+function newsFx(n){
+  const f=NEWS_FX[fxKey(n)]; if(!f || reduced()) return '';
+  const k=phone()?14:22;
+  const parts=Array.from({length:k},(_,i)=>{ const e=f.e[i%f.e.length], x=Math.random()*100, y=Math.random()*100, d=(Math.random()*1.4).toFixed(2), s=(0.7+Math.random()*0.9).toFixed(2), dur=(2.2+Math.random()*1.6).toFixed(2);
+    const ang=Math.random()*Math.PI*2, dx=Math.round(Math.cos(ang)*45), dy=Math.round(Math.sin(ang)*45);
+    return `<i class="nf ${f.m}${f.digit&&/^\d$/.test(e)?' dg':''}" style="--x:${x}%;--y:${y}%;--d:${d}s;--s:${s};--dur:${dur}s;--dx:${dx}vw;--dy:${dy}vh">${e}</i>`; }).join('');
+  return `<div class="nfx" style="--nt:${f.t}" aria-hidden="true"><div class="nfx-glow"></div>${parts}</div>`;
+}
+function newsFxSfx(n){
+  const f=NEWS_FX[fxKey(n)]; if(!f) return;
+  const S2={
+    fire:()=>{ tone(120,.7,'sawtooth',.03,.1,420); tone(90,.6,'sawtooth',.025,.3,300); },
+    bubble:()=>{ [0,1,2,3,4].forEach(i=>tone(500+i*160,.09,'sine',.05,.15+i*.09,900+i*200)); },
+    build:()=>{ [0,1,2].forEach(i=>{ tone(160,.07,'square',.05,.15+i*.22); tone(1200,.04,'square',.02,.15+i*.22); }); },
+    coin:()=>{ tone(988,.07,'square',.035,.2); tone(1319,.25,'square',.035,.27); },
+    jet:()=>{ tone(900,.9,'sawtooth',.025,.1,150); },
+    digi:()=>{ for(let i=0;i<8;i++) tone(800+Math.random()*900,.035,'square',.02,.12+i*.06); },
+    crash:()=>{ tone(420,.8,'sawtooth',.04,.1,60); setTimeout(()=>sfx('slam'),500); }
+  };
+  try{ S2[f.s] && S2[f.s](); }catch(e){}
+  if(f.quake) haptic([30,40,30]);
+}
 function impactChips(n, cls){
   const row=G.cfg.table[n], mx=Math.max(...row);
   return `<div class="impact ${cls||''}">${IND.map((d,i)=>{ const v=row[i];
     return `<div class="ni${v===mx?' top':''}${v<0?' neg':v>0?' pos':''}" style="--d:${1150+i*120}ms;--c:var(--i${i})"><span class="ic">${svg(i,2.2)}</span><span class="nn">${d}</span><b>${v>0?'▲':v<0?'▼':'■'}${sgn(v)}</b>${v===mx?'<i class="nt">注目</i>':''}</div>`; }).join('')}</div>`;
 }
+const quake = n => { const f=NEWS_FX[fxKey(n)]; return f&&f.quake&&!reduced() ? " quake" : ""; };
 function newsIntro(n){
   const skip='<div class="note">タップでスキップ</div>';
   if(G.cfg.fut){   // 未来編：ホログラムの予報
-    return `<div class="overlay intro news-holo" onclick="endIntro()"><div class="holo-scan"></div><div class="holo-grid"></div><div class="box">
+    return `<div class="overlay intro news-holo${quake(n)}" onclick="endIntro()"><div class="holo-scan"></div><div class="holo-grid"></div>${newsFx(n)}<div class="box">
       <div class="ho-top"><span>◉ FORECAST</span><span>${turnLabel()}</span></div>
       <div class="ho-yr" data-t="${yearOf(n)}">${yearOf(n)}</div>
       <div class="ho-h">${nm(n)}</div><p class="ho-d">${HIST[n].d}</p>
       ${impactChips(n,'ip-holo')}${introMkt()}${skip}</div></div>`;
   }
   if(G.cfg.hist){  // 歴史モード：号外の新聞が回って飛んでくる
-    return `<div class="overlay intro news-paper" onclick="endIntro()"><div class="np-rays"></div><div class="box">
+    return `<div class="overlay intro news-paper${quake(n)}" onclick="endIntro()"><div class="np-rays"></div>${newsFx(n)}<div class="box">
       <div class="np-turn">${turnLabel()}</div>
       <div class="np"><div class="np-mast"><span>AZAKEI 経済新聞</span><span class="gogai">号外</span></div>
         <div class="np-yr">${yearOf(n)}<small>年</small></div><div class="np-h">${nm(n)}</div><p class="np-d">${HIST[n].d}</p></div>
@@ -2241,13 +2343,14 @@ function newsIntro(n){
   }
   // クラシック：テレビの臨時ニュース
   const tick=NEWS.map(x=>`<span>${x}</span>`).join('');
-  return `<div class="overlay intro news-tv" onclick="endIntro()"><div class="tv-flash"></div><div class="box">
+  return `<div class="overlay intro news-tv${quake(n)}" onclick="endIntro()"><div class="tv-flash"></div>${newsFx(n)}<div class="box">
     <div class="tv-top"><span class="tv-live">● LIVE</span><span class="tv-ch">AZAKEI NEWS</span><span class="tv-turn">${turnLabel()}</span></div>
     <div class="tv-band"><span class="tv-tag">速報</span><span class="tv-head">${nm(n)}！</span></div>
     ${impactChips(n,'ip-tv')}${introMkt()}${skip}</div>
     <div class="tv-ticker"><div>${tick}${tick}</div></div></div>`;
 }
 function newsSfx(){
+  try{ newsFxSfx(G.deck[G.turn]); }catch(e){}
   if(!G) return;
   const chips=()=>{ for(let i=0;i<6;i++) tone(500+i*90,.05,'triangle',.025,1.15+i*.12); };
   if(G.cfg.fut){ tone(260,.5,'sine',.06,0,1500); tone(1800,.04,'square',.02,.35); tone(1500,.04,'square',.02,.42); tone(2200,.05,'square',.02,.5); chips(); return; }
@@ -2304,7 +2407,7 @@ function hud(){
   return `<div class="hud"><div class="logo"><span class="mk"></span><span class="hide-sm" style="color:inherit">AZAKEI</span> <span>MARKET</span>${G.cfg.fut?'<span class="modechip fut">未来</span>':G.cfg.hist?'<span class="modechip">歴史</span>':''}</div>
     <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div><span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${curMarket()&&G.phase!=="final"?`<span class="mktchip" style="--m1:${curMarket().c1};--m2:${curMarket().c2}">${curMarket().ic} ${curMarket().n}</span>`:""}
     ${G.phase==='final'?'':`<span class="deckchip hide-sm" title="このあと出るNEWSの数"><span class="mini-back"></span>残り${left}</span>`}
-    ${G.online?`<span class="codechip hide-sm">${esc(NET.code||'')}</span>`:''}${snd}<button class="btn ghost icon" onclick="quit()">${G.online?(G.host?'ロビーへ':'退出'):'やめる'}</button></div></div>`;
+    ${G.online?`<span class="codechip hide-sm">${esc(NET.code||'')}</span>`:''}<button class="btn ghost icon tblbtn" onclick="openSheet('table')" aria-label="全体の点数表">📊<span class="hide-sm"> 点数表</span></button>${snd}<button class="btn ghost icon" onclick="quit()">${G.online?(G.host?'ロビーへ':'退出'):'やめる'}</button></div></div>`;
 }
 function cardHTML(i,o){
   o=o||{};
@@ -2377,7 +2480,7 @@ function sideInfo(){
   return `<div class="side">${curMarket()?`<div class="info"><span class="label">${termName(G.round)}の市況</span>${marketCard(G.mkts[G.round],"wide")}</div>`:""}${deckInfo}
     ${C.fore==='dividend'&&G.turn>0?`<div class="info"><span class="label">今ターンの配当</span><div class="chips div">${G.divs.length?G.divs.map(d=>`<span>${esc(d.name)} ${IND[d.ind]} +${d.d}</span>`).join(''):'<span style="background:none;color:var(--muted)">なし</span>'}</div></div>`:''}
     <div class="info"><span class="label">ルール</span><span class="note">独占ボーナス <b style="color:var(--gold)">${sgn(C.bonus)}</b> · 未来予測は「${FORE[C.fore].name}」</span>
-      ${C.hist?'':`<details><summary class="note">得点表を見る</summary>${scoreTable(false)}</details>`}</div>
+      <button class="btn ghost icon" style="margin-top:6px" onclick="openSheet('table')">📊 全体の点数表を見る</button></div>
   </div>`;
 }
 function emoteBar(){ return G.online&&NET.room ? `<div class="emotes" role="group" aria-label="リアクション">${EMOTES.map(e=>`<button onclick="sendEmote('${e}')" aria-label="リアクション ${e}">${e}</button>`).join('')}</div>` : ''; }
