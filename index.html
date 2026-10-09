@@ -682,6 +682,25 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- 今週のイベント ---- */
+.evtcard{display:flex;align-items:center;gap:12px;border-radius:20px;padding:12px 14px;background:linear-gradient(110deg,color-mix(in srgb,var(--m2) 55%,var(--panel)),var(--panel) 70%);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--m1) 50%,var(--line))}
+.evtcard.on{box-shadow:inset 0 0 0 2px var(--m1),0 0 26px -8px var(--m1)}
+.ev-ic{flex:0 0 auto;width:50px;height:50px;border-radius:16px;display:grid;place-items:center;font-size:26px;background:linear-gradient(150deg,var(--m1),var(--m2));box-shadow:0 4px 0 rgb(0 0 0 / .35)}
+.ev-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px} .ev-tx b{font-family:var(--display);font-weight:400;font-size:19px} .ev-tx .note{font-size:12px;line-height:1.45}
+.evtcard .btn{flex:0 0 auto;padding:8px 12px;min-height:40px;font-size:13px}
+@media (max-width:560px){ .evtcard{flex-wrap:wrap} .evtcard .btn{width:100%} }
+/* ---- プレイ分析 ---- */
+.analysis{background:radial-gradient(circle at 100% 0%,rgb(79 227 255 / .15),transparent 50%),linear-gradient(180deg,var(--panel2),var(--panel))}
+.an-v{font-family:var(--display);font-size:16px;color:var(--cyan);border-radius:10px;padding:2px 10px;background:rgb(79 227 255 / .12)}
+.an-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+.an-grid div{display:flex;flex-direction:column;border-radius:14px;padding:10px 12px;background:rgb(7 8 24 / .4);box-shadow:inset 0 0 0 1px var(--line)}
+.an-grid b{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.2} .an-grid .note{font-size:11px}
+@media (max-width:560px){ .an-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+/* ---- VSのセリフ ---- */
+.vsp{position:relative}
+.vsq{position:absolute;top:-30px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:800;color:#1a1033;background:#fff;border-radius:12px;padding:3px 10px;box-shadow:0 4px 12px -4px #000;opacity:0;animation:fltag .4s cubic-bezier(.2,.9,.3,1.6) both;z-index:2}
+.vsq::after{content:"";position:absolute;left:50%;bottom:-5px;width:10px;height:10px;background:#fff;transform:translateX(-50%) rotate(45deg)}
+.vsside{gap:34px!important;padding-top:24px}
 /* ---- チーム戦・スピード ---- */
 .seat.team{border-top:4px solid var(--tc)} .seat.t0{--tc:#ff7a3d} .seat.t1{--tc:#4fe3ff}
 .opts{display:flex;flex-wrap:wrap;align-items:center;gap:6px} .opts .label{margin-right:4px}
@@ -1459,15 +1478,22 @@ function bgmNote(f,t,d,type,v){
   g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(v,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+d);
   o.connect(g).connect(BGM.master); o.start(t); o.stop(t+d+.05);
 }
+const BGM_STYLES={
+  classic:{bpm:104, bass:"triangle", lead:"sine", lv:.035, arp:[0,1,2,1,0,2,1,2], prog:BGM_PROG},
+  hist:{bpm:84, bass:"sine", lead:"triangle", lv:.03, arp:[0,2,1,2,0,2,1,2], prog:[[220,261.63,329.63],[174.61,220,261.63],[261.63,329.63,392],[196,246.94,293.66]]},          // Am-F-C-G、ゆったり
+  future:{bpm:122, bass:"sawtooth", lead:"square", lv:.014, arp:[0,1,2,1,2,1,0,1,2,1,0,2,1,2,1,2], prog:[[164.81,196,246.94],[130.81,164.81,196],[196,246.94,293.66],[146.83,185,220]]},   // Em-C-G-D、速めの電子音
+  long:{bpm:96, bass:"triangle", lead:"sine", lv:.035, arp:[0,1,2,1,0,1,2,1], prog:[[146.83,174.61,220],[116.54,146.83,174.61],[174.61,220,261.63],[130.81,164.81,196]]}   // Dm-B♭-F-C、少しドラマチック
+};
 function bgmTick(){
   const a=ac(); if(!a || !BGM.on) return;
   if(document.hidden){ BGM.next=0; return; }
-  const beat=60/104, barLen=beat*4;
+  const st=BGM_STYLES[document.body.dataset.theme]||BGM_STYLES.classic;   // モードごとに曲の雰囲気を変える
+  const beat=60/st.bpm, barLen=beat*4;
   if(!BGM.next || BGM.next<a.currentTime) BGM.next=a.currentTime+.08;
   while(BGM.next < a.currentTime+1.2){            // 少し先まで予約しておく
-    const ch=BGM_PROG[BGM.bar%4], t0=BGM.next;
-    bgmNote(ch[0]/2,t0,barLen*.9,'triangle',.09);                       // ベース
-    [0,1,2,1,0,2,1,2].forEach((k,i)=>bgmNote(ch[k]*(i%4===3?2:1),t0+i*beat/2,beat*.45,'sine',.035));   // アルペジオ
+    const ch=st.prog[BGM.bar%st.prog.length], t0=BGM.next;
+    bgmNote(ch[0]/2,t0,barLen*.9,st.bass,.09);                       // ベース
+    st.arp.forEach((k,i)=>bgmNote(ch[k]*(i%4===3?2:1),t0+i*beat*4/st.arp.length,beat*4/st.arp.length*.9,st.lead,st.lv));   // アルペジオ
     if(BGM.bar%2===1) bgmNote(ch[2]*2,t0+beat*3,beat*.9,'triangle',.025);
     BGM.next+=barLen; BGM.bar++;
   }
@@ -1546,6 +1572,7 @@ function start(data){
   if(S.calm===undefined) S.calm=!!load('azakei-calm');
   if(!S.len) S.len=load('azakei-len')==='long'?'long':'short';
   if(S.bgm===undefined) S.bgm=!!load('azakei-bgm');
+  if(S.evt===undefined) S.evt=!!load('azakei-evt');
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
@@ -1586,12 +1613,14 @@ function startGame(online, daily, chalId){
   const seed = daily || (ch && ch.seed) || 0;
   let fullPool=null;
   if(long && cfg.hist){ fullPool=cfg.pool.slice().sort((a,b)=>yearOf(a)-yearOf(b)); cfg={...cfg, pool:fullPool.slice(0,LONG_PER)}; }
+  let evtKey=null;
+  if(!long && !daily && !ch && !online && S.evt){ evtKey=weekEvent(); cfg={...cfg, table:clone(cfg.table)}; MARKETS[evtKey].apply(cfg); }   // 今週のイベント：ショートにも市況ルール
   if(cfg.hist && cfg.pool.length<TURNS) TURNS=cfg.pool.length;
   G={ cfg, online:!!online, host:!!online, players:seats.map((s,i)=>({seat:i,name:(s.name||'').trim()||'名無し',type:s.type,peer:online?(s.peer||null):null,fore:'auto',hand:[0,1,2,3,4,5],used:[],score:0,uniq:0,hist:[0],foreUsed:false,foreTurn:-1,fut:false,pick:null,last:null,shown:0})),
       deck:buildDeck(cfg, seed?mulberry(seed):Math.random), rnd:seed?mulberry(seed*7+13):null, daily:daily||null, chal:ch?ch.id:null, turn:0, phase:'choose', active:-1, sel:null, last:null, divs:[], ov:null,
       rounds: long ? (cfg.hist ? Math.ceil(fullPool.length/LONG_PER) : LONG_ROUNDS) : 1, round:0, fullPool, log:[], settles:[] };
   G.players.forEach(p=>p.roundStart=0);
-  G.gid=Date.now();
+  G.gid=Date.now(); G.evt=evtKey;
   G.teams = (!online && !daily && !ch && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
   if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); G.players.forEach(p=>p.brand=null); dealContracts(); }
   G.me = online ? G.players.findIndex(p=>p.peer===NET.myPeer) : -1;
@@ -1628,7 +1657,7 @@ function vsOverlay(){
   const mode = G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
-      <div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
+      ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
   return `<div class="overlay vs" onclick="endVs()"><div class="vsbg"></div>
@@ -2285,6 +2314,32 @@ function render(){
   if(phone()){ const r=document.querySelector('.rivals'); const a=document.querySelector('.seat.active'); if(r&&a) r.scrollLeft=Math.max(0,a.offsetLeft-16); }
   const tl=document.getElementById('tl'), now=tl&&tl.querySelector('.now'); if(now) tl.scrollLeft=Math.max(0,now.offsetLeft-60);
 }
+/* ---- 今週のイベント：週替わりで市況カードのルールがショートにも付く。参加でXP1.5倍 ---- */
+function weekEvent(){ const keys=Object.keys(MARKETS).filter(k=>!MARKETS[k].fut || CFG.fore==='futures'); const w=Math.floor((Date.now()/86400000+3)/7); return keys[w%keys.length]; }
+function weekLeft(){ const d=new Date(), dow=(d.getDay()+6)%7; return 7-dow; }   // 月曜はじまり
+function setEvt(on){ S.evt=!!on; save('azakei-evt',S.evt); sfx(on?'coin':'click'); render(); }
+function eventCard(){
+  const k=weekEvent(), m=MARKETS[k];
+  return `<section class="evtcard${S.evt?' on':''}" style="--m1:${m.c1};--m2:${m.c2}"><span class="ev-ic">${m.ic}</span>
+    <span class="ev-tx"><span class="label">WEEKLY EVENT · あと${weekLeft()}日</span><b>${m.n}ウィーク</b><span class="note">${m.d}。ショート版にもこのルールが付き、<b style="color:var(--gold)">XPが1.5倍</b></span></span>
+    <button class="btn ${S.evt?'':'gold '}" onclick="setEvt(${!S.evt})">${S.evt?'参加中 ✓':'参加する'}</button></section>`;
+}
+/* ---- プレイ分析：結果画面で自分のプレイをふり返る ---- */
+function playAnalysis(){
+  const me=myIndex(); if(me<0) return '';
+  const p=G.players[me], us=p.used; if(!us.length) return '';
+  const n=us.length, mono=us.filter(u=>u.k===1).length, avg=p.score/n, best=us.reduce((a,u)=>u.total>a.total?u:a,us[0]), worst=us.reduce((a,u)=>u.total<a.total?u:a,us[0]);
+  const fut=us.filter(u=>u.fut), futSum=fut.reduce((s,u)=>s+u.total,0), neg=us.filter(u=>u.total<0).length;
+  const ld=logDeck(), lbl=u=>G.cfg.hist?`${yearOf(ld[u.turn])}年`:`T${u.turn+1}`;
+  const rate=Math.round(mono/n*100);
+  const verdict = rate>=60 ? ['読み合い上手！','人と被らない選び方ができています。'] : avg>=3.5 ? ['点取り屋！','高い点を確実に取れています。'] : neg>=2 ? ['ちょっと守りに課題','マイナスのカードは被りにくいターンに出すのがコツ。'] : rate<=20 ? ['被りやすいかも','みんなが狙う一番高い産業を、あえて外すと独占しやすくなります。'] : ['バランス型','次は先物取引で一気に取りにいってみよう。'];
+  const stat=(k,v,s)=>`<div><span class="label">${k}</span><b>${v}</b>${s?`<span class="note">${s}</span>`:''}</div>`;
+  return `<section class="panel analysis"><div class="row spread"><h3>あなたのプレイ分析</h3><span class="an-v">${verdict[0]}</span></div>
+    <p class="note">${verdict[1]}</p>
+    <div class="an-grid">${stat('独占率',rate+'%',`${n}回中${mono}回`)}${stat('1ターン平均',(Math.round(avg*10)/10)+'点','')}
+      ${stat('ベスト',sgn(best.total),`${lbl(best)} ${IND[best.ind]}`)}${stat('ワースト',sgn(worst.total),`${lbl(worst)} ${IND[worst.ind]}`)}
+      ${stat('先物',fut.length?sgn(futSum):'未使用',fut.length?`${fut.length}回`:'')}${stat('マイナス',neg+'回','')}</div></section>`;
+}
 /* ---- チーム戦（2対2）：合計点で勝負。相棒CPUは出すつもりのカードを教えてくれる ---- */
 const TEAM_NAMES=['チームA','チームB'];
 function teamScores(){ const s=[0,0], u=[0,0]; G.players.forEach((p,i)=>{ s[G.teams[i]]+=p.score; u[G.teams[i]]+=p.uniq; }); return {s,u}; }
@@ -2489,7 +2544,7 @@ function hud(){
   const pips = isLong() ? Array.from({length:G.rounds},(_,r)=>`<span class="term${r===G.round?' cur':''}">${Array.from({length:TURNS},(_,i)=>pip(r,i)).join('')}</span>`).join('') : Array.from({length:TURNS},(_,i)=>pip(0,i)).join('');
   const left=G.phase==='final'?0:TURNS-1-G.turn;
   return `<div class="hud"><div class="logo"><span class="mk"></span><span class="hide-sm" style="color:inherit">AZAKEI</span> <span>MARKET</span>${G.cfg.fut?'<span class="modechip fut">未来</span>':G.cfg.hist?'<span class="modechip">歴史</span>':''}</div>
-    <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div><span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${curMarket()&&G.phase!=="final"?`<span class="mktchip" style="--m1:${curMarket().c1};--m2:${curMarket().c2}">${curMarket().ic} ${curMarket().n}</span>`:""}
+    <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div><span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${(curMarket()||(G.evt&&MARKETS[G.evt]))&&G.phase!=="final"?(()=>{ const m=curMarket()||MARKETS[G.evt]; return `<span class="mktchip" style="--m1:${m.c1};--m2:${m.c2}">${m.ic} ${m.n}${G.evt?" WEEK":""}</span>`; })():""}
     ${G.phase==='final'?'':`<span class="deckchip hide-sm" title="このあと出るNEWSの数"><span class="mini-back"></span>残り${left}</span>`}
     ${G.online?`<span class="codechip hide-sm">${esc(NET.code||'')}</span>`:''}<button class="btn ghost icon tblbtn" onclick="openSheet('table')" aria-label="全体の点数表">📊<span class="hide-sm"> 点数表</span></button>${snd}<button class="btn ghost icon" onclick="quit()">${G.online?(G.host?'ロビーへ':'退出'):'やめる'}</button></div></div>`;
 }
@@ -2646,6 +2701,7 @@ function finalView(){
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
     ${teamPanel()}
+    ${playAnalysis()}
     ${chalPanel()}
     ${rewardPanel()}
     ${aw.length?`<section class="panel"><h3>今回の賞</h3><div class="awards">${aw.map(a=>`<div class="award"><span class="t">${a[0]}</span><span class="w">${esc(a[1])}</span><span class="note">${a[2]}</span></div>`).join('')}</div></section>`:''}
@@ -2702,6 +2758,7 @@ function homeView(){
   ${quickMenu()}
   <div class="todayhead"><span class="label">TODAY</span><b>今日やること</b></div>
   ${dailyCard()}
+  ${eventCard()}
   ${missionsPanel()}
   <nav class="homelinks"><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
@@ -3309,12 +3366,12 @@ function chalPanel(){
 }
 /* ---- CPU chatter: 公開のたびに、CPUがキャラに合ったひとことを言う ---- */
 const CPU_TALK={
-  'ミナト':{mono:['読みどおり。','計算済みだよ。','ここは僕だけの市場だ。'], hit:['……想定外だ。','読まれていたか。','被るとはね。'], big:['期待値どおり。','効率よく稼げた。'], neg:['必要な損切りさ。','次で取り返す。'], lead:['このまま逃げ切る。']},
-  'アオイ':{mono:['いただきっ！','やったー独占！','ひとり勝ち〜！'], hit:['えー被ったー！','ちょっと真似しないでよ！','うそでしょ！？'], big:['大当たり〜！','見て見て、この点！'], neg:['いったーい…','まだまだこれから！'], lead:['トップいただき！']},
-  'ソラ':{mono:['あれ、ひとりだ〜','のんびり独占〜'], hit:['みんな一緒だね〜','にぎやかだ〜'], big:['お、いい感じ〜','ラッキー〜'], neg:['まあいっか〜','そういう日もあるよ〜'], lead:['あれ、1位だ〜']},
-  'ハル':{mono:['よっしゃ独占！','狙いどおり！'], hit:['かぶったかー！','やるじゃん！'], big:['でかいの来た！'], neg:['くっそー！'], lead:['トップは渡さない！']},
-  'ユイ':{mono:['ふふ、ひとりじめ。','静かに稼ぎます。'], hit:['あら、同じ考え。','ふーん、そう来る。'], big:['悪くないわね。'], neg:['…今のは忘れて。'], lead:['このまま行くわ。']},
-  'レン':{mono:['オレの市場だ！','独占ぉ！'], hit:['マジかよ！','ついてくんなって！'], big:['爆益！'], neg:['ぐぬぬ…'], lead:['頂点はオレだ！']}
+  'ミナト':{vs:['計算はもう終わってる。','データは嘘をつかない。'], mono:['読みどおり。','計算済みだよ。','ここは僕だけの市場だ。'], hit:['……想定外だ。','読まれていたか。','被るとはね。'], big:['期待値どおり。','効率よく稼げた。'], neg:['必要な損切りさ。','次で取り返す。'], lead:['このまま逃げ切る。']},
+  'アオイ':{vs:['今日も勝っちゃうよ〜！','負けないからね！'], mono:['いただきっ！','やったー独占！','ひとり勝ち〜！'], hit:['えー被ったー！','ちょっと真似しないでよ！','うそでしょ！？'], big:['大当たり〜！','見て見て、この点！'], neg:['いったーい…','まだまだこれから！'], lead:['トップいただき！']},
+  'ソラ':{vs:['よろしくね〜','のんびりいこう〜'], mono:['あれ、ひとりだ〜','のんびり独占〜'], hit:['みんな一緒だね〜','にぎやかだ〜'], big:['お、いい感じ〜','ラッキー〜'], neg:['まあいっか〜','そういう日もあるよ〜'], lead:['あれ、1位だ〜']},
+  'ハル':{vs:['全力でいくぞ！'], mono:['よっしゃ独占！','狙いどおり！'], hit:['かぶったかー！','やるじゃん！'], big:['でかいの来た！'], neg:['くっそー！'], lead:['トップは渡さない！']},
+  'ユイ':{vs:['お手やわらかに。'], mono:['ふふ、ひとりじめ。','静かに稼ぎます。'], hit:['あら、同じ考え。','ふーん、そう来る。'], big:['悪くないわね。'], neg:['…今のは忘れて。'], lead:['このまま行くわ。']},
+  'レン':{vs:['頂点はオレがもらう！'], mono:['オレの市場だ！','独占ぉ！'], hit:['マジかよ！','ついてくんなって！'], big:['爆益！'], neg:['ぐぬぬ…'], lead:['頂点はオレだ！']}
 };
 const talkOf = p => CPU_TALK[String(p.name).replace(/^CPU\s*/,'').replace(/（.*$/,'')] || CPU_TALK['ソラ'];
 function cpuChatter(){
