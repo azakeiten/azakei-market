@@ -682,6 +682,36 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- ショップ：テーブルとカード裏面 ---- */
+body[data-table="green"]::before{background:radial-gradient(120% 80% at 50% 0%,#1f7a4d 0%,#0e4a2e 55%,#06231a 100%),repeating-linear-gradient(45deg,rgb(255 255 255 / .02) 0 2px,transparent 2px 6px)}
+body[data-table="wood"]::before{background:repeating-linear-gradient(92deg,rgb(0 0 0 / .08) 0 3px,transparent 3px 22px),repeating-linear-gradient(88deg,rgb(255 255 255 / .04) 0 1px,transparent 1px 9px),linear-gradient(170deg,#7a4a26,#4a2a14 60%,#2a170a)}
+body[data-table="red"]::before{background:radial-gradient(circle at 50% 0%,rgb(255 200 58 / .25),transparent 40%),repeating-linear-gradient(0deg,rgb(0 0 0 / .08) 0 2px,transparent 2px 5px),linear-gradient(180deg,#8a1020,#4a0710 70%,#200308)}
+body[data-table="space"]::before{background:radial-gradient(1.5px 1.5px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 20%,#fff,transparent),radial-gradient(1.5px 1.5px at 40% 80%,#fff,transparent),radial-gradient(1px 1px at 85% 65%,#fff,transparent),radial-gradient(1px 1px at 10% 70%,#cde,transparent),radial-gradient(120% 70% at 30% 10%,#3a1f7a,#120a33 50%,#03020c)}
+.back.bk-gold{background:linear-gradient(135deg,#fff1b8,#e0a516 45%,#8a5a06)} .back.bk-gold::after{color:#5a3a00;background:repeating-linear-gradient(45deg,rgb(255 255 255 / .25) 0 3px,transparent 3px 7px)}
+.back.bk-koban{background:radial-gradient(ellipse at 50% 50%,#ffe9a0 0 40%,#d4a017 41% 52%,#7a5200 53%)} .back.bk-koban::after{content:"両";color:#6a3a00;font-family:var(--serif);font-weight:800;background:none}
+.back.bk-stars{background:radial-gradient(1.5px 1.5px at 25% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 25%,#fff,transparent),radial-gradient(1.5px 1.5px at 60% 75%,#fff,transparent),radial-gradient(1px 1px at 30% 80%,#fff,transparent),linear-gradient(160deg,#3a1f7a,#0b0a2a)} .back.bk-stars::after{content:"★";color:#ffe08a;text-shadow:0 0 8px #ffc83a;background:none}
+.back.bk-carbon{background:repeating-linear-gradient(45deg,#1a1a1f 0 4px,#26262e 4px 8px),#111} .back.bk-carbon::after{color:#ff5d5d;font-style:italic;background:none}
+.coinbal{font-weight:800;border-radius:999px;padding:4px 12px;background:rgb(255 200 58 / .14);box-shadow:inset 0 0 0 1px rgb(255 200 58 / .4)} .coinbal b{font-family:var(--display);font-weight:400;font-size:18px;color:var(--gold)}
+.coingain{font-family:var(--display);font-weight:400;font-size:20px;color:var(--gold)}
+.sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;margin-top:6px}
+.sp-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;border-radius:16px;padding:10px 8px;color:var(--ink);text-align:center;background:rgb(7 8 24 / .45);box-shadow:inset 0 0 0 1px var(--line)}
+.sp-item b{font-size:13px} .sp-item .note{font-size:10.5px;line-height:1.35}
+.sp-item.on{box-shadow:inset 0 0 0 2px var(--gold),0 0 18px -8px var(--gold)}
+.sp-prev{width:100%;height:58px;border-radius:12px;display:grid;place-items:center;overflow:hidden;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .1);background:radial-gradient(120% 80% at 50% 0%,var(--felt2),var(--night))}
+.sp-prev .back{width:36px}
+.sp-prev.tbl-green{background:radial-gradient(120% 80% at 50% 0%,#1f7a4d,#06231a)} .sp-prev.tbl-wood{background:repeating-linear-gradient(92deg,rgb(0 0 0 / .1) 0 3px,transparent 3px 14px),linear-gradient(170deg,#7a4a26,#2a170a)}
+.sp-prev.tbl-red{background:linear-gradient(180deg,#8a1020,#200308)} .sp-prev.tbl-space{background:radial-gradient(1.5px 1.5px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 60%,#fff,transparent),linear-gradient(160deg,#3a1f7a,#03020c)}
+.sp-price{margin-top:3px;font-size:12px;font-weight:800;border-radius:999px;padding:2px 10px;background:var(--gold);color:#2a1a00}
+.sp-item.on .sp-price{background:var(--up);color:#06331b} .sp-item:not(.locked):not(.on) .sp-price{background:var(--panel2);color:var(--ink)}
+/* ---- カードの絵柄：産業ごとの背景パターン ---- */
+.card .art::before{content:"";position:absolute;inset:6% 8%;border-radius:12px;opacity:.22;pointer-events:none}
+.card.c0 .art::before{background:repeating-conic-gradient(from 0deg at 50% 55%,#fff 0 6deg,transparent 6deg 18deg)}
+.card.c1 .art::before{background:linear-gradient(transparent 0 calc(100% - 1px),#fff 0) 0 0/100% 25%,linear-gradient(155deg,transparent 45%,#fff 46% 49%,transparent 50%)}
+.card.c2 .art::before{background:radial-gradient(circle,transparent 0 30%,#fff 31% 38%,transparent 39%) 0 0/40% 40%}
+.card.c3 .art::before{background:repeating-linear-gradient(90deg,#fff 0 10%,transparent 10% 20%);mask:linear-gradient(#000 0 35%,transparent 36%)}
+.card.c4 .art::before{background:linear-gradient(90deg,transparent 46%,#fff 46% 54%,transparent 54%) 0 0/100% 22%;mask:linear-gradient(90deg,transparent 30%,#000 30% 70%,transparent 70%)}
+.card.c5 .art::before{background:repeating-radial-gradient(circle at 50% 60%,transparent 0 10%,#fff 10% 12%)}
+.card.mini .art::before,.card.pv .art::before{display:none}
 /* ---- 今週のイベント ---- */
 .evtcard{display:flex;align-items:center;gap:12px;border-radius:20px;padding:12px 14px;background:linear-gradient(110deg,color-mix(in srgb,var(--m2) 55%,var(--panel)),var(--panel) 70%);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--m1) 50%,var(--line))}
 .evtcard.on{box-shadow:inset 0 0 0 2px var(--m1),0 0 26px -8px var(--m1)}
@@ -1759,7 +1789,7 @@ function flipOverlay(){
   const n=G.players.length, me=myIndex();
   const cards=G.players.map((p,i)=>{ const r=G.last[i], st=r.k===1?'mono':r.k>1?'hit':''; const d=350+i*170, settle=350+n*170+250;
     return `<div class="fl ${st}${i===me?' me':''}" style="--d:${d}ms;--s2:${settle}ms">
-      <div class="fl-in"><div class="fl-face fl-back${skc()}"></div><div class="fl-face fl-front">${cardHTML(r.ind,{cls:'flc'})}</div></div>
+      <div class="fl-in"><div class="fl-face fl-back back${skc()}${bkc()}"></div><div class="fl-face fl-front">${cardHTML(r.ind,{cls:'flc'})}</div></div>
       <span class="fl-tag">${r.k===1?'独占！':r.k>1?`${r.k}人被り`:''}</span>
       <span class="fl-name"><span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</span>${esc(p.name)}</span>
       <b class="fl-pts${r.total<0?' neg':''}">${sgn(r.total)}</b></div>`; }).join('');
@@ -2295,6 +2325,8 @@ function renderSheet(){
 function setTheme(){   // モードごとに画面全体の色を変える（クラシック＝藍、歴史＝セピア、ロング＝紫）
   const t = G ? (G.cfg.fut?'future':isLong()?'long':G.cfg.hist?'hist':'classic') : (S.screen==='play' ? (S.mode==='future'?'future':S.len==='long'?'long':S.mode==='history'?'hist':'classic') : 'classic');
   if(document.body.dataset.theme!==t) document.body.dataset.theme=t;
+  const tb = G && S.prof && S.prof.eq && S.prof.eq.table && S.prof.eq.table!=='std' ? S.prof.eq.table : '';   // ショップのテーブル（ゲーム中の背景）
+  if((document.body.dataset.table||'')!==tb) document.body.dataset.table=tb;
 }
 function render(){
   setTheme();
@@ -2313,6 +2345,33 @@ function render(){
   renderOv();
   if(phone()){ const r=document.querySelector('.rivals'); const a=document.querySelector('.seat.active'); if(r&&a) r.scrollLeft=Math.max(0,a.offsetLeft-16); }
   const tl=document.getElementById('tl'), now=tl&&tl.querySelector('.now'); if(now) tl.scrollLeft=Math.max(0,now.offsetLeft-60);
+}
+/* ---- ショップ：遊んでたまるコインで、テーブル（背景）とカードの裏面を買う ---- */
+const SHOP={
+  table:[ {id:'std',n:'ナイトマーケット',p:0,d:'いつもの夜の市場'}, {id:'green',n:'カジノグリーン',p:120,d:'緑のフェルトのテーブル'}, {id:'wood',n:'木目のテーブル',p:150,d:'あたたかい木の机'}, {id:'red',n:'レッドカーペット',p:200,d:'赤じゅうたんの特等席'}, {id:'space',n:'スペースステーション',p:300,d:'星空に浮かぶ取引所'} ],
+  back:[ {id:'std',n:'スタンダード',p:0,d:'いつもの裏面'}, {id:'gold',n:'ゴールド',p:80,d:'金の箔押し'}, {id:'koban',n:'小判',p:120,d:'江戸の小判柄'}, {id:'stars',n:'星空',p:150,d:'きらめく夜空'}, {id:'carbon',n:'カーボン',p:200,d:'黒くて速そう'} ]
+};
+const shopEq = k => (S.prof.eq&&S.prof.eq[k])||'std';
+const shopOwn = (k,id) => id==='std' || ((S.prof.own||{})[k]||[]).includes(id);
+const bkc = () => { const b=S&&S.prof?shopEq('back'):'std'; return b==='std'?'':' bk-'+b; };
+function shopBuy(k,id){
+  const it=SHOP[k].find(x=>x.id===id), P=S.prof; if(!it) return;
+  P.own=P.own||{}; P.own[k]=P.own[k]||[]; P.eq=P.eq||{};
+  if(!shopOwn(k,id)){
+    if((P.coin||0)<it.p){ toast(`コインが足りません（あと ${it.p-(P.coin||0)}）`); sfx('buzz'); return; }
+    P.coin-=it.p; P.own[k].push(id); sfx('coin'); haptic(20); toast(`「${it.n}」を手に入れた！`);
+  } else sfx('select');
+  P.eq[k]=id; saveProfile(); render();
+}
+function shopPanel(){
+  const coin=S.prof.coin||0;
+  const item=(k,x)=>{ const own=shopOwn(k,x.id), on=shopEq(k)===x.id;
+    const prev = k==='table' ? `<span class="sp-prev tbl-${x.id}"></span>` : `<span class="sp-prev"><span class="back${x.id==='std'?'':' bk-'+x.id}"></span></span>`;
+    return `<button class="sp-item${on?' on':''}${own?'':' locked'}" onclick="shopBuy('${k}','${x.id}')">${prev}<b>${x.n}</b><span class="note">${x.d}</span><span class="sp-price">${on?'使用中':own?'つかう':`🪙 ${x.p}`}</span></button>`; };
+  return `<section class="panel shop"><div class="row spread"><h3>ショップ</h3><span class="coinbal">🪙 <b>${coin}</b></span></div>
+    <p class="note">ゲームを遊ぶとコインがたまります（1位・独占・ミッション・デイリーでボーナス）。</p>
+    <span class="label" style="margin-top:8px">テーブル（ゲーム中の背景）</span><div class="sp-grid">${SHOP.table.map(x=>item('table',x)).join('')}</div>
+    <span class="label" style="margin-top:12px">カードの裏面</span><div class="sp-grid">${SHOP.back.map(x=>item('back',x)).join('')}</div></section>`;
 }
 /* ---- 今週のイベント：週替わりで市況カードのルールがショートにも付く。参加でXP1.5倍 ---- */
 function weekEvent(){ const keys=Object.keys(MARKETS).filter(k=>!MARKETS[k].fut || CFG.fore==='futures'); const w=Math.floor((Date.now()/86400000+3)/7); return keys[w%keys.length]; }
@@ -2575,7 +2634,7 @@ function seatsView(){
         <span class="popnum${r.total<0?' neg':''}" style="animation-delay:${450+i*130}ms">${sgn(r.total)}</span>`;
     } else {
       const done=p.pick!==null;
-      play = done ? `<div class="back${skc()}"></div><span class="st">出した！</span>`
+      play = done ? `<div class="back${skc()}${bkc()}"></div><span class="st">出した！</span>`
         : `<div class="slot"></div><span class="st">${i===G.active?'<span style="color:var(--gold)">選んでいます</span>':'考え中'} <span class="dots"><i></i><i></i><i></i></span></span>`;
     }
     const lead = p.score===top && top>0 && G.phase!=='reveal';
@@ -2628,7 +2687,7 @@ function handDock(news){
     if(G.me<0) return `<div class="dock"><p class="note" style="text-align:center;padding:16px">観戦中です。次のゲームから参加できます。</p>${emoteBar()}</div>`;
     const me=G.players[G.me];
     if(me.pick!==null){ const done=G.players.filter(p=>p.pick!==null).length;
-      return `<div class="dock"><div class="waitbox"><div class="back${skc()}" style="width:52px"></div><div><b>${me.pick>=0?IND[me.pick]+'を出しました':'出しました'}</b><p class="note">ほかの人を待っています（${done}/${G.players.length}）<span class="dots"><i></i><i></i><i></i></span></p></div></div>${emoteBar()}</div>`; }
+      return `<div class="dock"><div class="waitbox"><div class="back${skc()}${bkc()}" style="width:52px"></div><div><b>${me.pick>=0?IND[me.pick]+'を出しました':'出しました'}</b><p class="note">ほかの人を待っています（${done}/${G.players.length}）<span class="dots"><i></i><i></i><i></i></span></p></div></div>${emoteBar()}</div>`; }
   }
   if(G.phase!=='choose' || G.active<0) return `<div class="dock"><p class="note" style="text-align:center;padding:20px">${G.phase==='countdown'?'公開中…':'NEWSを確認中…'}</p>${emoteBar()}</div>`;
   const C=G.cfg, p=G.players[G.active];
@@ -2902,7 +2961,9 @@ function recordResult(){
   const r0=rateOf(), r1=Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold');
   const dex=dexRecord(); if(dexCount()>=DEX_TOTAL()) unlock('dexall');
   const chal=G.chal?chalResult():null; if(chal && CHALLENGES.every(c=>chalStars(c.id)===3)) unlock('chal24');
-  G.reward={xp:xp+mis.xp, base:xp, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, dex};
+  const coin = 10 + (won?20:mine&&mine.rank===2?10:0) + p.uniq*2 + (mis.cleared.length*5) + (G.daily?10:0);   // ショップで使うコイン
+  P.coin=(P.coin||0)+coin;
+  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, dex};
   saveProfile();
 }
 /* ---- daily challenge: 日付で決まる同じゲームを、全員が同じ条件で遊ぶ ---- */
@@ -3022,6 +3083,7 @@ function meView(){
     <section class="statgrid">
       ${[['対戦',st.games],['勝利',st.wins],['勝率',st.games?Math.round(st.wins/st.games*100)+'%':'—'],['最高点',st.best],['独占',st.mono],['歴史モード',st.hist],['オンライン',st.online],['実績',got+'/'+ACH.length]].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('')}
     </section>
+    ${shopPanel()}
     ${skinsPanel()}
     ${dexPanel()}
     ${statsCharts()}
@@ -3039,7 +3101,7 @@ function meView(){
 function rewardPanel(){
   const R=G.reward; if(!R) return '';
   const pct=x=>Math.round(x.cur/x.need*100), up=R.after.lv>R.before.lv;
-  return `<section class="panel reward"><div class="row spread"><h3>リザルト報酬</h3><b class="xpgain">+${R.xp} XP</b></div>
+  return `<section class="panel reward"><div class="row spread"><h3>リザルト報酬</h3><span class="row" style="gap:8px"><b class="xpgain">+${R.xp} XP</b>${R.coin?`<b class="coingain">🪙 +${R.coin}</b>`:""}</span></div>
     <div class="lvline"><span class="lvbadge${up?' up':''}">Lv.${R.after.lv}</span><span class="xpbar big"><i class="fill" style="--from:${up?0:pct(R.before)}%;width:${pct(R.after)}%"></i></span><span class="note num">${R.after.cur}/${R.after.need}</span></div>
     ${rankDeltaPanel(R)}
     ${R.mis&&R.mis.xp?`<div class="mclear">${R.mis.cleared.map((m,j)=>`<div class="mis ok pop" style="animation-delay:${1.2+j*.25}s"><span class="mic">✓</span><span class="mtx"><span class="label">MISSION CLEAR</span><b>${m.n}</b></span><span class="mxp">+${m.xp}XP</span></div>`).join('')}
