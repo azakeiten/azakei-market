@@ -1154,6 +1154,19 @@ body[data-theme="future"] #bg{filter:hue-rotate(-60deg) saturate(1.4)}
 @keyframes vsfin{0%{transform:translateX(-50%) scale(3);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
 .cr-cup{display:flex;flex-direction:column;align-items:center;gap:4px;margin:6px 0;animation:troup .9s cubic-bezier(.2,.9,.3,1.4) both;animation-delay:var(--d)}
 .cr-cup b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--cc);text-shadow:0 4px 0 rgb(0 0 0 / .4),0 0 30px var(--cc)}
+.survcard{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px 14px;align-items:center;padding:16px;border-radius:22px;background:radial-gradient(circle at 0% 0%,rgb(255 92 122 / .28),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px rgb(255 92 122 / .4)}
+.survcard .row{grid-column:1/-1}
+.sv-ic{font-size:40px;filter:drop-shadow(0 4px 0 rgb(0 0 0 / .3))}
+.sv-tx{display:flex;flex-direction:column;gap:3px}.sv-tx>b{font-family:var(--display);font-weight:400;font-size:22px}
+.sv-best{font-weight:800;font-size:13px}.sv-best b{font-family:var(--display);font-weight:400;font-size:20px;color:#ff7a8f}
+.survres{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;background:radial-gradient(circle at 50% 0%,rgb(255 92 122 / .25),transparent 60%),linear-gradient(180deg,var(--panel2),var(--panel))}
+.survres.clear .chalbig{color:#ff7a8f;text-shadow:0 5px 0 var(--rail),0 0 40px rgb(255 92 122 / .6)}
+.svsteps{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:4px 0}
+.svsteps i{font-style:normal;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--panel2);box-shadow:inset 0 0 0 2px var(--line)}
+.svsteps i.ok{background:#ff7a8f;color:#2a0510;box-shadow:none}.svsteps i.ng{background:#3a3f6a;color:#ff6b86}
+.svbest{font-weight:800;color:var(--gold);padding:6px 14px;border-radius:999px;background:rgb(255 200 58 / .14);animation:vsfin2 .6s cubic-bezier(.2,.9,.3,1.4) both}
+@keyframes vsfin2{0%{transform:scale(2);opacity:0}100%{transform:none;opacity:1}}
+.svnext{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;padding:10px;border-radius:14px;background:rgb(0 0 0 / .18)}
 .stories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .stc{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;border:0;color:var(--ink);font:inherit;cursor:pointer;padding:12px 4px 10px;border-radius:18px;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--rc) 30%,transparent),transparent 65%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 4px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 40%,var(--line));animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--k) * 45ms)}
 .stc b{font-size:14px}.stc .note{font-size:10px;line-height:1.35}
@@ -1854,36 +1867,38 @@ function toggleSound(){ S.sound=!S.sound; save('azakei-sound',S.sound); if(S.sou
 
 /* ================= game flow ================= */
 let introTimer=null;
-function startGame(online, daily, chalId, cupRun, storyK){
+function startGame(online, daily, chalId, cupRun, storyK, survLv){
   sfx('open');
   const ch = chalId ? CHALLENGES.find(c=>c.id===chalId) : null;
   const cu = cupRun ? CUPS.find(c=>c.id===cupRun.id) : null;   // カップ戦：決まった相手と1試合ずつ
   const sto = storyK ? STORIES.find(x=>x.k===storyK) : null;   // キャラストーリー
-  const long = ch ? !!ch.long : (cu||sto) ? false : (!daily && S.len==='long');   // オンラインはホストの設定（S.len）に従う
-  TURNS=daily||cu||sto||ch&&!long ? 4 : long ? LONG_PER : (CFG.turns||4);
-  let cfg=daily ? dailyCfg(daily) : ch ? chalCfg(ch, long) : cu ? chalCfg({mode:'classic'}, false) : sto ? storyCfg(sto) : cfgFor(S.mode, long?'all':S.era);
+  const sv = survLv!=null ? survSpec(survLv) : null;           // サバイバル
+  const long = ch ? !!ch.long : (cu||sto||sv) ? false : (!daily && S.len==='long');   // オンラインはホストの設定（S.len）に従う
+  TURNS=daily||cu||sto||sv||ch&&!long ? 4 : long ? LONG_PER : (CFG.turns||4);
+  let cfg=daily ? dailyCfg(daily) : ch ? chalCfg(ch, long) : cu ? chalCfg({mode:'classic'}, false) : sto ? storyCfg(sto) : sv ? survCfg(sv) : cfgFor(S.mode, long?'all':S.era);
   const seats = ch ? ch.seats.map((t,i)=>({name:i===0?(NET.name||'あなた'):'CPU '+CHAL_NAMES[i-1], type:t}))
+    : sv ? [{name:NET.name||'あなた', type:'human'}, ...sv.foes.map(([k,t])=>({name:'CPU '+k, type:t}))]
     : sto ? [{name:NET.name||'あなた', type:'human'}, ...sto.foes.map(([k,t])=>({name:'CPU '+k, type:t}))]
     : cu ? ['human',...cu.m[cupRun.stage]].map((t,i)=>({name:i===0?(NET.name||'あなた'):'CPU '+CUP_NAMES[(cupRun.stage*3+i-1)%CUP_NAMES.length], type:t})) : S.seats;
   const seed = daily || (ch && ch.seed) || 0;
   let fullPool=null;
   if(long && cfg.hist){ fullPool=cfg.pool.slice().sort((a,b)=>yearOf(a)-yearOf(b)); cfg={...cfg, pool:fullPool.slice(0,LONG_PER)}; }
   let evtKey=null;
-  if(!long && !daily && !ch && !cu && !sto && !online && S.evt){ evtKey=weekEvent(); cfg={...cfg, table:clone(cfg.table)}; MARKETS[evtKey].apply(cfg); }   // 今週のイベント：ショートにも市況ルール
+  if(!long && !daily && !ch && !cu && !sto && !sv && !online && S.evt){ evtKey=weekEvent(); cfg={...cfg, table:clone(cfg.table)}; MARKETS[evtKey].apply(cfg); }   // 今週のイベント：ショートにも市況ルール
   if(cfg.hist && cfg.pool.length<TURNS) TURNS=cfg.pool.length;
   G={ cfg, online:!!online, host:!!online, players:seats.map((s,i)=>({seat:i,name:(s.name||'').trim()||'名無し',type:s.type,peer:online?(s.peer||null):null,fore:'auto',hand:[0,1,2,3,4,5],used:[],score:0,uniq:0,hist:[0],foreUsed:false,foreTurn:-1,fut:false,pick:null,last:null,shown:0})),
       deck:buildDeck(cfg, seed?mulberry(seed):Math.random), rnd:seed?mulberry(seed*7+13):null, daily:daily||null, chal:ch?ch.id:null, turn:0, phase:'choose', active:-1, sel:null, last:null, divs:[], ov:null,
       rounds: long ? (cfg.hist ? Math.ceil(fullPool.length/LONG_PER) : LONG_ROUNDS) : 1, round:0, fullPool, log:[], settles:[] };
   G.players.forEach(p=>p.roundStart=0);
-  if(!online && !daily && !ch && !cu && !sto) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
-  G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:null;
-  G.teams = (!online && !daily && !ch && !cu && !sto && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
+  if(!online && !daily && !ch && !cu && !sto && !sv) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
+  G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null;
+  G.teams = (!online && !daily && !ch && !cu && !sto && !sv && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
   if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); G.players.forEach(p=>p.brand=null); dealContracts(); }
   G.me = online ? G.players.findIndex(p=>p.peer===NET.myPeer) : -1;
   scrollTo(0,0);
   beginTurn();
 }
-function restartGame(){ if(G && G.online){ if(G.host) startOnlineGame(); } else if(G && G.daily) startDaily(); else if(G && G.chal) startGame(false,null,G.chal); else if(G && G.cup) cupNext(G.cup.id); else if(G && G.story) startStory(G.story); else startGame(); }
+function restartGame(){ if(G && G.online){ if(G.host) startOnlineGame(); } else if(G && G.daily) startDaily(); else if(G && G.chal) startGame(false,null,G.chal); else if(G && G.cup) cupNext(G.cup.id); else if(G && G.story) startStory(G.story); else if(G && G.surv!=null) survNext(); else startGame(); }
 const isHuman = p => p.type==='human';
 const humans = () => G.players.filter(isHuman).length;
 const nm = i => G.cfg.names[i];
@@ -1912,7 +1927,7 @@ function vsOverlay(){
   const C=G.cfg, me=myIndex(), L=lvInfo(S.prof.xp);
   const cu = G.cup && CUPS.find(c=>c.id===G.cup.id), fin = cu && G.cup.stage===cu.m.length-1;
   const stv = G.story && STORIES.find(x=>x.k===G.story);
-  const mode = stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
+  const mode = G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
       ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
@@ -2229,7 +2244,7 @@ function settleOverlay(){
 function quit(){
   clearTimeout(introTimer);
   if(G && G.online){ if(G.host){ G=null; hostBroadcast(); render(); } else leaveRoom(); return; }
-  const back = G && (G.chal||G.cup||G.story) ? 'chal' : 'home';   // チャレンジ中はステージ一覧へ戻る
+  const back = G && (G.chal||G.cup||G.story||G.surv!=null) ? 'chal' : 'home';   // チャレンジ中はステージ一覧へ戻る
   G=null; S.screen=back; render();
 }
 
@@ -3099,7 +3114,7 @@ function finalView(){
   if(big.p) aw.push(['最大瞬間風速',big.p.name,`T${big.u.turn+1} ${IND[big.u.ind]} ${sgn(big.v)}`]);
   const hist=G.players.map(p=>`<tr><td>${esc(p.name)}</td>${p.used.map(u=>`<td>${chip(u.ind)} <span class="num ${cls(u.total)}">${sgn(u.total)}</span>${u.fut?' <span class="tagx cy">先物</span>':''}</td>`).join('')}<td class="n">${p.uniq}</td><td class="n"><b>${p.score}</b></td></tr>`).join('');
   const recap = C.hist ? `<section class="panel"><h3>あなたたちが生きた時代</h3><div class="recap">${logDeck().map(i=>`<div><b>${yearOf(i)}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${HIST[i].n}</b><br>${HIST[i].d}</p></div>`).join('')}</div></section>` : '';
-  return `<div class="two"><div class="col">${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+  return `<div class="two"><div class="col">${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
@@ -3243,6 +3258,7 @@ function lvInfo(xp){ let lv=1, rest=xp; while(rest>=lvNeed(lv)){ rest-=lvNeed(lv
 const TITLES=[[1,'見習いトレーダー'],[3,'駆け出しトレーダー'],[5,'市場の読み手'],[8,'敏腕トレーダー'],[12,'相場師'],[16,'マーケットの支配者']];
 const titleOf = lv => TITLES.filter(t=>lv>=t[0]).pop()[1];
 const ACH=[
+  {id:'surv5', n:'しぶとい投資家', d:'サバイバルで5戦連続突破', ic:'🛡️'},
   {id:'story9', n:'物語の主人公', d:'キャラストーリーを9話すべてクリア', ic:'📖'},
   {id:'chars9', n:'顔なじみ', d:'9人のキャラ全員と対戦する', ic:'👥'},
   {id:'beat9', n:'全員撃破', d:'9人のキャラ全員に1回以上勝つ', ic:'⚔'},
@@ -3316,10 +3332,11 @@ function recordResult(){
   let coin = 10 + (won?20:mine&&mine.rank===2?10:0) + p.uniq*2 + (mis.cleared.length*5) + (G.daily?10:0);   // ショップで使うコイン
   const cup=G.cup?cupResult(mine?mine.rank:9):null; if(cup && cup.champ){ coin+=cup.bonus; if(cup.id==='gold') unlock('cupgold'); }
   P.coin=(P.coin||0)+coin;
+  const svr=G.surv!=null?survResult(mine?mine.rank:9):null; if(svr&&svr.coin){ coin+=svr.coin; P.coin+=svr.coin; } if(svr&&svr.lv+1>=5&&svr.pass) unlock('surv5');
   const sty=G.story?storyResult(rk, me):null; if(sty&&sty.bonus){ coin+=sty.bonus; P.coin+=sty.bonus; } if(STORIES.every(x=>(P.story||{})[x.k])) unlock('story9');
   const trb=recordRivals(rk, me); if(trb){ coin+=trb; P.coin+=trb; }
   { const RV=P.riv||{}, ks=Object.keys(CHARS); if(ks.every(k=>RV[k])) unlock('chars9'); if(ks.every(k=>RV[k]&&RV[k].w>0)) unlock('beat9'); }
-  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, sty, dex, trb, trk:trb?todayRival():null};
+  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, sty, svr, dex, trb, trk:trb?todayRival():null};
   saveProfile();
 }
 /* ---- daily challenge: 日付で決まる同じゲームを、全員が同じ条件で遊ぶ ---- */
@@ -3768,6 +3785,7 @@ function chalView(){
   return `<div class="col"><section class="chalhead"><span class="label">CHALLENGE</span><h2 class="ttl">チャレンジ</h2>
       <p class="note">山札と相手が決まった8つのステージ。条件をクリアして★を集めよう。1つクリアすると次が開きます。</p>
       <div class="chaltotal"><span class="stars"><i class="on" style="font-size:34px">★</i></span><b>${total}</b><span>/ ${CHALLENGES.length*3}</span></div></section>
+    ${survCard()}
     ${storySection()}
     ${cupsSection()}
     <span class="label" style="margin:4px 0 -4px">STAGES</span>
@@ -3914,10 +3932,47 @@ function challengeChar(k){   // いまの席のまま、CPUの1人目をこの�
   if(others<0){ const i=S.seats.findIndex(s=>s.type!=='human'); S.seats[i].name='CPU '+k; }
   closeSheet(); sfx('select'); go('play');
 }
-/* ---- キャラストーリー：9人と1話ずつ。会話のあとで対戦し、そのキャラより上の順位ならクリア ---- */
+/* ---- サバイバル：負けるまで続く勝ち抜き戦。勝つほど相手が強くなり、市況ルールも付く ---- */
+const SURV_FOES=[['naive','naive'],['read','naive','naive'],['read','read','naive'],['read','read','read'],['pro','read','read'],['pro','pro','read'],['pro','pro','pro']];
+const SURV_RULES=['boom','bubble','reg','slump','crowd'];
+function survSpec(lv){
+  const types=SURV_FOES[Math.min(lv,SURV_FOES.length-1)], ks=Object.keys(CHARS), r=mulberry(lv*977+S.prof.survSeed||1);
+  const names=shuffle(ks.slice(),r).slice(0,types.length);
+  return {lv, foes:names.map((k,i)=>[k,types[i]]), need:lv<3?2:1, rule:lv>=3?SURV_RULES[(lv*3+(S.prof.survSeed||0))%SURV_RULES.length]:null};
+}
+function survCfg(sv){ let c=chalCfg({mode:'classic'}, false); if(sv.rule){ c={...c, table:clone(c.table)}; MARKETS[sv.rule].apply(c); } return c; }
+const survCoin = lv => 10+lv*5;
+function startSurv(){ const P=S.prof; P.survSeed=Math.floor(Math.random()*1e6); P.survRun={lv:0}; saveProfile(); closeSheet(); startGame(false,null,null,null,null,0); }
+function survNext(){ const r=S.prof.survRun; if(r){ closeSheet(); startGame(false,null,null,null,null,r.lv); } else startSurv(); }
+function survResult(rank){
+  const P=S.prof, lv=G.surv, sv=survSpec(lv), pass=rank<=sv.need;
+  const before=P.survBest||0; let best=false;
+  if(pass){ P.survRun={lv:lv+1}; if(lv+1>before){ P.survBest=lv+1; best=true; } } else P.survRun=null;
+  return {lv, rank, need:sv.need, pass, coin:pass?survCoin(lv):0, best, record:P.survBest||0, next:pass?survSpec(lv+1):null};
+}
+const survFoes = sv => sv.foes.map(([k,t])=>`<span class="tagx${t==='pro'?' pro':''}">${CHARS[k].ic} ${k}・${CUP_TYPE[t]}</span>`).join(' ');
+function survCard(){
+  const P=S.prof, run=P.survRun, best=P.survBest||0;
+  return `<span class="label" style="margin:4px 0 -4px">SURVIVAL · 勝ち抜き</span>
+  <section class="survcard"><span class="sv-ic">🛡️</span><span class="sv-tx"><b>サバイバル</b><span class="note">負けるまで続く勝ち抜き戦。勝つほど相手が強くなり、4戦目からは市況ルールも付きます。突破するたびにコイン。</span>
+    <span class="sv-best">最高記録 <b>${best}</b> 連続突破${run?` · いま第${run.lv+1}戦に挑戦中`:''}</span></span>
+    <div class="row" style="gap:8px">${run?`<button class="btn gold" onclick="survNext()">第${run.lv+1}戦へ</button><button class="btn" onclick="startSurv()">最初から</button>`:`<button class="btn gold" onclick="startSurv()">スタート</button>`}</div></section>`;
+}
+function survPanel(){
+  const R=G.reward&&G.reward.svr; if(!R) return '';
+  const steps=Array.from({length:Math.max(5,R.lv+2)},(_,i)=>`<i class="${i<R.lv+(R.pass?1:0)?'ok':i===R.lv&&!R.pass?'ng':''}">${i<R.lv+(R.pass?1:0)?'✓':i===R.lv&&!R.pass?'✕':i+1}</i>`).join('');
+  return `<section class="panel survres${R.pass?' clear':''}"><span class="label">SURVIVAL · 第${R.lv+1}戦</span>
+    <div class="chalbig">${R.pass?'突破！':'ここまで！'}</div>
+    <p class="note">${R.rank}位（${R.need===1?'1位':R.need+'位以内'}で突破）${R.pass?` · <b>+${R.coin}コイン</b>`:''}</p>
+    <div class="svsteps">${steps}</div>
+    ${R.best?`<div class="svbest">🏅 自己ベスト更新！ ${R.record}連続突破</div>`:R.pass?'':`<p class="note">最高記録 ${R.record}連続突破</p>`}
+    ${R.next?`<div class="svnext"><span class="label">次の相手</span><div class="row" style="gap:6px;justify-content:center">${survFoes(R.next)}${R.next.rule?`<span class="mktchip" style="--m1:${MARKETS[R.next.rule].c1};--m2:${MARKETS[R.next.rule].c2}">${MARKETS[R.next.rule].ic} ${MARKETS[R.next.rule].n}</span>`:''}</div></div>`:''}
+    <div class="row" style="justify-content:center"><button class="btn big" onclick="quit()">一覧へ</button>${R.pass?`<button class="btn gold big pulse" onclick="survNext()">第${R.lv+2}戦へ！</button>`:`<button class="btn gold big" onclick="startSurv()">もう一度</button>`}</div></section>`;
+}
+/* ---- キャラストーリー：9人と1話ずつ。会話のあとで対戦し、そのキャラに負けない順位ならクリア（最終話は1位） ---- */
 const STORIES=[
   {k:'ソラ', t:'のんびり市場さんぽ', rule:null, foes:[['ソラ','naive'],['ハル','naive']],
-   pre:[['ソラ','やあ、はじめまして〜。市場って、のんびり眺めるのが楽しいんだよ〜'],['ソラ','人と被らないカードを出すと、独占ボーナスがもらえるんだ〜'],['ソラ','ぼくより上の順位になれたら、きみの勝ち。いこっか〜']],
+   pre:[['ソラ','やあ、はじめまして〜。市場って、のんびり眺めるのが楽しいんだよ〜'],['ソラ','人と被らないカードを出すと、独占ボーナスがもらえるんだ〜'],['ソラ','ぼくに負けない順位なら、きみの勝ち。いこっか〜']],
    win:'わあ、すごいね〜。きみ、市場に向いてるかも〜', lose:'まあいっか〜。また一緒に遊ぼ〜'},
   {k:'ハル', t:'熱血！好景気バトル', rule:'boom', foes:[['ハル','read'],['ソラ','naive']],
    pre:[['ハル','おっ、新顔だな！ オレはハル、全力勝負がモットーだ！'],['ハル','今日は好景気。独占すればボーナスがさらに +1 だ！'],['me','（だれもいない産業に飛びこめば、大きく稼げる…！）'],['ハル','その勇気、見せてもらうぜ！']],
@@ -3940,8 +3995,8 @@ const STORIES=[
   {k:'レン', t:'頂点への挑戦状', rule:'boom', foes:[['レン','pro'],['ハル','read'],['アオイ','read']],
    pre:[['レン','おまえが最近ウワサの新人か'],['レン','頂点に立つのはオレだ。達人の読み、見せてやる'],['レン','かかってこい！']],
    win:'ぐぬぬ…認めてやる。おまえは強い', lose:'頂点はオレだ！ 出直してこい！'},
-  {k:'ミナト', t:'計算された結末', rule:null, foes:[['ミナト','pro'],['レン','pro'],['ユイ','pro']],
-   pre:[['ミナト','君の対戦データは、全部見せてもらった'],['ミナト','選ぶ癖、被る確率、勝ちパターン。計算はもう終わってる'],['ミナト','さあ、僕の計算を超えられるかな']],
+  {k:'ミナト', t:'計算された結末', rule:null, top:true, foes:[['ミナト','pro'],['レン','pro'],['ユイ','pro']],
+   pre:[['ミナト','君の対戦データは、全部見せてもらった'],['ミナト','選ぶ癖、被る確率、勝ちパターン。計算はもう終わってる'],['ミナト','条件はひとつ。達人3人の中で、1位になること'],['ミナト','さあ、僕の計算を超えられるかな']],
    win:'……想定外だ。君は、計算の外にいる', lose:'データは嘘をつかない。また挑戦してくれ'}
 ];
 const STORY_COIN=40, STORY_FINAL_COIN=100;
@@ -3955,7 +4010,7 @@ function storyCfg(st){
 function startStory(k){ closeSheet(); startGame(false,null,null,null,k); }
 function storyResult(rk, me){
   const st=STORIES.find(x=>x.k===G.story), a=rk.find(x=>x.i===me), ci=G.players.findIndex(p=>charKey(p)===st.k&&!isHuman(p)), b=rk.find(x=>x.i===ci);
-  const win=!!(a&&b&&a.rank<b.rank), P=S.prof; P.story=P.story||{}; const first=win&&!P.story[st.k];
+  const win=!!(a&&b&&(st.top ? a.rank===1 : a.rank<=b.rank)), P=S.prof; P.story=P.story||{}; const first=win&&!P.story[st.k];
   if(win) P.story[st.k]=(P.story[st.k]||0)+1;
   const last=STORIES.indexOf(st)===STORIES.length-1;
   return {k:st.k, win, first, bonus:first?(last?STORY_FINAL_COIN:STORY_COIN):0};
@@ -3967,7 +4022,7 @@ function storySheetBody(k){
   return `<div class="sthead" style="--rc:${c.c}"><span class="label">STORY ${i+1} · ${k}</span><h3 class="ttl" style="font-size:24px">${st.t}</h3>
       <div class="row" style="gap:6px;justify-content:center">${m?`<span class="mktchip" style="--m1:${m.c1};--m2:${m.c2}">${m.ic} ${m.n}</span>`:''}${st.hist?'<span class="tagx">歴史モード・昭和</span>':''}${st.foes.map(([n,t])=>`<span class="tagx${t==='pro'?' pro':''}">${CHARS[n].ic} ${n}・${CUP_TYPE[t]}</span>`).join('')}</div></div>
     <div class="talk">${st.pre.map((l,j)=>talkLine(l[0],l[1],j)).join('')}</div>
-    <p class="note" style="text-align:center">クリア条件：<b>${k}より上の順位</b> · はじめてのクリアで <b>${i===STORIES.length-1?STORY_FINAL_COIN:STORY_COIN}コイン</b>${storyDone(k)?' · クリア済み ✓':''}</p>
+    <p class="note" style="text-align:center">クリア条件：<b>${st.top?"1位になる（同点もOK）":k+"に負けない順位（同じ順位もOK）"}</b> · はじめてのクリアで <b>${i===STORIES.length-1?STORY_FINAL_COIN:STORY_COIN}コイン</b>${storyDone(k)?' · クリア済み ✓':''}</p>
     <button class="btn gold big" onclick="startStory('${k}')">対戦する！</button>`;
 }
 function storySection(){
