@@ -1273,6 +1273,18 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .pc-stats b{font-family:var(--display);font-weight:400;font-size:20px;line-height:1.1}.pc-stats b small{font-size:11px}
 .pc-stats span{font-size:10px;color:var(--muted);font-weight:800}
 .pc-foot{position:relative;display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:var(--muted)}
+.lgres{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;background:radial-gradient(circle at 50% 0%,rgb(255 200 58 / .22),transparent 60%),linear-gradient(180deg,var(--panel2),var(--panel))}
+.lgres.done .chalbig{color:var(--gold);text-shadow:0 5px 0 var(--rail),0 0 40px rgb(255 200 58 / .6)}
+.lgchamp{font-family:var(--display);font-size:24px;animation:vsfin2 .6s cubic-bezier(.2,.9,.3,1.4) both}
+.lgtable{width:100%;display:flex;flex-direction:column;gap:6px}
+.lgrow{display:grid;grid-template-columns:28px minmax(0,auto) 1fr auto;align-items:center;gap:10px;padding:8px 12px;border-radius:14px;background:var(--panel2);text-align:left;animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--k) * 90ms)}
+.lgrow.champ{box-shadow:inset 0 0 0 2px var(--gold),0 0 20px -6px var(--gold)}
+.lgr{font-family:var(--display);font-size:18px;color:var(--muted)}.lgrow:first-child .lgr{color:var(--gold)}
+.lgn{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:9em}
+.lgbar{height:8px;border-radius:8px;background:rgb(255 255 255 / .06);overflow:hidden}.lgbar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--gold-deep),var(--gold));transition:width .8s}
+.lgp{font-family:var(--display);font-weight:400;font-size:20px;min-width:2.6em;text-align:right}.lgp small{font-size:11px;color:var(--cta);margin-left:3px}
+.lgdots{display:flex;gap:6px}.lgdots i{font-style:normal;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:12px;background:var(--panel2);box-shadow:inset 0 0 0 2px var(--line)}.lgdots i.on{background:var(--gold);color:#2a1a00;box-shadow:none}
+.linkbtn{border:0;background:none;color:var(--cyan,#4fe3ff);font:inherit;font-weight:800;text-decoration:underline;cursor:pointer;padding:0}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -1887,6 +1899,7 @@ function start(data){
   if(S.evt===undefined) S.evt=!!load('azakei-evt');
   if(S.big===undefined) S.big=!!load('azakei-big'); document.documentElement.classList.toggle('bigtext',!!S.big);
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
+  if(S.league===undefined) S.league=!!load('azakei-league-on'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
   const firstRun = !data.S && !load('azakei-tut');
@@ -1940,6 +1953,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv){
       rounds: long ? (cfg.hist ? Math.ceil(fullPool.length/LONG_PER) : LONG_ROUNDS) : 1, round:0, fullPool, log:[], settles:[] };
   G.players.forEach(p=>p.roundStart=0);
   if(!online && !daily && !ch && !cu && !sto && !sv) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
+  G.league = (!online && !daily && !ch && !cu && !sto && !sv && S.league) ? leagueJoin(G.players.map(p=>p.name)) : null;   // リーグ戦の何試合目か
   G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null;
   G.teams = (!online && !daily && !ch && !cu && !sto && !sv && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
   if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); G.players.forEach(p=>p.brand=null); dealContracts(); }
@@ -2207,7 +2221,7 @@ const logDeck = () => G.log && G.log.length ? G.log : G.deck.slice(0,TURNS);
 const termName = r => G.cfg.hist && G.fullPool ? `${r===0?'前半':'後半'}` : `第${r+1}期`;
 function termRange(r){ if(!G.fullPool) return ''; const ids=G.fullPool.slice(r*LONG_PER,(r+1)*LONG_PER); return `${yearOf(ids[0])}–${yearOf(ids[ids.length-1])}`; }
 const turnLabel = () => (isLong()?`${termName(G.round)} · `:'')+`TURN ${G.turn+1}/${TURNS}`;
-function finishGame(){ G.phase='final'; G.ov=null; recordResult(); render(); netSync(); scrollTo(0,0); startCeremony(); }
+function finishGame(){ G.phase='final'; G.ov=null; recordResult(); leagueRecord(); render(); netSync(); scrollTo(0,0); startCeremony(); }
 /* ブランド：期の決算で、その期にいちばん独占した産業が自分のブランドになり、以後その産業は毎回+1 */
 function brandOf(us, prev){
   const n=[0,0,0,0,0,0]; let lastMono=-1;
@@ -2785,6 +2799,44 @@ function shopPanel(){
     <span class="label" style="margin-top:8px">テーブル（ゲーム中の背景）</span><div class="sp-grid">${SHOP.table.filter(x=>shopShow('table',x)).map(x=>item('table',x)).join('')}</div>
     <span class="label" style="margin-top:12px">カードの裏面</span><div class="sp-grid">${SHOP.back.filter(x=>shopShow('back',x)).map(x=>item('back',x)).join('')}</div></section>`;
 }
+/* ---- リーグ戦：同じメンバーで3試合。順位でリーグポイント（5・3・2・1）を集め、合計で優勝を決める ---- */
+const LEAGUE_GAMES=3, LEAGUE_PTS=[5,3,2,1,0,0];
+function setLeague(on){ S.league=!!on; save('azakei-league-on',S.league); sfx('click'); render(); }
+function leagueSave(){ save('azakei-league', S.lg); }
+function leagueReset(){ S.lg=null; leagueSave(); sfx('click'); render(); }
+function leagueJoin(names){
+  const same = S.lg && S.lg.games<LEAGUE_GAMES && S.lg.names.length===names.length && S.lg.names.every((n,i)=>n===names[i]);
+  if(!same){ S.lg={names:names.slice(), pts:names.map(()=>0), wins:names.map(()=>0), games:0, hist:[]}; leagueSave(); }
+  return S.lg.games+1;
+}
+function leagueRecord(){
+  if(!G || !G.league || G.lgDone || !S.lg) return; G.lgDone=true;
+  const rk=ranking(G.players,G.cfg), add=G.players.map(()=>0);
+  rk.forEach(x=>{ add[x.i]=LEAGUE_PTS[x.rank-1]||0; if(x.rank===1) S.lg.wins[x.i]++; });
+  S.lg.pts=S.lg.pts.map((v,i)=>v+add[i]); S.lg.games++; S.lg.hist.push(add); leagueSave();
+  G.lgAdd=add;
+  if(S.lg.games>=LEAGUE_GAMES) const gid=G.gid; setTimeout(()=>{ if(!G || G.gid!==gid || G.phase!=="final") return; const ch=leagueChamp(); cutIn('リーグ優勝！', ch.map(i=>S.lg.names[i]).join('・'), 'big'); sfx('fanfare'); confetti(); }, reduced()?300:5200);
+}
+const leagueChamp = () => { const m=Math.max(...S.lg.pts), c=S.lg.pts.map((v,i)=>v===m?i:-1).filter(i=>i>=0); if(c.length<2) return c; const w=Math.max(...c.map(i=>S.lg.wins[i])); return c.filter(i=>S.lg.wins[i]===w); };
+function leagueTable(add){
+  const L=S.lg, order=L.names.map((n,i)=>i).sort((a,b)=>L.pts[b]-L.pts[a] || L.wins[b]-L.wins[a]), mx=Math.max(1,...L.pts), done=L.games>=LEAGUE_GAMES, champ=done?leagueChamp():[];
+  return `<div class="lgtable">${order.map((i,r)=>`<div class="lgrow${champ.includes(i)?' champ':''}" style="--k:${r}"><span class="lgr">${r+1}</span><span class="lgn">${champ.includes(i)?'👑 ':''}${esc(L.names[i])}</span><span class="lgbar"><i style="width:${L.pts[i]/mx*100}%"></i></span><b class="lgp">${L.pts[i]}${add&&add[i]?`<small>+${add[i]}</small>`:''}</b></div>`).join('')}</div>`;
+}
+function leagueNote(){   // みんなで遊ぶとき（CPUなし）はここにリーグ戦の切り替えを出す
+  const chip = S.seats.some(s=>s.type!=="human") ? "" : `<div class="opts"><span class="label">ルール</span><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button></div>`;
+  if(!S.league) return chip;
+  const L=S.lg, live=L && L.games>0 && L.games<LEAGUE_GAMES;
+  return chip+`<p class="note tagnote">🏆 リーグ戦：同じメンバーで${LEAGUE_GAMES}試合。1位5点・2位3点・3位2点・4位1点のリーグポイントで優勝を決めます。${live?` <b>いま第${L.games+1}戦</b>（${L.names.map((n,i)=>`${esc(n)} ${L.pts[i]}`).join('・')}） <button class="linkbtn" onclick="leagueReset()">最初から</button>`:''}</p>`;
+}
+function leaguePanel(){
+  if(!G || !G.league || !S.lg) return '';
+  const L=S.lg, done=L.games>=LEAGUE_GAMES, champ=done?leagueChamp():[];
+  return `<section class="panel lgres${done?' done':''}"><span class="label">LEAGUE · 第${Math.min(L.games,LEAGUE_GAMES)}戦 / 全${LEAGUE_GAMES}戦</span>
+    ${done?`<div class="chalbig">リーグ優勝！</div><div class="lgchamp">👑 ${champ.map(i=>esc(L.names[i])).join('・')}</div>`:`<h3>リーグ順位</h3>`}
+    ${leagueTable(G.lgAdd)}
+    <div class="lgdots">${Array.from({length:LEAGUE_GAMES},(_,i)=>`<i class="${i<L.games?'on':''}">${i+1}</i>`).join('')}</div>
+    ${G.online&&!G.host?'':`<div class="row" style="justify-content:center">${done?`<button class="btn gold big" onclick="leagueReset();restartGame()">新しいリーグ</button>`:`<button class="btn gold big pulse" onclick="restartGame()">第${L.games+1}戦へ！</button>`}</div>`}</section>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -3193,7 +3245,7 @@ function finalView(){
   if(big.p) aw.push(['最大瞬間風速',big.p.name,`T${big.u.turn+1} ${IND[big.u.ind]} ${sgn(big.v)}`]);
   const hist=G.players.map(p=>`<tr><td>${esc(p.name)}</td>${p.used.map(u=>`<td>${chip(u.ind)} <span class="num ${cls(u.total)}">${sgn(u.total)}</span>${u.fut?' <span class="tagx cy">先物</span>':''}</td>`).join('')}<td class="n">${p.uniq}</td><td class="n"><b>${p.score}</b></td></tr>`).join('');
   const recap = C.hist ? `<section class="panel"><h3>あなたたちが生きた時代</h3><div class="recap">${logDeck().map(i=>`<div><b>${yearOf(i)}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${HIST[i].n}</b><br>${HIST[i].d}</p></div>`).join('')}</div></section>` : '';
-  return `<div class="two"><div class="col">${seasonWin()}${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+  return `<div class="two"><div class="col">${leaguePanel()}${seasonWin()}${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
@@ -3304,7 +3356,8 @@ function playView(){
         <button onclick="go('online')">オンラインで →</button>
       </div>
       ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${diffNow()===k?" on":""}" onclick="setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>`:""}
-      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button></div>${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
+      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button></div>${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
+      ${leagueNote()}
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
       <p class="note">${hc===0?'全員CPUの観戦モードです。':hc===1?'あなたとCPUで対戦します。読み合いCPUは相手と先を読み、素直CPUはいちばん高い点を出します。達人CPUは相手ひとりひとりの考えを読み、極秘契約も狙う強敵（ロング版でとくに強い）。':`${hc}人で1台の端末を回します。順番に手札を見る画面が出ます。`}${S.seats.length===2?' 2人戦は同点になりやすいので3人以上がおすすめ。':''}</p>
