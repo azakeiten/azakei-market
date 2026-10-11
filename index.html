@@ -682,6 +682,51 @@ body.calm *{animation:none!important;transition:none!important}
 .card.branded{box-shadow:0 0 0 3px var(--rail),0 0 0 5px var(--gold),0 0 22px -4px var(--gold),0 16px 26px -12px #000}
 .card.branded::after{content:"BRAND";position:absolute;top:50%;left:-26%;width:150%;transform:rotate(-30deg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.2em;color:#2a1a00;background:linear-gradient(90deg,var(--gold2),var(--gold));padding:2px 0;z-index:3;box-shadow:0 2px 6px rgb(0 0 0 / .4);pointer-events:none}
 @media (max-width:560px){ .strow{padding:8px 10px} .srow1{gap:8px} .srow2{padding-left:0} .strow .sg{font-size:11px} .strow .ava{display:none} .card.branded::after{font-size:8px} }
+/* ---- 文字を大きく ---- */
+html.bigtext body{zoom:1.14}
+/* ---- ミニカード（クイズ・ボックス） ---- */
+.minicard{display:flex;align-items:center;gap:12px;border:0;border-radius:20px;padding:14px;text-align:left;color:var(--ink);background:linear-gradient(150deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px var(--line);transition:transform .12s ease}
+.minicard:hover{transform:translateY(-2px)} .minicard:active{transform:translateY(3px)}
+.mc-ic{flex:0 0 auto;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-size:24px;font-weight:800}
+.quizc .mc-ic{background:radial-gradient(circle at 35% 30%,#b6ffd6,var(--cta));color:#06331b;font-family:var(--display)}
+.boxc .mc-ic{background:radial-gradient(circle at 35% 30%,#ffd6ee,#ff7ad1)}
+.mc-tx{display:flex;flex-direction:column;min-width:0} .mc-tx b{font-family:var(--display);font-weight:400;font-size:19px} .mc-tx .note{font-size:12px}
+/* ---- クイズ ---- */
+.qz-sc{font-weight:800;color:var(--up);margin-right:46px}
+.qz-bar{height:8px;border-radius:4px;background:var(--rail);overflow:hidden;margin:6px 0 10px} .qz-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cta),var(--up));transition:width .3s ease}
+.qz-q{font-size:20px;line-height:1.4;margin:4px 0 12px}
+.qz-opts{display:flex;flex-direction:column;gap:8px}
+.qz-o{display:flex;align-items:center;gap:10px;border:0;font:inherit;font-weight:800;font-size:15px;text-align:left;color:var(--ink);border-radius:14px;padding:12px 14px;background:rgb(7 8 24 / .45);box-shadow:inset 0 0 0 1px var(--line);transition:transform .1s}
+.qz-o:active:not(:disabled){transform:scale(.98)}
+.qz-o i{font-style:normal;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;flex:0 0 auto;background:var(--panel2);font-family:var(--display);font-weight:400}
+.qz-o.ok{box-shadow:inset 0 0 0 2px var(--up);background:rgb(92 240 162 / .14)} .qz-o.ok i{background:var(--up);color:#06331b}
+.qz-o.ng{box-shadow:inset 0 0 0 2px var(--down);background:rgb(255 127 127 / .12);animation:flshake2 .4s ease} .qz-o.ng i{background:var(--down);color:#3a0505}
+.qz-o.dim{opacity:.45}
+@keyframes flshake2{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+.qz-exp{display:flex;flex-direction:column;gap:3px;border-radius:14px;padding:10px 12px;margin:10px 0;font-size:13px;line-height:1.55;background:rgb(7 8 24 / .4);animation:achin .35s ease both}
+.qz-exp b{font-family:var(--display);font-weight:400;font-size:18px} .qz-exp.ok b{color:var(--up)} .qz-exp.ng b{color:var(--down)}
+.qz-res{display:flex;flex-direction:column;align-items:center;margin:10px 0}
+.qz-res b{font-family:var(--display);font-weight:400;font-size:72px;line-height:1;color:var(--gold);animation:bang .6s cubic-bezier(.2,.9,.3,1.5) both} .qz-res b small{font-size:26px;color:var(--muted)}
+.qz-res span{font-weight:800;font-size:16px}
+.qz-rw{display:flex;justify-content:center;gap:12px;margin:8px 0 14px} .qz-rw span{font-family:var(--display);font-size:22px;color:var(--gold);border-radius:12px;padding:4px 14px;background:rgb(255 200 58 / .12)}
+/* ---- ラッキーボックス ---- */
+.bx-stage{display:flex;flex-direction:column;align-items:center;gap:10px;margin:16px 0;min-height:180px;justify-content:center}
+.bx{position:relative;width:120px;height:110px}
+.bx-body{position:absolute;left:0;right:0;bottom:0;height:78px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-size:40px;color:#fff;background:linear-gradient(90deg,transparent 42%,var(--gold) 42% 58%,transparent 58%),linear-gradient(160deg,#ff7ad1,#b02ea0);box-shadow:0 8px 0 #5a1350,0 20px 30px -10px #000}
+.bx-lid{position:absolute;left:-8px;right:-8px;top:12px;height:28px;border-radius:10px;background:linear-gradient(90deg,transparent 42%,var(--gold2) 42% 58%,transparent 58%),linear-gradient(160deg,#ff9ad9,#c23aae);box-shadow:0 4px 0 #5a1350;z-index:1}
+.bx.idle{animation:bxidle 2s ease-in-out infinite}
+@keyframes bxidle{50%{transform:translateY(-6px) rotate(-2deg)}}
+.bx.shake{animation:bxshake .12s linear infinite}
+@keyframes bxshake{25%{transform:translateX(-5px) rotate(-4deg)}75%{transform:translateX(5px) rotate(4deg)}}
+.bx.open .bx-lid{animation:bxlid .6s cubic-bezier(.2,.9,.3,1.3) both}
+@keyframes bxlid{to{transform:translateY(-70px) rotate(-25deg);opacity:0}}
+.bx.open{height:60px;opacity:.5;transform:scale(.6)}
+.bx-prize{display:flex;flex-direction:column;align-items:center;gap:6px;border-radius:18px;padding:14px 18px;background:rgb(255 200 58 / .1);box-shadow:inset 0 0 0 2px var(--gold);animation:crwin .6s cubic-bezier(.2,.9,.3,1.5) both}
+.bx-prize.rare{background:radial-gradient(circle,rgb(255 122 209 / .3),transparent 70%);box-shadow:inset 0 0 0 3px #ff7ad1,0 0 40px -6px #ff7ad1}
+.bx-prize b{font-size:16px} .bx-big{font-size:46px;line-height:1}
+.back.bk-rainbow{background:linear-gradient(135deg,#ff5c9a,#ffc83a 25%,#5cf0a2 50%,#4fe3ff 75%,#a77bff);background-size:220% 220%;animation:holo 3s linear infinite} .back.bk-rainbow::after{color:#fff;text-shadow:0 2px 0 rgb(0 0 0 / .35);background:none}
+body[data-table="sakura"]::before{background:radial-gradient(4px 4px at 15% 20%,#ffd1e6,transparent),radial-gradient(3px 3px at 70% 35%,#ffb8da,transparent),radial-gradient(4px 4px at 40% 70%,#ffd1e6,transparent),radial-gradient(3px 3px at 85% 80%,#ffb8da,transparent),radial-gradient(3px 3px at 25% 85%,#ffd1e6,transparent),radial-gradient(120% 80% at 50% 0%,#4a1f4a,#1a0a24 60%,#0a0412)}
+.sp-prev.tbl-sakura{background:radial-gradient(3px 3px at 20% 30%,#ffd1e6,transparent),radial-gradient(3px 3px at 70% 60%,#ffb8da,transparent),radial-gradient(2px 2px at 45% 20%,#ffd1e6,transparent),linear-gradient(160deg,#4a1f4a,#0a0412)}
 /* ---- ショップ：テーブルとカード裏面 ---- */
 body[data-table="green"]::before{background:radial-gradient(120% 80% at 50% 0%,#1f7a4d 0%,#0e4a2e 55%,#06231a 100%),repeating-linear-gradient(45deg,rgb(255 255 255 / .02) 0 2px,transparent 2px 6px)}
 body[data-table="wood"]::before{background:repeating-linear-gradient(92deg,rgb(0 0 0 / .08) 0 3px,transparent 3px 22px),repeating-linear-gradient(88deg,rgb(255 255 255 / .04) 0 1px,transparent 1px 9px),linear-gradient(170deg,#7a4a26,#4a2a14 60%,#2a170a)}
@@ -1603,6 +1648,7 @@ function start(data){
   if(!S.len) S.len=load('azakei-len')==='long'?'long':'short';
   if(S.bgm===undefined) S.bgm=!!load('azakei-bgm');
   if(S.evt===undefined) S.evt=!!load('azakei-evt');
+  if(S.big===undefined) S.big=!!load('azakei-big'); document.documentElement.classList.toggle('bigtext',!!S.big);
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
@@ -2316,6 +2362,8 @@ function renderSheet(){
   else if(k==='login') body=loginBody();
   else if(k==='title') body=titleBody();
   else if(k==='table') body=fullTableBody();
+  else if(k==='quiz') body=quizBody();
+  else if(k==='box') body=boxBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
@@ -2346,10 +2394,91 @@ function render(){
   if(phone()){ const r=document.querySelector('.rivals'); const a=document.querySelector('.seat.active'); if(r&&a) r.scrollLeft=Math.max(0,a.offsetLeft-16); }
   const tl=document.getElementById('tl'), now=tl&&tl.querySelector('.now'); if(now) tl.scrollLeft=Math.max(0,now.offsetLeft-60);
 }
+/* ---- 文字を大きく ---- */
+function toggleBig(){ S.big=!S.big; save('azakei-big',S.big); document.documentElement.classList.toggle('bigtext',S.big); renderSheet(); render(); }
+/* ---- 経済クイズ：出来事・年・いちばん得した産業を当てる5問。報酬は1日3セットまで ---- */
+let QZ=null;
+const QUIZ_REWARD_MAX=3;
+function shuf(a){ return shuffle(a.slice(),Math.random); }
+function makeQuiz(){
+  const real=HIST.map((h,i)=>i).filter(i=>!HIST[i].f), all=HIST.map((h,i)=>i);
+  const uniqTop=i=>{ const r=HIST[i].r, mx=Math.max(...r); return r.filter(v=>v===mx).length===1; };
+  const qs=[], used=new Set();
+  const gens=[
+    ()=>{ const i=shuf(real).find(x=>!used.has('y'+x)); used.add('y'+i); const opts=shuf([i,...shuf(real.filter(x=>x!==i)).slice(0,3)]); return {q:`${HIST[i].y}年に起きたのは？`, opts:opts.map(x=>HIST[x].n), a:opts.indexOf(i), exp:HIST[i].d}; },
+    ()=>{ const i=shuf(all).find(x=>!used.has('n'+x)); used.add('n'+i); const ys=shuf([HIST[i].y,...shuf(all.filter(x=>x!==i)).slice(0,3).map(x=>HIST[x].y)]); return {q:`「${HIST[i].n}」は何年？${HIST[i].f?'（未来編）':''}`, opts:ys.map(String), a:ys.indexOf(HIST[i].y), exp:HIST[i].d}; },
+    ()=>{ const i=shuf(all.filter(uniqTop)).find(x=>!used.has('t'+x)); used.add('t'+i); const r=HIST[i].r, top=r.indexOf(Math.max(...r)); const opts=shuf([top,...shuf([0,1,2,3,4,5].filter(x=>x!==top)).slice(0,3)]); return {q:`「${HIST[i].n}」でいちばん点が高い産業は？`, opts:opts.map(x=>IND[x]), a:opts.indexOf(top), exp:`${IND.map((d,k)=>d+' '+sgn(r[k])).join(' / ')}`}; },
+    ()=>{ const n=Math.floor(Math.random()*6), r=T2[n], mx=Math.max(...r), tops=r.map((v,k)=>v===mx?k:-1).filter(k=>k>=0), top=tops[0], wrong=shuf([0,1,2,3,4,5].filter(x=>!tops.includes(x))).slice(0,3), opts=shuf([top,...wrong]); return {q:`クラシックの「${NEWS[n]}」で${tops.length>1?'+3がつく産業のひとつ':'いちばん点が高い産業'}は？`, opts:opts.map(x=>IND[x]), a:opts.indexOf(top), exp:`${IND.map((d,k)=>d+' '+sgn(r[k])).join(' / ')}`}; }
+  ];
+  const order=shuf([0,1,2,3,0,1,2,2]).slice(0,5);
+  order.forEach(g=>{ try{ qs.push(gens[g]()); }catch(e){ qs.push(gens[0]()); } });
+  return {qs, i:0, score:0, picked:null, done:false};
+}
+function quizLeft(){ const P=S.prof, k=todayKey(); return P.quiz&&P.quiz.day===k ? Math.max(0,QUIZ_REWARD_MAX-P.quiz.n) : QUIZ_REWARD_MAX; }
+function startQuiz(){ QZ=makeQuiz(); openSheet('quiz'); sfx('open'); }
+function quizPick(k){
+  if(!QZ || QZ.picked!==null) return;
+  const q=QZ.qs[QZ.i]; QZ.picked=k;
+  if(k===q.a){ QZ.score++; sfx('coin'); haptic(15); } else { sfx('buzz'); haptic([20,30,20]); }
+  renderSheet();
+}
+function quizNext(){
+  if(!QZ) return;
+  if(QZ.i<QZ.qs.length-1){ QZ.i++; QZ.picked=null; sfx('click'); renderSheet(); return; }
+  QZ.done=true;
+  const P=S.prof, k=todayKey(); P.quiz = P.quiz&&P.quiz.day===k ? P.quiz : {day:k,n:0};
+  QZ.reward=null;
+  if(P.quiz.n<QUIZ_REWARD_MAX){ const c=QZ.score*6+(QZ.score===5?10:0), x=QZ.score*5; P.quiz.n++; P.coin=(P.coin||0)+c; P.xp+=x; QZ.reward={c,x}; }
+  saveProfile(); sfx(QZ.score>=4?'fanfare':'open'); if(QZ.score===5) confetti(); renderSheet();
+}
+function quizCard(){
+  const left=quizLeft();
+  return `<button class="minicard quizc" onclick="startQuiz()"><span class="mc-ic">？</span><span class="mc-tx"><span class="label">MINI GAME</span><b>経済クイズ</b><span class="note">5問 · ${left?`ごほうびあと${left}回`:'今日のごほうびは終了（練習はできる）'}</span></span></button>`;
+}
+function quizBody(){
+  if(!QZ) QZ=makeQuiz();
+  if(QZ.done){
+    const R=QZ.reward, msg=QZ.score===5?'パーフェクト！':QZ.score>=3?'なかなかの物知り！':'歴史モードで覚えよう！';
+    return `<span class="label">RESULT</span><div class="qz-res"><b>${QZ.score}<small>/5</small></b><span>${msg}</span></div>
+      ${R?`<div class="qz-rw"><span>🪙 +${R.c}</span><span>+${R.x} XP</span></div>`:'<p class="note" style="text-align:center">今日のごほうびは終わりました（あしたまた3回）</p>'}
+      <div class="col" style="gap:8px"><button class="btn gold big" onclick="startQuiz()">もう一度</button><button class="btn ghost" onclick="closeSheet()">とじる</button></div>`;
+  }
+  const q=QZ.qs[QZ.i], ans=QZ.picked!==null;
+  return `<div class="row spread"><span class="label">経済クイズ · Q${QZ.i+1} / ${QZ.qs.length}</span><span class="qz-sc">正解 ${QZ.score}</span></div>
+    <div class="qz-bar"><i style="width:${(QZ.i+(ans?1:0))/QZ.qs.length*100}%"></i></div>
+    <h3 class="qz-q">${esc(q.q)}</h3>
+    <div class="qz-opts">${q.opts.map((o,k)=>`<button class="qz-o${ans?(k===q.a?' ok':k===QZ.picked?' ng':' dim'):''}" onclick="quizPick(${k})" ${ans?'disabled':''}><i>${'ABCD'[k]}</i>${esc(o)}</button>`).join('')}</div>
+    ${ans?`<div class="qz-exp ${QZ.picked===q.a?'ok':'ng'}"><b>${QZ.picked===q.a?'正解！':'ざんねん…'}</b><span>${esc(q.exp)}</span></div><button class="btn gold big" onclick="quizNext()">${QZ.i<QZ.qs.length-1?'次の問題':'結果を見る'}</button>`:''}`;
+}
+/* ---- ラッキーボックス：60コインで1回。ボックス限定のレアデザインも出る ---- */
+const BOX_COST=60;
+let BX={stage:'idle', prize:null};
+const BOX_PRIZES=[ {w:25,t:'coin',v:30,n:'コイン 30'}, {w:15,t:'coin',v:90,n:'コイン 90'}, {w:25,t:'xp',v:50,n:'50 XP'}, {w:10,t:'xp',v:150,n:'150 XP'}, {w:12.5,t:'item',k:'back',id:'rainbow',n:'レア裏面「レインボー」'}, {w:12.5,t:'item',k:'table',id:'sakura',n:'レアテーブル「夜桜」'} ];
+function boxCard(){ return `<button class="minicard boxc" onclick="openBox()"><span class="mc-ic">🎁</span><span class="mc-tx"><span class="label">LUCKY BOX</span><b>ラッキーボックス</b><span class="note">🪙 ${BOX_COST}で1回 · レアデザインも</span></span></button>`; }
+function openBox(){ BX={stage:'idle',prize:null}; openSheet('box'); }
+function boxOpen(){
+  const P=S.prof;
+  if((P.coin||0)<BOX_COST){ toast(`コインが足りません（あと ${BOX_COST-(P.coin||0)}）`); sfx('buzz'); return; }
+  P.coin-=BOX_COST; BX.stage='shake'; renderSheet(); sfx('drum');
+  let r=Math.random()*100, pz=BOX_PRIZES[0]; for(const p of BOX_PRIZES){ if(r<p.w){ pz=p; break; } r-=p.w; }
+  pz={...pz};
+  if(pz.t==='item' && shopOwn(pz.k,pz.id)){ pz={t:'coin',v:150,n:'コイン 150（レアがかぶったのでコインに）'}; }
+  if(pz.t==='coin') P.coin+=pz.v; else if(pz.t==='xp') P.xp+=pz.v; else { P.own=P.own||{}; P.own[pz.k]=P.own[pz.k]||[]; P.own[pz.k].push(pz.id); }
+  saveProfile();
+  setTimeout(()=>{ if(S.sheet!=='box') return; BX.stage='open'; BX.prize=pz; renderSheet(); sfx(pz.t==='item'?'fanfare':'coin'); haptic(30); if(pz.t==='item') confetti(); else burstAt(document.querySelector('.bx-prize'),['#ffc83a','#ffe08a','#fff'],40); },1300);
+}
+function boxBody(){
+  const coin=S.prof.coin||0, pz=BX.prize;
+  const prizeHTML = pz ? `<div class="bx-prize${pz.t==='item'?' rare':''}">${pz.t==='item'?(pz.k==='back'?`<span class="back bk-${pz.id}" style="width:64px"></span>`:`<span class="sp-prev tbl-${pz.id}" style="width:120px;height:70px"></span>`):`<span class="bx-big">${pz.t==='coin'?'🪙':'✨'}</span>`}<b>${pz.t==='item'?'RARE! ':''}${esc(pz.n)}</b>${pz.t==='item'?'<span class="note">マイページのショップで「つかう」を押すと使えます</span>':''}</div>` : '';
+  return `<div class="row spread"><span class="label">LUCKY BOX</span><span class="coinbal" style="margin-right:46px">🪙 <b>${coin}</b></span></div>
+    <div class="bx-stage"><div class="bx ${BX.stage}"><div class="bx-lid"></div><div class="bx-body">？</div></div>${BX.stage==='open'?prizeHTML:''}</div>
+    <p class="note" style="text-align:center">中身：コイン・XP、またはボックス限定のレアデザイン（裏面「レインボー」・テーブル「夜桜」）</p>
+    ${BX.stage==='shake'?'<p class="note" style="text-align:center">開けています…</p>':`<button class="btn gold big" onclick="boxOpen()" ${coin<BOX_COST?'disabled':''}>🪙 ${BOX_COST} で${BX.stage==='open'?'もう一回':'開ける'}</button>`}`;
+}
 /* ---- ショップ：遊んでたまるコインで、テーブル（背景）とカードの裏面を買う ---- */
 const SHOP={
-  table:[ {id:'std',n:'ナイトマーケット',p:0,d:'いつもの夜の市場'}, {id:'green',n:'カジノグリーン',p:120,d:'緑のフェルトのテーブル'}, {id:'wood',n:'木目のテーブル',p:150,d:'あたたかい木の机'}, {id:'red',n:'レッドカーペット',p:200,d:'赤じゅうたんの特等席'}, {id:'space',n:'スペースステーション',p:300,d:'星空に浮かぶ取引所'} ],
-  back:[ {id:'std',n:'スタンダード',p:0,d:'いつもの裏面'}, {id:'gold',n:'ゴールド',p:80,d:'金の箔押し'}, {id:'koban',n:'小判',p:120,d:'江戸の小判柄'}, {id:'stars',n:'星空',p:150,d:'きらめく夜空'}, {id:'carbon',n:'カーボン',p:200,d:'黒くて速そう'} ]
+  table:[ {id:'std',n:'ナイトマーケット',p:0,d:'いつもの夜の市場'}, {id:'green',n:'カジノグリーン',p:120,d:'緑のフェルトのテーブル'}, {id:'wood',n:'木目のテーブル',p:150,d:'あたたかい木の机'}, {id:'red',n:'レッドカーペット',p:200,d:'赤じゅうたんの特等席'}, {id:'space',n:'スペースステーション',p:300,d:'星空に浮かぶ取引所'}, {id:'sakura',n:'夜桜',p:null,d:'ラッキーボックス限定'} ],
+  back:[ {id:'std',n:'スタンダード',p:0,d:'いつもの裏面'}, {id:'gold',n:'ゴールド',p:80,d:'金の箔押し'}, {id:'koban',n:'小判',p:120,d:'江戸の小判柄'}, {id:'stars',n:'星空',p:150,d:'きらめく夜空'}, {id:'carbon',n:'カーボン',p:200,d:'黒くて速そう'}, {id:'rainbow',n:'レインボー',p:null,d:'ラッキーボックス限定'} ]
 };
 const shopEq = k => (S.prof.eq&&S.prof.eq[k])||'std';
 const shopOwn = (k,id) => id==='std' || ((S.prof.own||{})[k]||[]).includes(id);
@@ -2357,6 +2486,7 @@ const bkc = () => { const b=S&&S.prof?shopEq('back'):'std'; return b==='std'?'':
 function shopBuy(k,id){
   const it=SHOP[k].find(x=>x.id===id), P=S.prof; if(!it) return;
   P.own=P.own||{}; P.own[k]=P.own[k]||[]; P.eq=P.eq||{};
+  if(!shopOwn(k,id) && it.p===null){ toast('ラッキーボックスで手に入るレアデザインです'); sfx('click'); return; }
   if(!shopOwn(k,id)){
     if((P.coin||0)<it.p){ toast(`コインが足りません（あと ${it.p-(P.coin||0)}）`); sfx('buzz'); return; }
     P.coin-=it.p; P.own[k].push(id); sfx('coin'); haptic(20); toast(`「${it.n}」を手に入れた！`);
@@ -2367,7 +2497,7 @@ function shopPanel(){
   const coin=S.prof.coin||0;
   const item=(k,x)=>{ const own=shopOwn(k,x.id), on=shopEq(k)===x.id;
     const prev = k==='table' ? `<span class="sp-prev tbl-${x.id}"></span>` : `<span class="sp-prev"><span class="back${x.id==='std'?'':' bk-'+x.id}"></span></span>`;
-    return `<button class="sp-item${on?' on':''}${own?'':' locked'}" onclick="shopBuy('${k}','${x.id}')">${prev}<b>${x.n}</b><span class="note">${x.d}</span><span class="sp-price">${on?'使用中':own?'つかう':`🪙 ${x.p}`}</span></button>`; };
+    return `<button class="sp-item${on?' on':''}${own?'':' locked'}" onclick="shopBuy('${k}','${x.id}')">${prev}<b>${x.n}</b><span class="note">${x.d}</span><span class="sp-price">${on?"使用中":own?"つかう":x.p===null?"🎁 限定":`🪙 ${x.p}`}</span></button>`; };
   return `<section class="panel shop"><div class="row spread"><h3>ショップ</h3><span class="coinbal">🪙 <b>${coin}</b></span></div>
     <p class="note">ゲームを遊ぶとコインがたまります（1位・独占・ミッション・デイリーでボーナス）。</p>
     <span class="label" style="margin-top:8px">テーブル（ゲーム中の背景）</span><div class="sp-grid">${SHOP.table.map(x=>item('table',x)).join('')}</div>
@@ -2818,6 +2948,7 @@ function homeView(){
   <div class="todayhead"><span class="label">TODAY</span><b>今日やること</b></div>
   ${dailyCard()}
   ${eventCard()}
+  <section class="two">${quizCard()}${boxCard()}</section>
   ${missionsPanel()}
   <nav class="homelinks"><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
@@ -2878,6 +3009,7 @@ function settingsBody(){
     ${sw(S.sound,'toggleSound()','効果音','カードを選ぶ音やファンファーレ')}
     ${sw(!!S.bgm,'toggleBgm()','BGM','ゲーム中に軽い音楽を流す')}
     ${sw(!!S.tts,'toggleTts()','ニュース読み上げ','NEWSの見出しをアナウンサーのように声で読む')}
+    ${sw(!!S.big,"toggleBig()","文字を大きく","画面全体の文字とボタンを大きくする（見やすさ重視）")}
     ${sw(!!S.coach,'toggleCoach()','コーチ（初心者向け）','手札の画面に「おすすめ」と理由を出す')}
     ${sw(S.vib!==false,'toggleVib()','振動','スマホで選んだときや被ったときに軽く振動')}
     ${sw(!!S.calm,'toggleCalm()','動きを減らす','アニメーションや紙吹雪を止めて静かに表示')}
