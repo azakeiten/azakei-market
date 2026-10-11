@@ -1166,7 +1166,17 @@ body[data-theme="future"] #bg{filter:hue-rotate(-60deg) saturate(1.4)}
 .svsteps i.ok{background:#ff7a8f;color:#2a0510;box-shadow:none}.svsteps i.ng{background:#3a3f6a;color:#ff6b86}
 .svbest{font-weight:800;color:var(--gold);padding:6px 14px;border-radius:999px;background:rgb(255 200 58 / .14);animation:vsfin2 .6s cubic-bezier(.2,.9,.3,1.4) both}
 @keyframes vsfin2{0%{transform:scale(2);opacity:0}100%{transform:none;opacity:1}}
+.svlife{display:flex;align-items:center;gap:6px;font-weight:800;font-size:13px}
 .svnext{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;padding:10px;border-radius:14px;background:rgb(0 0 0 / .18)}
+.chalhead.yk{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center}
+.yk-ring{position:relative;width:88px;height:88px}
+.yk-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.yk-ring circle{fill:none;stroke-width:8;stroke-linecap:round}.yk-ring .bg{stroke:rgb(255 255 255 / .08)}
+.yk-ring .fg{stroke:var(--gold);filter:drop-shadow(0 0 6px rgb(255 200 58 / .6));transition:stroke-dashoffset 1s cubic-bezier(.2,.9,.3,1)}
+.yk-ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:400;font-size:26px}
+.yk-ring b small{font-size:13px;color:var(--muted)}
+.ctabs button{display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.2;padding:8px 0}
+.ctabs small{font-size:10px;font-weight:800;color:var(--gold);letter-spacing:0}
 .stories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .stc{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;border:0;color:var(--ink);font:inherit;cursor:pointer;padding:12px 4px 10px;border-radius:18px;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--rc) 30%,transparent),transparent 65%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 4px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 40%,var(--line));animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--k) * 45ms)}
 .stc b{font-size:14px}.stc .note{font-size:10px;line-height:1.35}
@@ -2244,7 +2254,8 @@ function settleOverlay(){
 function quit(){
   clearTimeout(introTimer);
   if(G && G.online){ if(G.host){ G=null; hostBroadcast(); render(); } else leaveRoom(); return; }
-  const back = G && (G.chal||G.cup||G.story||G.surv!=null) ? 'chal' : 'home';   // チャレンジ中はステージ一覧へ戻る
+  const back = G && (G.chal||G.cup||G.story||G.surv!=null) ? 'chal' : 'home';
+  if(G) S.ctab = G.chal?'stage':G.cup?'cup':G.story?'story':G.surv!=null?'surv':S.ctab;   // 戻ったら遊んでいたタブを開く   // チャレンジ中はステージ一覧へ戻る
   G=null; S.screen=back; render();
 }
 
@@ -3780,18 +3791,25 @@ function chalCard(){
   const total=chalTotal(), next=CHALLENGES.findIndex((c,i)=>chalOpen(i)&&chalStars(c.id)===0);
   return `<button class="chalcard" onclick="go('chal')"><span class="cstars">★</span><span class="ctx"><span class="label">CHALLENGE · ストーリー・カップ・ステージ</span><b>チャレンジ</b><span class="desc">${next>=0?`次は STAGE ${next+1}「${CHALLENGES[next].n}」`:'全ステージクリア！★をそろえよう'}</span></span><span class="cnum"><b>${total}</b><small>/ ${CHALLENGES.length*3} ★</small></span></button>`;
 }
+function yarikomi(){   // やりこみ度：ストーリー・カップ・サバイバル・ステージ・実績をまとめた達成率
+  const P=S.prof, st=STORIES.filter(x=>storyDone(x.k)).length/STORIES.length, cup=CUPS.filter(c=>cupWins(c.id)).length/CUPS.length,
+    pf=CUPS.filter(c=>cupPerfect(c.id)).length/CUPS.length, sv=Math.min(10,P.survBest||0)/10, stg=chalTotal()/(CHALLENGES.length*3), ach=ACH.filter(a=>P.ach[a.id]).length/ACH.length;
+  return Math.round((st*2+cup*2+pf+sv*1.5+stg*2+ach*1.5)/10*100);
+}
 function chalView(){
-  const total=chalTotal();
-  return `<div class="col"><section class="chalhead"><span class="label">CHALLENGE</span><h2 class="ttl">チャレンジ</h2>
-      <p class="note">山札と相手が決まった8つのステージ。条件をクリアして★を集めよう。1つクリアすると次が開きます。</p>
-      <div class="chaltotal"><span class="stars"><i class="on" style="font-size:34px">★</i></span><b>${total}</b><span>/ ${CHALLENGES.length*3}</span></div></section>
-    ${survCard()}
-    ${storySection()}
-    ${cupsSection()}
-    <span class="label" style="margin:4px 0 -4px">STAGES</span>
+  const P=S.prof, total=chalTotal(), yk=yarikomi(), R=34, L=2*Math.PI*R;
+  const sDone=STORIES.filter(x=>storyDone(x.k)).length, cDone=CUPS.filter(c=>cupWins(c.id)).length;
+  const tab=S.ctab || (sDone<STORIES.length?'story':'cup');
+  const tabs=[['story','ストーリー',`${sDone}/${STORIES.length}`],['cup','カップ',`${cDone}/${CUPS.length}`],['surv','サバイバル',`最高${P.survBest||0}`],['stage','ステージ',`★${total}`]];
+  const body = tab==='story' ? storySection() : tab==='cup' ? cupsSection() : tab==='surv' ? survCard() : `<span class="label" style="margin:4px 0 -4px">STAGES · ★${total} / ${CHALLENGES.length*3}</span>
+    <p class="note" style="margin:0">山札と相手が決まった8つのステージ。条件をクリアして★を集めよう。</p>
     <div class="path">${CHALLENGES.map((c,i)=>{ const st=chalStars(c.id), open=chalOpen(i);
       return `<button class="stg${open?'':' lock'}${st===3?' perfect':''}${c.long?' long':''}${c.mode==='history'?' hist':''}" ${open?`onclick="openSheet('chal:${c.id}')"`:'disabled'} style="--k:${i}">
-        <span class="snum">${open?i+1:'🔒'}</span><span class="sinfo"><b>${c.n}</b><span class="note">${open?c.d:'前のステージをクリアすると開きます'}</span></span>${open?starRow(st):''}</button>`; }).join('')}</div></div>`;
+        <span class="snum">${open?i+1:'🔒'}</span><span class="sinfo"><b>${c.n}</b><span class="note">${open?c.d:'前のステージをクリアすると開きます'}</span></span>${open?starRow(st):''}</button>`; }).join('')}</div>`;
+  return `<div class="col"><section class="chalhead yk"><div class="yk-ring"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="${R}" class="bg"/><circle cx="40" cy="40" r="${R}" class="fg" style="stroke-dasharray:${L};stroke-dashoffset:${L*(1-yk/100)}"/></svg><b>${yk}<small>%</small></b></div>
+      <div><span class="label">CHALLENGE</span><h2 class="ttl">やりこみ</h2><p class="note">ストーリー・カップ・サバイバル・ステージ。ぜんぶ合わせた<b style="color:var(--gold)">やりこみ度</b>を100%にしよう。</p></div></section>
+    <nav class="mtabs ctabs" role="tablist">${tabs.map(([k,n,b])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="S.ctab='${k}';sfx('click');render()">${n}<small>${b}</small></button>`).join('')}</nav>
+    ${body}</div>`;
 }
 function chalSheetBody(id){
   const c=CHALLENGES.find(x=>x.id===id); if(!c) return '';
@@ -3938,36 +3956,37 @@ const SURV_RULES=['boom','bubble','reg','slump','crowd'];
 function survSpec(lv){
   const types=SURV_FOES[Math.min(lv,SURV_FOES.length-1)], ks=Object.keys(CHARS), r=mulberry(lv*977+S.prof.survSeed||1);
   const names=shuffle(ks.slice(),r).slice(0,types.length);
-  return {lv, foes:names.map((k,i)=>[k,types[i]]), need:lv<3?2:1, rule:lv>=3?SURV_RULES[(lv*3+(S.prof.survSeed||0))%SURV_RULES.length]:null};
+  return {lv, foes:names.map((k,i)=>[k,types[i]]), need:lv<5?2:1, rule:lv>=3?SURV_RULES[(lv*3+(S.prof.survSeed||0))%SURV_RULES.length]:null};
 }
 function survCfg(sv){ let c=chalCfg({mode:'classic'}, false); if(sv.rule){ c={...c, table:clone(c.table)}; MARKETS[sv.rule].apply(c); } return c; }
 const survCoin = lv => 10+lv*5;
-function startSurv(){ const P=S.prof; P.survSeed=Math.floor(Math.random()*1e6); P.survRun={lv:0}; saveProfile(); closeSheet(); startGame(false,null,null,null,null,0); }
+function startSurv(){ const P=S.prof; P.survSeed=Math.floor(Math.random()*1e6); P.survRun={lv:0, life:1}; saveProfile(); closeSheet(); startGame(false,null,null,null,null,0); }
 function survNext(){ const r=S.prof.survRun; if(r){ closeSheet(); startGame(false,null,null,null,null,r.lv); } else startSurv(); }
 function survResult(rank){
   const P=S.prof, lv=G.surv, sv=survSpec(lv), pass=rank<=sv.need;
   const before=P.survBest||0; let best=false;
-  if(pass){ P.survRun={lv:lv+1}; if(lv+1>before){ P.survBest=lv+1; best=true; } } else P.survRun=null;
-  return {lv, rank, need:sv.need, pass, coin:pass?survCoin(lv):0, best, record:P.survBest||0, next:pass?survSpec(lv+1):null};
+  const life=(P.survRun&&P.survRun.life)||0; let retry=false;
+  if(pass){ P.survRun={lv:lv+1, life}; if(lv+1>before){ P.survBest=lv+1; best=true; } } else if(life>0){ P.survRun={lv, life:life-1}; retry=true; } else P.survRun=null;
+  return {lv, rank, need:sv.need, pass, retry, life:retry?life-1:life, coin:pass?survCoin(lv):0, best, record:P.survBest||0, next:pass?survSpec(lv+1):null};
 }
 const survFoes = sv => sv.foes.map(([k,t])=>`<span class="tagx${t==='pro'?' pro':''}">${CHARS[k].ic} ${k}・${CUP_TYPE[t]}</span>`).join(' ');
 function survCard(){
   const P=S.prof, run=P.survRun, best=P.survBest||0;
   return `<span class="label" style="margin:4px 0 -4px">SURVIVAL · 勝ち抜き</span>
-  <section class="survcard"><span class="sv-ic">🛡️</span><span class="sv-tx"><b>サバイバル</b><span class="note">負けるまで続く勝ち抜き戦。勝つほど相手が強くなり、4戦目からは市況ルールも付きます。突破するたびにコイン。</span>
-    <span class="sv-best">最高記録 <b>${best}</b> 連続突破${run?` · いま第${run.lv+1}戦に挑戦中`:''}</span></span>
+  <section class="survcard"><span class="sv-ic">🛡️</span><span class="sv-tx"><b>サバイバル</b><span class="note">負けるまで続く勝ち抜き戦。勝つほど相手が強くなり、4戦目からは市況ルール、6戦目からは1位が条件に。リトライ❤は1回だけ。</span>
+    <span class="sv-best">最高記録 <b>${best}</b> 連続突破${run?` · いま第${run.lv+1}戦に挑戦中 ${hearts(run.life||0,1)}`:''}</span></span>
     <div class="row" style="gap:8px">${run?`<button class="btn gold" onclick="survNext()">第${run.lv+1}戦へ</button><button class="btn" onclick="startSurv()">最初から</button>`:`<button class="btn gold" onclick="startSurv()">スタート</button>`}</div></section>`;
 }
 function survPanel(){
   const R=G.reward&&G.reward.svr; if(!R) return '';
   const steps=Array.from({length:Math.max(5,R.lv+2)},(_,i)=>`<i class="${i<R.lv+(R.pass?1:0)?'ok':i===R.lv&&!R.pass?'ng':''}">${i<R.lv+(R.pass?1:0)?'✓':i===R.lv&&!R.pass?'✕':i+1}</i>`).join('');
   return `<section class="panel survres${R.pass?' clear':''}"><span class="label">SURVIVAL · 第${R.lv+1}戦</span>
-    <div class="chalbig">${R.pass?'突破！':'ここまで！'}</div>
+    <div class="chalbig">${R.pass?'突破！':R.retry?'ピンチ！':'ここまで！'}</div>${R.retry?`<p class="note">リトライ❤を使って、もう一度 第${R.lv+1}戦に挑戦できます</p>`:''}
     <p class="note">${R.rank}位（${R.need===1?'1位':R.need+'位以内'}で突破）${R.pass?` · <b>+${R.coin}コイン</b>`:''}</p>
     <div class="svsteps">${steps}</div>
-    ${R.best?`<div class="svbest">🏅 自己ベスト更新！ ${R.record}連続突破</div>`:R.pass?'':`<p class="note">最高記録 ${R.record}連続突破</p>`}
+    ${R.pass||R.retry?`<div class="svlife">リトライ ${hearts(R.life,1)}</div>`:''}${R.best?`<div class="svbest">🏅 自己ベスト更新！ ${R.record}連続突破</div>`:R.pass?'':`<p class="note">最高記録 ${R.record}連続突破</p>`}
     ${R.next?`<div class="svnext"><span class="label">次の相手</span><div class="row" style="gap:6px;justify-content:center">${survFoes(R.next)}${R.next.rule?`<span class="mktchip" style="--m1:${MARKETS[R.next.rule].c1};--m2:${MARKETS[R.next.rule].c2}">${MARKETS[R.next.rule].ic} ${MARKETS[R.next.rule].n}</span>`:''}</div></div>`:''}
-    <div class="row" style="justify-content:center"><button class="btn big" onclick="quit()">一覧へ</button>${R.pass?`<button class="btn gold big pulse" onclick="survNext()">第${R.lv+2}戦へ！</button>`:`<button class="btn gold big" onclick="startSurv()">もう一度</button>`}</div></section>`;
+    <div class="row" style="justify-content:center"><button class="btn big" onclick="quit()">一覧へ</button>${R.pass?`<button class="btn gold big pulse" onclick="survNext()">第${R.lv+2}戦へ！</button>`:R.retry?`<button class="btn gold big pulse" onclick="survNext()">リトライ！</button>`:`<button class="btn gold big" onclick="startSurv()">もう一度</button>`}</div></section>`;
 }
 /* ---- キャラストーリー：9人と1話ずつ。会話のあとで対戦し、そのキャラに負けない順位ならクリア（最終話は1位） ---- */
 const STORIES=[
