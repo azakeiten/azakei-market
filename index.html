@@ -1611,12 +1611,19 @@ const HIST = [
   {f:true, y:2047, n:'巨大サイバー攻撃', d:'世界中の銀行とネットが一時停止。現金とお店の買いだめが復活した。', r:[-1,-3,0,2,-1,-2]},
   {f:true, y:2050, n:'カーボンニュートラル達成', d:'温室効果ガスの排出が実質ゼロに。新しいエネルギーと工場の技術が世界を支える。', r:[3,1,2,0,1,0]},
   {f:true, y:2055, n:'月面都市の建設', d:'月に人が住む街ができはじめる。ロケットで運び、月で作り、地球へ中継する。', r:[1,1,2,0,3,1]},
-  {f:true, y:2060, n:'分身ロボで暮らす社会', d:'遠くの分身ロボを動かして、家にいながら買い物も旅行も。届ける仕事と配信が主役。', r:[0,0,1,3,1,2]}
+  {f:true, y:2060, n:'分身ロボで暮らす社会', d:'遠くの分身ロボを動かして、家にいながら買い物も旅行も。届ける仕事と配信が主役。', r:[0,0,1,3,1,2]},
+  // ---- 追加の歴史（番号を変えないよう末尾に足す。表示は年代順に並べ替える） ----
+  {y:1970, n:'大阪万博', d:'アジア初の万国博覧会に約6400万人が来場。会場づくりと人の移動で建設・輸送がにぎわい、カラーテレビも広まった。', r:[1,1,2,1,3,2]},
+  {y:1979, n:'第二次オイルショック', d:'イラン革命をきっかけに原油価格が再び高騰。省エネが進み、燃費のよい日本車が世界で売れた。', r:[3,-1,1,1,-2,0]},
+  {y:1997, n:'金融危機', d:'大手の証券会社や銀行が相次いで破綻し、金融不安が広がった。消費は冷え、安い店が選ばれた。', r:[1,-3,-2,2,-1,0]},
+  {y:2023, n:'生成AIブーム', d:'対話型AIが世界中で使われはじめ、AI向け半導体とデータセンターへの投資が急増。電力の需要も伸びた。', r:[2,2,1,0,0,3]},
+  {y:2024, n:'新NISAスタート', d:'投資の非課税枠が大きく広がった新しいNISAが始まり、個人のお金が株式や投資信託へ流れこんだ。', r:[0,3,1,1,0,1]},
+  {y:2025, n:'大阪・関西万博', d:'大阪で2度目の万博が開催。会場への鉄道や道路が整備され、訪日客の観光や公式グッズもにぎわった。', r:[1,0,2,2,3,2]}
 ];
 const ERAS = {
-  all:{name:'全時代', sub:'1964〜2022', ids:[0,1,2,3,4,5,6,7,8,9,10,11]},
-  showa:{name:'昭和〜バブル崩壊', sub:'1964〜1991', ids:[0,1,2,3,4]},
-  heisei:{name:'平成・令和', sub:'1995〜2022', ids:[5,6,7,8,9,10,11]},
+  all:{name:'全時代', sub:'1964〜2025', ids:[0,1,2,3,4,5,6,7,8,9,10,11,24,25,26,27,28,29]},
+  showa:{name:'昭和〜バブル崩壊', sub:'1964〜1991', ids:[0,24,1,25,2,3,4]},
+  heisei:{name:'平成・令和', sub:'1995〜2025', ids:[5,26,6,7,8,9,10,11,27,28,29]},
   future:{name:'未来編', sub:'2027〜2060', ids:[12,13,14,15,16,17,18,19,20,21,22,23], hidden:true}
 };
 const FORE = {
@@ -2625,7 +2632,7 @@ ${IND.map((d,i)=>d+' '+(h.r[i]>0?'+':'')+h.r[i]).join(' / ')}`).join('\n\n')}
 ## 基本ルール
 ${base}
 ## ロング版のルール
-- クラシックは6ターン×3期（18ターン）、歴史モードは12の出来事すべてを前半・後半の2期（12ターン）
+- クラシックは6ターン×3期（18ターン）、歴史モードは18の出来事すべてを6つずつ3期（18ターン）
 - 1期で手札6枚をすべて使い切る。期が変わると手札6枚と先物取引が復活
 - 期のはじめに市況カードを1枚めくり、その期だけルールが加わる（第1期は好景気か先物ブーム）
 - 期の終わりに決算：その期に稼いだPOINTがいちばん多い人に+3（同点は全員）。最後の期も決算してから終了
@@ -2638,7 +2645,7 @@ ${Object.values(MARKETS).map(m=>`- **${m.n}**：${m.d}。${m.tip}`).join('\n')}
 ## 得点表（NEWS × 産業）
 ${rows(NEWS,T2)}
 `;
-  if(k==='history') return `# AZAKEI MARKET β3 歴史モード ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。NEWSが本当の歴史どおりに動くモードです。\n\n## ルール\n${base}- 歴史モードでは、選んだ時代の出来事から4つが**年代順**に起きる。いまより前の年の出来事はもう起きない\n- 時代：全時代（1964〜2022・12の出来事）／昭和〜バブル崩壊（5）／平成・令和（7）\n\n## 出来事\n${HIST.filter(h=>!h.f).map(h=>`### ${h.y} ${h.n}\n${h.d}\n\n${IND.map((d,i)=>d+' '+t(h.r[i])).join(' / ')}\n`).join('\n')}\n## 早見表\n${rows(HIST.filter(h=>!h.f).map(h=>h.y+' '+h.n),HIST.filter(h=>!h.f).map(h=>h.r))}\n`;
+  if(k==='history') return `# AZAKEI MARKET β3 歴史モード ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。NEWSが本当の歴史どおりに動くモードです。\n\n## ルール\n${base}- 歴史モードでは、選んだ時代の出来事から4つが**年代順**に起きる。いまより前の年の出来事はもう起きない\n- 時代：全時代（1964〜2025・18の出来事）／昭和〜バブル崩壊（7）／平成・令和（11）\n\n## 出来事\n${HIST.filter(h=>!h.f).map(h=>`### ${h.y} ${h.n}\n${h.d}\n\n${IND.map((d,i)=>d+' '+t(h.r[i])).join(' / ')}\n`).join('\n')}\n## 早見表\n${rows(HIST.filter(h=>!h.f).map(h=>h.y+' '+h.n),HIST.filter(h=>!h.f).map(h=>h.r))}\n`;
   return `# AZAKEI MARKET β3 ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。2〜6人・全4ターン。\n\n## ルール\n${base}\n## 得点表（NEWS × 産業）\n${rows(NEWS,T2)}\n`;
 }
 // ---- sheets (bottom sheet on phones / modal on desktop) ----
@@ -3027,7 +3034,10 @@ const NEWS_FX={
   h16:{e:['💧','🏜️','🚰'],m:'fall',t:'#4fe3ff',s:'bubble'}, h17:{e:['🚀','🪐','✨'],m:'rise',t:'#a77bff',s:'jet'},
   h18:{e:['🤖','🧹','🦾'],m:'pop',t:'#ff8ab4',s:'build'},  h19:{e:['⚛️','🔮','✨'],m:'spin',t:'#a77bff',s:'digi'},
   h20:{e:['⚠️','🔒','💀'],m:'fall',t:'#ff3b3b',s:'crash',quake:true}, h21:{e:['🌱','🌍','♻️'],m:'rise',t:'#3fe08f',s:'bubble'},
-  h22:{e:['🌕','🚀','🏙️'],m:'spin',t:'#ffe08a',s:'jet'},  h23:{e:['🦾','🕶️','📦'],m:'fly',t:'#ff8ab4',s:'digi'}
+  h22:{e:['🌕','🚀','🏙️'],m:'spin',t:'#ffe08a',s:'jet'},  h23:{e:['🦾','🕶️','📦'],m:'fly',t:'#ff8ab4',s:'digi'},
+  h24:{e:['🗼','🎌','📺'],m:'rise',t:'#ff5c9a',s:'coin'},   h25:{e:['🛢️','🚗','⛽'],m:'fall',t:'#ff8a3d',s:'crash'},
+  h26:{e:['🏦','📉','💸'],m:'fall',t:'#ff3b3b',s:'crash',quake:true}, h27:{e:['🤖','💬','🖥️'],m:'pop',t:'#7af0ff',s:'digi'},
+  h28:{e:['📈','💰','🌱'],m:'rise',t:'#3fe08f',s:'bubble'}, h29:{e:['🎡','🚆','🌏'],m:'fly',t:'#4fe3ff',s:'jet'}
 };
 const fxKey = n => (G.cfg.hist?'h':'n')+n;
 function newsFx(n){
@@ -3335,7 +3345,7 @@ function scoreTable(editable){
 }
 function histTable(){
   return `<div class="tbl-wrap"><table class="st"><thead><tr><th>年</th><th>出来事</th>${IND.map((d,i)=>`<th>${chip(i)}</th>`).join('')}</tr></thead><tbody>
-    ${HIST.filter(h=>!h.f).map(h=>{ const mx=Math.max(...h.r); return `<tr><td class="yrcell">${h.y}</td><th>${h.n}</th>${h.r.map(v=>`<td class="v ${v===mx?'p3':v<0?'neg':v>0?'pos':''}">${sgn(v)}</td>`).join('')}</tr>`; }).join('')}
+    ${HIST.filter(h=>!h.f).sort((a,b)=>a.y-b.y).map(h=>{ const mx=Math.max(...h.r); return `<tr><td class="yrcell">${h.y}</td><th>${h.n}</th>${h.r.map(v=>`<td class="v ${v===mx?'p3':v<0?'neg':v>0?'pos':''}">${sgn(v)}</td>`).join('')}</tr>`; }).join('')}
     </tbody></table></div>`;
 }
 
@@ -3392,7 +3402,7 @@ function playView(){
         <button class="len${S.len!=='long'?' on':''}" onclick="setLen('short')"><span class="lt">SHORT</span><b>ショート</b><span class="note">${CFG.turns||4}ターン · 5分 · 文化祭向け</span></button>
         <button class="len long${S.len==='long'?' on':''}" onclick="setLen('long')"><span class="lt">LONG</span><b>ロング版</b><span class="note">${S.mode==='future'?'12ターン · 2期 · 2027→2060 全部':S.mode==='history'?'12ターン · 2期 · 1964→2022 全部':'18ターン · 3期 · じっくり'}</span></button>
       </div>
-      ${S.len==='long'?`<p class="note lnote">6ターンで1期。期が変わると<b style="color:var(--ink)">手札6枚と${FORE[CFG.fore].short}が復活</b>。期のはじめに<b style="color:#ff9ad9">市況カード</b>を1枚めくり、その期だけルールが変わる（好景気・不況・バブル…）。期末の決算で、その期にいちばん稼いだ人に <b style="color:var(--gold)">+${SETTLE_BONUS}</b>。さらに、自分だけが見られるお題<b style="color:#ff9ad9">極秘契約</b>と、いちばん独占した産業が以後+1になる<b style="color:var(--ink)">ブランド</b>も。${S.mode==='history'?'歴史モードは12の出来事をすべて、前半・後半に分けて遊びます。':''}</p>`:''}
+      ${S.len==='long'?`<p class="note lnote">6ターンで1期。期が変わると<b style="color:var(--ink)">手札6枚と${FORE[CFG.fore].short}が復活</b>。期のはじめに<b style="color:#ff9ad9">市況カード</b>を1枚めくり、その期だけルールが変わる（好景気・不況・バブル…）。期末の決算で、その期にいちばん稼いだ人に <b style="color:var(--gold)">+${SETTLE_BONUS}</b>。さらに、自分だけが見られるお題<b style="color:#ff9ad9">極秘契約</b>と、いちばん独占した産業が以後+1になる<b style="color:var(--ink)">ブランド</b>も。${S.mode==='history'?'歴史モードは18の出来事をすべて、6つずつ3期に分けて遊びます。':''}</p>`:''}
       <div class="step"><span class="sn">2</span><b>だれと遊ぶ？</b></div>
       <div class="seg wide" role="group" aria-label="遊び方">
         <button class="${!party?'on':''}" onclick="setSeatPreset('cpu')">1人でCPUと</button>
@@ -3869,7 +3879,7 @@ function dexPanel(){
   const D=S.prof.dex||{n:[],h:[],m:[]}, total=DEX_TOTAL(), got=dexCount();
   const sec=(t,items)=>`<div class="dexsec"><span class="label">${t}</span><div class="dexgrid">${items}</div></div>`;
   const news=NEWS.map((n,i)=>{ const ok=D.n.includes(i); return `<button class="dx news${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:n${i}')"`:'disabled'}><span class="dxk">NEWS</span><b>${ok?n:'？？？'}</b></button>`; }).join('');
-  const histBtn=(h,i)=>{ const ok=D.h.includes(i); return `<button class="dx ${h.f?"fut":"hist"}${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:h${i}')"`:'disabled'}><span class="dxk">${ok?h.y:(h.f?'20XX':'19XX')}</span><b>${ok?h.n:'？？？'}</b></button>`; }; const hist=HIST.map((h,i)=>h.f?'':histBtn(h,i)).join(''), fut=HIST.map((h,i)=>h.f?histBtn(h,i):'').join('');
+  const histBtn=(h,i)=>{ const ok=D.h.includes(i); return `<button class="dx ${h.f?"fut":"hist"}${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:h${i}')"`:'disabled'}><span class="dxk">${ok?h.y:(h.f?'20XX':'19XX')}</span><b>${ok?h.n:'？？？'}</b></button>`; }; const hist=HIST.map((h,i)=>i).filter(i=>!HIST[i].f).sort((a,b)=>HIST[a].y-HIST[b].y).map(i=>histBtn(HIST[i],i)).join(''), fut=HIST.map((h,i)=>h.f?histBtn(h,i):'').join('');
   const mk=Object.entries(MARKETS).map(([k,m])=>{ const ok=D.m.includes(k); return `<button class="dx mk${ok?'':' lock'}" style="--m1:${m.c1};--m2:${m.c2}" ${ok?`onclick="openSheet('dex:m${k}')"`:'disabled'}><span class="dxk">${ok?m.ic:'?'}</span><b>${ok?m.n:'？？？'}</b></button>`; }).join('');
   return `<section class="panel"><div class="row spread"><h3>マーケット図鑑</h3><span class="note">${got} / ${total} 発見</span></div>
     <span class="dexbar"><i style="width:${Math.round(got/total*100)}%"></i></span>
@@ -4489,8 +4499,8 @@ function rulesView(){
       <section class="panel"><span class="label">WINNER</span><h3>4ターンで合計が多い人の勝ち</h3><p class="note">${CFG.tiebreak?'同点は独占回数が多い人が上位。それも同じなら同順位。':'同点は同順位。'}</p></section>
     </div>`;
   if(tab==='table') body=`<section class="panel"><div class="row spread"><h3>クラシックの得点表</h3><span class="note">金色が各NEWSの最高点</span></div>${scoreTable(false)}<p class="note">数値を変えたいときは「ルール設定」から。</p></section>`;
-  if(tab==='hist') body=`<section class="panel"><div class="row spread"><h3 style="font-family:var(--serif);font-size:20px">歴史モードの出来事</h3><span class="note">年代順に起きる12の出来事</span></div>${histTable()}<p class="note">点数は、実際の出来事でその産業が追い風か向かい風かをもとに、ゲーム用に決めたものです。</p></section>
-    <section class="panel"><h3>解説</h3><div class="recap">${HIST.filter(h=>!h.f).map(h=>`<div><b>${h.y}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${h.n}</b><br>${h.d}</p></div>`).join('')}</div></section>`;
+  if(tab==='hist') body=`<section class="panel"><div class="row spread"><h3 style="font-family:var(--serif);font-size:20px">歴史モードの出来事</h3><span class="note">年代順に起きる18の出来事</span></div>${histTable()}<p class="note">点数は、実際の出来事でその産業が追い風か向かい風かをもとに、ゲーム用に決めたものです。</p></section>
+    <section class="panel"><h3>解説</h3><div class="recap">${HIST.filter(h=>!h.f).sort((a,b)=>a.y-b.y).map(h=>`<div><b>${h.y}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${h.n}</b><br>${h.d}</p></div>`).join('')}</div></section>`;
   if(tab==='set') body=`<section class="panel"><h3>プリセット</h3>
       <div class="choices">${Object.entries(PRESETS).map(([k,p])=>`<button class="choice${CFG.preset===k?' on':''}" onclick="applyPreset('${k}')"><b>${p.name}${p.badge?`<span class="badge">${p.badge}</span>`:''}</b><span class="note">${p.desc}</span></button>`).join('')}</div>
       ${CFG.preset==='custom'?'<p class="note">いまは手で変えたカスタム設定です。</p>':''}</section>
