@@ -1341,6 +1341,24 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .wp-luck small{color:#5a4a30}
 .wp-ad{border:1px dashed currentColor;padding:4px 8px;font-size:12px}
 .wp-foot{margin-top:10px;padding-top:6px;border-top:1px solid rgb(0 0 0 / .25);text-align:center;font-size:10px;font-family:var(--body);color:#5a4a30}
+.achp .dexbar{margin:6px 0 10px}
+.am-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+.am-sum>div{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px;border-radius:14px;background:var(--panel2)}
+.am-sum b{font-family:var(--display);font-weight:400;font-size:22px}.am-sum small{color:var(--muted);font-size:11px}
+.am-g{margin-top:12px}
+.am-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:8px;margin-top:6px}
+.am{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;background:rgb(7 8 24 / .4);box-shadow:inset 0 0 0 1px var(--line)}
+.am.t1{--m1:#ffd0a8;--m2:#b8692e}.am.t2{--m1:#f4f7ff;--m2:#8890b8}.am.t3{--m1:#fff1b0;--m2:#d49a12}
+.am-sum .t1{--m1:#ffd0a8;--m2:#b8692e}.am-sum .t2{--m1:#f4f7ff;--m2:#8890b8}.am-sum .t3{--m1:#fff1b0;--m2:#d49a12}
+.am-medal{position:relative;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(from 200deg,var(--m1),var(--m2),var(--m1),var(--m2),var(--m1));box-shadow:0 3px 0 rgb(0 0 0 / .35),inset 0 0 0 2px rgb(255 255 255 / .35)}
+.am-medal i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:17px;font-weight:800;color:#2a1a00;background:radial-gradient(circle at 35% 30%,#fff,var(--m1) 45%,var(--m2))}
+.am-medal.sm{width:32px;height:32px}.am-medal.sm i{width:24px;height:24px;font-size:11px}
+.am:not(.on) .am-medal{filter:grayscale(1) brightness(.45)}.am:not(.on) b{color:var(--muted)}
+.am.on{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--m2) 60%,transparent),0 0 18px -8px var(--m1)}
+.am.on.t3 .am-medal::after{content:"";position:absolute;inset:-4px;border-radius:50%;box-shadow:0 0 14px 2px rgb(255 214 90 / .55);animation:lastpulse 2.4s ease-in-out infinite}
+.am-tx{display:flex;flex-direction:column;gap:1px;min-width:0}.am-tx b{font-size:14px}.am-tx .note{font-size:11px}.am-tx small{font-size:10px;color:var(--gold)}
+.am-tier{font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;color:#2a1a00;background:linear-gradient(135deg,var(--m1),var(--m2))}
+.am:not(.on) .am-tier{opacity:.4}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -1973,7 +1991,7 @@ function start(data){
   splash();
   fxSize(); bgInit(); render(); renderSheet();
   if(firstRun){ save('azakei-tut',1); setTimeout(openTutorial,600); }
-  else if(!G) setTimeout(loginBonus,700);
+  if(S.prof && S.prof.coinFix===1 && !G){ S.prof.coinFix=2; saveProfile(); setTimeout(()=>toast(`コインの記録が壊れていたので、${S.prof.coin}コインに戻しました`),1600); }
 }
 window.addEventListener('resize', fxSize);
 window.claude?.hot?.snapshot?.(() => ({CFG,S,G,LAB}));
@@ -3002,6 +3020,28 @@ function weeklyBody(){
     </div>
     <div class="wp-foot">AZAKEI 経済新聞社 · 経済を読み、相手を読み、未来を読む</div></div>`;
 }
+/* ---- 実績：種類ごとに分け、むずかしさで銅・銀・金のメダルに ---- */
+const ACH_GROUPS=[
+  ['はじめての一歩', ['first','win1','online','long1','hist','futwin']],
+  ['腕前', ['mono3','fut4','big15','comeback','beatpro','longwin','sweep','ct5']],
+  ['やりこみ', ['win10','games20','daily3','daily7','gold','chal24','surv5','cupgold']],
+  ['コレクション', ['mkall','dexall','story9','chars9','beat9','boss3']]
+];
+const ACH_TIER={win10:2,games20:2,daily3:2,ct5:2,mono3:2,fut4:2,big15:2,longwin:2,chars9:2,gold:2,mkall:2, comeback:3,beatpro:3,sweep:3,daily7:3,chal24:3,surv5:3,cupgold:3,dexall:3,story9:3,beat9:3,boss3:3};
+const ACH_TN=['','銅','銀','金'];
+function achPanel(){
+  const P=S.prof, got=ACH.filter(a=>P.ach[a.id]), tier=id=>ACH_TIER[id]||1;
+  const cnt=[1,2,3].map(t=>got.filter(a=>tier(a.id)===t).length), tot=[1,2,3].map(t=>ACH.filter(a=>tier(a.id)===t).length);
+  const listed=new Set(ACH_GROUPS.flatMap(g=>g[1])), extra=ACH.filter(a=>!listed.has(a.id)).map(a=>a.id);
+  const groups=extra.length?ACH_GROUPS.concat([['そのほか',extra]]):ACH_GROUPS;
+  const badge=a=>{ const t=P.ach[a.id], tr=tier(a.id), d=t&&typeof t==='number'?new Date(t):null;
+    return `<div class="am t${tr}${t?' on':''}"><span class="am-medal"><i>${t?a.ic:'?'}</i></span><span class="am-tx"><b>${a.n}</b><span class="note">${a.d}</span>${d?`<small>${d.getMonth()+1}/${d.getDate()} 解除</small>`:''}</span><span class="am-tier">${ACH_TN[tr]}</span></div>`; };
+  return `<section class="panel achp"><div class="row spread"><h3>実績</h3><span class="note">${got.length} / ${ACH.length} 解除</span></div>
+    <span class="dexbar"><i style="width:${Math.round(got.length/ACH.length*100)}%"></i></span>
+    <div class="am-sum">${[1,2,3].map(t=>`<div class="t${t}"><span class="am-medal sm"><i>${ACH_TN[t]}</i></span><b>${cnt[t-1]}</b><small>/ ${tot[t-1]}</small></div>`).join('')}</div>
+    ${groups.map(([g,ids])=>{ const as=ids.map(id=>ACH.find(a=>a.id===id)).filter(Boolean), n=as.filter(a=>P.ach[a.id]).length;
+      return `<div class="am-g"><div class="row spread"><span class="label">${g}</span><span class="note">${n}/${as.length}</span></div><div class="am-list">${as.map(badge).join('')}</div></div>`; }).join('')}</section>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -3653,7 +3693,7 @@ function recordResult(){
   if(G.daily){ P.daily=P.daily||{}; if(!P.daily[G.daily]) P.daily[G.daily]={score:p.score, rank:mine?mine.rank:0, grid:resultGrid(p)};
     const ks=Object.keys(P.daily).sort(); while(ks.length>60) delete P.daily[ks.shift()];
     if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
-  P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-30);
+  P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-100);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
   const r0=rateOf(), r1=Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold');
   const dex=dexRecord(); if(dexCount()>=DEX_TOTAL()) unlock('dexall');
@@ -3805,8 +3845,7 @@ function meView(){
     ${tab==="col"?`${signPanel()}${cupsPanel()}
     ${dexPanel()}
     ${skinsPanel()}
-    <section class="panel"><div class="row spread"><h3>実績</h3><span class="note">${got} / ${ACH.length} 解除</span></div>
-      <div class="achgrid">${ACH.map(a=>{ const t=P.ach[a.id]; return `<div class="ach${t?' on':''}"><span class="aic">${t?a.ic:'?'}</span><span><b>${a.n}</b><span class="note">${a.d}</span></span></div>`; }).join('')}</div></section>
+    ${achPanel()}
     `:""}
     ${tab==="shop"?`
     ${shopPanel()}
@@ -4495,18 +4534,19 @@ function claimToday(){
 const STAMP_COIN=[10,10,20,20,30,30,80];
 function loginStamp(){
   const P=S.prof, k=todayKey(), y=todayKey(new Date(Date.now()-864e5)); P.login=P.login||{last:0, streak:0};
+  if(P.coin===null || (P.coin!==undefined && !Number.isFinite(P.coin))){ P.coin=Math.max(100,((P.st&&P.st.games)||0)*20); P.coinFix=1; }   // 以前の不具合でコインが壊れていたら、遊んだ回数から戻す
   if(P.login.last===k) return;
-  const streak = P.login.last===y ? P.login.streak%7+1 : 1, coin=STAMP_COIN[streak-1];
-  P.login={last:k, streak}; P.coin=(P.coin||0)+coin; saveProfile();
-  setTimeout(()=>showStamp(streak, coin), 900);
+  const prev=(P.login.streak||P.login.day||0), streak = P.login.last===y ? prev%7+1 : 1, coin=STAMP_COIN[streak-1], xp=LOGIN_XP[streak-1];   // 前の形式（day）も引き継ぐ
+  P.login={last:k, streak}; P.coin=(P.coin||0)+coin; P.xp=(P.xp||0)+xp; saveProfile();
+  setTimeout(()=>showStamp(streak, coin, xp), 900);
 }
-function showStamp(streak, coin){
+function showStamp(streak, coin, xp){
   if(!S || S.screen!=='home' || G) return;
   const el=document.createElement('div'); el.className='stampfx';
   el.innerHTML=`<div class="st-card"><span class="label">LOGIN BONUS</span><b class="st-ttl">${streak}日目のスタンプ</b>
     <div class="st-grid">${STAMP_COIN.map((c,i)=>`<div class="st-cell${i<streak-1?' got':''}${i===streak-1?' now':''}${i===6?' big':''}"><span class="st-day">${i+1}日目</span><span class="st-c">${i===6?'🎁':'🪙'}<small>+${c}</small></span>${i<streak?'<span class="st-mark">済</span>':''}</div>`).join('')}</div>
     <p class="note">${streak===7?'7日連続達成！ 大ボーナス！':'毎日ひらくとスタンプがたまります。7日目は大ボーナス！'}</p>
-    <button class="btn gold big">+${coin}コイン受け取る</button></div>`;
+    <button class="btn gold big">+${coin}コイン${xp?` ＆ +${xp}XP`:''} 受け取る</button></div>`;
   const close=()=>{ el.classList.add('out'); setTimeout(()=>el.remove(),250); render(); };
   el.querySelector('.btn').onclick=e=>{ e.stopPropagation(); sfx('coin'); close(); };
   el.onclick=e=>{ if(e.target===el) close(); };
