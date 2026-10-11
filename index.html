@@ -1359,6 +1359,12 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .am-tx{display:flex;flex-direction:column;gap:1px;min-width:0}.am-tx b{font-size:14px}.am-tx .note{font-size:11px}.am-tx small{font-size:10px;color:var(--gold)}
 .am-tier{font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;color:#2a1a00;background:linear-gradient(135deg,var(--m1),var(--m2))}
 .am:not(.on) .am-tier{opacity:.4}
+.gl{border:0;background:none;color:inherit;font:inherit;padding:0;cursor:pointer;text-decoration:underline dotted 2px;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,currentColor 55%,var(--gold))}
+.glpop{position:fixed;z-index:60;display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:14px;background:#fffdf5;color:#2a2216;font-size:13px;line-height:1.55;box-shadow:0 10px 30px -8px rgb(0 0 0 / .6),0 0 0 2px var(--gold);animation:mcin .25s ease both}
+.glpop b{font-size:14px;color:#8a5a00}
+.glist{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:8px;margin-top:8px}
+.gli{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;background:var(--panel2);font-size:13px;line-height:1.55}
+.gli b{font-size:15px;color:var(--gold)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3043,6 +3049,58 @@ function achPanel(){
     ${groups.map(([g,ids])=>{ const as=ids.map(id=>ACH.find(a=>a.id===id)).filter(Boolean), n=as.filter(a=>P.ach[a.id]).length;
       return `<div class="am-g"><div class="row spread"><span class="label">${g}</span><span class="note">${n}/${as.length}</span></div><div class="am-list">${as.map(badge).join('')}</div></div>`; }).join('')}</section>`;
 }
+/* ---- 経済用語ミニ辞典：説明文の中の言葉をタップすると、意味がふきだしで出る ---- */
+const GLOSSARY={
+  '円高':'円の価値が上がること。海外のモノや旅行は安くなるが、日本から輸出する会社はもうけにくくなる。',
+  '円安':'円の価値が下がること。輸出する会社はもうかりやすいが、輸入するモノ（食べ物や燃料）は高くなる。',
+  '原油':'地下からくみ上げたままの石油。ガソリンやプラスチック、発電の燃料になる。',
+  '株価':'会社の「株」の値段。会社の調子がよさそう、と思う人が増えると上がる。',
+  '地価':'土地の値段。景気がよいと上がりやすい。',
+  '不良債権':'貸したお金が返ってこなくなりそうなもの。銀行の経営を苦しくする。',
+  '金融緩和':'中央銀行がお金を借りやすくして、世の中に出回るお金を増やすこと。景気を元気にするために行う。',
+  '金融':'お金を貸したり、預かったり、投資したりする仕事のこと。銀行や証券会社など。',
+  '破綻':'会社がお金を払えなくなり、続けられなくなること。',
+  '証券会社':'株などの売り買いを手伝う会社。',
+  '投資信託':'たくさんの人から集めたお金を、専門家がまとめて株などに投資する商品。',
+  '投資':'将来ふえることを期待して、お金を株や事業などに使うこと。',
+  'NISA':'投資でもうけたお金に税金がかからない、国の制度。',
+  '非課税':'税金がかからないこと。',
+  '半導体':'スマホやパソコン、車を動かす小さな電子部品のもと。「産業のコメ」と呼ばれる。',
+  'データセンター':'インターネットやAIを動かすコンピューターがたくさん置かれた建物。大量の電気を使う。',
+  '万国博覧会':'世界中の国が技術や文化を展示する大きなイベント。万博とも言う。',
+  '万博':'世界中の国が技術や文化を展示する大きなイベント（万国博覧会）。人の移動やお土産でにぎわう。',
+  '輸出':'国内でつくったモノを外国に売ること。',
+  '輸入':'外国でつくられたモノを買って、国内に入れること。',
+  '値上げ':'モノの値段が上がること。続くと「インフレ」と呼ばれる。',
+  '不況':'景気が悪く、モノが売れず、会社のもうけや給料が減っている状態。',
+  'バブル':'株や土地の値段が、本当の価値以上にふくらんでいく状態。いつか弾けて急に下がる。',
+  'IT':'コンピューターやインターネットを使う技術のこと。',
+  '訪日':'外国から日本に旅行に来ること。インバウンドとも言う。',
+  '外出自粛':'感染症などを防ぐため、なるべく出かけないようにすること。',
+  '省エネ':'エネルギー（電気や燃料）をむだなく使うこと。',
+  '先物':'「あとでこの値段で売り買いする」と前もって約束する取引。このゲームでは、次のNEWSを先に見られる。',
+  '独占':'ほかに同じものを売る人がいない状態。このゲームでは、だれとも被らなかったときのボーナス。'
+};
+const GLOSS_RE=new RegExp(Object.keys(GLOSSARY).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
+function gloss(text){
+  const seen=new Set();
+  return esc(String(text)).replace(GLOSS_RE, w=>{ if(seen.has(w)) return w; seen.add(w); return `<button class="gl" onclick="event.stopPropagation();showGloss(this,'${w}')">${w}</button>`; });
+}
+function showGloss(el, w){
+  document.querySelectorAll('.glpop').forEach(x=>x.remove());
+  const r=el.getBoundingClientRect(), p=document.createElement('div'); p.className='glpop';
+  p.innerHTML=`<b>${w}</b><span>${GLOSSARY[w]||''}</span>`; document.body.appendChild(p);
+  const pw=Math.min(300, innerWidth-24); p.style.width=pw+'px';
+  p.style.left=Math.max(12, Math.min(innerWidth-pw-12, r.left+r.width/2-pw/2))+'px';
+  const below=r.bottom+10+p.offsetHeight<innerHeight; p.style.top=(below? r.bottom+8 : r.top-p.offsetHeight-8)+'px'; p.classList.add(below?'dn':'up');
+  sfx('click');
+  setTimeout(()=>{ const off=e=>{ if(!p.contains(e.target)){ p.remove(); document.removeEventListener('pointerdown',off,true); } }; document.addEventListener('pointerdown',off,true); }, 0);
+}
+function glossPanel(){
+  const ks=Object.keys(GLOSSARY).filter(k=>k!=='万国博覧会');
+  return `<section class="panel"><h3>経済用語ミニ辞典</h3><p class="note">ゲームの出来事に出てくる言葉の意味です。出来事の説明文の中で<span class="gl" style="pointer-events:none">点線の言葉</span>をタップしても見られます。</p>
+    <div class="glist">${ks.map(k=>`<div class="gli"><b>${k}</b><span>${GLOSSARY[k]}</span></div>`).join('')}</div></section>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -3355,7 +3413,7 @@ function paperCard(news){
   if(C.hist) return `<section class="paper${C.fut?" fut":""}" aria-label="今ターンの出来事">
     <div class="mast"><span class="t">${C.fut?"AZAKEI 未来新聞 · FORECAST":"AZAKEI 経済新聞"}</span><span class="d">${turnLabel()}<span class="gogai">号外</span></span></div>
     <div class="head"><div class="yr"><small>西暦</small>${yearOf(news)}</div><h2>${nm(news)}</h2></div>
-    <p class="lede">${HIST[news].d}</p>${pays}</section>`;
+    <p class="lede">${gloss(HIST[news].d)}</p>${pays}</section>`;
   return `<section class="paper" aria-label="今ターンの経済NEWS">
     <div class="mast"><span class="t">AZAKEI 経済新聞</span><span class="d">${turnLabel()}<span class="gogai">号外</span></span></div>
     <h2>${nm(news)}！</h2>${pays}</section>`;
@@ -3481,7 +3539,7 @@ function finalView(){
   let big={v:-99}; G.players.forEach(p=>p.used.forEach(u=>{ if(u.total>big.v) big={v:u.total,p,u}; }));
   if(big.p) aw.push(['最大瞬間風速',big.p.name,`T${big.u.turn+1} ${IND[big.u.ind]} ${sgn(big.v)}`]);
   const hist=G.players.map(p=>`<tr><td>${esc(p.name)}</td>${p.used.map(u=>`<td>${chip(u.ind)} <span class="num ${cls(u.total)}">${sgn(u.total)}</span>${u.fut?' <span class="tagx cy">先物</span>':''}</td>`).join('')}<td class="n">${p.uniq}</td><td class="n"><b>${p.score}</b></td></tr>`).join('');
-  const recap = C.hist ? `<section class="panel"><h3>あなたたちが生きた時代</h3><div class="recap">${logDeck().map(i=>`<div><b>${yearOf(i)}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${HIST[i].n}</b><br>${HIST[i].d}</p></div>`).join('')}</div></section>` : '';
+  const recap = C.hist ? `<section class="panel"><h3>あなたたちが生きた時代</h3><div class="recap">${logDeck().map(i=>`<div><b>${yearOf(i)}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${HIST[i].n}</b><br>${gloss(HIST[i].d)}</p></div>`).join('')}</div></section>` : '';
   return `<div class="two"><div class="col">${bossPanel()}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${leaguePanel()}${seasonWin()}${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
@@ -4122,7 +4180,7 @@ function dexSheetBody(key){
   const k=key[0], id=key.slice(1);
   const payRow=r=>{ const mx=Math.max(...r); return `<div class="dexpay">${IND.map((d,i)=>`<div class="${r[i]===mx?'top':''}"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span>${d}</span><b class="${cls(r[i])}">${sgn(r[i])}</b></div>`).join('')}</div>`; };
   if(k==='m'){ const m=MARKETS[id]; return `<span class="label">マーケット図鑑 · 市況カード</span>${marketCard(id,'big')}<button class="btn gold big" onclick="closeSheet()">とじる</button>`; }
-  if(k==='h'){ const h=HIST[+id]; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${+id+7}</span></div><div class="yr">${h.y}</div><h3>${h.n}</h3><p>${h.d}</p>${payRow(h.r)}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`; }
+  if(k==='h'){ const h=HIST[+id]; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${+id+7}</span></div><div class="yr">${h.y}</div><h3>${h.n}</h3><p>${gloss(h.d)}</p>${payRow(h.r)}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`; }
   const i=+id; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${i+1}</span></div><h3>${NEWS[i]}！</h3><p>クラシックの経済NEWS。いちばん高いのは${(()=>{ const r=T2[i], mx=Math.max(...r); return r.map((v,c)=>v===mx?IND[c]:'').filter(Boolean).join('・'); })()}。</p>${payRow(CFG.table[i]||T2[i])}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`;
 }
 /* ---- login bonus: 1日1回、7日周期でXP。7日目は特大 ---- */
@@ -4742,8 +4800,9 @@ function onlineView(){
 }
 function rulesView(){
   const tab=S.rtab||'how';
-  const tabs=[['how','遊び方'],['table','得点表'],['hist','歴史の出来事'],['set','ルール設定'],['book','ルールブック']];
+  const tabs=[['how','遊び方'],['table','得点表'],['hist','歴史の出来事'],['words','用語'],['set','ルール設定'],['book','ルールブック']];
   let body='';
+  if(tab==='words') body=glossPanel();
   if(tab==='how') body=`<section class="panel"><h3>覚えることは5つだけ</h3>${ruleList()}<button class="btn gold" onclick="openTutorial()">図で見る（1分）</button></section>
     <div class="two">
       <section class="panel"><span class="label">MARKET BONUS</span><h3>被らなければ ${sgn(CFG.bonus)}</h3><p class="note">NEWSでいちばん高いのは+3で、どのNEWSにも2つあります。みんなが同じ方を出すと被って+3だけ。もう一方の+3を1人で出せば +3${sgn(CFG.bonus)}＝<b style="color:var(--gold)">+${3+CFG.bonus}</b>。</p></section>
@@ -4753,7 +4812,7 @@ function rulesView(){
     </div>`;
   if(tab==='table') body=`<section class="panel"><div class="row spread"><h3>クラシックの得点表</h3><span class="note">金色が各NEWSの最高点</span></div>${scoreTable(false)}<p class="note">数値を変えたいときは「ルール設定」から。</p></section>`;
   if(tab==='hist') body=`<section class="panel"><div class="row spread"><h3 style="font-family:var(--serif);font-size:20px">歴史モードの出来事</h3><span class="note">年代順に起きる18の出来事</span></div>${histTable()}<p class="note">点数は、実際の出来事でその産業が追い風か向かい風かをもとに、ゲーム用に決めたものです。</p></section>
-    <section class="panel"><h3>解説</h3><div class="recap">${HIST.filter(h=>!h.f).sort((a,b)=>a.y-b.y).map(h=>`<div><b>${h.y}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${h.n}</b><br>${h.d}</p></div>`).join('')}</div></section>`;
+    <section class="panel"><h3>解説</h3><div class="recap">${HIST.filter(h=>!h.f).sort((a,b)=>a.y-b.y).map(h=>`<div><b>${h.y}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${h.n}</b><br>${gloss(h.d)}</p></div>`).join('')}</div></section>`;
   if(tab==='set') body=`<section class="panel"><h3>プリセット</h3>
       <div class="choices">${Object.entries(PRESETS).map(([k,p])=>`<button class="choice${CFG.preset===k?' on':''}" onclick="applyPreset('${k}')"><b>${p.name}${p.badge?`<span class="badge">${p.badge}</span>`:''}</b><span class="note">${p.desc}</span></button>`).join('')}</div>
       ${CFG.preset==='custom'?'<p class="note">いまは手で変えたカスタム設定です。</p>':''}</section>
