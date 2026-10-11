@@ -1254,6 +1254,25 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .back.bk-pumpkin{background:radial-gradient(circle at 50% 55%,#ffb347,#e0620d 60%,#5a1f05)} .back.bk-pumpkin::after{content:"🎃";font-size:16px;background:none}
 .back.bk-snow{background:radial-gradient(1.5px 1.5px at 25% 30%,#fff,transparent),radial-gradient(1.5px 1.5px at 70% 70%,#fff,transparent),linear-gradient(160deg,#9fd8ff,#2a6fc9)} .back.bk-snow::after{content:"❄";color:#fff;font-size:18px;background:none}
 .back.bk-kagami{background:linear-gradient(180deg,#fff 0 50%,#d6283c 50%)} .back.bk-kagami::after{content:"🎍";font-size:15px;background:none}
+.pcard-wrap{perspective:900px;display:flex;justify-content:center}
+.pcard{--rx:0deg;--ry:0deg;--gx:50%;--gy:30%;position:relative;width:min(340px,100%);aspect-ratio:63/88;border-radius:22px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:10px;overflow:hidden;touch-action:pan-y;transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .25s ease-out;
+  background:radial-gradient(circle at 50% 28%,color-mix(in srgb,var(--fc) 45%,transparent),transparent 55%),linear-gradient(160deg,color-mix(in srgb,var(--e2) 70%,#141633),#0d0f26 70%);
+  box-shadow:0 0 0 3px var(--rail),0 0 0 6px var(--e1),0 0 0 8px var(--rail),0 24px 40px -18px #000,0 0 50px -16px var(--e1)}
+.pc-glare{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--gx) var(--gy),rgb(255 255 255 / .35),transparent 45%);mix-blend-mode:overlay}
+.pc-holo{position:absolute;inset:0;pointer-events:none;opacity:.22;background:linear-gradient(115deg,transparent 20%,#ff5c9a 35%,#ffc83a 45%,#5cf0a2 55%,#4fe3ff 65%,transparent 80%);background-size:250% 250%;background-position:var(--gx) var(--gy);mix-blend-mode:color-dodge}
+.pc-top{position:relative;display:flex;justify-content:space-between;font-family:var(--display);font-size:13px;color:var(--e1)}
+.pc-art{position:relative;flex:1;min-height:0;display:grid;place-items:center;border-radius:14px;background:repeating-conic-gradient(from 0deg,rgb(255 255 255 / .04) 0 10deg,transparent 10deg 20deg),radial-gradient(circle,color-mix(in srgb,var(--fc) 35%,transparent),transparent 70%);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .12)}
+.pc-ava{width:42%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:clamp(40px,12vw,58px);font-family:var(--display);color:#2a1a00;background:radial-gradient(circle at 35% 30%,#fff7d6,var(--s));box-shadow:0 0 0 4px var(--rail),0 0 0 7px var(--e1),0 10px 24px -6px #000}
+.pc-art .emb{position:absolute;right:10px;bottom:8px}
+.pc-name{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
+.pc-name b{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.1}.pc-name span{font-size:12px;font-weight:800;color:var(--gold)}
+.pc-type{position:relative;display:flex;align-items:center;justify-content:center;gap:8px}
+.pc-chip{font-weight:800;font-size:12px;padding:3px 10px;border-radius:999px;background:var(--fc);color:#140a00}
+.pc-stats{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:8px 4px;border-radius:12px;background:rgb(0 0 0 / .28)}
+.pc-stats>div{display:flex;flex-direction:column;align-items:center}
+.pc-stats b{font-family:var(--display);font-weight:400;font-size:20px;line-height:1.1}.pc-stats b small{font-size:11px}
+.pc-stats span{font-size:10px;color:var(--muted);font-weight:800}
+.pc-foot{position:relative;display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:var(--muted)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3364,6 +3383,7 @@ function recordResult(){
   let lastAt3=false;
   if((G.rounds||1)===1 && TURNS>=4 && p.hist.length>3){ const s3=G.players.map(q=>q.hist[3]); lastAt3 = s3[me]===Math.min(...s3) && s3.some(v=>v>s3[me]); }
   const futBest=Math.max(-99,...p.used.filter(u=>u.fut).map(u=>u.total));
+  P.ind=P.ind||[0,0,0,0,0,0]; P.indm=P.indm||[0,0,0,0,0,0]; p.used.forEach(u=>{ P.ind[u.ind]++; if(u.k===1) P.indm[u.ind]++; });
   st.games++; if(won) st.wins++; st.best=Math.max(st.best,p.score); st.mono+=p.uniq; if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
   const xp = Math.round((20 + Math.max(0,p.score)*3 + p.uniq*5 + (won?40:0) + (G.online?15:0)) * (G.evt?1.5:1));   // 今週のイベント参加中はXP1.5倍
   const mis = progressMissions({p, won, rank:mine?mine.rank:9, hist:!!G.cfg.hist, daily:!!G.daily});
@@ -3515,7 +3535,7 @@ function meView(){
       </div>
     </section>
     <nav class="mtabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?"on":""}" onclick="S.mtab=\x27${k}\x27;sfx(\x27click\x27);render()">${n}</button>`).join("")}</nav>
-    ${tab==="prof"?`
+    ${tab==="prof"?`${playerCard()}
     <section class="panel"><div class="row spread"><h3>アバター</h3><span class="note">レベルが上がると増えます</span></div>
       <div class="avgrid">${AVATARS.map(([a,lv],i)=>{ const ok=L.lv>=lv, on=(P.av||null)===a; return `<button class="avopt${on?' on':''}${ok?'':' lock'}" ${ok?`onclick="setAvatar(${i})"`:'disabled'} style="--s:${AVA_COLORS[P.color%6]}" aria-label="${a||'頭文字'}"><span>${a||esc(initial(NET.name||'あなた'))}</span>${ok?'':`<small>Lv.${lv}</small>`}</button>`; }).join('')}</div></section>
     ${rankCard()}
@@ -3957,6 +3977,30 @@ const CPU_TALK={
   'トキ':{vs:['時は金なり、だ。','歴史は繰り返す。'], mono:['好機は逃さぬ。','時を読んだ。'], hit:['ほう、同じ時を見たか。','若いのに鋭いな。'], big:['これぞ好機。'], neg:['焦りは禁物…'], lead:['老兵はまだ去らぬ。']},
   'レン':{vs:['頂点はオレがもらう！'], mono:['オレの市場だ！','独占ぉ！'], hit:['マジかよ！','ついてくんなって！'], big:['爆益！'], neg:['ぐぬぬ…'], lead:['頂点はオレだ！']}
 };
+/* ---- プレイヤーカード：成績をまとめたトレカ風のカード。指でなぞると傾いて光る ---- */
+function playerCard(){
+  const P=S.prof, st=P.st, L=lvInfo(P.xp), r=rateOf(), t=tierOf(r), ind=P.ind||[0,0,0,0,0,0], tot=ind.reduce((a,b)=>a+b,0);
+  const fav = tot ? ind.indexOf(Math.max(...ind)) : -1, mrate = tot ? Math.round((P.indm||[]).reduce((a,b)=>a+b,0)/tot*100) : 0;
+  const style = mrate>=55 ? ['一匹狼','人と被らない道を行く'] : st.games && st.wins/st.games>=.45 ? ['勝負師','ここ一番で勝ちきる'] : (st.fut||0)>=5 ? ['未来予測家','先物で流れを読む'] : st.hist>=5 ? ['歴史通','時代の流れを知る'] : ['新進トレーダー','これからの成長株'];
+  const trophies=CUPS.reduce((s,c)=>s+cupWins(c.id),0), signs=STORIES.filter(x=>storyDone(x.k)).length;
+  if(!P.created){ P.created=Date.now(); saveProfile(); }   // カード番号は最初に作った時刻から
+  const no=String(P.created%100000).padStart(5,'0');
+  return `<div class="pcard-wrap"><div class="pcard t-${t.id}" style="--e1:${t.c1};--e2:${t.c2};--fc:${fav>=0?`var(--i${fav})`:'var(--gold)'}" onpointermove="pcTilt(event,this)" onpointerleave="pcTilt(null,this)">
+    <div class="pc-glare"></div><div class="pc-holo"></div>
+    <div class="pc-top"><span class="pc-no">No.${no}</span><span class="pc-lv">Lv.${L.lv}</span></div>
+    <div class="pc-art"><span class="pc-ava" style="--s:${AVA_COLORS[P.color%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span>${emblem(r,40)}</div>
+    <div class="pc-name"><b>${esc(NET.name||'あなた')}</b><span>${esc(myTitle())}</span></div>
+    <div class="pc-type"><span class="pc-chip">${style[0]}</span><span class="note">${style[1]}</span></div>
+    <div class="pc-stats"><div><b>${st.games}</b><span>対戦</span></div><div><b>${st.games?Math.round(st.wins/st.games*100):0}<small>%</small></b><span>勝率</span></div><div><b>${st.best}</b><span>最高点</span></div><div><b>${r}</b><span>${t.n}</span></div></div>
+    <div class="pc-foot"><span>${fav>=0?`得意：<b style="color:var(--fc)">${IND[fav]}</b>`:'得意な産業：これから'}</span><span>🏆${trophies} ✍${signs} ★${chalTotal()}</span></div>
+  </div></div>`;
+}
+function pcTilt(e,el){
+  if(!e || reduced()){ el.style.setProperty('--rx','0deg'); el.style.setProperty('--ry','0deg'); el.style.setProperty('--gx','50%'); el.style.setProperty('--gy','30%'); return; }
+  const r=el.getBoundingClientRect(), x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+  el.style.setProperty('--ry',((x-.5)*16).toFixed(1)+'deg'); el.style.setProperty('--rx',((.5-y)*12).toFixed(1)+'deg');
+  el.style.setProperty('--gx',(x*100).toFixed(0)+'%'); el.style.setProperty('--gy',(y*100).toFixed(0)+'%');
+}
 /* ---- characters & rivals: CPUキャラと、あなたとの対戦成績 ---- */
 const CHARS={
   'ミナト':{c:'#5f86ff', ic:'📊', d:'データ派の計算屋。期待値で冷静に動く'},
