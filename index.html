@@ -796,6 +796,7 @@ body[data-table="space"]::before{background:radial-gradient(1.5px 1.5px at 20% 3
 .tm-m{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px;font-size:12px;font-weight:800;text-align:center}
 .tm-m .ava{width:22px;height:22px;font-size:10px}
 .tm-vs{font-family:var(--display);font-size:24px;color:var(--muted)}
+.cr-close{align-self:center;font-weight:800;font-size:15px;color:#fff;background:linear-gradient(90deg,#c8102e,#ff3d5a);border-radius:999px;padding:6px 16px;box-shadow:0 4px 0 rgb(0 0 0 / .4),0 0 30px rgb(255 61 90 / .6);opacity:0;animation:crwin .6s cubic-bezier(.2,.9,.3,1.5) both var(--d)}
 .cr-team{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(18px,5vw,26px);opacity:0;animation:crwin .6s cubic-bezier(.2,.9,.3,1.5) both var(--d)}
 .cr-team span:first-child{color:#ff7a3d} .cr-team span:last-child{color:#4fe3ff} .cr-team i{font-style:normal;font-size:.7em;color:var(--muted)}
 .cr-team span.win{text-shadow:0 0 18px currentColor;font-size:1.15em}
@@ -1277,6 +1278,17 @@ body{transition:background-color .5s ease}
 .cutin span{font-family:var(--display);font-size:clamp(18px,4.5vw,30px);color:#5a3a00}
 .cutin.big .band{background:linear-gradient(90deg,transparent,var(--cta) 12%,#b6ffd6 50%,var(--cta) 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 60px rgb(63 224 143 / .7)}
 .cutin.big b{color:#04220f} .cutin.big span{color:#0d4a2a}
+.cutin.combo .band{background:linear-gradient(90deg,transparent,#ff7a3d 12%,#ffd35c 40%,#fff3c4 50%,#ffd35c 60%,#ff7a3d 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 80px rgb(255 122 61 / .9)}
+.cutin.combo b{animation:combo .18s steps(2) 6;color:#3a0d00}
+@keyframes combo{50%{transform:translate(2px,-2px) scale(1.04)}}
+.cutin.lead .band{background:linear-gradient(90deg,transparent,#a77bff 12%,#ffb3e6 50%,#a77bff 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 70px rgb(167 123 255 / .8)}
+.cutin.lead b{color:#22053d} .cutin.lead span{color:#4a1a6e}
+.cutin.final .band{transform:none;background:linear-gradient(90deg,transparent,#c8102e 10%,#ff3d5a 50%,#c8102e 90%,transparent);box-shadow:0 0 0 4px #000,0 0 90px rgb(255 40 70 / .8);flex-direction:column;align-items:center;gap:6px;animation:finalcut 1.9s cubic-bezier(.2,.8,.2,1) both}
+.cutin.final b{color:#fff;letter-spacing:.08em;text-shadow:0 5px 0 rgb(0 0 0 / .45)} .cutin.final span{color:#ffe3e8;font-family:var(--body);font-weight:800;font-size:clamp(14px,4vw,20px)}
+@keyframes finalcut{0%{transform:scaleY(0);opacity:0}12%{transform:scaleY(1.15);opacity:1}20%{transform:scaleY(1)}82%{transform:scaleY(1);opacity:1}100%{transform:scaleY(0);opacity:0}}
+body.lastturn::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:3;box-shadow:inset 0 0 90px 10px rgb(255 40 70 / .45);animation:lastpulse 1.1s ease-in-out infinite}
+@keyframes lastpulse{0%,100%{opacity:.45}15%{opacity:1}30%{opacity:.6}45%{opacity:.95}}
+@media (prefers-reduced-motion:reduce){body.lastturn::after{animation:none}}
 @keyframes cutin{0%{transform:rotate(-8deg) translateX(110%)}18%{transform:rotate(-8deg) translateX(0)}78%{transform:rotate(-8deg) translateX(-3%);opacity:1}100%{transform:rotate(-8deg) translateX(-110%);opacity:0}}
 /* ---- card skins ---- */
 .card.sk-gold{box-shadow:0 0 0 2px var(--rail),0 0 0 4.5px var(--gold),0 0 0 6px var(--rail),0 0 0 7.5px var(--gold-deep),0 16px 26px -12px #000}
@@ -1591,6 +1603,7 @@ const SFX = {
   fanfare:()=>[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i===5?.6:.18,'triangle',.07,i*.13)),
   flip:()=>{ tone(1200,.05,'triangle',.04,0,700); tone(500,.06,'sine',.03,.03); },
   slam:()=>{ tone(110,.25,'sine',.12,0,55); tone(220,.08,'square',.03); },
+  beat:()=>{ tone(68,.2,'sine',.18,0,40); tone(68,.2,'sine',.13,.26,40); tone(68,.2,'sine',.18,.9,40); tone(68,.2,'sine',.13,1.16,40); },
   drum:()=>{ for(let i=0;i<22;i++) tone(90+Math.random()*30,.05,'square',.018+i*.0012,i*.055); }
 };
 function sfx(n){ try{ SFX[n] && SFX[n](); }catch(e){} }
@@ -1802,10 +1815,19 @@ function cutIn(text, sub, cls){
   if(reduced()) return;
   const el=document.createElement('div'); el.className='cutin '+(cls||''); el.setAttribute('aria-hidden','true');
   el.innerHTML=`<div class="band"><b>${text}</b>${sub?`<span>${sub}</span>`:''}</div>`;
-  document.body.appendChild(el); setTimeout(()=>el.remove(),1500);
+  document.body.appendChild(el); setTimeout(()=>el.remove(),(cls||"").includes("final")?2000:1500);
+}
+const isFinalTurn = () => !!G && G.turn===TURNS-1 && (!isLong() || (G.round||0)===G.rounds-1) && totalTurns()>1;
+function finalTurnCut(){   // 最後のターン：鼓動の音と赤いふちどり、いまの点差をひとこと
+  const me=myIndex(), sc=G.players.map(p=>p.score), mx=Math.max(...sc);
+  let sub='すべてはこの1枚で決まる';
+  if(me>=0){ const mine=sc[me], other=Math.max(...sc.filter((v,i)=>i!==me));
+    sub = mine>other ? `2位と${mine-other}点差。逃げ切れ！` : mine===mx ? 'トップに並んでいる。最後に抜け出せ！' : `トップまで${mx-mine}点。逆転できる！`; }
+  cutIn('FINAL TURN', sub, 'final'); sfx('beat'); haptic(60);
 }
 function endIntro(){
   if(!G || G.ov!=='intro') return;
+  if(isFinalTurn()) setTimeout(()=>{ if(G && G.phase==='choose') finalTurnCut(); },200);
   if(G.online && !G.host){ NET.introUntil=0; G.ov=null; render(); return; }
   clearTimeout(introTimer); G.ov=null;
   if(G.online){ G.active=G.me; render(); checkAllPicked(); return; }
@@ -1920,7 +1942,7 @@ function ceremonyOverlay(){
   return `<div class="overlay ceremony" onclick="endCeremony()"><div class="cr-spot" style="--d:${900+(n-1)*650}ms"></div><div class="box">
     <div class="cr-title">結果発表</div><div class="cr-drum"><i></i><i></i><i></i></div>
     ${G.teams?(()=>{ const {s}=teamScores(), w=s[0]===s[1]?-1:s[0]>s[1]?0:1; return `<div class="cr-team" style="--d:${900+(n-1)*650+500}ms"><span class="${w===0?"win":""}">${TEAM_NAMES[0]} ${s[0]}</span><i>VS</i><span class="${w===1?"win":""}">${s[1]} ${TEAM_NAMES[1]}</span></div>`; })():""}
-    <div class="cr-list">${rows}</div>${(c=>c?`<div class="cr-cup" style="--d:${900+(n-1)*650+700}ms;--cc:${c.c}"><span class="tro huge">${c.ic}</span><b>${c.n} 優勝！</b></div>`:'')(cupChamp())}<div class="note">タップで結果画面へ</div></div></div>`;
+    <div class="cr-list">${rows}</div>${(()=>{ const so=G.players.map(p=>p.score).sort((a,b)=>b-a), d=so[0]-so[1]; return so.length>1&&d<=1 ? `<div class="cr-close" style="--d:${900+(n-1)*650+400}ms">${d===0?(G.cfg.tiebreak?"同点！ 独占回数で決着":"同点で並んだ！"):"わずか1点差の大接戦！"}</div>` : ""; })()}${(c=>c?`<div class="cr-cup" style="--d:${900+(n-1)*650+700}ms;--cc:${c.c}"><span class="tro huge">${c.ic}</span><b>${c.n} 優勝！</b></div>`:'')(cupChamp())}<div class="note">タップで結果画面へ</div></div></div>`;
 }
 function revealFx(){
   const fast=reduced();
@@ -1932,6 +1954,7 @@ function revealFx(){
     const st=now=>{ const k=Math.min(1,Math.max(0,(now-t0-delay)/dur)); el.firstChild.textContent=Math.round(from+(to-from)*(1-Math.pow(1-k,3))); if(k<1) requestAnimationFrame(st); };
     requestAnimationFrame(st);
   });
+  const prev=G.players.map(p=>p.shown);
   G.players.forEach(p=>p.shown=p.score);
   const rootCs=getComputedStyle(document.documentElement);
   let anyMono=false, anyHit=false;
@@ -1940,8 +1963,14 @@ function revealFx(){
   if(anyMono) setTimeout(()=>sfx('coin'),520);
   cpuChatter();
   const me=myIndex(), r=me>=0?G.last[me]:null;     // 自分の見せ場はカットインで
-  if(r && r.k===1) setTimeout(()=>cutIn('独占！',`${IND[r.ind]} ${sgn(r.total)}`,'mono'),700);
+  const streak = r ? (()=>{ const u=G.players[me].used; let n=0; for(let k=u.length-1;k>=0&&u[k].k===1;k--) n++; return n; })() : 0;
+  if(r && r.k===1) setTimeout(()=>{ cutIn(streak>=2?`${streak}連続独占！`:'独占！',`${IND[r.ind]} ${sgn(r.total)}`,streak>=2?'mono combo':'mono'); if(streak>=2){ sfx('fanfare'); haptic(50); } },700);
   else if(r && r.total>=5) setTimeout(()=>cutIn('大当たり！',`${IND[r.ind]} ${sgn(r.total)}`,'big'),700);
+  if(me>=0 && G.players[me].hist.length>2){   // 逆転してトップに立った瞬間
+    const top=a=>{ const m=Math.max(...a); return a.filter(v=>v===m).length===1 ? a.indexOf(m) : -1; };
+    const now=G.players.map(p=>p.score);
+    if(top(now)===me && top(prev)!==me) setTimeout(()=>{ cutIn('逆転トップ！',`${now[me]}点で単独1位`,'lead'); sfx('select'); haptic(30); }, r&&(r.k===1||r.total>=5)?2200:900);
+  }
 }
 function nextTurn(){
   if(!G || G.phase!=='reveal') return;   // 連打で2ターン進まないように
@@ -2429,6 +2458,7 @@ function renderSheet(){
 function setTheme(){   // モードごとに画面全体の色を変える（クラシック＝藍、歴史＝セピア、ロング＝紫）
   const t = G ? (G.cfg.fut?'future':isLong()?'long':G.cfg.hist?'hist':'classic') : (S.screen==='play' ? (S.mode==='future'?'future':S.len==='long'?'long':S.mode==='history'?'hist':'classic') : 'classic');
   if(document.body.dataset.theme!==t) document.body.dataset.theme=t;
+  document.body.classList.toggle('lastturn', !!(G && G.phase!=='final' && isFinalTurn()));
   const tb = G && S.prof && S.prof.eq && S.prof.eq.table && S.prof.eq.table!=='std' ? S.prof.eq.table : '';   // ショップのテーブル（ゲーム中の背景）
   if((document.body.dataset.table||'')!==tb) document.body.dataset.table=tb;
 }
