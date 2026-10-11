@@ -1154,6 +1154,25 @@ body[data-theme="future"] #bg{filter:hue-rotate(-60deg) saturate(1.4)}
 @keyframes vsfin{0%{transform:translateX(-50%) scale(3);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
 .cr-cup{display:flex;flex-direction:column;align-items:center;gap:4px;margin:6px 0;animation:troup .9s cubic-bezier(.2,.9,.3,1.4) both;animation-delay:var(--d)}
 .cr-cup b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--cc);text-shadow:0 4px 0 rgb(0 0 0 / .4),0 0 30px var(--cc)}
+.chpick{border:0;cursor:pointer;padding:0;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--s) 60%,#fff),var(--s));font-size:18px!important;position:relative}
+.chpick::after{content:"⇄";position:absolute;right:-4px;bottom:-4px;width:16px;height:16px;border-radius:50%;background:var(--ink);color:var(--rail);font-size:10px;display:grid;place-items:center;font-weight:800}
+button.rv{border:0;color:var(--ink);font:inherit;cursor:pointer}
+button.rv:active,.chc:active{transform:scale(.96)}
+.chargrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:6px}
+.chc{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;border:0;color:var(--ink);font:inherit;cursor:pointer;padding:12px 4px 10px;border-radius:16px;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--rc) 26%,transparent),transparent 65%),var(--panel2);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rc) 35%,var(--line));animation:achin .4s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--k) * 35ms)}
+.chc b{font-size:14px}.chc .note{font-size:10px;line-height:1.35}
+.chc.on{box-shadow:inset 0 0 0 3px var(--rc),0 0 20px -4px var(--rc)}
+.chc.taken{opacity:.4;cursor:default}
+.chc .newc{color:var(--gold);font-weight:800}
+.charhead{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;margin:0 46px 4px}
+.rva.big{width:84px;height:84px;font-size:42px;animation:troup .7s cubic-bezier(.2,.9,.3,1.4) both}
+.charrec{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0}
+.charrec>div{display:flex;flex-direction:column;align-items:center;padding:8px 0;border-radius:12px;background:var(--panel2)}
+.charrec b{font-family:var(--display);font-weight:400;font-size:24px}.charrec b.w{color:#5dffa8}.charrec b.l{color:#ff6b86}.charrec span{font-size:11px;color:var(--muted)}
+.chqs{display:flex;flex-direction:column;gap:8px;margin:6px 0 12px}
+.chq{display:flex;align-items:center;gap:10px}.chq .label{min-width:78px;margin:0}
+.chq .bub{position:relative;background:#fff;color:#1a1d3a;font-weight:800;font-size:14px;padding:8px 12px;border-radius:14px;box-shadow:0 3px 0 rgb(0 0 0 / .25)}
+.chq .bub::before{content:"";position:absolute;left:-6px;top:50%;margin-top:-6px;border:6px solid transparent;border-right-color:#fff;border-left:0}
 .rivals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
 .rv{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;padding:12px 6px 10px;border-radius:16px;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--rc) 26%,transparent),transparent 65%),var(--panel2);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rc) 35%,var(--line));animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--k) * 40ms)}
 .rv b{font-size:14px}.rv .note{font-size:10px;line-height:1.35;min-height:2.7em}
@@ -2481,6 +2500,8 @@ function renderSheet(){
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   else if(k.startsWith('cup:')) body=cupSheetBody(k.slice(4));
+  else if(k.startsWith('pickchar:')) body=pickCharBody(+k.slice(9));
+  else if(k.startsWith('char:')) body=charSheetBody(k.slice(5));
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
 }
 
@@ -3083,7 +3104,8 @@ function setSeatPreset(k){ S.seats=defaultSeats(k==='party'?'party':'cpu'); sfx(
 function lobbyView(){ return playView(); }
 function playView(){
   const seats=S.seats.map((s,i)=>`<div class="seatrow">
-    <div class="ava" style="--s:var(--s${i%6})">${esc(initial(s.name))}</div>
+    ${s.type!=='human'&&CHARS[charKey(s)] ? `<button class="ava chpick" style="--s:${CHARS[charKey(s)].c}" onclick="openSheet('pickchar:${i}')" aria-label="CPUのキャラを変える">${CHARS[charKey(s)].ic}</button>`
+      : s.type!=='human' ? `<button class="ava chpick" style="--s:var(--s${i%6})" onclick="openSheet('pickchar:${i}')" aria-label="CPUのキャラを選ぶ">${esc(initial(s.name))}</button>` : `<div class="ava" style="--s:var(--s${i%6})">${esc(initial(s.name))}</div>`}
     <input id="seat${i}" class="inp" value="${esc(s.name)}" maxlength="12" aria-label="プレイヤー${i+1}の名前" oninput="S.seats[${i}].name=this.value">
     <div class="seg" role="group" aria-label="プレイヤー${i+1}の種類">${Object.entries(TYPES).map(([k,l])=>`<button class="${s.type===k?'on':''}" onclick="S.seats[${i}].type='${k}';sfx('click');render()">${l}</button>`).join('')}</div>
     <button class="x" aria-label="削除" onclick="removeSeat(${i})" ${S.seats.length<=2?'disabled':''}>✕</button></div>`).join('');
@@ -3782,6 +3804,30 @@ function recordRivals(rk, me){   // recordResult から：順位が上なら勝�
     const b=rk.find(x=>x.i===i), r=P.riv[k]=P.riv[k]||{w:0,l:0,d:0};
     if(a.rank<b.rank) r.w++; else if(a.rank>b.rank) r.l++; else r.d++; });
 }
+function pickCharBody(i){
+  const s=S.seats[i]; if(!s) return '';
+  const used=S.seats.map((x,j)=>j!==i&&x.type!=='human'?charKey(x):null), R=S.prof.riv||{};
+  return `<span class="label">席 ${i+1} のCPU</span><h3 class="ttl" style="font-size:22px">対戦相手のキャラを選ぶ</h3>
+    <p class="note">強さ（素直・読み合い・達人）は席の設定のまま。キャラで変わるのはセリフとアイコンです。</p>
+    <div class="chargrid">${Object.entries(CHARS).map(([k,c],j)=>{ const on=charKey(s)===k, tk=used.includes(k), r=R[k];
+      return `<button class="chc${on?' on':''}${tk?' taken':''}" style="--rc:${c.c};--k:${j}" ${tk?'disabled':''} onclick="setChar(${i},'${k}')"><span class="rva">${c.ic}</span><b>${k}</b><span class="note">${tk?'ほかの席で出場中':c.d}</span>${r?`<span class="rvrec"><span class="w">${r.w}勝</span><span class="l">${r.l}敗</span></span>`:'<span class="note newc">はじめまして</span>'}</button>`; }).join('')}</div>`;
+}
+function setChar(i,k){ if(!S.seats[i]) return; S.seats[i].name='CPU '+k; sfx('select'); closeSheet(); render(); }
+function charSheetBody(k){
+  const c=CHARS[k], t=CPU_TALK[k]; if(!c) return '';
+  const r=(S.prof.riv||{})[k], g=r?r.w+r.l+r.d:0;
+  const lines=[['対戦前',t.vs],['独占したとき',t.mono],['被ったとき',t.hit]].filter(x=>x[1]).map(([n,a])=>`<div class="chq"><span class="label">${n}</span><span class="bub">${a[0]}</span></div>`).join('');
+  return `<div class="charhead" style="--rc:${c.c}"><span class="rva big">${c.ic}</span><span class="label">CHARACTER</span><h3 class="ttl" style="font-size:28px">${k}</h3><p class="note">${c.d}</p></div>
+    ${r?`<div class="charrec"><div><b class="w">${r.w}</b><span>勝</span></div><div><b class="l">${r.l}</b><span>敗</span></div><div><b>${r.d}</b><span>分</span></div><div><b>${Math.round(r.w/g*100)}%</b><span>勝率</span></div></div>`:''}
+    <div class="chqs">${lines}</div>
+    <button class="btn gold big" onclick="challengeChar('${k}')">${k}と対戦する</button>`;
+}
+function challengeChar(k){   // いまの席のまま、CPUの1人目をこのキャラにして対戦画面へ
+  if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu');
+  const others=S.seats.findIndex(s=>s.type!=='human'&&charKey(s)===k);
+  if(others<0){ const i=S.seats.findIndex(s=>s.type!=='human'); S.seats[i].name='CPU '+k; }
+  closeSheet(); sfx('select'); go('play');
+}
 function rivalsPanel(){
   const R=S.prof.riv||{}, ks=Object.keys(CHARS), met=ks.filter(k=>R[k]);
   const nem=met.filter(k=>R[k].w+R[k].l+R[k].d>=3).sort((a,b)=>(R[b].l-R[b].w)-(R[a].l-R[a].w))[0];
@@ -3790,10 +3836,10 @@ function rivalsPanel(){
     <div class="rivals">${ks.map((k,i)=>{ const c=CHARS[k], r=R[k];
       if(!r) return `<div class="rv unk" style="--k:${i}"><span class="rva">?</span><b>？？？</b><span class="note">カップ戦で出会える</span></div>`;
       const g=r.w+r.l+r.d, pct=Math.round(r.w/g*100);
-      return `<div class="rv${k===nemesis?' nem':''}${r.w>=5&&pct>=60?' dom':''}" style="--rc:${c.c};--k:${i}">${k===nemesis?'<span class="rvtag">宿敵</span>':r.w>=5&&pct>=60?'<span class="rvtag dom">お得意さま</span>':''}
+      return `<button class="rv${k===nemesis?' nem':''}${r.w>=5&&pct>=60?' dom':''}" style="--rc:${c.c};--k:${i}" onclick="openSheet('char:${k}')">${k===nemesis?'<span class="rvtag">宿敵</span>':r.w>=5&&pct>=60?'<span class="rvtag dom">お得意さま</span>':''}
         <span class="rva">${c.ic}</span><b>${k}</b><span class="note">${c.d}</span>
         <span class="rvrec"><span class="w">${r.w}勝</span><span class="l">${r.l}敗</span>${r.d?`<span>${r.d}分</span>`:''}</span>
-        <span class="rvbar"><i style="width:${pct}%"></i></span></div>`; }).join('')}</div></section>`;
+        <span class="rvbar"><i style="width:${pct}%"></i></span></button>`; }).join('')}</div></section>`;
 }
 const talkOf = p => CPU_TALK[String(p.name).replace(/^CPU\s*/,'').replace(/（.*$/,'')] || CPU_TALK['ソラ'];
 function cpuChatter(){
@@ -3978,7 +4024,7 @@ function rulesView(){
     <div class="subtabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="S.rtab='${k}';sfx('click');render();scrollTo(0,0)">${l}</button>`).join('')}</div>${body}</div>`;
 }
 
-function addSeat(type){ if(S.seats.length>=6) return; sfx('click'); const names=['ハル','ユイ','レン','カイ','ミオ','ナギ']; S.seats.push({name:type==='human'?`プレイヤー${S.seats.length+1}`:`CPU ${names[S.seats.length%6]}`,type}); render(); }
+function addSeat(type){ if(S.seats.length>=6) return; sfx('click'); const used=S.seats.map(charKey), free=Object.keys(CHARS).filter(k=>!used.includes(k)); S.seats.push({name:type==='human'?`プレイヤー${S.seats.length+1}`:`CPU ${free[0]||'ハル'}`,type}); render(); }
 function removeSeat(i){ if(S.seats.length<=2) return; sfx('click'); S.seats.splice(i,1); render(); }
 function setCell(r,c,v){ CFG.table[r][c]=Math.max(-9,Math.min(9,parseInt(v,10)||0)); CFG.preset='custom'; saveCfg(); LAB.result=null; render(); }
 function setRule(k,v){ CFG[k]=v; TURNS=CFG.turns||4; CFG.preset='custom'; saveCfg(); LAB.result=null; sfx('click'); render(); }
