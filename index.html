@@ -1154,6 +1154,26 @@ body[data-theme="future"] #bg{filter:hue-rotate(-60deg) saturate(1.4)}
 @keyframes vsfin{0%{transform:translateX(-50%) scale(3);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
 .cr-cup{display:flex;flex-direction:column;align-items:center;gap:4px;margin:6px 0;animation:troup .9s cubic-bezier(.2,.9,.3,1.4) both;animation-delay:var(--d)}
 .cr-cup b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--cc);text-shadow:0 4px 0 rgb(0 0 0 / .4),0 0 30px var(--cc)}
+.rivals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+.rv{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;padding:12px 6px 10px;border-radius:16px;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--rc) 26%,transparent),transparent 65%),var(--panel2);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rc) 35%,var(--line));animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--k) * 40ms)}
+.rv b{font-size:14px}.rv .note{font-size:10px;line-height:1.35;min-height:2.7em}
+.rva{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--rc) 60%,#fff),var(--rc));box-shadow:0 0 0 3px var(--rail),0 4px 0 rgb(0 0 0 / .3)}
+.rv.unk{opacity:.55}.rv.unk .rva{background:var(--panel);color:var(--muted);font-family:var(--display)}
+.rvrec{display:flex;gap:6px;font-weight:800;font-size:12px}.rvrec .w{color:#5dffa8}.rvrec .l{color:#ff6b86}
+.rvbar{width:80%;height:5px;border-radius:5px;background:rgb(255 107 134 / .35);overflow:hidden}.rvbar i{display:block;height:100%;background:#5dffa8;border-radius:5px}
+.rvtag{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;white-space:nowrap;padding:2px 8px;border-radius:999px;background:#ff3d5a;color:#fff;box-shadow:0 2px 0 rgb(0 0 0 / .35)}
+.rvtag.dom{background:#3fd0a0;color:#03241a}
+.rv.nem{box-shadow:inset 0 0 0 2px #ff3d5a,0 0 18px -4px #ff3d5a}
+.promofx{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:rgb(5 6 26 / .82);cursor:pointer;overflow:hidden;animation:pffade .3s ease both}
+.pf-rays{position:absolute;width:160vmax;height:160vmax;left:50%;top:50%;margin:-80vmax 0 0 -80vmax;background:repeating-conic-gradient(color-mix(in srgb,var(--e1) 22%,transparent) 0 7deg,transparent 7deg 14deg);animation:pfspin 14s linear infinite;mask:radial-gradient(circle,#000 10%,transparent 60%);-webkit-mask:radial-gradient(circle,#000 10%,transparent 60%)}
+.pf-box{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.pf-box .emb{animation:troup .9s cubic-bezier(.2,.9,.3,1.4) both;filter:drop-shadow(0 0 30px var(--e1))}
+.pf-box b{font-family:var(--display);font-weight:400;font-size:clamp(40px,12vw,64px);line-height:1;color:var(--e1);text-shadow:0 5px 0 rgb(0 0 0 / .5),0 0 40px var(--e1);animation:pfin .6s .35s cubic-bezier(.2,.9,.3,1.4) both}
+.pf-box>span:not(.label):not(.note):not(.emb){font-weight:800;font-size:20px}
+@keyframes pffade{from{opacity:0}}
+@keyframes pfin{0%{transform:scale(3);opacity:0}100%{transform:none;opacity:1}}
+@keyframes pfspin{to{transform:rotate(360deg)}}
+@media (max-width:420px){.rivals{gap:6px}.rv{padding:12px 4px 8px}.rva{width:38px;height:38px;font-size:19px}}
 .chalres{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;background:radial-gradient(circle at 50% 0%,rgb(255 200 58 / .22),transparent 60%),linear-gradient(180deg,var(--panel2),var(--panel))}
 .chalres .goals{width:100%;text-align:left}
 .chalbig{font-family:var(--display);font-size:clamp(40px,10vw,60px);line-height:1;color:var(--muted);text-shadow:0 5px 0 var(--rail);animation:bang .6s cubic-bezier(.2,.9,.3,1.5) .3s both}
@@ -1444,7 +1464,7 @@ const $ = s => document.querySelector(s);
 const initial = n => (String(n).replace(/^CPU\s*/,'').trim()[0] || '?');
 const AVATARS=[[null,1],["🦊",1],["🐼",1],["🐯",2],["🐸",3],["🐧",4],["🦉",5],["🐙",6],["🦁",8],["🐲",10],["🤖",12],["👑",15]];   // [絵,解放レベル]、nullは名前の頭文字
 const myAvatar = () => { const P=S&&S.prof; if(!P||!P.av) return null; const a=AVATARS.find(x=>x[0]===P.av); return a && lvInfo(P.xp).lv>=a[1] ? a[0] : null; };
-const avOf = p => (G && G.players.indexOf(p)===myIndex() && myAvatar()) || initial(p.name);
+const avOf = p => (G && G.players.indexOf(p)===myIndex() && myAvatar()) || (!isHuman(p) && CHARS[charKey(p)] ? CHARS[charKey(p)].ic : initial(p.name));   // CPUはキャラのアイコン
 const myTitle = () => { const P=S.prof, a=P.title && P.ach[P.title] && ACH.find(x=>x.id===P.title); return a ? a.n : titleOf(lvInfo(P.xp).lv); };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || !!(typeof S!=='undefined' && S && S.calm);
 const phone = () => matchMedia('(max-width:640px)').matches;
@@ -1933,6 +1953,16 @@ function endCeremony(){
   CER_T.forEach(clearTimeout); CER_T=[];
   if(!G || G.ov!=='ceremony') return;
   G.ov=null; renderOv(); scrollTo(0,0);
+  promoFx();
+}
+function promoFx(){   // ランク昇格：エンブレムが光って登場
+  const R=G&&G.reward; if(!R || !R.rate || R.promoShown) return;
+  const t0=tierOf(R.rate.before), t1=tierOf(R.rate.after); if(TIERS.indexOf(t1)<=TIERS.indexOf(t0)) return;
+  R.promoShown=true;
+  const el=document.createElement('div'); el.className='promofx'; el.style.cssText=`--e1:${t1.c1};--e2:${t1.c2}`;
+  el.innerHTML=`<div class="pf-rays"></div><div class="pf-box"><span class="label">RANK UP</span>${emblem(R.rate.after,120)}<b>${t1.n}</b><span>に昇格！</span><span class="note">タップで閉じる</span></div>`;
+  el.onclick=()=>el.remove(); document.body.appendChild(el);
+  sfx('fanfare'); haptic(60); setTimeout(()=>{ confetti(); }, 300); setTimeout(()=>el.remove(), 4200);
 }
 function ceremonyOverlay(){
   const rk=ranking(G.players,G.cfg), n=rk.length, me=myIndex();
@@ -3183,6 +3213,7 @@ function recordResult(){
   let coin = 10 + (won?20:mine&&mine.rank===2?10:0) + p.uniq*2 + (mis.cleared.length*5) + (G.daily?10:0);   // ショップで使うコイン
   const cup=G.cup?cupResult(mine?mine.rank:9):null; if(cup && cup.champ){ coin+=cup.bonus; if(cup.id==='gold') unlock('cupgold'); }
   P.coin=(P.coin||0)+coin;
+  recordRivals(rk, me);
   G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, dex};
   saveProfile();
 }
@@ -3312,6 +3343,7 @@ function meView(){
     <section class="statgrid">
       ${[['対戦',st.games],['勝利',st.wins],['勝率',st.games?Math.round(st.wins/st.games*100)+'%':'—'],['最高点',st.best],['独占',st.mono],['歴史モード',st.hist],['オンライン',st.online],['実績',got+'/'+ACH.length]].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('')}
     </section>
+    ${rivalsPanel()}
     ${statsCharts()}
     ${historyPanel()}
     <button class="wide lab" onclick="go(\x27lab\x27)"><span class="label">LAB</span><b>バランス検証</b><span class="desc">CPU同士を大量に対戦させて、ルールの偏りを調べる開発者向けの機能。</span><span class="go">ラボを開く →</span></button>`:""}
@@ -3657,7 +3689,7 @@ function chalPanel(){
     <div class="row" style="justify-content:center"><button class="btn big" onclick="quit();go('chal')">ステージ一覧</button>${R.stars&&next?`<button class="btn gold big" onclick="startChallenge('${next.id}')">次のステージへ</button>`:''}</div></section>`;
 }
 /* ---- cup mode: 3試合を勝ち抜くトーナメント。負けたら1回戦から ---- */
-const CUP_NAMES=['ハル','リン','カイ','ユウ','ナギ','レン','ミオ','トキ','サク'];
+const CUP_NAMES=['ハル','ユイ','ナギ','ミオ','レン','トキ','ミナト','アオイ','ソラ'];
 const CUP_STAGE=['1回戦','準決勝','決勝'];
 const CUP_TYPE={naive:'素直', read:'読み合い', pro:'達人'};
 const CUPS=[   // life＝負けても同じ試合をやり直せる回数（運の要素が大きいので、残機で遊びやすく）
@@ -3726,8 +3758,43 @@ const CPU_TALK={
   'ソラ':{vs:['よろしくね〜','のんびりいこう〜'], mono:['あれ、ひとりだ〜','のんびり独占〜'], hit:['みんな一緒だね〜','にぎやかだ〜'], big:['お、いい感じ〜','ラッキー〜'], neg:['まあいっか〜','そういう日もあるよ〜'], lead:['あれ、1位だ〜']},
   'ハル':{vs:['全力でいくぞ！'], mono:['よっしゃ独占！','狙いどおり！'], hit:['かぶったかー！','やるじゃん！'], big:['でかいの来た！'], neg:['くっそー！'], lead:['トップは渡さない！']},
   'ユイ':{vs:['お手やわらかに。'], mono:['ふふ、ひとりじめ。','静かに稼ぎます。'], hit:['あら、同じ考え。','ふーん、そう来る。'], big:['悪くないわね。'], neg:['…今のは忘れて。'], lead:['このまま行くわ。']},
+  'ナギ':{vs:['波に乗るだけさ。','流れは読めてる。'], mono:['いい波だ。','ひとり乗り。'], hit:['波がぶつかったね。','混んできたな。'], big:['大波きた！'], neg:['引き潮か…'], lead:['このまま流れに乗る。']},
+  'ミオ':{vs:['勉強してきました！','ノート、ばっちりです。'], mono:['予習どおりです！','ひとりじめ、できました。'], hit:['えっ、同じ答え…','みなさんもそう考えましたか。'], big:['満点の回答です！'], neg:['復習が必要ですね…'], lead:['このまま首位で。']},
+  'トキ':{vs:['時は金なり、だ。','歴史は繰り返す。'], mono:['好機は逃さぬ。','時を読んだ。'], hit:['ほう、同じ時を見たか。','若いのに鋭いな。'], big:['これぞ好機。'], neg:['焦りは禁物…'], lead:['老兵はまだ去らぬ。']},
   'レン':{vs:['頂点はオレがもらう！'], mono:['オレの市場だ！','独占ぉ！'], hit:['マジかよ！','ついてくんなって！'], big:['爆益！'], neg:['ぐぬぬ…'], lead:['頂点はオレだ！']}
 };
+/* ---- characters & rivals: CPUキャラと、あなたとの対戦成績 ---- */
+const CHARS={
+  'ミナト':{c:'#5f86ff', ic:'📊', d:'データ派の計算屋。期待値で冷静に動く'},
+  'アオイ':{c:'#ff5c9a', ic:'🎀', d:'元気いっぱいの負けず嫌い'},
+  'ソラ':  {c:'#20c6d1', ic:'☁', d:'マイペースなのんびり屋'},
+  'ハル':  {c:'#ff7a3d', ic:'🔥', d:'全力勝負の熱血タイプ'},
+  'ユイ':  {c:'#a77bff', ic:'🌙', d:'静かに稼ぐクールな策士'},
+  'レン':  {c:'#eab520', ic:'⚡', d:'頂点をねらう強気な挑戦者'},
+  'ナギ':  {c:'#3fd0a0', ic:'🌊', d:'流れに乗るサーファー投資家'},
+  'ミオ':  {c:'#ff9ad9', ic:'📒', d:'予習は完璧、まじめな優等生'},
+  'トキ':  {c:'#c9a46b', ic:'⌛', d:'歴史を知りつくした老練な相場師'}
+};
+const charKey = p => String(p.name).replace(/^CPU\s*/,'').replace(/（.*$/,'');
+function recordRivals(rk, me){   // recordResult から：順位が上なら勝ち
+  const P=S.prof, a=rk.find(x=>x.i===me); if(!a) return; P.riv=P.riv||{};
+  G.players.forEach((q,i)=>{ if(i===me || isHuman(q)) return; const k=charKey(q); if(!CHARS[k]) return;
+    const b=rk.find(x=>x.i===i), r=P.riv[k]=P.riv[k]||{w:0,l:0,d:0};
+    if(a.rank<b.rank) r.w++; else if(a.rank>b.rank) r.l++; else r.d++; });
+}
+function rivalsPanel(){
+  const R=S.prof.riv||{}, ks=Object.keys(CHARS), met=ks.filter(k=>R[k]);
+  const nem=met.filter(k=>R[k].w+R[k].l+R[k].d>=3).sort((a,b)=>(R[b].l-R[b].w)-(R[a].l-R[a].w))[0];
+  const nemesis = nem && R[nem].l>=R[nem].w ? nem : null;   // 負け越し・五分の相手が「宿敵」
+  return `<section class="panel"><div class="row spread"><h3>ライバル</h3><span class="note">${met.length} / ${ks.length} 人と対戦</span></div>
+    <div class="rivals">${ks.map((k,i)=>{ const c=CHARS[k], r=R[k];
+      if(!r) return `<div class="rv unk" style="--k:${i}"><span class="rva">?</span><b>？？？</b><span class="note">カップ戦で出会える</span></div>`;
+      const g=r.w+r.l+r.d, pct=Math.round(r.w/g*100);
+      return `<div class="rv${k===nemesis?' nem':''}${r.w>=5&&pct>=60?' dom':''}" style="--rc:${c.c};--k:${i}">${k===nemesis?'<span class="rvtag">宿敵</span>':r.w>=5&&pct>=60?'<span class="rvtag dom">お得意さま</span>':''}
+        <span class="rva">${c.ic}</span><b>${k}</b><span class="note">${c.d}</span>
+        <span class="rvrec"><span class="w">${r.w}勝</span><span class="l">${r.l}敗</span>${r.d?`<span>${r.d}分</span>`:''}</span>
+        <span class="rvbar"><i style="width:${pct}%"></i></span></div>`; }).join('')}</div></section>`;
+}
 const talkOf = p => CPU_TALK[String(p.name).replace(/^CPU\s*/,'').replace(/（.*$/,'')] || CPU_TALK['ソラ'];
 function cpuChatter(){
   if(!G || !G.last || reduced()) return;
