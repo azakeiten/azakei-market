@@ -568,8 +568,8 @@ body.calm *{animation:none!important;transition:none!important}
   .stats b{font-size:18px}
   .pchip{padding:3px 10px 3px 3px;gap:6px} .pchip .ava{width:30px!important;height:30px!important;font-size:12px!important} .pmeta b{display:none} .xpbar{width:44px}
   .statgrid{grid-template-columns:repeat(2,minmax(0,1fr))} .statgrid b{font-size:22px}
-  .profile{grid-template-columns:1fr;justify-items:center;text-align:center} .pinfo{align-items:center;width:100%} .lvline{width:100%} .colors{justify-content:center}
-  .ava.big{width:76px;height:76px;font-size:30px}
+  .profile{grid-template-columns:auto minmax(0,1fr);gap:14px;padding:16px} .pinfo{width:100%;min-width:0} .lvline{width:100%} .colors{gap:6px}
+  .ava.big{width:64px;height:64px;font-size:26px;align-self:start}
   .wrap{gap:12px}
   .hide-sm{display:none!important}
   .hud{padding-top:10px;gap:8px}
@@ -1138,6 +1138,21 @@ body[data-theme="future"] #bg{filter:hue-rotate(-60deg) saturate(1.4)}
 .trophy b{font-size:11px;white-space:nowrap;letter-spacing:-.03em}.trophy:not(.on) .tro{filter:grayscale(1) brightness(.5);opacity:.6}
 .trophy.on .tro{filter:drop-shadow(0 0 14px var(--cc))}
 @media (max-width:420px){.cups{gap:6px}.cupc{padding:12px 4px 10px}.tro{font-size:32px}.bk{min-width:62px}.bk i{width:34px;height:34px}}
+.hearts{display:inline-flex;gap:3px;font-size:13px;line-height:1}
+.hearts i{font-style:normal;color:#ff5c8a;filter:drop-shadow(0 2px 0 rgb(0 0 0 / .3))}
+.hearts i:not(.on){color:transparent;-webkit-text-stroke:1.5px rgb(255 255 255 / .3)}
+.cuprules{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+.cuprules>div{display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:var(--panel2)}
+.cuprules b{font-size:13px}.cuprules .note{font-size:11px}
+.pfmark{font-size:16px;color:rgb(255 255 255 / .25)}.pfmark.on{color:var(--gold);text-shadow:0 0 10px var(--gold)}
+.cupc.pf::before,.trophy.pf::before{content:"★";position:absolute;top:6px;left:8px;color:var(--gold);font-size:14px;text-shadow:0 0 8px var(--gold)}
+.trophy{position:relative}
+.cupres .hearts{font-size:18px}
+.overlay.vs.final .vsbg{background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--cc) 35%,transparent),transparent 60%),repeating-conic-gradient(from 0deg at 50% 50%,color-mix(in srgb,var(--cc) 14%,transparent) 0 8deg,transparent 8deg 16deg),#0a0c22}
+.vsfinal{position:absolute;top:9%;left:50%;transform:translateX(-50%);font-family:var(--display);font-size:clamp(54px,17vw,110px);letter-spacing:.06em;color:var(--cc);text-shadow:0 6px 0 rgb(0 0 0 / .45),0 0 40px var(--cc);animation:vsfin .7s cubic-bezier(.2,.9,.3,1.4) both;pointer-events:none;z-index:1}
+@keyframes vsfin{0%{transform:translateX(-50%) scale(3);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
+.cr-cup{display:flex;flex-direction:column;align-items:center;gap:4px;margin:6px 0;animation:troup .9s cubic-bezier(.2,.9,.3,1.4) both;animation-delay:var(--d)}
+.cr-cup b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--cc);text-shadow:0 4px 0 rgb(0 0 0 / .4),0 0 30px var(--cc)}
 .chalres{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;background:radial-gradient(circle at 50% 0%,rgb(255 200 58 / .22),transparent 60%),linear-gradient(180deg,var(--panel2),var(--panel))}
 .chalres .goals{width:100%;text-align:left}
 .chalbig{font-family:var(--display);font-size:clamp(40px,10vw,60px);line-height:1;color:var(--muted);text-shadow:0 5px 0 var(--rail);animation:bang .6s cubic-bezier(.2,.9,.3,1.5) .3s both}
@@ -1768,13 +1783,14 @@ function endVs(){
 }
 function vsOverlay(){
   const C=G.cfg, me=myIndex(), L=lvInfo(S.prof.xp);
-  const mode = G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
+  const cu = G.cup && CUPS.find(c=>c.id===G.cup.id), fin = cu && G.cup.stage===cu.m.length-1;
+  const mode = cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
       ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
-  return `<div class="overlay vs" onclick="endVs()"><div class="vsbg"></div>
+  return `<div class="overlay vs${fin?' final':''}" onclick="endVs()" style="${cu?`--cc:${cu.c}`:''}"><div class="vsbg"></div>${fin?'<div class="vsfinal">FINAL</div>':''}
     <div class="vsmode">${mode}</div>
     <div class="vsrow"><div class="vsside l">${left.map((i,j)=>plate(G.players[i],i,'l',j)).join('')}</div>
       <div class="vsmark">VS</div>
@@ -1888,7 +1904,8 @@ function startCeremony(){
   const n=G.players.length, winAt=900+(n-1)*650;
   for(let k=0;k<n-1;k++) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('flip'); haptic(8); } }, 900+k*650));
   CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('slam'); haptic(40); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); } }, winAt));
-  CER_T.push(setTimeout(endCeremony, winAt+3200));
+  if(cupChamp()) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('fanfare'); confetti(); haptic(60); } }, winAt+900));
+  CER_T.push(setTimeout(endCeremony, winAt+(cupChamp()?4600:3200)));
 }
 function endCeremony(){
   CER_T.forEach(clearTimeout); CER_T=[];
@@ -1903,7 +1920,7 @@ function ceremonyOverlay(){
   return `<div class="overlay ceremony" onclick="endCeremony()"><div class="cr-spot" style="--d:${900+(n-1)*650}ms"></div><div class="box">
     <div class="cr-title">結果発表</div><div class="cr-drum"><i></i><i></i><i></i></div>
     ${G.teams?(()=>{ const {s}=teamScores(), w=s[0]===s[1]?-1:s[0]>s[1]?0:1; return `<div class="cr-team" style="--d:${900+(n-1)*650+500}ms"><span class="${w===0?"win":""}">${TEAM_NAMES[0]} ${s[0]}</span><i>VS</i><span class="${w===1?"win":""}">${s[1]} ${TEAM_NAMES[1]}</span></div>`; })():""}
-    <div class="cr-list">${rows}</div><div class="note">タップで結果画面へ</div></div></div>`;
+    <div class="cr-list">${rows}</div>${(c=>c?`<div class="cr-cup" style="--d:${900+(n-1)*650+700}ms;--cc:${c.c}"><span class="tro huge">${c.ic}</span><b>${c.n} 優勝！</b></div>`:'')(cupChamp())}<div class="note">タップで結果画面へ</div></div></div>`;
 }
 function revealFx(){
   const fast=reduced();
@@ -3613,29 +3630,35 @@ function chalPanel(){
 const CUP_NAMES=['ハル','リン','カイ','ユウ','ナギ','レン','ミオ','トキ','サク'];
 const CUP_STAGE=['1回戦','準決勝','決勝'];
 const CUP_TYPE={naive:'素直', read:'読み合い', pro:'達人'};
-const CUPS=[
-  {id:'bronze', n:'ブロンズカップ', ic:'🥉', c:'#d98a4e', d:'はじめての大会。素直なCPUが相手。', bonus:60,  need:[2,2,1], m:[['naive','naive'],['read','naive','naive'],['read','read','naive']]},
-  {id:'silver', n:'シルバーカップ', ic:'🥈', c:'#b9c6de', d:'読み合いの強者がそろう中級大会。', bonus:100, need:[2,1,1], m:[['read','read','naive'],['read','read','read'],['pro','read','read']], lock:'bronze'},
-  {id:'gold',   n:'ゴールドカップ', ic:'🥇', c:'#ffc83a', d:'決勝は達人3人。最強の大会。',     bonus:200, need:[2,1,1], m:[['read','read','read'],['pro','read','read'],['pro','pro','pro']], lock:'silver'}
+const CUPS=[   // life＝負けても同じ試合をやり直せる回数（運の要素が大きいので、残機で遊びやすく）
+  {id:'bronze', n:'ブロンズカップ', ic:'🥉', c:'#d98a4e', d:'はじめての大会。素直なCPUが相手。', bonus:60,  life:2, need:[2,2,2], m:[['naive','naive'],['read','naive','naive'],['read','read','naive']]},
+  {id:'silver', n:'シルバーカップ', ic:'🥈', c:'#b9c6de', d:'読み合いの強者がそろう中級大会。', bonus:100, life:2, need:[2,2,1], m:[['read','read','naive'],['read','read','read'],['pro','read','read']], lock:'bronze'},
+  {id:'gold',   n:'ゴールドカップ', ic:'🥇', c:'#ffc83a', d:'決勝は達人3人。最強の大会。',     bonus:200, life:1, need:[2,1,1], m:[['read','read','read'],['pro','read','read'],['pro','pro','pro']], lock:'silver'}
 ];
 const cupWins = id => ((S.prof.cups||{})[id])||0;
+const cupPerfect = id => !!((S.prof.cupPf||{})[id]);
 const cupOpen = c => !c.lock || cupWins(c.lock)>0;
 const needTxt = n => n===1 ? '1位で突破' : `${n}位以内で突破`;
-function startCup(id){ S.prof.cupRun={id, stage:0}; saveProfile(); closeSheet(); startGame(false,null,null,S.prof.cupRun); }
+const hearts = (n,max) => `<span class="hearts" aria-label="リトライ残り${n}回">${Array.from({length:max},(_,i)=>`<i class="${i<n?'on':''}">❤</i>`).join('')}</span>`;
+function startCup(id){ const c=CUPS.find(x=>x.id===id); S.prof.cupRun={id, stage:0, life:c.life, pf:true}; saveProfile(); closeSheet(); startGame(false,null,null,S.prof.cupRun); }
 function cupNext(id){ const r=S.prof.cupRun; if(r && r.id===id){ closeSheet(); startGame(false,null,null,r); } else startCup(id); }
 function cupResult(rank){   // recordResult から呼ぶ
-  const c=CUPS.find(x=>x.id===G.cup.id), st=G.cup.stage, P=S.prof, pass=rank<=c.need[st], champ=pass && st===c.m.length-1;
-  if(champ){ P.cups=P.cups||{}; P.cups[c.id]=(P.cups[c.id]||0)+1; P.cupRun=null; }
-  else P.cupRun = pass ? {id:c.id, stage:st+1} : null;
-  return {id:c.id, stage:st, rank, need:c.need[st], pass, champ, bonus:c.bonus, wins:cupWins(c.id)};
+  const c=CUPS.find(x=>x.id===G.cup.id), st=G.cup.stage, P=S.prof, run=P.cupRun&&P.cupRun.id===c.id ? P.cupRun : {id:c.id, stage:st, life:0, pf:false};
+  const pass=rank<=c.need[st], champ=pass && st===c.m.length-1, pf=run.pf!==false && rank===1;
+  let life=run.life||0, retry=false, perfect=false;
+  if(champ){ P.cups=P.cups||{}; P.cups[c.id]=(P.cups[c.id]||0)+1; if(pf){ P.cupPf=P.cupPf||{}; perfect=!P.cupPf[c.id]; P.cupPf[c.id]=1; } P.cupRun=null; }
+  else if(pass) P.cupRun={id:c.id, stage:st+1, life, pf};
+  else if(life>0){ life--; retry=true; P.cupRun={id:c.id, stage:st, life, pf:false}; }   // 残機を1つ使って同じ試合から
+  else P.cupRun=null;
+  return {id:c.id, stage:st, rank, need:c.need[st], pass, champ, retry, life, pf:champ&&pf, perfect, bonus:c.bonus, wins:cupWins(c.id)};
 }
 const bracket = (c,at,fail) => `<div class="bracket">${CUP_STAGE.map((n,i)=>`<div class="bk${i<at?' done':''}${i===at?(fail?' lost':' now'):''}"><i>${i<at?'✓':i===at&&fail?'✕':i===2?'🏆':i+1}</i><span>${n}</span><small>${needTxt(c.need[i])}</small></div>`).join('<b class="bkl"></b>')}</div>`;
 function cupsSection(){
   const run=S.prof.cupRun;
   return `<span class="label" style="margin:4px 0 -4px">CUP · トーナメント</span><div class="cups">${CUPS.map((c,i)=>{ const open=cupOpen(c), w=cupWins(c.id), on=run&&run.id===c.id;
-    return `<button class="cupc${open?'':' lock'}${w?' won':''}${on?' on':''}" style="--cc:${c.c};--k:${i}" ${open?`onclick="openSheet('cup:${c.id}')"`:'disabled'}>
+    return `<button class="cupc${open?'':' lock'}${w?' won':''}${on?' on':''}${cupPerfect(c.id)?' pf':''}" style="--cc:${c.c};--k:${i}" ${open?`onclick="openSheet('cup:${c.id}')"`:'disabled'}>
       <span class="tro">${open?c.ic:'🔒'}</span><b>${c.n}</b><span class="note">${open?(on?`挑戦中・${CUP_STAGE[run.stage]}`:w?`優勝 ${w}回`:c.d):'前のカップで優勝すると開く'}</span>
-      ${open?`<span class="cprize">優勝 +${c.bonus}</span>`:''}</button>`; }).join('')}</div>`;
+      ${on?hearts(run.life||0,c.life):open?`<span class="cprize">優勝 +${c.bonus}</span>`:''}</button>`; }).join('')}</div>`;
 }
 function cupSheetBody(id){
   const c=CUPS.find(x=>x.id===id); if(!c) return '';
@@ -3643,23 +3666,29 @@ function cupSheetBody(id){
   return `<div class="cuphead" style="--cc:${c.c}"><span class="tro big">${c.ic}</span><span class="label">CUP · 3試合のトーナメント</span><h3 class="ttl" style="font-size:24px">${c.n}</h3><p class="note">${c.d}</p></div>
     ${bracket(c,on?run.stage:-1)}
     <div class="cupfoes">${c.m.map((m,i)=>`<div><b>${CUP_STAGE[i]}</b><span>${m.map(t=>`<span class="tagx${t==='pro'?' pro':''}">${CUP_TYPE[t]}</span>`).join(' ')}</span></div>`).join('')}</div>
-    <p class="note">負けたら1回戦からやり直し。優勝するとトロフィーと <b>${c.bonus}コイン</b>！ これまでの優勝：${cupWins(id)}回</p>
+    <div class="cuprules"><div><b>リトライ</b>${hearts(on?run.life||0:c.life,c.life)}<span class="note">負けても${c.life}回まで同じ試合をやり直せる</span></div>
+      <div><b>完全優勝</b><span class="pfmark${cupPerfect(id)?' on':''}">★</span><span class="note">3試合すべて1位・リトライなしで優勝</span></div></div>
+    <p class="note">優勝するとトロフィーと <b>${c.bonus}コイン</b>！ これまでの優勝：${cupWins(id)}回</p>
     <div class="row">${on?`<button class="btn gold big" onclick="cupNext('${id}')">${CUP_STAGE[run.stage]}へ進む</button><button class="btn" onclick="startCup('${id}')">最初から</button>`:`<button class="btn gold big" onclick="startCup('${id}')">エントリーする！</button>`}</div>`;
 }
 function cupPanel(){
   const R=G.reward&&G.reward.cup; if(!R) return '';
   const c=CUPS.find(x=>x.id===R.id), nx=CUPS[CUPS.indexOf(c)+1];
-  const head = R.champ ? `<div class="cupwin"><span class="tro huge">${c.ic}</span><div class="chalbig">優勝！</div><p class="note">${c.n}を制覇！ ボーナス <b>+${R.bonus}コイン</b>（通算 ${R.wins}回目）</p></div>`
-    : `<div class="chalbig">${R.pass?CUP_STAGE[R.stage]+' 突破！':'敗退…'}</div><p class="note">${R.rank}位（${needTxt(R.need)}）</p>`;
+  const head = R.champ ? `<div class="cupwin"><span class="tro huge">${c.ic}</span><div class="chalbig">${R.pf?'完全優勝！':'優勝！'}</div><p class="note">${c.n}を制覇！ ボーナス <b>+${R.bonus}コイン</b>（通算 ${R.wins}回目）${R.perfect?'<br>はじめての<b>完全優勝</b>。トロフィーに★がつきました':''}</p></div>`
+    : R.pass ? `<div class="chalbig">${CUP_STAGE[R.stage]} 突破！</div><p class="note">${R.rank}位（${needTxt(R.need)}）</p>`
+    : `<div class="chalbig">${R.retry?'惜しい！':'敗退…'}</div><p class="note">${R.rank}位（${needTxt(R.need)}）${R.retry?`<br>リトライを1つ使って、もう一度${CUP_STAGE[R.stage]}に挑戦できます`:''}</p>${R.retry?hearts(R.life,c.life):''}`;
   const btn = R.champ ? `<button class="btn big" onclick="quit()">カップ一覧</button>${nx?`<button class="btn gold big" onclick="openSheet('cup:${nx.id}')">次のカップへ</button>`:''}`
-    : R.pass ? `<button class="btn gold big pulse" onclick="cupNext('${c.id}')">${CUP_STAGE[R.stage+1]}へ！</button>` : `<button class="btn big" onclick="quit()">カップ一覧</button><button class="btn gold big" onclick="startCup('${c.id}')">もう一度挑戦</button>`;
+    : R.pass ? `<button class="btn gold big pulse" onclick="cupNext('${c.id}')">${CUP_STAGE[R.stage+1]}へ！</button>`
+    : R.retry ? `<button class="btn big" onclick="quit()">カップ一覧</button><button class="btn gold big pulse" onclick="cupNext('${c.id}')">リトライ！</button>`
+    : `<button class="btn big" onclick="quit()">カップ一覧</button><button class="btn gold big" onclick="startCup('${c.id}')">もう一度挑戦</button>`;
   return `<section class="panel cupres${R.champ?' champ':R.pass?' clear':''}" style="--cc:${c.c}"><span class="label">${c.ic} ${c.n}</span>${head}${bracket(c, R.champ?3:R.pass?R.stage+1:R.stage, !R.pass)}<div class="row" style="justify-content:center">${btn}</div></section>`;
 }
 function cupsPanel(){   // コレクション：トロフィー棚
   const total=CUPS.reduce((s,c)=>s+cupWins(c.id),0);
   return `<section class="panel"><div class="row spread"><h3>トロフィー</h3><span class="note">優勝 ${total}回</span></div>
-    <div class="shelf">${CUPS.map(c=>{ const w=cupWins(c.id); return `<button class="trophy${w?' on':''}" style="--cc:${c.c}" onclick="go('chal')"><span class="tro">${c.ic}</span><b>${c.n}</b><span class="note">${w?'×'+w:'未獲得'}</span></button>`; }).join('')}</div></section>`;
+    <div class="shelf">${CUPS.map(c=>{ const w=cupWins(c.id); return `<button class="trophy${w?' on':''}${cupPerfect(c.id)?' pf':''}" style="--cc:${c.c}" onclick="go('chal')"><span class="tro">${c.ic}</span><b>${c.n}</b><span class="note">${w?'×'+w+(cupPerfect(c.id)?' · 完全優勝':''):'未獲得'}</span></button>`; }).join('')}</div></section>`;
 }
+const cupChamp = () => { if(!G||!G.cup) return null; const c=CUPS.find(x=>x.id===G.cup.id), me=myIndex(); if(me<0||G.cup.stage!==c.m.length-1) return null; const r=ranking(G.players,G.cfg).find(x=>x.i===me); return r&&r.rank<=c.need[G.cup.stage] ? c : null; };
 /* ---- CPU chatter: 公開のたびに、CPUがキャラに合ったひとことを言う ---- */
 const CPU_TALK={
   'ミナト':{vs:['計算はもう終わってる。','データは嘘をつかない。'], mono:['読みどおり。','計算済みだよ。','ここは僕だけの市場だ。'], hit:['……想定外だ。','読まれていたか。','被るとはね。'], big:['期待値どおり。','効率よく稼げた。'], neg:['必要な損切りさ。','次で取り返す。'], lead:['このまま逃げ切る。']},
