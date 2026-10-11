@@ -1154,6 +1154,32 @@ body[data-theme="future"] #bg{filter:hue-rotate(-60deg) saturate(1.4)}
 @keyframes vsfin{0%{transform:translateX(-50%) scale(3);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
 .cr-cup{display:flex;flex-direction:column;align-items:center;gap:4px;margin:6px 0;animation:troup .9s cubic-bezier(.2,.9,.3,1.4) both;animation-delay:var(--d)}
 .cr-cup b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--cc);text-shadow:0 4px 0 rgb(0 0 0 / .4),0 0 30px var(--cc)}
+.stories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stc{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;border:0;color:var(--ink);font:inherit;cursor:pointer;padding:12px 4px 10px;border-radius:18px;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--rc) 30%,transparent),transparent 65%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 4px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 40%,var(--line));animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:calc(var(--k) * 45ms)}
+.stc b{font-size:14px}.stc .note{font-size:10px;line-height:1.35}
+.stc.lock{opacity:.45;cursor:default;filter:grayscale(.8)}
+.stc.done{box-shadow:0 4px 0 var(--rail),inset 0 0 0 2px var(--rc)}
+.stn{position:absolute;top:6px;left:9px;font-family:var(--display);font-size:13px;color:var(--muted)}
+.stok{position:absolute;top:6px;right:8px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--cta);color:#04220f;font-size:11px;font-weight:800}
+.sthead{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;margin:0 40px 8px}
+.talk{display:flex;flex-direction:column;gap:10px;margin:6px 0 10px}
+.sl{display:flex;align-items:flex-end;gap:8px;animation:slin .45s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:var(--d)}
+.sl.me{justify-content:flex-end}
+.sl .rva{width:40px;height:40px;font-size:20px;flex:0 0 auto}
+.rva.mea{background:radial-gradient(circle at 35% 30%,#fff3c4,var(--gold));color:#2a1a00;font-family:var(--display);font-size:16px}
+.sb{position:relative;max-width:78%;background:#fff;color:#1a1d3a;font-weight:700;font-size:14px;line-height:1.55;padding:9px 13px;border-radius:16px 16px 16px 4px;box-shadow:0 3px 0 rgb(0 0 0 / .25)}
+.sb b{display:block;font-size:11px;color:var(--rc);filter:brightness(.75)}
+.sl.me .sb{background:linear-gradient(180deg,#fff3c4,#ffe08a);border-radius:16px 16px 4px 16px;font-style:normal}
+@keyframes slin{0%{transform:translateY(14px) scale(.9);opacity:0}100%{transform:none;opacity:1}}
+.storyres{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--rc) 28%,transparent),transparent 60%),linear-gradient(180deg,var(--panel2),var(--panel))}
+.storyres .talk{width:100%;text-align:left}
+.storyres.clear .chalbig{color:var(--rc);text-shadow:0 5px 0 var(--rail),0 0 40px var(--rc)}
+.signs{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:4px;margin:8px 0 4px}
+.sign{display:flex;flex-direction:column;align-items:center;gap:3px}
+.sign .rva{width:100%;max-width:40px;height:auto;aspect-ratio:1;font-size:18px;filter:grayscale(1) brightness(.5)}
+.sign.on .rva{filter:none;box-shadow:0 0 0 2px var(--gold),0 0 12px -2px var(--gold)}
+.sign i{font-style:normal;font-family:var(--serif,serif);font-weight:700;font-size:12px;color:var(--gold);transform:rotate(-8deg);min-height:1.2em;white-space:nowrap}
+@media (max-width:420px){.signs{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}}
 .todaybar{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px;margin-top:6px;padding:14px 16px;border-radius:22px;background:linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line)}
 .todaybar.all{box-shadow:inset 0 0 0 2px var(--gold),0 0 30px -10px var(--gold)}
 .tb-ring{position:relative;width:64px;height:64px}
@@ -1828,34 +1854,36 @@ function toggleSound(){ S.sound=!S.sound; save('azakei-sound',S.sound); if(S.sou
 
 /* ================= game flow ================= */
 let introTimer=null;
-function startGame(online, daily, chalId, cupRun){
+function startGame(online, daily, chalId, cupRun, storyK){
   sfx('open');
   const ch = chalId ? CHALLENGES.find(c=>c.id===chalId) : null;
   const cu = cupRun ? CUPS.find(c=>c.id===cupRun.id) : null;   // カップ戦：決まった相手と1試合ずつ
-  const long = ch ? !!ch.long : cu ? false : (!daily && S.len==='long');   // オンラインはホストの設定（S.len）に従う
-  TURNS=daily||cu||ch&&!long ? 4 : long ? LONG_PER : (CFG.turns||4);
-  let cfg=daily ? dailyCfg(daily) : ch ? chalCfg(ch, long) : cu ? chalCfg({mode:'classic'}, false) : cfgFor(S.mode, long?'all':S.era);
+  const sto = storyK ? STORIES.find(x=>x.k===storyK) : null;   // キャラストーリー
+  const long = ch ? !!ch.long : (cu||sto) ? false : (!daily && S.len==='long');   // オンラインはホストの設定（S.len）に従う
+  TURNS=daily||cu||sto||ch&&!long ? 4 : long ? LONG_PER : (CFG.turns||4);
+  let cfg=daily ? dailyCfg(daily) : ch ? chalCfg(ch, long) : cu ? chalCfg({mode:'classic'}, false) : sto ? storyCfg(sto) : cfgFor(S.mode, long?'all':S.era);
   const seats = ch ? ch.seats.map((t,i)=>({name:i===0?(NET.name||'あなた'):'CPU '+CHAL_NAMES[i-1], type:t}))
+    : sto ? [{name:NET.name||'あなた', type:'human'}, ...sto.foes.map(([k,t])=>({name:'CPU '+k, type:t}))]
     : cu ? ['human',...cu.m[cupRun.stage]].map((t,i)=>({name:i===0?(NET.name||'あなた'):'CPU '+CUP_NAMES[(cupRun.stage*3+i-1)%CUP_NAMES.length], type:t})) : S.seats;
   const seed = daily || (ch && ch.seed) || 0;
   let fullPool=null;
   if(long && cfg.hist){ fullPool=cfg.pool.slice().sort((a,b)=>yearOf(a)-yearOf(b)); cfg={...cfg, pool:fullPool.slice(0,LONG_PER)}; }
   let evtKey=null;
-  if(!long && !daily && !ch && !cu && !online && S.evt){ evtKey=weekEvent(); cfg={...cfg, table:clone(cfg.table)}; MARKETS[evtKey].apply(cfg); }   // 今週のイベント：ショートにも市況ルール
+  if(!long && !daily && !ch && !cu && !sto && !online && S.evt){ evtKey=weekEvent(); cfg={...cfg, table:clone(cfg.table)}; MARKETS[evtKey].apply(cfg); }   // 今週のイベント：ショートにも市況ルール
   if(cfg.hist && cfg.pool.length<TURNS) TURNS=cfg.pool.length;
   G={ cfg, online:!!online, host:!!online, players:seats.map((s,i)=>({seat:i,name:(s.name||'').trim()||'名無し',type:s.type,peer:online?(s.peer||null):null,fore:'auto',hand:[0,1,2,3,4,5],used:[],score:0,uniq:0,hist:[0],foreUsed:false,foreTurn:-1,fut:false,pick:null,last:null,shown:0})),
       deck:buildDeck(cfg, seed?mulberry(seed):Math.random), rnd:seed?mulberry(seed*7+13):null, daily:daily||null, chal:ch?ch.id:null, turn:0, phase:'choose', active:-1, sel:null, last:null, divs:[], ov:null,
       rounds: long ? (cfg.hist ? Math.ceil(fullPool.length/LONG_PER) : LONG_ROUNDS) : 1, round:0, fullPool, log:[], settles:[] };
   G.players.forEach(p=>p.roundStart=0);
-  if(!online && !daily && !ch && !cu) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
-  G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null;
-  G.teams = (!online && !daily && !ch && !cu && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
+  if(!online && !daily && !ch && !cu && !sto) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
+  G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:null;
+  G.teams = (!online && !daily && !ch && !cu && !sto && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
   if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); G.players.forEach(p=>p.brand=null); dealContracts(); }
   G.me = online ? G.players.findIndex(p=>p.peer===NET.myPeer) : -1;
   scrollTo(0,0);
   beginTurn();
 }
-function restartGame(){ if(G && G.online){ if(G.host) startOnlineGame(); } else if(G && G.daily) startDaily(); else if(G && G.chal) startGame(false,null,G.chal); else if(G && G.cup) cupNext(G.cup.id); else startGame(); }
+function restartGame(){ if(G && G.online){ if(G.host) startOnlineGame(); } else if(G && G.daily) startDaily(); else if(G && G.chal) startGame(false,null,G.chal); else if(G && G.cup) cupNext(G.cup.id); else if(G && G.story) startStory(G.story); else startGame(); }
 const isHuman = p => p.type==='human';
 const humans = () => G.players.filter(isHuman).length;
 const nm = i => G.cfg.names[i];
@@ -1883,7 +1911,8 @@ function endVs(){
 function vsOverlay(){
   const C=G.cfg, me=myIndex(), L=lvInfo(S.prof.xp);
   const cu = G.cup && CUPS.find(c=>c.id===G.cup.id), fin = cu && G.cup.stage===cu.m.length-1;
-  const mode = cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
+  const stv = G.story && STORIES.find(x=>x.k===G.story);
+  const mode = stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
       ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
@@ -2200,7 +2229,7 @@ function settleOverlay(){
 function quit(){
   clearTimeout(introTimer);
   if(G && G.online){ if(G.host){ G=null; hostBroadcast(); render(); } else leaveRoom(); return; }
-  const back = G && (G.chal||G.cup) ? 'chal' : 'home';   // チャレンジ中はステージ一覧へ戻る
+  const back = G && (G.chal||G.cup||G.story) ? 'chal' : 'home';   // チャレンジ中はステージ一覧へ戻る
   G=null; S.screen=back; render();
 }
 
@@ -2549,6 +2578,7 @@ function renderSheet(){
   else if(k.startsWith('cup:')) body=cupSheetBody(k.slice(4));
   else if(k.startsWith('pickchar:')) body=pickCharBody(+k.slice(9));
   else if(k.startsWith('char:')) body=charSheetBody(k.slice(5));
+  else if(k.startsWith('story:')) body=storySheetBody(k.slice(6));
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
 }
 
@@ -2917,7 +2947,7 @@ function hud(){
   const pips = isLong() ? Array.from({length:G.rounds},(_,r)=>`<span class="term${r===G.round?' cur':''}">${Array.from({length:TURNS},(_,i)=>pip(r,i)).join('')}</span>`).join('') : Array.from({length:TURNS},(_,i)=>pip(0,i)).join('');
   const left=G.phase==='final'?0:TURNS-1-G.turn;
   return `<div class="hud"><div class="logo"><span class="mk"></span><span class="hide-sm" style="color:inherit">AZAKEI</span> <span>MARKET</span>${G.cfg.fut?'<span class="modechip fut">未来</span>':G.cfg.hist?'<span class="modechip">歴史</span>':''}</div>
-    <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div><span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${(curMarket()||(G.evt&&MARKETS[G.evt]))&&G.phase!=="final"?(()=>{ const m=curMarket()||MARKETS[G.evt]; return `<span class="mktchip" style="--m1:${m.c1};--m2:${m.c2}">${m.ic} ${m.n}${G.evt?" WEEK":""}</span>`; })():""}
+    <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div><span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${(curMarket()||(G.evt&&MARKETS[G.evt])||(G.srule&&MARKETS[G.srule]))&&G.phase!=="final"?(()=>{ const m=curMarket()||MARKETS[G.evt||G.srule]; return `<span class="mktchip" style="--m1:${m.c1};--m2:${m.c2}">${m.ic} ${m.n}${G.evt?" WEEK":""}</span>`; })():""}
     ${G.phase==='final'?'':`<span class="deckchip hide-sm" title="このあと出るNEWSの数"><span class="mini-back"></span>残り${left}</span>`}
     ${G.online?`<span class="codechip hide-sm">${esc(NET.code||'')}</span>`:''}<button class="btn ghost icon tblbtn" onclick="openSheet('table')" aria-label="全体の点数表">📊<span class="hide-sm"> 点数表</span></button>${snd}<button class="btn ghost icon" onclick="quit()">${G.online?(G.host?'ロビーへ':'退出'):'やめる'}</button></div></div>`;
 }
@@ -3069,7 +3099,7 @@ function finalView(){
   if(big.p) aw.push(['最大瞬間風速',big.p.name,`T${big.u.turn+1} ${IND[big.u.ind]} ${sgn(big.v)}`]);
   const hist=G.players.map(p=>`<tr><td>${esc(p.name)}</td>${p.used.map(u=>`<td>${chip(u.ind)} <span class="num ${cls(u.total)}">${sgn(u.total)}</span>${u.fut?' <span class="tagx cy">先物</span>':''}</td>`).join('')}<td class="n">${p.uniq}</td><td class="n"><b>${p.score}</b></td></tr>`).join('');
   const recap = C.hist ? `<section class="panel"><h3>あなたたちが生きた時代</h3><div class="recap">${logDeck().map(i=>`<div><b>${yearOf(i)}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${HIST[i].n}</b><br>${HIST[i].d}</p></div>`).join('')}</div></section>` : '';
-  return `<div class="two"><div class="col">${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+  return `<div class="two"><div class="col">${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
@@ -3213,6 +3243,7 @@ function lvInfo(xp){ let lv=1, rest=xp; while(rest>=lvNeed(lv)){ rest-=lvNeed(lv
 const TITLES=[[1,'見習いトレーダー'],[3,'駆け出しトレーダー'],[5,'市場の読み手'],[8,'敏腕トレーダー'],[12,'相場師'],[16,'マーケットの支配者']];
 const titleOf = lv => TITLES.filter(t=>lv>=t[0]).pop()[1];
 const ACH=[
+  {id:'story9', n:'物語の主人公', d:'キャラストーリーを9話すべてクリア', ic:'📖'},
   {id:'chars9', n:'顔なじみ', d:'9人のキャラ全員と対戦する', ic:'👥'},
   {id:'beat9', n:'全員撃破', d:'9人のキャラ全員に1回以上勝つ', ic:'⚔'},
   {id:'cupgold', n:'ゴールドの覇者', d:'ゴールドカップで優勝する', ic:'🏆'},
@@ -3285,9 +3316,10 @@ function recordResult(){
   let coin = 10 + (won?20:mine&&mine.rank===2?10:0) + p.uniq*2 + (mis.cleared.length*5) + (G.daily?10:0);   // ショップで使うコイン
   const cup=G.cup?cupResult(mine?mine.rank:9):null; if(cup && cup.champ){ coin+=cup.bonus; if(cup.id==='gold') unlock('cupgold'); }
   P.coin=(P.coin||0)+coin;
+  const sty=G.story?storyResult(rk, me):null; if(sty&&sty.bonus){ coin+=sty.bonus; P.coin+=sty.bonus; } if(STORIES.every(x=>(P.story||{})[x.k])) unlock('story9');
   const trb=recordRivals(rk, me); if(trb){ coin+=trb; P.coin+=trb; }
   { const RV=P.riv||{}, ks=Object.keys(CHARS); if(ks.every(k=>RV[k])) unlock('chars9'); if(ks.every(k=>RV[k]&&RV[k].w>0)) unlock('beat9'); }
-  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, dex, trb, trk:trb?todayRival():null};
+  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, sty, dex, trb, trk:trb?todayRival():null};
   saveProfile();
 }
 /* ---- daily challenge: 日付で決まる同じゲームを、全員が同じ条件で遊ぶ ---- */
@@ -3420,7 +3452,7 @@ function meView(){
     ${statsCharts()}
     ${historyPanel()}
     <button class="wide lab" onclick="go(\x27lab\x27)"><span class="label">LAB</span><b>バランス検証</b><span class="desc">CPU同士を大量に対戦させて、ルールの偏りを調べる開発者向けの機能。</span><span class="go">ラボを開く →</span></button>`:""}
-    ${tab==="col"?`${cupsPanel()}
+    ${tab==="col"?`${signPanel()}${cupsPanel()}
     ${dexPanel()}
     ${skinsPanel()}
     <section class="panel"><div class="row spread"><h3>実績</h3><span class="note">${got} / ${ACH.length} 解除</span></div>
@@ -3729,13 +3761,14 @@ function chalResult(){   // recordResult から呼ぶ
 const starRow = (n,big) => `<span class="stars${big?' big':''}">${[0,1,2].map(i=>`<i class="${i<n?'on':''}" style="animation-delay:${.9+i*.25}s">★</i>`).join('')}</span>`;
 function chalCard(){
   const total=chalTotal(), next=CHALLENGES.findIndex((c,i)=>chalOpen(i)&&chalStars(c.id)===0);
-  return `<button class="chalcard" onclick="go('chal')"><span class="cstars">★</span><span class="ctx"><span class="label">CHALLENGE · 8ステージ＋カップ戦</span><b>チャレンジ</b><span class="desc">${next>=0?`次は STAGE ${next+1}「${CHALLENGES[next].n}」`:'全ステージクリア！★をそろえよう'}</span></span><span class="cnum"><b>${total}</b><small>/ ${CHALLENGES.length*3} ★</small></span></button>`;
+  return `<button class="chalcard" onclick="go('chal')"><span class="cstars">★</span><span class="ctx"><span class="label">CHALLENGE · ストーリー・カップ・ステージ</span><b>チャレンジ</b><span class="desc">${next>=0?`次は STAGE ${next+1}「${CHALLENGES[next].n}」`:'全ステージクリア！★をそろえよう'}</span></span><span class="cnum"><b>${total}</b><small>/ ${CHALLENGES.length*3} ★</small></span></button>`;
 }
 function chalView(){
   const total=chalTotal();
   return `<div class="col"><section class="chalhead"><span class="label">CHALLENGE</span><h2 class="ttl">チャレンジ</h2>
       <p class="note">山札と相手が決まった8つのステージ。条件をクリアして★を集めよう。1つクリアすると次が開きます。</p>
       <div class="chaltotal"><span class="stars"><i class="on" style="font-size:34px">★</i></span><b>${total}</b><span>/ ${CHALLENGES.length*3}</span></div></section>
+    ${storySection()}
     ${cupsSection()}
     <span class="label" style="margin:4px 0 -4px">STAGES</span>
     <div class="path">${CHALLENGES.map((c,i)=>{ const st=chalStars(c.id), open=chalOpen(i);
@@ -3880,6 +3913,82 @@ function challengeChar(k){   // いまの席のまま、CPUの1人目をこの�
   const others=S.seats.findIndex(s=>s.type!=='human'&&charKey(s)===k);
   if(others<0){ const i=S.seats.findIndex(s=>s.type!=='human'); S.seats[i].name='CPU '+k; }
   closeSheet(); sfx('select'); go('play');
+}
+/* ---- キャラストーリー：9人と1話ずつ。会話のあとで対戦し、そのキャラより上の順位ならクリア ---- */
+const STORIES=[
+  {k:'ソラ', t:'のんびり市場さんぽ', rule:null, foes:[['ソラ','naive'],['ハル','naive']],
+   pre:[['ソラ','やあ、はじめまして〜。市場って、のんびり眺めるのが楽しいんだよ〜'],['ソラ','人と被らないカードを出すと、独占ボーナスがもらえるんだ〜'],['ソラ','ぼくより上の順位になれたら、きみの勝ち。いこっか〜']],
+   win:'わあ、すごいね〜。きみ、市場に向いてるかも〜', lose:'まあいっか〜。また一緒に遊ぼ〜'},
+  {k:'ハル', t:'熱血！好景気バトル', rule:'boom', foes:[['ハル','read'],['ソラ','naive']],
+   pre:[['ハル','おっ、新顔だな！ オレはハル、全力勝負がモットーだ！'],['ハル','今日は好景気。独占すればボーナスがさらに +1 だ！'],['me','（だれもいない産業に飛びこめば、大きく稼げる…！）'],['ハル','その勇気、見せてもらうぜ！']],
+   win:'くっそー！ でも燃えたぜ、またやろう！', lose:'よっしゃ！ 次はもっと思い切ってこいよ！'},
+  {k:'アオイ', t:'負けず嫌いのバブル', rule:'bubble', foes:[['アオイ','read'],['ハル','read']],
+   pre:[['アオイ','ねえねえ、あたしと勝負して！ 今日はバブル相場だよ！'],['アオイ','+3以上の点がさらに +1。おいしい産業に、みんな集まっちゃうかもね〜'],['me','（みんなが狙う産業は、被りやすい…？）'],['アオイ','負けないからね！']],
+   win:'うそでしょ！？ …次は絶対勝つから！', lose:'やったー！ あたしの勝ち〜！'},
+  {k:'ミオ', t:'予習の成果', rule:'reg', foes:[['ミオ','read'],['アオイ','read'],['ソラ','naive']],
+   pre:[['ミオ','こんにちは。規制強化の日のために、ノートをまとめてきました'],['ミオ','被ると点がさらに −1。だれとも同じにならない一手が大事です'],['ミオ','予習どおりにいくか、確かめさせてください']],
+   win:'…予習にない答えでした。勉強になります！', lose:'予習どおりです。復習、がんばってくださいね'},
+  {k:'ナギ', t:'潮目を読め', rule:'crowd', foes:[['ナギ','read'],['ハル','read'],['ミオ','read']],
+   pre:[['ナギ','よう。市場には波がある。乗るか、外すかだ'],['ナギ','今日は過当競争。被ったプラス点は人数で割られる'],['ナギ','みんなと同じ波に乗ったら、分け前は小さいぜ']],
+   win:'いい波乗りだった。完敗だよ', lose:'今日の波は、オレのほうが読めてたな'},
+  {k:'ユイ', t:'静かな不況', rule:'slump', foes:[['ユイ','read'],['ミオ','read'],['ナギ','read']],
+   pre:[['ユイ','不況の日は、静かに守るのが一番よ'],['ユイ','マイナス点が 2 倍。攻めすぎた人から沈んでいくわ'],['ユイ','あなたは、どこで我慢できるかしら']],
+   win:'…ふふ、やるわね。覚えておくわ', lose:'守りが甘かったわね'},
+  {k:'トキ', t:'歴史は繰り返す', rule:null, hist:true, era:'showa', foes:[['トキ','pro'],['ユイ','read'],['ナギ','read']],
+   pre:[['トキ','若いの。わしは昭和の相場を、この目で見てきた'],['トキ','オイルショック、バブル…次に何が起きるか、知っておるかね'],['me','（歴史モード。本当の出来事が、年代順に起きる…）'],['トキ','歴史を読めるなら、わしに勝てるはずじゃ']],
+   win:'ほっほ、見事。歴史をよく学んだようじゃな', lose:'まだまだ。歴史はもっと深いぞ'},
+  {k:'レン', t:'頂点への挑戦状', rule:'boom', foes:[['レン','pro'],['ハル','read'],['アオイ','read']],
+   pre:[['レン','おまえが最近ウワサの新人か'],['レン','頂点に立つのはオレだ。達人の読み、見せてやる'],['レン','かかってこい！']],
+   win:'ぐぬぬ…認めてやる。おまえは強い', lose:'頂点はオレだ！ 出直してこい！'},
+  {k:'ミナト', t:'計算された結末', rule:null, foes:[['ミナト','pro'],['レン','pro'],['ユイ','pro']],
+   pre:[['ミナト','君の対戦データは、全部見せてもらった'],['ミナト','選ぶ癖、被る確率、勝ちパターン。計算はもう終わってる'],['ミナト','さあ、僕の計算を超えられるかな']],
+   win:'……想定外だ。君は、計算の外にいる', lose:'データは嘘をつかない。また挑戦してくれ'}
+];
+const STORY_COIN=40, STORY_FINAL_COIN=100;
+const storyDone = k => !!((S.prof.story||{})[k]);
+const storyOpen = i => i===0 || storyDone(STORIES[i-1].k);
+function storyCfg(st){
+  let c=chalCfg({mode:st.hist?'history':'classic', era:st.era}, false);
+  if(st.rule){ c={...c, table:clone(c.table)}; MARKETS[st.rule].apply(c); }
+  return c;
+}
+function startStory(k){ closeSheet(); startGame(false,null,null,null,k); }
+function storyResult(rk, me){
+  const st=STORIES.find(x=>x.k===G.story), a=rk.find(x=>x.i===me), ci=G.players.findIndex(p=>charKey(p)===st.k&&!isHuman(p)), b=rk.find(x=>x.i===ci);
+  const win=!!(a&&b&&a.rank<b.rank), P=S.prof; P.story=P.story||{}; const first=win&&!P.story[st.k];
+  if(win) P.story[st.k]=(P.story[st.k]||0)+1;
+  const last=STORIES.indexOf(st)===STORIES.length-1;
+  return {k:st.k, win, first, bonus:first?(last?STORY_FINAL_COIN:STORY_COIN):0};
+}
+const talkLine = (who,text,i) => { const me=who==='me', c=me?null:CHARS[who];
+  return `<div class="sl${me?' me':''}" style="--d:${.25+i*.55}s;${c?`--rc:${c.c}`:''}">${me?'':`<span class="rva">${c.ic}</span>`}<div class="sb">${me?'':`<b>${who}</b>`}${text}</div>${me?`<span class="rva mea">${esc(myAvatar()||initial(NET.name||'あ'))}</span>`:''}</div>`; };
+function storySheetBody(k){
+  const st=STORIES.find(x=>x.k===k); if(!st) return ''; const i=STORIES.indexOf(st), c=CHARS[k], m=st.rule&&MARKETS[st.rule];
+  return `<div class="sthead" style="--rc:${c.c}"><span class="label">STORY ${i+1} · ${k}</span><h3 class="ttl" style="font-size:24px">${st.t}</h3>
+      <div class="row" style="gap:6px;justify-content:center">${m?`<span class="mktchip" style="--m1:${m.c1};--m2:${m.c2}">${m.ic} ${m.n}</span>`:''}${st.hist?'<span class="tagx">歴史モード・昭和</span>':''}${st.foes.map(([n,t])=>`<span class="tagx${t==='pro'?' pro':''}">${CHARS[n].ic} ${n}・${CUP_TYPE[t]}</span>`).join('')}</div></div>
+    <div class="talk">${st.pre.map((l,j)=>talkLine(l[0],l[1],j)).join('')}</div>
+    <p class="note" style="text-align:center">クリア条件：<b>${k}より上の順位</b> · はじめてのクリアで <b>${i===STORIES.length-1?STORY_FINAL_COIN:STORY_COIN}コイン</b>${storyDone(k)?' · クリア済み ✓':''}</p>
+    <button class="btn gold big" onclick="startStory('${k}')">対戦する！</button>`;
+}
+function storySection(){
+  const n=STORIES.filter(x=>storyDone(x.k)).length;
+  return `<span class="label" style="margin:4px 0 -4px">STORY · キャラストーリー ${n} / ${STORIES.length}</span><div class="stories">${STORIES.map((st,i)=>{ const c=CHARS[st.k], open=storyOpen(i), done=storyDone(st.k);
+    return `<button class="stc${open?'':' lock'}${done?' done':''}" style="--rc:${c.c};--k:${i}" ${open?`onclick="openSheet('story:${st.k}')"`:'disabled'}><span class="stn">${i+1}</span><span class="rva">${open?c.ic:'🔒'}</span><b>${open?st.k:'？？？'}</b><span class="note">${open?st.t:'前の話をクリア'}</span>${done?'<span class="stok">✓</span>':''}</button>`; }).join('')}</div>`;
+}
+function storyPanel(){
+  const R=G.reward&&G.reward.sty; if(!R) return '';
+  const st=STORIES.find(x=>x.k===R.k), i=STORIES.indexOf(st), nx=STORIES[i+1], c=CHARS[R.k];
+  return `<section class="panel storyres${R.win?' clear':''}" style="--rc:${c.c}"><span class="label">STORY ${i+1} · ${st.t}</span>
+    <div class="chalbig">${R.win?'STORY CLEAR!':'もう一歩…'}</div>
+    <div class="talk">${talkLine(R.k, R.win?st.win:st.lose, 0)}</div>
+    ${R.bonus?`<p class="note">はじめてのクリア！ <b>+${R.bonus}コイン</b>${nx?` · 次の話「${nx.t}」が開きました`:' · 全話クリア、おめでとう！'}</p>`:''}
+    <div class="row" style="justify-content:center">${R.win&&nx?`<button class="btn big" onclick="quit()">ストーリー一覧</button><button class="btn gold big pulse" onclick="openSheet('story:${nx.k}')">次の話へ</button>`:R.win?`<button class="btn gold big" onclick="quit()">ストーリー一覧</button>`:`<button class="btn big" onclick="quit()">ストーリー一覧</button><button class="btn gold big" onclick="startStory('${R.k}')">リベンジ！</button>`}</div></section>`;
+}
+function signPanel(){   // コレクション：ストーリーをクリアしたキャラのサイン
+  const n=STORIES.filter(x=>storyDone(x.k)).length;
+  return `<section class="panel"><div class="row spread"><h3>サイン帳</h3><span class="note">${n} / ${STORIES.length}</span></div>
+    <div class="signs">${STORIES.map(st=>{ const c=CHARS[st.k], d=storyDone(st.k); return `<div class="sign${d?' on':''}" style="--rc:${c.c}"><span class="rva">${d?c.ic:'?'}</span><i>${d?st.k:''}</i></div>`; }).join('')}</div>
+    <p class="note">キャラストーリーをクリアすると、そのキャラのサインがもらえます。</p></section>`;
 }
 /* ---- 今日のチェックリスト：4つ全部やると、コンプリートボーナス ---- */
 const TODAY_BONUS=30;
