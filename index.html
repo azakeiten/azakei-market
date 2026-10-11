@@ -3872,25 +3872,74 @@ async function drawResultCard(){
   x.font=`500 26px ${B}`; x.fillStyle=v('--cyan'); x.fillText(PUBLIC_URL.replace(/^https:\/\//,''),W/2,1322);
   return cv;
 }
+/* ---- プレイヤーカードを1枚の画像に（LINEなどで送れる） ---- */
+async function drawPlayerCard(){
+  try{ await document.fonts.ready; }catch(e){}
+  const d=pcData(), W=1080, H=1512, cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const x=cv.getContext('2d'), css=getComputedStyle(document.documentElement), v=n=>css.getPropertyValue(n).trim();
+  const D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', B='"M PLUS Rounded 1c",sans-serif', fc=d.fav>=0?v('--i'+d.fav):v('--gold');
+  x.fillStyle='#07081a'; x.fillRect(0,0,W,H);
+  // 外枠（ランク色）
+  rr(x,24,24,W-48,H-48,60); x.fillStyle=d.t.c1; x.fill();
+  rr(x,40,40,W-80,H-80,48); let g=x.createLinearGradient(0,0,W*.4,H); g.addColorStop(0,d.t.c2); g.addColorStop(.75,'#0d0f26'); x.fillStyle=g; x.fill();
+  x.save(); rr(x,40,40,W-80,H-80,48); x.clip();
+  let rg=x.createRadialGradient(W/2,560,20,W/2,560,620); rg.addColorStop(0,fc+'aa'); rg.addColorStop(1,'rgba(0,0,0,0)'); x.fillStyle=rg; x.fillRect(0,0,W,H);
+  const hg=x.createLinearGradient(0,0,W,H); ['rgba(255,92,154,0)','rgba(255,92,154,.16)','rgba(255,200,58,.16)','rgba(92,240,162,.16)','rgba(79,227,255,.16)','rgba(79,227,255,0)'].forEach((c,i,a)=>hg.addColorStop(i/(a.length-1),c)); x.fillStyle=hg; x.fillRect(0,0,W,H);
+  x.restore();
+  // 上段
+  x.textBaseline='alphabetic'; x.font=`40px ${D}`; x.fillStyle=d.t.c1; x.textAlign='left'; x.fillText(`No.${d.no}`,90,130); x.textAlign='right'; x.fillText(`Lv.${d.L.lv}`,W-90,130);
+  // アート枠
+  rr(x,90,170,W-180,640,40); x.fillStyle='rgba(255,255,255,.05)'; x.fill(); x.lineWidth=3; x.strokeStyle='rgba(255,255,255,.18)'; x.stroke();
+  x.save(); rr(x,90,170,W-180,640,40); x.clip(); x.translate(W/2,490); for(let i=0;i<36;i++){ x.rotate(Math.PI/18); x.fillStyle=i%2?'rgba(255,255,255,.035)':'rgba(255,255,255,0)'; x.beginPath(); x.moveTo(0,0); x.lineTo(900,-80); x.lineTo(900,80); x.closePath(); x.fill(); } x.restore();
+  x.beginPath(); x.arc(W/2,490,190,0,Math.PI*2); x.fillStyle=d.t.c1; x.fill();
+  x.beginPath(); x.arc(W/2,490,176,0,Math.PI*2); x.fillStyle='#07081a'; x.fill();
+  const ag=x.createRadialGradient(W/2-60,430,20,W/2,490,170); ag.addColorStop(0,'#fff7d6'); ag.addColorStop(1,AVA_COLORS[d.P.color%6]); x.beginPath(); x.arc(W/2,490,164,0,Math.PI*2); x.fillStyle=ag; x.fill();
+  x.textAlign='center'; x.textBaseline='middle'; x.fillStyle='#2a1a00'; x.font=`150px ${D}`; x.fillText(myAvatar()||initial(NET.name||'あなた'),W/2,500);
+  // エンブレム
+  hexPath(x,W-200,720,130); const eg=x.createLinearGradient(W-260,650,W-140,790); eg.addColorStop(0,'#fff'); eg.addColorStop(.3,d.t.c1); eg.addColorStop(1,d.t.c2); x.fillStyle=eg; x.fill();
+  hexPath(x,W-200,720,96); x.fillStyle=d.t.c2; x.fill(); x.fillStyle=d.t.c1; x.font=`800 30px ${B}`; x.fillText('★'.repeat(Math.min(3,TIERS.indexOf(d.t)%3+1)),W-200,724);
+  // 名前
+  x.textBaseline='alphabetic'; x.font=`78px ${D}`; x.fillStyle='#fff'; x.fillText(NET.name||'あなた',W/2,920);
+  x.font=`800 34px ${B}`; x.fillStyle=v('--gold'); x.fillText(myTitle(),W/2,972);
+  // タイプ
+  x.font=`800 32px ${B}`; const tw=x.measureText(d.style[0]).width+50; rr(x,W/2-tw/2-150,1004,tw,56,28); x.fillStyle=fc; x.fill();
+  x.fillStyle='#140a00'; x.fillText(d.style[0],W/2-150,1043); x.textAlign='left'; x.fillStyle='rgba(255,255,255,.8)'; x.font=`700 30px ${B}`; x.fillText(d.style[1],W/2-150+tw/2+20,1043);
+  // 成績
+  rr(x,90,1090,W-180,190,30); x.fillStyle='rgba(0,0,0,.32)'; x.fill();
+  const cols=[[d.st.games,'対戦'],[d.wr+'%','勝率'],[d.st.best,'最高点'],[d.r,d.t.n]], cw=(W-180)/4;
+  cols.forEach(([val,lab],i)=>{ const cx=90+cw*i+cw/2; x.textAlign='center'; x.fillStyle='#fff'; x.font=`64px ${D}`; x.fillText(String(val),cx,1200); x.fillStyle='rgba(255,255,255,.6)'; x.font=`800 26px ${B}`; x.fillText(lab,cx,1248); });
+  // 下段
+  x.textAlign='left'; x.font=`800 32px ${B}`; x.fillStyle='rgba(255,255,255,.75)'; x.fillText(d.fav>=0?`得意：${IND[d.fav]}`:'得意な産業：これから',96,1340);
+  x.textAlign='right'; x.fillText(`🏆${d.trophies}  ✍${d.signs}  ★${chalTotal()}`,W-96,1340);
+  x.textAlign='left'; x.font=`40px ${D}`; { const aw=x.measureText('AZAKEI ').width, mw=x.measureText('MARKET').width, x0=W/2-(aw+mw)/2; x.fillStyle='#fff'; x.fillText('AZAKEI',x0,1430); x.fillStyle=v('--gold'); x.fillText('MARKET',x0+aw,1430); } x.textAlign='center';
+  x.font=`500 24px ${B}`; x.fillStyle='rgba(255,255,255,.55)'; x.fillText(PUBLIC_URL.replace(/^https:\/\//,''),W/2,1468);
+  return cv;
+}
+async function openPlayerCardImg(){
+  sfx('click'); toast('画像を作っています…');
+  const cv=await drawPlayerCard();
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'プレイヤーカード', name:`azakei-card-${todayKey()}.png`, note:'あなたの成績をまとめた1枚。友だちと見せ合おう！'};
+  openSheet('card');
+}
 async function openResultCard(){
   sfx('click'); toast('画像を作っています…');
   const cv=await drawResultCard(); if(!cv) return;
-  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png'))};
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'リザルトカード', name:`azakei-result-${todayKey()}.png`, note:'友だちに送ると、点数とターンごとの結果、ランクがひと目で伝わります。'};
   openSheet('card');
 }
 function cardSheetBody(){
   if(!CARD_IMG) return '';
   const canFile = !IN_CLAUDE && navigator.canShare && (()=>{ try{ return navigator.canShare({files:[new File([CARD_IMG.blob],'a.png',{type:'image/png'})]}); }catch(e){ return false; } })();
-  return `<h3 class="ttl" style="font-size:20px">リザルトカード</h3>
+  return `<h3 class="ttl" style="font-size:20px">${CARD_IMG.title||'リザルトカード'}</h3>
     <img class="rcard" src="${CARD_IMG.url}" alt="今回の結果をまとめた画像">
     <div class="col" style="gap:10px">${canFile?'<button class="btn gold big" onclick="shareCardImg()">画像を送る（LINEなど）</button>':''}
       <button class="btn ${canFile?'':'gold '}big" onclick="saveCardImg()">画像を保存する</button></div>
-    <p class="note">友だちに送ると、点数とターンごとの結果、ランクがひと目で伝わります。</p>`;
+    <p class="note">${CARD_IMG.note||''}</p>`;
 }
-const cardName = () => `azakei-result-${todayKey()}.png`;
+const cardName = () => (CARD_IMG&&CARD_IMG.name) || `azakei-result-${todayKey()}.png`;
 async function shareCardImg(){
   const f=new File([CARD_IMG.blob],cardName(),{type:'image/png'});
-  try{ await navigator.share({files:[f], text:shareText()}); }catch(e){ if(!e || e.name!=='AbortError') saveCardImg(); }
+  try{ await navigator.share({files:[f], text:(G&&G.phase==='final')?shareText():'AZAKEI MARKET '+PUBLIC_URL}); }catch(e){ if(!e || e.name!=='AbortError') saveCardImg(); }
 }
 async function saveCardImg(){
   if(!IN_CLAUDE){ const u=URL.createObjectURL(CARD_IMG.blob); saveByLink(u,cardName()); setTimeout(()=>URL.revokeObjectURL(u),5000); return; }
@@ -4119,11 +4168,16 @@ const CPU_TALK={
   'レン':{vs:['頂点はオレがもらう！'], mono:['オレの市場だ！','独占ぉ！'], hit:['マジかよ！','ついてくんなって！'], big:['爆益！'], neg:['ぐぬぬ…'], lead:['頂点はオレだ！']}
 };
 /* ---- プレイヤーカード：成績をまとめたトレカ風のカード。指でなぞると傾いて光る ---- */
-function playerCard(){
+function pcData(){
   const P=S.prof, st=P.st, L=lvInfo(P.xp), r=rateOf(), t=tierOf(r), ind=P.ind||[0,0,0,0,0,0], tot=ind.reduce((a,b)=>a+b,0);
   const fav = tot ? ind.indexOf(Math.max(...ind)) : -1, mrate = tot ? Math.round((P.indm||[]).reduce((a,b)=>a+b,0)/tot*100) : 0;
   const style = mrate>=55 ? ['一匹狼','人と被らない道を行く'] : st.games && st.wins/st.games>=.45 ? ['勝負師','ここ一番で勝ちきる'] : (st.fut||0)>=5 ? ['未来予測家','先物で流れを読む'] : st.hist>=5 ? ['歴史通','時代の流れを知る'] : ['新進トレーダー','これからの成長株'];
   const trophies=CUPS.reduce((s,c)=>s+cupWins(c.id),0), signs=STORIES.filter(x=>storyDone(x.k)).length;
+  if(!P.created){ P.created=Date.now(); saveProfile(); }
+  return {P,st,L,r,t,fav,style,trophies,signs,no:String(P.created%100000).padStart(5,'0'),wr:st.games?Math.round(st.wins/st.games*100):0};
+}
+function playerCard(){
+  const {P,st,L,r,t,fav,style,trophies,signs}=pcData();
   if(!P.created){ P.created=Date.now(); saveProfile(); }   // カード番号は最初に作った時刻から
   const no=String(P.created%100000).padStart(5,'0');
   return `<div class="pcard-wrap"><div class="pcard t-${t.id}" style="--e1:${t.c1};--e2:${t.c2};--fc:${fav>=0?`var(--i${fav})`:'var(--gold)'}" onpointermove="pcTilt(event,this)" onpointerleave="pcTilt(null,this)">
@@ -4134,7 +4188,7 @@ function playerCard(){
     <div class="pc-type"><span class="pc-chip">${style[0]}</span><span class="note">${style[1]}</span></div>
     <div class="pc-stats"><div><b>${st.games}</b><span>対戦</span></div><div><b>${st.games?Math.round(st.wins/st.games*100):0}<small>%</small></b><span>勝率</span></div><div><b>${st.best}</b><span>最高点</span></div><div><b>${r}</b><span>${t.n}</span></div></div>
     <div class="pc-foot"><span>${fav>=0?`得意：<b style="color:var(--fc)">${IND[fav]}</b>`:'得意な産業：これから'}</span><span>🏆${trophies} ✍${signs} ★${chalTotal()}</span></div>
-  </div></div>`;
+  </div></div><div class="row" style="justify-content:center;margin-top:10px"><button class="btn cyan" onclick="openPlayerCardImg()">📷 カードを画像にする</button></div>`;
 }
 function pcTilt(e,el){
   if(!e || reduced()){ el.style.setProperty('--rx','0deg'); el.style.setProperty('--ry','0deg'); el.style.setProperty('--gx','50%'); el.style.setProperty('--gy','30%'); return; }
