@@ -1375,6 +1375,8 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 :is(.ava,.pc-ava).fr-rainbow{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #ff5c9a,0 0 18px 5px rgb(255 200 58 / .55);animation:frrain 3s linear infinite}
 @keyframes frrain{0%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #ff5c9a,0 0 18px 5px rgb(255 92 154 / .5)}25%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #ffc83a,0 0 18px 5px rgb(255 200 58 / .5)}50%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #5cf0a2,0 0 18px 5px rgb(92 240 162 / .5)}75%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #4fe3ff,0 0 18px 5px rgb(79 227 255 / .5)}100%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #ff5c9a,0 0 18px 5px rgb(255 92 154 / .5)}}
 @media (prefers-reduced-motion:reduce){:is(.ava,.pc-ava).fr-fire,:is(.ava,.pc-ava).fr-neon,:is(.ava,.pc-ava).fr-rainbow{animation:none}}
+.missions.weekly{background:radial-gradient(circle at 100% 0%,rgb(167 123 255 / .2),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel))}
+.missions.weekly .mbar i{background:linear-gradient(90deg,#a77bff,#ff5c9a)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3561,7 +3563,7 @@ function finalView(){
   if(big.p) aw.push(['最大瞬間風速',big.p.name,`T${big.u.turn+1} ${IND[big.u.ind]} ${sgn(big.v)}`]);
   const hist=G.players.map(p=>`<tr><td>${esc(p.name)}</td>${p.used.map(u=>`<td>${chip(u.ind)} <span class="num ${cls(u.total)}">${sgn(u.total)}</span>${u.fut?' <span class="tagx cy">先物</span>':''}</td>`).join('')}<td class="n">${p.uniq}</td><td class="n"><b>${p.score}</b></td></tr>`).join('');
   const recap = C.hist ? `<section class="panel"><h3>あなたたちが生きた時代</h3><div class="recap">${logDeck().map(i=>`<div><b>${yearOf(i)}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${HIST[i].n}</b><br>${gloss(HIST[i].d)}</p></div>`).join('')}</div></section>` : '';
-  return `<div class="two"><div class="col">${bossPanel()}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${leaguePanel()}${seasonWin()}${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+  return `<div class="two"><div class="col">${bossPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${leaguePanel()}${seasonWin()}${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
@@ -3626,6 +3628,7 @@ function homeView(){
   <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
   <div class="car-dots" id="todayDots">${[0,1,2,3,4].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${missionsPanel()}
+  ${weeklyPanel()}
   <nav class="homelinks"><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
@@ -3787,9 +3790,11 @@ function recordResult(){
   const sea=curSeason(); let spr=null;
   if(sea){ P.sp=P.sp||{}; const sk=sea.id+(todayKey()/10000|0); const n=P.sp[sk]=(P.sp[sk]||0)+1; spr={id:sea.id, n, bonus:n===SEASON_GOAL?SEASON_BONUS:0}; if(spr.bonus){ coin+=spr.bonus; P.coin+=spr.bonus; } }
   const sty=G.story?storyResult(rk, me):null; if(sty&&sty.bonus){ coin+=sty.bonus; P.coin+=sty.bonus; } if(STORIES.every(x=>(P.story||{})[x.k])) unlock('story9');
+  const wm=progressWeekly({p, won, rank:mine?mine.rank:9, boss:!!(bsr&&bsr.win), special:!!(G.story||G.cup||G.surv!=null)});
+  if(wm.coin){ coin+=wm.coin; P.coin+=wm.coin; }
   const trb=recordRivals(rk, me); if(trb){ coin+=trb; P.coin+=trb; }
   { const RV=P.riv||{}, ks=Object.keys(CHARS); if(ks.every(k=>RV[k])) unlock('chars9'); if(ks.every(k=>RV[k]&&RV[k].w>0)) unlock('beat9'); }
-  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, sty, svr, spr, bsr, luck, dex, trb, trk:trb?todayRival():null};
+  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, sty, svr, spr, bsr, luck, wm, dex, trb, trk:trb?todayRival():null};
   saveProfile();
 }
 /* ---- daily challenge: 日付で決まる同じゲームを、全員が同じ条件で遊ぶ ---- */
@@ -3976,6 +3981,40 @@ function progressMissions(r){
   return {cleared, bonus, xp:cleared.reduce((s,m)=>s+m.xp,0)+bonus};
 }
 function untilReset(){ const n=new Date(), t=new Date(n); t.setHours(24,0,0,0); const m=Math.ceil((t-n)/60000); return m>=60?`${Math.floor(m/60)}時間${m%60?m%60+'分':''}`:`${m}分`; }
+/* ---- 週間ミッション：1週間かけて達成する大きめのお題。1つ60コイン、3つで+100 ---- */
+const WM_COIN=60, WM_BONUS=100;
+const WMISSIONS=[
+  {id:'wg', ic:'🎮', n:'10ゲーム遊ぶ', t:10, f:r=>1},
+  {id:'ww', ic:'🏆', n:'1位に5回なる', t:5, f:r=>r.won?1:0},
+  {id:'wm', ic:'◆', n:'独占を合計12回する', t:12, f:r=>r.p.uniq},
+  {id:'wh', ic:'⌛', n:'歴史モードで3回遊ぶ', t:3, f:r=>G.cfg.hist&&!G.cfg.fut?1:0},
+  {id:'wf', ic:'✦', n:'未来編で2回遊ぶ', t:2, f:r=>G.cfg.fut?1:0},
+  {id:'wl', ic:'∞', n:'ロング版を1回最後まで遊ぶ', t:1, f:r=>isLong()?1:0},
+  {id:'wb', ic:'👹', n:'週替わりボスを倒す', t:1, f:r=>r.boss?1:0},
+  {id:'wx', ic:'📖', n:'ストーリー・カップ・サバイバルで3回遊ぶ', t:3, f:r=>r.special?1:0},
+  {id:'ws', ic:'▲', n:'1ゲーム12点以上を2回とる', t:2, f:r=>r.p.score>=12?1:0}
+];
+function weekMissions(){
+  const wk=bossWeek(), rnd=mulberry(wk*31+5), pool=WMISSIONS.slice(), out=[];
+  while(out.length<3) out.push(pool.splice(Math.floor(rnd()*pool.length),1)[0]);
+  const P=S.prof; if(!P.wmis || P.wmis.wk!==wk) P.wmis={wk, prog:{}, done:{}, bonus:false};
+  return out;
+}
+function progressWeekly(r){
+  const list=weekMissions(), M=S.prof.wmis; let coin=0; const cleared=[];
+  list.forEach(m=>{ if(M.done[m.id]) return; M.prog[m.id]=Math.min(m.t,(M.prog[m.id]||0)+m.f(r)); if(M.prog[m.id]>=m.t){ M.done[m.id]=1; coin+=WM_COIN; cleared.push(m.n); } });
+  if(!M.bonus && list.every(m=>M.done[m.id])){ M.bonus=true; coin+=WM_BONUS; }
+  return {coin, cleared};
+}
+function weeklyPanel(){
+  const list=weekMissions(), M=S.prof.wmis, n=list.filter(m=>M.done[m.id]).length;
+  return `<section class="panel missions weekly"><div class="row spread"><div><span class="label">WEEKLY MISSIONS</span><h3>今週のミッション</h3></div><span class="note">あと${weekLeft()}日</span></div>
+    <div class="mlist">${list.map(m=>{ const v=M.prog[m.id]||0, ok=!!M.done[m.id]; return `<div class="mis${ok?' ok':''}"><span class="mic">${ok?'✓':m.ic}</span>
+      <span class="mtx"><b>${m.n}</b><span class="mbar"><i style="width:${Math.round(v/m.t*100)}%"></i></span></span>
+      <span class="mxp">${ok?'CLEAR':`<span class="num">${v}/${m.t}</span><small>+${WM_COIN}🪙</small>`}</span></div>`; }).join('')}</div>
+    <div class="mbonus${M.bonus?' ok':''}"><span>3つぜんぶ達成で <b>+${WM_BONUS}コイン</b></span><span class="mpips">${list.map(m=>`<i class="${M.done[m.id]?'on':''}"></i>`).join('')}</span><b>${n}/3</b></div>
+  </section>`;
+}
 function missionsPanel(){
   const list=todayMissions(), M=S.prof.mis, n=list.filter(m=>M.done[m.id]).length;
   return `<section class="panel missions"><div class="row spread"><div><span class="label">DAILY MISSIONS</span><h3>今日のミッション</h3></div><span class="note">更新まで ${untilReset()}</span></div>
@@ -4119,6 +4158,12 @@ async function drawPlayerCard(){
   // アート枠
   rr(x,90,170,W-180,640,40); x.fillStyle='rgba(255,255,255,.05)'; x.fill(); x.lineWidth=3; x.strokeStyle='rgba(255,255,255,.18)'; x.stroke();
   x.save(); rr(x,90,170,W-180,640,40); x.clip(); x.translate(W/2,490); for(let i=0;i<36;i++){ x.rotate(Math.PI/18); x.fillStyle=i%2?'rgba(255,255,255,.035)':'rgba(255,255,255,0)'; x.beginPath(); x.moveTo(0,0); x.lineTo(900,-80); x.lineTo(900,80); x.closePath(); x.fill(); } x.restore();
+  { const fr=shopEq('frame'), FC={gold:'#ffe08a',fire:'#ff7a3d',neon:'#4fe3ff',sakura:'#ffb8da'};
+    if(fr!=='std'){ x.save(); let st=FC[fr]||'#fff'; if(fr==='rainbow' && x.createConicGradient){ st=x.createConicGradient(0,W/2,490); ['#ff5c9a','#ffc83a','#5cf0a2','#4fe3ff','#a77bff','#ff5c9a'].forEach((c,i,a)=>st.addColorStop(i/(a.length-1),c)); }
+      x.shadowColor=FC[fr]||'#ffc83a'; x.shadowBlur=50; x.lineWidth=18; x.strokeStyle=st; x.beginPath(); x.arc(W/2,490,204,0,Math.PI*2); x.stroke();
+      if(fr==='neon'){ x.lineWidth=8; x.strokeStyle='#ff5c9a'; x.beginPath(); x.arc(W/2,490,222,0,Math.PI*2); x.stroke(); }
+      if(fr==='gold'){ x.lineWidth=6; x.strokeStyle='#c98e12'; x.beginPath(); x.arc(W/2,490,222,0,Math.PI*2); x.stroke(); }
+      x.restore(); } }
   x.beginPath(); x.arc(W/2,490,190,0,Math.PI*2); x.fillStyle=d.t.c1; x.fill();
   x.beginPath(); x.arc(W/2,490,176,0,Math.PI*2); x.fillStyle='#07081a'; x.fill();
   const ag=x.createRadialGradient(W/2-60,430,20,W/2,490,170); ag.addColorStop(0,'#fff7d6'); ag.addColorStop(1,AVA_COLORS[d.P.color%6]); x.beginPath(); x.arc(W/2,490,164,0,Math.PI*2); x.fillStyle=ag; x.fill();
