@@ -1390,6 +1390,13 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .demotag{font-family:var(--display);font-size:12px;letter-spacing:.06em;padding:3px 10px;border-radius:999px;background:#ff3d5a;color:#fff;animation:lastpulse 1.4s ease-in-out infinite}
 .bd-name{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;margin:6px 0;text-align:left;font-weight:800;font-size:13px}
 .bd-name .inp{padding:10px 12px;min-height:44px;border:1px solid var(--line);border-radius:12px;background:var(--rail);color:var(--ink);font:inherit;font-size:16px;width:100%}
+.qrwrap{display:flex;flex-direction:column;align-items:center;gap:8px;margin:10px 0;text-align:center}
+.qrbox{display:grid;place-items:center;padding:10px;border-radius:14px;background:#fff;min-width:120px;min-height:120px;box-shadow:0 0 0 3px var(--gold)}
+.qrbox img,.qrbox canvas{display:block}
+.qrbig{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;margin:0 30px}
+.qrbox.big{padding:16px;box-shadow:0 0 0 4px var(--gold),0 0 40px -6px var(--gold)}
+.boothqr{position:fixed;right:12px;bottom:84px;z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px 8px 8px;border-radius:16px;background:rgb(10 12 34 / .92);box-shadow:0 0 0 2px var(--gold),0 10px 30px -10px #000;font-weight:800;font-size:13px;line-height:1.3;color:#fff;animation:mcin .4s ease both;pointer-events:none}
+.boothqr .qrbox{padding:5px;min-width:0;min-height:0;box-shadow:none;border-radius:8px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2761,6 +2768,7 @@ function renderSheet(){
       <p class="note">画像は8ページを縦につないだ1枚の長い画像で、そのまま印刷や拡大ができます。PDFを開けたら、ブラウザの共有・保存ボタンから保存できます。テキスト版には、ルールと得点表がすべて入っています。</p>`;
   } else if(k==='settings') body=settingsBody();
   else if(k==='share') body=shareBody();
+  else if(k==='qr') body=qrBody();
   else if(k==='tutorial') body=tutorialBody();
   else if(k==='card') body=cardSheetBody();
   else if(k==='longtut') body=longTutBody();
@@ -2778,6 +2786,7 @@ function renderSheet(){
   else if(k==='modes') body=modesBody();
   else if(k==='weekly') body=weeklyBody();
   else if(k==='board') body=boardBody();
+  setTimeout(fillQRs,0);
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
 }
 
@@ -3196,9 +3205,9 @@ function startDemo(){
   const ks=shuffle(DEMO_CHARS.slice(),Math.random).slice(0,4), keep=S.seats, keepMode=S.mode, keepLen=S.len, keepLg=S.league, keepTeam=S.team; S.league=false; S.team=false;
   S.seats=ks.map((k,i)=>({name:'CPU '+k, type:i===0?'pro':'read'})); S.mode=['classic','history','future'][Math.random()*3|0]; S.len='short';
   try{ startGame(); } finally { S.seats=keep; S.mode=keepMode; S.len=keepLen; S.league=keepLg; S.team=keepTeam; save('azakei-seats', keep.map(x=>({name:x.name, type:x.type}))); }   // デモの席は保存しない
-  if(G){ G.demo=true; G.demoAt=Date.now(); render(); }
+  if(G){ G.demo=true; G.demoAt=Date.now(); render(); boothQR(true); }
 }
-function demoStop(){ if(!G || !G.demo) return; G=null; S.screen='home'; closeSheet(); render(); BOOTH_LAST=Date.now(); }
+function demoStop(){ boothQR(false); if(!G || !G.demo) return; G=null; S.screen='home'; closeSheet(); render(); BOOTH_LAST=Date.now(); }
 function boothTick(){
   if(!S || !S.booth) return;
   const idle=Date.now()-BOOTH_LAST;
@@ -3211,6 +3220,33 @@ function boothTick(){
   if(!G && S.screen==='home' && idle>60000 && !document.querySelector('#sheet .sheet') && !document.querySelector('.stampfx')) startDemo();
 }
 function boothArm(){ clearInterval(BOOTH_T); BOOTH_T=S&&S.booth?setInterval(boothTick,1000):null; }
+/* ---- QRコード：公開版のURLをスマホで読みこめるように（ライブラリは使うときだけ読みこむ） ---- */
+let QR_LIB=null;
+function loadQR(){
+  if(window.QRCode) return Promise.resolve(true);
+  if(QR_LIB) return QR_LIB;
+  QR_LIB=new Promise(res=>{ const sc=document.createElement('script'); sc.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'; sc.onload=()=>res(true); sc.onerror=()=>{ QR_LIB=null; res(false); }; document.head.appendChild(sc); });
+  return QR_LIB;
+}
+async function fillQRs(){
+  const els=[...document.querySelectorAll('[data-qr]:not([data-qrdone])')]; if(!els.length) return;
+  const ok=await loadQR();
+  els.forEach(el=>{ el.setAttribute('data-qrdone','1'); if(!ok || !window.QRCode){ el.innerHTML='<span class="note">QRコードを読みこめませんでした</span>'; return; }
+    const size=+el.dataset.size||180; el.innerHTML='';
+    try{ new QRCode(el,{text:el.dataset.qr, width:size, height:size, colorDark:'#0a0c22', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M}); }catch(e){ el.textContent=''; } });
+}
+function qrBody(){
+  return `<div class="qrbig"><span class="label">SCAN TO PLAY</span><h3 class="ttl" style="font-size:26px">スマホで遊ぼう！</h3>
+    <div class="qrbox big" data-qr="${SHARE_URL}" data-size="280"></div>
+    <p><b>AZAKEI MARKET</b><br><span class="note">カメラで読みこむだけ。ログインもインストールも要りません</span></p>
+    <span class="note" style="overflow-wrap:anywhere">${PUBLIC_URL}</span></div>`;
+}
+function boothQR(on){
+  document.querySelectorAll('.boothqr').forEach(e=>e.remove());
+  if(!on) return;
+  const d=document.createElement('div'); d.className='boothqr'; d.innerHTML='<div class="qrbox" data-qr="'+SHARE_URL+'" data-size="96"></div><span>スマホで<br>遊べる！</span>';
+  document.body.appendChild(d); fillQRs();
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4869,9 +4905,11 @@ function shareBody(){
   if(!IN_CLAUDE) return `<h3 class="ttl" style="font-size:22px">友だちにも遊んでもらう</h3>
     <p>このページのURLを送るだけで、だれでもすぐに遊べます。ログインもインストールも要りません。</p>
     <div class="codebox"><span class="label">このページのURL</span><b id="codebig" style="font-size:15px;white-space:normal;overflow-wrap:anywhere">${SHARE_URL}</b><button class="btn" onclick="copyText(SHARE_URL)">コピー</button></div>
+    <div class="qrwrap"><div class="qrbox" data-qr="${SHARE_URL}"></div><span class="note">スマホのカメラで読みこむと、すぐ遊べます</span><button class="btn" onclick="openSheet('qr')">QRを大きく表示</button></div>
     <p class="note">スマホでは、ブラウザのメニューから「ホーム画面に追加」すると、アプリのように開けます。</p>`;
   return `<h3 class="ttl" style="font-size:22px">友だちにも使ってもらう</h3>
     <div class="codebox"><span class="label">だれでも遊べる公開版（GitHub）</span><b id="codebig" style="font-size:15px;white-space:normal;overflow-wrap:anywhere">${SHARE_URL}</b><button class="btn" onclick="copyText(SHARE_URL)">コピー</button></div>
+    <div class="qrwrap"><div class="qrbox" data-qr="${SHARE_URL}"></div><span class="note">公開版のQRコード。スマホのカメラで読みこむと遊べます</span><button class="btn" onclick="openSheet('qr')">QRを大きく表示</button></div>
     <p class="note">公開版はURLを送るだけで、ログインなしで遊べます。オンライン対戦も使えます。以下は、このclaude.ai版を共有する方法です。</p>
     <p>このアプリは、作った人（あなた）の claude.ai に置かれています。ほかの人が使うには、あなたが<b>共有</b>する必要があります。</p>
     <div class="rules">
