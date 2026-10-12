@@ -1399,6 +1399,12 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .qrbox.big{padding:16px;box-shadow:0 0 0 4px var(--gold),0 0 40px -6px var(--gold)}
 .boothqr{position:fixed;right:12px;bottom:84px;z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px 8px 8px;border-radius:16px;background:rgb(10 12 34 / .92);box-shadow:0 0 0 2px var(--gold),0 10px 30px -10px #000;font-weight:800;font-size:13px;line-height:1.3;color:#fff;animation:mcin .4s ease both;pointer-events:none}
 .boothqr .qrbox{padding:5px;min-width:0;min-height:0;box-shadow:none;border-radius:8px}
+.indst{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.isr{display:grid;grid-template-columns:auto 5.4em minmax(0,1fr);grid-template-areas:"ic n b" ". v v";align-items:center;column-gap:8px;row-gap:1px}
+.isr .ic{grid-area:ic;width:24px;height:24px;border-radius:8px;display:grid;place-items:center;color:#fff}.isr .ic svg{width:15px;height:15px}
+.isn{grid-area:n;font-weight:800;font-size:12.5px;white-space:nowrap}
+.isb{grid-area:b;height:10px;border-radius:10px;background:rgb(255 255 255 / .06);overflow:hidden}.isb i{display:block;height:100%;border-radius:10px}
+.isv{grid-area:v;font-size:11px;color:var(--muted)}.isv b{color:var(--ink)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3010,16 +3016,20 @@ const BOSSES=[
    talk:{vs:['相場は上がるものだ！','強気でいくぞ！ ブモォ！'], mono:['ブモォ！ 独り占めだ！'], hit:['ぶつかってでも押し通す！'], big:['上げ相場だ！'], neg:['……下げは認めん！'], lead:['トップを突き進む！']}},
   {id:'bear', n:'ベア', ic:'🐻', c:'#6b7cff', ab:'弱気相場', d:'ボス以外がマイナス点を取ると、2倍になる。', mates:['ユイ','ミオ'],
    talk:{vs:['市場は下がる。覚悟しろ。','ガオォ……冬の時代だ。'], mono:['静かに稼ぐ。'], hit:['ふん、群れたか。'], big:['悪くない。'], neg:['下げこそ好機……のはず。'], lead:['このまま冬眠はせん。']}},
+  {id:'pumpkin', n:'パンプキン', ic:'🎃', c:'#ff8a1f', ab:'いたずら', season:'halloween', d:'ボス以外が独占すると、独占ボーナスが半分になる。', mates:['ソラ','アオイ'],
+   talk:{vs:['トリック・オア・トリート！','いたずらしちゃうぞ〜！'], mono:['ケケケ、ひとりじめ！'], hit:['おばけも被るんだよ〜'], big:['お菓子ざくざく！'], neg:['……かぼちゃが割れた'], lead:['ハロウィンの主役はボクだ！']}},
   {id:'whale', n:'ホエール', ic:'🐋', c:'#20c6d1', ab:'大口投資家', d:'ボスは被っても、点が減らない。', mates:['ナギ','ミナト'],
    talk:{vs:['この海は、私の海だ。','大口の力を見せよう。'], mono:['ザブーン！'], hit:['被っても痛くもかゆくもない。'], big:['大波だ！'], neg:['……潮が引いたか。'], lead:['海を支配した。']}}
 ];
 const bossWeek = () => Math.floor((Date.now()/86400000+3)/7);
-const curBoss = () => BOSSES[bossWeek()%BOSSES.length];
+const REG_BOSSES = () => BOSSES.filter(b=>!b.season);
+const curBoss = () => { const s=curSeason(), sb=s&&BOSSES.find(b=>b.season===s.id); return sb || REG_BOSSES()[bossWeek()%REG_BOSSES().length]; };
 function bossAdj(p, base, k, t){
   if(!G || !G.boss) return t;
   if(G.boss==='bull' && p.boss && k===1 && t>0) return t+1;
   if(G.boss==='bear' && !p.boss && t<0) return t*2;
   if(G.boss==='whale' && p.boss && k>1) return Math.max(t, base);
+  if(G.boss==='pumpkin' && !p.boss && k===1) return t - Math.ceil((G.cfg.bonus||0)/2);
   return t;
 }
 function startBoss(){ closeSheet(); startGame(false,null,null,null,null,null,curBoss().id); }
@@ -3027,13 +3037,13 @@ function bossResult(rk, me){
   const P=S.prof, b=BOSSES.find(x=>x.id===G.boss), a=rk.find(x=>x.i===me), bi=G.players.findIndex(p=>p.boss), bb=rk.find(x=>x.i===bi);
   const win=!!(a&&bb&&a.rank<bb.rank), wk=bossWeek(); P.boss=P.boss||{kills:{}, wk:0};
   let coin=0; if(win){ P.boss.kills[b.id]=(P.boss.kills[b.id]||0)+1; if(P.boss.wk!==wk){ P.boss.wk=wk; coin=BOSS_COIN; } }
-  if(BOSSES.every(x=>(P.boss.kills||{})[x.id])){ P.ach=P.ach||{}; if(!P.ach.boss3) P.ach.boss3=Date.now(); }
+  if(REG_BOSSES().every(x=>(P.boss.kills||{})[x.id])){ P.ach=P.ach||{}; if(!P.ach.boss3) P.ach.boss3=Date.now(); }
   return {id:b.id, win, coin, me:G.players[me].score, boss:G.players[bi].score, kills:P.boss.kills[b.id]||0};
 }
 function bossCard(){
   const b=curBoss(), P=S.prof, done=P.boss&&P.boss.wk===bossWeek(), k=(P.boss&&P.boss.kills&&P.boss.kills[b.id])||0;
   return `<section class="bosscard${done?' done':''}" style="--bc:${b.c}"><span class="bs-ic">${b.ic}</span>
-    <span class="bs-tx"><span class="label">WEEKLY BOSS · あと${weekLeft()}日</span><b>${b.n}</b><span class="bs-ab">能力「${b.ab}」：${b.d}</span>
+    <span class="bs-tx"><span class="label">${b.season?`SEASON BOSS · ${SEASONS.find(x=>x.id===b.season).n}限定`:`WEEKLY BOSS · あと${weekLeft()}日`}</span><b>${b.n}</b><span class="bs-ab">能力「${b.ab}」：${b.d}</span>
       <span class="note">${done?`今週は撃破ずみ！ +${BOSS_COIN}コイン獲得`:`ボスより上の順位で撃破。今週はじめての撃破で <b style="color:var(--gold)">+${BOSS_COIN}コイン</b>`}${k?` · 撃破 ${k}回`:''}</span></span>
     <button class="btn ${done?'':'gold '}" onclick="startBoss()">${done?'また挑む':'挑戦する'}</button></section>`;
 }
@@ -3252,6 +3262,17 @@ function boothQR(on){
   if(!on) return;
   const d=document.createElement('div'); d.className='boothqr'; d.innerHTML='<div class="qrbox" data-qr="'+SHARE_URL+'" data-size="96"></div><span>スマホで<br>遊べる！</span>';
   document.body.appendChild(d); fillQRs();
+}
+/* ---- 産業別の成績：どの産業でよく稼げているか ---- */
+function indPanel(){
+  const P=S.prof, n=P.ind||[0,0,0,0,0,0], m=P.indm||[0,0,0,0,0,0], pt=P.indp||null, pc=P.indc||[0,0,0,0,0,0], tot=n.reduce((a,b)=>a+b,0);
+  if(!tot) return '';
+  const avg=i=>pt&&pc[i]?pt[i]/pc[i]:null, mx=Math.max(...n), best=pt?[0,1,2,3,4,5].filter(i=>pc[i]>=3).sort((a,b)=>avg(b)-avg(a))[0]:null;
+  return `<section class="panel"><div class="row spread"><h3>産業別の成績</h3><span class="note">${tot}枚ぶん</span></div>
+    <div class="indst">${IND.map((d,i)=>`<div class="isr"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span class="isn">${d}</span>
+      <span class="isb"><i style="width:${Math.round(n[i]/mx*100)}%;background:var(--i${i})"></i></span>
+      <span class="isv"><b>${n[i]}</b>回 · 独占${n[i]?Math.round(m[i]/n[i]*100):0}%${avg(i)!=null?` · 平均${sgn(Math.round(avg(i)*10)/10)}`:''}</span></div>`).join('')}</div>
+    ${best!=null&&best!==undefined?`<p class="note">いちばん稼げているのは <b style="color:var(--i${best})">${IND[best]}</b>（1枚あたり平均 ${sgn(Math.round(avg(best)*10)/10)}）</p>`:'<p class="note">平均点は、これから遊ぶ対戦から数えます。</p>'}</section>`;
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
@@ -3885,7 +3906,7 @@ function recordResult(){
   let lastAt3=false;
   if((G.rounds||1)===1 && TURNS>=4 && p.hist.length>3){ const s3=G.players.map(q=>q.hist[3]); lastAt3 = s3[me]===Math.min(...s3) && s3.some(v=>v>s3[me]); }
   const futBest=Math.max(-99,...p.used.filter(u=>u.fut).map(u=>u.total));
-  P.ind=P.ind||[0,0,0,0,0,0]; P.indm=P.indm||[0,0,0,0,0,0]; p.used.forEach(u=>{ P.ind[u.ind]++; if(u.k===1) P.indm[u.ind]++; });
+  P.ind=P.ind||[0,0,0,0,0,0]; P.indm=P.indm||[0,0,0,0,0,0]; P.indp=P.indp||[0,0,0,0,0,0]; P.indc=P.indc||[0,0,0,0,0,0]; p.used.forEach(u=>{ P.ind[u.ind]++; if(u.k===1) P.indm[u.ind]++; P.indp[u.ind]+=u.total; P.indc[u.ind]++; });   // indp・indc：平均点用（数えはじめてからの点と回数）
   st.games++; if(won) st.wins++; st.best=Math.max(st.best,p.score); st.mono+=p.uniq; if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
   const xp = Math.round((20 + Math.max(0,p.score)*3 + p.uniq*5 + (won?40:0) + (G.online?15:0)) * (G.evt?1.5:1));   // 今週のイベント参加中はXP1.5倍
   const mis = progressMissions({p, won, rank:mine?mine.rank:9, hist:!!G.cfg.hist, daily:!!G.daily});
@@ -4054,6 +4075,7 @@ function meView(){
     <section class="statgrid">
       ${[['対戦',st.games],['勝利',st.wins],['勝率',st.games?Math.round(st.wins/st.games*100)+'%':'—'],['最高点',st.best],['独占',st.mono],['歴史モード',st.hist],['オンライン',st.online],['実績',got+'/'+ACH.length]].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('')}
     </section>
+    ${indPanel()}
     ${rivalsPanel()}
     ${statsCharts()}
     ${historyPanel()}
