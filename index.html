@@ -1365,6 +1365,16 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .glist{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:8px;margin-top:8px}
 .gli{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;background:var(--panel2);font-size:13px;line-height:1.55}
 .gli b{font-size:15px;color:var(--gold)}
+.fprev{display:grid;place-items:center}.fprev .ava{width:46px;height:46px;font-size:18px}
+:is(.ava,.pc-ava).fr-gold{box-shadow:0 0 0 3px var(--rail),0 0 0 5px #ffe08a,0 0 0 7px var(--rail),0 0 0 9px #c98e12,0 0 14px 4px rgb(255 200 58 / .45)}
+:is(.ava,.pc-ava).fr-fire{box-shadow:0 0 0 3px var(--rail),0 0 0 5px #ff7a3d,0 0 16px 6px rgb(255 90 30 / .7);animation:frfire 1.2s ease-in-out infinite}
+@keyframes frfire{50%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #ffc83a,0 -4px 24px 8px rgb(255 120 30 / .85)}}
+:is(.ava,.pc-ava).fr-neon{box-shadow:0 0 0 3px var(--rail),0 0 0 5px #4fe3ff,0 0 0 7px #ff5c9a,0 0 18px 4px rgb(79 227 255 / .6);animation:frneon 2s linear infinite}
+@keyframes frneon{50%{box-shadow:0 0 0 3px var(--rail),0 0 0 5px #ff5c9a,0 0 0 7px #4fe3ff,0 0 18px 4px rgb(255 92 154 / .6)}}
+:is(.ava,.pc-ava).fr-sakura{box-shadow:0 0 0 3px var(--rail),0 0 0 5px #ffb8da,0 0 0 7px #fff0f7,0 0 16px 4px rgb(255 160 210 / .55);background-image:radial-gradient(circle at 20% 20%,#ffd1e6 0 3px,transparent 4px),radial-gradient(circle at 80% 70%,#ffd1e6 0 2px,transparent 3px),radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--s) 55%,#fff),var(--s))}
+:is(.ava,.pc-ava).fr-rainbow{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #ff5c9a,0 0 18px 5px rgb(255 200 58 / .55);animation:frrain 3s linear infinite}
+@keyframes frrain{0%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #ff5c9a,0 0 18px 5px rgb(255 92 154 / .5)}25%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #ffc83a,0 0 18px 5px rgb(255 200 58 / .5)}50%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #5cf0a2,0 0 18px 5px rgb(92 240 162 / .5)}75%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #4fe3ff,0 0 18px 5px rgb(79 227 255 / .5)}100%{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #ff5c9a,0 0 18px 5px rgb(255 92 154 / .5)}}
+@media (prefers-reduced-motion:reduce){:is(.ava,.pc-ava).fr-fire,:is(.ava,.pc-ava).fr-neon,:is(.ava,.pc-ava).fr-rainbow{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2083,7 +2093,7 @@ function vsOverlay(){
   const bsv = G.boss && BOSSES.find(b=>b.id===G.boss);
   const mode = bsv ? `WEEKLY BOSS · ${bsv.ic} ${bsv.n}「${bsv.ab}」` : G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
-      <div class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
+      <div class="ava${i===me?frc():''}" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
       ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
@@ -2863,6 +2873,7 @@ function boxBody(){
 }
 /* ---- ショップ：遊んでたまるコインで、テーブル（背景）とカードの裏面を買う ---- */
 const SHOP={
+  frame:[ {id:'std',n:'なし',p:0,d:'いつものアイコン'}, {id:'gold',n:'ゴールド',p:150,d:'金の二重リング'}, {id:'fire',n:'フレイム',p:200,d:'燃えるオーラ'}, {id:'neon',n:'ネオン',p:250,d:'光る2色のライン'}, {id:'sakura',n:'さくら',p:250,d:'花びらが舞う'}, {id:'rainbow',n:'レインボー',p:400,d:'虹色に回る'} ],
   table:[ {id:'std',n:'ナイトマーケット',p:0,d:'いつもの夜の市場'}, {id:'green',n:'カジノグリーン',p:120,d:'緑のフェルトのテーブル'}, {id:'wood',n:'木目のテーブル',p:150,d:'あたたかい木の机'}, {id:'red',n:'レッドカーペット',p:200,d:'赤じゅうたんの特等席'}, {id:'space',n:'スペースステーション',p:300,d:'星空に浮かぶ取引所'}, {id:'sakura',n:'夜桜',p:null,d:'ラッキーボックス限定'},
     {id:'halloween',n:'ハロウィンナイト',p:100,d:'かぼちゃ色の満月',season:'halloween'}, {id:'xmas',n:'ホワイトクリスマス',p:100,d:'雪のふる市場',season:'xmas'}, {id:'shogatsu',n:'初売り',p:100,d:'紅白とこがねの新春',season:'newyear'} ],
   back:[ {id:'std',n:'スタンダード',p:0,d:'いつもの裏面'}, {id:'gold',n:'ゴールド',p:80,d:'金の箔押し'}, {id:'koban',n:'小判',p:120,d:'江戸の小判柄'}, {id:'stars',n:'星空',p:150,d:'きらめく夜空'}, {id:'carbon',n:'カーボン',p:200,d:'黒くて速そう'}, {id:'rainbow',n:'レインボー',p:null,d:'ラッキーボックス限定'},
@@ -2870,6 +2881,7 @@ const SHOP={
 };
 const shopEq = k => (S.prof.eq&&S.prof.eq[k])||'std';
 const shopOwn = (k,id) => id==='std' || ((S.prof.own||{})[k]||[]).includes(id);
+const frc = () => { const f=S&&S.prof?shopEq('frame'):'std'; return f==='std'?'':' fr-'+f; };
 const bkc = () => { const b=S&&S.prof?shopEq('back'):'std'; return b==='std'?'':' bk-'+b; };
 function shopBuy(k,id){
   const it=SHOP[k].find(x=>x.id===id), P=S.prof; if(!it) return;
@@ -2885,11 +2897,12 @@ function shopBuy(k,id){
 function shopPanel(){
   const coin=S.prof.coin||0;
   const item=(k,x)=>{ const own=shopOwn(k,x.id), on=shopEq(k)===x.id;
-    const prev = k==='table' ? `<span class="sp-prev tbl-${x.id}"></span>` : `<span class="sp-prev"><span class="back${x.id==='std'?'':' bk-'+x.id}"></span></span>`;
+    const prev = k==='frame' ? `<span class="sp-prev fprev"><span class="ava${x.id==='std'?'':' fr-'+x.id}" style="--s:${AVA_COLORS[S.prof.color%6]};grid-row:auto">${esc(myAvatar()||initial(NET.name||'あなた'))}</span></span>` : k==='table' ? `<span class="sp-prev tbl-${x.id}"></span>` : `<span class="sp-prev"><span class="back${x.id==='std'?'':' bk-'+x.id}"></span></span>`;
     return `<button class="sp-item${on?' on':''}${own?'':' locked'}${x.season?' ltd':''}" onclick="shopBuy('${k}','${x.id}')">${x.season?`<span class="ltdtag">${SEASONS.find(z=>z.id===x.season).ic} 期間限定</span>`:''}${prev}<b>${x.n}</b><span class="note">${x.d}</span><span class="sp-price">${on?"使用中":own?"つかう":x.p===null?"🎁 限定":`🪙 ${x.p}`}</span></button>`; };
   return `<section class="panel shop"><div class="row spread"><h3>ショップ</h3><span class="coinbal">🪙 <b>${coin}</b></span></div>
     <p class="note">ゲームを遊ぶとコインがたまります（1位・独占・ミッション・デイリーでボーナス）。</p>
     <span class="label" style="margin-top:8px">テーブル（ゲーム中の背景）</span><div class="sp-grid">${SHOP.table.filter(x=>shopShow('table',x)).map(x=>item('table',x)).join('')}</div>
+    <span class="label" style="margin-top:12px">アイコンのフレーム</span><div class="sp-grid">${SHOP.frame.map(x=>item('frame',x)).join('')}</div>
     <span class="label" style="margin-top:12px">カードの裏面</span><div class="sp-grid">${SHOP.back.filter(x=>shopShow('back',x)).map(x=>item('back',x)).join('')}</div></section>`;
 }
 /* ---- リーグ戦：同じメンバーで3試合。順位でリーグポイント（5・3・2・1）を集め、合計で優勝を決める ---- */
@@ -3078,6 +3091,14 @@ const GLOSSARY={
   '訪日':'外国から日本に旅行に来ること。インバウンドとも言う。',
   '外出自粛':'感染症などを防ぐため、なるべく出かけないようにすること。',
   '省エネ':'エネルギー（電気や燃料）をむだなく使うこと。',
+  '生成AI':'文章や絵、音楽などを自動でつくりだすAI（人工知能）。',
+  '自動運転':'人が運転しなくても、車が自分で走ること。',
+  '再エネ':'太陽光や風力など、なくならない自然の力でつくるエネルギー（再生可能エネルギー）。',
+  'デジタル通貨':'スマホなどで使う、データの形のお金。国が出すものも研究されている。',
+  '量子コンピュータ':'今のコンピューターとはちがう仕組みで、ある種の計算をとても速く解けるコンピューター。',
+  'サイバー攻撃':'インターネットを通して、コンピューターや情報をこわしたり盗んだりすること。',
+  '気候変動':'地球の気温や天気のパターンが、長い時間をかけて大きく変わること。',
+  '温室効果ガス':'二酸化炭素など、地球をあたためる働きのあるガス。',
   '先物':'「あとでこの値段で売り買いする」と前もって約束する取引。このゲームでは、次のNEWSを先に見られる。',
   '独占':'ほかに同じものを売る人がいない状態。このゲームでは、だれとも被らなかったときのボーナス。'
 };
@@ -3396,7 +3417,7 @@ function seatsView(){
     }
     const lead = p.score===top && top>0 && G.phase!=='reveal';
     return `<div class="seat${G.teams?' team t'+G.teams[i]:''}${(G.online?i===G.me:isHuman(p)&&humans()===1)?' me':''}${i===G.active?' active':''}" data-i="${i}">${lead?CROWN('crown'):''}<span class="rk">#${rk[i]}</span>
-      <div class="ava" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</div>
+      <div class="ava${i===myIndex()?frc():''}" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</div>
       <div class="nm">${esc(p.name)}${isHuman(p)?'':`<span class="tagx${p.type==='pro'?' pro':''}">${cpuLabel(p)}</span>`}</div>
       <div class="sc" id="sc${i}">${G.phase==='reveal'?p.shown:p.score}${spark(p.hist)}</div>
       <div class="meta">${p.used.filter(u=>Math.floor(u.turn/TURNS)===(G.round||0)).map(u=>`<span class="dot c${u.ind}" title="${IND[u.ind]}"></span>`).join('')}${p.brand!=null?`<span class="brd sm" style="--c:var(--i${p.brand})" title="ブランド">${IND[p.brand]}</span>`:""}<span class="eye${p.foreUsed?' on':''}" title="未来予測">${EYE}${p.foreUsed?FORE[G.cfg.fore].short+'済':'未使用'}</span></div>
@@ -3877,7 +3898,7 @@ function meView(){
   const tab=S.mtab||'prof', tabs=[['prof','プロフィール'],['rec','記録'],['col','コレクション'],['shop','ショップ']];   // マイページは4つのタブに分けてすっきり
   return `<div class="col">
     <section class="profile">
-      <div class="ava big" style="--s:${AVA_COLORS[P.color%6]};grid-row:auto">${esc(myAvatar()||initial(NET.name||"あなた"))}</div>
+      <div class="ava big${frc()}" style="--s:${AVA_COLORS[P.color%6]};grid-row:auto">${esc(myAvatar()||initial(NET.name||"あなた"))}</div>
       <div class="pinfo"><button class="titlechip" onclick="openSheet('title')" aria-label="称号を変える">${esc(myTitle())} <span>変更</span></button><h2 class="ttl">${esc(NET.name||'あなた')}</h2>
         <div class="lvline"><span class="lvbadge">Lv.${L.lv}</span><span class="xpbar big"><i style="width:${Math.round(L.cur/L.need*100)}%"></i></span><span class="note num">${L.cur}/${L.need} XP</span></div>
         <div class="colors" role="group" aria-label="アバターの色">${AVA_COLORS.map((c,i)=>`<button style="--c:${c}" class="${P.color%6===i?'on':''}" onclick="setAvaColor(${i})" aria-label="色${i+1}"></button>`).join('')}<button class="btn ghost icon" onclick="openSheet('settings')">名前・設定</button></div>
@@ -4390,7 +4411,7 @@ function playerCard(){
   return `<div class="pcard-wrap"><div class="pcard t-${t.id}" style="--e1:${t.c1};--e2:${t.c2};--fc:${fav>=0?`var(--i${fav})`:'var(--gold)'}" onpointermove="pcTilt(event,this)" onpointerleave="pcTilt(null,this)">
     <div class="pc-glare"></div><div class="pc-holo"></div>
     <div class="pc-top"><span class="pc-no">No.${no}</span><span class="pc-lv">Lv.${L.lv}</span></div>
-    <div class="pc-art"><span class="pc-ava" style="--s:${AVA_COLORS[P.color%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span>${emblem(r,40)}</div>
+    <div class="pc-art"><span class="pc-ava${frc()}" style="--s:${AVA_COLORS[P.color%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span>${emblem(r,40)}</div>
     <div class="pc-name"><b>${esc(NET.name||'あなた')}</b><span>${esc(myTitle())}</span></div>
     <div class="pc-type"><span class="pc-chip">${style[0]}</span><span class="note">${style[1]}</span></div>
     <div class="pc-stats"><div><b>${st.games}</b><span>対戦</span></div><div><b>${st.games?Math.round(st.wins/st.games*100):0}<small>%</small></b><span>勝率</span></div><div><b>${st.best}</b><span>最高点</span></div><div><b>${r}</b><span>${t.n}</span></div></div>
