@@ -961,7 +961,7 @@ body[data-table="space"]::before{background:radial-gradient(1.5px 1.5px at 20% 3
 .homelinks{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:4px 0 10px}
 .homelinks button{border:0;font:inherit;font-size:13px;font-weight:800;color:var(--muted);background:rgb(7 8 24 / .4);border-radius:999px;padding:8px 14px;box-shadow:inset 0 0 0 1px var(--line)}
 .homelinks button:hover{color:var(--ink)}
-@media (max-width:560px){ .hero .showcase{display:none} .hero{padding-bottom:4px} .heroact .btn.huge{flex:1} }
+@media (max-width:560px){ .hero .showcase{display:none} .hero{padding-bottom:4px} .heroact{flex-wrap:wrap;gap:8px} .heroact .btn.huge{flex:1 1 100%;white-space:nowrap} .heroact .btn.ghost{flex:1 1 0;white-space:nowrap} }
 .q-fut{--q:#7af0ff} .q-fut .qs{color:#7af0ff}
 /* ---- my result on reveal ---- */
 .myres{display:flex;align-items:center;gap:12px;border-radius:18px;padding:10px 14px;background:linear-gradient(90deg,rgb(255 255 255 / .08),rgb(7 8 24 / .3));box-shadow:inset 0 0 0 1.5px var(--line);animation:achin .5s cubic-bezier(.2,.9,.3,1.3) .5s both}
@@ -1405,6 +1405,11 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .isn{grid-area:n;font-weight:800;font-size:12.5px;white-space:nowrap}
 .isb{grid-area:b;height:10px;border-radius:10px;background:rgb(255 255 255 / .06);overflow:hidden}.isb i{display:block;height:100%;border-radius:10px}
 .isv{grid-area:v;font-size:11px;color:var(--muted)}.isv b{color:var(--ink)}
+.guide{display:flex;gap:10px;align-items:flex-start;margin:0 0 10px;padding:10px 12px;border-radius:14px;background:linear-gradient(90deg,rgb(63 224 143 / .18),rgb(255 255 255 / .03));box-shadow:inset 3px 0 0 var(--cta);font-size:13px;line-height:1.6;animation:mcin .4s ease both}
+.g-ic{font-size:22px;animation:trbob 2s ease-in-out infinite}
+.g-tx{display:block}.g-tx .label{display:block;margin:0 0 2px}.g-tx b{color:var(--cta)}
+.guideres{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;background:radial-gradient(circle at 50% 0%,rgb(63 224 143 / .22),transparent 60%),linear-gradient(180deg,var(--panel2),var(--panel))}
+.guideres .chalbig{color:var(--cta)}.g-big{font-size:56px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2357,7 +2362,7 @@ const logDeck = () => G.log && G.log.length ? G.log : G.deck.slice(0,TURNS);
 const termName = r => G.cfg.hist && G.fullPool ? `${r===0?'前半':'後半'}` : `第${r+1}期`;
 function termRange(r){ if(!G.fullPool) return ''; const ids=G.fullPool.slice(r*LONG_PER,(r+1)*LONG_PER); return `${yearOf(ids[0])}–${yearOf(ids[ids.length-1])}`; }
 const turnLabel = () => (isLong()?`${termName(G.round)} · `:'')+`TURN ${G.turn+1}/${TURNS}`;
-function finishGame(){ G.phase='final'; G.ov=null; recordResult(); leagueRecord(); boardRecord(); partyReward(); render(); netSync(); scrollTo(0,0); startCeremony(); }
+function finishGame(){ G.phase='final'; G.ov=null; recordResult(); practiceDone(); leagueRecord(); boardRecord(); partyReward(); render(); netSync(); scrollTo(0,0); startCeremony(); }
 /* ブランド：期の決算で、その期にいちばん独占した産業が自分のブランドになり、以後その産業は毎回+1 */
 function brandOf(us, prev){
   const n=[0,0,0,0,0,0]; let lastMono=-1;
@@ -2987,6 +2992,7 @@ function carGo(i){ const car=document.getElementById('todayCar'), it=car&&car.ch
 /* ---- モード案内：ぜんぶの遊び方を1枚で ---- */
 const MODES=()=>[   // 関数にして、表示するときにキャラなどを読む
   {g:'まずはここから', items:[
+    ['🎓','練習試合','1人 · 5分','ガイドつき。はじめての人はここから',"closeSheet();startPractice()"],
     ['▶','CPU対戦','1人 · 5分','いちばん基本。CPU3人と4ターン勝負',"closeSheet();go('play','cpu')"],
     ['👥','1台をみんなで','2〜6人 · 5分','スマホ1台を回して遊ぶ。文化祭にぴったり',"closeSheet();go('play');setSeatPreset('party')"],
     ['◎','オンライン','2〜6人','合言葉で友だちと別々の端末から',"closeSheet();go('online')"]]},
@@ -3273,6 +3279,31 @@ function indPanel(){
       <span class="isb"><i style="width:${Math.round(n[i]/mx*100)}%;background:var(--i${i})"></i></span>
       <span class="isv"><b>${n[i]}</b>回 · 独占${n[i]?Math.round(m[i]/n[i]*100):0}%${avg(i)!=null?` · 平均${sgn(Math.round(avg(i)*10)/10)}`:''}</span></div>`).join('')}</div>
     ${best!=null&&best!==undefined?`<p class="note">いちばん稼げているのは <b style="color:var(--i${best})">${IND[best]}</b>（1枚あたり平均 ${sgn(Math.round(avg(best)*10)/10)}）</p>`:'<p class="note">平均点は、これから遊ぶ対戦から数えます。</p>'}</section>`;
+}
+/* ---- 練習試合：ガイドつきで1ゲーム。やさしいCPU2人と、決まった山札で ---- */
+const PRACTICE_COIN=50;
+function startPractice(){ closeSheet(); startGame(false,null,'c1'); if(G){ G.practice=true; render(); } }
+function guideTip(){
+  if(!G || !G.practice || G.phase==='final') return '';
+  const f=FORE[G.cfg.fore], last=G.turn===TURNS-1;
+  let t='';
+  if(G.phase==='reveal') t = G.turn===0 ? '<b>OPEN！</b> だれとも被らなかった産業は<b>「独占」</b>でボーナス +'+G.cfg.bonus+'。被った産業は点が伸びません。下の表で、だれが何を出したか見てみよう。'
+    : last ? '<b>これで4ターン終了！</b> 「最終結果へ」で順位を見よう。' : 'ターンごとに<b>独占</b>をねらうのがコツ。点数は画面上の席の数字に足されていきます。';
+  else if(G.turn===0) t='<b>① NEWSを見る</b>：上の新聞の数字が、そのターンに各産業がもらえる点です。<b>② 下の手札から1枚選んで</b>「出す」を押そう。';
+  else if(G.turn===1) t='<b>コツ</b>：いちばん点が高い産業は、みんなも選びがちで<b>被りやすい</b>。2番目に高い産業で独占をねらうのも手です。';
+  else if(G.turn===2) t=`<b>${f.name}</b>：${f.desc} 1ゲームに1回だけ。手札の上のボタンから使えます。`;
+  else t='<b>最後のターン！</b> 一度使った産業はもう出せません。残ったカードでいちばん得をするものを選ぼう。';
+  return `<div class="guide"><span class="g-ic">🎓</span><span class="g-tx"><span class="label">練習試合 · ${G.phase==='reveal'?'結果':'ターン'+(G.turn+1)}</span>${t}</span></div>`;
+}
+function practiceDone(){
+  if(!G || !G.practice || G.practiceDone) return; G.practiceDone=true;
+  const P=S.prof; G.practiceFirst=!P.practiced; if(G.practiceFirst){ P.practiced=Date.now(); P.coin=(P.coin||0)+PRACTICE_COIN; saveProfile(); }
+}
+function practicePanel(){
+  if(!G || !G.practice) return '';
+  return `<section class="panel guideres"><span class="g-big">🎓</span><div class="chalbig">練習おわり！</div>
+    <p class="note">これで遊び方はばっちり。${G.practiceFirst?`はじめての練習ボーナス <b>+${PRACTICE_COIN}コイン</b>！`:''}</p>
+    <div class="row" style="justify-content:center"><button class="btn big" onclick="startPractice()">もう一度練習</button><button class="btn gold big pulse" onclick="quit();go('play','cpu')">本番の対戦へ！</button></div></section>`;
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
@@ -3630,7 +3661,7 @@ function handDock(news){
   let preview='<span>カードを選ぶと、独占したときと被ったときの点数が出ます</span>';
   if(G.sel!==null){ const b=ptsOf(G.sel); preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(C,b,1))}</b><span class="x">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2))}</b>`; }
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
-  return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">
+  return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
     <span class="grab hide-lg" aria-hidden="true"></span>
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span></div>
@@ -3694,7 +3725,7 @@ function revealDock(){
       <div class="lb">${who.map(x=>`<div class="who" style="--s:var(--s${x.p.seat%6});animation-delay:${x.i*130}ms"><span class="d"></span>${esc(x.p.name)}${G.last[x.i].fut?' <span class="tagx cy">先物</span>':''}</div>`).join('')}</div>
       <div class="lf">${foot}</div>${k>1?'<span class="stamp">被り！</span>':k===1?'<span class="stamp g">独占</span>':''}</div>`;
   }).join('');
-  return `<div class="dock">${myResultBar()}<div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold)">${mvp} ${sgn(best)}</b></span></div>
+  return `<div class="dock">${guideTip()}${myResultBar()}<div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold)">${mvp} ${sgn(best)}</b></span></div>
     ${liveBox()}
     <div class="board">${lanes}</div>${emoteBar()}
     <div class="actions" style="justify-content:flex-end">${G.online&&!G.host?'<span class="note">ホストが次へ進めます…</span>':`<button class="btn gold big pulse" style="flex:1 1 auto;max-width:360px" onclick="nextTurn()">${G.turn===TURNS-1?'最終結果へ':'次のターンへ'}</button>`}</div></div>`;
@@ -3713,7 +3744,7 @@ function finalView(){
   if(big.p) aw.push(['最大瞬間風速',big.p.name,`T${big.u.turn+1} ${IND[big.u.ind]} ${sgn(big.v)}`]);
   const hist=G.players.map(p=>`<tr><td>${esc(p.name)}</td>${p.used.map(u=>`<td>${chip(u.ind)} <span class="num ${cls(u.total)}">${sgn(u.total)}</span>${u.fut?' <span class="tagx cy">先物</span>':''}</td>`).join('')}<td class="n">${p.uniq}</td><td class="n"><b>${p.score}</b></td></tr>`).join('');
   const recap = C.hist ? `<section class="panel"><h3>あなたたちが生きた時代</h3><div class="recap">${logDeck().map(i=>`<div><b>${yearOf(i)}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${HIST[i].n}</b><br>${gloss(HIST[i].d)}</p></div>`).join('')}</div></section>` : '';
-  return `<div class="two"><div class="col">${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${bossPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${leaguePanel()}${seasonWin()}${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+  return `<div class="two"><div class="col">${practicePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${bossPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${leaguePanel()}${seasonWin()}${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
@@ -4963,7 +4994,7 @@ function tutorialBody(){
     <span class="label">遊び方 ${i+1} / ${TUT.length}</span><h3 class="ttl" style="font-size:24px">${s.t}</h3><p>${s.d}</p>
     <div class="tut-dots">${TUT.map((_,j)=>`<i class="${j===i?'on':''}"></i>`).join('')}</div>
     <div class="row spread"><button class="btn ghost" onclick="tutGo(-1)" ${i===0?'disabled':''}>戻る</button>
-      ${i<TUT.length-1?`<button class="btn gold big" onclick="tutGo(1)">次へ</button>`:`<button class="btn go big" onclick="closeSheet();S.mode='classic';S.seats=defaultSeats('cpu');save('azakei-tut',1);startGame()">練習ゲームをはじめる</button>`}</div>`;
+      ${i<TUT.length-1?`<button class="btn gold big" onclick="tutGo(1)">次へ</button>`:`<button class="btn go big" onclick="closeSheet();save('azakei-tut',1);startPractice()">練習ゲームをはじめる</button>`}</div>`;
 }
 
 function setOnlineLen(l){ if(!NET.host) return; S.len=l; save('azakei-len',l); sfx('click'); hostBroadcast(); render(); }
