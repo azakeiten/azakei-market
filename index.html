@@ -1567,6 +1567,28 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .why-r b{display:block;font-size:12.5px}.why-r.why-up b{color:#0d8a4a}.why-r.why-dn b{color:#c8102e}
 .why-i{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--c);color:#fff}.why-i svg{width:16px;height:16px}
 @media (prefers-reduced-motion:reduce){.why-box{animation:none}}
+.ipf-tabs{flex:none;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin:0 46px 12px 0}
+.ipf-tab{height:40px;border:0;border-radius:12px;cursor:pointer;display:grid;place-items:center;color:#fff;background:color-mix(in srgb,var(--c) 30%,var(--panel2));box-shadow:inset 0 0 0 1px var(--line)}
+.ipf-tab svg{width:20px;height:20px}.ipf-tab.on{background:var(--c);box-shadow:0 0 0 2px #fff,0 4px 14px -4px var(--c)}
+.ipf-hero{position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;gap:2px;padding:18px 18px 16px;border-radius:20px;color:#fff;background:linear-gradient(140deg,var(--c),color-mix(in srgb,var(--c) 45%,#0b0d22));box-shadow:0 10px 26px -12px var(--c)}
+.ipf-ic{position:absolute;right:-14px;bottom:-22px;width:120px;height:120px;opacity:.22}.ipf-ic svg{width:100%;height:100%}
+.ipf-en{font-family:var(--display);font-size:12px;letter-spacing:.2em;opacity:.85}
+.ipf-n{font-family:var(--display);font-weight:400;font-size:34px;line-height:1.1;margin:0;text-shadow:0 3px 0 rgb(0 0 0 / .25)}
+.ipf-ex{font-size:13px;font-weight:800;opacity:.92}
+.ipf-mk{align-self:flex-start;margin-top:8px;font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;background:rgb(0 0 0 / .3)}.ipf-mk.luck{background:rgb(0 0 0 / .45);box-shadow:inset 0 0 0 1.5px #ffd36a;color:#ffe08a}
+.ipf-mk .up{color:#5cf0a2}.ipf-mk .dn{color:#ff8a9a}
+.ipf-d{margin:12px 2px 4px;font-size:14px;line-height:1.6}
+.ipf-sec{margin-top:10px}.ipf-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.ipf-nw{display:inline-flex;align-items:center;gap:6px;border:0;cursor:pointer;font:inherit;font-size:12.5px;font-weight:800;color:var(--ink);padding:5px 10px 5px 6px;border-radius:10px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.ipf-nw:disabled{cursor:default;opacity:.8}
+.ipf-nw b{font-family:var(--display);font-weight:400;font-size:14px;min-width:2.1em;text-align:center;padding:1px 4px;border-radius:6px}
+.ipf-nw.pos b{background:rgb(63 224 143 / .18);color:#3fe08f}.ipf-nw.neg b{background:rgb(255 92 122 / .16);color:#ff7a8f}
+.ipf-nw i{font-style:normal;font-size:9px;font-weight:900;padding:0 5px;border-radius:5px;background:linear-gradient(90deg,#ffc83a,#ff5c9a);color:#1a1033}
+.ipf-me{flex:none;margin:14px 0 12px;padding:12px 14px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.ipf-st{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:6px;text-align:center}
+.ipf-st span{display:flex;flex-direction:column;font-size:11px;color:var(--muted)}.ipf-st b{font-family:var(--display);font-weight:400;font-size:22px;color:var(--ink)}
+.ipf-link{margin-left:auto;border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.isr[role=button]{cursor:pointer;border-radius:10px}.isr[role=button]:active{background:rgb(255 255 255 / .05)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2970,6 +2992,7 @@ function renderSheet(){
   else if(k==='quiz') body=quizBody();
   else if(k==='box') body=boxBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
+  else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   else if(k.startsWith('cup:')) body=cupSheetBody(k.slice(4));
   else if(k.startsWith('pickchar:')) body=pickCharBody(+k.slice(9));
@@ -3459,10 +3482,10 @@ function indPanel(){
   if(!tot) return '';
   const avg=i=>pt&&pc[i]?pt[i]/pc[i]:null, mx=Math.max(...n), best=pt?[0,1,2,3,4,5].filter(i=>pc[i]>=3).sort((a,b)=>avg(b)-avg(a))[0]:null;
   return `<section class="panel"><div class="row spread"><h3>産業別の成績</h3><span class="note">${tot}枚ぶん</span></div>
-    <div class="indst">${IND.map((d,i)=>`<div class="isr"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span class="isn">${d}</span>
+    <div class="indst">${IND.map((d,i)=>`<div class="isr" role="button" tabindex="0" onclick="openSheet('ind:${i}')" aria-label="${d}の産業ガイド"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span class="isn">${d}</span>
       <span class="isb"><i style="width:${Math.round(n[i]/mx*100)}%;background:var(--i${i})"></i></span>
       <span class="isv"><b>${n[i]}</b>回 · 独占${n[i]?Math.round(m[i]/n[i]*100):0}%${avg(i)!=null?` · 平均${sgn(Math.round(avg(i)*10)/10)}`:''}</span></div>`).join('')}</div>
-    ${best!=null&&best!==undefined?`<p class="note">いちばん稼げているのは <b style="color:var(--i${best})">${IND[best]}</b>（1枚あたり平均 ${sgn(Math.round(avg(best)*10)/10)}）</p>`:'<p class="note">平均点は、これから遊ぶ対戦から数えます。</p>'}</section>`;
+    ${best!=null&&best!==undefined?`<p class="note">いちばん稼げているのは <b style="color:var(--i${best})">${IND[best]}</b>（1枚あたり平均 ${sgn(Math.round(avg(best)*10)/10)}）</p>`:'<p class="note">平均点は、これから遊ぶ対戦から数えます。</p>'}<p class="note">産業をタップすると、くわしい産業ガイドが開きます。</p></section>`;
 }
 /* ---- 練習試合：ガイドつきで1ゲーム。やさしいCPU2人と、決まった山札で ---- */
 const PRACTICE_COIN=50;
@@ -3858,9 +3881,7 @@ function skyScene(){
     <div class="sky-tick" aria-hidden="true"><div class="sky-tk">${tick}${tick}</div></div></section>`;
 }
 function skyTap(c){
-  const {ch,li}=todayMarket(); sfx('click'); haptic(6);
-  toast(c===li ? `★ ${IND[c]} ${skyPct(ch[c])}　今日のラッキー産業！ 独占すると +${LUCK_COIN}コイン` : `${IND[c]} ${skyPct(ch[c])}　今日の${ch[c]>0?'上げ':ch[c]<0?'下げ':'横ばい'}ムード（点数には関係ありません）`);
-}
+  sfx('click'); haptic(6); openSheet('ind:'+c); }
 /* ---- 「なぜ？」解説：クラシック（＋EX）のNEWSごとに、得する産業・損する産業の理由をひとことで。
    並び順は ALL_NEWS と同じ。u＝上がる理由、d＝下がる理由（産業の番号ごと） ---- */
 const WHY=[
@@ -3888,6 +3909,35 @@ function whyBox(n, row, dex){
     ${up.map(x=>`<div class="why-r why-up" style="--c:var(--i${x.c})"><span class="why-i">${svg(x.c,2.2)}</span><span><b>${IND[x.c]} ${sgn(x.v)}</b>${w.u[x.c]}</span></div>`).join('')}
     ${dn.map(x=>`<div class="why-r why-dn" style="--c:var(--i${x.c})"><span class="why-i">${svg(x.c,2.2)}</span><span><b>${IND[x.c]} ${sgn(x.v)}</b>${w.d[x.c]}</span></div>`).join('')}</div>`;
 }
+/* ---- 産業ガイド：6つの産業それぞれのプロフィール。本当の経済での姿・強いNEWSと弱いNEWS・自分の成績・今日の相場 ---- */
+const IND_PROF=[
+  {en:'ENERGY',        ex:'電力会社・石油会社・ガス会社',     d:'暮らしや工場を動かす電気・燃料をつくって売る産業。モノの値段が上がるNEWSに強く、省エネやデジタル化では出番がへる。'},
+  {en:'FINANCE',       ex:'銀行・証券会社・保険会社',         d:'お金を預かり、貸し、ふやす産業。株や土地の値段が大きく動くと忙しくなり、もうけもふえる。'},
+  {en:'MANUFACTURING', ex:'自動車・電機・半導体の工場',       d:'モノをつくる産業。たくさん売れるときや輸出しやすいときに強いが、原料や電気代が上がると苦しい。'},
+  {en:'RETAIL',        ex:'スーパー・コンビニ・ネット通販',   d:'お客さんに直接モノを売る産業。買い物や旅行で人がたくさん動くと、売上が一気にふえる。'},
+  {en:'TRANSPORT',     ex:'鉄道・航空・宅配便',               d:'人やモノを運ぶ産業。旅行や通販でにぎわうが、燃料が高くなると大きな打撃を受ける。'},
+  {en:'MEDIA',         ex:'テレビ・動画配信・広告・SNS',      d:'情報と広告を届ける産業。景気がよいときやデジタル化が進むときに伸びる。'}
+];
+function indSheetBody(c){
+  c=Math.max(0,Math.min(5,c|0)); const pf=IND_PROF[c], T=T2.concat(EXT_T);
+  const rows=T.map((r,n)=>({n, v:r[c], ex:n>=NEWS.length}));
+  const strong=rows.filter(x=>x.v>=2).sort((a,b)=>b.v-a.v), weak=rows.filter(x=>x.v<0).sort((a,b)=>a.v-b.v);
+  const avgAll=Math.round(rows.reduce((a,x)=>a+x.v,0)/rows.length*10)/10;
+  const nw=x=>`<button class="ipf-nw ${x.v>0?'pos':'neg'}" onclick="openSheet('dex:n${x.n}')" ${dexHas(x.n)?'':'disabled'}><b>${sgn(x.v)}</b><span>${ALL_NEWS[x.n]}</span>${x.ex?'<i>EX</i>':''}</button>`;
+  const P=S.prof, n=(P.ind||[])[c]||0, m=(P.indm||[])[c]||0, pc=(P.indc||[])[c]||0, pt=(P.indp||[])[c]||0;
+  const {ch,li}=todayMarket();
+  const tabs=IND.map((d,i)=>`<button class="ipf-tab${i===c?' on':''}" style="--c:var(--i${i})" onclick="openSheet('ind:${i}')" aria-label="${d}">${svg(i,2.2)}</button>`).join('');
+  return `<div class="ipf-tabs" role="tablist">${tabs}</div>
+    <div class="ipf-hero" style="--c:var(--i${c})"><span class="ipf-ic">${svg(c,2)}</span><span class="ipf-en">${pf.en}</span><h3 class="ipf-n">${IND[c]}</h3><span class="ipf-ex">${pf.ex}</span>
+      <span class="ipf-mk${c===li?' luck':''}">今日の相場 <b class="${ch[c]>0?'up':ch[c]<0?'dn':''}">${skyPct(ch[c])}</b>${c===li?' ★ラッキー産業':''}</span></div>
+    <p class="ipf-d">${pf.d}</p>
+    <div class="ipf-sec"><span class="label">強いNEWS</span><div class="ipf-list">${strong.map(nw).join('')||'<span class="note">なし</span>'}</div></div>
+    <div class="ipf-sec"><span class="label">弱いNEWS</span><div class="ipf-list">${weak.map(nw).join('')||'<span class="note">マイナスになるNEWSはありません</span>'}</div></div>
+    <p class="note">12種のNEWSでの平均は ${sgn(avgAll)}。図鑑で見つけたNEWSはタップでくわしく読めます。</p>
+    <div class="ipf-me"><span class="label">あなたの${IND[c]}</span>${n?`<div class="ipf-st"><span><b>${n}</b>回 出した</span><span><b>${Math.round(m/n*100)}%</b> 独占</span><span><b>${pc?sgn(Math.round(pt/pc*10)/10):'—'}</b> 1枚の平均</span></div>`:'<p class="note">まだ出したことがありません。</p>'}</div>
+    <button class="btn gold big" onclick="closeSheet()">とじる</button>`;
+}
+function dexHas(n){ const D=S.prof.dex||{n:[]}; return (D.n||[]).includes(n); }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4246,7 +4296,7 @@ function handDock(news){
   const dealKey=G.turn+':'+G.active, deal=G.dealKey!==dealKey; G.dealKey=dealKey;
   const canFore=!p.foreUsed && G.turn<TURNS-1, fdef=FORE[C.fore];
   let preview='<span>カードを選ぶと、独占したときと被ったときの点数が出ます</span>';
-  if(G.sel!==null){ const b=ptsOf(G.sel); preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(C,b,1))}</b><span class="x">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2))}</b>`; }
+  if(G.sel!==null){ const b=ptsOf(G.sel); preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(C,b,1))}</b><span class="x">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2))}</b><button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>`; }
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
     <span class="grab hide-lg" aria-hidden="true"></span>
