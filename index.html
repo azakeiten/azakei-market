@@ -1442,6 +1442,11 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .ud-res>b{font-family:var(--display);font-weight:400;font-size:30px}.ud-res.ok>b{color:var(--cta)}.ud-res.ng>b{color:#ff8aa0}
 .ud-res p{font-size:13px;line-height:1.6;margin:4px 0 0;text-align:left}
 .ud-res .up{color:#5dffa8}.ud-res .down{color:#ff8aa0}
+.hmtalk{display:flex;align-items:flex-end;gap:10px;width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;padding:0;margin:2px 0}
+.hmtalk .rva{width:48px;height:48px;font-size:24px;flex:0 0 auto;animation:trbob 2.4s ease-in-out infinite}
+.hmt-b{position:relative;flex:1;min-width:0;padding:10px 14px;border-radius:18px 18px 18px 4px;background:#fff;color:#1a1d3a;font-weight:700;font-size:13.5px;line-height:1.6;box-shadow:0 3px 0 rgb(0 0 0 / .25),inset 3px 0 0 var(--rc);animation:mcin .35s ease both}
+.hmt-b b{display:block;font-size:11px;color:var(--rc);filter:brightness(.75)}
+.hmt-b small{display:block;margin-top:2px;font-size:10px;color:#8a8fb8;text-align:right}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3130,7 +3135,7 @@ function weeklyBody(){
 /* ---- 実績：種類ごとに分け、むずかしさで銅・銀・金のメダルに ---- */
 const ACH_GROUPS=[
   ['はじめての一歩', ['first','win1','online','long1','hist','futwin']],
-  ['腕前', ['mono3','fut4','big15','comeback','beatpro','longwin','sweep','ct5']],
+  ['腕前', ['mono3','fut4','big15','comeback','beatpro','longwin','sweep','ct5','ud10','duelwin']],
   ['やりこみ', ['win10','games20','daily3','daily7','gold','chal24','surv5','cupgold']],
   ['コレクション', ['mkall','dexall','story9','chars9','beat9','boss3','party5']]
 ];
@@ -3431,7 +3436,7 @@ function startUd(){ UDG={q:udQuestion(), streak:0, picked:null}; sfx('open'); op
 function udPick(up){
   if(!UDG || UDG.picked!==null) return;
   const v=HIST[UDG.q.i].r[UDG.q.ind], ok=(v>0)===up; UDG.picked=up; UDG.ok=ok;
-  if(ok){ UDG.streak++; sfx('coin'); haptic(15); }
+  if(ok){ UDG.streak++; sfx('coin'); haptic(15); if(UDG.streak>=10 && !S.prof.ach.ud10){ S.prof.ach.ud10=Date.now(); saveProfile(); toast('実績「相場の勘」を解除！'); } }
   else { sfx('buzz'); haptic(40); const P=S.prof, best=P.udBest||0; UDG.newBest=UDG.streak>best; if(UDG.newBest) P.udBest=UDG.streak;
     if(P.udDay!==todayKey() && UDG.streak>0){ P.udDay=todayKey(); UDG.coin=Math.min(UD_MAXCOIN, UDG.streak*3); P.coin=(P.coin||0)+UDG.coin; } saveProfile(); }
   renderSheet();
@@ -3451,6 +3456,37 @@ function udCard(){
   const P=S.prof, done=P.udDay===todayKey();
   return `<button class="udcard" onclick="startUd()"><span class="ud-ic">📈</span><span class="ud-tx"><span class="label">MINI GAME</span><b>値動き予想</b><span class="note">歴史の出来事で、その産業は上がった？下がった？ 連続正解をめざそう</span>
     <span class="note">最高 <b>${P.udBest||0}</b>問連続${done?' · 今日のボーナス獲得済み':` · 今日はじめての挑戦で最大 +${UD_MAXCOIN}コイン`}</span></span></button>`;
+}
+/* ---- ホームのひとこと：キャラが日替わりで話しかける。タップで次の話（コツ・豆知識） ---- */
+const HOME_TALK=[
+  ['ミナト','みんなが選ぶ一番高い産業は、被りやすい。2番目をねらうのが期待値の計算だよ。'],
+  ['アオイ','独占すると+2！ だれもいない産業を見つけたら、迷わず飛びこもう！'],
+  ['ソラ','マイナスのカードは、みんなが被りそうなターンに出すと、ダメージが小さいかも〜'],
+  ['ハル','先物は1回だけ！ 次のNEWSが大きく動きそうなときに使え！'],
+  ['ユイ','最後のターンは、残ったカードの中で一番得するものを。計画は早めにね。'],
+  ['レン','歴史モードは、出来事が年代順に起きる。昔の年が出たら、それより前はもう来ない！'],
+  ['ナギ','円安になると、輸出する会社はもうかりやすい。でも輸入する燃料は高くなるんだ。'],
+  ['ミオ','「バブル」は、本当の価値以上に値段がふくらむこと。いつか弾けるので要注意です。'],
+  ['トキ','1973年と1979年、2回のオイルショックで、日本は省エネの国になったのじゃ。'],
+  ['ミナト','新NISAは、投資でもうけても税金がかからない制度。2024年に大きく広がった。'],
+  ['アオイ','ボス戦は、ボスより上の順位なら勝ち！ 1位じゃなくてもいいんだよ〜！'],
+  ['ソラ','挑戦状は、同じ山札で友だちと点数勝負。URLを送るだけだよ〜'],
+  ['ハル','値動き予想、10問連続で正解できたら本物の相場師だ！'],
+  ['ユイ','ラッキー産業で独占すると、コインがもらえるわ。今日の産業はホームの右上よ。'],
+  ['レン','サバイバルは❤が1回だけ。6戦目からは1位じゃないと突破できないぞ！'],
+  ['ナギ','半導体は「産業のコメ」。スマホにも車にも入ってる、経済の主役さ。'],
+  ['ミオ','リーマン・ショック（2008年）では、ほとんどの産業がマイナスになりました。'],
+  ['トキ','ロング版では期ごとに市況カードが変わる。好景気か不況か、流れを読むのじゃ。']
+];
+let HOME_TALK_I=null;
+function homeTalk(){
+  if(HOME_TALK_I===null) HOME_TALK_I=(todayKey()*5)%HOME_TALK.length;
+  const [k,t]=HOME_TALK[HOME_TALK_I], c=CHARS[k];
+  return `<button class="hmtalk" style="--rc:${c.c}" onclick="nextHomeTalk()" aria-label="次のひとこと"><span class="rva">${c.ic}</span><span class="hmt-b"><b>${k}</b>${t}<small>タップで次の話 ›</small></span></button>`;
+}
+function nextHomeTalk(){
+  HOME_TALK_I=(HOME_TALK_I+1)%HOME_TALK.length; const [k,t]=HOME_TALK[HOME_TALK_I];
+  const el=document.querySelector('.hmtalk'); if(el){ el.outerHTML=homeTalk(); } voice(k,t);
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
@@ -3950,6 +3986,7 @@ function homeView(){
         <div class="row heroact"><button class="btn gold huge pulse" onclick="go('play','cpu')">あそぶ</button><button class="btn ghost" onclick="openTutorial()">遊び方（1分）</button><button class="btn ghost" onclick="openSheet('modes')">なにで遊ぶ？</button></div>
       </div>
       <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>
+  ${homeTalk()}
   ${quickMenu()}
   ${seasonCard()}
   ${todayBar()}
@@ -4037,6 +4074,8 @@ function lvInfo(xp){ let lv=1, rest=xp; while(rest>=lvNeed(lv)){ rest-=lvNeed(lv
 const TITLES=[[1,'見習いトレーダー'],[3,'駆け出しトレーダー'],[5,'市場の読み手'],[8,'敏腕トレーダー'],[12,'相場師'],[16,'マーケットの支配者']];
 const titleOf = lv => TITLES.filter(t=>lv>=t[0]).pop()[1];
 const ACH=[
+  {id:'ud10', n:'相場の勘', d:'値動き予想で10問連続正解', ic:'📈'},
+  {id:'duelwin', n:'挑戦者', d:'挑戦状で相手の点数を超える', ic:'✉️'},
   {id:'party5', n:'みんなの市場', d:'1台をみんなで回して5回遊ぶ', ic:'🎉'},
   {id:'boss3', n:'ボスハンター', d:'3種類のボスをすべて倒す', ic:'👹'},
   {id:'surv5', n:'しぶとい投資家', d:'サバイバルで5戦連続突破', ic:'🛡️'},
@@ -4122,6 +4161,7 @@ function recordResult(){
   const sty=G.story?storyResult(rk, me):null; if(sty&&sty.bonus){ coin+=sty.bonus; P.coin+=sty.bonus; } if(STORIES.every(x=>(P.story||{})[x.k])) unlock('story9');
   const wm=progressWeekly({p, won, rank:mine?mine.rank:9, boss:!!(bsr&&bsr.win), special:!!(G.story||G.cup||G.surv!=null)});
   if(wm.coin){ coin+=wm.coin; P.coin+=wm.coin; }
+  if(G.duel && G.duel.target!=null && p.score>G.duel.target) unlock('duelwin');
   const trb=recordRivals(rk, me); if(trb){ coin+=trb; P.coin+=trb; }
   { const RV=P.riv||{}, ks=Object.keys(CHARS); if(ks.every(k=>RV[k])) unlock('chars9'); if(ks.every(k=>RV[k]&&RV[k].w>0)) unlock('beat9'); }
   G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, sty, svr, spr, bsr, luck, wm, dex, trb, trk:trb?todayRival():null};
