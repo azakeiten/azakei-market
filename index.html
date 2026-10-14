@@ -1466,6 +1466,46 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .tac.on{box-shadow:inset 0 0 0 2px var(--gold),0 0 16px -4px var(--gold)}.tac.on small{color:var(--gold)}
 .tac:disabled{opacity:.4;cursor:default}
 .tac-sc{grid-column:1/-1;font-weight:800;font-size:12px;padding:6px 10px;border-radius:10px;background:rgb(79 227 255 / .14);color:#7af0ff}
+.dgx-open{display:flex;align-items:center;gap:12px;width:100%;margin:6px 0 2px;padding:12px 16px;border:0;border-radius:18px;cursor:pointer;color:var(--ink);font:inherit;text-align:left;background:linear-gradient(110deg,rgb(79 227 255 / .2),rgb(167 123 255 / .2));box-shadow:inset 0 0 0 1.5px rgb(79 227 255 / .5)}
+.dgx-open>i{font-style:normal;display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:50%;background:#4fe3ff;color:#06102a;font-size:16px;animation:dgPulse 2s infinite}
+.dgx-open span{display:flex;flex-direction:column}.dgx-open b{font-size:15px}.dgx-open small{font-size:12px;color:var(--muted)}
+@keyframes dgPulse{0%{box-shadow:0 0 0 0 rgb(79 227 255 / .6)}70%,100%{box-shadow:0 0 0 12px rgb(79 227 255 / 0)}}
+.overlay.dgx{background:radial-gradient(circle at 50% 0%,#1d3a7a,#060818 70%);overflow-y:auto;grid-template-columns:minmax(0,560px);justify-content:center;align-items:start;padding:max(16px,env(safe-area-inset-top)) 12px 20px}
+.overlay.dgx .dg-box{gap:12px;max-width:560px;color:#fff}
+.dg-tag{font-family:var(--display);letter-spacing:.14em;font-size:13px;color:#7af0ff}
+.dg-dots{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}.dg-dots i{width:18px;height:5px;border-radius:3px;background:rgb(255 255 255 / .18)}.dg-dots i.done{background:#4fe3ff}.dg-dots i.on{background:#ffc83a;box-shadow:0 0 8px #ffc83a}
+.dg-news{display:flex;flex-direction:column;align-items:center;gap:2px;animation:dgIn .5s cubic-bezier(.2,1.4,.4,1) both}
+.dg-news b{font-family:var(--display);font-weight:400;font-size:clamp(26px,8vw,40px);line-height:1.1;background:linear-gradient(180deg,#fff,#ffd36a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.dg-yr{font-size:12px;font-weight:800;color:#aab}
+@keyframes dgIn{from{opacity:0;transform:translateY(-14px) scale(.9)}}
+.dg-lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+.dg-lane{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:14px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .1);min-height:100px;animation:dgLane .45s var(--dl) both}
+.dg-lane.empty{opacity:.45}
+.dg-lane .chip{font-size:11px}
+.dg-lane.mono{background:linear-gradient(180deg,rgb(255 200 58 / .22),rgb(255 200 58 / .04));box-shadow:inset 0 0 0 2px #ffc83a,0 0 18px -4px #ffc83a}
+.dg-lane.hit{background:rgb(255 80 80 / .1);box-shadow:inset 0 0 0 1.5px rgb(255 92 92 / .6)}
+.dg-lane.hit .dg-who{animation:dgShake .4s calc(var(--dl) + .35s) both}
+.dg-who{display:flex;justify-content:center;flex-wrap:wrap;gap:2px}.dg-who .ava{width:26px;height:26px;font-size:14px}
+.dg-v{font-family:var(--display);font-weight:400;font-size:18px;line-height:1}.dg-v.up{color:#3fe08f}.dg-v.dn{color:#ff6b6b}
+.dg-badge{position:absolute;top:-7px;right:-3px;font-size:10px;font-weight:900;padding:1px 6px;border-radius:8px;background:#ffc83a;color:#2a1a00}.dg-badge.hit{background:#ff5c5c;color:#fff}
+@keyframes dgLane{from{opacity:0;transform:translateY(10px) scale(.92)}}
+@keyframes dgShake{20%,60%{transform:translateX(-3px)}40%,80%{transform:translateX(3px)}}
+.dg-say{margin:0;min-height:2.8em;font-size:14px;line-height:1.45;padding:8px 12px;border-radius:12px;background:rgb(0 0 0 / .3);width:100%;animation:dgIn .4s .75s both}
+.dg-say em{font-style:normal;font-weight:900}.dg-say .up,.dg-pt .up{color:#3fe08f}.dg-say .dn,.dg-pt .dn{color:#ff6b6b}
+.dg-race{display:flex;flex-direction:column;gap:5px;width:100%}
+.dg-row{display:grid;grid-template-columns:18px minmax(0,7.5em) minmax(0,1fr) auto;gap:6px;align-items:center;font-size:12px;text-align:left}
+.dg-row.me .dg-nm{color:#ffd36a;font-weight:800}
+.dg-rk{font-family:var(--display);color:#aab}
+.dg-nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dg-bar{height:12px;border-radius:6px;background:rgb(255 255 255 / .07);overflow:hidden}
+.dg-bar i{display:block;height:100%;width:var(--w1);border-radius:6px;background:var(--s);animation:dgBar .9s .9s cubic-bezier(.2,.9,.3,1) both}
+@keyframes dgBar{from{width:var(--w0)}}
+.dg-pt{font-family:var(--display);font-weight:400;font-size:15px;min-width:3.6em;text-align:right}.dg-pt small{font-size:10px;margin-left:2px}
+.dg-ctl{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.dg-ctl .btn{min-height:44px}
+.dg-fin{display:flex;flex-direction:column;align-items:center;gap:4px;animation:dgIn .6s cubic-bezier(.2,1.4,.4,1) both}
+.dg-fin b{font-family:var(--display);font-weight:400;font-size:32px;color:#ffd36a}.dg-fin span{font-size:14px}
+.dg-crown{width:56px;height:auto;color:#ffc83a;filter:drop-shadow(0 0 10px #ffc83a)}
+@media (prefers-reduced-motion:reduce){.dg-lane,.dg-news,.dg-say,.dg-fin,.dg-bar i,.dg-who,.dgx-open>i{animation:none !important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -1520,6 +1560,7 @@ button.rv:active,.chc:active{transform:scale(.96)}
 @media (max-width:420px){.rvgrid{gap:6px}.rv{padding:12px 4px 8px}.rva{width:38px;height:38px;font-size:19px}}
 .chalres{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;background:radial-gradient(circle at 50% 0%,rgb(255 200 58 / .22),transparent 60%),linear-gradient(180deg,var(--panel2),var(--panel))}
 .chalres .goals{width:100%;text-align:left}
+.panel:has(> .chalbig, > .banner){overflow-x:clip}   /* 結果の大見出しは登場時に拡大するので、スマホで横にはみ出さないように */
 .chalbig{font-family:var(--display);font-size:clamp(40px,10vw,60px);line-height:1;color:var(--muted);text-shadow:0 5px 0 var(--rail);animation:bang .6s cubic-bezier(.2,.9,.3,1.5) .3s both}
 .chalres.clear .chalbig{color:var(--gold);text-shadow:0 5px 0 var(--rail),0 0 40px rgb(255 200 58 / .6)}
 .chalcard{position:relative;display:flex;align-items:center;gap:16px;border:0;border-radius:24px;padding:16px 18px;text-align:left;color:#fff;overflow:hidden;background:radial-gradient(circle at 15% 50%,rgb(255 255 255 / .2),transparent 40%),linear-gradient(120deg,#b97f0c,#e0730f 50%,#c2261b);box-shadow:0 6px 0 #5a2a06,0 20px 40px -18px #000;transition:transform .15s ease}
@@ -2513,7 +2554,7 @@ function settleOverlay(){
     <div class="stable">${rows}</div>${next}${btn}</div></div>`;
 }
 function quit(){
-  clearTimeout(introTimer);
+  clearTimeout(introTimer); clearTimeout(DG_T);
   if(G && G.online){ if(G.host){ G=null; hostBroadcast(); render(); } else leaveRoom(); return; }
   const back = G && (G.chal||G.cup||G.story||G.surv!=null) ? 'chal' : 'home';   // ボス戦はホームへ
   if(G) S.ctab = G.chal?'stage':G.cup?'cup':G.story?'story':G.surv!=null?'surv':S.ctab;   // 戻ったら遊んでいたタブを開く   // チャレンジ中はステージ一覧へ戻る
@@ -3607,6 +3648,72 @@ function tacRow(){
     return `<button class="tac${on?' on':''}" ${used?'disabled':''} onclick="useTac('${t.id}')" title="${t.d}"><i>${t.ic}</i><b>${t.n}</b><small>${on?'このターン使用中':used?'使用済み':t.d}</small></button>`; }).join('')}
     ${sc?`<span class="tac-sc">🔍 ${esc(String(G.players[sc.i].name).replace(/^CPU\s*/,''))} → ${IND[sc.c]}</span>`:''}</div>`;
 }
+/* ---- 試合ダイジェスト：終わった試合を1ターンずつ再生。NEWS・どこに誰が出したか・実況・得点レース ---- */
+let DG_T=0;
+const DG_MS=2900;
+function digestOpen(){
+  if(!G || G.phase!=='final') return;
+  clearTimeout(DG_T); G.ov='digest'; G.dg={t:0, play:true}; sfx('select'); renderOv(); digestTick(true);
+}
+function digestTick(first){
+  clearTimeout(DG_T); if(!G || G.ov!=='digest') return;
+  const d=G.dg, N=totalTurns();
+  if(!first){ sfx(d.t>=N?'fanfare':'flip'); haptic(8); }
+  if(d.t<N){ const mono=G.players.some(p=>p.used[d.t]&&p.used[d.t].k===1); if(mono) setTimeout(()=>{ if(G&&G.ov==='digest') sfx('coin'); },650); }
+  if(d.t>=N && !first && !reduced()) setTimeout(()=>{ if(G&&G.ov==='digest') confetti(); },500);
+  if(d.play && d.t<N) DG_T=setTimeout(()=>{ if(!G||G.ov!=='digest') return; d.t++; renderOv(); digestTick(); }, DG_MS);
+}
+function digestGo(dt){ if(!G||!G.dg) return; const N=totalTurns(); G.dg.t=Math.max(0,Math.min(N,G.dg.t+dt)); renderOv(); digestTick(); }
+function digestPlay(){ if(!G||!G.dg) return; const N=totalTurns(); G.dg.play=!G.dg.play; if(G.dg.play && G.dg.t>=N) G.dg.t=0; renderOv(); digestTick(true); }
+function digestClose(){ clearTimeout(DG_T); if(!G) return; G.ov=null; G.dg=null; renderOv(); }
+function digestLine(t){       // 実況：そのターンのいちばんの見どころを1〜2行で
+  const P=G.players, U=P.map((p,i)=>({p,i,u:p.used[t]})).filter(x=>x.u), out=[];
+  const sh=p=>esc(String(p.name).replace(/^CPU\s*/,''));
+  const mono=U.filter(x=>x.u.k===1).sort((a,b)=>b.u.total-a.u.total);
+  if(mono.length && mono[0].u.total>=4) out.push(`<b>${sh(mono[0].p)}</b>が「${IND[mono[0].u.ind]}」をひとりじめ！ <em class="up">${sgn(mono[0].u.total)}</em>`);
+  const cnt=[0,0,0,0,0,0]; U.forEach(x=>cnt[x.u.ind]++);
+  const crowd=cnt.indexOf(Math.max(...cnt));
+  if(cnt[crowd]>=3) out.push(`${cnt[crowd]}人が「${IND[crowd]}」に殺到… 読みが重なった`);
+  const neg=U.filter(x=>x.u.total<0).sort((a,b)=>a.u.total-b.u.total);
+  if(out.length<2 && neg.length && neg[0].u.total<=-2) out.push(`${sh(neg[0].p)}は「${IND[neg[0].u.ind]}」で痛恨の <em class="dn">${sgn(neg[0].u.total)}</em>`);
+  const lead=a=>{ const m=Math.max(...a); return a.filter(v=>v===m).length===1?a.indexOf(m):-1; };
+  const before=P.map(p=>p.hist[t]||0), after=P.map(p=>p.hist[t+1]!=null?p.hist[t+1]:p.score);
+  const lb=lead(before), la=lead(after);
+  if(t>0 && la>=0 && la!==lb) out.unshift(`<b>${sh(P[la])}</b>がトップに浮上！`);
+  if(!out.length){ const b=U.slice().sort((a,b)=>b.u.total-a.u.total)[0]; if(b) out.push(`${sh(b.p)}の「${IND[b.u.ind]}」${sgn(b.u.total)}が最高点。静かなターン`); }
+  return out.slice(0,2).join('<br>');
+}
+function digestRace(t){       // t ターン目のあとの累計。前のターンからバーが伸びる
+  const P=G.players, at=k=>P.map(p=>k<=0?0:(p.hist[k]!=null?p.hist[k]:p.score));
+  const now=at(t+1), prev=at(t), lo=Math.min(0,...now,...prev), hi=Math.max(1,...now,...prev), span=hi-lo;
+  const order=P.map((p,i)=>i).sort((a,b)=>now[b]-now[a]);
+  return `<div class="dg-race">${order.map((i,r)=>{ const p=P[i], w1=Math.max(4,(now[i]-lo)/span*100), w0=Math.max(4,(prev[i]-lo)/span*100), dlt=now[i]-prev[i];
+    return `<div class="dg-row${i===myIndex()?' me':''}" style="--s:var(--s${p.seat%6})"><span class="dg-rk">${r+1}</span><span class="dg-nm">${esc(avOf(p))} ${esc(p.name)}</span>
+      <span class="dg-bar"><i style="--w0:${w0}%;--w1:${w1}%"></i></span><b class="dg-pt">${now[i]}${dlt?`<small class="${dlt>0?'up':'dn'}">${sgn(dlt)}</small>`:''}</b></div>`; }).join('')}</div>`;
+}
+function digestOverlay(){
+  const d=G.dg, N=totalTurns(), LG=logDeck(), P=G.players;
+  const dots=`<div class="dg-dots">${Array.from({length:N+1},(_,k)=>`<i class="${k<d.t?'done':k===d.t?'on':''}"></i>`).join('')}</div>`;
+  const ctl=`<div class="dg-ctl"><button class="btn" onclick="digestGo(-1)" ${d.t<=0?'disabled':''} aria-label="前のターン">◀</button><button class="btn cyan" onclick="digestPlay()">${d.play&&d.t<N?'⏸ 一時停止':'▶ 再生'}</button><button class="btn" onclick="digestGo(1)" ${d.t>=N?'disabled':''} aria-label="次のターン">▶</button><button class="btn" onclick="digestClose()">閉じる</button></div>`;
+  if(d.t>=N){
+    const rk=ranking(P,G.cfg), w=rk.filter(x=>x.rank===1);
+    return `<div class="overlay dgx"><div class="box dg-box"><span class="dg-tag">DIGEST · FINAL</span>${dots}
+      <div class="dg-fin">${CROWN('dg-crown')}<b>${w.map(x=>esc(x.p.name)).join('・')}</b><span>${w[0].p.score}pt で優勝！</span></div>
+      ${digestRace(N-1)}${ctl}</div></div>`;
+  }
+  const n=LG[d.t]!=null?LG[d.t]:G.deck[d.t%TURNS];
+  const lanes=IND.map((_,c)=>{ const who=P.filter(p=>p.used[d.t]&&p.used[d.t].ind===c), k=who.length, v=k?who[0].used[d.t]:null;
+    const vals=who.map(p=>sgn(p.used[d.t].total)).filter((x,j,a)=>a.indexOf(x)===j).join('/');
+    return `<div class="dg-lane${k===1?' mono':k>1?' hit':''}${!k?' empty':''}" style="--dl:${300+c*70}ms"><span class="chip" style="--c:var(--i${c})"><i></i>${IND[c]}</span>
+      <span class="dg-who">${who.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})" title="${esc(p.name)}">${esc(avOf(p))}</span>`).join('')}</span>
+      ${v?`<b class="dg-v ${v.total>0?'up':v.total<0?'dn':''}">${vals}</b>${k===1?'<span class="dg-badge">独占</span>':`<span class="dg-badge hit">${k}人</span>`}`:''}</div>`; }).join('');
+  const yr=G.cfg.hist&&typeof yearOf==='function'?`<span class="dg-yr">${yearOf(n)}</span>`:'';
+  return `<div class="overlay dgx"><div class="box dg-box"><span class="dg-tag">DIGEST · TURN ${d.t+1}/${N}</span>${dots}
+    <div class="dg-news">${yr}<b>${esc(nm(n))}</b></div>
+    <div class="dg-lanes">${lanes}</div>
+    <p class="dg-say">${digestLine(d.t)}</p>
+    ${digestRace(d.t)}${ctl}</div></div>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -3823,12 +3930,13 @@ function newsSfx(){
 }
 function renderOv(){
   const ov=$('#ov'); if(!G || !G.ov){ ov.innerHTML=''; ov.dataset.k=''; return; }
-  const ik = G.ov==='intro' ? 'i'+(G.round||0)+':'+G.turn : '';   // NEWS演出は途中で描き直すと最初から再生されるので、同じターンなら触らない
+  const ik = G.ov==='intro' ? 'i'+(G.round||0)+':'+G.turn : G.ov==='digest'&&G.dg ? 'd'+G.dg.t+':'+G.dg.play : '';   // NEWS演出は途中で描き直すと最初から再生されるので、同じターンなら触らない
   if(ik && ov.dataset.k===ik && ov.firstElementChild) return;
   ov.dataset.k=ik;
   if(G.ov==='vs'){ ov.innerHTML=vsOverlay(); return; }
   if(G.ov==='flip'){ ov.innerHTML=flipOverlay(); return; }
   if(G.ov==='ceremony'){ ov.innerHTML=ceremonyOverlay(); return; }
+  if(G.ov==='digest'){ ov.innerHTML=digestOverlay(); return; }
   if(G.ov==='settle'){ ov.innerHTML=settleOverlay(); return; }
   if(G.ov==='count'){ ov.innerHTML=`<div class="overlay"><div class="box"><div class="count${G.countText.length>1?' open':''}">${G.countText}</div></div></div>`; return; }
   if(G.ov==='intro'){ const n=G.deck[G.turn];
@@ -4053,6 +4161,7 @@ function finalView(){
   return `<div class="two"><div class="col">${duelPanel()}${practicePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${bossPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${leaguePanel()}${seasonWin()}${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
+      <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
     ${teamPanel()}
     ${playAnalysis()}
