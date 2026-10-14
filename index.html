@@ -1589,6 +1589,27 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .ipf-st span{display:flex;flex-direction:column;font-size:11px;color:var(--muted)}.ipf-st b{font-family:var(--display);font-weight:400;font-size:22px;color:var(--ink)}
 .ipf-link{margin-left:auto;border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
 .isr[role=button]{cursor:pointer;border-radius:10px}.isr[role=button]:active{background:rgb(255 255 255 / .05)}
+.gzp{position:relative;padding:16px 16px 14px;border-radius:6px;color:var(--paper-ink);background:repeating-linear-gradient(0deg,rgb(36 24 10 / .035) 0 1px,transparent 1px 4px),linear-gradient(170deg,var(--paper),var(--paper2));box-shadow:0 14px 30px -14px #000,0 0 0 1px rgb(36 24 10 / .2);animation:gzpIn .7s cubic-bezier(.2,1.2,.4,1) .3s both}
+@keyframes gzpIn{from{opacity:0;transform:translateY(-16px) scale(.97)}}
+.gzp-mast{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"n n" "d no";align-items:end;gap:2px 6px;padding-right:40px;padding-bottom:6px;border-bottom:3px double var(--paper-ink)}
+.gzp-date,.gzp-no{font-size:10.5px;font-weight:800}.gzp-date{grid-area:d}.gzp-no{grid-area:no;text-align:right}
+.gzp-name{grid-area:n;text-align:center;font-family:var(--serif);font-size:clamp(18px,5vw,24px);letter-spacing:.06em;white-space:nowrap}
+.gzp-stamp{position:absolute;top:10px;right:12px;font-family:var(--serif);font-size:15px;color:#fff;background:var(--paper-red);padding:4px 7px;border-radius:4px;writing-mode:vertical-rl;letter-spacing:.1em;box-shadow:0 2px 0 rgb(0 0 0 / .25);rotate:6deg}
+.gzp-head{font-family:var(--serif);font-weight:800;font-size:clamp(24px,7vw,36px);line-height:1.2;margin:12px 0 4px;letter-spacing:.01em}
+.gzp-sub{margin:0 0 8px;font-size:12.5px;font-weight:800;color:var(--paper-red)}
+.gzp-lead{margin:0;padding:8px 0;border-top:1px solid rgb(36 24 10 / .35);border-bottom:1px solid rgb(36 24 10 / .35);font-family:var(--serif);font-size:14px;line-height:1.75;text-indent:1em}
+.gzp-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;margin-top:8px}
+.gzp-col{padding:6px 10px 6px 0}.gzp-col+.gzp-col{padding-left:10px;border-left:1px solid rgb(36 24 10 / .25)}
+.gzp-col b{display:inline-block;font-size:11px;font-weight:900;color:#fff;background:var(--paper-ink);padding:1px 8px;border-radius:3px;margin-bottom:4px}
+.gzp-col p{margin:0;font-family:var(--serif);font-size:13px;line-height:1.65}
+.gzp-stocks{margin-top:10px;padding-top:8px;border-top:3px double var(--paper-ink);display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:2px 14px;font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+.gzp-lab{grid-column:1/-1;font-family:var(--body);font-size:10.5px;font-weight:900;letter-spacing:.06em;margin-bottom:2px}
+.gzp-sk{display:grid;grid-template-columns:minmax(0,1fr) auto 3.2em;gap:6px;align-items:baseline;border-bottom:1px dotted rgb(36 24 10 / .3)}
+.gzp-sk span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--body);font-weight:800}.gzp-sk.me span{color:var(--paper-red)}
+.gzp-sk b{font-weight:600}.gzp-sk em{font-style:normal;text-align:right}
+.gzp-up{color:#0d7a40}.gzp-dn{color:var(--paper-red)}
+@media (max-width:560px){.gzp-cols{grid-template-columns:1fr}.gzp-col{padding-right:0}.gzp-col+.gzp-col{padding-left:0;border-left:0;border-top:1px solid rgb(36 24 10 / .25);padding-top:8px}}
+@media (prefers-reduced-motion:reduce){.gzp{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -1643,7 +1664,7 @@ button.rv:active,.chc:active{transform:scale(.96)}
 @media (max-width:420px){.rvgrid{gap:6px}.rv{padding:12px 4px 8px}.rva{width:38px;height:38px;font-size:19px}}
 .chalres{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;background:radial-gradient(circle at 50% 0%,rgb(255 200 58 / .22),transparent 60%),linear-gradient(180deg,var(--panel2),var(--panel))}
 .chalres .goals{width:100%;text-align:left}
-.panel:has(> .chalbig, > .banner){overflow-x:clip}   /* 結果の大見出しは登場時に拡大するので、スマホで横にはみ出さないように */
+.panel:has(.chalbig, .banner, .lvup, .stitle, .hpass, .sp-in, .qz-res){overflow-x:clip}   /* 結果の大見出しは登場時に拡大するので、スマホで横にはみ出さないように */
 .chalbig{font-family:var(--display);font-size:clamp(40px,10vw,60px);line-height:1;color:var(--muted);text-shadow:0 5px 0 var(--rail);animation:bang .6s cubic-bezier(.2,.9,.3,1.5) .3s both}
 .chalres.clear .chalbig{color:var(--gold);text-shadow:0 5px 0 var(--rail),0 0 40px rgb(255 200 58 / .6)}
 .chalcard{position:relative;display:flex;align-items:center;gap:16px;border:0;border-radius:24px;padding:16px 18px;text-align:left;color:#fff;overflow:hidden;background:radial-gradient(circle at 15% 50%,rgb(255 255 255 / .2),transparent 40%),linear-gradient(120deg,#b97f0c,#e0730f 50%,#c2261b);box-shadow:0 6px 0 #5a2a06,0 20px 40px -18px #000;transition:transform .15s ease}
@@ -3938,6 +3959,43 @@ function indSheetBody(c){
     <button class="btn gold big" onclick="closeSheet()">とじる</button>`;
 }
 function dexHas(n){ const D=S.prof.dex||{n:[]}; return (D.n||[]).includes(n); }
+/* ---- 試合の号外：終わった試合を「AZAKEI経済新聞」の一面にする。見出し・リード・3つの記事・株価欄は試合の中身から自動で書く ---- */
+function gogaiPaper(){
+  if(!G || G.phase!=='final') return '';
+  const src=digestFromG(), P=src.pl, N=src.N, me=src.me;
+  if(!P.length || !N) return '';
+  const order=P.map((p,i)=>i).sort((a,b)=>P[b].sc-P[a].sc), tie=src.win.length>1, w=src.win[0]!=null?src.win[0]:order[0];
+  const second=order.find(i=>!src.win.includes(i));
+  const sh=i=>String(P[i].n).replace(/^CPU\s*/,''), who=i=>i===me?'あなた':sh(i)+'氏';
+  const all=[]; P.forEach((p,i)=>p.u.forEach((u,t)=>all.push({i,t,ind:u[0],v:u[1],k:u[2]})));
+  const best=i=>all.filter(x=>x.i===i).sort((a,b)=>b.v-a.v)[0];
+  const wb=best(w), margin=second!=null?P[w].sc-P[second].sc:0;
+  let def=0; for(let t=0;t<=N;t++){ const at=i=>P[i].h[t]!=null?P[i].h[t]:P[i].sc; def=Math.max(def,Math.max(...P.map((_,i)=>at(i)))-at(w)); }
+  const monoW=all.filter(x=>x.i===w&&x.k===1).length;
+  const verb=tie?'首位を分け合う':def>=4?'大逆転で頂点に':margin>=6?'独走の圧勝':margin<=1?'大接戦を制す':'首位の座をつかむ';
+  const head=tie?`${src.win.map(i=>i===me?'あなた':sh(i)).join('・')}、${P[w].sc}点で${verb}`:`${who(w)}、${wb?IND[wb.ind]:''}で${verb}`;
+  const d=new Date(), date=`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+  const lead=`AZAKEI市場で${N}ターンの取引が行われ、${tie?src.win.map(who).join('と')+'が'+P[w].sc+'点で首位に並んだ':who(w)+'が'+P[w].sc+'点で首位に立った'}。`+
+    (wb?`決め手はT${wb.t+1}「${src.news[wb.t]}」での${IND[wb.ind]}${wb.k===1?'独占':''}（${sgn(wb.v)}）。`:'')+(def>=4&&!tie?`一時は${def}点差をつけられながらの逆転劇だった。`:monoW>=2?`この試合で${monoW}回の独占を決めた。`:'');
+  let hit=null; for(let t=0;t<N;t++){ const c=[0,0,0,0,0,0]; P.forEach(p=>{ if(p.u[t]) c[p.u[t][0]]++; }); const k=Math.max(...c); if(k>=2 && (!hit||k>hit.k)) hit={t,k,c:c.indexOf(k)}; }
+  const sum=[0,0,0,0,0,0]; all.forEach(x=>sum[x.ind]+=x.v); const star=sum.indexOf(Math.max(...sum));
+  const cols=[
+    ['波乱', hit?`T${hit.t+1}「${src.news[hit.t]}」では${hit.k}人が${IND[hit.c]}に殺到。読みが重なり、うま味が消えた。`:'だれもぶつからない、静かな読み合いの市場だった。'],
+    ['主役の産業', `${IND[star]}がこの試合で合計${sgn(sum[star])}点を生み、いちばん熱い産業になった。`]
+  ];
+  if(me>=0){ const mb=best(me), rk=order.indexOf(me)+1;
+    cols.push(['あなたの一手', mb?`T${mb.t+1}の${IND[mb.ind]}${mb.k===1?'独占':''}（${sgn(mb.v)}）が光った。${me===w?'見事、首位でフィニッシュ。':`最終${rk}位、次の巻き返しに期待。`}`:'']); }
+  const stocks=order.map(i=>{ const dl=P[i].sc-(P[i].h[Math.max(0,N-1)]!=null?P[i].h[Math.max(0,N-1)]:0);
+    return `<div class="gzp-sk${i===me?' me':''}"><span>${esc(sh(i))}</span><b>${P[i].sc}</b><em class="${dl>0?'gzp-up':dl<0?'gzp-dn':''}">${dl>0?'▲':dl<0?'▼':'—'}${dl?Math.abs(dl):''}</em></div>`; }).join('');
+  return `<section class="gzp" aria-label="試合の号外">
+    <div class="gzp-mast"><span class="gzp-date">${date}</span><b class="gzp-name">AZAKEI経済新聞</b><span class="gzp-no">第${(S.prof.st&&S.prof.st.games)||1}号</span><span class="gzp-stamp">号外</span></div>
+    <h3 class="gzp-head">${esc(head)}</h3>
+    <p class="gzp-sub">最終${P[w].sc}点${second!=null&&!tie?`・2位に${margin}点差`:''}・全${N}ターン・${esc(modeName(G.cfg))}</p>
+    <p class="gzp-lead">${esc(lead)}</p>
+    <div class="gzp-cols">${cols.filter(c=>c[1]).map(c=>`<div class="gzp-col"><b>${c[0]}</b><p>${esc(c[1])}</p></div>`).join('')}</div>
+    <div class="gzp-stocks"><span class="gzp-lab">本日の株価欄（最終POINT・最終ターンの値動き）</span>${stocks}</div>
+  </section>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4387,6 +4445,7 @@ function finalView(){
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
+    ${gogaiPaper()}
     ${teamPanel()}
     ${playAnalysis()}
     ${chalPanel()}
