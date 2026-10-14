@@ -1452,6 +1452,7 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .xf-code{width:100%;min-height:84px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--rail);color:var(--ink);font:12px/1.4 ui-monospace,monospace;word-break:break-all;resize:vertical}
 .xf-pre{padding:8px 10px;border-radius:10px;background:rgb(255 200 58 / .14);color:var(--ink)!important}
 .xf-go{font-size:22px;color:var(--muted)}
+.mode.ex b{background:linear-gradient(90deg,#ffc83a,#ff5c9a,#a77bff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -1739,6 +1740,10 @@ const NEWS = ['エネルギー価格急騰','資産バブル','インフラ投�
 // 行 = NEWS、列 = 産業（エネルギー, 金融, 製造, 小売, 運輸, メディア）
 const B2 = [[3,-1,-2,-1,-3,0],[0,3,2,1,0,1],[2,1,3,0,2,-1],[0,2,1,3,1,2],[1,0,-1,2,3,1],[-1,1,0,1,-1,3]];
 const T2 = [[3,3,-2,-1,-3,0],[0,3,1,1,0,3],[3,0,2,0,3,-1],[0,1,3,3,2,1],[1,0,-1,3,3,1],[-1,0,3,1,0,3]];
+// クラシックEXで足すNEWS。もとの6種と同じく、どの産業も +3 がちょうど2回ずつ
+const EXT_NEWS = ['資源株ブーム','円安ラッシュ','推し活ブーム','脱炭素投資','フィンテック革命','ネット大セール'];
+const EXT_T = [[3,3,-1,-1,-2,0],[-2,1,3,0,3,0],[0,0,1,3,1,3],[3,1,3,-1,0,-1],[-1,3,0,1,-1,3],[0,-1,1,3,3,0]];
+const ALL_NEWS = NEWS.concat(EXT_NEWS);
 // 歴史モード：実際の出来事。r = 各産業の基本POINT（エネルギー, 金融, 製造, 小売, 運輸, メディア）
 const HIST = [
   {y:1964, n:'東京オリンピック', d:'東海道新幹線や首都高速が開通し、建設と輸送が活気づく。中継を見るためテレビも売れた。', r:[2,1,3,1,3,1]},
@@ -1818,10 +1823,11 @@ function saveCfg(){ save(KEY,CFG); }
 function cfgFor(mode,era){
   if(mode==='future') return {...CFG, table:HIST.map(h=>h.r), names:HIST.map(h=>h.n), hist:true, fut:true, pool:ERAS.future.ids.slice(), era:'future'};   // 未来編は歴史モードのしくみで、未来の出来事を使う
   if(mode==='history'){ const e=ERAS[era]||ERAS.all; return {...CFG, table:HIST.map(h=>h.r), names:HIST.map(h=>h.n), hist:true, pool:e.ids, era}; }
+  if(mode==='ex') return {...CFG, table:CFG.table.concat(EXT_T), names:ALL_NEWS, hist:false, ex:true};
   return {...CFG, names:NEWS, hist:false};
 }
 const yearOf = i => HIST[i].y;
-const modeName = c => c&&c.fut ? '未来編' : c&&c.hist ? '歴史モード' : 'クラシック';
+const modeName = c => c&&c.fut ? '未来編' : c&&c.hist ? '歴史モード' : c&&c.ex ? 'クラシックEX' : 'クラシック';
 
 /* ================= engine（対戦と検証で共通） ================= */
 function gain(cfg,b,k){
@@ -1845,6 +1851,7 @@ function unseen(cfg,deck,t){
   return deck.slice(t+1);
 }
 function buildDeck(cfg,rnd){
+  if(cfg.ex) return shuffle([...Array(cfg.table.length).keys()],rnd).slice(0,6);   // EX：12種から毎回ちがう6種
   if(cfg.hist) return shuffle(cfg.pool.slice(),rnd).slice(0,TURNS).sort((a,b)=>yearOf(a)-yearOf(b));
   return shuffle([0,1,2,3,4,5],rnd);
 }
@@ -2175,7 +2182,7 @@ function vsOverlay(){
   const cu = G.cup && CUPS.find(c=>c.id===G.cup.id), fin = cu && G.cup.stage===cu.m.length-1;
   const stv = G.story && STORIES.find(x=>x.k===G.story);
   const bsv = G.boss && BOSSES.find(b=>b.id===G.boss);
-  const mode = G.duel ? (G.duel.target!=null ? `挑戦状 · ${esc(G.duel.from)}さんの ${G.duel.target}点を超えろ！` : '挑戦状 · この点数で友だちに勝負！') : bsv ? `WEEKLY BOSS · ${bsv.ic} ${bsv.n}「${bsv.ab}」` : G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : 'CLASSIC MATCH';
+  const mode = G.duel ? (G.duel.target!=null ? `挑戦状 · ${esc(G.duel.from)}さんの ${G.duel.target}点を超えろ！` : '挑戦状 · この点数で友だちに勝負！') : bsv ? `WEEKLY BOSS · ${bsv.ic} ${bsv.n}「${bsv.ab}」` : G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : C.ex ? 'CLASSIC EX MATCH · 12種から6種' : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava${i===me?frc():''}" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
       ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
@@ -3052,6 +3059,7 @@ const MODES=()=>[   // 関数にして、表示するときにキャラなどを
     ['?','経済クイズ','1分','5問のミニゲーム。コインがもらえる',"closeSheet();startQuiz()"]]},
   {g:'じっくり・ちがうルール', items:[
     ['∞','ロング版','20分','3期×6ターン。市況・極秘契約・ブランド',"closeSheet();pickLong()"],
+    ['🃏','クラシックEX','5分','NEWSが12種に。毎回ちがう6種で山札ができる',"closeSheet();pickMode('ex')"],
     ['📜','歴史モード','5分','本当の出来事が年代順に起きる',"closeSheet();pickMode('history')"],
     ['✦','未来編','5分','2027→2060の未来シナリオ',"closeSheet();pickFuture()"]]},
   {g:'やりこみ', items:[
@@ -3668,6 +3676,9 @@ const NEWS_FX={
   n0:{e:['🔥','🛢️','⚡'],m:'rise',t:'#ff5a1f',s:'fire'},   n1:{e:['🫧','💰','📈'],m:'rise',t:'#ffc83a',s:'bubble'},
   n2:{e:['🏗️','🚧','🔩'],m:'fall',t:'#5f86ff',s:'build'},  n3:{e:['🛍️','💳','🎁'],m:'pop',t:'#ff5c9a',s:'coin'},
   n4:{e:['✈️','🧳','🏝️'],m:'fly',t:'#20c6d1',s:'jet'},    n5:{e:['0','1','📱','💾'],m:'fall',t:'#a77bff',s:'digi',digit:true},
+  n6:{e:['⛏️','💹','🛢️'],m:'rise',t:'#ffc83a',s:'coin'},   n7:{e:['💴','✈️','🏭'],m:'fly',t:'#3fe08f',s:'jet'},
+  n8:{e:['💖','🎤','🛍️'],m:'pop',t:'#ff5c9a',s:'coin'},    n9:{e:['🌱','☀️','🔋'],m:'rise',t:'#3fe08f',s:'bubble'},
+  n10:{e:['📱','💳','🏦'],m:'pop',t:'#7af0ff',s:'digi'},  n11:{e:['📦','🛒','🚚'],m:'fly',t:'#ff8a3d',s:'build'},
   h0:{e:['🏅','🚄','📺'],m:'rise',t:'#ffc83a',s:'coin'},    h1:{e:['🛢️','⛽','🧻'],m:'fall',t:'#ff5a1f',s:'crash'},
   h2:{e:['💴','💵','✈️'],m:'fly',t:'#3fe08f',s:'jet'},     h3:{e:['🫧','🍾','💰'],m:'rise',t:'#ffc83a',s:'bubble'},
   h4:{e:['💥','📉','🫧'],m:'fall',t:'#ff3b3b',s:'crash',quake:true}, h5:{e:['💻','🌐','📧'],m:'pop',t:'#5f86ff',s:'digi'},
@@ -4071,7 +4082,8 @@ function playView(){
       <div class="modes" role="group" aria-label="ゲームモード">
         <button class="mode${S.mode==='classic'?' on':''}" onclick="S.mode='classic';sfx('click');render()"><b>クラシック</b><span class="note">6つのNEWSがランダムな順番で</span></button>
         <button class="mode hist${S.mode==='history'?' on':''}" onclick="S.mode='history';sfx('click');render()"><b style="font-family:var(--serif)">歴史モード</b><span class="note">実際の出来事が年代順に起きる</span></button>
-        <button class="mode fut${S.mode==='future'?' on':''}" onclick="S.mode='future';sfx('click');render()"><span class="newtag">NEW</span><b class="futb">未来編</b><span class="note">2027→2060 の未来シナリオ</span></button>
+        <button class="mode fut${S.mode==='future'?' on':''}" onclick="S.mode='future';sfx('click');render()"><b class="futb">未来編</b><span class="note">2027→2060 の未来シナリオ</span></button>
+        <button class="mode ex${S.mode==='ex'?' on':''}" onclick="S.mode='ex';sfx('click');render()"><span class="newtag">NEW</span><b>クラシックEX</b><span class="note">12種のNEWSから毎回ちがう6種</span></button>
       </div>${S.len==='long'&&S.mode==='history'?'':eraSel}
       <div class="lens" role="group" aria-label="ゲームの長さ">
         <button class="len${S.len!=='long'?' on':''}" onclick="setLen('short')"><span class="lt">SHORT</span><b>ショート</b><span class="note">${CFG.turns||4}ターン · 5分 · 文化祭向け</span></button>
@@ -4644,12 +4656,12 @@ async function saveCardImg(){
   catch(e){ if(e && e.code==='declined') return; toast('保存できませんでした（'+(e&&e.code||'unknown')+'）'); }
 }
 /* ---- market dex: 出会ったNEWS・歴史の出来事・市況カードを集める図鑑（全24種） ---- */
-const DEX_TOTAL = () => NEWS.length + HIST.length + Object.keys(MARKETS).length;
+const DEX_TOTAL = () => ALL_NEWS.length + HIST.length + Object.keys(MARKETS).length;
 function dexRecord(){   // recordResult から。新しく見つけたものを返す
   const P=S.prof; P.dex=P.dex||{n:[],h:[],m:[]}; const D=P.dex, found=[];
   const add=(arr,id,k,n)=>{ if(!arr.includes(id)){ arr.push(id); found.push({k,n}); } };
   const seen=logDeck();
-  seen.forEach(id=>{ if(G.cfg.hist) add(D.h,id,'h',`${HIST[id].y} ${HIST[id].n}`); else add(D.n,id,'n',NEWS[id]); });
+  seen.forEach(id=>{ if(G.cfg.hist) add(D.h,id,'h',`${HIST[id].y} ${HIST[id].n}`); else add(D.n,id,'n',ALL_NEWS[id]); });
   (G.mkts||[]).slice(0,(G.round||0)+1).forEach(id=>add(D.m,id,'m',MARKETS[id].n));
   return found;
 }
@@ -4657,7 +4669,7 @@ const dexCount = () => { const D=S.prof.dex||{n:[],h:[],m:[]}; return D.n.length
 function dexPanel(){
   const D=S.prof.dex||{n:[],h:[],m:[]}, total=DEX_TOTAL(), got=dexCount();
   const sec=(t,items)=>`<div class="dexsec"><span class="label">${t}</span><div class="dexgrid">${items}</div></div>`;
-  const news=NEWS.map((n,i)=>{ const ok=D.n.includes(i); return `<button class="dx news${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:n${i}')"`:'disabled'}><span class="dxk">NEWS</span><b>${ok?n:'？？？'}</b></button>`; }).join('');
+  const news=ALL_NEWS.map((n,i)=>{ const ok=D.n.includes(i); return `<button class="dx news${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:n${i}')"`:'disabled'}><span class="dxk">NEWS</span><b>${ok?n:'？？？'}</b></button>`; }).join('');
   const histBtn=(h,i)=>{ const ok=D.h.includes(i); return `<button class="dx ${h.f?"fut":"hist"}${ok?'':' lock'}" ${ok?`onclick="openSheet('dex:h${i}')"`:'disabled'}><span class="dxk">${ok?h.y:(h.f?'20XX':'19XX')}</span><b>${ok?h.n:'？？？'}</b></button>`; }; const hist=HIST.map((h,i)=>i).filter(i=>!HIST[i].f).sort((a,b)=>HIST[a].y-HIST[b].y).map(i=>histBtn(HIST[i],i)).join(''), fut=HIST.map((h,i)=>h.f?histBtn(h,i):'').join('');
   const mk=Object.entries(MARKETS).map(([k,m])=>{ const ok=D.m.includes(k); return `<button class="dx mk${ok?'':' lock'}" style="--m1:${m.c1};--m2:${m.c2}" ${ok?`onclick="openSheet('dex:m${k}')"`:'disabled'}><span class="dxk">${ok?m.ic:'?'}</span><b>${ok?m.n:'？？？'}</b></button>`; }).join('');
   return `<section class="panel"><div class="row spread"><h3>マーケット図鑑</h3><span class="note">${got} / ${total} 発見</span></div>
@@ -4670,7 +4682,7 @@ function dexSheetBody(key){
   const payRow=r=>{ const mx=Math.max(...r); return `<div class="dexpay">${IND.map((d,i)=>`<div class="${r[i]===mx?'top':''}"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span>${d}</span><b class="${cls(r[i])}">${sgn(r[i])}</b></div>`).join('')}</div>`; };
   if(k==='m'){ const m=MARKETS[id]; return `<span class="label">マーケット図鑑 · 市況カード</span>${marketCard(id,'big')}<button class="btn gold big" onclick="closeSheet()">とじる</button>`; }
   if(k==='h'){ const h=HIST[+id]; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${+id+7}</span></div><div class="yr">${h.y}</div><h3>${h.n}</h3><p>${gloss(h.d)}</p>${payRow(h.r)}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`; }
-  const i=+id; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${i+1}</span></div><h3>${NEWS[i]}！</h3><p>クラシックの経済NEWS。いちばん高いのは${(()=>{ const r=T2[i], mx=Math.max(...r); return r.map((v,c)=>v===mx?IND[c]:'').filter(Boolean).join('・'); })()}。</p>${payRow(CFG.table[i]||T2[i])}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`;
+  const i=+id; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${i+1}</span></div><h3>${ALL_NEWS[i]}！</h3><p>${i>=NEWS.length?'クラシックEXで登場する経済NEWS':'クラシックの経済NEWS'}。いちばん高いのは${(()=>{ const r=T2.concat(EXT_T)[i], mx=Math.max(...r); return r.map((v,c)=>v===mx?IND[c]:'').filter(Boolean).join('・'); })()}。</p>${payRow(i<NEWS.length?(CFG.table[i]||T2[i]):EXT_T[i-NEWS.length])}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`;
 }
 /* ---- login bonus: 1日1回、7日周期でXP。7日目は特大 ---- */
 const LOGIN_XP=[20,20,30,30,40,40,120];
