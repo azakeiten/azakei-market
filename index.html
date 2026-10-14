@@ -1459,6 +1459,13 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .nm-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
 .nm-row .inp{padding:10px 12px;min-height:44px;border:1px solid var(--line);border-radius:12px;background:var(--rail);color:var(--ink);font:inherit;font-size:16px;width:100%}
 .nm-tx .linkbtn{align-self:flex-end;font-size:12px}
+.tacrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0 0 10px}
+.tacrow .label{grid-column:1/-1;margin:0}
+.tac{display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center;border:0;cursor:pointer;color:var(--ink);font:inherit;padding:8px 4px;border-radius:14px;background:linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line),0 3px 0 var(--rail)}
+.tac i{font-style:normal;font-size:20px}.tac b{font-size:12px}.tac small{font-size:9.5px;line-height:1.3;color:var(--muted)}
+.tac.on{box-shadow:inset 0 0 0 2px var(--gold),0 0 16px -4px var(--gold)}.tac.on small{color:var(--gold)}
+.tac:disabled{opacity:.4;cursor:default}
+.tac-sc{grid-column:1/-1;font-weight:800;font-size:12px;padding:6px 10px;border-radius:10px;background:rgb(79 227 255 / .14);color:#7af0ff}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2090,7 +2097,8 @@ function start(data){
   if(S.evt===undefined) S.evt=!!load('azakei-evt');
   if(S.big===undefined) S.big=!!load('azakei-big'); document.documentElement.classList.toggle('bigtext',!!S.big);
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
-  if(S.league===undefined) S.league=!!load('azakei-league-on'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
+  if(S.league===undefined) S.league=!!load('azakei-league-on');
+  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
@@ -2151,7 +2159,8 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   G.players.forEach(p=>p.roundStart=0);
   if(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
   G.league = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.league) ? leagueJoin(G.players.map(p=>p.name)) : null;   // リーグ戦の何試合目か
-  G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du; if(bs) G.players[1].boss=true;
+  G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
+  G.tac = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.tacOn && G.players.filter(isHuman).length===1) ? {used:{}, now:null} : null;   // 作戦カード（1人プレイのふだんの対戦だけ） if(bs) G.players[1].boss=true;
   G.teams = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
   if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); G.players.forEach(p=>p.brand=null); dealContracts(); }
   G.me = online ? G.players.findIndex(p=>p.peer===NET.myPeer) : -1;
@@ -2167,6 +2176,7 @@ function beginTurn(){
   G.divs=[];
   if(C.fore==='dividend' && G.turn>0) G.players.forEach(p=>{ const d=divOf(C,C.table[news][p.last]); if(d){ p.score+=d; G.divs.push({name:p.name,ind:p.last,d}); } });
   G.players.forEach(p=>{ p.pick=null; p.fut=false; p.shown=p.score; });
+  if(G.tac) G.tac.now=null;
   G.players.forEach(p=>{ if(!isHuman(p)) p.pick=cpuPick(p,G.players,G.deck,G.turn,C,G.rnd||Math.random); });
   G.phase='choose'; G.active=-1; G.sel=null;
   clearTimeout(introTimer);
@@ -2269,7 +2279,7 @@ function resolveTurn(){
   const C=G.cfg, cnt=[0,0,0,0,0,0];
   G.players.forEach(p=>cnt[p.pick]++);
   G.last=G.players.map(p=>{
-    const base=baseFor(C,p,G.deck,G.turn,p.pick), total=bossAdj(p, base, cnt[p.pick], gain(C,base,cnt[p.pick]));
+    const base=baseFor(C,p,G.deck,G.turn,p.pick), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], gain(C,base,cnt[p.pick])));
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++;
     p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick]});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
@@ -3244,7 +3254,7 @@ function glossPanel(){
 const BOARD_MAX=20;
 function boardLoad(){ const b=load('azakei-board'); return Array.isArray(b)?b:[]; }
 function boardRecord(){
-  if(!G || G.online || isLong() || G.boardDone) return; G.boardDone=true;
+  if(!G || G.online || isLong() || G.boardDone || G.tac) return; G.boardDone=true;
   const b=boardLoad(), now=Date.now(), mode=G.cfg.fut?'未来編':G.cfg.hist?'歴史':'クラシック', added=[];
   G.players.forEach((p,i)=>{ if(!isHuman(p)) return; const e={n:String(p.name).slice(0,12), s:p.score, u:p.uniq, m:mode, t:now, k:now+'-'+i}; b.push(e); added.push(e.k); });
   b.sort((a,c)=>c.s-a.s || c.u-a.u || a.t-c.t); const top=b.slice(0,BOARD_MAX); save('azakei-board', top);
@@ -3566,6 +3576,36 @@ function nameSave(){
   const v=(document.getElementById('nmIn')||{}).value; const n=String(v||'').trim().slice(0,12);
   if(!n){ toast('名前を入れてね'); return; }
   setMyName(n); S.prof.nameAsked=1; saveProfile(); sfx('coin'); toast(`よろしく、${n}さん！`); render();
+}
+/* ---- 作戦カード：1人でCPUと遊ぶときの特別な手。偵察・保険・独占ブーストを1回ずつ ---- */
+const TACTICS=[
+  {id:'scout', ic:'🔍', n:'偵察', d:'CPUの1人が出すカードがわかる'},
+  {id:'ins',   ic:'🛡️', n:'保険', d:'このターン、マイナス点なら0に'},
+  {id:'boost', ic:'⚡', n:'独占ブースト', d:'このターン、独占したら さらに+2'}
+];
+function setTac(on){ S.tacOn=!!on; save('azakei-tac',S.tacOn); sfx('click'); render(); }
+function tacAdj(p, k, t){
+  if(!G || !G.tac || !G.tac.now || !isHuman(p)) return t;
+  if(G.tac.now==='ins' && t<0) return 0;
+  if(G.tac.now==='boost' && k===1) return t+2;
+  return t;
+}
+function useTac(id){
+  if(!G || !G.tac || G.tac.used[id] || G.phase!=='choose') return;
+  if(id!=='scout' && G.tac.now){ toast('このターンはもう作戦カードを使っています'); return; }
+  G.tac.used[id]=G.turn+1; sfx('future'); haptic(20);
+  if(id==='scout'){
+    const cs=G.players.map((p,i)=>({p,i})).filter(x=>!isHuman(x.p) && x.p.pick!=null); const x=cs[Math.random()*cs.length|0];
+    if(x){ const nmx=String(x.p.name).replace(/^CPU\s*/,''); G.tac.scout={i:x.i, c:x.p.pick, turn:G.turn}; toast(`🔍 偵察成功！ ${nmx}は「${IND[x.p.pick]}」を出すつもりだ`); setTimeout(()=>say(x.i,`${IND[x.p.pick]}を出すつもり…`),200); }
+  } else { G.tac.now=id; toast(id==='ins'?'🛡️ 保険をかけた！ このターンはマイナスにならない':'⚡ 独占ブースト！ 独占できたら+2'); }
+  render();
+}
+function tacRow(){
+  if(!G || !G.tac || G.phase!=='choose') return '';
+  const sc=G.tac.scout&&G.tac.scout.turn===G.turn ? G.tac.scout : null;
+  return `<div class="tacrow"><span class="label">作戦カード</span>${TACTICS.map(t=>{ const used=G.tac.used[t.id], on=G.tac.now===t.id || (t.id==='scout'&&sc);
+    return `<button class="tac${on?' on':''}" ${used?'disabled':''} onclick="useTac('${t.id}')" title="${t.d}"><i>${t.ic}</i><b>${t.n}</b><small>${on?'このターン使用中':used?'使用済み':t.d}</small></button>`; }).join('')}
+    ${sc?`<span class="tac-sc">🔍 ${esc(String(G.players[sc.i].name).replace(/^CPU\s*/,''))} → ${IND[sc.c]}</span>`:''}</div>`;
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
@@ -3936,6 +3976,7 @@ function handDock(news){
     ${speedArm(p)}${partnerHint(p)}
     ${G.online?"":coachHTML(p)}
     <div class="preview">${preview}</div>
+    ${tacRow()}
     <div class="actions">
       <button class="btn cyan" onclick="useForesight()" ${canFore?'':'disabled'} title="${fdef.desc}">${EYE.replace('<svg','<svg style="width:18px;height:18px;vertical-align:-4px;margin-right:4px"')}${p.foreUsed?(known?`${fdef.short}中`:'使用済み'):(G.turn>=TURNS-1?'最終ターン':`${fdef.btn}`)}</button>
       <button class="btn go big${G.sel!==null?' pulse':''}" onclick="confirmPick()" ${G.sel===null?'disabled':''}>${G.sel===null?'カードを選んでね':`${IND[G.sel]}を出す！`}</button>
@@ -4127,7 +4168,7 @@ function playView(){
         <button onclick="go('online')">オンラインで →</button>
       </div>
       ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${diffNow()===k?" on":""}" onclick="setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>`:""}
-      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button></div>${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
+      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}</div>${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
       ${leagueNote()}
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
@@ -4237,7 +4278,7 @@ function recordResult(){
     if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
   P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-100);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
-  const r0=rateOf(), r1=Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold'); rsPeak(r1);
+  const r0=rateOf(), r1=G.tac ? r0 : Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won));   // 作戦カードありはレートに入れない P.rate=r1; if(r1>=1250) unlock('gold'); rsPeak(r1);
   const dex=dexRecord(); if(dexCount()>=DEX_TOTAL()) unlock('dexall');
   const chal=G.chal?chalResult():null; if(chal && CHALLENGES.every(c=>chalStars(c.id)===3)) unlock('chal24');
   let coin = 10 + (won?20:mine&&mine.rank===2?10:0) + p.uniq*2 + (mis.cleared.length*5) + (G.daily?10:0);   // ショップで使うコイン
