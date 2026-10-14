@@ -1447,6 +1447,11 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .hmt-b{position:relative;flex:1;min-width:0;padding:10px 14px;border-radius:18px 18px 18px 4px;background:#fff;color:#1a1d3a;font-weight:700;font-size:13.5px;line-height:1.6;box-shadow:0 3px 0 rgb(0 0 0 / .25),inset 3px 0 0 var(--rc);animation:mcin .35s ease both}
 .hmt-b b{display:block;font-size:11px;color:var(--rc);filter:brightness(.75)}
 .hmt-b small{display:block;margin-top:2px;font-size:10px;color:#8a8fb8;text-align:right}
+.xf-box{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding:12px;border-radius:16px;background:var(--panel2)}
+.xf-box>b{font-size:14px}
+.xf-code{width:100%;min-height:84px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--rail);color:var(--ink);font:12px/1.4 ui-monospace,monospace;word-break:break-all;resize:vertical}
+.xf-pre{padding:8px 10px;border-radius:10px;background:rgb(255 200 58 / .14);color:var(--ink)!important}
+.xf-go{font-size:22px;color:var(--muted)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2827,6 +2832,7 @@ function renderSheet(){
   else if(k==='qr') body=qrBody();
   else if(k==='duelin') body=duelInBody();
   else if(k==='updown') body=udBody();
+  else if(k==='xfer') body=xferBody();
   else if(k==='duelnew') body=duelNewBody();
   else if(k==='tutorial') body=tutorialBody();
   else if(k==='card') body=cardSheetBody();
@@ -3488,6 +3494,47 @@ function nextHomeTalk(){
   HOME_TALK_I=(HOME_TALK_I+1)%HOME_TALK.length; const [k,t]=HOME_TALK[HOME_TALK_I];
   const el=document.querySelector('.hmtalk'); if(el){ el.outerHTML=homeTalk(); } voice(k,t);
 }
+/* ---- データ引き継ぎ：この端末の記録（azakei- で始まる保存）を1本のコードにして、別の端末で読みこむ ---- */
+const XF_PREFIX='AZK1:';
+function xferKeys(){ const out={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k && k.startsWith('azakei-')) out[k]=localStorage.getItem(k); } return out; }
+const b64u = bytes => { let s=''; bytes.forEach(b=>s+=String.fromCharCode(b)); return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); };
+const ub64u = str => { const s=atob(str.replace(/-/g,'+').replace(/_/g,'/')); return Uint8Array.from(s, c=>c.charCodeAt(0)); };
+async function gz(data, dir){ const cs=dir==='c'?new CompressionStream('gzip'):new DecompressionStream('gzip'); return new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(cs)).arrayBuffer()); }
+async function xferMake(){
+  saveProfile(); const json=JSON.stringify({v:1, t:Date.now(), d:xferKeys()}), raw=new TextEncoder().encode(json);
+  let code; try{ code=XF_PREFIX+'z'+b64u(await gz(raw,'c')); }catch(e){ code=XF_PREFIX+'p'+b64u(raw); }   // 圧縮できないブラウザはそのまま
+  return code;
+}
+async function xferRead(code){
+  code=String(code||'').trim().replace(/\s+/g,''); if(!code.startsWith(XF_PREFIX)) throw new Error('コードの形がちがいます');
+  let obj; try{ const kind=code[XF_PREFIX.length], body=ub64u(code.slice(XF_PREFIX.length+1));
+    const raw = kind==='z' ? await gz(body,'d') : body; obj=JSON.parse(new TextDecoder().decode(raw)); }catch(e){ throw new Error('コードが途中で切れているか、まちがっています'); }
+  if(!obj || obj.v!==1 || !obj.d || typeof obj.d!=='object') throw new Error('コードが読めませんでした');
+  const prof=obj.d['azakei-prof'] && JSON.parse(obj.d['azakei-prof']); if(!prof || typeof prof.xp!=='number') throw new Error('記録が入っていません');
+  return obj;
+}
+let XF={code:'', armed:0, preview:null};
+function xferBody(){
+  const P=S.prof, L=lvInfo(P.xp);
+  return `<span class="label">DATA TRANSFER</span><h3 class="ttl" style="font-size:24px;margin-right:46px">データ引き継ぎ</h3>
+    <div class="xf-box"><b>① 今の端末で、引き継ぎコードを作る</b><p class="note">いまの記録：Lv.${L.lv} · ${P.coin||0}コイン · ${(P.st&&P.st.games)||0}戦</p>
+      ${XF.code?`<textarea class="inp xf-code" readonly onclick="this.select()">${XF.code}</textarea><div class="row" style="gap:8px"><button class="btn gold" onclick="copyText(XF.code)">コピーする</button><span class="note">${XF.code.length}文字</span></div>`:`<button class="btn gold" onclick="xferMakeUI()">コードを作る</button>`}</div>
+    <div class="xf-box"><b>② 新しい端末で、コードを読みこむ</b><p class="note">新しい端末でこの画面をひらき、コードを貼りつけてください。<b style="color:#ff8aa0">その端末の今の記録は上書きされます。</b></p>
+      <textarea id="xfIn" class="inp xf-code" placeholder="AZK1: から始まるコードを貼りつけ"></textarea>
+      ${XF.preview?`<p class="note xf-pre">読みこみ予定：Lv.${lvInfo(XF.preview.xp).lv} · ${XF.preview.coin||0}コイン · ${(XF.preview.st&&XF.preview.st.games)||0}戦（${new Date(XF.preview.t).toLocaleDateString('ja-JP')}に作成）</p>`:''}
+      <button class="btn${XF.preview?' gold':''}" onclick="xferLoadUI()">${XF.preview?'この記録で上書きする':'コードを確認する'}</button></div>`;
+}
+async function xferMakeUI(){ try{ XF.code=await xferMake(); sfx('coin'); renderSheet(); }catch(e){ toast('コードを作れませんでした'); } }
+async function xferLoadUI(){
+  const el=document.getElementById('xfIn'), v=el?el.value:'';
+  try{
+    const obj=await xferRead(v||XF.pending||'');
+    if(!XF.preview){ const p=JSON.parse(obj.d['azakei-prof']); XF.preview={xp:p.xp, coin:p.coin, st:p.st, t:obj.t}; XF.pending=v; sfx('click'); renderSheet(); const e2=document.getElementById('xfIn'); if(e2) e2.value=v; return; }
+    Object.keys(xferKeys()).forEach(k=>localStorage.removeItem(k));
+    Object.entries(obj.d).forEach(([k,val])=>{ if(k.startsWith('azakei-') && typeof val==='string') localStorage.setItem(k,val); });
+    toast('引き継ぎました。読みこみ直します'); setTimeout(()=>location.reload(),800);
+  }catch(e){ XF.preview=null; toast(e.message||'読みこめませんでした'); sfx('buzz'); renderSheet(); }
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4057,6 +4104,7 @@ function settingsBody(){
     ${sw(!!S.tts,'toggleTts()','ニュース読み上げ','NEWSの見出しをアナウンサーのように声で読む')}
     ${sw(!!S.big,"toggleBig()","文字を大きく","画面全体の文字とボタンを大きくする（見やすさ重視）")}
     ${sw(!!S.coach,'toggleCoach()','コーチ（初心者向け）','手札の画面に「おすすめ」と理由を出す')}
+    <button class="swrow" onclick="openSheet('xfer')"><span><b>データ引き継ぎ</b><span class="note">機種変更やほかのブラウザへ、レベル・コイン・記録を移す</span></span><span class="xf-go">›</span></button>
     ${sw(!!S.booth,'toggleBooth()','ブースモード（文化祭向け）','だれも触らないとデモ対戦を流し、結果画面は2分でホームへ戻る')}
     ${sw(S.vib!==false,'toggleVib()','振動','スマホで選んだときや被ったときに軽く振動')}
     ${sw(!!S.calm,'toggleCalm()','動きを減らす','アニメーションや紙吹雪を止めて静かに表示')}
