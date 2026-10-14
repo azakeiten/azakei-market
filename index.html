@@ -1506,6 +1506,23 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .dg-fin b{font-family:var(--display);font-weight:400;font-size:32px;color:#ffd36a}.dg-fin span{font-size:14px}
 .dg-crown{width:56px;height:auto;color:#ffc83a;filter:drop-shadow(0 0 10px #ffc83a)}
 @media (prefers-reduced-motion:reduce){.dg-lane,.dg-news,.dg-say,.dg-fin,.dg-bar i,.dg-who,.dgx-open>i{animation:none !important}}
+.rh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px}
+.rh-t{position:relative;display:flex;flex-direction:column;gap:2px;padding:12px 12px 10px;border-radius:16px;background:linear-gradient(170deg,rgb(255 200 58 / .14),var(--panel2) 55%);box-shadow:inset 0 0 0 1px rgb(255 200 58 / .35),0 3px 0 var(--rail);overflow:hidden}
+.rh-t::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#ffe08a,#f29a12)}
+.rh-t.none{background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line);opacity:.6}.rh-t.none::before{display:none}
+.rh-t.new{box-shadow:inset 0 0 0 2px var(--gold),0 0 22px -6px var(--gold)}
+.rh-ic{font-size:22px;line-height:1}
+.rh-n{font-size:12px;font-weight:800;color:var(--muted)}
+.rh-v{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.05;color:var(--gold)}.rh-t.none .rh-v{color:var(--muted)}
+.rh-v small{font-family:var(--body);font-size:12px;font-weight:800;margin-left:3px;color:var(--ink)}
+.rh-d{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rh-new{position:absolute;top:8px;right:8px;font-style:normal;font-size:10px;font-weight:900;padding:1px 7px;border-radius:8px;background:var(--gold);color:#2a1a00;animation:rhBlink 1.6s ease-in-out infinite}
+@keyframes rhBlink{50%{opacity:.55}}
+.rh-list{display:flex;flex-direction:column;gap:2px;margin-top:4px;font-size:13px}
+.rh-list s{color:var(--muted)}.rh-list em{font-style:normal;font-weight:900;color:var(--gold)}
+.cr-rec{align-self:center;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 18px;border-radius:16px;background:linear-gradient(180deg,#ffd769,#f29a12);color:#2a1a00;box-shadow:0 4px 0 rgb(0 0 0 / .4),0 0 34px rgb(255 200 58 / .6);opacity:0;animation:crwin .6s cubic-bezier(.2,.9,.3,1.5) both var(--d)}
+.cr-rec b{font-size:16px}.cr-rec span{font-size:13px;font-weight:800}
+@media (prefers-reduced-motion:reduce){.rh-new{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2201,7 +2218,8 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   if(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
   G.league = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.league) ? leagueJoin(G.players.map(p=>p.name)) : null;   // リーグ戦の何試合目か
   G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
-  G.tac = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.tacOn && G.players.filter(isHuman).length===1) ? {used:{}, now:null} : null;   // 作戦カード（1人プレイのふだんの対戦だけ） if(bs) G.players[1].boss=true;
+  G.tac = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.tacOn && G.players.filter(isHuman).length===1) ? {used:{}, now:null} : null;   // 作戦カード（1人プレイのふだんの対戦だけ）
+  if(bs) G.players[1].boss=true;
   G.teams = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
   if(long){ G.base={table:clone(cfg.table), bonus:cfg.bonus, collide:cfg.collide}; G.mkts=drawMarkets(G.rounds,cfg); applyMarket(); G.players.forEach(p=>p.brand=null); dealContracts(); }
   G.me = online ? G.players.findIndex(p=>p.peer===NET.myPeer) : -1;
@@ -2369,6 +2387,7 @@ function startCeremony(){
   for(let k=0;k<n-1;k++) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('flip'); haptic(8); } }, 900+k*650));
   CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('slam'); haptic(40); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); } }, winAt));
   if(cupChamp()) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('fanfare'); confetti(); haptic(60); } }, winAt+900));
+  if(G.recBroke&&G.recBroke.length) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('coin'); setTimeout(()=>sfx('select'),160); haptic(30); } }, winAt+1200));
   CER_T.push(setTimeout(endCeremony, winAt+(cupChamp()?4600:3200)));
 }
 function endCeremony(){
@@ -2394,7 +2413,7 @@ function ceremonyOverlay(){
   return `<div class="overlay ceremony" onclick="endCeremony()"><div class="cr-spot" style="--d:${900+(n-1)*650}ms"></div><div class="box">
     <div class="cr-title">結果発表</div><div class="cr-drum"><i></i><i></i><i></i></div>
     ${G.teams?(()=>{ const {s}=teamScores(), w=s[0]===s[1]?-1:s[0]>s[1]?0:1; return `<div class="cr-team" style="--d:${900+(n-1)*650+500}ms"><span class="${w===0?"win":""}">${TEAM_NAMES[0]} ${s[0]}</span><i>VS</i><span class="${w===1?"win":""}">${s[1]} ${TEAM_NAMES[1]}</span></div>`; })():""}
-    <div class="cr-list">${rows}</div>${(()=>{ const so=G.players.map(p=>p.score).sort((a,b)=>b-a), d=so[0]-so[1]; return so.length>1&&d<=1 ? `<div class="cr-close" style="--d:${900+(n-1)*650+400}ms">${d===0?(G.cfg.tiebreak?"同点！ 独占回数で決着":"同点で並んだ！"):"わずか1点差の大接戦！"}</div>` : ""; })()}${(c=>c?`<div class="cr-cup" style="--d:${900+(n-1)*650+700}ms;--cc:${c.c}"><span class="tro huge">${c.ic}</span><b>${c.n} 優勝！</b></div>`:'')(cupChamp())}<div class="note">タップで結果画面へ</div></div></div>`;
+    <div class="cr-list">${rows}</div>${(()=>{ const so=G.players.map(p=>p.score).sort((a,b)=>b-a), d=so[0]-so[1]; return so.length>1&&d<=1 ? `<div class="cr-close" style="--d:${900+(n-1)*650+400}ms">${d===0?(G.cfg.tiebreak?"同点！ 独占回数で決着":"同点で並んだ！"):"わずか1点差の大接戦！"}</div>` : ""; })()}${(c=>c?`<div class="cr-cup" style="--d:${900+(n-1)*650+700}ms;--cc:${c.c}"><span class="tro huge">${c.ic}</span><b>${c.n} 優勝！</b></div>`:'')(cupChamp())}${G.recBroke&&G.recBroke.length?`<div class="cr-rec" style="--d:${900+(n-1)*650+1200}ms"><b>🏅 自己ベスト更新！</b><span>${G.recBroke.map(b=>{ const r=REC_DEF.find(x=>x.k===b.k); return `${r.n} ${b.v}${r.u}`; }).join('<br>')}</span></div>`:''}<div class="note">タップで結果画面へ</div></div></div>`;
 }
 function revealFx(){
   const fast=reduced();
@@ -3714,6 +3733,44 @@ function digestOverlay(){
     <p class="dg-say">${digestLine(d.t)}</p>
     ${digestRace(d.t)}${ctl}</div></div>`;
 }
+/* ---- 自己ベスト殿堂：試合をまたいだ自分の最高記録。破ったら結果発表とマイページで祝う ---- */
+const REC_DEF=[
+  {k:'hi',       ic:'🏆', n:'最高得点',       u:'pt'},
+  {k:'turn',     ic:'💥', n:'1ターン最高点',  u:'pt'},
+  {k:'mono',     ic:'👑', n:'1試合の独占',    u:'回'},
+  {k:'streak',   ic:'🔥', n:'連続独占',       u:'連続'},
+  {k:'margin',   ic:'📏', n:'最大の点差勝ち', u:'点差'},
+  {k:'comeback', ic:'🔄', n:'最大の逆転勝ち', u:'点差'}
+];
+function recordBests(p, me, won){
+  if(!G || isLong() || G.tac || G.demo) return [];     /* ロング版・作戦カード・デモは記録しない */
+  const P=S.prof, st=P.st;
+  if(!P.rec){ P.rec={}; if(st.best>0) P.rec.hi={v:st.best, d:0}; }   /* 前からの最高点は引き継ぐ */
+  const others=G.players.filter((q,i)=>i!==me), so=others.map(q=>q.score);
+  let streak=0, run=0; p.used.forEach(u=>{ run=u.k===1?run+1:0; streak=Math.max(streak,run); });
+  const bt=p.used.slice().sort((a,b)=>b.total-a.total)[0];
+  let def=0; p.hist.forEach((v,t)=>{ if(!others.length) return; const m=Math.max(...others.map(q=>q.hist[t]!=null?q.hist[t]:q.score)); def=Math.max(def,m-v); });
+  const cand={hi:p.score, turn:bt?bt.total:null, mono:p.uniq, streak, margin:won&&so.length?p.score-Math.max(...so):null, comeback:won?def:null};
+  const ext={turn:bt?{ind:bt.ind, news:String(nm(logDeck()[bt.turn])||'')}:{}};
+  const out=[];
+  REC_DEF.forEach(({k})=>{ const v=cand[k]; if(v==null || v<=0) return; const o=P.rec[k]; if(o && v<=o.v) return;
+    P.rec[k]={v, d:Date.now(), ...(ext[k]||{})}; if(o) out.push({k, old:o.v, v}); });
+  return out;
+}
+function recBrokePanel(){
+  const b=G&&G.recBroke; if(!b||!b.length) return '';
+  return `<section class="trwin rh-win" style="--rc:var(--gold)"><span class="rva">🏅</span><span><span class="label">PERSONAL BEST</span><b>自己ベスト更新！</b>
+    <span class="rh-list">${b.map(x=>{ const r=REC_DEF.find(d=>d.k===x.k); return `<span>${r.ic} ${r.n} <s>${x.old}</s> → <em>${x.v}${r.u}</em></span>`; }).join('')}</span></span></section>`;
+}
+function recHall(){
+  const R=S.prof.rec||{}, md=d=>{ if(!d) return '以前の記録'; const t=new Date(d); return `${t.getMonth()+1}/${t.getDate()}`; };
+  const n=REC_DEF.filter(x=>R[x.k]).length;
+  return `<section class="panel rh-hall"><div class="row spread"><h3>🏅 自己ベスト殿堂</h3><span class="note">${n}/${REC_DEF.length} 記録</span></div>
+    <div class="rh-grid">${REC_DEF.map(x=>{ const r=R[x.k], fresh=r&&r.d&&Date.now()-r.d<86400000;
+      const sub=!r?'まだ記録なし':x.k==='turn'&&r.ind!=null?`${IND[r.ind]}・${esc(r.news||'')}`:md(r.d);
+      return `<div class="rh-t${r?'':' none'}${fresh?' new':''}"><span class="rh-ic">${x.ic}</span><span class="rh-n">${x.n}</span><b class="rh-v">${r?r.v:'—'}<small>${r?x.u:''}</small></b><span class="rh-d">${sub}</span>${fresh?'<i class="rh-new">NEW</i>':''}</div>`; }).join('')}</div>
+    <p class="note">ロング版・作戦カードありの試合は記録に入りません。</p></section>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4158,7 +4215,7 @@ function finalView(){
   if(big.p) aw.push(['最大瞬間風速',big.p.name,`T${big.u.turn+1} ${IND[big.u.ind]} ${sgn(big.v)}`]);
   const hist=G.players.map(p=>`<tr><td>${esc(p.name)}</td>${p.used.map(u=>`<td>${chip(u.ind)} <span class="num ${cls(u.total)}">${sgn(u.total)}</span>${u.fut?' <span class="tagx cy">先物</span>':''}</td>`).join('')}<td class="n">${p.uniq}</td><td class="n"><b>${p.score}</b></td></tr>`).join('');
   const recap = C.hist ? `<section class="panel"><h3>あなたたちが生きた時代</h3><div class="recap">${logDeck().map(i=>`<div><b>${yearOf(i)}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${HIST[i].n}</b><br>${gloss(HIST[i].d)}</p></div>`).join('')}</div></section>` : '';
-  return `<div class="two"><div class="col">${duelPanel()}${practicePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${bossPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${leaguePanel()}${seasonWin()}${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+  return `<div class="two"><div class="col">${recBrokePanel()}${duelPanel()}${practicePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${bossPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${leaguePanel()}${seasonWin()}${survPanel()}${storyPanel()}${cupPanel()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
@@ -4364,6 +4421,7 @@ function recordResult(){
   if((G.rounds||1)===1 && TURNS>=4 && p.hist.length>3){ const s3=G.players.map(q=>q.hist[3]); lastAt3 = s3[me]===Math.min(...s3) && s3.some(v=>v>s3[me]); }
   const futBest=Math.max(-99,...p.used.filter(u=>u.fut).map(u=>u.total));
   P.ind=P.ind||[0,0,0,0,0,0]; P.indm=P.indm||[0,0,0,0,0,0]; P.indp=P.indp||[0,0,0,0,0,0]; P.indc=P.indc||[0,0,0,0,0,0]; p.used.forEach(u=>{ P.ind[u.ind]++; if(u.k===1) P.indm[u.ind]++; P.indp[u.ind]+=u.total; P.indc[u.ind]++; });   // indp・indc：平均点用（数えはじめてからの点と回数）
+  G.recBroke=recordBests(p, me, won);
   st.games++; if(won) st.wins++; st.best=Math.max(st.best,p.score); st.mono+=p.uniq; if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
   const xp = Math.round((20 + Math.max(0,p.score)*3 + p.uniq*5 + (won?40:0) + (G.online?15:0)) * (G.evt?1.5:1));   // 今週のイベント参加中はXP1.5倍
   const mis = progressMissions({p, won, rank:mine?mine.rank:9, hist:!!G.cfg.hist, daily:!!G.daily});
@@ -4387,7 +4445,7 @@ function recordResult(){
     if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
   P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-100);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
-  const r0=rateOf(), r1=G.tac ? r0 : Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won));   // 作戦カードありはレートに入れない P.rate=r1; if(r1>=1250) unlock('gold'); rsPeak(r1);
+  const r0=rateOf(), r1=G.tac ? r0 : Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold'); rsPeak(r1);   // 作戦カードありはレートに入れない
   const dex=dexRecord(); if(dexCount()>=DEX_TOTAL()) unlock('dexall');
   const chal=G.chal?chalResult():null; if(chal && CHALLENGES.every(c=>chalStars(c.id)===3)) unlock('chal24');
   let coin = 10 + (won?20:mine&&mine.rank===2?10:0) + p.uniq*2 + (mis.cleared.length*5) + (G.daily?10:0);   // ショップで使うコイン
@@ -4533,6 +4591,7 @@ function meView(){
     <section class="statgrid">
       ${[['対戦',st.games],['勝利',st.wins],['勝率',st.games?Math.round(st.wins/st.games*100)+'%':'—'],['最高点',st.best],['独占',st.mono],['歴史モード',st.hist],['オンライン',st.online],['実績',got+'/'+ACH.length]].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('')}
     </section>
+    ${recHall()}
     ${indPanel()}
     ${rivalsPanel()}
     ${statsCharts()}
