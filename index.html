@@ -2833,7 +2833,7 @@ function renderSheet(){
         <button class="btn big" onclick="downloadMd('${bk}')">テキスト版（.md）を保存する</button>
         <button class="btn ghost" onclick="downloadBook('${bk}')">もう一度PDFを保存してみる</button>
       </div>
-      <p class="note">画像は8ページを縦につないだ1枚の長い画像で、そのまま印刷や拡大ができます。PDFを開けたら、ブラウザの共有・保存ボタンから保存できます。テキスト版には、ルールと得点表がすべて入っています。</p>`;
+      <p class="note">画像は全ページを縦につないだ1枚の長い画像で、そのまま印刷や拡大ができます。PDFを開けたら、ブラウザの共有・保存ボタンから保存できます。テキスト版には、ルールと得点表がすべて入っています。</p>`;
   } else if(k==='settings') body=settingsBody();
   else if(k==='share') body=shareBody();
   else if(k==='qr') body=qrBody();
@@ -4017,6 +4017,11 @@ function lineChart(){
       ${p.hist.map((v,t)=>`<circle cx="${x(t)}" cy="${y(v)}" r="${win?4.5:3}" fill="${col}" stroke="var(--panel)" stroke-width="2"><title>${esc(p.name)} ${t===0?'開始':'T'+t}: ${v}pt</title></circle>`).join('')}
       <text class="lbl" x="${W-R+8}" y="${labY[i]+4}">${esc(p.name)} ${p.score}</text>`; }).join('');
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="各プレイヤーの累計POINTの推移">${ticks}${lines}</svg>`;
+}
+function exTable(){
+  const cur=G && G.cfg.ex && G.phase!=='final' && G.turn<TURNS ? G.deck[G.turn]-NEWS.length : -1;
+  return `<div class="tbl-wrap"><table class="st"><thead><tr><th>NEWS ＼ 産業</th>${IND.map((d,i)=>`<th>${chip(i)}</th>`).join('')}</tr></thead><tbody>
+    ${EXT_NEWS.map((n,r)=>`<tr class="${r===cur?'cur':''}"><th>${n}</th>${EXT_T[r].map(v=>`<td class="v ${v===Math.max(...EXT_T[r])?'p3':v<0?'neg':v>0?'pos':''}">${sgn(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 function scoreTable(editable){
   const cur=G && G.phase!=='final' && !G.cfg.hist && G.turn<TURNS ? G.deck[G.turn] : -1;
@@ -5313,7 +5318,8 @@ function rulesView(){
       <section class="panel"><span class="label">HISTORY</span><h3 style="font-family:var(--serif)">歴史モード</h3><p class="note">実際の出来事が年代順に起きます。いまより前の年の出来事はもう来ないので、候補が絞れます。</p></section>
       <section class="panel"><span class="label">WINNER</span><h3>4ターンで合計が多い人の勝ち</h3><p class="note">${CFG.tiebreak?'同点は独占回数が多い人が上位。それも同じなら同順位。':'同点は同順位。'}</p></section>
     </div>`;
-  if(tab==='table') body=`<section class="panel"><div class="row spread"><h3>クラシックの得点表</h3><span class="note">金色が各NEWSの最高点</span></div>${scoreTable(false)}<p class="note">数値を変えたいときは「ルール設定」から。</p></section>`;
+  if(tab==='table') body=`<section class="panel"><div class="row spread"><h3>クラシックの得点表</h3><span class="note">金色が各NEWSの最高点</span></div>${scoreTable(false)}<p class="note">数値を変えたいときは「ルール設定」から。</p></section>
+    <section class="panel"><div class="row spread"><h3>クラシックEXで加わるNEWS</h3><span class="note">12種から毎回6種</span></div>${exTable()}<p class="note">EXでは、もとの6種とこの6種の合わせて12種から、毎回6種で山札ができます。</p></section>`;
   if(tab==='hist') body=`<section class="panel"><div class="row spread"><h3 style="font-family:var(--serif);font-size:20px">歴史モードの出来事</h3><span class="note">年代順に起きる18の出来事</span></div>${histTable()}<p class="note">点数は、実際の出来事でその産業が追い風か向かい風かをもとに、ゲーム用に決めたものです。</p></section>
     <section class="panel"><h3>解説</h3><div class="recap">${HIST.filter(h=>!h.f).sort((a,b)=>a.y-b.y).map(h=>`<div><b>${h.y}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${h.n}</b><br>${gloss(h.d)}</p></div>`).join('')}</div></section>`;
   if(tab==='set') body=`<section class="panel"><h3>プリセット</h3>
@@ -5334,7 +5340,7 @@ function rulesView(){
   if(tab==='book') body=`<section class="panel"><h3>ルールブック（PDF）</h3><p class="note">印刷して遊べるPDFです。カードを手作りするときの得点表や、歴史モードの年表チェックシートも入っています。</p>
       <div class="dlrow">${['classic','history','long','future'].map(k=>`<button class="dl${k==='history'?' hist':k==='long'?' long':k==='future'?' fut':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`).join('')}</div>
       <div class="row" style="gap:8px">${['classic','history','long','future'].map(k=>`<button class="btn" onclick="downloadPng('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}を画像（PNG）で保存</button>`).join('')}${['classic','history','long','future'].map(k=>`<a class="btn ghost" href="${BOOKS[k].file}" target="_blank" rel="noopener" style="text-decoration:none">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}のPDFを開く</a>`).join('')}${['classic','history','long','future'].map(k=>`<button class="btn ghost" onclick="downloadMd('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}のテキスト版（.md）</button>`).join('')}</div>
-      <p class="note">PDFが保存できないときは「画像（PNG）で保存」を使ってください。画像は8ページを縦につないだ1枚で、どの画面でも保存できる形式です。</p></section>`;
+      <p class="note">PDFが保存できないときは「画像（PNG）で保存」を使ってください。画像は全ページを縦につないだ1枚で、どの画面でも保存できる形式です。</p></section>`;
   return `<div class="col"><div class="row spread"><h2 class="ttl">ルール</h2></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="S.rtab='${k}';sfx('click');render();scrollTo(0,0)">${l}</button>`).join('')}</div>${body}</div>`;
 }
