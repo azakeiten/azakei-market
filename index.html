@@ -1523,6 +1523,9 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .cr-rec{align-self:center;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 18px;border-radius:16px;background:linear-gradient(180deg,#ffd769,#f29a12);color:#2a1a00;box-shadow:0 4px 0 rgb(0 0 0 / .4),0 0 34px rgb(255 200 58 / .6);opacity:0;animation:crwin .6s cubic-bezier(.2,.9,.3,1.5) both var(--d)}
 .cr-rec b{font-size:16px}.cr-rec span{font-size:13px;font-weight:800}
 @media (prefers-reduced-motion:reduce){.rh-new{animation:none}}
+.hrep{flex:none;width:36px;height:36px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;font-size:13px;background:#4fe3ff;color:#06102a;box-shadow:0 3px 0 #1a6fd6}
+.hrep:active{transform:translateY(2px);box-shadow:0 1px 0 #1a6fd6}
+.dg-sub{font-size:11px;font-weight:800;color:#aab;margin-top:-6px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2489,7 +2492,7 @@ const logDeck = () => G.log && G.log.length ? G.log : G.deck.slice(0,TURNS);
 const termName = r => G.cfg.hist && G.fullPool ? `${r===0?'前半':'後半'}` : `第${r+1}期`;
 function termRange(r){ if(!G.fullPool) return ''; const ids=G.fullPool.slice(r*LONG_PER,(r+1)*LONG_PER); return `${yearOf(ids[0])}–${yearOf(ids[ids.length-1])}`; }
 const turnLabel = () => (isLong()?`${termName(G.round)} · `:'')+`TURN ${G.turn+1}/${TURNS}`;
-function finishGame(){ G.phase='final'; G.ov=null; recordResult(); practiceDone(); leagueRecord(); boardRecord(); partyReward(); render(); netSync(); scrollTo(0,0); startCeremony(); }
+function finishGame(){ G.phase='final'; G.ov=null; recordResult(); repSave(); practiceDone(); leagueRecord(); boardRecord(); partyReward(); render(); netSync(); scrollTo(0,0); startCeremony(); }
 /* ブランド：期の決算で、その期にいちばん独占した産業が自分のブランドになり、以後その産業は毎回+1 */
 function brandOf(us, prev){
   const n=[0,0,0,0,0,0]; let lastMono=-1;
@@ -2573,7 +2576,7 @@ function settleOverlay(){
     <div class="stable">${rows}</div>${next}${btn}</div></div>`;
 }
 function quit(){
-  clearTimeout(introTimer); clearTimeout(DG_T);
+  clearTimeout(introTimer); clearTimeout(DG_T); DGS=null;
   if(G && G.online){ if(G.host){ G=null; hostBroadcast(); render(); } else leaveRoom(); return; }
   const back = G && (G.chal||G.cup||G.story||G.surv!=null) ? 'chal' : 'home';   // ボス戦はホームへ
   if(G) S.ctab = G.chal?'stage':G.cup?'cup':G.story?'story':G.surv!=null?'surv':S.ctab;   // 戻ったら遊んでいたタブを開く   // チャレンジ中はステージ一覧へ戻る
@@ -3667,68 +3670,87 @@ function tacRow(){
     return `<button class="tac${on?' on':''}" ${used?'disabled':''} onclick="useTac('${t.id}')" title="${t.d}"><i>${t.ic}</i><b>${t.n}</b><small>${on?'このターン使用中':used?'使用済み':t.d}</small></button>`; }).join('')}
     ${sc?`<span class="tac-sc">🔍 ${esc(String(G.players[sc.i].name).replace(/^CPU\s*/,''))} → ${IND[sc.c]}</span>`:''}</div>`;
 }
-/* ---- 試合ダイジェスト：終わった試合を1ターンずつ再生。NEWS・どこに誰が出したか・実況・得点レース ---- */
-let DG_T=0;
-const DG_MS=2900;
-function digestOpen(){
-  if(!G || G.phase!=='final') return;
-  clearTimeout(DG_T); G.ov='digest'; G.dg={t:0, play:true}; sfx('select'); renderOv(); digestTick(true);
+/* ---- 試合ダイジェスト：終わった試合を1ターンずつ再生。NEWS・どこに誰が出したか・実況・得点レース。
+   いま終わった試合（G）も、名勝負アーカイブに残した試合（P.reps）も、同じ形のデータ（src）から再生する ---- */
+let DG_T=0, DGS=null;
+const DG_MS=2900, REP_MAX=10;
+function digestFromG(){
+  const rk=ranking(G.players,G.cfg), LG=logDeck();
+  return { N:totalTurns(), me:myIndex(), news:LG.map(n=>String(nm(n))), yrs:G.cfg.hist&&typeof yearOf==='function'?LG.map(n=>yearOf(n)):null,
+    pl:G.players.map(p=>({n:p.name, s:p.seat%6, a:avOf(p), u:p.used.map(u=>[u.ind,u.total,u.k]), h:p.hist.slice(), sc:p.score})),
+    win:rk.filter(x=>x.rank===1).map(x=>x.i) };
+}
+function repSave(){            /* 名勝負アーカイブ：最近の試合を再生できる形で端末に残す */
+  if(!G || G.demo || G.repSaved) return; G.repSaved=true;
+  const d=digestFromG(), mine=d.me>=0?ranking(G.players,G.cfg).find(x=>x.i===d.me):null;
+  d.t=Date.now(); d.mode=modeName(G.cfg)+(isLong()?'・ロング':''); d.r=mine?mine.rank:0;
+  S.prof.reps=(S.prof.reps||[]).concat([d]).slice(-REP_MAX); saveProfile();
+}
+const repFor = t => (S.prof.reps||[]).find(r=>Math.abs(r.t-t)<15000);
+function digestOpen(){ if(!G || G.phase!=='final') return; digestStart(digestFromG()); }
+function repPlay(t){ const d=repFor(t); if(!d){ toast('この試合の記録は残っていません'); return; } digestStart(d); }
+function digestStart(src){ clearTimeout(DG_T); DGS={src, t:0, play:true}; sfx('select'); renderDg(); digestTick(true); }
+function renderDg(){
+  const ov=$('#ov');
+  if(!DGS){ ov.dataset.k=''; if(G) { ov.innerHTML=''; renderOv(); } else ov.innerHTML=''; return; }
+  const k='d'+DGS.t+':'+DGS.play; if(ov.dataset.k===k && ov.firstElementChild) return;   /* 描き直すと演出が最初からになるので、同じ場面なら触らない */
+  ov.dataset.k=k; ov.innerHTML=digestOverlay();
 }
 function digestTick(first){
-  clearTimeout(DG_T); if(!G || G.ov!=='digest') return;
-  const d=G.dg, N=totalTurns();
+  clearTimeout(DG_T); if(!DGS) return;
+  const d=DGS, N=d.src.N;
   if(!first){ sfx(d.t>=N?'fanfare':'flip'); haptic(8); }
-  if(d.t<N){ const mono=G.players.some(p=>p.used[d.t]&&p.used[d.t].k===1); if(mono) setTimeout(()=>{ if(G&&G.ov==='digest') sfx('coin'); },650); }
-  if(d.t>=N && !first && !reduced()) setTimeout(()=>{ if(G&&G.ov==='digest') confetti(); },500);
-  if(d.play && d.t<N) DG_T=setTimeout(()=>{ if(!G||G.ov!=='digest') return; d.t++; renderOv(); digestTick(); }, DG_MS);
+  if(d.t<N && d.src.pl.some(p=>p.u[d.t]&&p.u[d.t][2]===1)) setTimeout(()=>{ if(DGS===d) sfx('coin'); },650);
+  if(d.t>=N && !first && !reduced()) setTimeout(()=>{ if(DGS===d) confetti(); },500);
+  if(d.play && d.t<N) DG_T=setTimeout(()=>{ if(DGS!==d) return; d.t++; renderDg(); digestTick(); }, DG_MS);
 }
-function digestGo(dt){ if(!G||!G.dg) return; const N=totalTurns(); G.dg.t=Math.max(0,Math.min(N,G.dg.t+dt)); renderOv(); digestTick(); }
-function digestPlay(){ if(!G||!G.dg) return; const N=totalTurns(); G.dg.play=!G.dg.play; if(G.dg.play && G.dg.t>=N) G.dg.t=0; renderOv(); digestTick(true); }
-function digestClose(){ clearTimeout(DG_T); if(!G) return; G.ov=null; G.dg=null; renderOv(); }
-function digestLine(t){       // 実況：そのターンのいちばんの見どころを1〜2行で
-  const P=G.players, U=P.map((p,i)=>({p,i,u:p.used[t]})).filter(x=>x.u), out=[];
-  const sh=p=>esc(String(p.name).replace(/^CPU\s*/,''));
-  const mono=U.filter(x=>x.u.k===1).sort((a,b)=>b.u.total-a.u.total);
-  if(mono.length && mono[0].u.total>=4) out.push(`<b>${sh(mono[0].p)}</b>が「${IND[mono[0].u.ind]}」をひとりじめ！ <em class="up">${sgn(mono[0].u.total)}</em>`);
-  const cnt=[0,0,0,0,0,0]; U.forEach(x=>cnt[x.u.ind]++);
+function digestGo(dt){ if(!DGS) return; DGS.t=Math.max(0,Math.min(DGS.src.N,DGS.t+dt)); renderDg(); digestTick(); }
+function digestPlay(){ if(!DGS) return; DGS.play=!DGS.play; if(DGS.play && DGS.t>=DGS.src.N) DGS.t=0; renderDg(); digestTick(true); }
+function digestClose(){ clearTimeout(DG_T); DGS=null; renderDg(); }
+function digestLine(t){       /* 実況：そのターンのいちばんの見どころを1〜2行で */
+  const P=DGS.src.pl, U=P.map((p,i)=>({p,i,u:p.u[t]})).filter(x=>x.u), out=[];
+  const sh=p=>esc(String(p.n).replace(/^CPU\s*/,''));
+  const mono=U.filter(x=>x.u[2]===1).sort((a,b)=>b.u[1]-a.u[1]);
+  if(mono.length && mono[0].u[1]>=4) out.push(`<b>${sh(mono[0].p)}</b>が「${IND[mono[0].u[0]]}」をひとりじめ！ <em class="up">${sgn(mono[0].u[1])}</em>`);
+  const cnt=[0,0,0,0,0,0]; U.forEach(x=>cnt[x.u[0]]++);
   const crowd=cnt.indexOf(Math.max(...cnt));
   if(cnt[crowd]>=3) out.push(`${cnt[crowd]}人が「${IND[crowd]}」に殺到… 読みが重なった`);
-  const neg=U.filter(x=>x.u.total<0).sort((a,b)=>a.u.total-b.u.total);
-  if(out.length<2 && neg.length && neg[0].u.total<=-2) out.push(`${sh(neg[0].p)}は「${IND[neg[0].u.ind]}」で痛恨の <em class="dn">${sgn(neg[0].u.total)}</em>`);
+  const neg=U.filter(x=>x.u[1]<0).sort((a,b)=>a.u[1]-b.u[1]);
+  if(out.length<2 && neg.length && neg[0].u[1]<=-2) out.push(`${sh(neg[0].p)}は「${IND[neg[0].u[0]]}」で痛恨の <em class="dn">${sgn(neg[0].u[1])}</em>`);
   const lead=a=>{ const m=Math.max(...a); return a.filter(v=>v===m).length===1?a.indexOf(m):-1; };
-  const before=P.map(p=>p.hist[t]||0), after=P.map(p=>p.hist[t+1]!=null?p.hist[t+1]:p.score);
-  const lb=lead(before), la=lead(after);
+  const at=k=>P.map(p=>p.h[k]!=null?p.h[k]:p.sc);
+  const lb=lead(at(t)), la=lead(at(t+1));
   if(t>0 && la>=0 && la!==lb) out.unshift(`<b>${sh(P[la])}</b>がトップに浮上！`);
-  if(!out.length){ const b=U.slice().sort((a,b)=>b.u.total-a.u.total)[0]; if(b) out.push(`${sh(b.p)}の「${IND[b.u.ind]}」${sgn(b.u.total)}が最高点。静かなターン`); }
+  if(!out.length){ const b=U.slice().sort((a,b)=>b.u[1]-a.u[1])[0]; if(b) out.push(`${sh(b.p)}の「${IND[b.u[0]]}」${sgn(b.u[1])}が最高点。静かなターン`); }
   return out.slice(0,2).join('<br>');
 }
-function digestRace(t){       // t ターン目のあとの累計。前のターンからバーが伸びる
-  const P=G.players, at=k=>P.map(p=>k<=0?0:(p.hist[k]!=null?p.hist[k]:p.score));
+function digestRace(t){       /* t ターン目のあとの累計。前のターンからバーが伸びる */
+  const P=DGS.src.pl, at=k=>P.map(p=>k<=0?0:(p.h[k]!=null?p.h[k]:p.sc));
   const now=at(t+1), prev=at(t), lo=Math.min(0,...now,...prev), hi=Math.max(1,...now,...prev), span=hi-lo;
   const order=P.map((p,i)=>i).sort((a,b)=>now[b]-now[a]);
   return `<div class="dg-race">${order.map((i,r)=>{ const p=P[i], w1=Math.max(4,(now[i]-lo)/span*100), w0=Math.max(4,(prev[i]-lo)/span*100), dlt=now[i]-prev[i];
-    return `<div class="dg-row${i===myIndex()?' me':''}" style="--s:var(--s${p.seat%6})"><span class="dg-rk">${r+1}</span><span class="dg-nm">${esc(avOf(p))} ${esc(p.name)}</span>
+    return `<div class="dg-row${i===DGS.src.me?' me':''}" style="--s:var(--s${p.s})"><span class="dg-rk">${r+1}</span><span class="dg-nm">${esc(p.a)} ${esc(p.n)}</span>
       <span class="dg-bar"><i style="--w0:${w0}%;--w1:${w1}%"></i></span><b class="dg-pt">${now[i]}${dlt?`<small class="${dlt>0?'up':'dn'}">${sgn(dlt)}</small>`:''}</b></div>`; }).join('')}</div>`;
 }
 function digestOverlay(){
-  const d=G.dg, N=totalTurns(), LG=logDeck(), P=G.players;
+  const d=DGS, src=d.src, N=src.N, P=src.pl;
+  const when=src.t?(()=>{ const x=new Date(src.t); return `<span class="dg-sub">名勝負アーカイブ · ${esc(src.mode||'')} · ${x.getMonth()+1}/${x.getDate()}</span>`; })():'';
   const dots=`<div class="dg-dots">${Array.from({length:N+1},(_,k)=>`<i class="${k<d.t?'done':k===d.t?'on':''}"></i>`).join('')}</div>`;
   const ctl=`<div class="dg-ctl"><button class="btn" onclick="digestGo(-1)" ${d.t<=0?'disabled':''} aria-label="前のターン">◀</button><button class="btn cyan" onclick="digestPlay()">${d.play&&d.t<N?'⏸ 一時停止':'▶ 再生'}</button><button class="btn" onclick="digestGo(1)" ${d.t>=N?'disabled':''} aria-label="次のターン">▶</button><button class="btn" onclick="digestClose()">閉じる</button></div>`;
   if(d.t>=N){
-    const rk=ranking(P,G.cfg), w=rk.filter(x=>x.rank===1);
-    return `<div class="overlay dgx"><div class="box dg-box"><span class="dg-tag">DIGEST · FINAL</span>${dots}
-      <div class="dg-fin">${CROWN('dg-crown')}<b>${w.map(x=>esc(x.p.name)).join('・')}</b><span>${w[0].p.score}pt で優勝！</span></div>
+    const w=src.win.length?src.win:[0];
+    return `<div class="overlay dgx"><div class="box dg-box"><span class="dg-tag">DIGEST · FINAL</span>${when}${dots}
+      <div class="dg-fin">${CROWN('dg-crown')}<b>${w.map(i=>esc(P[i].n)).join('・')}</b><span>${P[w[0]].sc}pt で優勝！</span></div>
       ${digestRace(N-1)}${ctl}</div></div>`;
   }
-  const n=LG[d.t]!=null?LG[d.t]:G.deck[d.t%TURNS];
-  const lanes=IND.map((_,c)=>{ const who=P.filter(p=>p.used[d.t]&&p.used[d.t].ind===c), k=who.length, v=k?who[0].used[d.t]:null;
-    const vals=who.map(p=>sgn(p.used[d.t].total)).filter((x,j,a)=>a.indexOf(x)===j).join('/');
+  const lanes=IND.map((_,c)=>{ const who=P.filter(p=>p.u[d.t]&&p.u[d.t][0]===c), k=who.length;
+    const vals=who.map(p=>sgn(p.u[d.t][1])).filter((x,j,a)=>a.indexOf(x)===j).join('/'), v=k?who[0].u[d.t][1]:0;
     return `<div class="dg-lane${k===1?' mono':k>1?' hit':''}${!k?' empty':''}" style="--dl:${300+c*70}ms"><span class="chip" style="--c:var(--i${c})"><i></i>${IND[c]}</span>
-      <span class="dg-who">${who.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})" title="${esc(p.name)}">${esc(avOf(p))}</span>`).join('')}</span>
-      ${v?`<b class="dg-v ${v.total>0?'up':v.total<0?'dn':''}">${vals}</b>${k===1?'<span class="dg-badge">独占</span>':`<span class="dg-badge hit">${k}人</span>`}`:''}</div>`; }).join('');
-  const yr=G.cfg.hist&&typeof yearOf==='function'?`<span class="dg-yr">${yearOf(n)}</span>`:'';
-  return `<div class="overlay dgx"><div class="box dg-box"><span class="dg-tag">DIGEST · TURN ${d.t+1}/${N}</span>${dots}
-    <div class="dg-news">${yr}<b>${esc(nm(n))}</b></div>
+      <span class="dg-who">${who.map(p=>`<span class="ava" style="--s:var(--s${p.s})" title="${esc(p.n)}">${esc(p.a)}</span>`).join('')}</span>
+      ${k?`<b class="dg-v ${v>0?'up':v<0?'dn':''}">${vals}</b>${k===1?'<span class="dg-badge">独占</span>':`<span class="dg-badge hit">${k}人</span>`}`:''}</div>`; }).join('');
+  const yr=src.yrs&&src.yrs[d.t]!=null?`<span class="dg-yr">${esc(String(src.yrs[d.t]))}</span>`:'';
+  return `<div class="overlay dgx"><div class="box dg-box"><span class="dg-tag">DIGEST · TURN ${d.t+1}/${N}</span>${when}${dots}
+    <div class="dg-news">${yr}<b>${esc(src.news[d.t]||'')}</b></div>
     <div class="dg-lanes">${lanes}</div>
     <p class="dg-say">${digestLine(d.t)}</p>
     ${digestRace(d.t)}${ctl}</div></div>`;
@@ -3986,14 +4008,14 @@ function newsSfx(){
   [659,830,988,1319].forEach((f,i)=>tone(f,.22,'triangle',.06,i*.16)); chips();   // 速報チャイム
 }
 function renderOv(){
+  if(DGS){ renderDg(); return; }
   const ov=$('#ov'); if(!G || !G.ov){ ov.innerHTML=''; ov.dataset.k=''; return; }
-  const ik = G.ov==='intro' ? 'i'+(G.round||0)+':'+G.turn : G.ov==='digest'&&G.dg ? 'd'+G.dg.t+':'+G.dg.play : '';   // NEWS演出は途中で描き直すと最初から再生されるので、同じターンなら触らない
+  const ik = G.ov==='intro' ? 'i'+(G.round||0)+':'+G.turn : '';   // NEWS演出は途中で描き直すと最初から再生されるので、同じターンなら触らない
   if(ik && ov.dataset.k===ik && ov.firstElementChild) return;
   ov.dataset.k=ik;
   if(G.ov==='vs'){ ov.innerHTML=vsOverlay(); return; }
   if(G.ov==='flip'){ ov.innerHTML=flipOverlay(); return; }
   if(G.ov==='ceremony'){ ov.innerHTML=ceremonyOverlay(); return; }
-  if(G.ov==='digest'){ ov.innerHTML=digestOverlay(); return; }
   if(G.ov==='settle'){ ov.innerHTML=settleOverlay(); return; }
   if(G.ov==='count'){ ov.innerHTML=`<div class="overlay"><div class="box"><div class="count${G.countText.length>1?' open':''}">${G.countText}</div></div></div>`; return; }
   if(G.ov==='intro'){ const n=G.deck[G.turn];
@@ -5419,7 +5441,7 @@ function historyPanel(){
     <div class="hlist">${L.slice(0,12).map(x=>`<div class="hrow">
       <span class="hplace p${Math.min(x.r,4)}">${x.r}<small>/${x.n}</small></span>
       <span class="hmeta"><b>${x.m==='f'?'未来編':x.m==='h'?'歴史モード':'クラシック'}${x.l?' <span class="htag long">ロング</span>':''}${x.d?' <span class="htag">デイリー</span>':''}${x.o?' <span class="htag cy">オンライン</span>':''}</b><span class="note">${d(x.t)}</span></span>
-      <span class="hgrid">${x.g||''}</span><b class="hs">${x.s}<small>pt</small></b></div>`).join('')}</div></section>`;
+      <span class="hgrid">${x.g||''}</span><b class="hs">${x.s}<small>pt</small></b>${repFor(x.t)?`<button class="hrep" onclick="repPlay(${x.t})" aria-label="この試合をダイジェストで再生">▶</button>`:''}</div>`).join('')}</div>${(S.prof.reps||[]).length?`<p class="note">▶ で最近${REP_MAX}試合までをダイジェスト再生できます（名勝負アーカイブ）。</p>`:''}</section>`;
 }
 /* ---- first-time guide for the long game ---- */
 function longTutOnce(){ if(load('azakei-longtut')) return; save('azakei-longtut',1); setTimeout(()=>openSheet('longtut'),250); }
