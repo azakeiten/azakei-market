@@ -1559,6 +1559,14 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .sky-tk .up{color:#3fe08f}.sky-tk .dn{color:#ff6b7d}
 @keyframes skyRun{to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.sky-tk,.sky-b,.sky-win,.sky-stars,.sky-star{animation:none}}
+.why-box{position:relative;margin-top:10px;padding:12px 14px 12px;border-radius:16px;background:linear-gradient(170deg,#fff8e6,#f3e6c4);color:#2a2116;box-shadow:inset 0 0 0 1px rgb(120 90 40 / .25),0 3px 0 rgb(0 0 0 / .25);animation:dgIn .5s 1.4s both}
+.why-box.dex{animation:none;margin-top:12px;text-align:left}
+.why-tag{position:absolute;top:-10px;left:12px;font-size:11px;font-weight:900;padding:2px 10px;border-radius:999px;background:#c8102e;color:#fff;letter-spacing:.06em}
+.why-s{margin:2px 0 8px;font-weight:800;font-size:14px;line-height:1.45}
+.why-r{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-top:1px dashed rgb(120 90 40 / .3);font-size:13px;line-height:1.45}
+.why-r b{display:block;font-size:12.5px}.why-r.why-up b{color:#0d8a4a}.why-r.why-dn b{color:#c8102e}
+.why-i{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--c);color:#fff}.why-i svg{width:16px;height:16px}
+@media (prefers-reduced-motion:reduce){.why-box{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3853,6 +3861,33 @@ function skyTap(c){
   const {ch,li}=todayMarket(); sfx('click'); haptic(6);
   toast(c===li ? `★ ${IND[c]} ${skyPct(ch[c])}　今日のラッキー産業！ 独占すると +${LUCK_COIN}コイン` : `${IND[c]} ${skyPct(ch[c])}　今日の${ch[c]>0?'上げ':ch[c]<0?'下げ':'横ばい'}ムード（点数には関係ありません）`);
 }
+/* ---- 「なぜ？」解説：クラシック（＋EX）のNEWSごとに、得する産業・損する産業の理由をひとことで。
+   並び順は ALL_NEWS と同じ。u＝上がる理由、d＝下がる理由（産業の番号ごと） ---- */
+const WHY=[
+  {s:'石油や電気の値段が一気に上がった！', u:{0:'石油・電気を売る会社は、同じ量でも売上が大きくふえる',1:'資源にお金が集まり、銀行や証券会社の取引がにぎわう'}, d:{4:'飛行機やトラックの燃料代が重くのしかかる',2:'工場の電気代や原料代が上がり、利益がけずられる',3:'仕入れ値が上がって、お店の値上げが続く'}},
+  {s:'株や土地の値段がぐんぐん上がっている！', u:{1:'株や土地が値上がりして、銀行・証券会社がもうかる',5:'景気がいいので広告がふえ、テレビや雑誌がうるおう'}, d:{0:'バブルの熱気は、電気や石油の需要まではあまり届かない',4:'値上がりするのは資産で、運ぶモノの量はあまり変わらない'}},
+  {s:'国が道路・鉄道・発電所にお金を注ぎこんだ！', u:{0:'新しい発電所や送電網がつぎつぎに作られる',4:'道路や港が整い、モノや人を運ぶ量がふえる',2:'工事に使う鉄やセメント、機械の注文がふえる'}, d:{5:'お金が工事に回り、広告は後回しになりやすい'}},
+  {s:'みんながどんどん買い物している！', u:{2:'作れば売れるので、工場はフル回転',3:'お店に人が押し寄せ、レジが止まらない',4:'売れた商品を届ける荷物がふえる'}, d:{0:'買い物の波は、電気や石油の売上にはあまり届かない'}},
+  {s:'旅行に出かける人が急にふえた！', u:{3:'お土産や飲食店が大にぎわい',4:'飛行機・新幹線・バスが満席に'}, d:{2:'人々がモノより「体験」にお金を使うので、モノづくりは一休み',1:'旅行の熱気は、銀行のもうけにはあまりつながらない'}},
+  {s:'仕事も暮らしもデジタルに切りかわっている！', u:{2:'半導体やパソコン、電子機器の注文が殺到',5:'動画配信やSNS広告がぐんと伸びる'}, d:{0:'効率化や在宅で、移動や紙が減りエネルギーの使い方が変わる'}},
+  {s:'石油や鉱山の会社の株が大人気！', u:{0:'資源を持つ会社の株が買われ、お金が集まる',1:'株の売り買いがふえて、証券会社がうるおう'}, d:{4:'燃料が高くなり、運ぶコストが上がる',2:'原料が高くなり、モノを作るのが苦しくなる',3:'仕入れ値が上がり、お店の利益がへる'}},
+  {s:'円の価値が下がって、外国から見て日本が「安く」なった！', u:{2:'海外で日本製品が安くなり、輸出がのびる',4:'外国人観光客と、輸出する荷物がふえる'}, d:{0:'石油やガスを外国から買う値段が上がってしまう'}},
+  {s:'好きなアイドルやキャラを応援する「推し活」が大流行！', u:{3:'グッズや限定品が飛ぶように売れる',5:'配信・ライブ・SNSが盛り上がる'}, d:{0:'推し活のお金は、電気や石油にはほとんど向かない',1:'楽しみに使うお金が多く、貯金や投資は少なめ'}},
+  {s:'CO2をへらすための投資が世界中で始まった！', u:{0:'太陽光や風力など、新しい発電にお金が集まる',2:'電気自動車や電池の工場がつぎつぎに建つ'}, d:{3:'環境対応のコストが値段にのり、買い物がひかえめに',5:'お金が設備に回り、広告は後回しに'}},
+  {s:'スマホ決済やネット銀行が一気に広がった！', u:{1:'新しいお金のサービスが急成長',5:'アプリやネット広告がにぎわう'}, d:{4:'現金を運ぶ仕事や窓口へ行く移動がへる',0:'お金のデジタル化は、エネルギーとは縁が遠い'}},
+  {s:'ネット通販で大セールが始まった！', u:{3:'ネットのお店に注文が殺到',4:'宅配の荷物が山のようにふえる'}, d:{1:'値引き合戦で、お金を貸す先の利益がうすくなる'}}
+];
+function whyBox(n, row, dex){
+  if(!dex && (!G || G.cfg.hist || G.cfg.fut)) return '';      /* 歴史モード・未来編は、それぞれの解説がある */
+  const w=WHY[n]; if(!w || !row) return '';
+  const mx=Math.max(...row), mn=Math.min(...row);
+  const up=row.map((v,c)=>({v,c})).filter(x=>x.v===mx && w.u[x.c]).slice(0,2);
+  const dn=row.map((v,c)=>({v,c})).filter(x=>x.v===mn && x.v<=0 && w.d[x.c]).slice(0,1);
+  if(!up.length && !dn.length) return '';
+  return `<div class="why-box${dex?' dex':''}"><span class="why-tag">なぜ？</span><p class="why-s">${w.s}</p>
+    ${up.map(x=>`<div class="why-r why-up" style="--c:var(--i${x.c})"><span class="why-i">${svg(x.c,2.2)}</span><span><b>${IND[x.c]} ${sgn(x.v)}</b>${w.u[x.c]}</span></div>`).join('')}
+    ${dn.map(x=>`<div class="why-r why-dn" style="--c:var(--i${x.c})"><span class="why-i">${svg(x.c,2.2)}</span><span><b>${IND[x.c]} ${sgn(x.v)}</b>${w.d[x.c]}</span></div>`).join('')}</div>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4280,7 +4315,7 @@ function revealDock(){
   }).join('');
   return `<div class="dock">${guideTip()}${myResultBar()}<div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold)">${mvp} ${sgn(best)}</b></span></div>
     ${liveBox()}
-    <div class="board">${lanes}</div>${emoteBar()}
+    <div class="board">${lanes}</div>${whyBox(G.deck[G.turn], G.cfg.table[G.deck[G.turn]])}${emoteBar()}
     <div class="actions" style="justify-content:flex-end">${G.online&&!G.host?'<span class="note">ホストが次へ進めます…</span>':`<button class="btn gold big pulse" style="flex:1 1 auto;max-width:360px" onclick="nextTurn()">${G.turn===TURNS-1?'最終結果へ':'次のターンへ'}</button>`}</div></div>`;
 }
 function finalView(){
@@ -5004,7 +5039,7 @@ function dexSheetBody(key){
   const payRow=r=>{ const mx=Math.max(...r); return `<div class="dexpay">${IND.map((d,i)=>`<div class="${r[i]===mx?'top':''}"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span>${d}</span><b class="${cls(r[i])}">${sgn(r[i])}</b></div>`).join('')}</div>`; };
   if(k==='m'){ const m=MARKETS[id]; return `<span class="label">マーケット図鑑 · 市況カード</span>${marketCard(id,'big')}<button class="btn gold big" onclick="closeSheet()">とじる</button>`; }
   if(k==='h'){ const h=HIST[+id]; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${+id+7}</span></div><div class="yr">${h.y}</div><h3>${h.n}</h3><p>${gloss(h.d)}</p>${payRow(h.r)}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`; }
-  const i=+id; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${i+1}</span></div><h3>${ALL_NEWS[i]}！</h3><p>${i>=NEWS.length?'クラシックEXで登場する経済NEWS':'クラシックの経済NEWS'}。いちばん高いのは${(()=>{ const r=T2.concat(EXT_T)[i], mx=Math.max(...r); return r.map((v,c)=>v===mx?IND[c]:'').filter(Boolean).join('・'); })()}。</p>${payRow(i<NEWS.length?(CFG.table[i]||T2[i]):EXT_T[i-NEWS.length])}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`;
+  const i=+id; return `<div class="dexpaper"><div class="mast"><span>AZAKEI 経済新聞</span><span>図鑑 No.${i+1}</span></div><h3>${ALL_NEWS[i]}！</h3><p>${i>=NEWS.length?'クラシックEXで登場する経済NEWS':'クラシックの経済NEWS'}。いちばん高いのは${(()=>{ const r=T2.concat(EXT_T)[i], mx=Math.max(...r); return r.map((v,c)=>v===mx?IND[c]:'').filter(Boolean).join('・'); })()}。</p>${payRow(i<NEWS.length?(CFG.table[i]||T2[i]):EXT_T[i-NEWS.length])}${whyBox(i, i<NEWS.length?(CFG.table[i]||T2[i]):EXT_T[i-NEWS.length], true)}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`;
 }
 /* ---- login bonus: 1日1回、7日周期でXP。7日目は特大 ---- */
 const LOGIN_XP=[20,20,30,30,40,40,120];
