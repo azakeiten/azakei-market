@@ -1642,6 +1642,14 @@ html.hicon :focus-visible{outline:3px solid #ffe08a !important;outline-offset:2p
 .tm-who{display:flex;gap:3px}.tm-who .ava{width:26px;height:26px;font-size:12px}
 .tm-st{font-size:11px;font-weight:900;padding:1px 8px;border-radius:6px}.tm-st.g{background:var(--gold);color:#2a1a00}.tm-st.r{background:#ff5c5c;color:#fff}
 @media (prefers-reduced-motion:reduce){.stp.now i{animation:none}}
+html.cvd .dot{width:17px;height:17px;display:inline-grid;place-items:center;border-radius:5px;font-size:11px;font-weight:900;line-height:1;color:#fff;text-shadow:0 1px 1px rgb(0 0 0 / .5)}
+html.cvd .chip i{width:15px;height:15px;display:grid;place-items:center;border-radius:4px;font-style:normal;font-size:11px;font-weight:900;line-height:1;color:#fff;text-shadow:0 1px 1px rgb(0 0 0 / .5)}
+html.cvd .c0.dot::after,html.cvd .chip.c0 i::after{content:"エ"}
+html.cvd .c1.dot::after,html.cvd .chip.c1 i::after{content:"金"}
+html.cvd .c2.dot::after,html.cvd .chip.c2 i::after{content:"製"}
+html.cvd .c3.dot::after,html.cvd .chip.c3 i::after{content:"小"}
+html.cvd .c4.dot::after,html.cvd .chip.c4 i::after{content:"運"}
+html.cvd .c5.dot::after,html.cvd .chip.c5 i::after{content:"メ"}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2274,6 +2282,7 @@ function start(data){
   if(S.evt===undefined) S.evt=!!load('azakei-evt');
   if(S.fs===undefined){ const v=load('azakei-fs'); S.fs = v!=null ? v : (load('azakei-big') ? 1 : 0); }
   if(S.hc===undefined) S.hc=!!load('azakei-hc');
+  if(S.cvd===undefined) S.cvd=!!load('azakei-cvd');
   if(S.steps===undefined){ const v=load('azakei-steps'); S.steps = v==null ? null : !!v; }
   applyLook();
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
@@ -3865,7 +3874,7 @@ function digestOverlay(){
   }
   const lanes=IND.map((_,c)=>{ const who=P.filter(p=>p.u[d.t]&&p.u[d.t][0]===c), k=who.length;
     const vals=who.map(p=>sgn(p.u[d.t][1])).filter((x,j,a)=>a.indexOf(x)===j).join('/'), v=k?who[0].u[d.t][1]:0;
-    return `<div class="dg-lane${k===1?' mono':k>1?' hit':''}${!k?' empty':''}" style="--dl:${300+c*70}ms"><span class="chip" style="--c:var(--i${c})"><i></i>${IND[c]}</span>
+    return `<div class="dg-lane${k===1?' mono':k>1?' hit':''}${!k?' empty':''}" style="--dl:${300+c*70}ms"><span class="chip c${c}" style="--c:var(--i${c})"><i></i>${IND[c]}</span>
       <span class="dg-who">${who.map(p=>`<span class="ava" style="--s:var(--s${p.s})" title="${esc(p.n)}">${esc(p.a)}</span>`).join('')}</span>
       ${k?`<b class="dg-v ${v>0?'up':v<0?'dn':''}">${vals}</b>${k===1?'<span class="dg-badge">独占</span>':`<span class="dg-badge hit">${k}人</span>`}`:''}</div>`; }).join('');
   const yr=src.yrs&&src.yrs[d.t]!=null?`<span class="dg-yr">${esc(String(src.yrs[d.t]))}</span>`:'';
@@ -4032,7 +4041,8 @@ function gogaiPaper(){
   </section>`;
 }
 /* ---- 見やすさ・遊びやすさ：文字の大きさ3段階・くっきり表示・操作ガイド・ことばの説明 ---- */
-function applyLook(){ const r=document.documentElement; r.classList.toggle('bigtext',S.fs===1); r.classList.toggle('fs2',S.fs===2); r.classList.toggle('hicon',!!S.hc); }
+function applyLook(){ const r=document.documentElement; r.classList.toggle('bigtext',S.fs===1); r.classList.toggle('fs2',S.fs===2); r.classList.toggle('hicon',!!S.hc); r.classList.toggle('cvd',!!S.cvd); }
+function toggleCvd(){ S.cvd=!S.cvd; save('azakei-cvd',S.cvd); applyLook(); renderSheet(); render(); }
 function setFs(i){ S.fs=i; save('azakei-fs',i); applyLook(); sfx('click'); renderSheet(); render(); }
 function toggleBig(){ setFs(S.fs?0:1); }
 function toggleHc(){ S.hc=!S.hc; save('azakei-hc',S.hc); applyLook(); renderSheet(); render(); }
@@ -4368,7 +4378,7 @@ function seatsView(){
       <div class="ava${i===myIndex()?frc():''}" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</div>
       <div class="nm">${esc(p.name)}${isHuman(p)?'':`<span class="tagx${p.type==='pro'?' pro':''}">${cpuLabel(p)}</span>`}</div>
       <div class="sc" id="sc${i}">${G.phase==='reveal'?p.shown:p.score}${spark(p.hist)}</div>
-      <div class="meta">${p.used.filter(u=>Math.floor(u.turn/TURNS)===(G.round||0)).map(u=>`<span class="dot c${u.ind}" title="${IND[u.ind]}"></span>`).join('')}${p.brand!=null?`<span class="brd sm" style="--c:var(--i${p.brand})" title="ブランド">${IND[p.brand]}</span>`:""}<span class="eye${p.foreUsed?' on':''}" title="未来予測">${EYE}${p.foreUsed?FORE[G.cfg.fore].short+'済':'未使用'}</span></div>
+      <div class="meta">${p.used.filter(u=>Math.floor(u.turn/TURNS)===(G.round||0)).map(u=>`<span class="dot c${u.ind}" title="${IND[u.ind]}" role="img" aria-label="出した産業：${IND[u.ind]}"></span>`).join('')}${p.brand!=null?`<span class="brd sm" style="--c:var(--i${p.brand})" title="ブランド">${IND[p.brand]}</span>`:""}<span class="eye${p.foreUsed?' on':''}" title="未来予測">${EYE}${p.foreUsed?FORE[G.cfg.fore].short+'済':'未使用'}</span></div>
       <div class="play">${play}</div></div>`;
   }).join('');
 }
@@ -4385,7 +4395,7 @@ function paperCard(news){
     <p class="lede">${gloss(HIST[news].d)}</p>${pays}</section>`;
   return `<section class="paper" aria-label="今ターンの経済NEWS">
     <div class="mast"><span class="t">AZAKEI 経済新聞</span><span class="d">${turnLabel()}<span class="gogai">号外</span></span></div>
-    <h2>${nm(news)}！</h2>${pays}</section>`;
+    <h2>${nm(news)}！</h2>${WHY[news]?`<p class="lede">${WHY[news].s}</p>`:''}${pays}</section>`;
 }
 function timeline(){
   const C=G.cfg, cur=yearOf(G.deck[G.turn]), shown=G.deck.slice(0,G.turn+1);
@@ -4651,6 +4661,7 @@ function settingsBody(){
     <div class="lk-box"><span class="label">見やすさ・遊びやすさ</span>
       <div class="lk-fs"><b>文字の大きさ</b><div class="lk-seg" role="radiogroup" aria-label="文字の大きさ">${['ふつう','大きい','特大'].map((n,i)=>`<button role="radio" aria-checked="${S.fs===i}" class="${S.fs===i?'on':''}" onclick="setFs(${i})" style="font-size:${13+i*2}px">${n}</button>`).join('')}</div></div>
       ${sw(!!S.hc,'toggleHc()','くっきり表示','うすい文字や線を濃くして、見分けやすくする')}
+      ${sw(!!S.cvd,'toggleCvd()','色の見分けサポート','色の小さな印に、産業の頭文字（エ・金・製・小・運・メ）を入れる')}
       ${sw(stepsOn(),'toggleSteps()','操作ガイド','試合中に「いまやること」を番号つきで表示する')}
       <button class="swrow" onclick="openSheet('terms')"><span><b>ことばの説明</b><span class="note">NEWS・独占・被り・先物取引などを、絵つきでやさしく説明</span></span><span class="xf-go">›</span></button></div>
     ${sw(!!S.coach,'toggleCoach()','コーチ（初心者向け）','手札の画面に「おすすめ」と理由を出す')}
