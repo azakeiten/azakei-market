@@ -1526,6 +1526,39 @@ body[data-table="shogatsu"]::before{background:repeating-linear-gradient(60deg,r
 .hrep{flex:none;width:36px;height:36px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;font-size:13px;background:#4fe3ff;color:#06102a;box-shadow:0 3px 0 #1a6fd6}
 .hrep:active{transform:translateY(2px);box-shadow:0 1px 0 #1a6fd6}
 .dg-sub{font-size:11px;font-weight:800;color:#aab;margin-top:-6px}
+.skyl{position:relative;height:184px;margin-top:10px;border-radius:24px;overflow:hidden;isolation:isolate;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .12),0 10px 30px -14px #000;--wc:rgb(255 255 255 / .35);--bd:22%}
+.skyl.sky-morn{background:linear-gradient(180deg,#ff9f7a 0%,#ffd39a 45%,#9fd3ff 100%)}
+.skyl.sky-day{background:linear-gradient(180deg,#2f7dff 0%,#7cc4ff 60%,#c9ecff 100%)}
+.skyl.sky-eve{background:linear-gradient(180deg,#2b1a5a 0%,#b23a6b 50%,#ff9a4d 100%);--wc:#ffd36a;--bd:45%}
+.skyl.sky-night{background:linear-gradient(180deg,#040714 0%,#111a48 60%,#27306e 100%);--wc:#ffe58a;--bd:62%}
+.sky-stars{position:absolute;inset:0 0 40%;z-index:-1;background-image:radial-gradient(1.4px 1.4px at 12% 20%,#fff,transparent),radial-gradient(1px 1px at 28% 46%,#fff,transparent),radial-gradient(1.6px 1.6px at 47% 14%,#fff,transparent),radial-gradient(1px 1px at 63% 36%,#fff,transparent),radial-gradient(1.3px 1.3px at 78% 12%,#fff,transparent),radial-gradient(1px 1px at 90% 40%,#fff,transparent),radial-gradient(1px 1px at 38% 28%,#fff,transparent);animation:skyTw 3.2s ease-in-out infinite}
+@keyframes skyTw{50%{opacity:.45}}
+.sky-orb{position:absolute;z-index:-1;width:34px;height:34px;border-radius:50%;translate:-50% 50%;background:radial-gradient(circle at 40% 40%,#fff8d6,#ffd36a 60%,#ffb02e);box-shadow:0 0 30px 8px rgb(255 211 106 / .55)}
+.sky-night .sky-orb{width:26px;height:26px;background:radial-gradient(circle at 35% 35%,#fffbe8,#e9e3c4);box-shadow:0 0 24px 4px rgb(255 251 232 / .35),inset -7px -3px 0 rgb(0 0 0 / .12)}
+.sky-head{position:absolute;top:12px;left:14px;right:14px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;color:#fff;text-shadow:0 1px 3px rgb(0 0 0 / .45)}
+.sky-ph{font-size:11px;font-weight:900;letter-spacing:.08em;padding:2px 9px;border-radius:999px;background:rgb(0 0 0 / .28)}
+.sky-head b{font-family:var(--display);font-weight:400;font-size:17px;letter-spacing:.02em}
+.sky-head em,.sky-tk em{font-style:normal;font-weight:900;font-size:12px}
+.skyl .up{color:#3fe08f}.skyl .dn{color:#ff6b7d}
+.sky-day .up,.sky-morn .up{color:#0d9a52}.sky-day .dn,.sky-morn .dn{color:#d61f45}.sky-day .sky-head em,.sky-morn .sky-head em{text-shadow:none;background:rgb(255 255 255 / .85);padding:0 6px;border-radius:6px}
+.sky-city{position:absolute;left:10px;right:10px;bottom:30px;height:118px;display:flex;align-items:flex-end;justify-content:space-between;gap:6px}
+.sky-city::after{content:"";position:absolute;left:-10px;right:-10px;bottom:-2px;height:4px;background:rgb(0 0 0 / .35)}
+.sky-b{position:relative;flex:1 1 0;min-width:0;height:var(--h);border:0;padding:0;cursor:pointer;border-radius:8px 8px 2px 2px;background:linear-gradient(180deg,color-mix(in srgb,var(--ic) calc(100% - var(--bd)),#0b0d22),color-mix(in srgb,var(--ic) calc(70% - var(--bd)),#0b0d22));box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .18),inset -8px 0 0 rgb(0 0 0 / .14);transform-origin:50% 100%;animation:skyRise .9s cubic-bezier(.2,1.3,.4,1) var(--dl) both;color:#fff}
+.sky-b:active{scale:.96}
+.sky-ic{position:absolute;top:6px;left:50%;translate:-50% 0;width:22px;height:22px;display:grid;place-items:center;border-radius:7px;background:rgb(0 0 0 / .22)}.sky-ic svg{width:15px;height:15px}
+.sky-win{position:absolute;inset:34px 6px 6px;background-image:radial-gradient(var(--wc) 1.3px,transparent 1.7px);background-size:8px 9px;background-position:center top}
+.sky-night .sky-win,.sky-eve .sky-win{animation:skyWin 4s steps(2) infinite}
+@keyframes skyWin{50%{opacity:.75}}
+.sky-b.luck{box-shadow:inset 0 0 0 2px #ffe08a,0 0 20px -2px #ffc83a}
+.sky-star{position:absolute;top:-20px;left:50%;translate:-50% 0;font-size:16px;color:#ffd36a;text-shadow:0 0 10px #ffc83a,0 1px 0 rgb(0 0 0 / .4);animation:skyBob 2s ease-in-out infinite}
+@keyframes skyBob{50%{translate:-50% -5px}}
+@keyframes skyRise{from{transform:scaleY(.05)}}
+.sky-tick{position:absolute;left:0;right:0;bottom:0;height:28px;display:flex;align-items:center;overflow:hidden;background:rgb(6 8 24 / .82);border-top:1px solid rgb(255 255 255 / .1)}
+.sky-tk{display:flex;flex:none;gap:22px;padding-left:22px;white-space:nowrap;animation:skyRun 26s linear infinite;font-size:12px;color:#e9ecff}
+.sky-tk span{display:inline-flex;gap:6px;align-items:baseline}.sky-tk span.luck b{color:#ffd36a}
+.sky-tk .up{color:#3fe08f}.sky-tk .dn{color:#ff6b7d}
+@keyframes skyRun{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.sky-tk,.sky-b,.sky-win,.sky-stars,.sky-star{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3793,6 +3826,33 @@ function recHall(){
       return `<div class="rh-t${r?'':' none'}${fresh?' new':''}"><span class="rh-ic">${x.ic}</span><span class="rh-n">${x.n}</span><b class="rh-v">${r?r.v:'—'}<small>${r?x.u:''}</small></b><span class="rh-d">${sub}</span>${fresh?'<i class="rh-new">NEW</i>':''}</div>`; }).join('')}</div>
     <p class="note">ロング版・作戦カードありの試合は記録に入りません。</p></section>`;
 }
+/* ---- ホームの街並み：本当の時刻で空が朝・昼・夕方・夜に変わり、6つの産業ビルが「今日の相場」で伸び縮みする。
+   相場は日付から決まる雰囲気の演出で、点数には関係しない（いちばん上がるのは今日のラッキー産業） ---- */
+function todayMarket(){
+  const r=mulberry(todayKey()*31+3), li=luckyInd();
+  const ch=IND.map(()=>Math.round((r()*5-2.5)*10)/10);
+  ch[li]=Math.round((Math.max(...ch.filter((v,i)=>i!==li),0)+0.4+r()*1.2)*10)/10;
+  return {ch, li};
+}
+const skyPhase = h => h>=5&&h<10 ? 'morn' : h>=10&&h<16 ? 'day' : h>=16&&h<19 ? 'eve' : 'night';
+const SKY_N = {morn:'朝の市場', day:'昼の市場', eve:'夕方の市場', night:'夜の市場'};
+const skyPct = v => `${v>0?'▲':v<0?'▼':'±'}${Math.abs(v).toFixed(1)}%`;
+function skyScene(){
+  const now=new Date(), hh=now.getHours()+now.getMinutes()/60, ph=skyPhase(now.getHours()), {ch,li}=todayMarket();
+  const avg=Math.round(ch.reduce((a,v)=>a+v,0)/6*100)/100, idx=(28000+(todayKey()%997)*7+avg*310).toLocaleString('ja-JP',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const dayT=Math.min(1,Math.max(0,(hh-5)/14)), nightT=((hh+24-19)%24)/10;     /* 太陽は5時→19時、月は19時→5時で空を横切る */
+  const t=ph==='night'?nightT:dayT, ox=6+t*88, oy=18+Math.sin(t*Math.PI)*46;
+  const tick=IND.map((n,c)=>`<span${c===li?' class="luck"':''}><b>${c===li?'★':''}${n}</b><em class="${ch[c]>0?'up':ch[c]<0?'dn':''}">${skyPct(ch[c])}</em></span>`).join('');
+  return `<section class="skyl sky-${ph}" aria-label="今日の相場（${SKY_N[ph]}）">
+    ${ph==='night'?'<i class="sky-stars"></i>':''}<i class="sky-orb" style="left:${ox}%;bottom:${oy}%"></i>
+    <div class="sky-head"><span class="sky-ph">${SKY_N[ph]}</span><b>AZAKEI指数 ${idx}</b><em class="${avg>=0?'up':'dn'}">${skyPct(avg)}</em></div>
+    <div class="sky-city">${IND.map((n,c)=>`<button class="sky-b${c===li?' luck':''}" style="--ic:var(--i${c});--h:${Math.round(52+[10,22,4,14,0,18][c]+ch[c]*7)}px;--dl:${(c*.07).toFixed(2)}s" onclick="skyTap(${c})" aria-label="${n} ${skyPct(ch[c])}"><span class="sky-ic">${svg(c,2.2)}</span>${c===li?'<span class="sky-star">★</span>':''}<span class="sky-win"></span></button>`).join('')}</div>
+    <div class="sky-tick" aria-hidden="true"><div class="sky-tk">${tick}${tick}</div></div></section>`;
+}
+function skyTap(c){
+  const {ch,li}=todayMarket(); sfx('click'); haptic(6);
+  toast(c===li ? `★ ${IND[c]} ${skyPct(ch[c])}　今日のラッキー産業！ 独占すると +${LUCK_COIN}コイン` : `${IND[c]} ${skyPct(ch[c])}　今日の${ch[c]>0?'上げ':ch[c]<0?'下げ':'横ばい'}ムード（点数には関係ありません）`);
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4302,6 +4362,7 @@ function homeView(){
         <div class="row heroact"><button class="btn gold huge pulse" onclick="go('play','cpu')">あそぶ</button><button class="btn ghost" onclick="openTutorial()">遊び方（1分）</button><button class="btn ghost" onclick="openSheet('modes')">なにで遊ぶ？</button></div>
       </div>
       <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>
+  ${skyScene()}
   ${nameCard()}
   ${homeTalk()}
   ${quickMenu()}
