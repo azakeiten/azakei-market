@@ -1710,10 +1710,15 @@ html.light body[data-theme="long"]{--night:#f6efff;--felt:#ede0ff;--felt2:#dcc6f
 html.light body[data-theme="future"]{--night:#eef9ff;--felt:#dff3fc;--felt2:#c4e7f6;--rail:#cfe6f1;--panel:#ffffff;--panel2:#eaf6fc;--line:#c3e0ee;--muted:#3e6b80;--dim:#6f9db3}
 html.light #bg{opacity:.35}
 html.light{--gold-t:#a86b00;--cyan-t:#0b7fa6;--cyan-tx:#0b7fa6}
-html.light :is(.overlay,.skyl,.tile,.mcard,.wide,.dgx,.stampfx,.tut-art,.ipf-hero,.mkt,.pcard,.mode.fut,.cr-list,.hero .showcase){--ink:#f5f2ff;--muted:#a9addc;--dim:#6c71ad;--line:#353b86;--panel:#1a1e4f;--panel2:#252a6a;--rail:#070818;--up:#5cf0a2;--down:#ff7f7f;--gold-t:var(--gold);--cyan-t:#7af0ff;--cyan-tx:var(--cyan)}
+html.light :is(.overlay,.skyl,.tile,.mcard,.wide,.dgx,.stampfx,.tut-art,.ipf-hero,.mkt,.pcard,.mode.fut,.cr-list,.hero .showcase,.seasoncard,.bosscard,.dl.long,.dl.fut){--ink:#f5f2ff;--muted:#a9addc;--dim:#6c71ad;--line:#353b86;--panel:#1a1e4f;--panel2:#252a6a;--rail:#070818;--up:#5cf0a2;--down:#ff7f7f;--gold-t:var(--gold);--cyan-t:#7af0ff;--cyan-tx:var(--cyan)}
 html.light .title .m{background:linear-gradient(100deg,#e09a00 0%,#f5b400 40%,#ffd65a 50%,#f5b400 60%,#e09a00 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text}
 html.light .lv,html.light .pchip .lv{color:#a86b00}
 html.light .tabbar button.on{color:#a86b00}
+html.light .linkbtn{color:#0b7fa6}
+html.light .yrcell{color:#7a4a12}
+html.light .rvrec .w{color:#0d9a52}html.light .rvrec .l{color:#c0283f}
+html.light .codebox b{color:#0d7a40}
+html.light .ipf-nw.pos b{color:#0d7a40}html.light .ipf-nw.neg b{color:#c0283f}
 html.light .seat{background:linear-gradient(180deg,#fff,#f6f3ff);box-shadow:inset 0 0 0 1px var(--line),0 8px 20px -14px rgb(60 50 140 / .4)}
 html.light .seat.me{box-shadow:inset 0 0 0 2px var(--gold),0 0 18px -8px var(--gold)}
 html.light .dock{background:linear-gradient(180deg,rgb(255 255 255 / .6),rgb(242 239 253 / .95))}
@@ -2408,7 +2413,8 @@ function start(data){
   if(S.fs===undefined){ const v=load('azakei-fs'); S.fs = v!=null ? v : (load('azakei-big') ? 1 : 0); }
   if(S.hc===undefined) S.hc=!!load('azakei-hc');
   if(S.cvd===undefined) S.cvd=!!load('azakei-cvd');
-  if(S.light===undefined) S.light=!!load('azakei-light');
+  if(S.theme===undefined){ const v=load('azakei-theme'); S.theme = v||(load('azakei-light')?'light':'dark'); }
+  try{ matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{ if(S.theme==='auto'){ applyLook(); render(); } }); }catch(e){}
   if(S.furi===undefined) S.furi=!!load('azakei-furi');
   furiArm();
   if(S.steps===undefined){ const v=load('azakei-steps'); S.steps = v==null ? null : !!v; }
@@ -4171,8 +4177,9 @@ function gogaiPaper(){
   </section>`;
 }
 /* ---- 見やすさ・遊びやすさ：文字の大きさ3段階・くっきり表示・操作ガイド・ことばの説明 ---- */
-function applyLook(){ const r=document.documentElement; r.classList.toggle('bigtext',S.fs===1); r.classList.toggle('fs2',S.fs===2); r.classList.toggle('hicon',!!S.hc); r.classList.toggle('cvd',!!S.cvd); r.classList.toggle('light',!!S.light); const mc=document.querySelector('meta[name="theme-color"]'); if(mc) mc.content=S.light?'#f4f1ff':'#0a0c22'; }
-function toggleLight(){ S.light=!S.light; save('azakei-light',S.light); applyLook(); sfx('click'); renderSheet(); render(); }
+function applyLook(){ const r=document.documentElement; r.classList.toggle('bigtext',S.fs===1); r.classList.toggle('fs2',S.fs===2); r.classList.toggle('hicon',!!S.hc); r.classList.toggle('cvd',!!S.cvd); S.light = S.theme==='light' || (S.theme==='auto' && matchMedia('(prefers-color-scheme: light)').matches); r.classList.toggle('light',!!S.light); const mc=document.querySelector('meta[name="theme-color"]'); if(mc) mc.content=S.light?'#f4f1ff':'#0a0c22'; }
+function setThemePref(t){ S.theme=t; save('azakei-theme',t); applyLook(); sfx('click'); renderSheet(); render(); }
+function toggleLight(){ setThemePref(S.light?'dark':'light'); }
 function toggleCvd(){ S.cvd=!S.cvd; save('azakei-cvd',S.cvd); applyLook(); renderSheet(); render(); }
 function setFs(i){ S.fs=i; save('azakei-fs',i); applyLook(); sfx('click'); renderSheet(); render(); }
 function toggleBig(){ setFs(S.fs?0:1); }
@@ -4928,7 +4935,7 @@ function settingsBody(){
     ${sw(!!S.bgm,'toggleBgm()','BGM','ゲーム中に軽い音楽を流す')}
     ${sw(!!S.tts,'toggleTts()','ニュース読み上げ','NEWSの見出しをアナウンサーのように声で読む')}
     <div class="lk-box"><span class="label">見やすさ・遊びやすさ</span>
-      ${sw(!!S.light,'toggleLight()','明るい画面','白っぽい明るい色で表示する（昼間や教室のプロジェクター向け）')}
+      <div class="lk-fs"><b>画面の色</b><div class="lk-seg" role="radiogroup" aria-label="画面の色">${[['dark','🌙 暗い'],['light','☀️ 明るい'],['auto','📱 自動']].map(([k,n])=>`<button role="radio" aria-checked="${S.theme===k}" class="${S.theme===k?'on':''}" onclick="setThemePref('${k}')">${n}</button>`).join('')}</div></div><p class="note" style="margin:-2px 4px 4px">「自動」は、スマホやパソコンの明るさの設定に合わせて切りかわります。</p>
       <div class="lk-fs"><b>文字の大きさ</b><div class="lk-seg" role="radiogroup" aria-label="文字の大きさ">${['ふつう','大きい','特大'].map((n,i)=>`<button role="radio" aria-checked="${S.fs===i}" class="${S.fs===i?'on':''}" onclick="setFs(${i})" style="font-size:${13+i*2}px">${n}</button>`).join('')}</div></div>
       ${sw(!!S.hc,'toggleHc()','くっきり表示','うすい文字や線を濃くして、見分けやすくする')}
       ${sw(!!S.furi,'toggleFuri()','ふりがな','むずかしい言葉（経済・産業・独占など）にふりがなをつける')}
