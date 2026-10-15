@@ -1697,6 +1697,10 @@ html.furi ruby{ruby-position:over}
 .stbar-sum{font-size:12.5px;font-weight:800;color:var(--muted);text-align:center}
 .stbar .btn{width:100%}
 @media (max-width:640px){.stbar{bottom:calc(74px + env(safe-area-inset-bottom,0px))}}
+.hlp-b{font-weight:900;font-size:18px}
+.hlp-list{margin:12px 0 14px;padding:0;list-style:none;counter-reset:hl;display:flex;flex-direction:column;gap:8px}
+.hlp-list li{counter-increment:hl;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line);font-size:14.5px;font-weight:700;line-height:1.6}
+.hlp-list li::before{content:counter(hl);flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#ff9ad9;color:#3a0f2a;font-family:var(--display);font-size:13px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3109,6 +3113,7 @@ function renderSheet(){
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
+  else if(k==='help') body=helpBody();
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   else if(k.startsWith('cup:')) body=cupSheetBody(k.slice(4));
   else if(k.startsWith('pickchar:')) body=pickCharBody(+k.slice(9));
@@ -4236,6 +4241,29 @@ function setupSummary(){
   const who = hc>1 ? `${hc}人で回す${cpu?`＋CPU ${cpu}人`:''}` : `CPU ${cpu}人${d?`・${d[1]}`:''}`;
   return `${mode}・${S.len==='long'?'ロング':'ショート'} ／ ${who}`;
 }
+/* ---- 「？」ヘルプ：いまの画面でできることを、ミオが3つにしぼって教える ---- */
+function helpCtx(){
+  if(G){ if(G.phase==='final') return 'final'; if(G.phase==='reveal'||G.phase==='settle') return 'reveal'; return 'choose'; }
+  return S.screen||'home';
+}
+const HELP={
+  home:{t:'ホーム画面', say:'ここはスタート地点だよ。迷ったら、まずは「あそぶ」を押してみてね！', tips:['「あそぶ」で、CPUとすぐに1試合できる','下のボタンで、デイリー・チャレンジ・オンラインなどの遊び方を選べる','街並みのビルをタップすると、その産業のガイドが見られる']},
+  play:{t:'あそぶ画面', say:'上から順に選んで、最後に下の「ゲームスタート！」を押せばOK！', tips:['① モード：迷ったら「クラシック」の「ショート」','② だれと遊ぶ：1人なら「1人でCPUと」、友だちと1台なら「みんなで回す」','③ CPUの強さ：はじめは「かんたん」がおすすめ']},
+  choose:{t:'カードをえらぶとき', say:'新聞の数字を見て、手札から1枚えらんでね。だれとも同じにならなければボーナスだよ！', tips:['上の新聞の数字が、このターンの各産業の点数（+3がいちばん高い）','手札のカードをタップ → 下の「〇〇を出す」で決定','だれも出さなかった産業は「独占」で +2。みんなが選びそうなところは外すのもコツ']},
+  reveal:{t:'結果を見るとき', say:'みんなのカードがオープン！ 光っているのが独占、赤いのが被りだよ。', tips:['金色に光った産業＝ひとりだけ（独占ボーナスつき）','赤い「被り！」＝2人以上が同じ産業（ボーナスなし）','見終わったら「次のターンへ」。合計点は上の席に出ている']},
+  final:{t:'試合の結果', say:'おつかれさま！ いちばん上に順位が出ているよ。ふりかえりも見てみてね。', tips:['「試合ダイジェスト」で、ターンごとの名場面を再生できる','号外新聞やプレイ分析で、勝因や自分のくせがわかる','「もう一戦！」で同じ設定のまま、すぐ次の試合へ']},
+  me:{t:'マイページ', say:'ここはあなたの部屋だよ。記録を見たり、コインで見た目を変えたりできるよ。', tips:['「記録」：勝率・自己ベスト殿堂・対戦履歴（▶で名勝負を再生）','「コレクション」：集めたNEWS図鑑や実績','「ショップ」：コインでカードの絵柄やテーブルを変えられる']},
+  chal:{t:'チャレンジ', say:'お題つきのステージに挑戦する場所だよ。★を集めてね！', tips:['ステージごとにクリア条件がある','★は3つまで。条件を多く満たすほど増える','大会・ストーリー・サバイバル・ボス戦もここから']},
+  online:{t:'オンライン', say:'友だちと、それぞれのスマホで対戦できるよ。', tips:['だれか1人が「ルームを作る」','ほかの人はルームコードを入れて参加','全員そろったら、ホストが「ゲームスタート」']},
+  rules:{t:'ルール', say:'ルールブックや得点表を見たり、ルールを変えたりできるよ。', tips:['「ルールブック」：印刷できるPDFもある','「得点表」：どのNEWSでどの産業が何点か','「ルール設定」：独占ボーナスなどを変えられる（はじめはそのままがおすすめ）']}
+};
+function helpBody(){
+  const k=helpCtx(), h=HELP[k]||HELP.home;
+  return `<span class="label">この画面の使い方</span><h3 class="ttl" style="font-size:22px">${h.t}</h3>
+    <div class="gd-talk" data-k="h">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${h.say}</p></div>
+    <ol class="hlp-list">${h.tips.map(t=>`<li>${t}</li>`).join('')}</ol>
+    <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn ghost" onclick="openSheet('terms')">ことばの説明</button><button class="btn ghost" onclick="closeSheet();openTutorial()">遊び方（1分）</button><button class="btn gold" style="margin-left:auto" onclick="closeSheet()">わかった！</button></div>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4492,16 +4520,17 @@ function tabbar(){ return `<nav class="tabbar" aria-label="メニュー">${NAV.m
 function hud(){
   const snd=`<button class="btn ghost icon" onclick="toggleSound()" aria-label="効果音 ${S.sound?'オン':'オフ'}" title="効果音">${SPK(S.sound)}</button>`;
   const gear=`<button class="btn ghost icon" onclick="openSheet('settings')" aria-label="設定" title="設定">${GEAR}</button>`;
+  const helpB=`<button class="btn ghost icon hlp-b" onclick="openSheet('help')" aria-label="この画面の使い方" title="この画面の使い方">？</button>`;
   if(!G) return `<div class="hud"><button class="logo" style="background:none;border:0;padding:0" onclick="go('home')"><span class="mk"></span>AZAKEI <span>MARKET</span></button>
     <nav class="topnav hide-sm" aria-label="メニュー">${NAV.map(([k,l])=>`<button class="${navOn(k)?'on':''}" onclick="go('${k}')">${l}</button>`).join('')}</nav>
-    <div class="row" style="gap:8px">${NET.room?`<span class="codechip" title="ルームコード">${esc(NET.code)}</span>`:''}${profileChip()}${snd}${gear}</div></div>`;
+    <div class="row" style="gap:8px">${NET.room?`<span class="codechip" title="ルームコード">${esc(NET.code)}</span>`:''}${profileChip()}${helpB}${snd}${gear}</div></div>`;
   const pip=(r,i)=>{ const g=r*TURNS+i, cur=(G.round||0)*TURNS+G.turn; return `<i class="${g<cur||G.phase==='final'||G.phase==='settle'&&r<=G.round?'done':g===cur?'now':''}"></i>`; };
   const pips = isLong() ? Array.from({length:G.rounds},(_,r)=>`<span class="term${r===G.round?' cur':''}">${Array.from({length:TURNS},(_,i)=>pip(r,i)).join('')}</span>`).join('') : Array.from({length:TURNS},(_,i)=>pip(0,i)).join('');
   const left=G.phase==='final'?0:TURNS-1-G.turn;
   return `<div class="hud"><div class="logo"><span class="mk"></span><span class="hide-sm" style="color:inherit">AZAKEI</span> <span>MARKET</span>${G.cfg.fut?'<span class="modechip fut">未来</span>':G.cfg.hist?'<span class="modechip">歴史</span>':''}</div>
     <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div>${G.demo?'<span class="demotag">DEMO · タップで遊ぶ</span>':''}<span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${G.boss&&G.phase!=="final"?(b=>`<span class="mktchip" style="--m1:${b.c};--m2:#2a0510">${b.ic} ${b.ab}</span>`)(BOSSES.find(b=>b.id===G.boss)):""}${(curMarket()||(G.evt&&MARKETS[G.evt])||(G.srule&&MARKETS[G.srule]))&&G.phase!=="final"?(()=>{ const m=curMarket()||MARKETS[G.evt||G.srule]; return `<span class="mktchip" style="--m1:${m.c1};--m2:${m.c2}">${m.ic} ${m.n}${G.evt?" WEEK":""}</span>`; })():""}
     ${G.phase==='final'?'':`<span class="deckchip hide-sm" title="このあと出るNEWSの数"><span class="mini-back"></span>残り${left}</span>`}
-    ${G.online?`<span class="codechip hide-sm">${esc(NET.code||'')}</span>`:''}<button class="btn ghost icon tblbtn" onclick="openSheet('table')" aria-label="全体の点数表">📊<span class="hide-sm"> 点数表</span></button>${snd}<button class="btn ghost icon" onclick="quit()">${G.online?(G.host?'ロビーへ':'退出'):'やめる'}</button></div></div>`;
+    ${G.online?`<span class="codechip hide-sm">${esc(NET.code||'')}</span>`:''}<button class="btn ghost icon tblbtn" onclick="openSheet('table')" aria-label="全体の点数表">📊<span class="hide-sm"> 点数表</span></button>${helpB}${snd}<button class="btn ghost icon" onclick="quit()">${G.online?(G.host?'ロビーへ':'退出'):'やめる'}</button></div></div>`;
 }
 function cardHTML(i,o){
   o=o||{};
