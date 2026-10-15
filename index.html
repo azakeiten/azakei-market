@@ -1795,6 +1795,16 @@ html.light .nk-hearts i{color:rgb(60 50 140 / .18)}
 .nk-rt{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}.nk-rt b{display:flex;align-items:center;gap:8px;font-size:15px}
 .nk-say{font-size:13.5px;font-weight:700;line-height:1.55}
 .nk-go{flex:none;font-size:22px;font-weight:900;color:var(--muted)}
+.lsnc .mc-ic{background:radial-gradient(circle at 35% 30%,#ffe0f2,#ff9ad9)}
+.lsn-list{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.lsn-item{display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 14px;border:0;border-radius:16px;cursor:pointer;text-align:left;font:inherit;color:var(--ink);background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.lsn-ic{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--rail)}
+.lsn-tx{display:flex;flex-direction:column;min-width:0;flex:1}.lsn-tx b{font-size:15px}.lsn-tx small{font-size:12px;color:var(--muted)}
+.lsn-st{flex:none;font-size:12px;font-weight:900;color:var(--muted)}
+.lsn-item.done{box-shadow:inset 0 0 0 1.5px rgb(63 224 143 / .6)}.lsn-item.done .lsn-st{color:var(--up);padding:2px 8px;border-radius:999px;background:rgb(63 224 143 / .15)}
+.lsn-art{display:grid;place-items:center;text-align:center;min-height:120px;padding:16px;margin:8px 0 10px;border-radius:18px;font-size:clamp(20px,6vw,28px);font-weight:800;line-height:1.5;background:radial-gradient(circle at 50% 30%,rgb(255 154 217 / .18),transparent 70%),var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.lsn-stamp{align-self:center;display:flex;flex-direction:column;align-items:center;gap:2px;margin:6px auto;padding:10px 20px;border:3px solid #e8364a;border-radius:14px;color:#e8364a;rotate:-6deg;animation:gdPop .45s cubic-bezier(.2,1.4,.4,1) both}
+.lsn-stamp span{font-family:var(--display);font-size:24px}.lsn-stamp small{font-weight:900;color:var(--gold-t)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3210,6 +3220,8 @@ function renderSheet(){
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
   else if(k==='help') body=helpBody();
+  else if(k==='lessons') body=lessonsBody();
+  else if(k==='lesson') body=lessonBody();
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   else if(k.startsWith('cup:')) body=cupSheetBody(k.slice(4));
   else if(k.startsWith('pickchar:')) body=pickCharBody(+k.slice(9));
@@ -4391,6 +4403,77 @@ function bondUpPanel(){
     <p class="note">タップすると、キャラのエピソードをまとめて読めるよ。</p></section>`;
 }
 
+/* ---- ミオのけいざい教室：本物の経済を、絵とミオの説明で。1つ3ページ＋確認の1問。はじめてクリアで +30コイン ---- */
+const LSN_COIN=30;
+const LESSONS=[
+  {id:'sd', ic:'⚖️', t:'ものの値段はどう決まる？', sub:'需要（じゅよう）と供給（きょうきゅう）', pages:[
+    {art:'👥👥👥 ＞ 🍎', say:'ほしい人がたくさんいるのに、ものが少ないと…値段は上がるよ。これを「需要が多い」っていうんだ。'},
+    {art:'🍎🍎🍎🍎 ＞ 👤', say:'反対に、ものがたくさんあって、ほしい人が少ないと値段は下がるよ。これが「供給が多い」状態。'},
+    {art:'🛍️ 消費ブーム → 🏭 製造 +3 ・ 🛒 小売 +3', say:'ゲームの「消費ブーム」はまさにこれ！ みんなが買いたがるから、作る会社とお店がもうかるんだね。'}],
+    q:{q:'ほしい人が急に増えて、ものの量が同じだったら？', opts:['値段は上がりやすい','値段は下がりやすい','値段は変わらない'], a:0, exp:'ほしい人（需要）が増えると、取り合いになって値段が上がりやすくなるよ。'}},
+  {id:'keiki', ic:'☀️', t:'景気（けいき）ってなに？', sub:'好景気と不景気', pages:[
+    {art:'💴 → 🏪 → 🏭 → 👷 → 💴', say:'お金が「買う→売れる→給料→また買う」とぐるぐる回る。よく回っているのが「好景気」だよ。'},
+    {art:'🌧️ 🏪💤 🏭💤', say:'お金の回りがにぶくなると「不景気」。お店も会社も元気がなくなって、給料も増えにくいんだ。'},
+    {art:'☀ 好景気 → 独占ボーナス +1 ／ ☂ 不況 → マイナス2倍', say:'ロング版の「市況カード」には、好景気や不況があるよ。景気で作戦を変えるのがコツ！'}],
+    q:{q:'好景気のときに起こりやすいのは？', opts:['給料が増えて、買い物も増える','お店がどんどん閉まる','だれもお金を使わなくなる'], a:0, exp:'好景気はお金がよく回る状態。給料が増えて、買い物も増えやすいよ。'}},
+  {id:'yen', ic:'💴', t:'円安（えんやす）・円高（えんだか）', sub:'お金と外国の関係', pages:[
+    {art:'1ドル = 100円 → 1ドル = 150円', say:'1ドルを買うのに、100円でよかったのが150円いるようになった。円の力が弱くなったから「円安」っていうよ。'},
+    {art:'🚗 → 🌏 「安い！」 ／ 🛢️ → 🗾 「高い…」', say:'円安だと、日本の車や機械は海外で安く感じて、よく売れる。でも外国から買う石油は高くなっちゃうんだ。'},
+    {art:'💴 円安ラッシュ → 🏭 製造 +3 ・ ⚡ エネルギー −2', say:'ゲームの「円安ラッシュ」で製造が+3、エネルギーが−2なのは、このしくみだよ。'}],
+    q:{q:'円安で得をしやすいのは？', opts:['海外に売る（輸出する）会社','石油を外国から買う会社','海外旅行に行く人'], a:0, exp:'円安だと日本の商品が海外で安くなるので、輸出する会社が得をしやすいよ。'}},
+  {id:'bubble', ic:'🫧', t:'バブルってなに？', sub:'ふくらんで、はじける', pages:[
+    {art:'🏠 1億円 → 2億円 → 4億円…', say:'みんなが「もっと上がる！」と思って買うと、土地や株の値段が実力以上にふくらむ。これがバブルだよ。'},
+    {art:'🫧💥 → 📉', say:'でも、いつかは「高すぎる」と気づく。そうすると一気に売られて、値段が急に下がる。バブルがはじけたっていうんだ。'},
+    {art:'🫧 資産バブル → 🏦 金融 +3 ・ 📺 メディア +3', say:'ゲームの「資産バブル」では金融がもうかるよ。歴史モードでは、1980年代の日本のバブルも出てくるんだ。'}],
+    q:{q:'バブルがはじけると、どうなりやすい？', opts:['値段が急に下がる','値段がもっと上がる','何も起こらない'], a:0, exp:'ふくらみすぎた値段は、はじけると一気に下がりやすいよ。'}},
+  {id:'infl', ic:'🛒', t:'インフレってなに？', sub:'ものの値段がまとめて上がる', pages:[
+    {art:'🍙 100円 → 130円 ・ 🥛 150円 → 190円', say:'いろんなものの値段が、まとめて上がっていくことを「インフレ」っていうよ。'},
+    {art:'💴 100円で 🍙🍙 → 🍙', say:'値段が上がると、同じ100円で買えるものが少なくなる。お金の「価値」が下がったってことなんだ。'},
+    {art:'⛽ エネルギー価格急騰 → 🚚 運輸 −3', say:'ゲームの「エネルギー価格急騰」では、燃料が高くなって運輸が−3。値上がりで困る会社もあるんだね。'}],
+    q:{q:'インフレのとき、同じ100円で買えるものは？', opts:['少なくなる','多くなる','変わらない'], a:0, exp:'値段が上がるので、同じお金で買えるものは少なくなるよ。'}},
+  {id:'mono', ic:'👑', t:'本物の「独占」ってなに？', sub:'ゲームとのちがい', pages:[
+    {art:'🏪 だけ → 👥👥👥', say:'ある商品を売る会社が1つだけの状態を「独占」っていうよ。ライバルがいないんだ。'},
+    {art:'💰⬆️ 「ほかで買えないなら高くても…」', say:'本物の経済だと、独占した会社は値段を高くしても売れてしまう。それだと買う人が困るよね。'},
+    {art:'⚖️ 独占禁止法 ／ 🃏 ゲームでは +2 ボーナス', say:'だから日本には「独占禁止法」というルールがあるよ。ゲームでは、ひとりじめできたらボーナスなんだけどね！'}],
+    q:{q:'本物の経済で、独占を防ぐためのきまりは？', opts:['独占禁止法','道路交通法','著作権法'], a:0, exp:'会社どうしが正しく競争できるように、独占禁止法というきまりがあるよ。'}}
+];
+let LSN=null;
+const lsnDone = id => !!((S.prof.lsn||{})[id]);
+function lessonCard(){
+  const n=LESSONS.filter(l=>lsnDone(l.id)).length;
+  return `<button class="minicard lsnc" onclick="openSheet('lessons')"><span class="mc-ic">📒</span><span class="mc-tx"><span class="label">LESSON</span><b>ミオのけいざい教室</b><span class="note">本物の経済を絵で学ぶ · ${n}/${LESSONS.length} クリア</span></span></button>`;
+}
+function lessonsBody(){
+  return `<span class="label">LESSON</span><h3 class="ttl" style="font-size:22px">ミオのけいざい教室</h3>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>ゲームのNEWSの「なぜ？」を、本物の経済で説明するよ。1つ1分くらい。はじめてクリアすると +${LSN_COIN}コイン！</p></div>
+    <div class="lsn-list">${LESSONS.map((l,i)=>`<button class="lsn-item${lsnDone(l.id)?' done':''}" onclick="lessonStart(${i})"><span class="lsn-ic">${l.ic}</span><span class="lsn-tx"><b>${i+1}. ${l.t}</b><small>${l.sub}</small></span><span class="lsn-st">${lsnDone(l.id)?'できた！':'›'}</span></button>`).join('')}</div>
+    <button class="btn ghost" onclick="closeSheet()">とじる</button>`;
+}
+function lessonStart(i){ LSN={i, p:0, pick:null, ord:shuffle([0,1,2],Math.random)}; sfx('click'); openSheet('lesson'); }
+function lessonGo(d){ if(!LSN) return; LSN.p=Math.max(0,LSN.p+d); sfx('click'); renderSheet(); }
+function lessonPick(k){
+  if(!LSN || LSN.pick!=null) return; const L=LESSONS[LSN.i]; LSN.pick=k; const ok=k===L.q.a;
+  if(ok){ sfx('coin'); haptic(20); const P=S.prof; P.lsn=P.lsn||{}; if(!P.lsn[L.id]){ P.lsn[L.id]=Date.now(); P.coin=(P.coin||0)+LSN_COIN; LSN.got=LSN_COIN; saveProfile(); } }
+  else { sfx('buzz'); haptic(30); }
+  renderSheet();
+}
+function lessonBody(){
+  if(!LSN) return lessonsBody();
+  const L=LESSONS[LSN.i], N=L.pages.length, p=LSN.p;
+  const dots=`<div class="tut-dots">${Array.from({length:N+1},(_,j)=>`<i class="${j===p?'on':''}"></i>`).join('')}</div>`;
+  if(p<N){ const pg=L.pages[p];
+    return `<span class="label">けいざい教室 ${LSN.i+1} · ${p+1} / ${N+1}</span><h3 class="ttl" style="font-size:22px">${L.ic} ${L.t}</h3>
+      <div class="lsn-art" aria-hidden="true">${pg.art}</div>
+      <div class="gd-talk" data-k="l${LSN.i}-${p}">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${pg.say}</p></div>${dots}
+      <div class="row spread"><button class="btn ghost" onclick="${p?'lessonGo(-1)':"openSheet('lessons')"}">${p?'戻る':'一覧へ'}</button><button class="btn gold big" onclick="lessonGo(1)">${p<N-1?'次へ':'確認の1問へ'}</button></div>`;
+  }
+  const q=L.q, ans=LSN.pick!=null, ok=LSN.pick===q.a;
+  return `<span class="label">けいざい教室 ${LSN.i+1} · 確認の1問</span><h3 class="qz-q">${q.q}</h3>
+    <div class="qz-opts">${(LSN.ord||[0,1,2]).map((k,j)=>{ const o=q.opts[k]; return `<button class="qz-o${ans?(k===q.a?' ok':k===LSN.pick?' ng':' dim'):''}" onclick="lessonPick(${k})" ${ans?'disabled':''}><i>${'ABC'[j]}</i>${o}</button>`; }).join('')}</div>
+    ${ans?`<div class="qz-exp ${ok?'ok':'ng'}"><b>${ok?'正解！':'ざんねん…'}</b><span>${q.exp}</span></div>
+      ${ok?`<div class="lsn-stamp"><span>できた！</span>${LSN.got?`<small>🪙 +${LSN.got}コイン</small>`:''}</div>`:''}
+      <div class="row spread">${ok?`<button class="btn ghost" onclick="openSheet('lessons')">一覧へ</button>${LSN.i<LESSONS.length-1?`<button class="btn gold big" onclick="lessonStart(${LSN.i+1})">次の授業へ</button>`:`<button class="btn gold big" onclick="closeSheet()">おしまい！</button>`}`:`<button class="btn ghost" onclick="LSN.p=0;LSN.pick=null;renderSheet()">はじめから読む</button><button class="btn gold" onclick="LSN.pick=null;renderSheet()">もう一度答える</button>`}</div>`:dots}`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4910,8 +4993,8 @@ function homeView(){
   ${quickMenu()}
   ${nbNew()?nbLocked():`${seasonCard()}
   ${todayBar()}
-  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
-  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
+  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
+  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${missionsPanel()}
   ${weeklyPanel()}`}
   <nav class="homelinks"><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
@@ -6184,7 +6267,7 @@ function rulesView(){
   const tabs=[['how','遊び方'],['table','得点表'],['hist','歴史の出来事'],['words','用語'],['set','ルール設定'],['book','ルールブック']];
   let body='';
   if(tab==='words') body=glossPanel();
-  if(tab==='how') body=`<section class="panel"><h3>覚えることは5つだけ</h3>${ruleList()}<button class="btn gold" onclick="openTutorial()">図で見る（1分）</button></section>
+  if(tab==='how') body=`<section class="panel"><h3>覚えることは5つだけ</h3>${ruleList()}<button class="btn gold" onclick="openTutorial()">図で見る（1分）</button><button class="btn ghost" onclick="openSheet('lessons')">📒 ミオのけいざい教室（本物の経済を学ぶ）</button></section>
     <div class="two">
       <section class="panel"><span class="label">MARKET BONUS</span><h3>被らなければ ${sgn(CFG.bonus)}</h3><p class="note">NEWSでいちばん高いのは+3で、どのNEWSにも2つあります。みんなが同じ方を出すと被って+3だけ。もう一方の+3を1人で出せば +3${sgn(CFG.bonus)}＝<b style="color:var(--gold-t)">+${3+CFG.bonus}</b>。</p></section>
       <section class="panel"><span class="label">FUTURES</span><h3>${FORE[CFG.fore].name}（1回だけ）</h3><p class="note">${FORE[CFG.fore].desc}</p></section>
