@@ -1805,6 +1805,18 @@ html.light .nk-hearts i{color:rgb(60 50 140 / .18)}
 .lsn-art{display:grid;place-items:center;text-align:center;min-height:120px;padding:16px;margin:8px 0 10px;border-radius:18px;font-size:clamp(20px,6vw,28px);font-weight:800;line-height:1.5;background:radial-gradient(circle at 50% 30%,rgb(255 154 217 / .18),transparent 70%),var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
 .lsn-stamp{align-self:center;display:flex;flex-direction:column;align-items:center;gap:2px;margin:6px auto;padding:10px 20px;border:3px solid #e8364a;border-radius:14px;color:#e8364a;rotate:-6deg;animation:gdPop .45s cubic-bezier(.2,1.4,.4,1) both}
 .lsn-stamp span{font-family:var(--display);font-size:24px}.lsn-stamp small{font-weight:900;color:var(--gold-t)}
+.cw-box{border-radius:16px;background:rgb(7 8 24 / .3);box-shadow:inset 0 0 0 1px var(--line);padding:0 12px}
+html.light .cw-box{background:rgb(70 60 150 / .06)}
+.cw-box>summary{list-style:none;cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:800;font-size:14px;position:relative;padding-right:24px}
+.cw-box>summary::-webkit-details-marker{display:none}
+.cw-box>summary::after{content:"›";position:absolute;right:2px;font-size:20px;font-weight:900;color:var(--muted);transition:rotate .2s}
+.cw-box[open]>summary::after{rotate:90deg}
+.cw-list{display:flex;flex-direction:column;gap:8px;padding:0 0 12px}
+.cw-row{display:flex;gap:8px;align-items:flex-start}
+.cw-row .ava{flex:none;width:34px;height:34px;font-size:16px}
+.cw-bub{flex:1;min-width:0;padding:8px 12px;border-radius:4px 14px 14px 14px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line);font-size:13.5px;line-height:1.55;font-weight:700}
+.cw-bub b{display:block;font-size:11px;color:var(--muted)}
+.cw-bub em{font-style:normal;font-weight:900;white-space:nowrap}.cw-ok{color:var(--gold-t)}.cw-ng{color:var(--down)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4474,6 +4486,27 @@ function lessonBody(){
       ${ok?`<div class="lsn-stamp"><span>できた！</span>${LSN.got?`<small>🪙 +${LSN.got}コイン</small>`:''}</div>`:''}
       <div class="row spread">${ok?`<button class="btn ghost" onclick="openSheet('lessons')">一覧へ</button>${LSN.i<LESSONS.length-1?`<button class="btn gold big" onclick="lessonStart(${LSN.i+1})">次の授業へ</button>`:`<button class="btn gold big" onclick="closeSheet()">おしまい！</button>`}`:`<button class="btn ghost" onclick="LSN.p=0;LSN.pick=null;renderSheet()">はじめから読む</button><button class="btn gold" onclick="LSN.pick=null;renderSheet()">もう一度答える</button>`}</div>`:dots}`;
 }
+/* ---- CPUの考え：結果のあと、CPUがなぜそのカードを出したかを、キャラのふきだしで説明する ---- */
+function cpuWhy(){
+  if(!G || !G.last || G.demo) return '';
+  const C=G.cfg, row=C.table[G.deck[G.turn]], nextRow=G.deck[G.turn+1]!=null?C.table[G.deck[G.turn+1]]:null;
+  const cpus=G.players.map((p,i)=>({p,i})).filter(x=>!isHuman(x.p) && G.last[x.i]);
+  if(!cpus.length) return '';
+  const items=cpus.map(({p,i})=>{
+    const r=G.last[i], c=r.ind, hand=p.hand.concat([c]), val=k=>row[k];
+    const best=hand.slice().sort((a,b)=>val(b)-val(a))[0];
+    let t;
+    if(r.fut && nextRow) t=`先物取引で次のNEWSを先に見て、「${IND[c]}」にかけた`;
+    else if(val(c)<0) t=`マイナスの「${IND[c]}」を、今のうちに使っておく作戦`;
+    else if(val(c)>=val(best)){ const ties=hand.filter(k=>val(k)===val(c)).length; t = ties>1 ? `${sgn(val(c))}のカードが${ties}枚。そのうち${p.type==='naive'?'':'、ほかの人と被らなそうだと読んで'}「${IND[c]}」を選んだ` : `手札でいちばん点が高い「${IND[c]}」（${sgn(val(c))}）を選んだ`; }
+    else t=`「${IND[best]}」はみんなが出しそうだから、あえて「${IND[c]}」（${sgn(val(c))}）でひとりじめをねらった`;
+    const res = r.k===1 ? `<em class="cw-ok">→ 独占成功 ${sgn(r.total)}</em>` : `<em class="cw-ng">→ ${r.k}人で被り ${sgn(r.total)}</em>`;
+    const ch=CHARS[charKey(p)];
+    return `<div class="cw-row"><span class="ava" style="--s:${ch?ch.c:`var(--s${p.seat%6})`}">${esc(avOf(p))}</span><span class="cw-bub"><b>${esc(String(p.name).replace(/^CPU\s*/,''))}</b>${t} ${res}</span></div>`;
+  }).join('');
+  const open = S.cwOpen!=null ? S.cwOpen : stepsOn();
+  return `<details class="cw-box"${open?' open':''} ontoggle="S.cwOpen=this.open"><summary>🧠 CPUはなぜそれを出した？</summary><div class="cw-list">${items}</div></details>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4902,7 +4935,7 @@ function revealDock(){
   }).join('');
   return `<div class="dock">${guideTip()}${stepBar('reveal')}${myResultBar()}${mioTurn()}<div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold-t)">${mvp} ${sgn(best)}</b></span></div>
     ${liveBox()}
-    <div class="board">${lanes}</div>${whyBox(G.deck[G.turn], G.cfg.table[G.deck[G.turn]])}${emoteBar()}
+    <div class="board">${lanes}</div>${whyBox(G.deck[G.turn], G.cfg.table[G.deck[G.turn]])}${cpuWhy()}${emoteBar()}
     <div class="actions" style="justify-content:flex-end">${G.online&&!G.host?'<span class="note">ホストが次へ進めます…</span>':`<button class="btn gold big pulse" style="flex:1 1 auto;max-width:360px" onclick="nextTurn()">${G.turn===TURNS-1?'最終結果へ':'次のターンへ'}</button>`}</div></div>`;
 }
 function finalView(){
