@@ -2134,8 +2134,10 @@ const NEWS = ['エネルギー価格急騰','資産バブル','インフラ投�
 const B2 = [[3,-1,-2,-1,-3,0],[0,3,2,1,0,1],[2,1,3,0,2,-1],[0,2,1,3,1,2],[1,0,-1,2,3,1],[-1,1,0,1,-1,3]];
 const T2 = [[3,3,-2,-1,-3,0],[0,3,1,1,0,3],[3,0,2,0,3,-1],[0,1,3,3,2,1],[1,0,-1,3,3,1],[-1,0,3,1,0,3]];
 // クラシックEXで足すNEWS。もとの6種と同じく、どの産業も +3 がちょうど2回ずつ
-const EXT_NEWS = ['資源株ブーム','円安ラッシュ','推し活ブーム','脱炭素投資','フィンテック革命','ネット大セール'];
-const EXT_T = [[3,3,-1,-1,-2,0],[-2,1,3,0,3,0],[0,0,1,3,1,3],[3,1,3,-1,0,-1],[-1,3,0,1,-1,3],[0,-1,1,3,3,0]];
+const EXT_NEWS = ['資源株ブーム','円安ラッシュ','推し活ブーム','脱炭素投資','フィンテック革命','ネット大セール',
+  'AIブーム','記録的な猛暑','円高','インバウンド','EVブーム','投資ブーム'];   /* 後半6つは「時事パック」 */
+const EXT_T = [[3,3,-1,-1,-2,0],[-2,1,3,0,3,0],[0,0,1,3,1,3],[3,1,3,-1,0,-1],[-1,3,0,1,-1,3],[0,-1,1,3,3,0],
+  [2,1,3,-1,-1,3],[3,0,-1,3,-2,1],[1,1,-2,3,3,0],[0,3,1,2,3,1],[3,1,3,0,1,0],[0,3,1,-1,0,3]];
 const ALL_NEWS = NEWS.concat(EXT_NEWS);
 // 歴史モード：実際の出来事。r = 各産業の基本POINT（エネルギー, 金融, 製造, 小売, 運輸, メディア）
 const HIST = [
@@ -2244,7 +2246,7 @@ function unseen(cfg,deck,t){
   return deck.slice(t+1);
 }
 function buildDeck(cfg,rnd){
-  if(cfg.ex) return shuffle([...Array(cfg.table.length).keys()],rnd).slice(0,6);   // EX：12種から毎回ちがう6種
+  if(cfg.ex) return shuffle([...Array(cfg.table.length).keys()],rnd).slice(0,6);   // EX：18種から毎回ちがう6種
   if(cfg.hist) return shuffle(cfg.pool.slice(),rnd).slice(0,TURNS).sort((a,b)=>yearOf(a)-yearOf(b));
   return shuffle([0,1,2,3,4,5],rnd);
 }
@@ -2589,7 +2591,7 @@ function vsOverlay(){
   const cu = G.cup && CUPS.find(c=>c.id===G.cup.id), fin = cu && G.cup.stage===cu.m.length-1;
   const stv = G.story && STORIES.find(x=>x.k===G.story);
   const bsv = G.boss && BOSSES.find(b=>b.id===G.boss);
-  const mode = G.duel ? (G.duel.target!=null ? `挑戦状 · ${esc(G.duel.from)}さんの ${G.duel.target}点を超えろ！` : '挑戦状 · この点数で友だちに勝負！') : bsv ? `WEEKLY BOSS · ${bsv.ic} ${bsv.n}「${bsv.ab}」` : G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : C.ex ? 'CLASSIC EX MATCH · 12種から6種' : 'CLASSIC MATCH';
+  const mode = G.duel ? (G.duel.target!=null ? `挑戦状 · ${esc(G.duel.from)}さんの ${G.duel.target}点を超えろ！` : '挑戦状 · この点数で友だちに勝負！') : bsv ? `WEEKLY BOSS · ${bsv.ic} ${bsv.n}「${bsv.ab}」` : G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : C.ex ? 'CLASSIC EX MATCH · 18種から6種' : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava${i===me?frc():''}" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
       ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
@@ -3473,7 +3475,7 @@ const MODES=()=>[   // 関数にして、表示するときにキャラなどを
     ['?','経済クイズ','1分','5問のミニゲーム。コインがもらえる',"closeSheet();startQuiz()"]]},
   {g:'じっくり・ちがうルール', items:[
     ['∞','ロング版','20分','3期×6ターン。市況・極秘契約・ブランド',"closeSheet();pickLong()"],
-    ['🃏','クラシックEX','5分','NEWSが12種に。毎回ちがう6種で山札ができる',"closeSheet();pickMode('ex')"],
+    ['🃏','クラシックEX','5分','NEWSが18種に。毎回ちがう6種で山札ができる',"closeSheet();pickMode('ex')"],
     ['📜','歴史モード','5分','本当の出来事が年代順に起きる',"closeSheet();pickMode('history')"],
     ['✦','未来編','5分','2027→2060の未来シナリオ',"closeSheet();pickFuture()"]]},
   {g:'やりこみ', items:[
@@ -4167,7 +4169,13 @@ const WHY=[
   {s:'好きなアイドルやキャラを応援する「推し活」が大流行！', u:{3:'グッズや限定品が飛ぶように売れる',5:'配信・ライブ・SNSが盛り上がる'}, d:{0:'推し活のお金は、電気や石油にはほとんど向かない',1:'楽しみに使うお金が多く、貯金や投資は少なめ'}},
   {s:'CO2をへらすための投資が世界中で始まった！', u:{0:'太陽光や風力など、新しい発電にお金が集まる',2:'電気自動車や電池の工場がつぎつぎに建つ'}, d:{3:'環境対応のコストが値段にのり、買い物がひかえめに',5:'お金が設備に回り、広告は後回しに'}},
   {s:'スマホ決済やネット銀行が一気に広がった！', u:{1:'新しいお金のサービスが急成長',5:'アプリやネット広告がにぎわう'}, d:{4:'現金を運ぶ仕事や窓口へ行く移動がへる',0:'お金のデジタル化は、エネルギーとは縁が遠い'}},
-  {s:'ネット通販で大セールが始まった！', u:{3:'ネットのお店に注文が殺到',4:'宅配の荷物が山のようにふえる'}, d:{1:'値引き合戦で、お金を貸す先の利益がうすくなる'}}
+  {s:'ネット通販で大セールが始まった！', u:{3:'ネットのお店に注文が殺到',4:'宅配の荷物が山のようにふえる'}, d:{1:'値引き合戦で、お金を貸す先の利益がうすくなる'}},
+  {s:'AI（人工知能）がいろんな仕事で使われはじめた！', u:{2:'AIを動かす半導体やロボットの注文がふえる',5:'AIを使ったアプリや動画サービスが伸びる'}, d:{3:'無人レジや自動化で、お店のやり方が変わる',4:'自動運転などで、運ぶ仕事のしくみが変わる'}},
+  {s:'記録的な暑さで、毎日が真夏日！', u:{0:'エアコンで電気がたくさん使われる',3:'アイスや飲み物が飛ぶように売れる'}, d:{4:'暑さで外出がへり、電車やバスの利用が落ちる',2:'工場の暑さ対策にお金がかかる'}},
+  {s:'円の価値が上がって、外国のものが「安く」なった！', u:{3:'輸入した商品を安く売れて、お店がにぎわう',4:'海外旅行が安くなって、飛行機が満席に'}, d:{2:'海外で日本製品が高く感じられ、輸出がへる'}},
+  {s:'外国からの観光客が、どっと日本にやってきた！', u:{4:'飛行機や新幹線、バスが観光客でいっぱい',1:'両替やキャッシュレス決済で、お金の会社がにぎわう'}, d:{0:'観光ブームは、電気や石油にはあまりつながらない'}},
+  {s:'電気自動車（EV）が一気に広がりはじめた！', u:{0:'充電する電気と、電池の材料が必要になる',2:'電気自動車や電池の工場がフル回転'}, d:{5:'車の広告よりも、工場づくりにお金が回る'}},
+  {s:'みんなが「投資」を始める投資ブームが来た！', u:{1:'株を買う人がふえて、証券会社や銀行がにぎわう',5:'お金の勉強の動画やアプリが人気に'}, d:{3:'買い物より投資にお金を回す人がふえる'}}
 ];
 function whyBox(n, row, dex){
   if(!dex && (!G || G.cfg.hist || G.cfg.fut)) return '';      /* 歴史モード・未来編は、それぞれの解説がある */
@@ -4204,7 +4212,7 @@ function indSheetBody(c){
     <p class="ipf-d">${pf.d}</p>
     <div class="ipf-sec"><span class="label">強いNEWS</span><div class="ipf-list">${strong.map(nw).join('')||'<span class="note">なし</span>'}</div></div>
     <div class="ipf-sec"><span class="label">弱いNEWS</span><div class="ipf-list">${weak.map(nw).join('')||'<span class="note">マイナスになるNEWSはありません</span>'}</div></div>
-    <p class="note">12種のNEWSでの平均は ${sgn(avgAll)}。図鑑で見つけたNEWSはタップでくわしく読めます。</p>
+    <p class="note">${T.length}種のNEWSでの平均は ${sgn(avgAll)}。図鑑で見つけたNEWSはタップでくわしく読めます。</p>
     <div class="ipf-me"><span class="label">あなたの${IND[c]}</span>${n?`<div class="ipf-st"><span><b>${n}</b>回 出した</span><span><b>${Math.round(m/n*100)}%</b> 独占</span><span><b>${pc?sgn(Math.round(pt/pc*10)/10):'—'}</b> 1枚の平均</span></div>`:'<p class="note">まだ出したことがありません。</p>'}</div>
     <button class="btn gold big" onclick="closeSheet()">とじる</button>`;
 }
@@ -4816,6 +4824,9 @@ const NEWS_FX={
   n6:{e:['⛏️','💹','🛢️'],m:'rise',t:'#ffc83a',s:'coin'},   n7:{e:['💴','✈️','🏭'],m:'fly',t:'#3fe08f',s:'jet'},
   n8:{e:['💖','🎤','🛍️'],m:'pop',t:'#ff5c9a',s:'coin'},    n9:{e:['🌱','☀️','🔋'],m:'rise',t:'#3fe08f',s:'bubble'},
   n10:{e:['📱','💳','🏦'],m:'pop',t:'#7af0ff',s:'digi'},  n11:{e:['📦','🛒','🚚'],m:'fly',t:'#ff8a3d',s:'build'},
+  n12:{e:['🤖','💡','🧠'],m:'pop',t:'#a77bff',s:'digi'},   n13:{e:['☀️','🌡️','🍧'],m:'rise',t:'#ff7a3d',s:'coin'},
+  n14:{e:['💴','✈️','🛍️'],m:'fly',t:'#5f86ff',s:'jet'},   n15:{e:['🧳','🗼','📸'],m:'fly',t:'#20c6d1',s:'jet'},
+  n16:{e:['🚗','🔋','⚡'],m:'rise',t:'#3fe08f',s:'bubble'}, n17:{e:['📈','💹','📱'],m:'rise',t:'#ffc83a',s:'coin'},
   h0:{e:['🏅','🚄','📺'],m:'rise',t:'#ffc83a',s:'coin'},    h1:{e:['🛢️','⛽','🧻'],m:'fall',t:'#ff5a1f',s:'crash'},
   h2:{e:['💴','💵','✈️'],m:'fly',t:'#3fe08f',s:'jet'},     h3:{e:['🫧','🍾','💰'],m:'rise',t:'#ffc83a',s:'bubble'},
   h4:{e:['💥','📉','🫧'],m:'fall',t:'#ff3b3b',s:'crash',quake:true}, h5:{e:['💻','🌐','📧'],m:'pop',t:'#5f86ff',s:'digi'},
@@ -5235,7 +5246,7 @@ function playView(){
         <button class="mode${S.mode==='classic'?' on':''}" onclick="S.mode='classic';sfx('click');render()"><b>クラシック</b><span class="note">6つのNEWSがランダムな順番で</span></button>
         <button class="mode hist${S.mode==='history'?' on':''}" onclick="S.mode='history';sfx('click');render()"><b style="font-family:var(--serif)">歴史モード</b><span class="note">実際の出来事が年代順に起きる</span></button>
         <button class="mode fut${S.mode==='future'?' on':''}" onclick="S.mode='future';sfx('click');render()"><b class="futb">未来編</b><span class="note">2027→2060 の未来シナリオ</span></button>
-        <button class="mode ex${S.mode==='ex'?' on':''}" onclick="S.mode='ex';sfx('click');render()"><span class="newtag">NEW</span><b>クラシックEX</b><span class="note">12種のNEWSから毎回ちがう6種</span></button>
+        <button class="mode ex${S.mode==='ex'?' on':''}" onclick="S.mode='ex';sfx('click');render()"><span class="newtag">NEW</span><b>クラシックEX</b><span class="note">18種のNEWSから毎回ちがう6種</span></button>
       </div>${S.len==='long'&&S.mode==='history'?'':eraSel}
       <div class="lens" role="group" aria-label="ゲームの長さ">
         <button class="len${S.len!=='long'?' on':''}" onclick="setLen('short')"><span class="lt">SHORT</span><b>ショート</b><span class="note">${CFG.turns||4}ターン · 5分 · 文化祭向け</span></button>
@@ -6483,7 +6494,7 @@ function rulesView(){
       <section class="panel"><span class="label">WINNER</span><h3>4ターンで合計が多い人の勝ち</h3><p class="note">${CFG.tiebreak?'同点は独占回数が多い人が上位。それも同じなら同順位。':'同点は同順位。'}</p></section>
     </div>`;
   if(tab==='table') body=`<section class="panel"><div class="row spread"><h3>クラシックの得点表</h3><span class="note">金色が各NEWSの最高点</span></div>${scoreTable(false)}<p class="note">数値を変えたいときは「ルール設定」から。</p></section>
-    <section class="panel"><div class="row spread"><h3>クラシックEXで加わるNEWS</h3><span class="note">12種から毎回6種</span></div>${exTable()}<p class="note">EXでは、もとの6種とこの6種の合わせて12種から、毎回6種で山札ができます。</p></section>`;
+    <section class="panel"><div class="row spread"><h3>クラシックEXで加わるNEWS</h3><span class="note">18種から毎回6種</span></div>${exTable()}<p class="note">EXでは、もとの6種とこの12種の合わせて18種から、毎回6種で山札ができます。後半の6つは新しい「時事パック」です。</p></section>`;
   if(tab==='hist') body=`<section class="panel"><div class="row spread"><h3 style="font-family:var(--serif);font-size:20px">歴史モードの出来事</h3><span class="note">年代順に起きる18の出来事</span></div>${histTable()}<p class="note">点数は、実際の出来事でその産業が追い風か向かい風かをもとに、ゲーム用に決めたものです。</p></section>
     <section class="panel"><h3>解説</h3><div class="recap">${HIST.filter(h=>!h.f).sort((a,b)=>a.y-b.y).map(h=>`<div><b>${h.y}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${h.n}</b><br>${gloss(h.d)}</p></div>`).join('')}</div></section>`;
   if(tab==='set') body=`<section class="panel"><h3>プリセット</h3>
