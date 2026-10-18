@@ -1834,6 +1834,17 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .gd-bub:has(.gd-say){padding-right:46px}
 .gd-say{position:absolute;top:6px;right:6px;width:34px;height:34px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;font-size:16px;background:#ffe3f2;box-shadow:inset 0 0 0 1.5px #ff9ad9}
 .gd-say:active{transform:scale(.92)}
+.pnt-box{display:flex;gap:14px;align-items:center;padding:12px;margin:6px 0 8px;border-radius:16px;background:linear-gradient(160deg,rgb(255 200 58 / .12),transparent 70%);box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .4)}
+.pnt-prev{width:64px !important}
+.pnt-tx{display:flex;flex-direction:column;min-width:0}.pnt-tx b{font-size:15px}.pnt-tx small{font-size:12px;color:var(--muted)}
+.pnt-stage{display:grid;place-items:center;padding:8px;border-radius:16px;background:var(--rail)}
+#pntCv{width:min(62vw,230px);aspect-ratio:5/7;height:auto;border-radius:14px;touch-action:none;cursor:crosshair;box-shadow:0 0 0 3px var(--gold-deep),0 10px 24px -10px #000}
+.pnt-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.pnt-row button{border:0;cursor:pointer;font:inherit;font-weight:800;color:var(--ink);background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line);border-radius:12px;min-height:40px;padding:6px 10px;display:inline-flex;align-items:center;gap:6px}
+.pnt-row button.on{box-shadow:inset 0 0 0 2.5px var(--gold);background:rgb(255 200 58 / .15)}
+.pnt-c{width:36px;padding:0 !important;background:var(--pc) !important}.pnt-c.on{box-shadow:0 0 0 3px var(--gold),inset 0 0 0 2px #fff !important}
+.pnt-sz i{display:inline-block;border-radius:50%;background:var(--ink)}
+.pnt-st{font-size:20px;width:40px;justify-content:center;padding:0 !important}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3251,6 +3262,7 @@ function renderSheet(){
   else if(k==='terms') body=termsBody();
   else if(k==='help') body=helpBody();
   else if(k==='lessons') body=lessonsBody();
+  else if(k==='paint') body=paintBody();
   else if(k==='lesson') body=lessonBody();
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   else if(k.startsWith('cup:')) body=cupSheetBody(k.slice(4));
@@ -3382,7 +3394,7 @@ const SHOP={
 const shopEq = k => (S.prof.eq&&S.prof.eq[k])||'std';
 const shopOwn = (k,id) => id==='std' || ((S.prof.own||{})[k]||[]).includes(id);
 const frc = () => { const f=S&&S.prof?shopEq('frame'):'std'; return f==='std'?'':' fr-'+f; };
-const bkc = () => { const b=S&&S.prof?shopEq('back'):'std'; return b==='std'?'':' bk-'+b; };
+const bkc = () => { const b=S&&S.prof?shopEq('back'):'std'; if(b==='mine') myBackCss(); return b==='std'?'':' bk-'+b; };
 function shopBuy(k,id){
   const it=SHOP[k].find(x=>x.id===id), P=S.prof; if(!it) return;
   P.own=P.own||{}; P.own[k]=P.own[k]||[]; P.eq=P.eq||{};
@@ -3403,7 +3415,7 @@ function shopPanel(){
     <p class="note">ゲームを遊ぶとコインがたまります（1位・独占・ミッション・デイリーでボーナス）。</p>
     <span class="label" style="margin-top:8px">テーブル（ゲーム中の背景）</span><div class="sp-grid">${SHOP.table.filter(x=>shopShow('table',x)).map(x=>item('table',x)).join('')}</div>
     <span class="label" style="margin-top:12px">アイコンのフレーム</span><div class="sp-grid">${SHOP.frame.map(x=>item('frame',x)).join('')}</div>
-    <span class="label" style="margin-top:12px">カードの裏面</span><div class="sp-grid">${SHOP.back.filter(x=>shopShow('back',x)).map(x=>item('back',x)).join('')}</div></section>`;
+    <span class="label" style="margin-top:12px">カードの裏面</span>${myBackBox()}<div class="sp-grid">${SHOP.back.filter(x=>shopShow('back',x)).map(x=>item('back',x)).join('')}</div></section>`;
 }
 /* ---- リーグ戦：同じメンバーで3試合。順位でリーグポイント（5・3・2・1）を集め、合計で優勝を決める ---- */
 const LEAGUE_GAMES=3, LEAGUE_PTS=[5,3,2,1,0,0];
@@ -4613,6 +4625,61 @@ function mioAuto(el){
 }
 mioAuto.last='';
 function toggleMioVoice(){ S.mioVoice=!S.mioVoice; save('azakei-miovoice',S.mioVoice); renderSheet(); if(S.mioVoice){ const b=document.createElement('p'); b.textContent='ミオだよ。これから、わたしのセリフを読み上げるね！'; mioSpeak(b); } }
+/* ---- マイデザイン：カードの裏面を自分で描く。ペン・スタンプ・背景ぬり・もどす。保存すると裏面に使える ---- */
+const PNT_COLORS=['#ffffff','#1a1d3a','#ffc83a','#ff7a3d','#ff5c9a','#a77bff','#5f86ff','#20c6d1','#3fe08f','#8a5a2b'];
+const PNT_STAMPS=['⭐','❤️','💰','📈','🍀','👑','⚡','🚀','🐱','✨'];
+const PNT_W=250, PNT_H=350;
+let PNT=null;
+function myBackCss(){
+  const P=S.prof, el=document.getElementById('mybk') || Object.assign(document.head.appendChild(document.createElement('style')),{id:'mybk'});
+  const css=P.myBack?`.back.bk-mine{background:#232985 url("${P.myBack}") center/cover}.back.bk-mine::after{content:"";background:none}`:'';
+  if(el.textContent!==css) el.textContent=css;
+}
+function myBackBox(){
+  const P=S.prof, has=!!P.myBack, on=shopEq('back')==='mine';
+  if(has) myBackCss();
+  return `<div class="pnt-box"><span class="back${has?' bk-mine':''} pnt-prev"></span><span class="pnt-tx"><b>✏️ マイデザイン</b><small>${has?'自分で描いた裏面。いつでも描きなおせるよ':'カードの裏面を自分で描いてみよう！（無料）'}</small>
+    <span class="row" style="gap:6px;margin-top:6px"><button class="btn gold" onclick="openPaint()">${has?'描きなおす':'描いてみる'}</button>${has?`<button class="btn${on?'':' ghost'}" onclick="useMyBack()" ${on?'disabled':''}>${on?'使用中':'これを使う'}</button>`:''}</span></span></div>`;
+}
+function useMyBack(){ const P=S.prof; if(!P.myBack) return; P.eq=P.eq||{}; P.eq.back='mine'; saveProfile(); sfx('select'); toast('マイデザインの裏面にしました'); render(); }
+function openPaint(){ PNT={color:'#ffc83a', size:10, mode:'pen', stamp:'⭐', hist:[]}; openSheet('paint'); setTimeout(paintInit,30); }
+function paintBody(){
+  if(!PNT) return '';
+  return `<span class="label">MY DESIGN</span><h3 class="ttl" style="font-size:22px">カードの裏面を描こう</h3>
+    <div class="pnt-stage"><canvas id="pntCv" width="${PNT_W}" height="${PNT_H}" aria-label="お絵かきキャンバス"></canvas></div>
+    <div class="pnt-row" role="group" aria-label="モード">${[['pen','✏️ ペン'],['stamp','⭐ スタンプ'],['fill','🪣 背景ぬり']].map(([k,n])=>`<button class="pnt-mode${PNT.mode===k?' on':''}" data-m="${k}" onclick="paintSet('mode','${k}',this)">${n}</button>`).join('')}</div>
+    <div class="pnt-row pnt-colors" role="group" aria-label="色">${PNT_COLORS.map(c=>`<button class="pnt-c${PNT.color===c?' on':''}" style="--pc:${c}" data-v="${c}" onclick="paintSet('color','${c}',this)" aria-label="色 ${c}"></button>`).join('')}</div>
+    <div class="pnt-row" role="group" aria-label="太さ">${[[4,'細い'],[10,'ふつう'],[22,'太い']].map(([v,n])=>`<button class="pnt-sz${PNT.size===v?' on':''}" data-v="${v}" onclick="paintSet('size',${v},this)"><i style="width:${Math.max(6,v/1.4)}px;height:${Math.max(6,v/1.4)}px"></i>${n}</button>`).join('')}</div>
+    <div class="pnt-row pnt-stamps" role="group" aria-label="スタンプ">${PNT_STAMPS.map(e=>`<button class="pnt-st${PNT.stamp===e?' on':''}" data-v="${e}" onclick="paintSet('stamp','${e}',this)">${e}</button>`).join('')}</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn ghost" onclick="paintUndo()">↩ もどす</button><button class="btn ghost" onclick="paintClear()">🗑 ぜんぶ消す</button><button class="btn gold big" style="margin-left:auto" onclick="paintSave()">保存して使う</button></div>`;
+}
+function paintSet(k,v,btn){   /* 描いた絵を消さないように、画面は描きなおさずボタンの見た目だけ変える */
+  if(!PNT) return; PNT[k]=v; if(k==='stamp') PNT.mode='stamp'; sfx('click');
+  const grp=btn&&btn.parentElement; if(grp) grp.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===btn));
+  if(k==='stamp') document.querySelectorAll('.pnt-mode').forEach(b=>b.classList.toggle('on',b.dataset.m==='stamp'));
+}
+function paintCtx(){ const cv=document.getElementById('pntCv'); return cv?[cv,cv.getContext('2d')]:[null,null]; }
+function paintBlank(x){ const g=x.createLinearGradient(0,0,PNT_W,PNT_H); g.addColorStop(0,'#3a43b8'); g.addColorStop(1,'#232985'); x.fillStyle=g; x.fillRect(0,0,PNT_W,PNT_H); }
+function paintInit(){
+  const [cv,x]=paintCtx(); if(!cv) return;
+  if(S.prof.myBack){ const im=new Image(); im.onload=()=>x.drawImage(im,0,0,PNT_W,PNT_H); im.src=S.prof.myBack; } else paintBlank(x);
+  let drawing=false, last=null;
+  const pt=e=>{ const r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)*PNT_W/r.width, y:(e.clientY-r.top)*PNT_H/r.height}; };
+  const snap=()=>{ PNT.hist.push(x.getImageData(0,0,PNT_W,PNT_H)); if(PNT.hist.length>20) PNT.hist.shift(); };
+  cv.addEventListener('pointerdown',e=>{ e.preventDefault(); cv.setPointerCapture(e.pointerId); snap(); const p=pt(e);
+    if(PNT.mode==='fill'){ x.fillStyle=PNT.color; x.fillRect(0,0,PNT_W,PNT_H); sfx('click'); return; }
+    if(PNT.mode==='stamp'){ x.font=`${PNT.size*3+18}px sans-serif`; x.textAlign='center'; x.textBaseline='middle'; x.fillText(PNT.stamp,p.x,p.y); sfx('coin'); return; }
+    drawing=true; last=p; x.fillStyle=PNT.color; x.beginPath(); x.arc(p.x,p.y,PNT.size/2,0,Math.PI*2); x.fill(); });
+  cv.addEventListener('pointermove',e=>{ if(!drawing) return; const p=pt(e); x.strokeStyle=PNT.color; x.lineWidth=PNT.size; x.lineCap='round'; x.lineJoin='round'; x.beginPath(); x.moveTo(last.x,last.y); x.lineTo(p.x,p.y); x.stroke(); last=p; });
+  const end=()=>{ drawing=false; last=null; }; cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end); cv.addEventListener('pointerleave',end);
+}
+function paintUndo(){ const [cv,x]=paintCtx(); if(!cv||!PNT.hist.length) return; x.putImageData(PNT.hist.pop(),0,0); sfx('click'); }
+function paintClear(){ const [cv,x]=paintCtx(); if(!cv) return; PNT.hist.push(x.getImageData(0,0,PNT_W,PNT_H)); paintBlank(x); sfx('click'); }
+function paintSave(){
+  const [cv]=paintCtx(); if(!cv) return; const P=S.prof;
+  P.myBack=cv.toDataURL('image/jpeg',.85); P.eq=P.eq||{}; P.eq.back='mine'; saveProfile(); myBackCss();
+  sfx('fanfare'); toast('マイデザインを保存して、裏面に使いました！'); PNT=null; closeSheet(); render();
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
