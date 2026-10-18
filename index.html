@@ -1826,6 +1826,10 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .osu-ic{flex:none;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:20px;background:var(--rail)}
 .osu-tx{display:flex;flex-direction:column;min-width:0;flex:1}.osu-tx b{font-size:14.5px}.osu-tx small{font-size:12px;color:var(--muted)}
 .osu-go{flex:none;font-size:20px;font-weight:900;color:var(--muted)}
+.lsn-term{margin-top:8px}
+.lsn-cert{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:12px 14px;border:0;border-radius:16px;cursor:pointer;text-align:left;font:inherit;color:#2a1a00;background:linear-gradient(100deg,#ffe08a,#f6b21f);box-shadow:0 5px 0 var(--gold-deep),0 0 24px -6px var(--gold)}
+.lsn-cert>span:first-child{font-size:30px}.lsn-cert b{display:block;font-size:15px}.lsn-cert small{font-size:12px;color:#5a3c00}
+.lsn-certnote{margin:6px 2px;font-size:13px;font-weight:700;color:var(--muted)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4456,7 +4460,37 @@ const LESSONS=[
     {art:'🏪 だけ → 👥👥👥', say:'ある商品を売る会社が1つだけの状態を「独占」っていうよ。ライバルがいないんだ。'},
     {art:'💰⬆️ 「ほかで買えないなら高くても…」', say:'本物の経済だと、独占した会社は値段を高くしても売れてしまう。それだと買う人が困るよね。'},
     {art:'⚖️ 独占禁止法 ／ 🃏 ゲームでは +2 ボーナス', say:'だから日本には「独占禁止法」というルールがあるよ。ゲームでは、ひとりじめできたらボーナスなんだけどね！'}],
-    q:{q:'本物の経済で、独占を防ぐためのきまりは？', opts:['独占禁止法','道路交通法','著作権法'], a:0, exp:'会社どうしが正しく競争できるように、独占禁止法というきまりがあるよ。'}}
+    q:{q:'本物の経済で、独占を防ぐためのきまりは？', opts:['独占禁止法','道路交通法','著作権法'], a:0, exp:'会社どうしが正しく競争できるように、独占禁止法というきまりがあるよ。'}},
+  {id:'kinri', term:2, ic:'🏦', t:'金利（きんり）ってなに？', sub:'お金を借りたときの「お礼」', pages:[
+    {art:'🏦 → 💴100万円 → 👤 ／ 1年後 💴103万円 → 🏦', say:'銀行からお金を借りたら、返すときに少し多めに返す。この「おまけ」の割合が金利だよ。この例だと3％だね。'},
+    {art:'🐷 預金 💴 → 🏦 → 少し増えて戻ってくる', say:'反対に、銀行にお金を預けると、銀行が金利を払ってくれる。銀行は「貸す金利」と「預かる金利」の差でもうけているんだ。'},
+    {art:'🏦 金融 ・ 資産バブル +3 ／ フィンテック革命 +3', say:'ゲームの「金融」は、銀行や証券会社の産業。お金の動きが大きくなるNEWSで点が高くなるよ。'}],
+    q:{q:'金利が上がると、お金を借りた人はどうなる？', opts:['返すお金が増える','返すお金が減る','返さなくてよくなる'], a:0, exp:'金利が上がると「おまけ」が増えるので、返すお金が多くなるよ。'}},
+  {id:'kabu', term:2, ic:'📈', t:'株（かぶ）ってなに？', sub:'会社を応援するチケット', pages:[
+    {art:'🏭 会社 ← 💴 ← 👥 ／ 👥 ← 📄 株', say:'会社は仕事に使うお金を集めるために「株」を出すよ。株を買った人は、その会社の持ち主の一人になるんだ。'},
+    {art:'🏭⬆️ → 📄 の値段 ⬆️ ／ 🏭⬇️ → 📄 ⬇️', say:'会社がもうかりそうだと、みんながその株をほしがって値段が上がる。反対だと下がる。需要と供給と同じだね。'},
+    {art:'⛏️ 資源株ブーム → ⚡ エネルギー +3 ・ 🏦 金融 +3', say:'ゲームの「資源株ブーム」では、石油や鉱山の会社の株が人気になって、エネルギーと金融がもうかるよ。'}],
+    q:{q:'株を買った人は、その会社にとってどんな人？', opts:['持ち主（株主）の一人','会社の社長','お客さんだけ'], a:0, exp:'株を持つ人は「株主」と呼ばれ、会社の持ち主の一人になるよ。'}},
+  {id:'boeki', term:2, ic:'🚢', t:'貿易（ぼうえき）ってなに？', sub:'輸出と輸入', pages:[
+    {art:'🗾 🚗 → 🚢 → 🌏', say:'国と国でものを売り買いすることを「貿易」っていうよ。外国に売るのが「輸出（ゆしゅつ）」。'},
+    {art:'🌏 🛢️🍌 → 🚢 → 🗾', say:'外国から買うのが「輸入（ゆにゅう）」。日本は石油や食べ物の多くを輸入しているんだ。'},
+    {art:'💴 円安ラッシュ → 🚚 運輸 +3', say:'輸出がふえると、港から運ぶ荷物もふえる。だから「円安ラッシュ」では運輸も+3なんだ。'}],
+    q:{q:'外国から石油を買うことを何という？', opts:['輸入','輸出','貯金'], a:0, exp:'外国から買うのが輸入、外国に売るのが輸出だよ。'}},
+  {id:'kokyo', term:2, ic:'🏗️', t:'国がお金を使うと？', sub:'公共事業（こうきょうじぎょう）', pages:[
+    {art:'🏛️ 国 → 💴 → 🛣️ 🚄 ⚡', say:'道路・鉄道・発電所などは、みんなが使うものだから、国や町が税金を使って作るよ。これが「公共事業」。'},
+    {art:'🏗️ → 👷 しごと → 💴 → 🛒', say:'工事が始まると、働く人にお給料が出て、その人たちがお買い物をする。お金が回って景気がよくなるんだ。'},
+    {art:'🏗️ インフラ投資ブーム → ⚡ +3 ・ 🚚 +3 ・ 🏭 +2 ・ 📺 −1', say:'ゲームの「インフラ投資ブーム」はまさにこれ。発電所や道路が作られて、エネルギーと運輸が+3だよ。'}],
+    q:{q:'道路や橋を作るお金は、おもにどこから出る？', opts:['税金','会社のおこづかい','くじ'], a:0, exp:'みんなが使うものは、みんなが納めた税金で作られることが多いよ。'}},
+  {id:'datsu', term:2, ic:'🌱', t:'環境とお金', sub:'脱炭素（だつたんそ）', pages:[
+    {art:'🏭💨 CO₂ → 🌍🔥', say:'石油や石炭を燃やすと出るCO₂（二酸化炭素）が、地球をあたためる原因のひとつといわれているよ。'},
+    {art:'☀️ 太陽光 ・ 🌬️ 風力 ・ 🔋 電池', say:'だから世界中で、CO₂を出さない発電や電気自動車にお金を使う「脱炭素」が進んでいるんだ。'},
+    {art:'🌱 脱炭素投資 → ⚡ +3 ・ 🏭 +3 ・ 🛒 −1', say:'ゲームの「脱炭素投資」では、新しい発電や工場が増えてエネルギーと製造が+3。環境もお金の流れを変えるんだね。'}],
+    q:{q:'脱炭素で増えやすいのは？', opts:['太陽光や風力の発電','石炭を燃やす発電','ごみのポイ捨て'], a:0, exp:'CO₂を出さない太陽光や風力の発電が増えやすいよ。'}},
+  {id:'cashless', term:2, ic:'📱', t:'キャッシュレスってなに？', sub:'お金のデジタル化', pages:[
+    {art:'💴🪙 → 📱💳', say:'お札や小銭を使わずに、スマホやカードで払うことを「キャッシュレス」っていうよ。'},
+    {art:'📱 → 🏦 → 🏪 （データが動く）', say:'お金そのものじゃなく「データ」が動いているんだ。だからお金の会社とスマホの会社がいっしょに成長するよ。'},
+    {art:'📱 フィンテック革命 → 🏦 +3 ・ 📺 +3 ・ 🚚 −1', say:'ゲームの「フィンテック革命」では、金融とメディア（アプリや広告）が+3。現金を運ぶ仕事は減っちゃうんだ。'}],
+    q:{q:'キャッシュレスで払うときに使うのは？', opts:['スマホやカード','お札と小銭だけ','手紙'], a:0, exp:'スマホ決済やカードで払うのがキャッシュレスだよ。'}}
 ];
 let LSN=null;
 const lsnDone = id => !!((S.prof.lsn||{})[id]);
@@ -4467,7 +4501,8 @@ function lessonCard(){
 function lessonsBody(){
   return `<span class="label">LESSON</span><h3 class="ttl" style="font-size:22px">ミオのけいざい教室</h3>
     <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>ゲームのNEWSの「なぜ？」を、本物の経済で説明するよ。1つ1分くらい。はじめてクリアすると +${LSN_COIN}コイン！</p></div>
-    <div class="lsn-list">${LESSONS.map((l,i)=>`<button class="lsn-item${lsnDone(l.id)?' done':''}" onclick="lessonStart(${i})"><span class="lsn-ic">${l.ic}</span><span class="lsn-tx"><b>${i+1}. ${l.t}</b><small>${l.sub}</small></span><span class="lsn-st">${lsnDone(l.id)?'できた！':'›'}</span></button>`).join('')}</div>
+    ${[1,2].map(tm=>`<span class="label lsn-term">${tm}学期${tm===2?' · NEW':''}</span><div class="lsn-list">${LESSONS.map((l,i)=>(l.term||1)!==tm?'':`<button class="lsn-item${lsnDone(l.id)?' done':''}" onclick="lessonStart(${i})"><span class="lsn-ic">${l.ic}</span><span class="lsn-tx"><b>${i+1}. ${l.t}</b><small>${l.sub}</small></span><span class="lsn-st">${lsnDone(l.id)?'できた！':'›'}</span></button>`).join('')}</div>`).join('')}
+    ${(()=>{ const n=LESSONS.filter(l=>lsnDone(l.id)).length; return n>=LESSONS.length ? `<button class="lsn-cert" onclick="openCert()"><span>🎓</span><span><b>修了証（しゅうりょうしょう）を受け取る</b><small>全${LESSONS.length}の授業をクリア！ 画像で保存できるよ</small></span></button>` : `<p class="lsn-certnote">🎓 全${LESSONS.length}の授業をクリアすると「修了証」がもらえるよ（いま ${n}/${LESSONS.length}）</p>`; })()}
     <button class="btn ghost" onclick="closeSheet()">とじる</button>`;
 }
 function lessonStart(i){ LSN={i, p:0, pick:null, ord:shuffle([0,1,2],Math.random)}; sfx('click'); openSheet('lesson'); }
@@ -4528,6 +4563,32 @@ function homeRec(){
   if(!out.length) out.push({ic:'🎲', t:'今日もCPUと腕だめし', d:'自己ベスト更新をねらおう', go:"go('play','cpu')"});
   return `<section class="osu-card"><div class="osu-head">${guideAva()}<span><span class="label">ミオのきょうのおすすめ</span><b>次はこれをやってみよう！</b></span></div>
     <div class="osu-list">${out.slice(0,3).map(x=>`<button class="osu-item" onclick="${x.go}"><span class="osu-ic">${x.ic}</span><span class="osu-tx"><b>${x.t}</b><small>${x.d}</small></span><span class="osu-go">›</span></button>`).join('')}</div></section>`;
+}
+/* ---- けいざい教室の修了証：全授業クリアで、名前と日付入りの画像をつくる ---- */
+async function drawCert(){
+  try{ await document.fonts.ready; }catch(e){}
+  const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d');
+  const SR='"Shippori Mincho B1","Yu Mincho",serif', D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', B='"M PLUS Rounded 1c",sans-serif';
+  const g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#fffaf0'); g.addColorStop(1,'#f6ead0'); x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.strokeStyle='#c99a2e'; x.lineWidth=14; x.strokeRect(40,40,W-80,H-80); x.lineWidth=3; x.strokeRect(70,70,W-140,H-140);
+  x.textAlign='center'; x.fillStyle='#8a6a1c'; x.font=`600 34px ${B}`; x.fillText('AZAKEI MARKET · ミオのけいざい教室',W/2,170);
+  x.fillStyle='#2a1f0e'; x.font=`800 150px ${SR}`; x.fillText('修了証',W/2,350);
+  const nm=(NET.name||'').trim()||'あなた'; x.font=`800 76px ${SR}`; x.fillText(`${nm} さん`,W/2,520);
+  x.strokeStyle='#2a1f0e'; x.lineWidth=2; x.beginPath(); x.moveTo(220,550); x.lineTo(W-220,550); x.stroke();
+  x.font=`600 40px ${SR}`; ['あなたは ミオのけいざい教室で',`全${LESSONS.length}の授業を学び`,'経済を読む力を身につけたことを','ここに証します'].forEach((t,i)=>x.fillText(t,W/2,660+i*66));
+  x.font=`56px sans-serif`; const icons=LESSONS.map(l=>l.ic); icons.forEach((ic,i)=>{ const col=i%6, row=Math.floor(i/6); x.fillText(ic, W/2-5*65+col*130, 1000+row*80); });
+  const d=new Date(); x.textAlign='left'; x.fillStyle='#2a1f0e'; x.font=`600 36px ${SR}`; x.fillText(`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`,130,1220);
+  x.textAlign='right'; x.fillText('案内役  ミオ',W-230,1220);
+  x.save(); x.translate(W-160,1190); x.rotate(-.18); x.strokeStyle='#d0312d'; x.fillStyle='rgba(208,49,45,.08)'; x.lineWidth=7; x.beginPath(); x.arc(0,0,62,0,Math.PI*2); x.fill(); x.stroke();
+  x.fillStyle='#d0312d'; x.textAlign='center'; x.font=`44px ${D}`; x.fillText('ミオ',0,8); x.font=`600 18px ${B}`; x.fillText('合格',0,40); x.restore();
+  return cv;
+}
+async function openCert(){
+  if(LESSONS.some(l=>!lsnDone(l.id))) return;
+  sfx('fanfare'); toast('修了証を作っています…');
+  const cv=await drawCert();
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'🎓 けいざい教室 修了証', alt:'けいざい教室の修了証', name:`azakei-certificate-${todayKey()}.png`, note:'おうちの人や友だちに見せてみよう！ 名前は設定で変えられます。'};
+  openSheet('card'); if(!reduced()) setTimeout(()=>confetti(),300);
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
@@ -5651,7 +5712,7 @@ function cardSheetBody(){
   if(!CARD_IMG) return '';
   const canFile = !IN_CLAUDE && navigator.canShare && (()=>{ try{ return navigator.canShare({files:[new File([CARD_IMG.blob],'a.png',{type:'image/png'})]}); }catch(e){ return false; } })();
   return `<h3 class="ttl" style="font-size:20px">${CARD_IMG.title||'リザルトカード'}</h3>
-    <img class="rcard" src="${CARD_IMG.url}" alt="今回の結果をまとめた画像">
+    <img class="rcard" src="${CARD_IMG.url}" alt="${CARD_IMG.alt||'今回の結果をまとめた画像'}">
     <div class="col" style="gap:10px">${canFile?'<button class="btn gold big" onclick="shareCardImg()">画像を送る（LINEなど）</button>':''}
       <button class="btn ${canFile?'':'gold '}big" onclick="saveCardImg()">画像を保存する</button></div>
     <p class="note">${CARD_IMG.note||''}</p>`;
