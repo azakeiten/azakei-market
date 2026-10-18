@@ -1830,6 +1830,10 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .lsn-cert{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:12px 14px;border:0;border-radius:16px;cursor:pointer;text-align:left;font:inherit;color:#2a1a00;background:linear-gradient(100deg,#ffe08a,#f6b21f);box-shadow:0 5px 0 var(--gold-deep),0 0 24px -6px var(--gold)}
 .lsn-cert>span:first-child{font-size:30px}.lsn-cert b{display:block;font-size:15px}.lsn-cert small{font-size:12px;color:#5a3c00}
 .lsn-certnote{margin:6px 2px;font-size:13px;font-weight:700;color:var(--muted)}
+.gd-bub{position:relative}
+.gd-bub:has(.gd-say){padding-right:46px}
+.gd-say{position:absolute;top:6px;right:6px;width:34px;height:34px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;font-size:16px;background:#ffe3f2;box-shadow:inset 0 0 0 1.5px #ff9ad9}
+.gd-say:active{transform:scale(.92)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2463,6 +2467,7 @@ function start(data){
   if(S.fs===undefined){ const v=load('azakei-fs'); S.fs = v!=null ? v : (load('azakei-big') ? 1 : 0); }
   if(S.hc===undefined) S.hc=!!load('azakei-hc');
   if(S.cvd===undefined) S.cvd=!!load('azakei-cvd');
+  if(S.mioVoice===undefined) S.mioVoice=!!load('azakei-miovoice');
   if(S.theme===undefined){ const v=load('azakei-theme'); S.theme = v||(load('azakei-light')?'light':'dark'); }
   try{ matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{ if(S.theme==='auto'){ applyLook(); render(); } }); }catch(e){}
   if(S.furi===undefined) S.furi=!!load('azakei-furi');
@@ -3210,7 +3215,7 @@ ${rows(NEWS,T2)}
 }
 // ---- sheets (bottom sheet on phones / modal on desktop) ----
 function openSheet(k){ S.sheet=k; renderSheet(); }
-function closeSheet(){ S.sheet=null; renderSheet(); }
+function closeSheet(){ S.sheet=null; mioAuto.last=''; try{ if(window.speechSynthesis && MIO_U) speechSynthesis.cancel(); }catch(e){} renderSheet(); }
 function renderSheet(){
   const el=document.getElementById('sheet'); if(!el) return;
   const k=S.sheet; if(!k){ el.innerHTML=''; return; }
@@ -3257,6 +3262,7 @@ function renderSheet(){
   else if(k==='board') body=boardBody();
   setTimeout(fillQRs,0);
   el.innerHTML=`<div class="sheet-bg" onclick="closeSheet()"></div><div class="sheet${k==='tutorial'?' tut':''}" role="dialog" aria-modal="true"><button class="sheet-x" onclick="closeSheet()" aria-label="閉じる">✕</button>${body}</div>`;
+  mioAuto(el);
 }
 
 /* ================= render ================= */
@@ -4317,7 +4323,7 @@ function nbPath(){
   if(steps.every(x=>x.done)){ if(!nbNew()) return ''; }
   const cur=steps.findIndex(x=>!x.done), n=steps.filter(x=>x.done).length;
   const say=cur<0?'ぜんぶできたね！ もう立派なプレイヤーだよ。あとは自由に遊んでみてね！':['まずはここから！ 3つやれば、もう立派なプレイヤーだよ。','ルールはばっちり！ 次は練習試合で、実際にやってみよう。','練習おつかれさま！ 最後はCPUと本番の1試合だよ。'][cur];
-  return `<section class="nb-card" aria-label="はじめてのみち"><div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${say}</p></div>
+  return `<section class="nb-card" aria-label="はじめてのみち"><div class="gd-talk">${guideAva()}<p class="gd-bub">${sayBtn()}<b>${GUIDE.n}</b>${say}</p></div>
     <div class="nb-steps">${steps.map((x,i)=>`<button class="nb-step${x.done?' done':''}${i===cur?' now':''}" onclick="${x.go}"><i>${x.done?'✓':i+1}</i><span><b>${x.t}</b><small>${x.done?'できた！':x.d}</small></span>${i===cur?'<em>ここ！</em>':''}</button>`).join('')}</div>
     <div class="nb-prog"><span style="width:${n/3*100}%"></span></div>${cur<0?`<button class="linkbtn" onclick="S.prof.nbDone=1;saveProfile();render()">このカードをしまう</button>`:''}</section>`;
 }
@@ -4327,7 +4333,7 @@ function nbLocked(){
 }
 function nbUnlocked(){
   const P=S.prof; if(nbNew() || P.nbOpen || !P.nbWasNew) return '';
-  return `<section class="nb-open"><div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>3試合おつかれさま！ デイリーチャレンジ、ミッション、イベントが遊べるようになったよ。下にあるから見てみてね！</p></div>
+  return `<section class="nb-open"><div class="gd-talk">${guideAva()}<p class="gd-bub">${sayBtn()}<b>${GUIDE.n}</b>3試合おつかれさま！ デイリーチャレンジ、ミッション、イベントが遊べるようになったよ。下にあるから見てみてね！</p></div>
     <button class="btn gold" onclick="S.prof.nbOpen=1;saveProfile();render()">わかった！</button></section>`;
 }
 /* ---- ミオのひとこと：はじめのうち（操作ガイドがオンのあいだ）、毎ターンの結果と試合のあとに、やさしく声をかける ---- */
@@ -4346,7 +4352,7 @@ function mioTurn(){
     if(miss!=null) t+=` ちなみに「${IND[miss]}」はだれも出してなかったよ（独占なら ${sgn(gain(C,row[miss],1))}）。`;
   }
   if(r.fut) t=`先物取引、使えたね！ `+t;
-  return `<div class="gd-talk mio-turn" data-k="t${G.turn}">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${t}</p></div>`;
+  return `<div class="gd-talk mio-turn" data-k="t${G.turn}">${guideAva()}<p class="gd-bub">${sayBtn()}<b>${GUIDE.n}</b>${t}</p></div>`;
 }
 function mioFinal(){
   if(!G || G.phase!=='final' || G.practice || G.demo || !stepsOn()) return '';
@@ -4361,7 +4367,7 @@ function mioFinal(){
   else if(neg>=2) tip='マイナスのカードは、ほかの人とぶつかりそうなターンに出すと、ダメージを小さくできるよ。';
   else if(rank===1 && G.players.filter(q=>!isHuman(q)).every(q=>q.type==='naive')) tip='CPUを「ふつう」にして、もっと手ごわい相手とも勝負してみる？';
   else tip='ニュースの新聞で、+3の産業がどこか最初に見ておくと、作戦が立てやすいよ。';
-  return `<section class="mio-final"><div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}のふりかえり</b>${head} ${good}</p></div>
+  return `<section class="mio-final"><div class="gd-talk">${guideAva()}<p class="gd-bub">${sayBtn()}<b>${GUIDE.n}のふりかえり</b>${head} ${good}</p></div>
     <p class="mio-tip"><span>次のヒント</span>${tip}</p></section>`;
 }
 /* ---- あそぶ画面：対戦相手の顔ぶれと、いつも見えるスタートボタン（いまの設定の要約つき） ---- */
@@ -4395,7 +4401,7 @@ const HELP={
 function helpBody(){
   const k=helpCtx(), h=HELP[k]||HELP.home;
   return `<span class="label">この画面の使い方</span><h3 class="ttl" style="font-size:22px">${h.t}</h3>
-    <div class="gd-talk" data-k="h">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${h.say}</p></div>
+    <div class="gd-talk" data-k="h">${guideAva()}<p class="gd-bub">${sayBtn()}<b>${GUIDE.n}</b>${h.say}</p></div>
     <ol class="hlp-list">${h.tips.map(t=>`<li>${t}</li>`).join('')}</ol>
     <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn ghost" onclick="openSheet('terms')">ことばの説明</button><button class="btn ghost" onclick="closeSheet();openTutorial()">遊び方（1分）</button><button class="btn gold" style="margin-left:auto" onclick="closeSheet()">わかった！</button></div>`;
 }
@@ -4500,7 +4506,7 @@ function lessonCard(){
 }
 function lessonsBody(){
   return `<span class="label">LESSON</span><h3 class="ttl" style="font-size:22px">ミオのけいざい教室</h3>
-    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>ゲームのNEWSの「なぜ？」を、本物の経済で説明するよ。1つ1分くらい。はじめてクリアすると +${LSN_COIN}コイン！</p></div>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub">${sayBtn()}<b>${GUIDE.n}</b>ゲームのNEWSの「なぜ？」を、本物の経済で説明するよ。1つ1分くらい。はじめてクリアすると +${LSN_COIN}コイン！</p></div>
     ${[1,2].map(tm=>`<span class="label lsn-term">${tm}学期${tm===2?' · NEW':''}</span><div class="lsn-list">${LESSONS.map((l,i)=>(l.term||1)!==tm?'':`<button class="lsn-item${lsnDone(l.id)?' done':''}" onclick="lessonStart(${i})"><span class="lsn-ic">${l.ic}</span><span class="lsn-tx"><b>${i+1}. ${l.t}</b><small>${l.sub}</small></span><span class="lsn-st">${lsnDone(l.id)?'できた！':'›'}</span></button>`).join('')}</div>`).join('')}
     ${(()=>{ const n=LESSONS.filter(l=>lsnDone(l.id)).length; return n>=LESSONS.length ? `<button class="lsn-cert" onclick="openCert()"><span>🎓</span><span><b>修了証（しゅうりょうしょう）を受け取る</b><small>全${LESSONS.length}の授業をクリア！ 画像で保存できるよ</small></span></button>` : `<p class="lsn-certnote">🎓 全${LESSONS.length}の授業をクリアすると「修了証」がもらえるよ（いま ${n}/${LESSONS.length}）</p>`; })()}
     <button class="btn ghost" onclick="closeSheet()">とじる</button>`;
@@ -4520,7 +4526,7 @@ function lessonBody(){
   if(p<N){ const pg=L.pages[p];
     return `<span class="label">けいざい教室 ${LSN.i+1} · ${p+1} / ${N+1}</span><h3 class="ttl" style="font-size:22px">${L.ic} ${L.t}</h3>
       <div class="lsn-art" aria-hidden="true">${pg.art}</div>
-      <div class="gd-talk" data-k="l${LSN.i}-${p}">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${pg.say}</p></div>${dots}
+      <div class="gd-talk" data-k="l${LSN.i}-${p}">${guideAva()}<p class="gd-bub">${sayBtn()}<b>${GUIDE.n}</b>${pg.say}</p></div>${dots}
       <div class="row spread"><button class="btn ghost" onclick="${p?'lessonGo(-1)':"openSheet('lessons')"}">${p?'戻る':'一覧へ'}</button><button class="btn gold big" onclick="lessonGo(1)">${p<N-1?'次へ':'確認の1問へ'}</button></div>`;
   }
   const q=L.q, ans=LSN.pick!=null, ok=LSN.pick===q.a;
@@ -4590,6 +4596,23 @@ async function openCert(){
   CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'🎓 けいざい教室 修了証', alt:'けいざい教室の修了証', name:`azakei-certificate-${todayKey()}.png`, note:'おうちの人や友だちに見せてみよう！ 名前は設定で変えられます。'};
   openSheet('card'); if(!reduced()) setTimeout(()=>confetti(),300);
 }
+/* ---- ミオの声：ふきだしの🔊で読み上げ。設定でオンにすると、遊び方・けいざい教室のページで自動で読む ---- */
+let MIO_U=null;
+const sayBtn = () => ('speechSynthesis' in window) ? `<button class="gd-say" onclick="event.stopPropagation();mioSpeak(this.closest('.gd-bub'))" aria-label="ミオのセリフを読み上げる" title="読み上げ">🔊</button>` : '';
+function mioSpeak(bub){
+  if(!bub || !('speechSynthesis' in window)) return;
+  const c=bub.cloneNode(true); c.querySelectorAll('.gd-say,b,rt').forEach(e=>e.remove());
+  const t=c.textContent.replace(/\s+/g,' ').trim(); if(!t) return;
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='ja-JP'; u.rate=1.0; u.pitch=1.35;
+    const v=speechSynthesis.getVoices().find(v=>/ja/i.test(v.lang)); if(v) u.voice=v; MIO_U=u; speechSynthesis.speak(u); }catch(e){}
+}
+function mioAuto(el){
+  if(!S.mioVoice || !el) return; const t=el.querySelector('.gd-talk[data-k]'); if(!t) return;
+  const key=S.sheet+':'+t.dataset.k; if(mioAuto.last===key) return; mioAuto.last=key;
+  setTimeout(()=>{ const b=document.querySelector('#sheet .gd-talk[data-k="'+t.dataset.k+'"] .gd-bub'); if(b && S.sheet) mioSpeak(b); },350);
+}
+mioAuto.last='';
+function toggleMioVoice(){ S.mioVoice=!S.mioVoice; save('azakei-miovoice',S.mioVoice); renderSheet(); if(S.mioVoice){ const b=document.createElement('p'); b.textContent='ミオだよ。これから、わたしのセリフを読み上げるね！'; mioSpeak(b); } }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5183,6 +5206,7 @@ function settingsBody(){
       <div class="lk-fs"><b>文字の大きさ</b><div class="lk-seg" role="radiogroup" aria-label="文字の大きさ">${['ふつう','大きい','特大'].map((n,i)=>`<button role="radio" aria-checked="${S.fs===i}" class="${S.fs===i?'on':''}" onclick="setFs(${i})" style="font-size:${13+i*2}px">${n}</button>`).join('')}</div></div>
       ${sw(!!S.hc,'toggleHc()','くっきり表示','うすい文字や線を濃くして、見分けやすくする')}
       ${sw(!!S.furi,'toggleFuri()','ふりがな','むずかしい言葉（経済・産業・独占など）にふりがなをつける')}
+      ${'speechSynthesis' in window?sw(!!S.mioVoice,'toggleMioVoice()','ミオの声','遊び方やけいざい教室で、ミオのセリフを自動で読み上げる（🔊ボタンでいつでも読める）'):''}
       ${sw(!!S.cvd,'toggleCvd()','色の見分けサポート','色の小さな印に、産業の頭文字（エ・金・製・小・運・メ）を入れる')}
       ${sw(stepsOn(),'toggleSteps()','操作ガイド','試合中に「いまやること」と、案内役ミオのひとことを表示する')}
       <button class="swrow" onclick="openSheet('terms')"><span><b>ことばの説明</b><span class="note">NEWS・独占・被り・先物取引などを、絵つきでやさしく説明</span></span><span class="xf-go">›</span></button></div>
@@ -6320,7 +6344,7 @@ function tutorialBody(){
   const i=S.tut||0, s=TUT[i];
   return `<div class="tut-art">${s.art()}</div>
     <span class="label">遊び方 ${i+1} / ${TUT.length}</span><h3 class="ttl" style="font-size:24px">${s.t}</h3>
-    ${s.say?`<div class="gd-talk" data-k="${i}">${guideAva()}<p class="gd-bub">${s.say}</p></div><p class="gd-pt"><b>ポイント</b>${s.d}</p>`:`<p>${s.d}</p>`}
+    ${s.say?`<div class="gd-talk" data-k="${i}">${guideAva()}<p class="gd-bub">${sayBtn()}${s.say}</p></div><p class="gd-pt"><b>ポイント</b>${s.d}</p>`:`<p>${s.d}</p>`}
     <div class="tut-dots">${TUT.map((_,j)=>`<i class="${j===i?'on':''}"></i>`).join('')}</div>
     <div class="row spread"><button class="btn ghost" onclick="tutGo(-1)" ${i===0?'disabled':''}>戻る</button>
       ${i<TUT.length-1?`<button class="btn gold big" onclick="tutGo(1)">次へ</button>`:`<button class="btn go big" onclick="closeSheet();save('azakei-tut',1);startPractice()">練習ゲームをはじめる</button>`}</div>`;
