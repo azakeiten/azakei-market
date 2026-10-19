@@ -3122,7 +3122,7 @@ function guestCountdown(){
 }
 // ---- reactions ----
 const EMOTES=['👏','🔥','😮','😂','💸','🙏'];
-function sendEmote(e){ if(!NET.room || !EMOTES.includes(e)) return; emit('emote',{e}); }
+function sendEmote(e){ if(!EMOTES.includes(e)) return; if(G && !G.online){ localEmote(e); return; } if(!NET.room) return; emit('emote',{e}); }
 function showEmote(peer,data){
   if(!data || !EMOTES.includes(data.e) || !G) return;
   const i=G.players.findIndex(p=>p.peer===peer); const el=document.querySelector(`.seat[data-i="${i}"]`)||document.querySelector('.rivals');
@@ -4688,6 +4688,28 @@ function paintSave(){
   P.myBack=cv.toDataURL('image/jpeg',.85); P.eq=P.eq||{}; P.eq.back='mine'; saveProfile(); myBackCss();
   sfx('fanfare'); toast('マイデザインを保存して、裏面に使いました！'); PNT=null; closeSheet(); render();
 }
+/* ---- CPU戦のリアクション：スタンプを送ると、CPUのキャラが返事をしてくれる ---- */
+const EMO_REPLY={
+  '👏':['ありがと！','てれるなあ','そっちもやるね！'],
+  '🔥':['燃えてきた！','こっちも本気でいくよ！','熱いね！'],
+  '😮':['びっくりした？','まだまだこれから！','ふふふ…'],
+  '😂':['あはは！','笑ってられるのも今のうち！','楽しいね！'],
+  '💸':['お金の話はシビアだよ','次はもうけるぞ！','ちゃりーん！'],
+  '🙏':['よろしくね！','手加減はしないよ？','おたがいがんばろう！']
+};
+const cpuEmoteOn = () => !!(G && !G.online && !G.demo && G.players.filter(isHuman).length===1 && G.players.some(p=>!isHuman(p)));
+function localEmote(e){
+  if(!cpuEmoteOn()) return; const now=Date.now(); if(now-(localEmote.t||0)<1500) return; localEmote.t=now;
+  const me=myIndex(); const el=document.querySelector(`.seat[data-i="${me}"]`)||document.querySelector('.rvgrid,.rivals');
+  if(el){ const sp=document.createElement('span'); sp.className='emo'; sp.textContent=e; el.appendChild(sp); setTimeout(()=>sp.remove(),1800); }
+  sfx('click'); haptic(8);
+  const cpus=G.players.map((p,i)=>i).filter(i=>!isHuman(G.players[i]));
+  const seen=cpus.filter(i=>{ const s=document.querySelector(`.seat[data-i="${i}"]`); if(!s) return false; const r=s.getBoundingClientRect(); return r.right>0 && r.left<innerWidth-40; });   /* スマホで席が横にはみ出していても、見えている席のCPUが返事する */
+  const pool=seen.length?seen:cpus, i=pool[Math.random()*pool.length|0];
+  const k=charKey(G.players[i]); let t=EMO_REPLY[e][Math.random()*3|0];
+  if(k==='トキ') t='ほっほっ、'+t; else if(k==='ユイ') t='…'+t.replace(/！/g,'。');
+  setTimeout(()=>{ if(G) say(i,t); },650);
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5033,7 +5055,7 @@ function sideInfo(){
       <button class="btn ghost icon" style="margin-top:6px" onclick="openSheet('table')">📊 全体の点数表を見る</button></div>
   </div>`;
 }
-function emoteBar(){ return G.online&&NET.room ? `<div class="emotes" role="group" aria-label="リアクション">${EMOTES.map(e=>`<button onclick="sendEmote('${e}')" aria-label="リアクション ${e}">${e}</button>`).join('')}</div>` : ''; }
+function emoteBar(){ return (G.online&&NET.room) || cpuEmoteOn() ? `<div class="emotes" role="group" aria-label="リアクション">${EMOTES.map(e=>`<button onclick="sendEmote('${e}')" aria-label="リアクション ${e}">${e}</button>`).join('')}</div>` : ''; }
 function handDock(news){
   if(G.online && G.phase==='choose' && G.ov!=='intro'){
     if(G.me<0) return `<div class="dock"><p class="note" style="text-align:center;padding:16px">観戦中です。次のゲームから参加できます。</p>${emoteBar()}</div>`;
