@@ -2847,7 +2847,7 @@ const logDeck = () => G.log && G.log.length ? G.log : G.deck.slice(0,TURNS);
 const termName = r => G.cfg.hist && G.fullPool ? `${r===0?'前半':'後半'}` : `第${r+1}期`;
 function termRange(r){ if(!G.fullPool) return ''; const ids=G.fullPool.slice(r*LONG_PER,(r+1)*LONG_PER); return `${yearOf(ids[0])}–${yearOf(ids[ids.length-1])}`; }
 const turnLabel = () => (isLong()?`${termName(G.round)} · `:'')+`TURN ${G.turn+1}/${TURNS}`;
-function finishGame(){ G.phase='final'; G.ov=null; recordResult(); repSave(); practiceDone(); leagueRecord(); boardRecord(); partyReward(); render(); netSync(); scrollTo(0,0); startCeremony(); }
+function finishGame(){ G.phase='final'; G.ov=null; recordResult(); repSave(); achCheck(); practiceDone(); leagueRecord(); boardRecord(); partyReward(); render(); netSync(); scrollTo(0,0); startCeremony(); }
 /* ブランド：期の決算で、その期にいちばん独占した産業が自分のブランドになり、以後その産業は毎回+1 */
 function brandOf(us, prev){
   const n=[0,0,0,0,0,0]; let lastMono=-1;
@@ -3598,9 +3598,10 @@ const ACH_GROUPS=[
   ['はじめての一歩', ['first','win1','online','long1','hist','futwin']],
   ['腕前', ['mono3','fut4','big15','comeback','beatpro','longwin','sweep','ct5','ud10','duelwin']],
   ['やりこみ', ['win10','games20','daily3','daily7','gold','chal24','surv5','cupgold']],
-  ['コレクション', ['mkall','dexall','story9','chars9','beat9','boss3','party5']]
+  ['コレクション', ['mkall','dexall','story9','chars9','beat9','boss3','party5']],
+  ['まなび・創作', ['lsn1','lsnall','pz3','artist','bond5','rec6']]
 ];
-const ACH_TIER={win10:2,games20:2,daily3:2,ct5:2,mono3:2,fut4:2,big15:2,longwin:2,chars9:2,gold:2,mkall:2, comeback:3,beatpro:3,sweep:3,daily7:3,chal24:3,surv5:3,cupgold:3,dexall:3,story9:3,beat9:3,boss3:3};
+const ACH_TIER={pz3:2,rec6:2,lsnall:3,bond5:3,win10:2,games20:2,daily3:2,ct5:2,mono3:2,fut4:2,big15:2,longwin:2,chars9:2,gold:2,mkall:2, comeback:3,beatpro:3,sweep:3,daily7:3,chal24:3,surv5:3,cupgold:3,dexall:3,story9:3,beat9:3,boss3:3};
 const ACH_TN=['','銅','銀','金'];
 function achPanel(){
   const P=S.prof, got=ACH.filter(a=>P.ach[a.id]), tier=id=>ACH_TIER[id]||1;
@@ -4560,7 +4561,7 @@ function lessonStart(i){ LSN={i, p:0, pick:null, ord:shuffle([0,1,2],Math.random
 function lessonGo(d){ if(!LSN) return; LSN.p=Math.max(0,LSN.p+d); sfx('click'); renderSheet(); }
 function lessonPick(k){
   if(!LSN || LSN.pick!=null) return; const L=LESSONS[LSN.i]; LSN.pick=k; const ok=k===L.q.a;
-  if(ok){ sfx('coin'); haptic(20); const P=S.prof; P.lsn=P.lsn||{}; if(!P.lsn[L.id]){ P.lsn[L.id]=Date.now(); P.coin=(P.coin||0)+LSN_COIN; LSN.got=LSN_COIN; saveProfile(); } }
+  if(ok){ sfx('coin'); haptic(20); const P=S.prof; P.lsn=P.lsn||{}; if(!P.lsn[L.id]){ P.lsn[L.id]=Date.now(); P.coin=(P.coin||0)+LSN_COIN; LSN.got=LSN_COIN; saveProfile(); } achCheck(); }
   else { sfx('buzz'); haptic(30); }
   renderSheet();
 }
@@ -4715,8 +4716,9 @@ function paintUndo(){ const [cv,x]=paintCtx(); if(!cv||!PNT.hist.length) return;
 function paintClear(){ const [cv,x]=paintCtx(); if(!cv) return; PNT.hist.push(x.getImageData(0,0,PNT.w,PNT.h)); paintBlank(x); sfx('click'); }
 function paintSave(){
   const [cv]=paintCtx(); if(!cv) return; const P=S.prof;
-  if(PNT.target==='icon'){ P.myIcon=cv.toDataURL('image/jpeg',.85); P.av='mine'; saveProfile(); sfx('fanfare'); toast('マイアイコンを保存して、アイコンにしました！'); PNT=null; closeSheet(); render(); return; }
+  if(PNT.target==='icon'){ P.myIcon=cv.toDataURL('image/jpeg',.85); P.av='mine'; saveProfile(); achCheck(); sfx('fanfare'); toast('マイアイコンを保存して、アイコンにしました！'); PNT=null; closeSheet(); render(); return; }
   P.myBack=cv.toDataURL('image/jpeg',.85); P.eq=P.eq||{}; P.eq.back='mine'; saveProfile(); myBackCss();
+  achCheck();
   sfx('fanfare'); toast('マイデザインを保存して、裏面に使いました！'); PNT=null; closeSheet(); render();
 }
 /* ---- CPU戦のリアクション：スタンプを送ると、CPUのキャラが返事をしてくれる ---- */
@@ -4772,7 +4774,7 @@ function puzSubmit(){
   const P=S.prof, wk=PZ.wk; const old=P.pz&&P.pz.wk===wk?P.pz:null;
   if(!old || sc>old.sc){ P.pz={wk, sc, stars, got:old?old.got:0}; }
   if(stars>=3 && !(P.pz.got)){ P.pz.got=1; P.coin=(P.coin||0)+PUZ_COIN; PZ.res.coin=PUZ_COIN; }
-  saveProfile(); sfx(stars>=3?'fanfare':stars?'coin':'buzz'); if(stars>=3 && !reduced()) setTimeout(()=>confetti(),200); renderSheet();
+  saveProfile(); achCheck(); sfx(stars>=3?'fanfare':stars?'coin':'buzz'); if(stars>=3 && !reduced()) setTimeout(()=>confetti(),200); renderSheet();
 }
 function puzRetry(){ if(!PZ) return; PZ.done=false; PZ.res=null; sfx('click'); renderSheet(); }
 function puzBody(){
@@ -4792,6 +4794,20 @@ function puzBody(){
       <div class="row" style="gap:8px"><button class="btn ghost" onclick="puzRetry()">もう一度考える</button><button class="btn gold" style="margin-left:auto" onclick="closeSheet()">とじる</button></div>`
      :`<div class="pz-foot"><span>合計 <b>${total==null?'—':total+'点'}</b></span><button class="btn gold big" onclick="puzSubmit()" ${total==null?'disabled':''}>これで決定！</button></div>
       <p class="note">★3＝最高点、★2＝あと1点、★1＝あと3点以内。今週はじめての★3で +${PUZ_COIN}コイン。</p>`}`;
+}
+/* ---- まなび・創作の実績：けいざい教室・パズル・お絵かき・なかよし度・自己ベスト殿堂 ---- */
+function achCheck(quiet){
+  const P=S.prof; if(!P) return; P.ach=P.ach||{}; const got=[];
+  const give=id=>{ if(!P.ach[id]){ P.ach[id]=Date.now(); got.push(id); } };
+  const L=P.lsn||{}; const n=LESSONS.filter(l=>L[l.id]).length;
+  if(n>=1) give('lsn1'); if(n>=LESSONS.length) give('lsnall');
+  if(P.pz && P.pz.stars>=3) give('pz3');
+  if(P.myBack || P.myIcon) give('artist');
+  if(Object.values(P.riv||{}).some(r=>bondLv(r)>=5)) give('bond5');
+  if(REC_DEF.every(x=>(P.rec||{})[x.k])) give('rec6');
+  if(!got.length) return; saveProfile();
+  if(quiet) return;
+  const a=ACH.find(x=>x.id===got[0]); setTimeout(()=>{ toast(`🏆 実績「${a.n}」を解除！${got.length>1?` ほか${got.length-1}つ`:''}`); sfx('fanfare'); },400);
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
@@ -5300,6 +5316,7 @@ function histTable(){
 /* ================= screens ================= */
 // ホームはシンプルに：「あそぶ」→ 6つの入口 → 今日やること。説明やPDFはそれぞれの画面へ
 function homeView(){
+  if(!homeView.ach){ homeView.ach=1; achCheck(true); }   /* 前からの進み具合で解除できる実績は、起動時にそっと解除 */
   const show=[0,1,2,3,4,5].map((c,j)=>cardHTML(c,{no:true,style:`transform:translateX(-50%) rotate(${(j-2.5)*12}deg);margin-left:${(j-2.5)*(phone()?20:28)}px;z-index:${j};animation-delay:${j*.25}s`})).join('');
   return `<section class="hero">
       <div><div class="ver">CARD GAME <b>β3</b></div>
@@ -5412,6 +5429,12 @@ function lvInfo(xp){ let lv=1, rest=xp; while(rest>=lvNeed(lv)){ rest-=lvNeed(lv
 const TITLES=[[1,'見習いトレーダー'],[3,'駆け出しトレーダー'],[5,'市場の読み手'],[8,'敏腕トレーダー'],[12,'相場師'],[16,'マーケットの支配者']];
 const titleOf = lv => TITLES.filter(t=>lv>=t[0]).pop()[1];
 const ACH=[
+  {id:'lsn1', n:'教室デビュー', d:'けいざい教室の授業を1つクリア', ic:'📒'},
+  {id:'lsnall', n:'けいざい博士', d:'けいざい教室の12の授業をすべてクリア', ic:'🎓'},
+  {id:'pz3', n:'パズル名人', d:'今週のパズルで★3', ic:'🧩'},
+  {id:'artist', n:'アーティスト', d:'マイデザインかマイアイコンを描く', ic:'🎨'},
+  {id:'bond5', n:'なかよしマスター', d:'どれかのキャラとなかよし度Lv5', ic:'💗'},
+  {id:'rec6', n:'レコードホルダー', d:'自己ベスト殿堂の6つすべてに記録', ic:'🏅'},
   {id:'ud10', n:'相場の勘', d:'値動き予想で10問連続正解', ic:'📈'},
   {id:'duelwin', n:'挑戦者', d:'挑戦状で相手の点数を超える', ic:'✉️'},
   {id:'party5', n:'みんなの市場', d:'1台をみんなで回して5回遊ぶ', ic:'🎉'},
