@@ -1845,6 +1845,26 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .pnt-c{width:36px;padding:0 !important;background:var(--pc) !important}.pnt-c.on{box-shadow:0 0 0 3px var(--gold),inset 0 0 0 2px #fff !important}
 .pnt-sz i{display:inline-block;border-radius:50%;background:var(--ink)}
 .pnt-st{font-size:20px;width:40px;justify-content:center;padding:0 !important}
+.pzc .mc-ic{background:radial-gradient(circle at 35% 30%,#d6f7ff,#4fe3ff)}
+.pz-list{display:flex;flex-direction:column;gap:10px;margin:8px 0}
+.pz-row{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.pz-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.pz-h b{font-size:15px}
+.pz-t{font-family:var(--display);font-size:12px;padding:1px 8px;border-radius:8px;background:var(--rail);color:var(--muted)}
+.pz-cpus{display:flex;gap:6px;flex-wrap:wrap}
+.pz-cpu{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:2px 8px 2px 4px;border-radius:999px;background:color-mix(in srgb,var(--s) 22%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--s) 60%,transparent)}
+.pz-cpu b{font-weight:800}
+.pz-bs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.pz-b{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;min-height:52px;padding:4px 0;border:0;border-radius:10px;cursor:pointer;font:inherit;color:#fff;background:color-mix(in srgb,var(--c) 70%,#0b0d22);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .15)}
+.pz-b i{display:grid;place-items:center}.pz-b i svg{width:16px;height:16px}
+.pz-b span{font-family:var(--display);font-size:14px}
+.pz-b em{position:absolute;top:-6px;right:-2px;font-style:normal;font-size:11px;font-weight:900;padding:0 4px;border-radius:5px;background:var(--gold);color:#2a1a00}
+.pz-b.on{background:var(--c);box-shadow:0 0 0 3px var(--gold),0 4px 12px -4px var(--c)}
+.pz-b.used{opacity:.3}
+.pz-b:disabled{cursor:default}
+.pz-r{margin-left:auto;font-size:12px;font-weight:900;padding:2px 8px;border-radius:999px}.pz-r.ok{background:var(--gold);color:#2a1a00}.pz-r.ng{background:rgb(255 92 92 / .2);color:var(--down)}
+.pz-foot{display:flex;align-items:center;gap:10px;justify-content:space-between}.pz-foot b{font-family:var(--display);font-weight:400;font-size:24px}
+.pz-res{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;border-radius:16px;background:rgb(255 200 58 / .12);box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .5);animation:gdPop .4s both}
+.pz-res b{font-family:var(--display);font-weight:400;font-size:34px}.pz-stars{font-size:26px;color:var(--gold-t);letter-spacing:4px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3265,6 +3285,7 @@ function renderSheet(){
   else if(k==='help') body=helpBody();
   else if(k==='lessons') body=lessonsBody();
   else if(k==='paint') body=paintBody();
+  else if(k==='puzzle') body=puzBody();
   else if(k==='lesson') body=lessonBody();
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   else if(k.startsWith('cup:')) body=cupSheetBody(k.slice(4));
@@ -4585,6 +4606,7 @@ function homeRec(){
   const tr=todayRival(); if(P.trDay!==k && CHARS[tr]) out.push({ic:CHARS[tr].ic, t:`今日のライバルは ${tr}`, d:`${tr}より上の順位で +${TR_BONUS}コイン`, go:`challengeChar('${tr}')`});
   const R=P.riv||{}; const near=Object.keys(CHARS).filter(c=>R[c]).map(c=>{ const g=R[c].w+R[c].l+R[c].d, lv=bondLv(R[c]), nx=BOND_AT[lv]; return {c, lv, left:nx!=null?nx-g:99}; }).filter(x=>x.left<=2).sort((a,b)=>a.left-b.left)[0];
   if(near) out.push({ic:'💗', t:`${near.c}とあと${near.left}回でなかよしLv${near.lv+1}`, d:'新しいエピソードが読めるよ', go:`challengeChar('${near.c}')`});
+  if(!(P.pz&&P.pz.wk===bossWeek()&&P.pz.stars>=3)) out.push({ic:'🧩', t:'今週のパズルに挑戦', d:`CPUの出し方は公開。最高点をねらえ（★3で +${PUZ_COIN}コイン）`, go:'openPuzzle()'});
   const ln=LESSONS.findIndex(l=>!lsnDone(l.id)); if(ln>=0) out.push({ic:'📒', t:`けいざい教室：${ln+1}. ${LESSONS[ln].t}`, d:`1分で読めて +${LSN_COIN}コイン`, go:`lessonStart(${ln})`});
   if(!out.length) out.push({ic:'🎲', t:'今日もCPUと腕だめし', d:'自己ベスト更新をねらおう', go:"go('play','cpu')"});
   return `<section class="osu-card"><div class="osu-head">${guideAva()}<span><span class="label">ミオのきょうのおすすめ</span><b>次はこれをやってみよう！</b></span></div>
@@ -4709,6 +4731,58 @@ function localEmote(e){
   const k=charKey(G.players[i]); let t=EMO_REPLY[e][Math.random()*3|0];
   if(k==='トキ') t='ほっほっ、'+t; else if(k==='ユイ') t='…'+t.replace(/！/g,'。');
   setTimeout(()=>{ if(G) say(i,t); },650);
+}
+/* ---- 今週のパズル：CPU3人の出すカードは公開。4ターンの自分の出し方を決めて、最高点をねらう。毎週かわる ---- */
+const PUZ_COIN=50, PUZ_CPUS=['ミナト','アオイ','ソラ'];
+let PZ=null;
+function puzMake(wk){
+  const C=presetCfg('rec');
+  let fb=null;
+  for(let v=0; v<40; v++){
+    const rnd=mulberry(wk*97+v*13+5), deck=shuffle([0,1,2,3,4,5],rnd).slice(0,4);
+    const pri=PUZ_CPUS.map(()=>shuffle([0,1,2,3,4,5],rnd));
+    const hands=PUZ_CPUS.map(()=>[0,1,2,3,4,5]), plays=deck.map(()=>[]);
+    deck.forEach((n,t)=>{ const row=C.table[n]; PUZ_CPUS.forEach((_,j)=>{ const h=hands[j]; const best=h.slice().sort((a,b)=>row[b]-row[a] || pri[j].indexOf(a)-pri[j].indexOf(b))[0]; plays[t].push(best); hands[j]=h.filter(x=>x!==best); }); });
+    const score=seq=>seq.reduce((sum,c,t)=>{ const k=1+plays[t].filter(x=>x===c).length; return sum+gain(C,C.table[deck[t]][c],k); },0);
+    let best=-99, bestSeq=null; const rec=(seq,used)=>{ if(seq.length===4){ const sc=score(seq); if(sc>best){ best=sc; bestSeq=seq.slice(); } return; } for(let c=0;c<6;c++) if(!used.includes(c)){ seq.push(c); rec(seq,used.concat([c])); seq.pop(); } }; rec([],[]);
+    const gh=[0,1,2,3,4,5], greedy=deck.map((n,t)=>{ const row=C.table[n]; const c=gh.slice().sort((a,b)=>row[b]-row[a])[0]; gh.splice(gh.indexOf(c),1); return c; });
+    const z={wk, C, deck, plays, best, bestSeq, greedy:score(greedy), score};
+    if(best-z.greedy>=2) return z;   /* 「いつも一番高いカード」では★3に届かない週を選ぶ */
+    if(!fb && best>z.greedy) fb=z; if(v===39) return fb||z;
+  }
+}
+function openPuzzle(){ const wk=bossWeek(); if(!PZ||PZ.wk!==wk) PZ=Object.assign(puzMake(wk),{pick:[null,null,null,null], done:false}); sfx('click'); openSheet('puzzle'); }
+function puzCard(){
+  const P=S.prof, wk=bossWeek(), r=P.pz&&P.pz.wk===wk?P.pz:null;
+  return `<button class="minicard pzc" onclick="openPuzzle()"><span class="mc-ic">🧩</span><span class="mc-tx"><span class="label">WEEKLY PUZZLE</span><b>今週のパズル</b><span class="note">${r?`今週の記録 ${'★'.repeat(r.stars)}${'☆'.repeat(3-r.stars)} · ${r.sc}点`:'CPUの出し方は公開。最高点を見つけよう'} · あと${weekLeft()}日</span></span></button>`;
+}
+function puzSet(t,c){ if(!PZ||PZ.done) return; const p=PZ.pick; const j=p.indexOf(c); if(j>=0 && j!==t) p[j]=null; p[t]=p[t]===c?null:c; sfx('click'); renderSheet(); }
+function puzSubmit(){
+  if(!PZ||PZ.pick.some(x=>x==null)) return; PZ.done=true; const sc=PZ.score(PZ.pick), d=PZ.best-sc;
+  const stars = d<=0?3:d<=1?2:d<=3?1:0; PZ.res={sc,stars};
+  const P=S.prof, wk=PZ.wk; const old=P.pz&&P.pz.wk===wk?P.pz:null;
+  if(!old || sc>old.sc){ P.pz={wk, sc, stars, got:old?old.got:0}; }
+  if(stars>=3 && !(P.pz.got)){ P.pz.got=1; P.coin=(P.coin||0)+PUZ_COIN; PZ.res.coin=PUZ_COIN; }
+  saveProfile(); sfx(stars>=3?'fanfare':stars?'coin':'buzz'); if(stars>=3 && !reduced()) setTimeout(()=>confetti(),200); renderSheet();
+}
+function puzRetry(){ if(!PZ) return; PZ.done=false; PZ.res=null; sfx('click'); renderSheet(); }
+function puzBody(){
+  if(!PZ) return '';
+  const C=PZ.C, used=PZ.pick, total=used.every(x=>x!=null)?PZ.score(used):null;
+  const rows=PZ.deck.map((n,t)=>{ const row=C.table[n], mine=used[t];
+    const cpu=PZ.plays[t].map((c,j)=>`<span class="pz-cpu" style="--s:${CHARS[PUZ_CPUS[j]].c}" title="${PUZ_CPUS[j]}">${CHARS[PUZ_CPUS[j]].ic}<b>${IND[c]}</b></span>`).join('');
+    const btns=[0,1,2,3,4,5].map(c=>{ const taken=used.includes(c)&&used[t]!==c, k=1+PZ.plays[t].filter(x=>x===c).length, pts=gain(C,row[c],k);
+      return `<button class="pz-b${mine===c?' on':''}${taken?' used':''}" style="--c:var(--i${c})" onclick="puzSet(${t},${c})" ${PZ.done?'disabled':''} aria-label="${IND[c]} ${sgn(pts)}"><i>${svg(c,2.2)}</i><span>${sgn(pts)}</span>${k===1?'<em>独占</em>':''}</button>`; }).join('');
+    const res = PZ.done ? (()=>{ const k=1+PZ.plays[t].filter(x=>x===mine).length; return `<span class="pz-r ${k===1?'ok':'ng'}">${IND[mine]} ${k===1?'独占':k+'人で被り'} ${sgn(gain(C,row[mine],k))}</span>`; })() : '';
+    return `<div class="pz-row"><div class="pz-h"><span class="pz-t">T${t+1}</span><b>${NEWS[n]}</b>${res}</div><div class="pz-cpus">${cpu}</div><div class="pz-bs">${btns}</div></div>`; }).join('');
+  const R=PZ.res;
+  return `<span class="label">WEEKLY PUZZLE · あと${weekLeft()}日</span><h3 class="ttl" style="font-size:22px">🧩 今週のパズル</h3>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub">${sayBtn()}<b>${GUIDE.n}</b>CPUの3人が出すカードは、もう決まっているよ（上の小さなアイコン）。4ターンで1枚ずつ、同じカードは1回だけ。ボタンの数字は「そこに出したら何点か」だよ。最高点を見つけてね！</p></div>
+    <div class="pz-list">${rows}</div>
+    ${R?`<div class="pz-res"><b>${R.sc}点</b><span class="pz-stars">${'★'.repeat(R.stars)}${'☆'.repeat(3-R.stars)}</span><span class="note">${R.stars>=3?`最高点 ${PZ.best}点を見つけた！`:`最高点は ${PZ.best}点。あと${PZ.best-R.sc}点！`}${R.coin?` 🪙 +${R.coin}コイン`:''}</span></div>
+      <div class="row" style="gap:8px"><button class="btn ghost" onclick="puzRetry()">もう一度考える</button><button class="btn gold" style="margin-left:auto" onclick="closeSheet()">とじる</button></div>`
+     :`<div class="pz-foot"><span>合計 <b>${total==null?'—':total+'点'}</b></span><button class="btn gold big" onclick="puzSubmit()" ${total==null?'disabled':''}>これで決定！</button></div>
+      <p class="note">★3＝最高点、★2＝あと1点、★1＝あと3点以内。今週はじめての★3で +${PUZ_COIN}コイン。</p>`}`;
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
@@ -5233,8 +5307,8 @@ function homeView(){
   ${quickMenu()}
   ${nbNew()?nbLocked():`${seasonCard()}
   ${todayBar()}
-  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
-  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
+  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
+  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${missionsPanel()}
   ${weeklyPanel()}`}
   <nav class="homelinks"><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
