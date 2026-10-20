@@ -1881,6 +1881,8 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .mn-meter{display:flex;justify-content:space-around;gap:6px;padding:8px;border-radius:12px;background:var(--rail);font-size:13px;font-weight:800}.mn-meter b{font-family:var(--display);font-weight:400;font-size:16px;color:var(--gold-t)}
 .mn-tips{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700;color:var(--muted)}
 .mn-good{margin:0;font-size:13.5px;font-weight:800;color:var(--up);text-align:center}
+.mn-qr{align-self:center;display:grid;place-items:center;padding:12px;border-radius:16px;background:#fff;min-height:224px;min-width:224px}
+.mn-imp>summary{cursor:pointer;font-weight:800;font-size:14px;min-height:40px;display:flex;align-items:center}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2257,7 +2259,7 @@ function cfgFor(mode,era){
   if(mode==='future') return {...CFG, table:HIST.map(h=>h.r), names:HIST.map(h=>h.n), hist:true, fut:true, pool:ERAS.future.ids.slice(), era:'future'};   // 未来編は歴史モードのしくみで、未来の出来事を使う
   if(mode==='history'){ const e=ERAS[era]||ERAS.all; return {...CFG, table:HIST.map(h=>h.r), names:HIST.map(h=>h.n), hist:true, pool:e.ids, era}; }
   if(mode==='ex') return {...CFG, table:CFG.table.concat(EXT_T), names:ALL_NEWS, hist:false, ex:true};
-  if(mode==='my'){ const M=(S.prof&&S.prof.myNews)||[]; if(M.length>=TURNS) return {...CFG, table:M.map(x=>x.v.slice()), names:M.map(x=>x.n), descs:M.map(x=>x.d||''), hist:false, my:true}; }
+  if(mode==='my'){ const M=(S.prof&&S.prof.myNews)||[]; if(M.length>=TURNS) return {...CFG, table:M.map(x=>x.v.slice()), names:M.map(x=>mnSafe(x.n)), descs:M.map(x=>mnSafe(x.d)), hist:false, my:true}; }
   return {...CFG, names:NEWS, hist:false};
 }
 const yearOf = i => HIST[i].y;
@@ -2511,7 +2513,7 @@ function start(data){
   if(!data.S){ const sv=load('azakei-seats'); if(Array.isArray(sv) && sv.length>=2 && sv.length<=6 && sv.every(x=>x && typeof x.name==='string' && TYPES[x.type])) S.seats=sv; }   // 前回の席（キャラ選択）を覚えておく
   if(!S.rec) S.rec=load('azakei-rec')||{games:0,wins:0,best:0};
   if(!S.prof) S.prof=loadProfile();
-  if(!data.S){ loginStamp(); rankSeasonCheck(); duelFromUrl(); }
+  if(!data.S){ loginStamp(); rankSeasonCheck(); duelFromUrl(); mnFromUrl(); }
   if(S.vib===undefined){ const v=load('azakei-vib'); S.vib = v===null ? true : !!v; }
   if(S.calm===undefined) S.calm=!!load('azakei-calm');
   if(!S.len) S.len=load('azakei-len')==='long'?'long':'short';
@@ -3308,6 +3310,8 @@ function renderSheet(){
   else if(k==='puzzle') body=puzBody();
   else if(k==='mynews') body=myNewsBody();
   else if(k==='mynewsedit') body=myNewsEditBody();
+  else if(k==='mnshare') body=mnShareBody();
+  else if(k==='mnin') body=mnInBody();
   else if(k==='lesson') body=lessonBody();
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   else if(k.startsWith('cup:')) body=cupSheetBody(k.slice(4));
@@ -4829,6 +4833,8 @@ function achCheck(quiet){
 }
 /* ---- マイNEWS：自分で経済NEWSを作って遊ぶ。題名・ひとこと説明・6つの産業の点数（−3〜+3）。4つ以上でCPU対戦 ---- */
 const MYN_MAX=6;
+/* 題名・説明は画面のいろいろな所にそのまま入るので、HTMLの記号は全角にしておく（友だちのリンクから変なコードが入らないように） */
+const mnSafe = t => String(t||'').replace(/[<>&"'`]/g, c=>({'<':'＜','>':'＞','&':'＆','"':'”',"'":'’','`':'‘'}[c]));
 const myNewsN = () => ((S.prof&&S.prof.myNews)||[]).length;
 let MNE=null;
 function pickMyNews(){ sfx('click'); if(myNewsN()<TURNS){ openSheet('mynews'); return; } S.mode='my'; if(S.len==='long'){ S.len='short'; save('azakei-len','short'); } render(); }
@@ -4840,6 +4846,8 @@ function myNewsBody(){
       <span class="mn-act"><button class="btn ghost" onclick="myNewsEdit(${i})">編集</button><button class="btn ghost" onclick="myNewsDel(${i})" aria-label="${esc(x.n)}を消す">🗑</button></span></div>`).join('')||'<p class="note" style="text-align:center">まだありません。下のボタンから作ってみよう！</p>'}</div>
     ${n<MYN_MAX?`<button class="btn gold big" onclick="myNewsEdit(-1)">＋ 新しいNEWSを作る（${n}/${MYN_MAX}）</button>`:''}
     ${n>=TURNS?`<button class="btn go big" onclick="closeSheet();S.mode='my';if(S.len==='long'){S.len='short';save('azakei-len','short');}go('play','cpu')">このNEWSでCPUと対戦！</button>`:`<p class="note" style="text-align:center">あと${TURNS-n}つ作ると、対戦できるようになるよ。</p>`}
+    ${n?`<button class="btn ghost" onclick="mnShare()">📤 友だちに送る（QRコード・リンク）</button>`:''}
+    <details class="mn-imp"><summary>📥 友だちのコードを入れる</summary><div class="row" style="gap:6px;margin-top:8px"><input id="mnCode" class="inp" placeholder="AZN1 から始まるコード" style="flex:1;min-width:0"><button class="btn gold" onclick="mnImportCode(document.getElementById('mnCode').value)">読みこむ</button></div></details>
     <p class="note">マイNEWSの試合は、ランクのレート・ランキング・図鑑・自己ベストには入りません。</p>`;
 }
 function myNewsEdit(i){ const M=S.prof.myNews||[]; const x=i>=0?M[i]:null; MNE={i, n:x?x.n:'', d:x?x.d:'', v:x?x.v.slice():[0,0,0,0,0,0]}; sfx('click'); openSheet('mynewsedit'); }
@@ -4864,9 +4872,57 @@ function myNewsEditBody(){
 }
 function myNewsSave(){
   if(!MNE || !MNE.n.trim()) return; const P=S.prof; P.myNews=P.myNews||[];
-  const x={n:MNE.n.trim().slice(0,14), d:(MNE.d||'').trim().slice(0,40), v:MNE.v.map(n=>Math.max(-3,Math.min(3,n|0)))};
+  const x={n:mnSafe(MNE.n.trim()).slice(0,14), d:mnSafe((MNE.d||'').trim()).slice(0,40), v:MNE.v.map(n=>Math.max(-3,Math.min(3,n|0)))};
   if(MNE.i>=0 && P.myNews[MNE.i]) P.myNews[MNE.i]=x; else if(P.myNews.length<MYN_MAX) P.myNews.push(x);
   saveProfile(); MNE=null; sfx('coin'); toast(`「${x.n}」を保存しました`); openSheet('mynews'); render();
+}
+/* ---- マイNEWSを共有：コード（圧縮）・リンク・QRコードで送る／受け取る。読みこむときは中身をきびしくチェック ---- */
+const MN_PREFIX='AZN1';
+let MNS=null;
+function mnClean(list){   /* 受け取ったデータをチェックして、正しい形だけ残す */
+  if(!Array.isArray(list)) return null;
+  const out=list.slice(0,MYN_MAX).map(x=>{ if(!x||typeof x.n!=='string'||!Array.isArray(x.v)||x.v.length!==6) return null;
+    const v=x.v.map(n=>Math.max(-3,Math.min(3,Math.round(Number(n)||0)))), n=mnSafe(x.n.replace(/[\u0000-\u001f]/g,'').trim()).slice(0,14), d=mnSafe(String(x.d||'').replace(/[\u0000-\u001f]/g,'').trim()).slice(0,40);
+    return n?{n,d,v}:null; }).filter(Boolean);
+  return out.length?out:null;
+}
+async function mnEncode(list){ const raw=new TextEncoder().encode(JSON.stringify({v:1,l:list.map(x=>({n:x.n,d:x.d,v:x.v}))})); try{ return MN_PREFIX+'z'+b64u(await gz(raw,'c')); }catch(e){ return MN_PREFIX+'p'+b64u(raw); } }
+async function mnDecode(code){
+  code=String(code||'').trim().replace(/\s+/g,''); const m=code.match(/AZN1[zp][A-Za-z0-9_-]+/); if(!m) throw new Error('コードの形がちがいます'); code=m[0];
+  let obj; try{ const kind=code[MN_PREFIX.length], body=ub64u(code.slice(MN_PREFIX.length+1)); const raw=kind==='z'?await gz(body,'d'):body; obj=JSON.parse(new TextDecoder().decode(raw)); }catch(e){ throw new Error('コードが途中で切れているか、まちがっています'); }
+  const l=obj&&obj.v===1?mnClean(obj.l):null; if(!l) throw new Error('NEWSが入っていませんでした'); return l;
+}
+async function mnShare(){
+  const M=S.prof.myNews||[]; if(!M.length) return;
+  try{ const code=await mnEncode(M); MNS={code, url:PUBLIC_URL+'?mn='+code, n:M.length}; sfx('coin'); openSheet('mnshare'); }catch(e){ toast('コードを作れませんでした'); }
+}
+function mnShareBody(){
+  if(!MNS) return ''; const canShare=!IN_CLAUDE && !!navigator.share;
+  return `<span class="label">MY NEWS · 送る</span><h3 class="ttl" style="font-size:22px">📤 マイNEWSを送る</h3>
+    <p class="note">${MNS.n}つのNEWSが入っています。友だちがこのQRコードを読みとるか、リンクを開くと、同じNEWSで遊べるよ。</p>
+    <div class="mn-qr" data-qr="${esc(MNS.url)}" data-size="200"></div>
+    <div class="codebox"><span class="label">リンク</span><b style="word-break:break-all;font-size:12px">${esc(MNS.url)}</b></div>
+    <div class="row" style="gap:8px;flex-wrap:wrap">${canShare?`<button class="btn gold" onclick="navigator.share({title:'AZAKEI MARKET マイNEWS',text:'わたしが作ったNEWSで遊んでみて！',url:MNS.url}).catch(()=>{})">送る（LINEなど）</button>`:''}<button class="btn${canShare?' ghost':' gold'}" onclick="copyText(MNS.url)">リンクをコピー</button><button class="btn ghost" onclick="copyText(MNS.code)">コードだけコピー</button></div>
+    <button class="btn ghost" onclick="openSheet('mynews')">もどる</button>`;
+}
+function mnFromUrl(){
+  try{ const q=new URLSearchParams(location.search).get('mn'); if(!q) return; history.replaceState(null,'',location.pathname);
+    mnDecode(q).then(l=>{ S.mnIn=l; setTimeout(()=>openSheet('mnin'),1200); }).catch(e=>toast('マイNEWSのリンクが読めませんでした'));
+  }catch(e){}
+}
+async function mnImportCode(code){ try{ S.mnIn=await mnDecode(code); sfx('click'); openSheet('mnin'); }catch(e){ toast(e.message||'読めませんでした'); sfx('buzz'); } }
+function mnInBody(){
+  const L=S.mnIn||[], M=S.prof.myNews||[], room=MYN_MAX-M.length;
+  return `<span class="label">MY NEWS · 受け取る</span><h3 class="ttl" style="font-size:22px">📥 マイNEWSが届いたよ</h3>
+    <div class="mn-list">${L.map(x=>`<div class="mn-item"><span class="mn-tx"><b>${esc(x.n)}！</b><small>${esc(x.d||'')}</small><span class="mn-vals">${x.v.map((v,c)=>`<i style="--c:var(--i${c})">${sgn(v)}</i>`).join('')}</span></span></div>`).join('')}</div>
+    <div class="col" style="gap:8px"><button class="btn gold big" onclick="mnTake('replace')">${M.length?`いまのマイNEWS（${M.length}つ）と入れかえる`:'マイNEWSに入れる'}</button>
+      ${M.length&&room>0?`<button class="btn" onclick="mnTake('add')">空きに追加する（あと${room}つ入る）</button>`:''}
+      <button class="btn ghost" onclick="S.mnIn=null;closeSheet()">やめる</button></div>`;
+}
+function mnTake(how){
+  const L=S.mnIn; if(!L) return; const P=S.prof; P.myNews=P.myNews||[];
+  if(how==='add') P.myNews=P.myNews.concat(L).slice(0,MYN_MAX); else P.myNews=L.slice(0,MYN_MAX);
+  saveProfile(); S.mnIn=null; sfx('fanfare'); toast(`マイNEWSが ${P.myNews.length}つ になりました`); openSheet('mynews'); render();
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
