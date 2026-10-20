@@ -1865,6 +1865,8 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .pz-foot{display:flex;align-items:center;gap:10px;justify-content:space-between}.pz-foot b{font-family:var(--display);font-weight:400;font-size:24px}
 .pz-res{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;border-radius:16px;background:rgb(255 200 58 / .12);box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .5);animation:gdPop .4s both}
 .pz-res b{font-family:var(--display);font-weight:400;font-size:34px}.pz-stars{font-size:26px;color:var(--gold-t);letter-spacing:4px}
+.ava-img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
+#pntCv.ic{width:min(60vw,220px);aspect-ratio:1/1;border-radius:50%}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2219,12 +2221,14 @@ let TURNS = 4;
 const clone = o => JSON.parse(JSON.stringify(o));
 const sgn = v => v>0 ? `+${v}` : v<0 ? `−${-v}` : '±0';
 const cls = v => v>0 ? 'up' : v<0 ? 'down' : '';
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MY_ICON='';   /* マイアイコン（自分で描いたアイコン）の目印。esc() がこの1文字だけを画像に置きかえる */
+const esc = s => { s=String(s); if(s===MY_ICON) return myIconImg(); return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); };
+const myIconImg = () => (S&&S.prof&&S.prof.myIcon) ? `<img class="ava-img" src="${S.prof.myIcon}" alt="">` : '？';
 const chip = i => `<span class="chip c${i}"><i></i>${IND[i]}</span>`;
 const $ = s => document.querySelector(s);
 const initial = n => (String(n).replace(/^CPU\s*/,'').trim()[0] || '?');
 const AVATARS=[[null,1],["🦊",1],["🐼",1],["🐯",2],["🐸",3],["🐧",4],["🦉",5],["🐙",6],["🦁",8],["🐲",10],["🤖",12],["👑",15]];   // [絵,解放レベル]、nullは名前の頭文字
-const myAvatar = () => { const P=S&&S.prof; if(!P||!P.av) return null; const a=AVATARS.find(x=>x[0]===P.av); return a && lvInfo(P.xp).lv>=a[1] ? a[0] : null; };
+const myAvatar = () => { const P=S&&S.prof; if(!P||!P.av) return null; if(P.av==='mine') return P.myIcon?MY_ICON:null; const a=AVATARS.find(x=>x[0]===P.av); return a && lvInfo(P.xp).lv>=a[1] ? a[0] : null; };
 const avOf = p => (G && G.players.indexOf(p)===myIndex() && myAvatar()) || (p.boss && G && G.boss ? BOSSES.find(b=>b.id===G.boss).ic : '') || (!isHuman(p) && CHARS[charKey(p)] ? CHARS[charKey(p)].ic : initial(p.name));   // CPUはキャラのアイコン
 const myTitle = () => { const P=S.prof, a=P.title && P.ach[P.title] && ACH.find(x=>x.id===P.title); return a ? a.n : titleOf(lvInfo(P.xp).lv); };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || !!(typeof S!=='undefined' && S && S.calm);
@@ -4672,11 +4676,13 @@ function myBackBox(){
     <span class="row" style="gap:6px;margin-top:6px"><button class="btn gold" onclick="openPaint()">${has?'描きなおす':'描いてみる'}</button>${has?`<button class="btn${on?'':' ghost'}" onclick="useMyBack()" ${on?'disabled':''}>${on?'使用中':'これを使う'}</button>`:''}</span></span></div>`;
 }
 function useMyBack(){ const P=S.prof; if(!P.myBack) return; P.eq=P.eq||{}; P.eq.back='mine'; saveProfile(); sfx('select'); toast('マイデザインの裏面にしました'); render(); }
-function openPaint(){ PNT={color:'#ffc83a', size:10, mode:'pen', stamp:'⭐', hist:[]}; openSheet('paint'); setTimeout(paintInit,30); }
+function openPaint(target){ const ic=target==='icon'; PNT={target:ic?'icon':'back', w:ic?240:PNT_W, h:ic?240:PNT_H, color:'#ffc83a', size:10, mode:'pen', stamp:'⭐', hist:[]}; openSheet('paint'); setTimeout(paintInit,30); }
+function setMyIcon(){ const P=S.prof; if(!P.myIcon) return; P.av='mine'; saveProfile(); sfx('select'); haptic(12); render(); }
 function paintBody(){
   if(!PNT) return '';
-  return `<span class="label">MY DESIGN</span><h3 class="ttl" style="font-size:22px">カードの裏面を描こう</h3>
-    <div class="pnt-stage"><canvas id="pntCv" width="${PNT_W}" height="${PNT_H}" aria-label="お絵かきキャンバス"></canvas></div>
+  const ic=PNT.target==='icon';
+  return `<span class="label">${ic?'MY ICON':'MY DESIGN'}</span><h3 class="ttl" style="font-size:22px">${ic?'自分のアイコンを描こう':'カードの裏面を描こう'}</h3>
+    <div class="pnt-stage"><canvas id="pntCv" class="${ic?'ic':''}" width="${PNT.w}" height="${PNT.h}" aria-label="お絵かきキャンバス"></canvas></div>${ic?'<p class="note" style="text-align:center;margin:0">丸い形で表示されるよ。顔やマークを真ん中に描いてね</p>':''}
     <div class="pnt-row" role="group" aria-label="モード">${[['pen','✏️ ペン'],['stamp','⭐ スタンプ'],['fill','🪣 背景ぬり']].map(([k,n])=>`<button class="pnt-mode${PNT.mode===k?' on':''}" data-m="${k}" onclick="paintSet('mode','${k}',this)">${n}</button>`).join('')}</div>
     <div class="pnt-row pnt-colors" role="group" aria-label="色">${PNT_COLORS.map(c=>`<button class="pnt-c${PNT.color===c?' on':''}" style="--pc:${c}" data-v="${c}" onclick="paintSet('color','${c}',this)" aria-label="色 ${c}"></button>`).join('')}</div>
     <div class="pnt-row" role="group" aria-label="太さ">${[[4,'細い'],[10,'ふつう'],[22,'太い']].map(([v,n])=>`<button class="pnt-sz${PNT.size===v?' on':''}" data-v="${v}" onclick="paintSet('size',${v},this)"><i style="width:${Math.max(6,v/1.4)}px;height:${Math.max(6,v/1.4)}px"></i>${n}</button>`).join('')}</div>
@@ -4689,24 +4695,27 @@ function paintSet(k,v,btn){   /* 描いた絵を消さないように、画面�
   if(k==='stamp') document.querySelectorAll('.pnt-mode').forEach(b=>b.classList.toggle('on',b.dataset.m==='stamp'));
 }
 function paintCtx(){ const cv=document.getElementById('pntCv'); return cv?[cv,cv.getContext('2d')]:[null,null]; }
-function paintBlank(x){ const g=x.createLinearGradient(0,0,PNT_W,PNT_H); g.addColorStop(0,'#3a43b8'); g.addColorStop(1,'#232985'); x.fillStyle=g; x.fillRect(0,0,PNT_W,PNT_H); }
+function paintBlank(x){ if(PNT.target==='icon'){ const g=x.createRadialGradient(PNT.w*.38,PNT.h*.32,10,PNT.w/2,PNT.h/2,PNT.w*.7); g.addColorStop(0,'#fff7d6'); g.addColorStop(1,AVA_COLORS[(S.prof.color||0)%6]); x.fillStyle=g; x.fillRect(0,0,PNT.w,PNT.h); return; }
+  const g=x.createLinearGradient(0,0,PNT.w,PNT.h); g.addColorStop(0,'#3a43b8'); g.addColorStop(1,'#232985'); x.fillStyle=g; x.fillRect(0,0,PNT.w,PNT.h); }
 function paintInit(){
   const [cv,x]=paintCtx(); if(!cv) return;
-  if(S.prof.myBack){ const im=new Image(); im.onload=()=>x.drawImage(im,0,0,PNT_W,PNT_H); im.src=S.prof.myBack; } else paintBlank(x);
+  const old=PNT.target==='icon'?S.prof.myIcon:S.prof.myBack;
+  if(old){ const im=new Image(); im.onload=()=>x.drawImage(im,0,0,PNT.w,PNT.h); im.src=old; } else paintBlank(x);
   let drawing=false, last=null;
-  const pt=e=>{ const r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)*PNT_W/r.width, y:(e.clientY-r.top)*PNT_H/r.height}; };
-  const snap=()=>{ PNT.hist.push(x.getImageData(0,0,PNT_W,PNT_H)); if(PNT.hist.length>20) PNT.hist.shift(); };
+  const pt=e=>{ const r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)*PNT.w/r.width, y:(e.clientY-r.top)*PNT.h/r.height}; };
+  const snap=()=>{ PNT.hist.push(x.getImageData(0,0,PNT.w,PNT.h)); if(PNT.hist.length>20) PNT.hist.shift(); };
   cv.addEventListener('pointerdown',e=>{ e.preventDefault(); cv.setPointerCapture(e.pointerId); snap(); const p=pt(e);
-    if(PNT.mode==='fill'){ x.fillStyle=PNT.color; x.fillRect(0,0,PNT_W,PNT_H); sfx('click'); return; }
+    if(PNT.mode==='fill'){ x.fillStyle=PNT.color; x.fillRect(0,0,PNT.w,PNT.h); sfx('click'); return; }
     if(PNT.mode==='stamp'){ x.font=`${PNT.size*3+18}px sans-serif`; x.textAlign='center'; x.textBaseline='middle'; x.fillText(PNT.stamp,p.x,p.y); sfx('coin'); return; }
     drawing=true; last=p; x.fillStyle=PNT.color; x.beginPath(); x.arc(p.x,p.y,PNT.size/2,0,Math.PI*2); x.fill(); });
   cv.addEventListener('pointermove',e=>{ if(!drawing) return; const p=pt(e); x.strokeStyle=PNT.color; x.lineWidth=PNT.size; x.lineCap='round'; x.lineJoin='round'; x.beginPath(); x.moveTo(last.x,last.y); x.lineTo(p.x,p.y); x.stroke(); last=p; });
   const end=()=>{ drawing=false; last=null; }; cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end); cv.addEventListener('pointerleave',end);
 }
 function paintUndo(){ const [cv,x]=paintCtx(); if(!cv||!PNT.hist.length) return; x.putImageData(PNT.hist.pop(),0,0); sfx('click'); }
-function paintClear(){ const [cv,x]=paintCtx(); if(!cv) return; PNT.hist.push(x.getImageData(0,0,PNT_W,PNT_H)); paintBlank(x); sfx('click'); }
+function paintClear(){ const [cv,x]=paintCtx(); if(!cv) return; PNT.hist.push(x.getImageData(0,0,PNT.w,PNT.h)); paintBlank(x); sfx('click'); }
 function paintSave(){
   const [cv]=paintCtx(); if(!cv) return; const P=S.prof;
+  if(PNT.target==='icon'){ P.myIcon=cv.toDataURL('image/jpeg',.85); P.av='mine'; saveProfile(); sfx('fanfare'); toast('マイアイコンを保存して、アイコンにしました！'); PNT=null; closeSheet(); render(); return; }
   P.myBack=cv.toDataURL('image/jpeg',.85); P.eq=P.eq||{}; P.eq.back='mine'; saveProfile(); myBackCss();
   sfx('fanfare'); toast('マイデザインを保存して、裏面に使いました！'); PNT=null; closeSheet(); render();
 }
@@ -5612,7 +5621,8 @@ function meView(){
     <nav class="mtabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?"on":""}" onclick="S.mtab=\x27${k}\x27;sfx(\x27click\x27);render()">${n}</button>`).join("")}</nav>
     ${tab==="prof"?`${playerCard()}
     <section class="panel"><div class="row spread"><h3>アバター</h3><span class="note">レベルが上がると増えます</span></div>
-      <div class="avgrid">${AVATARS.map(([a,lv],i)=>{ const ok=L.lv>=lv, on=(P.av||null)===a; return `<button class="avopt${on?' on':''}${ok?'':' lock'}" ${ok?`onclick="setAvatar(${i})"`:'disabled'} style="--s:${AVA_COLORS[P.color%6]}" aria-label="${a||'頭文字'}"><span>${a||esc(initial(NET.name||'あなた'))}</span>${ok?'':`<small>Lv.${lv}</small>`}</button>`; }).join('')}</div></section>
+      <div class="avgrid">${AVATARS.map(([a,lv],i)=>{ const ok=L.lv>=lv, on=(P.av||null)===a; return `<button class="avopt${on?' on':''}${ok?'':' lock'}" ${ok?`onclick="setAvatar(${i})"`:'disabled'} style="--s:${AVA_COLORS[P.color%6]}" aria-label="${a||'頭文字'}"><span>${a||esc(initial(NET.name||'あなた'))}</span>${ok?'':`<small>Lv.${lv}</small>`}</button>`; }).join('')}${P.myIcon?`<button class="avopt${P.av==='mine'?' on':''}" onclick="setMyIcon()" style="--s:${AVA_COLORS[P.color%6]}" aria-label="マイアイコン"><span>${myIconImg()}</span></button>`:''}</div>
+      <button class="btn ghost" style="margin-top:8px" onclick="openPaint('icon')">✏️ ${P.myIcon?'マイアイコンを描きなおす':'自分でアイコンを描く'}</button></section>
     ${rankCard()}
     <div class="panel"><span class="label">そのほか</span><div class="col" style="gap:8px">
         <button class="btn" onclick="openTutorial()">遊び方をもう一度見る</button>
@@ -5873,7 +5883,8 @@ async function drawPlayerCard(){
   x.beginPath(); x.arc(W/2,490,190,0,Math.PI*2); x.fillStyle=d.t.c1; x.fill();
   x.beginPath(); x.arc(W/2,490,176,0,Math.PI*2); x.fillStyle='#07081a'; x.fill();
   const ag=x.createRadialGradient(W/2-60,430,20,W/2,490,170); ag.addColorStop(0,'#fff7d6'); ag.addColorStop(1,AVA_COLORS[d.P.color%6]); x.beginPath(); x.arc(W/2,490,164,0,Math.PI*2); x.fillStyle=ag; x.fill();
-  x.textAlign='center'; x.textBaseline='middle'; x.fillStyle='#2a1a00'; x.font=`150px ${D}`; x.fillText(myAvatar()||initial(NET.name||'あなた'),W/2,500);
+  if(myAvatar()===MY_ICON){ const im=await new Promise(r=>{ const i=new Image(); i.onload=()=>r(i); i.onerror=()=>r(null); i.src=S.prof.myIcon; }); if(im){ x.save(); x.beginPath(); x.arc(W/2,490,164,0,Math.PI*2); x.clip(); x.drawImage(im,W/2-164,490-164,328,328); x.restore(); } }
+  else { x.textAlign='center'; x.textBaseline='middle'; x.fillStyle='#2a1a00'; x.font=`150px ${D}`; x.fillText(myAvatar()||initial(NET.name||'あなた'),W/2,500); }
   // エンブレム
   hexPath(x,W-200,720,130); const eg=x.createLinearGradient(W-260,650,W-140,790); eg.addColorStop(0,'#fff'); eg.addColorStop(.3,d.t.c1); eg.addColorStop(1,d.t.c2); x.fillStyle=eg; x.fill();
   hexPath(x,W-200,720,96); x.fillStyle=d.t.c2; x.fill(); x.fillStyle=d.t.c1; x.font=`800 30px ${B}`; x.fillText('★'.repeat(Math.min(3,TIERS.indexOf(d.t)%3+1)),W-200,724);
