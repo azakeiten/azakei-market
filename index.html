@@ -1867,6 +1867,20 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .pz-res b{font-family:var(--display);font-weight:400;font-size:34px}.pz-stars{font-size:26px;color:var(--gold-t);letter-spacing:4px}
 .ava-img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
 #pntCv.ic{width:min(60vw,220px);aspect-ratio:1/1;border-radius:50%}
+.mode.my b{color:#ff9ad9}
+.mn-list{display:flex;flex-direction:column;gap:8px;margin:8px 0}
+.mn-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:var(--paper);color:var(--paper-ink);box-shadow:0 3px 0 rgb(0 0 0 / .2)}
+.mn-tx{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}.mn-tx b{font-family:var(--serif);font-size:16px}.mn-tx small{font-size:12px;color:#6a5a3a}
+.mn-vals{display:flex;gap:3px;margin-top:2px}.mn-vals i{font-style:normal;font-family:var(--display);font-size:12px;min-width:30px;text-align:center;padding:1px 2px;border-radius:6px;color:#fff;background:color-mix(in srgb,var(--c) 70%,#333)}
+.mn-act{display:flex;gap:4px}.mn-act .btn{min-height:40px;padding:6px 10px}
+.mn-rows{display:flex;flex-direction:column;gap:6px}
+.mn-row{display:grid;grid-template-columns:minmax(0,1fr) 44px 3.2em 44px;align-items:center;gap:6px;padding:4px 6px 4px 4px;border-radius:12px;background:var(--panel2);box-shadow:inset 3px 0 0 var(--c)}
+.mn-ind{display:flex;align-items:center;gap:8px;font-weight:800}.mn-ind i{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--c);color:#fff}.mn-ind svg{width:17px;height:17px}
+.mn-st{height:40px;border:0;border-radius:10px;cursor:pointer;font:inherit;font-size:20px;font-weight:900;color:var(--ink);background:var(--rail);box-shadow:inset 0 0 0 1px var(--line)}.mn-st:disabled{opacity:.35}
+.mn-v{text-align:center;font-family:var(--display);font-weight:400;font-size:20px}.mn-v.p{color:var(--up)}.mn-v.m{color:var(--down)}
+.mn-meter{display:flex;justify-content:space-around;gap:6px;padding:8px;border-radius:12px;background:var(--rail);font-size:13px;font-weight:800}.mn-meter b{font-family:var(--display);font-weight:400;font-size:16px;color:var(--gold-t)}
+.mn-tips{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700;color:var(--muted)}
+.mn-good{margin:0;font-size:13.5px;font-weight:800;color:var(--up);text-align:center}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2243,10 +2257,11 @@ function cfgFor(mode,era){
   if(mode==='future') return {...CFG, table:HIST.map(h=>h.r), names:HIST.map(h=>h.n), hist:true, fut:true, pool:ERAS.future.ids.slice(), era:'future'};   // 未来編は歴史モードのしくみで、未来の出来事を使う
   if(mode==='history'){ const e=ERAS[era]||ERAS.all; return {...CFG, table:HIST.map(h=>h.r), names:HIST.map(h=>h.n), hist:true, pool:e.ids, era}; }
   if(mode==='ex') return {...CFG, table:CFG.table.concat(EXT_T), names:ALL_NEWS, hist:false, ex:true};
+  if(mode==='my'){ const M=(S.prof&&S.prof.myNews)||[]; if(M.length>=TURNS) return {...CFG, table:M.map(x=>x.v.slice()), names:M.map(x=>x.n), descs:M.map(x=>x.d||''), hist:false, my:true}; }
   return {...CFG, names:NEWS, hist:false};
 }
 const yearOf = i => HIST[i].y;
-const modeName = c => c&&c.fut ? '未来編' : c&&c.hist ? '歴史モード' : c&&c.ex ? 'クラシックEX' : 'クラシック';
+const modeName = c => c&&c.fut ? '未来編' : c&&c.hist ? '歴史モード' : c&&c.ex ? 'クラシックEX' : c&&c.my ? 'マイNEWS' : 'クラシック';
 
 /* ================= engine（対戦と検証で共通） ================= */
 function gain(cfg,b,k){
@@ -2271,6 +2286,7 @@ function unseen(cfg,deck,t){
 }
 function buildDeck(cfg,rnd){
   if(cfg.ex) return shuffle([...Array(cfg.table.length).keys()],rnd).slice(0,6);   // EX：18種から毎回ちがう6種
+  if(cfg.my) return shuffle([...Array(cfg.table.length).keys()],rnd);   // マイNEWS：自分で作った4〜6枚
   if(cfg.hist) return shuffle(cfg.pool.slice(),rnd).slice(0,TURNS).sort((a,b)=>yearOf(a)-yearOf(b));
   return shuffle([0,1,2,3,4,5],rnd);
 }
@@ -3290,6 +3306,8 @@ function renderSheet(){
   else if(k==='lessons') body=lessonsBody();
   else if(k==='paint') body=paintBody();
   else if(k==='puzzle') body=puzBody();
+  else if(k==='mynews') body=myNewsBody();
+  else if(k==='mynewsedit') body=myNewsEditBody();
   else if(k==='lesson') body=lessonBody();
   else if(k.startsWith('chal:')) body=chalSheetBody(k.slice(5));
   else if(k.startsWith('cup:')) body=cupSheetBody(k.slice(4));
@@ -3680,7 +3698,7 @@ function glossPanel(){
 const BOARD_MAX=20;
 function boardLoad(){ const b=load('azakei-board'); return Array.isArray(b)?b:[]; }
 function boardRecord(){
-  if(!G || G.online || isLong() || G.boardDone || G.tac) return; G.boardDone=true;
+  if(!G || G.online || isLong() || G.boardDone || G.tac || G.cfg.my) return; G.boardDone=true;
   const b=boardLoad(), now=Date.now(), mode=G.cfg.fut?'未来編':G.cfg.hist?'歴史':'クラシック', added=[];
   G.players.forEach((p,i)=>{ if(!isHuman(p)) return; const e={n:String(p.name).slice(0,12), s:p.score, u:p.uniq, m:mode, t:now, k:now+'-'+i}; b.push(e); added.push(e.k); });
   b.sort((a,c)=>c.s-a.s || c.u-a.u || a.t-c.t); const top=b.slice(0,BOARD_MAX); save('azakei-board', top);
@@ -4128,7 +4146,7 @@ const REC_DEF=[
   {k:'comeback', ic:'🔄', n:'最大の逆転勝ち', u:'点差'}
 ];
 function recordBests(p, me, won){
-  if(!G || isLong() || G.tac || G.demo) return [];     /* ロング版・作戦カード・デモは記録しない */
+  if(!G || isLong() || G.tac || G.demo || G.cfg.my) return [];     /* ロング版・作戦カード・デモは記録しない */
   const P=S.prof, st=P.st;
   if(!P.rec){ P.rec={}; if(st.best>0) P.rec.hi={v:st.best, d:0}; }   /* 前からの最高点は引き継ぐ */
   const others=G.players.filter((q,i)=>i!==me), so=others.map(q=>q.score);
@@ -4204,7 +4222,7 @@ const WHY=[
   {s:'みんなが「投資」を始める投資ブームが来た！', u:{1:'株を買う人がふえて、証券会社や銀行がにぎわう',5:'お金の勉強の動画やアプリが人気に'}, d:{3:'買い物より投資にお金を回す人がふえる'}}
 ];
 function whyBox(n, row, dex){
-  if(!dex && (!G || G.cfg.hist || G.cfg.fut)) return '';      /* 歴史モード・未来編は、それぞれの解説がある */
+  if(!dex && (!G || G.cfg.hist || G.cfg.fut || G.cfg.my)) return '';      /* 歴史モード・未来編は、それぞれの解説がある */
   const w=WHY[n]; if(!w || !row) return '';
   const mx=Math.max(...row), mn=Math.min(...row);
   const up=row.map((v,c)=>({v,c})).filter(x=>x.v===mx && w.u[x.c]).slice(0,2);
@@ -4423,7 +4441,7 @@ function oppRow(){
     return `<button class="opp" onclick="openSheet('pickchar:${i}')"><span class="ava" style="--s:${ch?ch.c:`var(--s${i%6})`}">${ch?ch.ic:esc(initial(s.name))}</span><b>${esc(String(s.name).replace(/^CPU\s*/,''))}</b><small>${ch?ch.d:TYPES[s.type]}</small></button>`; }).join('')}</div></div>`;
 }
 function setupSummary(){
-  const mode={classic:'クラシック',history:'歴史モード',future:'未来編',ex:'クラシックEX'}[S.mode]||'クラシック';
+  const mode={classic:'クラシック',history:'歴史モード',future:'未来編',ex:'クラシックEX',my:'マイNEWS'}[S.mode]||'クラシック';
   const hc=S.seats.filter(s=>s.type==='human').length, cpu=S.seats.length-hc, d=DIFFS.find(x=>x[0]===diffNow());
   const who = hc>1 ? `${hc}人で回す${cpu?`＋CPU ${cpu}人`:''}` : `CPU ${cpu}人${d?`・${d[1]}`:''}`;
   return `${mode}・${S.len==='long'?'ロング':'ショート'} ／ ${who}`;
@@ -4809,6 +4827,47 @@ function achCheck(quiet){
   if(quiet) return;
   const a=ACH.find(x=>x.id===got[0]); setTimeout(()=>{ toast(`🏆 実績「${a.n}」を解除！${got.length>1?` ほか${got.length-1}つ`:''}`); sfx('fanfare'); },400);
 }
+/* ---- マイNEWS：自分で経済NEWSを作って遊ぶ。題名・ひとこと説明・6つの産業の点数（−3〜+3）。4つ以上でCPU対戦 ---- */
+const MYN_MAX=6;
+const myNewsN = () => ((S.prof&&S.prof.myNews)||[]).length;
+let MNE=null;
+function pickMyNews(){ sfx('click'); if(myNewsN()<TURNS){ openSheet('mynews'); return; } S.mode='my'; if(S.len==='long'){ S.len='short'; save('azakei-len','short'); } render(); }
+function myNewsBody(){
+  const M=S.prof.myNews||[], n=M.length;
+  return `<span class="label">MY NEWS</span><h3 class="ttl" style="font-size:22px">✏️ マイNEWS</h3>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub">${sayBtn()}<b>${GUIDE.n}</b>自分で経済のニュースを作ってみよう！ 「このニュースなら、どの会社がもうかる？ どこがこまる？」と考えるのがポイントだよ。4つ以上作ると、そのNEWSでCPUと対戦できるよ。</p></div>
+    <div class="mn-list">${M.map((x,i)=>`<div class="mn-item"><span class="mn-tx"><b>${esc(x.n)}！</b><small>${esc(x.d||'')}</small><span class="mn-vals">${x.v.map((v,c)=>`<i style="--c:var(--i${c})" class="${v>0?'p':v<0?'m':''}">${sgn(v)}</i>`).join('')}</span></span>
+      <span class="mn-act"><button class="btn ghost" onclick="myNewsEdit(${i})">編集</button><button class="btn ghost" onclick="myNewsDel(${i})" aria-label="${esc(x.n)}を消す">🗑</button></span></div>`).join('')||'<p class="note" style="text-align:center">まだありません。下のボタンから作ってみよう！</p>'}</div>
+    ${n<MYN_MAX?`<button class="btn gold big" onclick="myNewsEdit(-1)">＋ 新しいNEWSを作る（${n}/${MYN_MAX}）</button>`:''}
+    ${n>=TURNS?`<button class="btn go big" onclick="closeSheet();S.mode='my';if(S.len==='long'){S.len='short';save('azakei-len','short');}go('play','cpu')">このNEWSでCPUと対戦！</button>`:`<p class="note" style="text-align:center">あと${TURNS-n}つ作ると、対戦できるようになるよ。</p>`}
+    <p class="note">マイNEWSの試合は、ランクのレート・ランキング・図鑑・自己ベストには入りません。</p>`;
+}
+function myNewsEdit(i){ const M=S.prof.myNews||[]; const x=i>=0?M[i]:null; MNE={i, n:x?x.n:'', d:x?x.d:'', v:x?x.v.slice():[0,0,0,0,0,0]}; sfx('click'); openSheet('mynewsedit'); }
+function myNewsDel(i){ const M=S.prof.myNews||[]; if(!M[i]) return; if(myNewsDel.arm!==i){ myNewsDel.arm=i; toast('もう一度🗑を押すと消えます'); setTimeout(()=>{ if(myNewsDel.arm===i) myNewsDel.arm=null; },3000); return; }
+  myNewsDel.arm=null; M.splice(i,1); saveProfile(); if(S.mode==='my' && M.length<TURNS) S.mode='classic'; sfx('click'); renderSheet(); render(); }
+function myNewsStep(c,d){ if(!MNE) return; MNE.v[c]=Math.max(-3,Math.min(3,MNE.v[c]+d)); sfx('click'); renderSheet(); }
+function myNewsEditBody(){
+  if(!MNE) return '';
+  const v=MNE.v, threes=v.filter(x=>x===3).length, sum=v.reduce((a,b)=>a+b,0), neg=v.filter(x=>x<0).length;
+  const tips=[]; if(threes===0) tips.push('+3（いちばんもうかる産業）を1つ以上つくろう'); else if(threes>2) tips.push('+3が多すぎると、みんなが得してしまうよ（本物のNEWSは2つ）');
+  if(neg===0) tips.push('こまる産業（マイナス）もあると、読み合いが面白くなるよ'); if(sum>10) tips.push('全体の点数が高め。少し下げるとバランスがよくなるよ');
+  const ok=MNE.n.trim().length>0;
+  return `<span class="label">MY NEWS · ${MNE.i>=0?'編集':'新しく作る'}</span><h3 class="ttl" style="font-size:22px">NEWSを作ろう</h3>
+    <div class="field"><label for="mnN">題名（例：「宇宙旅行ブーム」）</label><input id="mnN" class="inp" maxlength="14" value="${esc(MNE.n)}" oninput="MNE.n=this.value;document.getElementById('mnSave').disabled=!this.value.trim()" placeholder="題名（14文字まで）"></div>
+    <div class="field"><label for="mnD">ひとこと説明（新聞にのるよ）</label><input id="mnD" class="inp" maxlength="40" value="${esc(MNE.d)}" oninput="MNE.d=this.value" placeholder="例：ロケットで月に行けるようになった！"></div>
+    <span class="label">それぞれの産業は何点？</span>
+    <div class="mn-rows">${IND.map((d,c)=>`<div class="mn-row" style="--c:var(--i${c})"><span class="mn-ind"><i>${svg(c,2.2)}</i>${d}</span>
+      <button class="mn-st" onclick="myNewsStep(${c},-1)" ${v[c]<=-3?'disabled':''} aria-label="${d}を1下げる">−</button><b class="mn-v ${v[c]>0?'p':v[c]<0?'m':''}">${sgn(v[c])}</b><button class="mn-st" onclick="myNewsStep(${c},1)" ${v[c]>=3?'disabled':''} aria-label="${d}を1上げる">＋</button></div>`).join('')}</div>
+    <div class="mn-meter"><span>+3 の数 <b>${threes}</b></span><span>マイナス <b>${neg}</b></span><span>合計 <b>${sgn(sum)}</b></span></div>
+    ${tips.length?`<ul class="mn-tips">${tips.map(t=>`<li>💡 ${t}</li>`).join('')}</ul>`:'<p class="mn-good">👍 バランスのいいNEWSだね！</p>'}
+    <div class="row" style="gap:8px"><button class="btn ghost" onclick="openSheet('mynews')">もどる</button><button id="mnSave" class="btn gold big" style="margin-left:auto" onclick="myNewsSave()" ${ok?'':'disabled'}>保存する</button></div>`;
+}
+function myNewsSave(){
+  if(!MNE || !MNE.n.trim()) return; const P=S.prof; P.myNews=P.myNews||[];
+  const x={n:MNE.n.trim().slice(0,14), d:(MNE.d||'').trim().slice(0,40), v:MNE.v.map(n=>Math.max(-3,Math.min(3,n|0)))};
+  if(MNE.i>=0 && P.myNews[MNE.i]) P.myNews[MNE.i]=x; else if(P.myNews.length<MYN_MAX) P.myNews.push(x);
+  saveProfile(); MNE=null; sfx('coin'); toast(`「${x.n}」を保存しました`); openSheet('mynews'); render();
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -4964,7 +5023,7 @@ const NEWS_FX={
   h26:{e:['🏦','📉','💸'],m:'fall',t:'#ff3b3b',s:'crash',quake:true}, h27:{e:['🤖','💬','🖥️'],m:'pop',t:'#7af0ff',s:'digi'},
   h28:{e:['📈','💰','🌱'],m:'rise',t:'#3fe08f',s:'bubble'}, h29:{e:['🎡','🚆','🌏'],m:'fly',t:'#4fe3ff',s:'jet'}
 };
-const fxKey = n => (G.cfg.hist?'h':'n')+n;
+const fxKey = n => G.cfg.my ? 'my' : (G.cfg.hist?'h':'n')+n;   /* マイNEWSには専用の演出がない */
 function newsFx(n){
   const f=NEWS_FX[fxKey(n)]; if(!f || reduced()) return '';
   const k=phone()?14:22;
@@ -5132,7 +5191,7 @@ function paperCard(news){
     <p class="lede">${gloss(HIST[news].d)}</p>${pays}</section>`;
   return `<section class="paper" aria-label="今ターンの経済NEWS">
     <div class="mast"><span class="t">AZAKEI 経済新聞</span><span class="d">${turnLabel()}<span class="gogai">号外</span></span></div>
-    <h2>${nm(news)}！</h2>${WHY[news]?`<p class="lede">${WHY[news].s}</p>`:''}${pays}</section>`;
+    <h2>${nm(news)}！</h2>${C.my?(C.descs[news]?`<p class="lede">${esc(C.descs[news])}</p>`:''):WHY[news]?`<p class="lede">${WHY[news].s}</p>`:''}${pays}</section>`;
 }
 function timeline(){
   const C=G.cfg, cur=yearOf(G.deck[G.turn]), shown=G.deck.slice(0,G.turn+1);
@@ -5368,8 +5427,9 @@ function playView(){
         <button class="mode${S.mode==='classic'?' on':''}" onclick="S.mode='classic';sfx('click');render()"><b>クラシック</b><span class="note">6つのNEWSがランダムな順番で</span></button>
         <button class="mode hist${S.mode==='history'?' on':''}" onclick="S.mode='history';sfx('click');render()"><b style="font-family:var(--serif)">歴史モード</b><span class="note">実際の出来事が年代順に起きる</span></button>
         <button class="mode fut${S.mode==='future'?' on':''}" onclick="S.mode='future';sfx('click');render()"><b class="futb">未来編</b><span class="note">2027→2060 の未来シナリオ</span></button>
-        <button class="mode ex${S.mode==='ex'?' on':''}" onclick="S.mode='ex';sfx('click');render()"><span class="newtag">NEW</span><b>クラシックEX</b><span class="note">18種のNEWSから毎回ちがう6種</span></button>
-      </div>${S.len==='long'&&S.mode==='history'?'':eraSel}
+        <button class="mode ex${S.mode==='ex'?' on':''}" onclick="S.mode='ex';sfx('click');render()"><b>クラシックEX</b><span class="note">18種のNEWSから毎回ちがう6種</span></button>
+        <button class="mode my${S.mode==='my'?' on':''}" onclick="pickMyNews()"><span class="newtag">NEW</span><b>マイNEWS ✏️</b><span class="note">${myNewsN()>=TURNS?`自分で作った${myNewsN()}つのNEWSで遊ぶ`:'自分でNEWSを作って遊ぶ'}</span></button>
+      </div>${S.mode==='my'?`<button class="btn ghost" onclick="openSheet('mynews')">✏️ マイNEWSを編集する（${myNewsN()}/6）</button>`:''}${S.len==='long'&&S.mode==='history'?'':eraSel}
       <div class="lens" role="group" aria-label="ゲームの長さ">
         <button class="len${S.len!=='long'?' on':''}" onclick="setLen('short')"><span class="lt">SHORT</span><b>ショート</b><span class="note">${CFG.turns||4}ターン · 5分 · 文化祭向け</span></button>
         <button class="len long${S.len==='long'?' on':''}" onclick="setLen('long')"><span class="lt">LONG</span><b>ロング版</b><span class="note">${S.mode==='future'?'12ターン · 2期 · 2027→2060 全部':S.mode==='history'?'12ターン · 2期 · 1964→2022 全部':'18ターン · 3期 · じっくり'}</span></button>
@@ -5509,7 +5569,7 @@ function recordResult(){
     if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
   P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-100);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
-  const r0=rateOf(), r1=G.tac ? r0 : Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold'); rsPeak(r1);   // 作戦カードありはレートに入れない
+  const r0=rateOf(), r1=(G.tac||G.cfg.my) ? r0 : Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold'); rsPeak(r1);   // 作戦カードありはレートに入れない
   const dex=dexRecord(); if(dexCount()>=DEX_TOTAL()) unlock('dexall');
   const chal=G.chal?chalResult():null; if(chal && CHALLENGES.every(c=>chalStars(c.id)===3)) unlock('chal24');
   let coin = 10 + (won?20:mine&&mine.rank===2?10:0) + p.uniq*2 + (mis.cleared.length*5) + (G.daily?10:0);   // ショップで使うコイン
@@ -5966,7 +6026,7 @@ function dexRecord(){   // recordResult から。新しく見つけたものを�
   const P=S.prof; P.dex=P.dex||{n:[],h:[],m:[]}; const D=P.dex, found=[];
   const add=(arr,id,k,n)=>{ if(!arr.includes(id)){ arr.push(id); found.push({k,n}); } };
   const seen=logDeck();
-  seen.forEach(id=>{ if(G.cfg.hist) add(D.h,id,'h',`${HIST[id].y} ${HIST[id].n}`); else add(D.n,id,'n',ALL_NEWS[id]); });
+  if(!G.cfg.my) seen.forEach(id=>{ if(G.cfg.hist) add(D.h,id,'h',`${HIST[id].y} ${HIST[id].n}`); else add(D.n,id,'n',ALL_NEWS[id]); });   /* マイNEWSは図鑑に入れない */
   (G.mkts||[]).slice(0,(G.round||0)+1).forEach(id=>add(D.m,id,'m',MARKETS[id].n));
   return found;
 }
