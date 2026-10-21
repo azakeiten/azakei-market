@@ -1883,6 +1883,17 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .mn-good{margin:0;font-size:13.5px;font-weight:800;color:var(--up);text-align:center}
 .mn-qr{align-self:center;display:grid;place-items:center;padding:12px;border-radius:16px;background:#fff;min-height:224px;min-width:224px}
 .mn-imp>summary{cursor:pointer;font-weight:800;font-size:14px;min-height:40px;display:flex;align-items:center}
+.tc-hero p{margin:4px 0 0;line-height:1.75}
+.tc-list{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;line-height:1.6}
+.tc-plan{display:flex;flex-direction:column;gap:6px}
+.tc-step{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.tc-min{flex:none;font-family:var(--display);font-size:14px;padding:3px 10px;border-radius:999px;background:var(--gold);color:#2a1a00}
+.tc-step b{display:block}.tc-step small{font-size:13px;color:var(--muted);line-height:1.55}
+.tc-qs{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:8px;line-height:1.65}
+.tc-tools{display:flex;flex-direction:column;gap:6px}
+.tc-tool{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 12px;border:0;border-radius:14px;cursor:pointer;text-align:left;font:inherit;color:var(--ink);background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.tc-ic{flex:none;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:20px;background:var(--rail)}
+.tc-tool b{display:block;font-size:14.5px}.tc-tool small{font-size:12px;color:var(--muted)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4464,7 +4475,7 @@ const HELP={
   me:{t:'マイページ', say:'ここはあなたの部屋だよ。記録を見たり、コインで見た目を変えたりできるよ。', tips:['「記録」：勝率・自己ベスト殿堂・対戦履歴（▶で名勝負を再生）','「コレクション」：集めたNEWS図鑑や実績','「ショップ」：コインでカードの絵柄やテーブルを変えられる']},
   chal:{t:'チャレンジ', say:'お題つきのステージに挑戦する場所だよ。★を集めてね！', tips:['ステージごとにクリア条件がある','★は3つまで。条件を多く満たすほど増える','大会・ストーリー・サバイバル・ボス戦もここから']},
   online:{t:'オンライン', say:'友だちと、それぞれのスマホで対戦できるよ。', tips:['だれか1人が「ルームを作る」','ほかの人はルームコードを入れて参加','全員そろったら、ホストが「ゲームスタート」']},
-  rules:{t:'ルール', say:'ルールブックや得点表を見たり、ルールを変えたりできるよ。', tips:['「ルールブック」：印刷できるPDFもある','「得点表」：どのNEWSでどの産業が何点か','「ルール設定」：独占ボーナスなどを変えられる（はじめはそのままがおすすめ）']}
+  rules:{t:'ルール', say:'ルールブックや得点表を見たり、ルールを変えたりできるよ。「先生・保護者の方へ」には授業での使い方もあるよ。', tips:['「ルールブック」：印刷できるPDFもある','「得点表」：どのNEWSでどの産業が何点か','「ルール設定」：独占ボーナスなどを変えられる（はじめはそのままがおすすめ）']}
 };
 function helpBody(){
   const k=helpCtx(), h=HELP[k]||HELP.home;
@@ -4923,6 +4934,48 @@ function mnTake(how){
   const L=S.mnIn; if(!L) return; const P=S.prof; P.myNews=P.myNews||[];
   if(how==='add') P.myNews=P.myNews.concat(L).slice(0,MYN_MAX); else P.myNews=L.slice(0,MYN_MAX);
   saveProfile(); S.mnIn=null; sfx('fanfare'); toast(`マイNEWSが ${P.myNews.length}つ になりました`); openSheet('mynews'); render();
+}
+/* ---- 先生・保護者の方へ：授業での使い方（ねらい・45分の流れ・話し合いの問い・便利な機能）と、印刷できるワークシート ---- */
+function teachPanel(){
+  const plan=[['5分','導入','「遊び方（1分）」で、NEWS・独占・被りの3つだけ確認。'],['15分','対戦','4人1組で「1台をみんなで回す」、または1人ずつCPUと。ショート（4ターン）なら1試合5分。'],['10分','ふりかえり','結果画面の「なぜ？」解説と号外新聞を見ながら、「どうしてその産業が上がったのか」を話し合う。'],['15分','発展','ワークシートで自分のNEWSを考え、「マイNEWS」に入力。QRコードでクラスに配って遊ぶ。']];
+  const qs=['「旅行ブーム」で、どうして運輸と小売がもうかるのでしょう？','高い点をねらう？ だれも出さない産業で独占をねらう？ あなたはどちらを選びましたか。理由も話してみよう。','円安になると、得をする会社とこまる会社はどこでしょう？','1つのニュースで、もうかる会社とこまる会社が両方あるのはなぜでしょう？','最近の本物のニュースを1つ選んで、6つの産業の点数を考えてみよう。'];
+  const tools=[['📒','けいざい教室','需要と供給・円安・インフレなど12の授業（各1分）',"openSheet('lessons')"],['✏️','マイNEWS','オリジナルのNEWSを作り、QRコードでクラスに配れる',"openSheet('mynews')"],['🔤','ふりがな・文字の大きさ・ミオの声','低学年や読むのが苦手な子にも',"openSheet('settings')"],['🏫','ブースモード','文化祭の展示向け。だれも触らないとデモを流す',"openSheet('settings')"],['📄','ルールブック（PDF）','印刷してカードゲームとしても遊べる',"S.rtab='book';render()"]];
+  return `<section class="panel tc-hero"><span class="label">FOR TEACHERS & FAMILIES</span><h3>授業や家庭での使い方</h3>
+      <p>AZAKEI MARKET は、経済ニュースを読んで「どの産業がもうかるか」「ほかの人はどう動くか」を考えるカードゲームです。小学校高学年〜中学生の、社会科・総合的な学習・特別活動などで使えます。登録やインストールは不要で、ブラウザで開くだけで遊べます。</p></section>
+    <section class="panel"><h3>🎯 ねらい</h3><ul class="tc-list"><li><b>ニュースと産業のつながり</b>：出来事が、どの会社のもうけにつながるかを考える</li><li><b>資料を読む力</b>：得点表（どの産業が何点か）を読み取って判断する</li><li><b>相手を予想する力</b>：みんなが選びそうなものを読み、あえて外す（ゲーム理論の入り口）</li><li><b>理由を説明する力</b>：「なぜ？」解説をきっかけに、自分のことばで説明する</li></ul></section>
+    <section class="panel"><h3>⏱ 45分の授業プラン（例）</h3><div class="tc-plan">${plan.map(([m,t,d])=>`<div class="tc-step"><span class="tc-min">${m}</span><span><b>${t}</b><small>${d}</small></span></div>`).join('')}</div></section>
+    <section class="panel"><h3>💬 話し合いの問い</h3><ol class="tc-qs">${qs.map(q=>`<li>${q}</li>`).join('')}</ol></section>
+    <section class="panel"><h3>🧰 授業で便利な機能</h3><div class="tc-tools">${tools.map(([ic,n,d,go])=>`<button class="tc-tool" onclick="${go}"><span class="tc-ic">${ic}</span><span><b>${n}</b><small>${d}</small></span></button>`).join('')}</div></section>
+    <section class="panel"><h3>📝 ワークシート「NEWSを考えよう」</h3><p class="note">ニュースの題名・理由・6つの産業の点数を書きこむシートです。画像で保存して、A4で印刷できます。</p><button class="btn gold" onclick="openWorksheet()">ワークシートを作る</button></section>
+    <section class="panel"><p class="note">記録や設定は、それぞれの端末のブラウザの中だけに保存され、サーバーには送られません。オンライン対戦を使うときは、同じルームコードを入れた人どうしだけがつながります。</p></section>`;
+}
+async function drawWorksheet(){
+  try{ await document.fonts.ready; }catch(e){}
+  const W=1240, H=1754, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d');
+  const B='"M PLUS Rounded 1c",sans-serif', D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', SR='"Shippori Mincho B1",serif';
+  x.fillStyle='#fff'; x.fillRect(0,0,W,H); x.fillStyle='#1a1d3a';
+  x.font=`28px ${B}`; x.fillText('AZAKEI MARKET · ワークシート',90,110);
+  x.font=`72px ${D}`; x.fillText('NEWSを考えよう',90,200);
+  x.font=`600 30px ${B}`; x.fillText('　　年　　　組　　　番　　名前',90,272); x.strokeStyle='#1a1d3a'; x.lineWidth=2; x.beginPath(); x.moveTo(90,286); x.lineTo(W-90,286); x.stroke();
+  const box=(y,h,label,hint)=>{ x.strokeStyle='#9aa0d0'; x.lineWidth=3; x.strokeRect(90,y,W-180,h); x.fillStyle='#1a1d3a'; x.font=`800 30px ${B}`; x.fillText(label,110,y+44); if(hint){ x.fillStyle='#8a8fb8'; x.font=`24px ${B}`; x.fillText(hint,110,y+84); } x.fillStyle='#1a1d3a'; };
+  box(320,140,'① ニュースの題名','例：宇宙旅行ブーム、記録的な大雪 など');
+  box(480,170,'② どんなニュース？（ひとこと）','新聞にのせる説明を書こう');
+  x.font=`800 30px ${B}`; x.fillText('③ 6つの産業は何点？（−3〜+3）と、その理由',90,700);
+  const cols=['産業','点数','そう考えた理由'], cx=[90,390,560], rowH=92, y0=722;
+  x.fillStyle='#eef0fb'; x.fillRect(90,y0,W-180,64); x.fillStyle='#1a1d3a'; x.font=`800 28px ${B}`; cols.forEach((c,i)=>x.fillText(c,cx[i]+20,y0+42));
+  const colors=['#ff7a3d','#eab520','#5f86ff','#ff5c9a','#20c6d1','#a77bff'];
+  IND.forEach((n,i)=>{ const y=y0+64+i*rowH; x.strokeStyle='#c9cdea'; x.lineWidth=2; x.strokeRect(90,y,W-180,rowH); x.beginPath(); x.moveTo(390,y); x.lineTo(390,y+rowH); x.moveTo(560,y); x.lineTo(560,y+rowH); x.stroke();
+    x.fillStyle=colors[i]; x.beginPath(); x.arc(130,y+rowH/2,20,0,Math.PI*2); x.fill(); x.fillStyle='#1a1d3a'; x.font=`800 30px ${B}`; x.fillText(n,165,y+rowH/2+11); });
+  const yq=y0+64+6*rowH+60; x.fillStyle='#1a1d3a'; x.font=`800 30px ${B}`; x.fillText('④ ふりかえり',90,yq);
+  x.font=`26px ${B}`; x.fillStyle='#444a7a'; ['・+3（いちばんもうかる）は、いくつにしましたか。どうしてですか。','・このニュースで、こまる人はだれでしょう。'].forEach((t,i)=>x.fillText(t,110,yq+50+i*44));
+  x.strokeStyle='#c9cdea'; for(let i=0;i<2;i++){ x.beginPath(); x.moveTo(110,yq+140+i*56); x.lineTo(W-110,yq+140+i*56); x.stroke(); }
+  x.fillStyle='#8a8fb8'; x.font=`22px ${B}`; x.fillText('書けたら、アプリの「マイNEWS」に入力して、友だちと遊んでみよう！',90,H-82); x.fillText(PUBLIC_URL,90,H-48);
+  return cv;
+}
+async function openWorksheet(){
+  sfx('click'); toast('ワークシートを作っています…'); const cv=await drawWorksheet();
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'📝 ワークシート「NEWSを考えよう」', alt:'NEWSを考えようワークシート', name:`azakei-worksheet.png`, note:'A4たて（1240×1754）の画像です。保存して印刷してください。'};
+  openSheet('card');
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
@@ -6729,8 +6782,9 @@ function onlineView(){
 }
 function rulesView(){
   const tab=S.rtab||'how';
-  const tabs=[['how','遊び方'],['table','得点表'],['hist','歴史の出来事'],['words','用語'],['set','ルール設定'],['book','ルールブック']];
+  const tabs=[['how','遊び方'],['table','得点表'],['hist','歴史の出来事'],['words','用語'],['set','ルール設定'],['book','ルールブック'],['teach','先生・保護者の方へ']];
   let body='';
+  if(tab==='teach') body=teachPanel();
   if(tab==='words') body=glossPanel();
   if(tab==='how') body=`<section class="panel"><h3>覚えることは5つだけ</h3>${ruleList()}<button class="btn gold" onclick="openTutorial()">図で見る（1分）</button><button class="btn ghost" onclick="openSheet('lessons')">📒 ミオのけいざい教室（本物の経済を学ぶ）</button></section>
     <div class="two">
