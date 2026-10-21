@@ -1894,6 +1894,11 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .tc-tool{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 12px;border:0;border-radius:14px;cursor:pointer;text-align:left;font:inherit;color:var(--ink);background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
 .tc-ic{flex:none;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:20px;background:var(--rail)}
 .tc-tool b{display:block;font-size:14.5px}.tc-tool small{font-size:12px;color:var(--muted)}
+.award.aw2{flex-direction:row;align-items:center;gap:12px;background:linear-gradient(120deg,color-mix(in srgb,var(--ac) 20%,transparent),transparent 70%),var(--panel2);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ac) 55%,var(--line));animation:achin .5s cubic-bezier(.2,.9,.3,1.3) var(--d) both}
+.aw-ic{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:26px;background:radial-gradient(circle at 35% 30%,#fff,var(--ac) 80%);box-shadow:0 0 0 3px rgb(255 255 255 / .85),0 6px 14px -6px var(--ac)}
+.awards:has(.aw2){grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.aw-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.aw-who{display:flex;align-items:center;gap:6px;min-width:0}.aw-who .ava{width:24px;height:24px;font-size:12px;flex:none}.aw-who .w{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4977,6 +4982,24 @@ async function openWorksheet(){
   CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'📝 ワークシート「NEWSを考えよう」', alt:'NEWSを考えようワークシート', name:`azakei-worksheet.png`, note:'A4たて（1240×1754）の画像です。保存して印刷してください。'};
   openSheet('card');
 }
+/* ---- 今回の賞：試合の中身から、だれが何で光ったかを6種類の賞にする ---- */
+function gameAwards(){
+  const P=G.players, aw=[], add=(ic,t,ps,d,c)=>{ if(ps&&ps.length) aw.push({ic,t,ps,d,c}); };
+  const mu=Math.max(...P.map(p=>p.uniq)); if(mu>0) add('👑','独占王',P.filter(p=>p.uniq===mu),`独占 ${mu}回`,'#ffc83a');
+  const fut=P.map(p=>({p,g:p.used.filter(u=>u.fut).reduce((s,u)=>s+u.total,0),has:p.used.some(u=>u.fut)})).filter(x=>x.has).sort((a,b)=>b.g-a.g);
+  if(fut.length) add('🔭','先物マスター',[fut[0].p],`先物で ${sgn(fut[0].g)}`,'#4fe3ff');
+  let big={v:-99}; P.forEach(p=>p.used.forEach(u=>{ if(u.total>big.v) big={v:u.total,p,u}; }));
+  if(big.p) add('💥','最大瞬間風速',[big.p],`T${big.u.turn+1} ${IND[big.u.ind]} ${sgn(big.v)}`,'#ff7a3d');
+  const mins=P.map(p=>p.used.length?Math.min(...p.used.map(u=>u.total)):-99), bestMin=Math.max(...mins), whoS=P.filter((p,i)=>mins[i]===bestMin);   /* いちばん悪いターンでも点が高かった人（1人だけのとき） */
+  if(whoS.length===1 && bestMin>0) add('🛡️','安定感No.1',whoS,`いちばん低いターンでも ${sgn(bestMin)}`,'#3fe08f');
+  const hits=P.map(p=>p.used.filter(u=>u.k>1).length), mh=Math.min(...hits), whoM=P.filter((p,i)=>hits[i]===mh);
+  if(whoM.length===1) add('🎯','読み合い名人',whoM,mh===0?'一度も被らなかった':`被ったのは ${mh}回だけ`,'#a77bff');
+  const rk=ranking(P,G.cfg), w=rk.filter(x=>x.rank===1);
+  if(w.length===1){ const wi=w[0].i, N=P[wi].hist.length; let wasLast=false;
+    for(let t=1;t<N-1;t++){ const s=P.map(p=>p.hist[t]); if(s[wi]===Math.min(...s) && s.some(v=>v>s[wi])) wasLast=true; }
+    if(wasLast) add('🔥','大逆転賞',[P[wi]],'途中ビリからの優勝','#ff5c9a'); }
+  return aw;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5417,12 +5440,7 @@ function finalView(){
   const order=[rk[1],rk[0],rk[2]].filter(Boolean), h={1:160,2:118,3:86};
   const pod=order.map((s,j)=>`<div class="pod p${s.rank}">${s.rank===1?CROWN('crownbig'):''}<div class="ava" style="--s:var(--s${s.p.seat%6})">${esc(avOf(s.p))}</div><span class="nm">${esc(s.p.name)}</span><div class="blk" style="height:${h[s.rank]||70}px;animation-delay:${[200,0,400][j]}ms"><span class="r">${s.rank}</span><span class="pts">${s.p.score}pt</span></div></div>`).join('');
   const rest=rk.slice(3).map(s=>`<div class="row spread" style="padding:7px 4px;border-top:1px solid var(--line)"><span><b>${s.rank}位</b> ${esc(s.p.name)}</span><b style="font-family:var(--display);font-weight:400">${s.p.score}</b></div>`).join('');
-  const aw=[];
-  const mu=Math.max(...G.players.map(p=>p.uniq)); if(mu>0) aw.push(['独占王',G.players.filter(p=>p.uniq===mu).map(p=>p.name).join('・'),`独占 ${mu}回`]);
-  const fut=G.players.map(p=>({p,g:p.used.filter(u=>u.fut).reduce((s,u)=>s+u.total,0),has:p.used.some(u=>u.fut)})).filter(x=>x.has).sort((a,b)=>b.g-a.g);
-  if(fut.length) aw.push(['先物マスター',fut[0].p.name,`先物で ${sgn(fut[0].g)}`]);
-  let big={v:-99}; G.players.forEach(p=>p.used.forEach(u=>{ if(u.total>big.v) big={v:u.total,p,u}; }));
-  if(big.p) aw.push(['最大瞬間風速',big.p.name,`T${big.u.turn+1} ${IND[big.u.ind]} ${sgn(big.v)}`]);
+  const aw=gameAwards();
   const hist=G.players.map(p=>`<tr><td>${esc(p.name)}</td>${p.used.map(u=>`<td>${chip(u.ind)} <span class="num ${cls(u.total)}">${sgn(u.total)}</span>${u.fut?' <span class="tagx cy">先物</span>':''}</td>`).join('')}<td class="n">${p.uniq}</td><td class="n"><b>${p.score}</b></td></tr>`).join('');
   const recap = C.hist ? `<section class="panel"><h3>あなたたちが生きた時代</h3><div class="recap">${logDeck().map(i=>`<div><b>${yearOf(i)}</b><p><b style="font-family:var(--body);font-size:14px;color:var(--ink)">${HIST[i].n}</b><br>${gloss(HIST[i].d)}</p></div>`).join('')}</div></section>` : '';
   return `<div class="two"><div class="col">${duelPanel()}${practicePanel()}${bossPanel()}${leaguePanel()}${survPanel()}${storyPanel()}${cupPanel()}
@@ -5436,7 +5454,7 @@ function finalView(){
     ${playAnalysis()}
     ${chalPanel()}
     ${rewardPanel()}
-    ${aw.length?`<section class="panel"><h3>今回の賞</h3><div class="awards">${aw.map(a=>`<div class="award"><span class="t">${a[0]}</span><span class="w">${esc(a[1])}</span><span class="note">${a[2]}</span></div>`).join('')}</div></section>`:''}
+    ${aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:''}
     ${recap}
   </div><div class="col">
     <section class="panel chart"><h3>POINTの推移</h3>${lineChart()}</section>
