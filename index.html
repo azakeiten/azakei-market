@@ -1953,6 +1953,23 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 @keyframes rcpop{0%{transform:scale(0)}100%{transform:scale(1)}}
 @keyframes rcl{0%{transform:translateX(-60px);opacity:0}100%{transform:none;opacity:1}}
 @keyframes rcr{0%{transform:translateX(60px);opacity:0}100%{transform:none;opacity:1}}
+.iv{position:relative;overflow:hidden;background:radial-gradient(120% 80% at 100% 0%,rgb(255 92 122 / .14),transparent 60%),var(--panel)}
+.iv-live{font-size:11px;font-weight:800;letter-spacing:.08em;color:#ff5c7a;animation:ivblink 1.2s steps(2) infinite}
+.iv.done .iv-live{animation:none;opacity:.5}
+.iv-q,.iv-a{display:flex;align-items:flex-end;gap:10px;margin:10px 0;animation:achin .4s cubic-bezier(.2,.9,.3,1.3) both}
+.iv-a{justify-content:flex-end}
+.iv-q p,.iv-a p{margin:0;max-width:78%;padding:9px 13px;font-size:14px;line-height:1.55;border-radius:16px 16px 16px 4px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.iv-q p b{display:block;font-size:11px;color:var(--muted);letter-spacing:.04em}
+.iv-a p{border-radius:16px 16px 4px 16px;background:linear-gradient(120deg,var(--gold),#ffe08a);color:#2a1a00;font-weight:800;box-shadow:none}
+.iv-q.iv-rv p{box-shadow:inset 0 0 0 2px var(--rc);background:linear-gradient(120deg,color-mix(in srgb,var(--rc) 22%,transparent),transparent),var(--panel2)}
+.iv-q.iv-rv p b{color:var(--rc)}
+.iv-ann{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:19px;background:radial-gradient(circle at 35% 30%,#ff8fa6,#c4204f 85%);box-shadow:0 0 0 2px #fff}
+.iv-q .ava,.iv-a .ava{flex:none;width:38px;height:38px;font-size:17px;grid-row:auto}
+.iv-ch{display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin:6px 0 4px}
+.iv-btn{font:inherit;font-size:14px;font-weight:800;text-align:left;cursor:pointer;border:0;padding:10px 16px;border-radius:999px;background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 2px var(--gold);max-width:92%;animation:achin .4s cubic-bezier(.2,.9,.3,1.3) var(--d) both}
+.iv-btn:hover,.iv-btn:focus-visible{background:color-mix(in srgb,var(--gold) 22%,var(--panel2))}
+.iv-done{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:12px;font-weight:700;color:var(--muted)}
+@keyframes ivblink{50%{opacity:.25}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4367,6 +4384,7 @@ function gogaiPaper(){
     ['主役の産業', `${IND[star]}がこの試合で合計${sgn(sum[star])}点を生み、いちばん熱い産業になった。`]
   ];
   if(me>=0){ const mb=best(me), rk=order.indexOf(me)+1;
+    if(G.iv && G.iv.a2!=null){ const q=ivData(); if(q) cols.push([me===w?'ヒーローインタビュー':'試合後のコメント', `「${q.q1[G.iv.a1]}」「${q.q2[G.iv.a2]}」と語った。${q.rn}氏は「${G.iv.re}」と${G.iv.a2===0?"やり返した":"笑顔でこたえた"}。`]); }
     cols.push(['あなたの一手', mb?`T${mb.t+1}の${IND[mb.ind]}${mb.k===1?'独占':''}（${sgn(mb.v)}）が光った。${me===w?'見事、首位でフィニッシュ。':`最終${rk}位、次の巻き返しに期待。`}`:'']); }
   const stocks=order.map(i=>{ const dl=P[i].sc-(P[i].h[Math.max(0,N-1)]!=null?P[i].h[Math.max(0,N-1)]:0);
     return `<div class="gzp-sk${i===me?' me':''}"><span>${esc(sh(i))}</span><b>${P[i].sc}</b><em class="${dl>0?'gzp-up':dl<0?'gzp-dn':''}">${dl>0?'▲':dl<0?'▼':'—'}${dl?Math.abs(dl):''}</em></div>`; }).join('');
@@ -5188,6 +5206,51 @@ function rcutShow(html, kind, c, p, line){
   sfx(kind==='clash'?'slam':'flip'); haptic(kind==='clash'?35:15);
   try{ voice(p.boss&&G.boss?'BOSS':charKey(p), line); }catch(e){}
 }
+/* ---- ヒーローインタビュー：試合のあと、アナウンサーの質問に答える。答えはライバルが言い返し、号外の新聞にのる ---- */
+function ivData(){
+  if(!G || G.phase!=='final' || !cpuEmoteOn() || G.teams) return null;
+  const me=myIndex(); if(me<0) return null;
+  const rk=ranking(G.players,G.cfg), mine=rk.find(x=>x.i===me); if(!mine) return null;
+  const won=mine.rank===1, p=G.players[me];
+  const rivI = won ? (rk.find(x=>x.i!==me && x.rank>1)||rk.find(x=>x.i!==me)).i : rk.find(x=>x.rank===1 && x.i!==me).i;
+  const rv=G.players[rivI]; if(!rv || isHuman(rv)) return null;
+  const rn=String(rv.name).replace(/^CPU\s*/,'');
+  const b=p.used.slice().sort((a,c)=>c.total-a.total)[0];
+  const cnt=[0,0,0,0,0,0]; p.used.forEach(u=>cnt[u.ind]++);
+  const q1 = won
+    ? [b?`ターン${b.turn+1}の${IND[b.ind]}${b.k===1?'独占':''}が決め手です！`:'最後まであきらめなかったことです！', 'みんなの読みの、その先を読みました', 'ぶっちゃけ、運がよかったです（笑）']
+    : [`次は${IND[b?b.ind:0]}で、もっと大きく独占をねらいます`, 'NEWSをもっと読みこんできます！', `${mine.rank}位からのリベンジ、見ててください！`];
+  return {won, rank:mine.rank, rn, rv, rivI, q1, q2:['次も負けません！','いい勝負でした！','また対戦しましょう！'],
+    ask1: won ? `優勝おめでとうございます！ ${p.score}点での1位、勝負を決めたのは？` : `${mine.rank}位という結果でした。次に向けて、ひとことお願いします！`,
+    ask2: `最後に、${won?'2位になった':'優勝した'}${rn}さんにひとこと！`};
+}
+function ivPanel(){
+  const q=ivData(); if(!q) return '';
+  const iv=G.iv||{}, c=(CHARS[charKey(q.rv)]||{}).c||'#ff5c7a';
+  const ann=`<span class="iv-ann" aria-hidden="true">🎙️</span>`;
+  const ask=(t)=>`<div class="iv-q">${ann}<p><b>アナウンサー</b>${esc(t)}</p></div>`;
+  const ans=(t)=>`<div class="iv-a"><p>「${esc(t)}」</p><span class="ava" style="--s:${AVA_COLORS[S.prof.color%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span></div>`;
+  const chips=(arr,step)=>`<div class="iv-ch" role="group" aria-label="答えをえらぶ">${arr.map((t,i)=>`<button class="iv-btn" style="--d:${i*70}ms" onclick="ivAnswer(${step},${i})">${esc(t)}</button>`).join('')}</div>`;
+  let body=ask(q.ask1);
+  if(iv.a1==null) body+=chips(q.q1,1);
+  else { body+=ans(q.q1[iv.a1])+`<div class="iv-q">${ann}<p><b>アナウンサー</b>${q.won?'みごとな読みでした！':'その意気です！'} ${esc(q.ask2)}</p></div>`;
+    if(iv.a2==null) body+=chips(q.q2,2);
+    else body+=ans(q.q2[iv.a2])+`<div class="iv-q iv-rv" style="--rc:${c}"><span class="ava" style="--s:${c}">${esc(avOf(q.rv))}</span><p><b>${esc(q.rn)}</b>${esc(iv.re)}</p></div>
+      <div class="iv-done"><span>📰 このインタビューは、下の号外にのりました</span><button class="ipf-link" onclick="document.querySelector('.gzp')?.scrollIntoView({behavior:'smooth',block:'start'})">号外を見る ↓</button></div>`; }
+  return `<section class="panel iv${iv.a2!=null?' done':''}"><div class="row spread"><h3>🎙️ ${q.won?'ヒーローインタビュー':'試合後インタビュー'}</h3><span class="iv-live">● ON AIR</span></div>${body}</section>`;
+}
+function ivAnswer(step,i){
+  const q=ivData(); if(!q) return; G.iv=G.iv||{};
+  if(step===1 && G.iv.a1==null){ G.iv.a1=i; sfx('select'); haptic(10); }
+  else if(step===2 && G.iv.a1!=null && G.iv.a2==null){
+    G.iv.a2=i; const T=talkOf(q.rv);
+    const pool = i===0 ? (T.vs||[]) : i===1 ? (T.lead||T.vs||[]) : (T.vs||[]);
+    const nice = ['こっちこそ、楽しかったよ。','次はもっと手ごわくなってるからね。','いつでも受けて立つよ！'];
+    G.iv.re = i===0 && pool.length ? pool[Math.floor(Math.random()*pool.length)] : nice[i];
+    sfx('fanfare'); haptic(30); setTimeout(()=>{ try{ voice(charKey(q.rv), G.iv.re); }catch(e){} },400);
+  } else return;
+  render();
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5638,6 +5701,7 @@ function finalView(){
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
     ${mioFinal()}${autoDiffNote()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+    ${ivPanel()}
     ${gogaiPaper()}
     ${teamPanel()}
     ${playAnalysis()}
