@@ -1899,6 +1899,17 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .awards:has(.aw2){grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .aw-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
 .aw-who{display:flex;align-items:center;gap:6px;min-width:0}.aw-who .ava{width:24px;height:24px;font-size:12px;flex:none}.aw-who .w{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hk-list{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.hk-row{display:flex;gap:12px;align-items:flex-start;text-align:left;font:inherit;color:var(--ink);cursor:pointer;border:0;border-radius:16px;padding:10px 12px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line);animation:achin .4s cubic-bezier(.2,.9,.3,1.3) var(--d) both}
+.hk-row:first-child{box-shadow:inset 0 0 0 2px #3fe08f;background:linear-gradient(110deg,rgb(63 224 143 / .16),transparent 70%),var(--panel2)}
+.hk-row.on{box-shadow:inset 0 0 0 2.5px var(--cyan)}
+.hk-ind{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--ic);color:#fff}.hk-ind svg{width:26px;height:26px}
+.hk-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.hk-top{display:flex;align-items:center;gap:8px}.hk-top b{font-size:16px}
+.hk-tag{margin-left:auto;font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;color:var(--tc);box-shadow:inset 0 0 0 1.5px var(--tc);white-space:nowrap}
+.hk-bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}.hk-bar i{display:block;height:100%;border-radius:99px;background:var(--ic)}.hk-bar.neg i{background:#ff5c7a}
+.hk-nums{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);font-weight:700}.hk-nums b{color:var(--ink);font-size:14px}
+.hk-foot{font-size:11px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3317,6 +3328,7 @@ function renderSheet(){
   else if(k==='card') body=cardSheetBody();
   else if(k==='longtut') body=longTutBody();
   else if(k==='login') body=loginBody();
+  else if(k==='cmp') body=hkBody();
   else if(k==='title') body=titleBody();
   else if(k==='table') body=fullTableBody();
   else if(k==='quiz') body=quizBody();
@@ -5026,6 +5038,39 @@ function peerIcon(peer){
   const x=(NET.peers||[]).find(q=>q.peer===peer), ic=x&&x.presence&&x.presence.ic;
   return (typeof ic==='string' && ic.length<30000 && /^data:image\/(jpeg|png);base64,[A-Za-z0-9+\/=]+$/.test(ic)) ? ic : null;
 }
+/* ---- 手札くらべ：手札のカードを1枚ずつ「独占なら／被ったら／独占できそう％／この先の強さ」で見くらべる。タップでそのカードを選ぶ ---- */
+function hkRows(){
+  const p=G.players[G.active], C=G.cfg, T=C.table, t=G.turn, known=p.foreUsed&&p.foreTurn===t, row=rowFor(p,G.deck,t);
+  const vals=cardValues(C,p,G.players,G.deck,t,row,known,p.fut?futBase:null);
+  const pool=unseen(C,G.deck,t), left=TURNS-1-t, fut=known?[G.deck[t+1]]:pool;
+  const opp=G.players.filter(o=>o!==p).map(o=>oppDist(T,o,G.deck[t],pool,left));
+  const base=c=>(p.fut?futBase(T[row][c],C):T[row][c])+(p.brand===c?1:0);
+  const order=p.hand.slice().sort((a,b)=>vals[b]-vals[a]);
+  return order.map((c,r)=>({c, r, b:base(c), solo:gain(C,base(c),1), hit:gain(C,base(c),2), alone:Math.round(opp.reduce((a,d)=>a*(1-d[c]),1)*100),
+    keep:left>0 && futureCost(T,p.hand,c,fut,left,known)>1, ev:vals[c]}));
+}
+function hkBody(){
+  if(!G || G.phase!=='choose' || G.active<0 || G.online) return `<h3 class="ttl" style="font-size:20px">手札くらべ</h3><p class="note">カードを選ぶ場面で使えます。</p>`;
+  let rows; try{ rows=hkRows(); }catch(e){ return `<p class="note">いまは計算できませんでした。</p>`; }
+  const mx=Math.max(1,...rows.map(x=>Math.abs(x.solo)));
+  const tag=x => x.r===0 ? ['◎','おすすめ','#3fe08f'] : x.keep ? ['🔒','とっておき','#4fe3ff'] : x.alone<35 ? ['⚠','被りやすい','#ff9f43'] : x.b<0 ? ['✕','マイナス','#ff5c7a'] : x.r===1 ? ['○','いい手','#ffc83a'] : ['・','ふつう','var(--muted)'];
+  const why=x => x.r===0 ? (x.alone>=50?'点が高く、ほかの人と被りにくい。':'被っても点が残るので安全。')
+    : x.keep ? 'この先のNEWSでもっと強くなる。いまは使わずに取っておくのもあり。'
+    : x.alone<35 ? 'みんなが出したくなるカード。被ると点が減る。'
+    : x.b<0 ? 'このNEWSではマイナス。出すなら最後の手段。'
+    : x.b===0 ? '点は0。相手のじゃまにはなるかも。' : 'ほどほどの点。';
+  return `<span class="label">HAND CHECK</span><h3 class="ttl" style="font-size:22px">📊 手札くらべ</h3>
+    <p class="note">上ほどおすすめ。<b>バー</b>は独占したときの点、<b>％</b>はほかの人と被らずに出せそうな確率です。タップするとそのカードを選びます。</p>
+    <div class="hk-list">${rows.map((x,i)=>{ const [ic,tx,col]=tag(x), w=Math.round(Math.abs(x.solo)/mx*100);
+      return `<button class="hk-row${G.sel===x.c?' on':''}" style="--ic:var(--i${x.c});--tc:${col};--d:${i*60}ms" onclick="hkPick(${x.c})">
+        <span class="hk-ind">${svg(x.c,2.2)}</span>
+        <span class="hk-mid"><span class="hk-top"><b>${IND[x.c]}</b><span class="hk-tag">${ic} ${tx}</span></span>
+          <span class="hk-bar${x.solo<0?' neg':''}"><i style="width:${w}%"></i></span>
+          <span class="hk-nums"><span>独占 <b>${sgn(x.solo)}</b></span><span>被り <b>${sgn(x.hit)}</b></span><span>独占できそう <b>${x.alone}%</b></span></span>
+          <span class="note">${why(x)}</span></span></button>`; }).join('')}</div>
+    <p class="note hk-foot">※ 確率は、相手がこれまで出したカードと手札から見積もった目安です。読みが外れることもあるのが、このゲームのおもしろさ！</p>`;
+}
+function hkPick(c){ if(!G||G.phase!=='choose') return; closeSheet(); selectCard(c); }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5387,8 +5432,9 @@ function handDock(news){
   const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return cardHTML(c,{click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`}); }).join('');
   const dealKey=G.turn+':'+G.active, deal=G.dealKey!==dealKey; G.dealKey=dealKey;
   const canFore=!p.foreUsed && G.turn<TURNS-1, fdef=FORE[C.fore];
-  let preview='<span>カードを選ぶと、独占したときと被ったときの点数が出ます</span>';
-  if(G.sel!==null){ const b=ptsOf(G.sel); preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(C,b,1))}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2))}</b><button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>`; }
+  const cmpBtn = G.online ? '' : `<button class="ipf-link hk-open" onclick="openSheet('cmp')" aria-label="手札のカードを見くらべる">📊 くらべる</button>`;
+  let preview=`<span>カードを選ぶと、独占したときと被ったときの点数が出ます</span>${cmpBtn}`;
+  if(G.sel!==null){ const b=ptsOf(G.sel); preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(C,b,1))}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2))}</b><button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
     <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}
