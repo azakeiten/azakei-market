@@ -2538,6 +2538,7 @@ function start(data){
   if(S.fs===undefined){ const v=load('azakei-fs'); S.fs = v!=null ? v : (load('azakei-big') ? 1 : 0); }
   if(S.hc===undefined) S.hc=!!load('azakei-hc');
   if(S.cvd===undefined) S.cvd=!!load('azakei-cvd');
+  if(S.autoDiff===undefined) S.autoDiff=!!load('azakei-autodiff');
   if(S.mioVoice===undefined) S.mioVoice=!!load('azakei-miovoice');
   if(S.theme===undefined){ const v=load('azakei-theme'); S.theme = v||(load('azakei-light')?'light':'dark'); }
   try{ matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{ if(S.theme==='auto'){ applyLook(); render(); } }); }catch(e){}
@@ -2581,6 +2582,7 @@ function toggleSound(){ S.sound=!S.sound; save('azakei-sound',S.sound); if(S.sou
 /* ================= game flow ================= */
 let introTimer=null;
 function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
+  if(!online && !daily && !chalId && !cupRun && !storyK && survLv==null && !bossK && !duel && S.autoDiff) autoDiffApply();
   sfx('open');
   const ch = chalId ? CHALLENGES.find(c=>c.id===chalId) : null;
   const cu = cupRun ? CUPS.find(c=>c.id===cupRun.id) : null;   // カップ戦：決まった相手と1試合ずつ
@@ -2881,7 +2883,7 @@ const logDeck = () => G.log && G.log.length ? G.log : G.deck.slice(0,TURNS);
 const termName = r => G.cfg.hist && G.fullPool ? `${r===0?'前半':'後半'}` : `第${r+1}期`;
 function termRange(r){ if(!G.fullPool) return ''; const ids=G.fullPool.slice(r*LONG_PER,(r+1)*LONG_PER); return `${yearOf(ids[0])}–${yearOf(ids[ids.length-1])}`; }
 const turnLabel = () => (isLong()?`${termName(G.round)} · `:'')+`TURN ${G.turn+1}/${TURNS}`;
-function finishGame(){ G.phase='final'; G.ov=null; recordResult(); repSave(); achCheck(); practiceDone(); leagueRecord(); boardRecord(); partyReward(); render(); netSync(); scrollTo(0,0); startCeremony(); }
+function finishGame(){ G.phase='final'; G.ov=null; recordResult(); repSave(); achCheck(); autoDiffAfter(); practiceDone(); leagueRecord(); boardRecord(); partyReward(); render(); netSync(); scrollTo(0,0); startCeremony(); }
 /* ブランド：期の決算で、その期にいちばん独占した産業が自分のブランドになり、以後その産業は毎回+1 */
 function brandOf(us, prev){
   const n=[0,0,0,0,0,0]; let lastMono=-1;
@@ -4463,7 +4465,7 @@ function oppRow(){
 function setupSummary(){
   const mode={classic:'クラシック',history:'歴史モード',future:'未来編',ex:'クラシックEX',my:'マイNEWS'}[S.mode]||'クラシック';
   const hc=S.seats.filter(s=>s.type==='human').length, cpu=S.seats.length-hc, d=DIFFS.find(x=>x[0]===diffNow());
-  const who = hc>1 ? `${hc}人で回す${cpu?`＋CPU ${cpu}人`:''}` : `CPU ${cpu}人${d?`・${d[1]}`:''}`;
+  const who = hc>1 ? `${hc}人で回す${cpu?`＋CPU ${cpu}人`:''}` : `CPU ${cpu}人${S.autoDiff?`・おまかせ（${AUTO_LV[autoLv()][1]}）`:d?`・${d[1]}`:''}`;
   return `${mode}・${S.len==='long'?'ロング':'ショート'} ／ ${who}`;
 }
 /* ---- 「？」ヘルプ：いまの画面でできることを、ミオが3つにしぼって教える ---- */
@@ -5000,6 +5002,23 @@ function gameAwards(){
     if(wasLast) add('🔥','大逆転賞',[P[wi]],'途中ビリからの優勝','#ff5c9a'); }
   return aw;
 }
+/* ---- CPUの強さ「おまかせ」：1位で1段階強く、最下位で1段階やさしく。かんたん→ふつう→むずかしい の3段階 ---- */
+const AUTO_LV=[['easy','かんたん'],['normal','ふつう'],['hard','むずかしい']];
+const autoLv = () => { const v=S.prof&&S.prof.autoLv; return v==null ? (nbNew()?0:1) : Math.max(0,Math.min(2,v)); };
+function setAutoDiff(on){ S.autoDiff=!!on; save('azakei-autodiff',S.autoDiff); if(on){ sfx('select'); autoDiffApply(); } render(); }
+function autoDiffApply(){ const k=AUTO_LV[autoLv()][0], d=DIFFS.find(x=>x[0]===k); if(!d) return; let j=0; S.seats.forEach(s=>{ if(s.type!=='human') s.type=d[3][j++]; }); }
+function autoDiffAfter(){
+  if(!G || !S.autoDiff || G.online || G.demo || G.chal || G.cup || G.story || G.surv!=null || G.boss || G.duel || G.players.filter(isHuman).length!==1) return;
+  const me=myIndex(), rk=ranking(G.players,G.cfg), mine=rk.find(x=>x.i===me); if(!mine) return;
+  const n=G.players.length, before=autoLv(); let after=before;
+  if(mine.rank===1) after=Math.min(2,before+1); else if(mine.rank===n) after=Math.max(0,before-1);
+  S.prof.autoLv=after; saveProfile(); G.autoMove={before, after, rank:mine.rank};
+}
+function autoDiffNote(){
+  const m=G&&G.autoMove; if(!m) return '';
+  const t = m.after>m.before ? `1位おめでとう！ 次の試合はCPUが「${AUTO_LV[m.after][1]}」になります。` : m.after<m.before ? `次の試合はCPUを「${AUTO_LV[m.after][1]}」にして、もう一度ちょうせん！` : m.after===2&&m.rank===1 ? `いちばん強い「むずかしい」でも1位！ 本物の実力者だね。` : `次の試合も「${AUTO_LV[m.after][1]}」のままです。`;
+  return `<section class="trwin" style="--rc:#4fe3ff"><span class="rva">🤖</span><span><span class="label">おまかせの強さ</span><b>${m.after>m.before?'レベルアップ！':m.after<m.before?'やさしくしたよ':'このまま'}</b><span class="note">${t}</span></span></section>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5448,7 +5467,7 @@ function finalView(){
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
-    ${mioFinal()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+    ${mioFinal()}${autoDiffNote()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${gogaiPaper()}
     ${teamPanel()}
     ${playAnalysis()}
@@ -5539,6 +5558,7 @@ function ruleList(){
 function setSeatPreset(k){ S.seats=defaultSeats(k==='party'?'party':'cpu'); sfx('click'); render(); }
 function lobbyView(){ return playView(); }
 function playView(){
+  if(S.autoDiff && S.seats.filter(s=>s.type==='human').length===1) autoDiffApply();   /* おまかせ中は、いまの段階のCPUを席に反映 */
   const seats=S.seats.map((s,i)=>`<div class="seatrow">
     ${s.type!=='human'&&CHARS[charKey(s)] ? `<button class="ava chpick" style="--s:${CHARS[charKey(s)].c}" onclick="openSheet('pickchar:${i}')" aria-label="CPUのキャラを変える">${CHARS[charKey(s)].ic}</button>`
       : s.type!=='human' ? `<button class="ava chpick" style="--s:var(--s${i%6})" onclick="openSheet('pickchar:${i}')" aria-label="CPUのキャラを選ぶ">${esc(initial(s.name))}</button>` : `<div class="ava" style="--s:var(--s${i%6})">${esc(initial(s.name))}</div>`}
@@ -5568,7 +5588,7 @@ function playView(){
         <button class="${party?'on':''}" onclick="setSeatPreset('party')">1台をみんなで回す</button>
         <button onclick="go('online')">オンラインで →</button>
       </div>
-      ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${diffNow()===k?" on":""}" onclick="setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>`:""}
+      ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span><button class="dchip d-auto${S.autoDiff?" on":""}" onclick="setAutoDiff(true)"><i>🤖</i>おまかせ</button>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${!S.autoDiff&&diffNow()===k?" on":""}" onclick="setAutoDiff(false);setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>${S.autoDiff?`<p class="note tagnote">🤖 おまかせ：いまは「${AUTO_LV[autoLv()][1]}」。1位を取ると強く、最下位だとやさしくなります。</p>`:''}`:""}
       ${!party&&S.seats.some(s=>s.type!=="human")?oppRow():''}
       ${party?'':`<details class="adv-box"${S.advOpen?' open':''} ontoggle="S.advOpen=this.open"><summary><span>⚙️ こだわり設定</span><small>人数・CPUの性格・チーム戦などの特別ルール</small></summary>`}
       ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}</div>${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
