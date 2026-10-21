@@ -841,7 +841,7 @@ body[data-table="space"]::before{background:radial-gradient(1.5px 1.5px at 20% 3
 .ftleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin-bottom:12px} .ftleg b{color:var(--gold-t)}
 .ftbl th.ft-n,.ftbl tr .ft-n{position:sticky;left:0;z-index:1;background:var(--panel)}
 .ftbl tr.now .ft-n{background:var(--gold)}
-@media (max-width:560px){ .ftbl .ft-n{min-width:0;width:96px;max-width:96px;font-size:11px;line-height:1.25;padding:5px 6px;white-space:normal} .ftbl td{font-size:15px;min-width:30px;padding:5px 0} .ftbl th{font-size:11px} .ftbl th .ic{width:20px;height:20px} .hud .btn.icon{padding:6px 8px;min-height:36px} .hud .row{gap:5px!important} .hud .turnlbl{font-size:12px} }
+@media (max-width:560px){ .ftbl{width:max-content;min-width:100%} .ftbl th span{font-size:10px;letter-spacing:-.04em} .ftbl .ft-n{min-width:96px;width:96px;max-width:96px;font-size:11px;line-height:1.25;padding:5px 6px;white-space:normal} .ftbl td{font-size:15px;min-width:30px;padding:5px 0} .ftbl th{font-size:11px} .ftbl th .ic{width:20px;height:20px} .hud .btn.icon{padding:6px 8px;min-height:36px} .hud .row{gap:5px!important} .hud .turnlbl{font-size:12px} }
 .usedsw{display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--panel2);opacity:.4;vertical-align:-1px}
 /* ---- NEWS演出：共通の「影響チップ」 ---- */
 .impact{width:100%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
@@ -1929,6 +1929,30 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .alb-pic figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px}
 .alb-pic figcaption b{font-size:13px;line-height:1.3}.alb-pic figcaption span{font-size:11px;line-height:1.4;color:#5a5470}
 .alb-pic time{font-size:11px;font-weight:800;color:#8a6d1e;align-self:flex-end}
+.rcut{position:fixed;inset:0;z-index:29;pointer-events:none;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.rcut::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--rc) 28%,transparent),rgb(0 0 0 / .45) 70%);animation:rcfade 1.95s ease both}
+.rc-band{position:relative;width:150vw;flex:none;display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 0;transform:rotate(6deg);
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--rc) 85%,#000) 14%,var(--rc) 50%,color-mix(in srgb,var(--rc) 85%,#000) 86%,transparent);
+  box-shadow:0 0 0 4px #0b0b1e,0 0 60px color-mix(in srgb,var(--rc) 70%,transparent);animation:rcin 1.95s cubic-bezier(.2,.8,.2,1) both}
+.rc-band::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(100deg,rgb(255 255 255 / .12) 0 2px,transparent 2px 22px);mix-blend-mode:overlay}
+.rc-ava{flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:28px;background:radial-gradient(circle at 35% 30%,#fff,var(--s) 80%);box-shadow:0 0 0 3px #fff,0 6px 16px rgb(0 0 0 / .5);overflow:hidden;color:#1b1030;font-weight:800}
+.rc-ava.big{width:76px;height:76px;font-size:38px;animation:rcpop .5s cubic-bezier(.2,1.6,.3,1) .25s both}
+.rc-ava .ava-img{width:100%;height:100%;object-fit:cover}
+.rc-duo{display:flex;align-items:center;gap:2px}
+.rc-duo .rc-ava.me{animation:rcl .45s cubic-bezier(.2,1.5,.3,1) .2s both}.rc-duo .rc-ava:last-child{animation:rcr .45s cubic-bezier(.2,1.5,.3,1) .2s both}
+.rc-spark{font-style:normal;font-size:30px;filter:drop-shadow(0 0 8px #fff);animation:rcpop .35s cubic-bezier(.2,1.8,.3,1) .5s both;margin:0 -6px;z-index:1}
+.rc-tx{display:flex;flex-direction:column;gap:2px;max-width:min(62vw,420px);color:#fff;text-shadow:0 2px 0 rgb(0 0 0 / .45)}
+.rc-tx small{font-family:var(--display);font-size:13px;letter-spacing:.12em;opacity:.9}
+.rc-tx b{font-family:var(--display);font-weight:400;font-size:clamp(22px,6.4vw,40px);line-height:1.1}
+.rc-tx span{font-size:clamp(12px,3.4vw,16px);font-weight:800}
+.rcut.clash .rc-band{transform:rotate(-5deg);animation-name:rcin2}
+@keyframes rcin{0%{transform:rotate(6deg) translateX(-110%)}16%{transform:rotate(6deg) translateX(0)}80%{transform:rotate(6deg) translateX(3%);opacity:1}100%{transform:rotate(6deg) translateX(110%);opacity:0}}
+@keyframes rcin2{0%{transform:rotate(-5deg) scale(1.6);opacity:0}12%{transform:rotate(-5deg) scale(1);opacity:1}16%{transform:rotate(-5deg) translateX(-8px)}20%{transform:rotate(-5deg) translateX(8px)}24%{transform:rotate(-5deg) translateX(0)}82%{transform:rotate(-5deg);opacity:1}100%{transform:rotate(-5deg) scale(.9);opacity:0}}
+@media (max-width:480px){ .rc-ava{width:46px;height:46px;font-size:22px} .rc-ava.big{width:60px;height:60px;font-size:30px} .rc-tx b{font-size:22px} }
+@keyframes rcfade{0%,100%{opacity:0}15%,80%{opacity:1}}
+@keyframes rcpop{0%{transform:scale(0)}100%{transform:scale(1)}}
+@keyframes rcl{0%{transform:translateX(-60px);opacity:0}100%{transform:none;opacity:1}}
+@keyframes rcr{0%{transform:translateX(60px);opacity:0}100%{transform:none;opacity:1}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2101,7 +2125,7 @@ body{transition:background-color .5s ease}
 }
 .rcard{display:block;width:100%;max-width:420px;margin:0 auto;border-radius:18px;box-shadow:0 0 0 1px var(--line),0 20px 40px -16px #000}
 /* ---- cut-in ---- */
-.cutin{position:fixed;inset:0;z-index:29;pointer-events:none;display:grid;place-items:center;overflow:hidden}
+.cutin{position:fixed;inset:0;z-index:29;pointer-events:none;display:flex;align-items:center;justify-content:center;overflow:hidden}.cutin .band{flex:none}@media (max-width:480px){ body .cutin .band{flex-direction:column;align-items:center;gap:4px} }
 .cutin .band{width:140vw;transform:rotate(-8deg);padding:14px 0;display:flex;align-items:baseline;justify-content:center;gap:16px;background:linear-gradient(90deg,transparent,var(--gold) 12%,#ffe08a 50%,var(--gold) 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 60px rgb(255 200 58 / .7);animation:cutin 1.45s cubic-bezier(.2,.8,.2,1) both}
 .cutin b{font-family:var(--display);font-weight:400;font-size:clamp(44px,11vw,84px);line-height:1;color:#2a1a00;text-shadow:0 4px 0 rgb(255 255 255 / .5)}
 .cutin span{font-family:var(--display);font-size:clamp(18px,4.5vw,30px);color:#5a3a00}
@@ -2856,6 +2880,7 @@ function revealFx(){
   G.cnt.forEach((k,c)=>{ if(k===1){ anyMono=true; setTimeout(()=>burstAt(document.getElementById('lane'+c),['#ffc83a','#ffe08a','#ffffff',rootCs.getPropertyValue('--i'+c).trim()],phone()?28:44),phone()?700:420); } if(k>1) anyHit=true; });
   if(anyHit) setTimeout(()=>{ sfx('buzz'); haptic(40); },380);
   if(anyMono) setTimeout(()=>sfx('coin'),520);
+  rivalFx(prev);
   cpuChatter(); speakLive();
   const me=myIndex(), r=me>=0?G.last[me]:null;     // 自分の見せ場はカットインで
   const streak = r ? (()=>{ const u=G.players[me].used; let n=0; for(let k=u.length-1;k>=0&&u[k].k===1;k--) n++; return n; })() : 0;
@@ -5130,6 +5155,39 @@ function albumBody(){
         <div class="alb-grid">${g.map((e,i)=>`<figure class="alb-pic" style="--c:${e.c};--r:${[-2,1.5,-1,2][i%4]}deg;--d:${Math.min(i,8)*50}ms"><span class="alb-ph">${e.ic}</span><figcaption><b>${esc(e.n)}</b><span>${esc(e.d)}</span><time>${fd(e.t)}</time></figcaption></figure>`).join('')}</div></section>`; }).join('')}
     <p class="note" style="text-align:center">対戦の記録は、さいきんの100試合ぶんから作っています。</p>`;
 }
+/* ---- ライバル・カットイン：自分の見せ場がないターンだけ、CPUの大きな独占や「自分と1対1で被った」瞬間をキャラのカットインで見せる ---- */
+function rivalFx(prev){
+  G.rcutI=-1;
+  if(reduced() || !cpuEmoteOn() || !G.last) return;
+  const me=myIndex(); if(me<0) return;
+  const r=G.last[me], P=G.players;
+  const top=a=>{ const m=Math.max(...a); return a.filter(v=>v===m).length===1 ? a.indexOf(m) : -1; };
+  const busy = (r.k===1 || r.total>=5) || (P[me].hist.length>2 && top(P.map(p=>p.score))===me && top(prev)!==me);
+  if(busy) return;
+  const pick=(arr)=>arr[Math.floor(Math.random()*arr.length)];
+  const look=p=>{ const c=CHARS[charKey(p)]; return {c:(c&&c.c)||'#ff5c7a', av:esc(avOf(p))}; };
+  if(r.k===2){
+    const j=P.findIndex((q,i)=>i!==me && G.last[i].ind===r.ind); if(j<0 || isHuman(P[j])) return;
+    const T=talkOf(P[j]), line=(T.hit&&pick(T.hit))||'……被ったか。', L=look(P[j]), nm=esc(String(P[j].name).replace(/^CPU\s*/,''));
+    G.rcutI=j;
+    setTimeout(()=>rcutShow(`<div class="rc-band"><span class="rc-duo"><span class="rc-ava me" style="--s:${AVA_COLORS[S.prof.color%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span><i class="rc-spark">⚡</i><span class="rc-ava" style="--s:${L.c}">${L.av}</span></span>
+      <span class="rc-tx"><small>CLASH！</small><b>${nm}と被った！</b><span>「${esc(line)}」 · ${IND[r.ind]} ${sgn(r.total)}</span></span></div>`, 'clash', L.c, P[j], line), 800);
+    return;
+  }
+  let j=-1, best=3; P.forEach((q,i)=>{ const x=G.last[i]; if(i!==me && !isHuman(q) && x.k===1 && x.total>best){ best=x.total; j=i; } });
+  if(j<0) return;
+  const T=talkOf(P[j]), line=(T.mono&&pick(T.mono))||'いただき！', L=look(P[j]), x=G.last[j], nm=esc(String(P[j].name).replace(/^CPU\s*/,''));
+  G.rcutI=j;
+  setTimeout(()=>rcutShow(`<div class="rc-band"><span class="rc-ava big" style="--s:${L.c}">${L.av}</span>
+    <span class="rc-tx"><small>RIVAL · ${nm}</small><b>「${esc(line)}」</b><span>${IND[x.ind]}を独占 ${sgn(x.total)}</span></span></div>`, 'mono', L.c, P[j], line), 900);
+}
+function rcutShow(html, kind, c, p, line){
+  if(!G || G.phase!=='reveal') return;
+  const el=document.createElement('div'); el.className='rcut '+kind; el.style.setProperty('--rc',c); el.setAttribute('aria-hidden','true'); el.innerHTML=html;
+  document.body.appendChild(el); setTimeout(()=>el.remove(),2000);
+  sfx(kind==='clash'?'slam':'flip'); haptic(kind==='clash'?35:15);
+  try{ voice(p.boss&&G.boss?'BOSS':charKey(p), line); }catch(e){}
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -6787,7 +6845,7 @@ function cpuChatter(){
   const top=Math.max(...G.players.map(p=>p.score));
   const lines=[];
   G.players.forEach((p,i)=>{
-    if(isHuman(p)) return;
+    if(isHuman(p) || i===G.rcutI) return;   /* カットインで話したキャラは吹き出しを出さない */
     const r=G.last[i], T=talkOf(p);
     const kind = r.k===1 ? 'mono' : r.total<0 ? 'neg' : r.total>=5 ? 'big' : (r.k>=2 && Math.random()<.6) ? 'hit' : (p.score===top && Math.random()<.5) ? 'lead' : null;
     if(kind && T[kind]) lines.push({i, text:T[kind][Math.floor(Math.random()*T[kind].length)], w:kind==='mono'||kind==='neg'?2:1});
