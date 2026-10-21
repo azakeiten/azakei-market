@@ -2254,14 +2254,14 @@ const clone = o => JSON.parse(JSON.stringify(o));
 const sgn = v => v>0 ? `+${v}` : v<0 ? `−${-v}` : '±0';
 const cls = v => v>0 ? 'up' : v<0 ? 'down' : '';
 const MY_ICON='';   /* マイアイコン（自分で描いたアイコン）の目印。esc() がこの1文字だけを画像に置きかえる */
-const esc = s => { s=String(s); if(s===MY_ICON) return myIconImg(); return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); };
+const esc = s => { s=String(s); if(s===MY_ICON) return myIconImg(); if(s.charCodeAt(0)===0xE001){ const ic=peerIcon(s.slice(1)); return ic?`<img class="ava-img" src="${ic}" alt="">`:'？'; } return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); };
 const myIconImg = () => (S&&S.prof&&S.prof.myIcon) ? `<img class="ava-img" src="${S.prof.myIcon}" alt="">` : '？';
 const chip = i => `<span class="chip c${i}"><i></i>${IND[i]}</span>`;
 const $ = s => document.querySelector(s);
 const initial = n => (String(n).replace(/^CPU\s*/,'').trim()[0] || '?');
 const AVATARS=[[null,1],["🦊",1],["🐼",1],["🐯",2],["🐸",3],["🐧",4],["🦉",5],["🐙",6],["🦁",8],["🐲",10],["🤖",12],["👑",15]];   // [絵,解放レベル]、nullは名前の頭文字
 const myAvatar = () => { const P=S&&S.prof; if(!P||!P.av) return null; if(P.av==='mine') return P.myIcon?MY_ICON:null; const a=AVATARS.find(x=>x[0]===P.av); return a && lvInfo(P.xp).lv>=a[1] ? a[0] : null; };
-const avOf = p => (G && G.players.indexOf(p)===myIndex() && myAvatar()) || (p.boss && G && G.boss ? BOSSES.find(b=>b.id===G.boss).ic : '') || (!isHuman(p) && CHARS[charKey(p)] ? CHARS[charKey(p)].ic : initial(p.name));   // CPUはキャラのアイコン
+const avOf = p => (G && G.players.indexOf(p)===myIndex() && myAvatar()) || (G && G.online && p.peer && p.peer!==NET.myPeer && peerIcon(p.peer) ? ''+p.peer : '') || (p.boss && G && G.boss ? BOSSES.find(b=>b.id===G.boss).ic : '') || (!isHuman(p) && CHARS[charKey(p)] ? CHARS[charKey(p)].ic : initial(p.name));   // CPUはキャラのアイコン
 const myTitle = () => { const P=S.prof, a=P.title && P.ach[P.title] && ACH.find(x=>x.id===P.title); return a ? a.n : titleOf(lvInfo(P.xp).lv); };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || !!(typeof S!=='undefined' && S && S.calm);
 const phone = () => matchMedia('(max-width:640px)').matches;
@@ -3057,7 +3057,9 @@ async function joinRoom(code, host){
   try{
     const r=await lobby.join(code, host);
     NET.room=r; NET.code=code; NET.host=host; NET.st=null; NET.fxKey=''; NET.ver=0;
-    await r.presence({name:NET.name.slice(0,12), host:host?1:0});
+    const myIc = S.prof.av==='mine' && S.prof.myIcon && S.prof.myIcon.length<30000 ? S.prof.myIcon : null;   /* マイアイコンは名前といっしょに送る */
+    try{ await r.presence(Object.assign({name:NET.name.slice(0,12), host:host?1:0}, myIc?{ic:myIc}:{})); }
+    catch(e){ if(!myIc) throw e; await r.presence({name:NET.name.slice(0,12), host:host?1:0}); }
     NET.unsubs.push(r.onPeers(ch=>{
       NET.peers=ch.peers; const me=ch.peers.find(p=>p.sameTab); if(me) NET.myPeer=me.peer;
       if(NET.host){ if(ch.joined.length) hostBroadcast(); if(ch.left.length) hostPeersLeft(ch.left); }
@@ -4080,7 +4082,7 @@ const DG_MS=2900, REP_MAX=10;
 function digestFromG(){
   const rk=ranking(G.players,G.cfg), LG=logDeck();
   return { N:totalTurns(), me:myIndex(), news:LG.map(n=>String(nm(n))), yrs:G.cfg.hist&&typeof yearOf==='function'?LG.map(n=>yearOf(n)):null,
-    pl:G.players.map(p=>({n:p.name, s:p.seat%6, a:avOf(p), u:p.used.map(u=>[u.ind,u.total,u.k]), h:p.hist.slice(), sc:p.score})),
+    pl:G.players.map(p=>({n:p.name, s:p.seat%6, a:(a=>a&&a.charCodeAt(0)===0xE001?initial(p.name):a)(avOf(p)), u:p.used.map(u=>[u.ind,u.total,u.k]), h:p.hist.slice(), sc:p.score})),
     win:rk.filter(x=>x.rank===1).map(x=>x.i) };
 }
 function repSave(){            /* 名勝負アーカイブ：最近の試合を再生できる形で端末に残す */
@@ -5018,6 +5020,11 @@ function autoDiffNote(){
   const m=G&&G.autoMove; if(!m) return '';
   const t = m.after>m.before ? `1位おめでとう！ 次の試合はCPUが「${AUTO_LV[m.after][1]}」になります。` : m.after<m.before ? `次の試合はCPUを「${AUTO_LV[m.after][1]}」にして、もう一度ちょうせん！` : m.after===2&&m.rank===1 ? `いちばん強い「むずかしい」でも1位！ 本物の実力者だね。` : `次の試合も「${AUTO_LV[m.after][1]}」のままです。`;
   return `<section class="trwin" style="--rc:#4fe3ff"><span class="rva">🤖</span><span><span class="label">おまかせの強さ</span><b>${m.after>m.before?'レベルアップ！':m.after<m.before?'やさしくしたよ':'このまま'}</b><span class="note">${t}</span></span></section>`;
+}
+/* ---- オンラインのマイアイコン：相手のアイコンは、その人の presence から読む（ゲームの同期データには入れない）。画像データの形をきびしくチェック ---- */
+function peerIcon(peer){
+  const x=(NET.peers||[]).find(q=>q.peer===peer), ic=x&&x.presence&&x.presence.ic;
+  return (typeof ic==='string' && ic.length<30000 && /^data:image\/(jpeg|png);base64,[A-Za-z0-9+\/=]+$/.test(ic)) ? ic : null;
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
@@ -6798,7 +6805,7 @@ function onlineView(){
       <p class="note">${IN_CLAUDE?'閲覧のみの権限で開いた人は、操作できず観戦になります。':'端末どうしを直接つなぎます。学校や会社のWi-Fiなど、一部のネットワークではつながらないことがあります。そのときはスマホの回線に切り替えてみてください。'}途中で抜けた人の席はCPUが引き継ぎます。</p></aside></div>`;
   const st=NET.st, mode=NET.host?S.mode:(st&&st.mode)||'classic', era=NET.host?S.era:(st&&st.era)||'all', cpus=NET.host?NET.cpus:(st&&+st.cpus)||0;
   const ps=rosterPeers();
-  const roster=ps.map((p,i)=>`<div class="rosterrow"><div class="ava" style="--s:var(--s${i%6});width:36px;height:36px;font-size:15px;grid-row:auto">${esc(initial(peerName(p)))}</div><b>${esc(peerName(p))}</b>${p.presence&&p.presence.host?'<span class="tagx" style="color:var(--gold-t)">ホスト</span>':''}${p.sameTab?'<span class="tagx cy">あなた</span>':''}${p.guest?'<span class="tagx">ゲスト</span>':''}</div>`).join('')
+  const roster=ps.map((p,i)=>`<div class="rosterrow"><div class="ava" style="--s:var(--s${i%6});width:36px;height:36px;font-size:15px;grid-row:auto">${(ic=>ic?`<img class="ava-img" src="${ic}" alt="">`:esc(initial(peerName(p))))(peerIcon(p.peer))}</div><b>${esc(peerName(p))}</b>${p.presence&&p.presence.host?'<span class="tagx" style="color:var(--gold-t)">ホスト</span>':''}${p.sameTab?'<span class="tagx cy">あなた</span>':''}${p.guest?'<span class="tagx">ゲスト</span>':''}</div>`).join('')
     + Array.from({length:cpus},(_,i)=>`<div class="rosterrow cpu"><div class="ava" style="--s:var(--s${(ps.length+i)%6});width:36px;height:36px;font-size:15px;grid-row:auto">C</div><b>CPU ${['ミナト','アオイ','ソラ','ハル','ユイ'][i]}</b><span class="tagx">CPU</span></div>`).join('');
   const total=Math.min(6,ps.length+cpus);
   const modeUI = NET.host ? `<div class="modes" role="group" aria-label="ゲームモード">
