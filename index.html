@@ -1990,6 +1990,7 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .xc-chip{font-family:var(--display);font-size:12px;padding:2px 8px;border-radius:999px;background:linear-gradient(90deg,var(--k1),var(--k2));color:#1a1438;white-space:nowrap}
 @media (max-width:560px){ .xc-hud{display:none} } @media (min-width:561px){ .xc-dock{display:none} }
 @keyframes xcring{0%,100%{transform:rotate(0)}25%{transform:rotate(-18deg)}75%{transform:rotate(18deg)}}
+.cx-tag{font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;background:linear-gradient(90deg,#ffb27a,#ff6f6f);color:#2a0d00;animation:ivblink 1s steps(2) infinite}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2639,7 +2640,7 @@ function start(data){
   applyLook();
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.league===undefined) S.league=!!load('azakei-league-on');
-  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
+  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
@@ -2703,6 +2704,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   if(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
   G.league = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.league) ? leagueJoin(G.players.map(p=>p.name)) : null;   // リーグ戦の何試合目か
   G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
+  G.closeX = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.closeX);   /* 大引け2倍：ふだんの対戦だけ */
   G.tac = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.tacOn && G.players.filter(isHuman).length===1) ? {used:{}, now:null} : null;   // 作戦カード（1人プレイのふだんの対戦だけ）
   if(bs) G.players[1].boss=true;
   G.teams = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
@@ -2768,7 +2770,7 @@ function finalTurnCut(){   // 最後のターン：鼓動の音と赤いふち�
   let sub='すべてはこの1枚で決まる';
   if(me>=0){ const mine=sc[me], other=Math.max(...sc.filter((v,i)=>i!==me));
     sub = mine>other ? `2位と${mine-other}点差。逃げ切れ！` : mine===mx ? 'トップに並んでいる。最後に抜け出せ！' : `トップまで${mx-mine}点。逆転できる！`; }
-  cutIn('FINAL TURN', sub, 'final'); sfx('beat'); haptic(60);
+  cutIn('FINAL TURN', closeXOn()?'大引け 点数2倍！ '+sub:sub, 'final'); sfx('beat'); haptic(60);
 }
 function endIntro(){
   if(!G || G.ov!=='intro') return;
@@ -2823,7 +2825,7 @@ function resolveTurn(){
   const C=G.cfg, cnt=[0,0,0,0,0,0];
   G.players.forEach(p=>cnt[p.pick]++);
   G.last=G.players.map(p=>{
-    const base=baseFor(C,p,G.deck,G.turn,p.pick), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], gain(C,base,cnt[p.pick])));
+    const base=baseFor(C,p,G.deck,G.turn,p.pick), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], gain(C,base,cnt[p.pick])))*(closeXOn()?2:1);
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++;
     p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick]});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
@@ -3816,7 +3818,7 @@ function glossPanel(){
 const BOARD_MAX=20;
 function boardLoad(){ const b=load('azakei-board'); return Array.isArray(b)?b:[]; }
 function boardRecord(){
-  if(!G || G.online || isLong() || G.boardDone || G.tac || G.cfg.my) return; G.boardDone=true;
+  if(!G || G.online || isLong() || G.boardDone || G.tac || G.closeX || G.cfg.my) return; G.boardDone=true;
   const b=boardLoad(), now=Date.now(), mode=G.cfg.fut?'未来編':G.cfg.hist?'歴史':'クラシック', added=[];
   G.players.forEach((p,i)=>{ if(!isHuman(p)) return; const e={n:String(p.name).slice(0,12), s:p.score, u:p.uniq, m:mode, t:now, k:now+'-'+i}; b.push(e); added.push(e.k); });
   b.sort((a,c)=>c.s-a.s || c.u-a.u || a.t-c.t); const top=b.slice(0,BOARD_MAX); save('azakei-board', top);
@@ -4264,7 +4266,7 @@ const REC_DEF=[
   {k:'comeback', ic:'🔄', n:'最大の逆転勝ち', u:'点差'}
 ];
 function recordBests(p, me, won){
-  if(!G || isLong() || G.tac || G.demo || G.cfg.my) return [];     /* ロング版・作戦カード・デモは記録しない */
+  if(!G || isLong() || G.tac || G.closeX || G.demo || G.cfg.my) return [];     /* ロング版・作戦カード・デモは記録しない */
   const P=S.prof, st=P.st;
   if(!P.rec){ P.rec={}; if(st.best>0) P.rec.hi={v:st.best, d:0}; }   /* 前からの最高点は引き継ぐ */
   const others=G.players.filter((q,i)=>i!==me), so=others.map(q=>q.score);
@@ -4564,7 +4566,7 @@ function setupSummary(){
   const mode={classic:'クラシック',history:'歴史モード',future:'未来編',ex:'クラシックEX',my:'マイNEWS'}[S.mode]||'クラシック';
   const hc=S.seats.filter(s=>s.type==='human').length, cpu=S.seats.length-hc, d=DIFFS.find(x=>x[0]===diffNow());
   const who = hc>1 ? `${hc}人で回す${cpu?`＋CPU ${cpu}人`:''}` : `CPU ${cpu}人${S.autoDiff?`・おまかせ（${AUTO_LV[autoLv()][1]}）`:d?`・${d[1]}`:''}`;
-  return `${mode}・${S.len==='long'?'ロング':'ショート'} ／ ${who}`;
+  return `${mode}・${S.len==="long"?"ロング":"ショート"} ／ ${who}${S.closeX?" ／ 🔔大引け2倍":""}`;
 }
 /* ---- 「？」ヘルプ：いまの画面でできることを、ミオが3つにしぼって教える ---- */
 function helpCtx(){
@@ -5130,7 +5132,7 @@ function hkRows(){
   const opp=G.players.filter(o=>o!==p).map(o=>oppDist(T,o,G.deck[t],pool,left));
   const base=c=>(p.fut?futBase(T[row][c],C):T[row][c])+(p.brand===c?1:0);
   const order=p.hand.slice().sort((a,b)=>vals[b]-vals[a]);
-  return order.map((c,r)=>({c, r, b:base(c), solo:gain(C,base(c),1), hit:gain(C,base(c),2), alone:Math.round(opp.reduce((a,d)=>a*(1-d[c]),1)*100),
+  return order.map((c,r)=>({c, r, b:base(c), solo:gain(C,base(c),1)*(closeXOn()?2:1), hit:gain(C,base(c),2)*(closeXOn()?2:1), alone:Math.round(opp.reduce((a,d)=>a*(1-d[c]),1)*100),
     keep:left>0 && futureCost(T,p.hand,c,fut,left,known)>1, ev:vals[c]}));
 }
 function hkBody(){
@@ -5294,8 +5296,11 @@ function xcBell(){
   if(!xcOn()) return '';
   const x=xcAt(G.turn,TURNS), first=G.turn===0, last=G.turn===TURNS-1;
   if(first||last) setTimeout(()=>{ if(!G||G.ov!=='intro') return; tone(1568,1.3,'sine',.05,0); tone(2093,1.1,'sine',.025,.02); tone(784,1.4,'sine',.03,0); },350);
-  return `<div class="xc-bell${last?' last':''}"><span>${first||last?'🔔':'🕐'}</span><b>${x.t} ${x.ses}</b><em>${first?'取引スタート！':last?'今日さいごの取引！':'取引中'}</em></div>`;
+  return `<div class="xc-bell${last?' last':''}"><span>${first||last?'🔔':'🕐'}</span><b>${x.t} ${x.ses}</b><em>${first?'取引スタート！':last?(closeXOn()?'点数2倍の大勝負！':'今日さいごの取引！'):'取引中'}</em></div>`;
 }
+/* ---- 大引け2倍（特別ルール）：最後のターンだけ点数2倍。検証で「最終ターン前のトップがそのまま勝つ」割合が 88%→79% に下がり、最後まで逆転の目が残る ---- */
+const closeXOn = () => !!(G && G.closeX && isFinalTurn());
+function setCloseX(on){ S.closeX=!!on; save('azakei-closex',S.closeX); sfx('click'); render(); }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5659,7 +5664,7 @@ function handDock(news){
   const canFore=!p.foreUsed && G.turn<TURNS-1, fdef=FORE[C.fore];
   const cmpBtn = G.online ? '' : `<button class="ipf-link hk-open" onclick="openSheet('cmp')" aria-label="手札のカードを見くらべる">📊 くらべる</button>`;
   let preview=`<span>カードを選ぶと、独占したときと被ったときの点数が出ます</span>${cmpBtn}`;
-  if(G.sel!==null){ const b=ptsOf(G.sel); preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(C,b,1))}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2))}</b><button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
+  if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(C,b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
     <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}
@@ -5686,7 +5691,7 @@ function myResultBar(){
   const r0=rankAt(before), r1=rankAt(G.players.map(q=>q.score)), mv=r0-r1;
   const kind = r.k===1 ? '独占！' : `${r.k}人で被り`;
   return `<div class="myres${r.k===1?' mono':''}${r.total<0?' neg':''}"><span class="mr-ind" style="background:var(--i${r.ind})">${svg(r.ind,2.2)}</span>
-    <span class="mr-t"><b>${IND[r.ind]} · ${kind}${r.fut?' · 先物':''}</b><span class="note">合計 ${p.score}pt</span></span>
+    <span class="mr-t"><b>${IND[r.ind]} · ${kind}${r.fut?' · 先物':''}${closeXOn()?' · 大引け×2':''}</b><span class="note">合計 ${p.score}pt</span></span>
     <b class="mr-v">${sgn(r.total)}</b><span class="mr-rk${G.turn+(G.round||0)>0&&mv>0?" up":G.turn+(G.round||0)>0&&mv<0?" down":""}">${r1}位${G.turn+(G.round||0)===0?"":mv>0?` ▲${mv}`:mv<0?` ▼${-mv}`:''}</span></div>`;
 }
 /* ---- 実況：ターンの結果をアナウンサーがひとことで伝える（読み上げオンなら声でも） ---- */
@@ -5832,7 +5837,7 @@ function pickLong(){ S.len='long'; save('azakei-len','long'); if(!S.seats.some(s
 function pickMode(m){ S.len='short'; save('azakei-len','short'); S.mode=m; if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); }
 function ruleList(){
   const f=FORE[CFG.fore];
-  return `<div class="rules">${['全員同じ6枚の産業カードからスタート','毎ターンNEWSを見て1枚選び、一斉にOPEN','一度使った産業はもう使えない',`ほかの人と被らなければ ${sgn(CFG.bonus)} POINT`,`1回だけ${f.name}：${f.desc}`].map((t,i)=>`<div class="rule"><span class="no">${i+1}</span><span>${t}</span></div>`).join('')}</div>`;
+  return `<div class="rules">${['全員同じ6枚の産業カードからスタート','毎ターンNEWSを見て1枚選び、一斉にOPEN','一度使った産業はもう使えない',`ほかの人と被らなければ ${sgn(CFG.bonus)} POINT`,`1回だけ${f.name}：${f.desc}`].concat(S.closeX?["特別ルール：最後のターン（大引け）だけ点数が2倍"]:[]).map((t,i)=>`<div class="rule"><span class="no">${i+1}</span><span>${t}</span></div>`).join('')}</div>`;
 }
 function setSeatPreset(k){ S.seats=defaultSeats(k==='party'?'party':'cpu'); sfx('click'); render(); }
 function lobbyView(){ return playView(); }
@@ -5870,7 +5875,7 @@ function playView(){
       ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span><button class="dchip d-auto${S.autoDiff?" on":""}" onclick="setAutoDiff(true)"><i>🤖</i>おまかせ</button>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${!S.autoDiff&&diffNow()===k?" on":""}" onclick="setAutoDiff(false);setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>${S.autoDiff?`<p class="note tagnote">🤖 おまかせ：いまは「${AUTO_LV[autoLv()][1]}」。1位を取ると強く、最下位だとやさしくなります。</p>`:''}`:""}
       ${!party&&S.seats.some(s=>s.type!=="human")?oppRow():''}
       ${party?'':`<details class="adv-box"${S.advOpen?' open':''} ontoggle="S.advOpen=this.open"><summary><span>⚙️ こだわり設定</span><small>人数・CPUの性格・チーム戦などの特別ルール</small></summary>`}
-      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}</div>${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
+      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button></div>${S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
       ${leagueNote()}
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
@@ -5972,7 +5977,7 @@ function recordResult(){
   const futBest=Math.max(-99,...p.used.filter(u=>u.fut).map(u=>u.total));
   P.ind=P.ind||[0,0,0,0,0,0]; P.indm=P.indm||[0,0,0,0,0,0]; P.indp=P.indp||[0,0,0,0,0,0]; P.indc=P.indc||[0,0,0,0,0,0]; p.used.forEach(u=>{ P.ind[u.ind]++; if(u.k===1) P.indm[u.ind]++; P.indp[u.ind]+=u.total; P.indc[u.ind]++; });   // indp・indc：平均点用（数えはじめてからの点と回数）
   G.recBroke=recordBests(p, me, won);
-  st.games++; if(won) st.wins++; st.best=Math.max(st.best,p.score); st.mono+=p.uniq; if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
+  st.games++; if(won) st.wins++; if(!G.closeX) st.best=Math.max(st.best,p.score); st.mono+=p.uniq; if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
   const xp = Math.round((20 + Math.max(0,p.score)*3 + p.uniq*5 + (won?40:0) + (G.online?15:0)) * (G.evt?1.5:1));   // 今週のイベント参加中はXP1.5倍
   const mis = progressMissions({p, won, rank:mine?mine.rank:9, hist:!!G.cfg.hist, daily:!!G.daily});
   const before=lvInfo(P.xp); P.xp+=xp+mis.xp; const after=lvInfo(P.xp);
@@ -5989,7 +5994,7 @@ function recordResult(){
   if(won && G.players.some(q=>q.type==='pro')) unlock('beatpro');
   if(p.uniq>=3) unlock('mono3'); if(futBest>=4) unlock('fut4');
   if(won && G.cfg.hist) unlock('hist'); if(G.online) unlock('online');
-  if(p.score>=15) unlock('big15'); if(won && lastAt3) unlock('comeback'); if(st.games>=20) unlock('games20');
+  if(p.score>=15 && !G.closeX) unlock('big15'); if(won && lastAt3) unlock('comeback'); if(st.games>=20) unlock('games20');
   if(G.daily){ P.daily=P.daily||{}; if(!P.daily[G.daily]) P.daily[G.daily]={score:p.score, rank:mine?mine.rank:0, grid:resultGrid(p)};
     const ks=Object.keys(P.daily).sort(); while(ks.length>60) delete P.daily[ks.shift()];
     if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
@@ -7165,7 +7170,7 @@ function simOne(acc,rnd,cfg){
     const picks=ps.map(p=>cpuPick(p,ps,deck,t,cfg,rnd)), cnt=[0,0,0,0,0,0];
     picks.forEach(c=>cnt[c]++);
     const mx=Math.max(...cfg.table[deck[t]]);
-    ps.forEach((p,i)=>{ const c=picks[i], g=gain(cfg,baseFor(cfg,p,deck,t,c),cnt[c]); p.score+=g; if(cnt[c]===1){p.uniq++; acc.uniq++;} acc.picks++; acc.plays[c]++; acc.pts[c]+=g; acc.seen[deck[t]]++; if(cfg.table[deck[t]][c]===mx) acc.top[deck[t]]++; p.hand=p.hand.filter(x=>x!==c); p.last=c; });
+    ps.forEach((p,i)=>{ const c=picks[i], g=gain(cfg,baseFor(cfg,p,deck,t,c),cnt[c])*(cfg.closeX&&t===TURNS-1?2:1); p.score+=g; if(cnt[c]===1){p.uniq++; acc.uniq++;} acc.picks++; acc.plays[c]++; acc.pts[c]+=g; acc.seen[deck[t]]++; if(cfg.table[deck[t]][c]===mx) acc.top[deck[t]]++; p.hand=p.hand.filter(x=>x!==c); p.last=c; });
   }
   const rk=ranking(ps,cfg), w=rk.filter(x=>x.rank===1);
   if(w.length>1) acc.ties++;
