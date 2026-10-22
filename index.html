@@ -2064,6 +2064,19 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .pwdx.lock{filter:grayscale(1);opacity:.55}.pwdx.lock .pwdx-ic{font-family:var(--display);color:#fff}
 .pwdx.win{box-shadow:inset 0 0 0 2.5px var(--gold),0 6px 16px -10px var(--gold)}
 .pwdx-crown{position:absolute;top:4px;right:6px;font-style:normal;font-size:16px}
+.pwn{position:relative;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:20px;overflow:hidden;background:radial-gradient(120% 120% at 0% 50%,rgb(255 200 58 / .22),transparent 60%),linear-gradient(120deg,#2b2266,#1a1846);box-shadow:inset 0 0 0 2px rgb(255 200 58 / .55),0 10px 26px -14px #000;color:#fff}
+.pwn-fan{position:relative;flex:none;width:150px;height:128px}
+.pwn-c{position:absolute;left:50%;top:6px;width:76px;height:108px;margin-left:-38px;transform:translateX(var(--x)) rotate(var(--r));animation:pwnin .6s cubic-bezier(.2,1.3,.3,1) var(--d) both}
+.pwn-c .pwf{padding:8px 4px;gap:3px;border-radius:10px;box-shadow:inset 0 0 0 3px var(--pc),0 8px 16px -8px #000}
+.pwn-c .pwf-ic{width:38px;height:38px;font-size:20px;box-shadow:0 0 0 2px #fff}
+.pwn-c .pwf-n{font-size:12px}.pwn-c .pwf-lab,.pwn-c .pwf-mk{display:none}.pwn-c .pwf-ch{font-size:8px}
+.pwn-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.pwn-tx b{font-size:17px}.pwn-tx .note{color:#d8dbff;font-size:12px;line-height:1.55}
+.pwn-new{align-self:flex-start;font-size:10px;font-weight:800;letter-spacing:.14em;padding:2px 8px;border-radius:999px;background:#ff5c7a;color:#fff;animation:ivblink 1.2s steps(2) infinite}
+@media (max-width:480px){ .pwn{flex-direction:column;align-items:stretch;text-align:left} .pwn-fan{align-self:center} }
+@keyframes pwnin{0%{opacity:0;transform:translateX(0) rotate(0) translateY(30px)}100%{opacity:1}}
+html.light .pwn{color:#fff}
+.tut-osp{display:flex;flex-direction:column;align-items:center;gap:4px;width:120px;padding:12px 8px;border-radius:14px;background:linear-gradient(170deg,#fff7dd,#ffe7a6);box-shadow:inset 0 0 0 3px #1b1030;color:#1b1030}
+.tut-osp-k{font-size:11px;font-weight:800;padding:1px 8px;border-radius:6px;background:#e2463a;color:#fff}.tut-osp b{font-family:var(--display);font-weight:400;font-size:34px;line-height:1}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5586,6 +5599,16 @@ function guestB4(st){
   if(st.wh && Array.isArray(st.wh.h) && st.wh.h.every(ok)) G.whale={pick:ok(st.wh.p)?st.wh.p:null, hand:st.wh.h.slice(), used:[]};
   if(Array.isArray(st.pw) && st.pw.length===G.players.length && st.pw.every(k=>k===null||PWR[k])){ G.pw=st.pw.slice(); if(Array.isArray(st.pg)&&st.pg.length===G.players.length&&st.pg.every(v=>Number.isInteger(v))) G.pwGain=st.pg.slice(); }
 }
+/* ---- ホームの「NEW」：投資家カードを紹介して、ワンタップで試せる（3回遊んだら出さない） ---- */
+function pwPromo(){
+  const st=(S.prof&&S.prof.pwSt)||{}, played=Object.values(st).reduce((a,r)=>a+(r.g||0),0);
+  if(played>=3) return '';
+  const pick=['haru','aoi','toki'];
+  return `<section class="pwn"><div class="pwn-fan" aria-hidden="true">${pick.map((k,j)=>`<div class="pwn-c" style="--r:${(j-1)*12}deg;--x:${(j-1)*46}px;--d:${j*.12}s">${pwCardFace(k,false)}</div>`).join('')}</div>
+    <div class="pwn-tx"><span class="pwn-new">NEW</span><b>投資家カード（試作）</b><span class="note">全員が1枚ずつ、特別な能力を持って戦う。ハルの「全力投資」、トキの「老練の勘」…キャラの個性がそのまま武器に！</span>
+      <div class="row" style="gap:8px;margin-top:6px"><button class="btn gold" onclick="pwTry()">🃏 試してみる</button><button class="btn ghost" onclick="openSheet('pw')">8枚を見る</button></div></div></section>`;
+}
+function pwTry(){ S.b4=true; save('azakei-b4',true); S.pwOn=true; save('azakei-pw',true); S.mode='classic'; S.len='short'; if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); sfx('select'); go('play'); startGame(); }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -6110,6 +6133,7 @@ function homeView(){
   ${nbNew()?'':homeRec()}
   ${nbNew()?'':homeTalk()}
   ${quickMenu()}
+  ${nbNew()?'':pwPromo()}
   ${nbNew()?nbLocked():`${seasonCard()}
   ${todayBar()}
   <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
@@ -7333,6 +7357,7 @@ const TUT=[
   {t:'1枚えらんで、せーので出す', say:'カードを1枚えらんだら、みんなで「せーの」でオープン！ 一度出したカードは、もう使えないから大事にね。', d:'1ターンに出せるのは1枚だけ', art:()=>`<div class="tut-row"><div class="back" style="width:56px"></div><div class="back" style="width:56px"></div><span class="tut-arrow">→</span>${cardHTML(4,{pts:3,style:'width:76px'})}${cardHTML(3,{pts:3,style:'width:76px'})}</div>`},
   {t:'ひとりじめでボーナス！', say:'だれとも同じにならなかったら「独占」で +2 のボーナス！ みんなが出しそうなところを、あえて外すのがコツだよ。', d:'2人以上が同じ産業＝「被り」（ボーナスなし）', art:()=>`<div class="tut-lanes"><div class="lane c4 hit"><div class="lh" style="background:var(--i4)">${svg(4,2.2)}運輸</div><div class="lb"><div class="who">Aさん</div><div class="who">Bさん</div></div><div class="lf">被り +3</div></div><div class="lane c3 mono"><div class="lh" style="background:var(--i3)">${svg(3,2.2)}小売</div><div class="lb"><div class="who">あなた</div></div><div class="lf">独占 +5</div></div></div>`},
   {t:'先物取引は1回だけの切り札', say:'「先物取引」を使うと、次のニュースをこっそり見られるよ。1試合に1回だけの切り札！ 最初は使わなくても大丈夫。', d:'点数は「次のニュースの点数 −1」で計算', art:()=>`<div class="tut-row">${cardHTML(4,{pts:2,style:'width:84px'})}<div class="tut-fut"><b>FUTURES</b><span>次のNEWS +3 − 手数料1 = +2</span><span>独占なら +2 で合計 +4</span></div></div>`},
+  {t:'最後は「大引けサプライズ」', say:'最後の4ターン目だけ、ニュースは<b>伏せたまま</b>カードを出すよ。来るのは残りの3つのどれか。全員が出したら発表して、点数は<b>2倍</b>！ ビリでも逆転できるんだ。', d:'「大引け」は株の取引所の、その日最後の取引のこと', art:()=>`<div class="tut-row"><div class="tut-osp"><span class="tut-osp-k">大引け</span><b>？？？</b></div><b class="tut-big" style="font-size:44px">×2</b></div>`},
   {t:'点数がいちばん多い人の勝ち！', say:'4ターンで点数をいちばん集めた人が勝ち！ じゃあ、わたしと一緒に練習試合をしてみよう！', d:'同点なら、独占した回数が多い人が上', art:()=>`<div class="tut-row">${CROWN('crownbig')}<b class="tut-big">WIN</b></div>`}
 ];
 function tutorialBody(){
