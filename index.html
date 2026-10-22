@@ -2011,6 +2011,10 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .whl-hint>span:first-child{font-size:22px;line-height:1}
 .who.whl{--s:#4fa0ff;font-weight:800}
 .fl.whl .fl-name{color:#9fd0ff}
+.osp-mio{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:16px;background:linear-gradient(110deg,rgb(255 154 217 / .2),transparent 70%),var(--panel2);box-shadow:inset 0 0 0 2px #ff9ad9;animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both}
+.osp-mio .gd-ava{width:42px;height:42px;font-size:21px}
+.osp-mio-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.osp-mio-t b:first-child{font-size:14px}.osp-mio-t p{margin:0;font-size:13px;line-height:1.6}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3313,7 +3317,7 @@ function showEmote(peer,data){
 function toast(t){ const el=document.getElementById('toast'); if(!el) return; el.textContent=t; el.classList.add('on'); clearTimeout(toast.tm); toast.tm=setTimeout(()=>el.classList.remove('on'),3200); }
 // ---- rulebook downloads ----
 const BOOKS={
-  classic:{file:'rulebook-classic.pdf', png:'rulebook-classic.png', pngName:'AZAKEI_MARKET_rulebook.png', name:'AZAKEI_MARKET_rulebook.pdf', md:'AZAKEI_MARKET_rulebook.md', title:'β3 ルールブック', sub:'クラシック · A4 8ページ'},
+  classic:{file:'rulebook-classic.pdf', png:'rulebook-classic.png', pngName:'AZAKEI_MARKET_rulebook.png', name:'AZAKEI_MARKET_rulebook.pdf', md:'AZAKEI_MARKET_rulebook.md', title:'β4 ルールブック', sub:'クラシック · A4 9ページ · 大引けサプライズ入り'},
   history:{file:'rulebook-history.pdf', png:'rulebook-history.png', pngName:'AZAKEI_MARKET_history_rulebook.png', name:'AZAKEI_MARKET_history_rulebook.pdf', md:'AZAKEI_MARKET_history_rulebook.md', title:'歴史モード ルールブック', sub:'1964〜2022 · A4 8ページ'},
   long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況・契約カード付き · A4 8ページ'},
   future:{file:'rulebook-future.pdf', png:'rulebook-future.png', pngName:'AZAKEI_MARKET_future_rulebook.png', name:'AZAKEI_MARKET_future_rulebook.pdf', md:'AZAKEI_MARKET_future_rulebook.md', title:'未来編 ルールブック', sub:'2027〜2060 · A4 4ページ'}
@@ -3406,7 +3410,7 @@ ${Object.values(MARKETS).map(m=>`- **${m.n}**：${m.d}。${m.tip}`).join('\n')}
 ${rows(NEWS,T2)}
 `;
   if(k==='history') return `# AZAKEI MARKET β3 歴史モード ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。NEWSが本当の歴史どおりに動くモードです。\n\n## ルール\n${base}- 歴史モードでは、選んだ時代の出来事から4つが**年代順**に起きる。いまより前の年の出来事はもう起きない\n- 時代：全時代（1964〜2025・18の出来事）／昭和〜バブル崩壊（7）／平成・令和（11）\n\n## 出来事\n${HIST.filter(h=>!h.f).map(h=>`### ${h.y} ${h.n}\n${h.d}\n\n${IND.map((d,i)=>d+' '+t(h.r[i])).join(' / ')}\n`).join('\n')}\n## 早見表\n${rows(HIST.filter(h=>!h.f).map(h=>h.y+' '+h.n),HIST.filter(h=>!h.f).map(h=>h.r))}\n`;
-  return `# AZAKEI MARKET β3 ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。2〜6人・全4ターン。\n\n## ルール\n${base}\n## 得点表（NEWS × 産業）\n${rows(NEWS,T2)}\n`;
+  return `# AZAKEI MARKET β4 ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。2〜6人・全4ターン。\n\n## ルール\n${base}\n## 大引けサプライズ（β4）\n- 最後の4ターン目だけ、NEWSをめくらずにカードを出す（山札に残った3枚のどれかが来ることは全員が知っている）\n- 全員が出したら山札の一番上をめくって発表し、いつもどおりOPEN\n- このターンの点数は2倍（基本POINTもMARKET BONUSも、マイナスも）\n- 3ターン目に先物取引を使った人は、最後のNEWSを先に知っている\n\n## 2人で遊ぶとき：クジラ\n- もう1組の産業カードを表向きに並べ、クジラの手札にする\n- 毎ターンOPENのとき、クジラはそのNEWSでいちばん点が高い産業を出す（同点ならエネルギー→金融→製造→小売→運輸→メディアの順で先）\n- クジラと同じ産業を出すと「被り」。クジラは点数をもらわない\n## 得点表（NEWS × 産業）\n${rows(NEWS,T2)}\n`;
 }
 // ---- sheets (bottom sheet on phones / modal on desktop) ----
 function openSheet(k){ S.sheet=k; renderSheet(); }
@@ -5389,6 +5393,11 @@ function whaleHint(){
   const w=whaleNext();
   return `<div class="whl-hint"><span>🐋</span><span><b>クジラ</b>${w==null?'は、NEWSの発表を見てから、いちばん点が高い産業に出します':`はこのターン「<b style="color:var(--i${w})">${IND[w]}</b>」に出します（いちばん点が高い産業）`}。クジラと同じ産業を出すと「被り」になります。</span></div>`;
 }
+/* ---- はじめての大引けサプライズ：ミオが1回だけ、何が起きているかを教える ---- */
+function ospMio(){
+  if(!ospPending() || (S.prof&&S.prof.ospSeen) || G.online) return '';
+  return `<div class="osp-mio">${guideAva()}<div class="osp-mio-t"><b>ミオ：はじめての「大引けサプライズ」！</b><p>最後のNEWSは、まだ誰も知らないよ。来るのは上の${G.osp.cand.length}つのどれか。<b>どのNEWSでもそこそこ点が取れるカード</b>は安全だけど、みんなも同じことを考えるかも…？ 点数は2倍だから、ビリでも逆転できるよ！</p><button class="btn gold" onclick="S.prof.ospSeen=1;saveProfile();sfx('click');render()">わかった！</button></div></div>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5765,7 +5774,7 @@ function handDock(news){
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>
     ${known?`<div class="peek"><span class="label" style="color:var(--cyan-tx)">${p.fut?'先物取引':'未来予測'} · 次のNEWS（あなただけ）</span><b>${nextLabel}</b></div>`:''}
     ${isLong()&&(p.contract||p.brand!=null)?`<div class="secret">${p.contract?`<span class="ctchip"><i>極秘契約</i>${esc(contractText(p.contract))}<b>+${contractVal(p.contract)}</b></span>`:""}${p.brand!=null?`<span class="brd" style="--c:var(--i${p.brand})"><i>ブランド</i>${IND[p.brand]} +1</span>`:""}</div>`:""}
-    ${whaleHint()}${speedArm(p)}${partnerHint(p)}
+    ${ospMio()}${whaleHint()}${speedArm(p)}${partnerHint(p)}
     ${G.online?"":coachHTML(p)}
     <div class="preview">${preview}</div>
     ${tacRow()}
@@ -5900,7 +5909,7 @@ function homeView(){
   if(!homeView.ach){ homeView.ach=1; achCheck(true); }   /* 前からの進み具合で解除できる実績は、起動時にそっと解除 */
   const show=[0,1,2,3,4,5].map((c,j)=>cardHTML(c,{no:true,style:`transform:translateX(-50%) rotate(${(j-2.5)*12}deg);margin-left:${(j-2.5)*(phone()?20:28)}px;z-index:${j};animation-delay:${j*.25}s`})).join('');
   return `<section class="hero">
-      <div><div class="ver">CARD GAME <b>β3</b></div>
+      <div><div class="ver">CARD GAME <b>β4</b></div>
         <h1 class="title">AZAKEI<span class="m">MARKET</span></h1>
         <p class="tagline">経済を読み、相手を読み、未来を読むカードゲーム</p>
         <div class="row heroact"><button class="btn gold huge pulse" onclick="go('play','cpu')">あそぶ</button><button class="btn ghost" onclick="openTutorial()">遊び方（1分）</button><button class="btn ghost" onclick="openSheet('modes')">なにで遊ぶ？</button></div>
