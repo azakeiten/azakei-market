@@ -2050,6 +2050,20 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 @keyframes pwdflip{0%{transform:rotateY(0) scale(.6) translateY(40px)}40%{transform:rotateY(0) scale(1) translateY(0)}100%{transform:rotateY(180deg) scale(1)}}
 @keyframes pwdshine{to{transform:translateX(120%)}}
 @keyframes pwdspin{to{transform:rotate(360deg)}}
+.pwfin-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.pwfin-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:14px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--pc) 50%,var(--line));animation:achin .4s cubic-bezier(.2,.9,.3,1.3) var(--d) both}
+.pwfin-row.top{background:linear-gradient(100deg,color-mix(in srgb,var(--pc) 26%,transparent),transparent 70%),var(--panel2);box-shadow:inset 0 0 0 2px var(--pc)}
+.pwfin-ic{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:21px;background:radial-gradient(circle at 35% 30%,#fff,var(--pc) 85%)}
+.pwfin-tx{flex:1;min-width:0;display:flex;flex-direction:column}.pwfin-tx b{font-size:14px}
+.pwfin-g{font-family:var(--display);font-weight:400;font-size:20px;color:var(--gold-t)}
+.pwdex{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}
+@media (max-width:560px){.pwdex{grid-template-columns:repeat(2,1fr)}}
+.pwdx{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 6px 10px;border:0;border-radius:14px;font:inherit;color:var(--ink);cursor:pointer;text-align:center;background:linear-gradient(170deg,var(--panel2),color-mix(in srgb,var(--pc) 16%,var(--panel2)));box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--pc) 60%,transparent)}
+.pwdx b{font-size:13px}.pwdx .note{font-size:11px}
+.pwdx-ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:24px;background:radial-gradient(circle at 35% 30%,#fff,var(--pc) 85%)}
+.pwdx.lock{filter:grayscale(1);opacity:.55}.pwdx.lock .pwdx-ic{font-family:var(--display);color:#fff}
+.pwdx.win{box-shadow:inset 0 0 0 2.5px var(--gold),0 6px 16px -10px var(--gold)}
+.pwdx-crown{position:absolute;top:4px;right:6px;font-style:normal;font-size:16px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2897,7 +2911,7 @@ function resolveTurn(){
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++;
     p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick]});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
-    return {ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t};
+    pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t};
   });
   if(G.log) G.log.push(G.deck[G.turn]);
   G.cnt=cnt; G.phase='reveal'; G.active=G.online?G.me:-1; render(); netSync();
@@ -3808,9 +3822,10 @@ const ACH_GROUPS=[
   ['腕前', ['mono3','fut4','big15','comeback','beatpro','longwin','sweep','ct5','ud10','duelwin']],
   ['やりこみ', ['win10','games20','daily3','daily7','gold','chal24','surv5','cupgold']],
   ['コレクション', ['mkall','dexall','story9','chars9','beat9','boss3','party5']],
-  ['まなび・創作', ['lsn1','lsnall','pz3','artist','bond5','rec6']]
+  ['まなび・創作', ['lsn1','lsnall','pz3','artist','bond5','rec6']],
+  ['投資家カード', ['pw1','pwall']]
 ];
-const ACH_TIER={pz3:2,rec6:2,lsnall:3,bond5:3,win10:2,games20:2,daily3:2,ct5:2,mono3:2,fut4:2,big15:2,longwin:2,chars9:2,gold:2,mkall:2, comeback:3,beatpro:3,sweep:3,daily7:3,chal24:3,surv5:3,cupgold:3,dexall:3,story9:3,beat9:3,boss3:3};
+const ACH_TIER={pwall:3,pz3:2,rec6:2,lsnall:3,bond5:3,win10:2,games20:2,daily3:2,ct5:2,mono3:2,fut4:2,big15:2,longwin:2,chars9:2,gold:2,mkall:2, comeback:3,beatpro:3,sweep:3,daily7:3,chal24:3,surv5:3,cupgold:3,dexall:3,story9:3,beat9:3,boss3:3};
 const ACH_TN=['','銅','銀','金'];
 function achPanel(){
   const P=S.prof, got=ACH.filter(a=>P.ach[a.id]), tier=id=>ACH_TIER[id]||1;
@@ -5516,6 +5531,33 @@ function pwDealOverlay(){
     <button class="btn gold big pwd-go" onclick="event.stopPropagation();pwDealDone()">このカードで勝負！</button></div></div>`;
 }
 function pwDealDone(){ if(!G || G.ov!=='pwdeal') return; G.ov=null; sfx('select'); beginTurn(); }
+/* ---- 投資家カードのふりかえり：その試合で能力がいくら稼いだか。マイページには8枚の図鑑（使った回数・1位の回数） ---- */
+function pwTrack(i,p,base,k,pb,total,pre){
+  if(!G.pw || !G.pw[i]) return;
+  const w=G.pw[i], m=closeXOn()?pwMult(i,pre):1; let g=pb.v*(m||1);
+  if(w==='haru' && k===1) g+=m;
+  if(w==='minato' && p.fut && base>0) g+=m;
+  if(w==='aoi' && p.pick===p.brand) g+=m;
+  if(w==='ren' && m===3) g+=Math.round(total/3);
+  G.pwGain=G.pwGain||G.players.map(()=>0); G.pwGain[i]+=g;
+}
+function pwFinalPanel(){
+  if(!G || !G.pw) return '';
+  const gains=G.pwGain||G.players.map(()=>0), mx=Math.max(...gains), rk=ranking(G.players,G.cfg);
+  const rows=G.players.map((p,i)=>({p,i,k:G.pw[i],g:gains[i],r:(rk.find(x=>x.i===i)||{}).rank})).sort((a,b)=>b.g-a.g);
+  return `<section class="panel pwfin"><div class="row spread"><h3>🃏 投資家カードの成績</h3><span class="note">能力でかせいだ点</span></div>
+    <div class="pwfin-list">${rows.map((x,j)=>{ const c=PWR[x.k], col=(CHARS[c.ch]||{}).c||'#ffc83a';
+      return `<div class="pwfin-row${x.g===mx&&mx>0?' top':''}" style="--pc:${col};--d:${j*80}ms"><span class="pwfin-ic">${c.ic}</span><span class="pwfin-tx"><b>${c.n}</b><span class="note">${esc(x.p.name)} · ${x.r}位</span></span><b class="pwfin-g">${x.k==='toki'?'情報':sgn(x.g)}</b></div>`; }).join('')}</div>
+    <p class="note">${mx>0?`いちばん能力が光ったのは「${PWR[rows[0].k].n}」。`:'今回は、能力が点数に結びつく場面がありませんでした。'}${G.pw.includes('toki')?'トキの「老練の勘」は、点数ではなく情報で戦うカードです。':''}</p></section>`;
+}
+function pwDexPanel(){
+  const st=(S.prof&&S.prof.pwSt)||{}, keys=Object.keys(PWR), used=keys.filter(k=>st[k]&&st[k].g), won=keys.filter(k=>st[k]&&st[k].w);
+  if(!used.length && !S.pwOn) return '';
+  return `<section class="panel"><div class="row spread"><h3>🃏 投資家カード図鑑</h3><span class="note">1位 ${won.length}/${keys.length}</span></div>
+    <div class="pwdex">${keys.map(k=>{ const c=PWR[k], r=st[k]||{g:0,w:0}, col=(CHARS[c.ch]||{}).c||'#ffc83a';
+      return `<button class="pwdx${r.g?'':' lock'}${r.w?' win':''}" style="--pc:${col}" onclick="openSheet('pw')"><span class="pwdx-ic">${r.g?c.ic:'?'}</span><b>${r.g?c.n:'？？？'}</b><span class="note">${r.g?`${r.g}回 · 1位${r.w}回`:'まだ使っていない'}</span>${r.w?'<i class="pwdx-crown">👑</i>':''}</button>`; }).join('')}</div>
+    <p class="note">「あそぶ」→ こだわり設定 →「🃏 投資家カード」をオンにすると、毎回ちがうカードが配られます。8枚すべてで1位を取ると実績「投資家マスター」。</p></section>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5971,7 +6013,7 @@ function finalView(){
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
     ${mioFinal()}${autoDiffNote()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
-    ${ivPanel()}
+    ${pwFinalPanel()}${ivPanel()}
     ${gogaiPaper()}
     ${teamPanel()}
     ${playAnalysis()}
@@ -6140,6 +6182,8 @@ function lvInfo(xp){ let lv=1, rest=xp; while(rest>=lvNeed(lv)){ rest-=lvNeed(lv
 const TITLES=[[1,'見習いトレーダー'],[3,'駆け出しトレーダー'],[5,'市場の読み手'],[8,'敏腕トレーダー'],[12,'相場師'],[16,'マーケットの支配者']];
 const titleOf = lv => TITLES.filter(t=>lv>=t[0]).pop()[1];
 const ACH=[
+  {id:'pw1', n:'投資家デビュー', d:'投資家カードありの対戦で1位', ic:'🃏'},
+  {id:'pwall', n:'投資家マスター', d:'8枚すべての投資家カードで1位', ic:'💼'},
   {id:'lsn1', n:'教室デビュー', d:'けいざい教室の授業を1つクリア', ic:'📒'},
   {id:'lsnall', n:'けいざい博士', d:'けいざい教室の12の授業をすべてクリア', ic:'🎓'},
   {id:'pz3', n:'パズル名人', d:'今週のパズルで★3', ic:'🧩'},
@@ -6212,6 +6256,7 @@ function recordResult(){
     if(mine2.length===G.rounds && mine2.every(r=>r.bonus>0)) unlock('sweep');
     P.mk=[...new Set([...(P.mk||[]),...(G.mkts||[])])]; if(P.mk.length>=Object.keys(MARKETS).length) unlock('mkall'); }
   if(won && G.players.some(q=>q.type==='pro')) unlock('beatpro');
+  if(G.pw && G.pw[me]){ const k=G.pw[me]; P.pwSt=P.pwSt||{}; const r=P.pwSt[k]=P.pwSt[k]||{g:0,w:0}; r.g++; if(won){ r.w++; unlock('pw1'); } if(Object.keys(PWR).every(x=>P.pwSt[x]&&P.pwSt[x].w>0)) unlock('pwall'); }
   if(p.uniq>=3) unlock('mono3'); if(futBest>=4) unlock('fut4');
   if(won && G.cfg.hist) unlock('hist'); if(G.online) unlock('online');
   if(p.score>=15 && !G.closeX && !G.pw) unlock('big15'); if(won && lastAt3) unlock('comeback'); if(st.games>=20) unlock('games20');
@@ -6376,6 +6421,7 @@ function meView(){
     ${historyPanel()}
     <button class="wide lab" onclick="go(\x27lab\x27)"><span class="label">LAB</span><b>バランス検証</b><span class="desc">CPU同士を大量に対戦させて、ルールの偏りを調べる開発者向けの機能。</span><span class="go">ラボを開く →</span></button>`:""}
     ${tab==="col"?`${signPanel()}${rsPanel()}${cupsPanel()}
+    ${pwDexPanel()}
     ${dexPanel()}
     ${skinsPanel()}
     ${achPanel()}
