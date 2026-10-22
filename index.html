@@ -1991,6 +1991,26 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 @media (max-width:560px){ .xc-hud{display:none} } @media (min-width:561px){ .xc-dock{display:none} }
 @keyframes xcring{0%,100%{transform:rotate(0)}25%{transform:rotate(-18deg)}75%{transform:rotate(18deg)}}
 .cx-tag{font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;background:linear-gradient(90deg,#ffb27a,#ff6f6f);color:#2a0d00;animation:ivblink 1s steps(2) infinite}
+.osp-q{font-family:var(--display);font-size:clamp(80px,24vw,140px);line-height:1;color:#ffd23a;text-shadow:0 6px 0 #8a4b00,0 0 40px rgb(255 210 58 / .7);animation:rcpop .6s cubic-bezier(.2,1.6,.3,1) .3s both, ivblink 1.4s steps(2) 1s infinite}
+.osp-lead{margin:10px 0 6px;color:#fff;font-weight:800;text-align:center;line-height:1.6}.osp-lead b{color:#ffd23a;font-size:1.3em}
+.osp-cands{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:6px 0}
+.osp-c{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:rgb(255 255 255 / .12);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .3);color:#fff;font-size:13px}
+.osp-c b{font-weight:800}.osp-c span{display:inline-flex;align-items:center;gap:2px;font-weight:800;color:#ffd23a}
+.osp-c i{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--c);color:#fff}.osp-c i svg{width:13px;height:13px}
+.paper-c .osp-c{background:rgb(0 0 0 / .06);box-shadow:inset 0 0 0 1.5px rgb(0 0 0 / .18);color:#2a2440}.paper-c .osp-c span{color:#b0560a}
+.osp-paper h2{display:flex;align-items:center;gap:8px}.osp-qm{display:inline-grid;place-items:center;width:1.4em;height:1.4em;border-radius:50%;background:#2a2440;color:#ffd23a;animation:ivblink 1.4s steps(2) infinite}
+.osp-pay .v{font-size:14px!important;white-space:nowrap}
+.osp-note{font-size:11px;text-align:center;margin:4px 0 0}
+.osp-pv{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--panel2)}.osp-pv b{font-size:14px}
+.osp-ann{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle,rgb(255 120 80 / .35),rgb(7 8 24 / .92) 70%);cursor:pointer}
+.osp-box{display:flex;flex-direction:column;align-items:center;gap:10px;max-width:560px;text-align:center;animation:bang .7s cubic-bezier(.2,.9,.3,1.4) both}
+.osp-box .label{color:#ffd23a;font-size:14px;letter-spacing:.1em}
+.osp-h{font-family:var(--display);font-weight:400;font-size:clamp(32px,9vw,60px);color:#fff;line-height:1.15;text-shadow:0 5px 0 #c4204f}
+.osp-box .note{color:#fff;opacity:.7}
+.whl-hint{display:flex;gap:8px;align-items:flex-start;padding:8px 12px;border-radius:14px;font-size:12px;line-height:1.5;background:linear-gradient(100deg,rgb(79 160 255 / .18),transparent),var(--panel2);box-shadow:inset 0 0 0 1.5px rgb(79 160 255 / .5)}
+.whl-hint>span:first-child{font-size:22px;line-height:1}
+.who.whl{--s:#4fa0ff;font-weight:800}
+.fl.whl .fl-name{color:#9fd0ff}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2640,7 +2660,7 @@ function start(data){
   applyLook();
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.league===undefined) S.league=!!load('azakei-league-on');
-  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
+  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
@@ -2704,7 +2724,9 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   if(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
   G.league = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.league) ? leagueJoin(G.players.map(p=>p.name)) : null;   // リーグ戦の何試合目か
   G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
-  G.closeX = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.closeX);   /* 大引け2倍：ふだんの対戦だけ */
+  G.b4 = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.b4 && !G.cfg.hist && !long);   /* β4ルール：大引けサプライズ（最後のNEWSは出したあとに発表・点数2倍） */
+  G.whale = G.b4 && G.players.length===2 ? {hand:[0,1,2,3,4,5], pick:null, used:[]} : null;   /* β4：2人のときは🐋クジラ（点数を数えない大口投資家）が参加 */
+  G.closeX = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.closeX && !G.b4);   /* 大引け2倍：β3ルールに足す特別ルール（記録には入れない） */
   G.tac = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.tacOn && G.players.filter(isHuman).length===1) ? {used:{}, now:null} : null;   // 作戦カード（1人プレイのふだんの対戦だけ）
   if(bs) G.players[1].boss=true;
   G.teams = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.team && G.players.length===4) ? [0,0,1,1] : null;   // チーム戦：席1・2がチームA、3・4がチームB
@@ -2723,7 +2745,8 @@ function beginTurn(){
   if(C.fore==='dividend' && G.turn>0) G.players.forEach(p=>{ const d=divOf(C,C.table[news][p.last]); if(d){ p.score+=d; G.divs.push({name:p.name,ind:p.last,d}); } });
   G.players.forEach(p=>{ p.pick=null; p.fut=false; p.shown=p.score; });
   if(G.tac) G.tac.now=null;
-  G.players.forEach(p=>{ if(!isHuman(p)) p.pick=cpuPick(p,G.players,G.deck,G.turn,C,G.rnd||Math.random); });
+  ospHide();
+  G.players.forEach(p=>{ if(!isHuman(p)) p.pick = G.osp && !G.osp.shown && p.foreUsed && p.foreTurn===G.turn-1 ? cpuPick(p,whaleField(),ospRealDeck(),G.turn,G.cfg,G.rnd||Math.random) : cpuPick(p,whaleField(),G.deck,G.turn,G.cfg,G.rnd||Math.random); });
   G.phase='choose'; G.active=-1; G.sel=null;
   clearTimeout(introTimer);
   if(G.turn===0 && !G.online && !G.vsShown && !reduced()){   // 対戦前のVS画面 → NEWSの順
@@ -2811,6 +2834,7 @@ function confirmPick(){
 }
 function startReveal(){
   if(G.phase!=='choose') return;   // 二重に始まらないように
+  if(ospPending()){ ospAnnounce(); return; }
   G.phase='countdown'; G.active=-1; netSync();
   const steps=['3','2','1','OPEN!'], fast=reduced(), game=G;
   let k=0;
@@ -2824,6 +2848,7 @@ function startReveal(){
 function resolveTurn(){
   const C=G.cfg, cnt=[0,0,0,0,0,0];
   G.players.forEach(p=>cnt[p.pick]++);
+  if(G.whale){ const w=G.whale; w.pick=whaleNext(); cnt[w.pick]++; w.hand=w.hand.filter(c=>c!==w.pick); w.used.push(w.pick); }
   G.last=G.players.map(p=>{
     const base=baseFor(C,p,G.deck,G.turn,p.pick), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], gain(C,base,cnt[p.pick])))*(closeXOn()?2:1);
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++;
@@ -2862,7 +2887,8 @@ function flipOverlay(){
       <span class="fl-tag">${r.k===1?'独占！':r.k>1?`${r.k}人被り`:''}</span>
       <span class="fl-name"><span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</span>${esc(p.name)}</span>
       <b class="fl-pts${r.total<0?' neg':''}">${sgn(r.total)}</b></div>`; }).join('');
-  return `<div class="overlay flipov" onclick="endFlip()"><div class="box"><div class="fl-open">OPEN!</div><div class="fl-row">${cards}</div><div class="note">タップでスキップ</div></div></div>`;
+  const wcard = G.whale&&G.whale.pick!=null ? `<div class="fl whl" style="--d:${350+n*170}ms;--s2:${350+n*170+250}ms"><div class="fl-in"><div class="fl-face fl-back back${skc()}${bkc()}"></div><div class="fl-face fl-front">${cardHTML(G.whale.pick,{cls:'flc'})}</div></div><span class="fl-tag"></span><span class="fl-name">🐋 クジラ</span><b class="fl-pts">—</b></div>` : '';
+  return `<div class="overlay flipov" onclick="endFlip()"><div class="box"><div class="fl-open">OPEN!</div><div class="fl-row">${cards}${wcard}</div><div class="note">タップでスキップ</div></div></div>`;
 }
 /* ---- 演出②：結果発表セレモニー。最下位から順に発表し、最後に1位をスポットライトで ---- */
 let CER_T=[];
@@ -4566,7 +4592,7 @@ function setupSummary(){
   const mode={classic:'クラシック',history:'歴史モード',future:'未来編',ex:'クラシックEX',my:'マイNEWS'}[S.mode]||'クラシック';
   const hc=S.seats.filter(s=>s.type==='human').length, cpu=S.seats.length-hc, d=DIFFS.find(x=>x[0]===diffNow());
   const who = hc>1 ? `${hc}人で回す${cpu?`＋CPU ${cpu}人`:''}` : `CPU ${cpu}人${S.autoDiff?`・おまかせ（${AUTO_LV[autoLv()][1]}）`:d?`・${d[1]}`:''}`;
-  return `${mode}・${S.len==="long"?"ロング":"ショート"} ／ ${who}${S.closeX?" ／ 🔔大引け2倍":""}`;
+  return `${mode}・${S.len==="long"?"ロング":"ショート"} ／ ${who}${S.b4&&S.mode!=="history"&&S.mode!=="future"&&S.len!=="long"?(S.seats.length===2?" ／ 🆕β4＋🐋クジラ":" ／ 🆕β4"):S.closeX?" ／ 🔔大引け2倍":""}`;
 }
 /* ---- 「？」ヘルプ：いまの画面でできることを、ミオが3つにしぼって教える ---- */
 function helpCtx(){
@@ -5132,7 +5158,7 @@ function hkRows(){
   const opp=G.players.filter(o=>o!==p).map(o=>oppDist(T,o,G.deck[t],pool,left));
   const base=c=>(p.fut?futBase(T[row][c],C):T[row][c])+(p.brand===c?1:0);
   const order=p.hand.slice().sort((a,b)=>vals[b]-vals[a]);
-  return order.map((c,r)=>({c, r, b:base(c), solo:gain(C,base(c),1)*(closeXOn()?2:1), hit:gain(C,base(c),2)*(closeXOn()?2:1), alone:Math.round(opp.reduce((a,d)=>a*(1-d[c]),1)*100),
+  return order.map((c,r)=>({c, r, b:base(c), solo:gain(C,base(c),1)*(closeXOn()?2:1), hit:gain(C,base(c),2)*(closeXOn()?2:1), alone:c===whaleNext()?0:Math.round(opp.reduce((a,d)=>a*(1-d[c]),1)*100),
     keep:left>0 && futureCost(T,p.hand,c,fut,left,known)>1, ev:vals[c]}));
 }
 function hkBody(){
@@ -5146,7 +5172,7 @@ function hkBody(){
     : x.b<0 ? 'このNEWSではマイナス。出すなら最後の手段。'
     : x.b===0 ? '点は0。相手のじゃまにはなるかも。' : 'ほどほどの点。';
   return `<span class="label">HAND CHECK</span><h3 class="ttl" style="font-size:22px">📊 手札くらべ</h3>
-    <p class="note">上ほどおすすめ。<b>バー</b>は独占したときの点、<b>％</b>はほかの人と被らずに出せそうな確率です。タップするとそのカードを選びます。</p>
+    <p class="note">上ほどおすすめ。<b>バー</b>は独占したときの点、<b>％</b>はほかの人と被らずに出せそうな確率です。タップするとそのカードを選びます。${ospPending()?`<br><b>🔔 大引けサプライズ中：</b>点数は、候補${G.osp.cand.length}つのNEWSの平均（×2）です。`:""}</p>
     <div class="hk-list">${rows.map((x,i)=>{ const [ic,tx,col]=tag(x), w=Math.round(Math.abs(x.solo)/mx*100);
       return `<button class="hk-row${G.sel===x.c?' on':''}" style="--ic:var(--i${x.c});--tc:${col};--d:${i*60}ms" onclick="hkPick(${x.c})">
         <span class="hk-ind">${svg(x.c,2.2)}</span>
@@ -5299,8 +5325,70 @@ function xcBell(){
   return `<div class="xc-bell${last?' last':''}"><span>${first||last?'🔔':'🕐'}</span><b>${x.t} ${x.ses}</b><em>${first?'取引スタート！':last?(closeXOn()?'点数2倍の大勝負！':'今日さいごの取引！'):'取引中'}</em></div>`;
 }
 /* ---- 大引け2倍（特別ルール）：最後のターンだけ点数2倍。検証で「最終ターン前のトップがそのまま勝つ」割合が 88%→79% に下がり、最後まで逆転の目が残る ---- */
-const closeXOn = () => !!(G && G.closeX && isFinalTurn());
+const closeXOn = () => !!(G && (G.closeX||G.b4) && isFinalTurn());
 function setCloseX(on){ S.closeX=!!on; save('azakei-closex',S.closeX); sfx('click'); render(); }
+/* ---- β4ルール「大引けサプライズ」：最後のターンは、NEWSを伏せたままカードを出す。全員が出したあとに発表し、点数は2倍。
+   検証（4人・読み合いCPU）：最終ターン前のトップがそのまま勝つ割合 90%→65%、ビリからの逆転 1%→18%、読み合いの効き目 1.6倍→2.1倍 ---- */
+function setB4(on){ S.b4=!!on; save('azakei-b4',S.b4); sfx('click'); render(); }
+const ospPending = () => !!(G && G.osp && !G.osp.shown && G.deck[G.turn]===G.osp.idx);
+function ospRealDeck(){ const d=G.deck.slice(); d[G.turn]=G.osp.real; return d; }
+function ospHide(){
+  if(!G.b4 || G.osp || !isFinalTurn()) return;
+  const cand=G.deck.slice(G.turn); if(cand.length<2) return;
+  const C=G.cfg={...G.cfg, table:G.cfg.table.map(r=>r.slice()), names:G.cfg.names.slice(), descs:G.cfg.descs?G.cfg.descs.slice():G.cfg.descs};
+  const avg=[0,1,2,3,4,5].map(c=>Math.round(cand.reduce((s,n)=>s+C.table[n][c],0)/cand.length*10)/10);
+  C.table.push(avg); C.names.push('？？？');
+  G.osp={real:G.deck[G.turn], cand, idx:C.table.length-1, shown:false};
+  G.deck[G.turn]=G.osp.idx;
+}
+function ospCands(){ const T=G.cfg.table; return G.osp.cand.map(n=>{ const r=T[n], mx=Math.max(...r); return `<span class="osp-c"><b>${esc(nm(n))}</b><span>${r.map((v,c)=>v===mx?`<i style="--c:var(--i${c})">${svg(c,2.4)}</i>`:'').join('')} ${sgn(mx)}</span></span>`; }).join(''); }
+function ospIntro(skip){
+  return `<div class="overlay intro news-tv osp-ov" onclick="endIntro()"><div class="tv-flash"></div><div class="box">
+    <div class="tv-top"><span class="tv-live">● LIVE</span><span class="tv-ch">AZAKEI NEWS</span><span class="tv-turn">${turnLabel()}</span></div>
+    <div class="osp-q">？</div>
+    <div class="tv-band"><span class="tv-tag">大引け</span><span class="tv-head">最後のNEWSは伏せたまま！</span></div>
+    <p class="osp-lead">全員がカードを出したあとに発表。点数は <b>2倍</b>！<br>来るのは、この${G.osp.cand.length}つのどれか：</p>
+    <div class="osp-cands">${ospCands()}</div>${skip}</div></div>`;
+}
+function ospPaper(){
+  const C=G.cfg, T=C.table, cs=G.osp.cand;
+  const pays=`<div class="payout osp-pay">${IND.map((d,i)=>{ const vs=cs.map(n=>T[n][i]), lo=Math.min(...vs), hi=Math.max(...vs);
+    return `<div class="pay${hi<0?' neg':''}"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span class="n">${d}</span><span class="v">${lo===hi?sgn(lo):`${sgn(lo)}〜${sgn(hi)}`}</span></div>`; }).join('')}</div>`;
+  return `<section class="paper osp-paper" aria-label="大引けサプライズ">
+    <div class="mast"><span class="t">AZAKEI 経済新聞</span><span class="d">${turnLabel()}<span class="gogai">大引け</span></span></div>
+    <h2>大引け速報は… <span class="osp-qm">？</span></h2><p class="lede">最後のNEWSは、全員がカードを出したあとに発表。点数は2倍！ 来るのは次の${cs.length}つのどれか。</p>
+    <div class="osp-cands paper-c">${ospCands()}</div>${pays}<p class="note osp-note">数字は「その産業がもらえる点数のはば」です</p></section>`;
+}
+function ospPreview(c){
+  const C=G.cfg, T=C.table, b=C.bonus||0;
+  return `<span>${IND[c]}：</span>${G.osp.cand.map(n=>`<span class="osp-pv">${esc(String(nm(n)).slice(0,6))} <b>${sgn(T[n][c])}</b></span>`).join('')}<span class="cx-tag">独占 ${sgn(b)} · 🔔×2</span>`;
+}
+function ospAnnounce(){
+  G.osp.shown=true; G.deck[G.turn]=G.osp.real; const n=G.osp.real;
+  render(); sfx('slam'); haptic(50);
+  let t=0;
+  const el=document.createElement('div'); el.className='osp-ann';
+  const go=()=>{ clearTimeout(t); el.remove(); if(G && G.phase==='choose') startReveal(); };
+  el.onclick=go;
+  el.innerHTML=`<div class="osp-box"><span class="label">🔔 15:30 大引け速報</span><b class="osp-h">${esc(nm(n))}！</b>${impactChips(n,'ip-tv')}<span class="note">タップで結果へ</span></div>`;
+  document.body.appendChild(el);
+  try{ tone(1568,1.3,'sine',.05,0); tone(2093,1.1,'sine',.025,.02); newsFxSfx(n); }catch(e){}
+  try{ if(S.tts) speakNews(n); }catch(e){}
+  t=setTimeout(go, reduced()?500:2800);
+}
+/* ---- 🐋クジラ（β4・2人用）：点数を数えない大口投資家。毎ターン、いちばん点が高い産業に出す（同点なら左＝番号が小さいほう）。
+   大引けサプライズのターンは、発表を見てから出す。検証（2人・読み合いCPU）：同点 74%→16%、読み合いの効き目も残る ---- */
+function whaleNext(){
+  if(!G || !G.whale || ospPending()) return null;
+  const row=G.cfg.table[G.deck[G.turn]], h=G.whale.hand; if(!h.length || !row) return null;
+  return h.reduce((a,c)=>row[c]>row[a]?c:a, h[0]);
+}
+function whaleField(){ return G.whale ? G.players.concat([{type:'naive', name:'クジラ', hand:G.whale.hand.slice(), brand:null, fut:false, foreUsed:true, foreTurn:-1, score:0, uniq:0, used:[]}]) : G.players; }
+function whaleHint(){
+  if(!G || !G.whale || G.phase!=='choose') return '';
+  const w=whaleNext();
+  return `<div class="whl-hint"><span>🐋</span><span><b>クジラ</b>${w==null?'は、NEWSの発表を見てから、いちばん点が高い産業に出します':`はこのターン「<b style="color:var(--i${w})">${IND[w]}</b>」に出します（いちばん点が高い産業）`}。クジラと同じ産業を出すと「被り」になります。</span></div>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5487,6 +5575,7 @@ function impactChips(n, cls){
 const quake = n => { const f=NEWS_FX[fxKey(n)]; return f&&f.quake&&!reduced() ? " quake" : ""; };
 function newsIntro(n){
   const skip='<div class="note">タップでスキップ</div>';
+  if(ospPending()) return ospIntro(skip);
   if(G.cfg.fut){   // 未来編：ホログラムの予報
     return `<div class="overlay intro news-holo${quake(n)}" onclick="endIntro()"><div class="holo-scan"></div><div class="holo-grid"></div>${newsFx(n)}<div class="box">
       <div class="ho-top"><span>◉ FORECAST</span><span>${turnLabel()}</span></div>
@@ -5510,7 +5599,7 @@ function newsIntro(n){
     <div class="tv-ticker"><div>${tick}${tick}</div></div></div>`;
 }
 function newsSfx(){
-  try{ speakNews(G.deck[G.turn]); }catch(e){}
+  try{ if(ospPending()){ if(S.tts&&'speechSynthesis' in window){ const u=new SpeechSynthesisUtterance('大引け前、最後の取引です。ニュースは、カードを出したあとに発表します。点数は2倍です。'); u.lang='ja-JP'; speechSynthesis.cancel(); speechSynthesis.speak(u); } } else speakNews(G.deck[G.turn]); }catch(e){}
   try{ newsFxSfx(G.deck[G.turn]); }catch(e){}
   if(!G) return;
   const chips=()=>{ for(let i=0;i<6;i++) tone(500+i*90,.05,'triangle',.025,1.15+i*.12); };
@@ -5541,6 +5630,7 @@ function renderOv(){
 function tape(news){
   const C=G?G.cfg:cfgFor('classic');
   const row = news===null ? C.table[C.hist?3:1] : C.table[news];
+  if(news!==null && ospPending()) return `<div class="tape" aria-hidden="true"><div class="tape-in">${'<span><b>🔔 大引けサプライズ</b></span><span>最後のNEWSは、全員がカードを出したあとに発表</span><span>点数は2倍！</span>'.repeat(4)}</div></div>`;
   const head = news===null ? 'AZAKEI MARKET' : (C.hist?`${yearOf(news)}年 ${nm(news)}`:`速報：${nm(news)}`);
   const items=`<span><b>${head}</b></span>`+IND.map((d,c)=>{ const v=row[c]; return `<span>${d} <span class="${cls(v)}">${v>0?'▲':v<0?'▼':'■'} ${sgn(v)}</span></span>`; }).join('');
   return `<div class="tape" aria-hidden="true"><div class="tape-in">${items}${items}${items}${items}</div></div>`;
@@ -5612,6 +5702,7 @@ function seatsView(){
   }).join('');
 }
 function paperCard(news){
+  if(ospPending()) return ospPaper();
   const C=G.cfg, row=C.table[news], mx=Math.max(...row);
   // 得点表：大きい数字＋ゼロを真ん中にした棒グラフ＋「独占ならいくつ」
   const pays=`<div class="payout">${IND.map((d,i)=>{ const v=row[i], h=Math.min(100,Math.abs(v)/4*100);
@@ -5638,7 +5729,7 @@ function timeline(){
 }
 function sideInfo(){
   const C=G.cfg;
-  const remain=Array.isArray(G.remain)?G.remain:G.deck.slice(G.turn+1).slice().sort((a,b)=>a-b);
+  const remain=ospPending()?G.osp.cand.slice().sort((a,b)=>a-b):Array.isArray(G.remain)?G.remain:G.deck.slice(G.turn+1).slice().sort((a,b)=>a-b);
   const deckInfo = C.hist ? timeline() : `<div class="info"><span class="label">山札に残っているNEWS（順番は秘密）· いちばん高い産業</span><div class="chips nx">${remain.map(n=>{ const r=C.table[n], mx=Math.max(...r); return `<span>${nm(n)}<i class="tops">${r.map((v,c)=>v===mx?`<em style="background:var(--i${c})" title="${IND[c]}">${svg(c,2.6)}</em>`:'').join('')}<b>${sgn(mx)}</b></i></span>`; }).join('')||'<span>なし</span>'}</div></div>`;
   return `<div class="side">${curMarket()?`<div class="info"><span class="label">${termName(G.round)}の市況</span>${marketCard(G.mkts[G.round],"wide")}</div>`:""}${deckInfo}
     ${C.fore==='dividend'&&G.turn>0?`<div class="info"><span class="label">今ターンの配当</span><div class="chips div">${G.divs.length?G.divs.map(d=>`<span>${esc(d.name)} ${IND[d.ind]} +${d.d}</span>`).join(''):'<span style="background:none;color:var(--muted)">なし</span>'}</div></div>`:''}
@@ -5658,13 +5749,14 @@ function handDock(news){
   const C=G.cfg, p=G.players[G.active];
   const known=p.foreUsed && p.foreTurn===G.turn, next=known?G.deck[G.turn+1]:null;
   const row=p.fut?next:news, n=p.hand.length;
-  const ptsOf=c=>(p.fut?futBase(C.table[row][c],C):C.table[row][c])+(p.brand===c?1:0);
+  const ptsOf=c=>ospPending()?null:(p.fut?futBase(C.table[row][c],C):C.table[row][c])+(p.brand===c?1:0);
   const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return cardHTML(c,{click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`}); }).join('');
   const dealKey=G.turn+':'+G.active, deal=G.dealKey!==dealKey; G.dealKey=dealKey;
   const canFore=!p.foreUsed && G.turn<TURNS-1, fdef=FORE[C.fore];
   const cmpBtn = G.online ? '' : `<button class="ipf-link hk-open" onclick="openSheet('cmp')" aria-label="手札のカードを見くらべる">📊 くらべる</button>`;
   let preview=`<span>カードを選ぶと、独占したときと被ったときの点数が出ます</span>${cmpBtn}`;
-  if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(C,b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
+  if(G.sel!==null && ospPending()) preview=ospPreview(G.sel)+cmpBtn;
+  else if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(C,b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
     <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}
@@ -5673,7 +5765,7 @@ function handDock(news){
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>
     ${known?`<div class="peek"><span class="label" style="color:var(--cyan-tx)">${p.fut?'先物取引':'未来予測'} · 次のNEWS（あなただけ）</span><b>${nextLabel}</b></div>`:''}
     ${isLong()&&(p.contract||p.brand!=null)?`<div class="secret">${p.contract?`<span class="ctchip"><i>極秘契約</i>${esc(contractText(p.contract))}<b>+${contractVal(p.contract)}</b></span>`:""}${p.brand!=null?`<span class="brd" style="--c:var(--i${p.brand})"><i>ブランド</i>${IND[p.brand]} +1</span>`:""}</div>`:""}
-    ${speedArm(p)}${partnerHint(p)}
+    ${whaleHint()}${speedArm(p)}${partnerHint(p)}
     ${G.online?"":coachHTML(p)}
     <div class="preview">${preview}</div>
     ${tacRow()}
@@ -5725,10 +5817,10 @@ function revealDock(){
   const best=Math.max(...G.last.map(r=>r.total));
   const mvp=G.players.filter((p,i)=>G.last[i].total===best).map(p=>esc(p.name)).join('・');
   const lanes=IND.map((d,c)=>{
-    const who=G.players.map((p,i)=>({p,i})).filter(x=>x.p.pick===c), k=who.length;
-    const foot=k===0?'—':k===1?`独占 ${sgn(G.last[who[0].i].total)}`:`${k}人で被り`;
+    const who=G.players.map((p,i)=>({p,i})).filter(x=>x.p.pick===c), wh=!!(G.whale&&G.whale.pick===c), k=who.length+(wh?1:0);
+    const foot=k===0?'—':k===1?(who[0]?`独占 ${sgn(G.last[who[0].i].total)}`:'🐋 クジラが独占'):`${k}人で被り`;
     return `<div class="lane c${c}${k===0?' empty':k===1?' mono':' hit'}" id="lane${c}"><div class="lh" style="background:var(--i${c})">${svg(c,2.2)}${d}</div>
-      <div class="lb">${who.map(x=>`<div class="who" style="--s:var(--s${x.p.seat%6});animation-delay:${x.i*130}ms"><span class="d"></span>${esc(x.p.name)}${G.last[x.i].fut?' <span class="tagx cy">先物</span>':''}</div>`).join('')}</div>
+      <div class="lb">${who.map(x=>`<div class="who" style="--s:var(--s${x.p.seat%6});animation-delay:${x.i*130}ms"><span class="d"></span>${esc(x.p.name)}${G.last[x.i].fut?' <span class="tagx cy">先物</span>':''}</div>`).join('')}${wh?'<div class="who whl"><span class="d"></span>🐋 クジラ</div>':''}</div>
       <div class="lf">${foot}</div>${k>1?'<span class="stamp">被り！</span>':k===1?'<span class="stamp g">独占</span>':''}</div>`;
   }).join('');
   return `<div class="dock">${guideTip()}${stepBar('reveal')}${myResultBar()}${mioTurn()}<div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold-t)">${mvp} ${sgn(best)}</b></span></div>
@@ -5837,7 +5929,7 @@ function pickLong(){ S.len='long'; save('azakei-len','long'); if(!S.seats.some(s
 function pickMode(m){ S.len='short'; save('azakei-len','short'); S.mode=m; if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); }
 function ruleList(){
   const f=FORE[CFG.fore];
-  return `<div class="rules">${['全員同じ6枚の産業カードからスタート','毎ターンNEWSを見て1枚選び、一斉にOPEN','一度使った産業はもう使えない',`ほかの人と被らなければ ${sgn(CFG.bonus)} POINT`,`1回だけ${f.name}：${f.desc}`].concat(S.closeX?["特別ルール：最後のターン（大引け）だけ点数が2倍"]:[]).map((t,i)=>`<div class="rule"><span class="no">${i+1}</span><span>${t}</span></div>`).join('')}</div>`;
+  return `<div class="rules">${['全員同じ6枚の産業カードからスタート','毎ターンNEWSを見て1枚選び、一斉にOPEN','一度使った産業はもう使えない',`ほかの人と被らなければ ${sgn(CFG.bonus)} POINT`,`1回だけ${f.name}：${f.desc}`].concat(S.b4?["β4ルール「大引けサプライズ」：最後のターンは、NEWSを伏せたままカードを出す。全員が出したあとに発表して、点数は2倍"].concat(S.seats.length===2?["2人のときは🐋クジラ（大口投資家）が参加。毎ターンいちばん点が高い産業に出す（点数は数えない）。クジラと被っても「被り」"]:[]):S.closeX?["特別ルール：最後のターン（大引け）だけ点数が2倍"]:[]).map((t,i)=>`<div class="rule"><span class="no">${i+1}</span><span>${t}</span></div>`).join('')}</div>`;
 }
 function setSeatPreset(k){ S.seats=defaultSeats(k==='party'?'party':'cpu'); sfx('click'); render(); }
 function lobbyView(){ return playView(); }
@@ -5875,7 +5967,7 @@ function playView(){
       ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span><button class="dchip d-auto${S.autoDiff?" on":""}" onclick="setAutoDiff(true)"><i>🤖</i>おまかせ</button>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${!S.autoDiff&&diffNow()===k?" on":""}" onclick="setAutoDiff(false);setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>${S.autoDiff?`<p class="note tagnote">🤖 おまかせ：いまは「${AUTO_LV[autoLv()][1]}」。1位を取ると強く、最下位だとやさしくなります。</p>`:''}`:""}
       ${!party&&S.seats.some(s=>s.type!=="human")?oppRow():''}
       ${party?'':`<details class="adv-box"${S.advOpen?' open':''} ontoggle="S.advOpen=this.open"><summary><span>⚙️ こだわり設定</span><small>人数・CPUの性格・チーム戦などの特別ルール</small></summary>`}
-      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button></div>${S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
+      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.b4?" on":""}" onclick="setB4(${!S.b4})"><i>🆕</i>β4ルール（大引けサプライズ）</button>${S.b4?'':`<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button>`}</div>${S.b4?'<p class="note tagnote">🆕 β4ルール：最後のターンだけ、NEWSを伏せたままカードを出します。候補の中のどれが来るかを読んで勝負。点数は2倍なので、最後まで逆転できます。オフにすると、ルールブックどおりのβ3で遊べます。</p>':''}${!S.b4&&S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
       ${leagueNote()}
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
@@ -6099,7 +6191,7 @@ function coachHTML(p){
     const pool=unseen(C,G.deck,t), left=TURNS-1-t;
     const opp=G.players.filter(o=>o!==p).map(o=>oppDist(T,o,G.deck[t],pool,left));
     const pi=G.teams?G.players.findIndex((q,k)=>q!==p&&G.teams[k]===G.teams[G.players.indexOf(p)]):-1, pp=pi>=0&&!isHuman(G.players[pi])?G.players[pi].pick:null;   // チーム戦：相棒の予定カードは被る前提
-    const alone=c=>c===pp?0:Math.round(opp.reduce((a,d)=>a*(1-d[c]),1)*100);
+    const wp=whaleNext(), alone=c=>c===pp||c===wp?0:Math.round(opp.reduce((a,d)=>a*(1-d[c]),1)*100);
     const base=c=>(p.fut?futBase(T[row][c],C):T[row][c])+(p.brand===c?1:0);
     const best=p.hand.slice().sort((a,b)=>(vals[b]-(b===pp?9:0))-(vals[a]-(a===pp?9:0)))[0];
     const top=p.hand.reduce((a,c)=>base(c)>base(a)?c:a,p.hand[0]);
@@ -6107,6 +6199,7 @@ function coachHTML(p){
     if(top!==best) tip=`いちばん点が高い${IND[top]}（${sgn(base(top))}）は、ほかの人も出しそう。独占できる確率は${alone(top)}%。`;
     else tip = alone(best)>=50 ? `点がいちばん高く、独占できる確率も${alone(best)}%。` : `いちばん高い点。被っても${sgn(base(best))}は入るので安全（独占できる確率は${alone(best)}%）。`;
     if(top!==best && futureCost(T,p.hand,top,known?[G.deck[t+1]]:pool,left,known)>1) tip+=`${IND[top]}はこの先のNEWSでも強いので、取っておくのもあり。`;
+    if(ospPending()) tip+=` 最後のNEWSは伏せられているので、点数は候補${G.osp.cand.length}つの平均です。`;
     if(!p.foreUsed && t<TURNS-1 && C.fore==='futures'){ const nx=G.deck[t+1]; if(known===false && left>0) tip+=' 迷ったら「先物取引」で次のNEWSを見てから決めるのも手。'; }
     return `<div class="coach"><span class="ci">💡</span><span class="ct"><b>コーチのおすすめ：${IND[best]}</b><span class="cp">${sgn(base(best))} · 独占できそう ${alone(best)}%</span><span class="note">${tip}</span></span><button class="cx" onclick="toggleCoach()" aria-label="コーチを非表示">✕</button></div>`;
   }catch(e){ return ''; }
