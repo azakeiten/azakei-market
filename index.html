@@ -3408,7 +3408,7 @@ function showEmote(peer,data){
 function toast(t){ const el=document.getElementById('toast'); if(!el) return; el.textContent=t; el.classList.add('on'); clearTimeout(toast.tm); toast.tm=setTimeout(()=>el.classList.remove('on'),3200); }
 // ---- rulebook downloads ----
 const BOOKS={
-  classic:{file:'rulebook-classic.pdf', png:'rulebook-classic.png', pngName:'AZAKEI_MARKET_rulebook.png', name:'AZAKEI_MARKET_rulebook.pdf', md:'AZAKEI_MARKET_rulebook.md', title:'β4 ルールブック', sub:'クラシック · A4 9ページ · 大引けサプライズ入り'},
+  classic:{file:'rulebook-classic.pdf', png:'rulebook-classic.png', pngName:'AZAKEI_MARKET_rulebook.png', name:'AZAKEI_MARKET_rulebook.pdf', md:'AZAKEI_MARKET_rulebook.md', title:'β4 ルールブック', sub:'クラシック · A4 10ページ · 大引けサプライズ・投資家カード入り'},
   history:{file:'rulebook-history.pdf', png:'rulebook-history.png', pngName:'AZAKEI_MARKET_history_rulebook.png', name:'AZAKEI_MARKET_history_rulebook.pdf', md:'AZAKEI_MARKET_history_rulebook.md', title:'歴史モード ルールブック', sub:'1964〜2022 · A4 8ページ'},
   long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況・契約カード付き · A4 8ページ'},
   future:{file:'rulebook-future.pdf', png:'rulebook-future.png', pngName:'AZAKEI_MARKET_future_rulebook.png', name:'AZAKEI_MARKET_future_rulebook.pdf', md:'AZAKEI_MARKET_future_rulebook.md', title:'未来編 ルールブック', sub:'2027〜2060 · A4 4ページ'},
@@ -3502,7 +3502,7 @@ ${Object.values(MARKETS).map(m=>`- **${m.n}**：${m.d}。${m.tip}`).join('\n')}
 ${rows(NEWS,T2)}
 `;
   if(k==='history') return `# AZAKEI MARKET β3 歴史モード ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。NEWSが本当の歴史どおりに動くモードです。\n\n## ルール\n${base}- 歴史モードでは、選んだ時代の出来事から4つが**年代順**に起きる。いまより前の年の出来事はもう起きない\n- 時代：全時代（1964〜2025・18の出来事）／昭和〜バブル崩壊（7）／平成・令和（11）\n\n## 出来事\n${HIST.filter(h=>!h.f).map(h=>`### ${h.y} ${h.n}\n${h.d}\n\n${IND.map((d,i)=>d+' '+t(h.r[i])).join(' / ')}\n`).join('\n')}\n## 早見表\n${rows(HIST.filter(h=>!h.f).map(h=>h.y+' '+h.n),HIST.filter(h=>!h.f).map(h=>h.r))}\n`;
-  return `# AZAKEI MARKET β4 ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。2〜6人・全4ターン。\n\n## ルール\n${base}\n## 大引けサプライズ（β4）\n- 最後の4ターン目だけ、NEWSをめくらずにカードを出す（山札に残った3枚のどれかが来ることは全員が知っている）\n- 全員が出したら山札の一番上をめくって発表し、いつもどおりOPEN\n- このターンの点数は2倍（基本POINTもMARKET BONUSも、マイナスも）\n- 3ターン目に先物取引を使った人は、最後のNEWSを先に知っている\n\n## 2人で遊ぶとき：クジラ\n- もう1組の産業カードを表向きに並べ、クジラの手札にする\n- 毎ターンOPENのとき、クジラはそのNEWSでいちばん点が高い産業を出す（同点ならエネルギー→金融→製造→小売→運輸→メディアの順で先）\n- クジラと同じ産業を出すと「被り」。クジラは点数をもらわない\n## 得点表（NEWS × 産業）\n${rows(NEWS,T2)}\n`;
+  return `# AZAKEI MARKET β4 ルールブック\n\n経済を読み、相手を読み、未来を読むカードゲーム。2〜6人・全4ターン。\n\n## ルール\n${base}\n## 大引けサプライズ（β4）\n- 最後の4ターン目だけ、NEWSをめくらずにカードを出す（山札に残った3枚のどれかが来ることは全員が知っている）\n- 全員が出したら山札の一番上をめくって発表し、いつもどおりOPEN\n- このターンの点数は2倍（基本POINTもMARKET BONUSも、マイナスも）\n- 3ターン目に先物取引を使った人は、最後のNEWSを先に知っている\n\n## 2人で遊ぶとき：クジラ\n- もう1組の産業カードを表向きに並べ、クジラの手札にする\n- 毎ターンOPENのとき、クジラはそのNEWSでいちばん点が高い産業を出す（同点ならエネルギー→金融→製造→小売→運輸→メディアの順で先）\n- クジラと同じ産業を出すと「被り」。クジラは点数をもらわない\n\n## 投資家カード（試作）\n- 9枚を裏向きで混ぜて1人1枚配る（慣れたら2枚配って1枚えらぶ）。能力はゲームのあいだずっと有効\n${Object.values(PWR).map(x=>`- ${x.ic} ${x.n}（${x.ch}）：${x.d}`).join('\n')}\n## 得点表（NEWS × 産業）\n${rows(NEWS,T2)}\n`;
 }
 // ---- sheets (bottom sheet on phones / modal on desktop) ----
 function openSheet(k){ S.sheet=k; renderSheet(); }
