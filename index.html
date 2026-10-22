@@ -2024,6 +2024,32 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .pw-card{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
 .pw-card.on{box-shadow:inset 0 0 0 2px var(--gold)}
 .pw-tx{display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:1.5;min-width:0}.pw-tx b{font-size:15px}.pw-tx em{font-style:normal;font-size:12px;font-weight:800;color:var(--gold-t)}
+.pwdeal{background:radial-gradient(circle at 50% 40%,#2a1f5a,#07081a 75%)}
+.pwdeal .box{display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px}
+.pwd-rays{position:absolute;inset:-50%;background:repeating-conic-gradient(from 0deg,rgb(255 200 58 / .09) 0 8deg,transparent 8deg 20deg);animation:pwdspin 30s linear infinite;pointer-events:none}
+.pwd-t{color:#ffd23a;letter-spacing:.12em;animation:achin .5s both}
+.pwd-flip{perspective:900px;width:210px;height:290px}
+.pwd-in{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:pwdflip 1.1s cubic-bezier(.3,.9,.3,1.2) .5s both}
+.pwd-back,.pwd-front{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px}
+.pwd-back{display:grid;place-items:center;background:repeating-linear-gradient(45deg,#2b2266 0 10px,#1c1650 10px 20px);box-shadow:inset 0 0 0 4px #ffd23a,0 18px 40px -12px #000}
+.pwd-back span{font-family:var(--display);font-size:80px;color:#ffd23a}
+.pwd-front{transform:rotateY(180deg)}
+.pwf{position:relative;width:100%;height:100%;border-radius:18px;padding:16px 14px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:#1b1030;
+  background:linear-gradient(170deg,#fffdf4,color-mix(in srgb,var(--pc) 22%,#fffdf4));box-shadow:inset 0 0 0 4px var(--pc),0 18px 40px -12px #000;overflow:hidden}
+.pwf::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgb(255 255 255 / .55) 50%,transparent 65%);transform:translateX(-120%);animation:pwdshine 1.4s ease 1.5s}
+.pwf-lab{font-size:10px;font-weight:800;letter-spacing:.2em;color:color-mix(in srgb,var(--pc) 70%,#000)}
+.pwf-ic{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;font-size:46px;background:radial-gradient(circle at 35% 30%,#fff,var(--pc) 85%);box-shadow:0 0 0 4px #fff,0 8px 18px -6px var(--pc)}
+.pwf-n{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.1}
+.pwf-ch{font-size:11px;font-weight:800;color:#6a6080}
+.pwf-d{margin:4px 0 0;font-size:13px;font-weight:700;line-height:1.55}
+.pwf-mk{margin-top:auto;font-family:var(--display);font-size:10px;letter-spacing:.1em;opacity:.55}
+.pwd-others{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:420px}
+.pwd-o{display:flex;align-items:center;gap:6px;padding:5px 10px 5px 6px;border-radius:999px;background:rgb(255 255 255 / .1);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .25);color:#fff;font-size:11px;animation:achin .4s cubic-bezier(.2,.9,.3,1.3) var(--d) both}
+.pwd-o b{display:block;font-size:12px}.pwd-oi{font-size:20px}
+.pwd-go{animation:achin .4s cubic-bezier(.2,.9,.3,1.3) 1.9s both}
+@keyframes pwdflip{0%{transform:rotateY(0) scale(.6) translateY(40px)}40%{transform:rotateY(0) scale(1) translateY(0)}100%{transform:rotateY(180deg) scale(1)}}
+@keyframes pwdshine{to{transform:translateX(120%)}}
+@keyframes pwdspin{to{transform:rotate(360deg)}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2763,6 +2789,9 @@ function beginTurn(){
   G.players.forEach((p,i)=>{ if(!isHuman(p)){ const know = G.osp && !G.osp.shown && ((p.foreUsed && p.foreTurn===G.turn-1) || pwOf(i)==='toki'); p.pick = cpuPick(p,whaleField(),know?ospRealDeck():G.deck,G.turn,pcfg(i),G.rnd||Math.random); } });
   G.phase='choose'; G.active=-1; G.sel=null;
   clearTimeout(introTimer);
+  if(G.turn===0 && G.pw && !G.pwShown && !G.online && myIndex()>=0 && !reduced()){   /* 投資家カードを配る演出 → VS → NEWS */
+    G.pwShown=true; G.ov='pwdeal'; render(); sfx('open'); setTimeout(()=>{ if(G && G.ov==='pwdeal'){ sfx('flip'); haptic(20); } },900); return;
+  }
   if(G.turn===0 && !G.online && !G.vsShown && !reduced()){   // 対戦前のVS画面 → NEWSの順
     G.vsShown=true; G.ov='vs'; render(); sfx('open'); haptic(20);
     introTimer=setTimeout(endVs, G.pw?5200:2400); return;
@@ -3330,7 +3359,8 @@ const BOOKS={
   classic:{file:'rulebook-classic.pdf', png:'rulebook-classic.png', pngName:'AZAKEI_MARKET_rulebook.png', name:'AZAKEI_MARKET_rulebook.pdf', md:'AZAKEI_MARKET_rulebook.md', title:'β4 ルールブック', sub:'クラシック · A4 9ページ · 大引けサプライズ入り'},
   history:{file:'rulebook-history.pdf', png:'rulebook-history.png', pngName:'AZAKEI_MARKET_history_rulebook.png', name:'AZAKEI_MARKET_history_rulebook.pdf', md:'AZAKEI_MARKET_history_rulebook.md', title:'歴史モード ルールブック', sub:'1964〜2022 · A4 8ページ'},
   long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況・契約カード付き · A4 8ページ'},
-  future:{file:'rulebook-future.pdf', png:'rulebook-future.png', pngName:'AZAKEI_MARKET_future_rulebook.png', name:'AZAKEI_MARKET_future_rulebook.pdf', md:'AZAKEI_MARKET_future_rulebook.md', title:'未来編 ルールブック', sub:'2027〜2060 · A4 4ページ'}
+  future:{file:'rulebook-future.pdf', png:'rulebook-future.png', pngName:'AZAKEI_MARKET_future_rulebook.png', name:'AZAKEI_MARKET_future_rulebook.pdf', md:'AZAKEI_MARKET_future_rulebook.md', title:'未来編 ルールブック', sub:'2027〜2060 · A4 4ページ'},
+  cards:{file:'investor-cards.pdf', png:'investor-cards.png', pngName:'AZAKEI_MARKET_investor_cards.png', name:'AZAKEI_MARKET_investor_cards.pdf', title:'投資家カード（印刷用）', sub:'8枚＋クジラ · 表と裏 · A4 2ページ'}
 };
 // 普通のWebサイト（GitHub Pages）では、ふつうのダウンロードリンクで保存する
 function saveByLink(href,name){ const a=document.createElement('a'); a.href=href; a.download=name; a.rel='noopener'; document.body.appendChild(a); a.click(); a.remove(); closeSheet(); toast('ダウンロードを開始しました'); }
@@ -5468,8 +5498,24 @@ function pwBody(){
     <p class="note">ゲームのはじめに、全員が1枚ずつもらいます。能力はゲームのあいだ、ずっと効きます。CPUは自分のキャラのカードを持ちます。</p>
     <div class="pw-list">${Object.entries(PWR).map(([k,x])=>{ const who=cur?G.players.map((p,i)=>G.pw[i]===k?p.name:null).filter(Boolean):[];
       return `<div class="pw-card${who.length?' on':''}"><span class="pw-ic big">${x.ic}</span><span class="pw-tx"><b>${x.n}</b><span class="note">${x.ch}のカード</span><span>${x.d}</span>${who.length?`<em>🙋 ${who.map(esc).join('・')}</em>`:''}</span></div>`; }).join('')}</div>
+    <div class="row" style="gap:8px;margin:6px 0"><button class="btn gold" onclick="downloadBook('cards')">🖨 印刷用カード（PDF）</button><button class="btn ghost" onclick="downloadPng('cards')">画像で保存</button></div>
     <p class="note" style="font-size:11px">CPU同士の検証では、どの能力の勝率も20〜29%（4人戦の基準は25%）に収まっています。試作なので、遊んだ感想で調整していきます。</p>`;
 }
+/* ---- 投資家カードを配る演出：自分のカードが裏から表にめくれて登場。ほかの人のカードも小さく並ぶ ---- */
+function pwCardFace(k, big){
+  const x=PWR[k], c=(CHARS[x.ch]||{}).c||'#ffc83a';
+  return `<div class="pwf${big?' big':''}" style="--pc:${c}"><span class="pwf-lab">INVESTOR</span><span class="pwf-ic">${x.ic}</span><b class="pwf-n">${x.n}</b><span class="pwf-ch">${x.ch}のカード</span>${big?`<p class="pwf-d">${x.d}</p>`:''}<span class="pwf-mk">AZAKEI MARKET</span></div>`;
+}
+function pwDealOverlay(){
+  const me=myIndex(), k=pwOf(me); if(!k) return '';
+  const others=G.players.map((p,i)=>({p,i})).filter(x=>x.i!==me&&G.pw[x.i]);
+  return `<div class="overlay pwdeal" onclick="pwDealDone()"><div class="pwd-rays"></div><div class="box">
+    <span class="label pwd-t">🃏 あなたの投資家カード</span>
+    <div class="pwd-flip"><div class="pwd-in"><div class="pwd-back"><span>?</span></div><div class="pwd-front">${pwCardFace(k,true)}</div></div></div>
+    <div class="pwd-others">${others.map((x,j)=>`<span class="pwd-o" style="--d:${1.5+j*.15}s"><span class="pwd-oi">${PWR[G.pw[x.i]].ic}</span><span><b>${esc(String(x.p.name).replace(/^CPU\s*/,''))}</b>${PWR[G.pw[x.i]].n}</span></span>`).join('')}</div>
+    <button class="btn gold big pwd-go" onclick="event.stopPropagation();pwDealDone()">このカードで勝負！</button></div></div>`;
+}
+function pwDealDone(){ if(!G || G.ov!=='pwdeal') return; G.ov=null; sfx('select'); beginTurn(); }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5695,6 +5741,7 @@ function renderOv(){
   if(ik && ov.dataset.k===ik && ov.firstElementChild) return;
   ov.dataset.k=ik;
   if(G.ov==='vs'){ ov.innerHTML=vsOverlay(); return; }
+  if(G.ov==='pwdeal'){ ov.innerHTML=pwDealOverlay(); return; }
   if(G.ov==='flip'){ ov.innerHTML=flipOverlay(); return; }
   if(G.ov==='ceremony'){ ov.innerHTML=ceremonyOverlay(); return; }
   if(G.ov==='settle'){ ov.innerHTML=settleOverlay(); return; }
@@ -7312,6 +7359,7 @@ function rulesView(){
   if(tab==='book') body=`<section class="panel"><h3>ルールブック（PDF）</h3><p class="note">印刷して遊べるPDFです。カードを手作りするときの得点表や、歴史モードの年表チェックシートも入っています。</p>
       <div class="dlrow">${['classic','history','long','future'].map(k=>`<button class="dl${k==='history'?' hist':k==='long'?' long':k==='future'?' fut':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`).join('')}</div>
       <div class="row" style="gap:8px">${['classic','history','long','future'].map(k=>`<button class="btn" onclick="downloadPng('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}を画像（PNG）で保存</button>`).join('')}${['classic','history','long','future'].map(k=>`<a class="btn ghost" href="${BOOKS[k].file}" target="_blank" rel="noopener" style="text-decoration:none">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}のPDFを開く</a>`).join('')}${['classic','history','long','future'].map(k=>`<button class="btn ghost" onclick="downloadMd('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}のテキスト版（.md）</button>`).join('')}</div>
+      <div class="dlrow" style="margin-top:8px"><button class="dl fut" onclick="downloadBook('cards')"><span class="dlic">PDF</span><span><b>${BOOKS.cards.title}</b><span class="note">${BOOKS.cards.sub}</span></span></button><button class="btn ghost" onclick="downloadPng('cards')">投資家カードを画像（PNG）で保存</button></div>
       <p class="note">PDFが保存できないときは「画像（PNG）で保存」を使ってください。画像は全ページを縦につないだ1枚で、どの画面でも保存できる形式です。</p></section>`;
   return `<div class="col"><div class="row spread"><h2 class="ttl">ルール</h2></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="S.rtab='${k}';sfx('click');render();scrollTo(0,0)">${l}</button>`).join('')}</div>${body}</div>`;
