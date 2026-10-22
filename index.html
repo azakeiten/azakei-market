@@ -2092,6 +2092,9 @@ html.light .pwn{color:#fff}
 .pwd-two .pwf-d{font-size:11.5px;line-height:1.45}
 .pwd-two .pwd-back span{font-size:60px}
 .pwd-hint{color:#d8dbff;text-align:center;max-width:320px}
+.stg-sec{display:block;width:100%;margin:6px 0 2px;font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--gold-t)}
+.stg-pw{width:180px;height:250px;margin:8px auto}
+.stg-pw .pwf{padding:12px 10px}.stg-pw .pwf-ic{width:64px;height:64px;font-size:34px}.stg-pw .pwf-n{font-size:20px}.stg-pw .pwf-d{font-size:12px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2808,7 +2811,12 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
   G.b4 = !!(!daily && !ch && !cu && !sto && !sv && !bs && !du && S.b4 && !G.cfg.hist && !long);   /* オンラインでもホストの設定でβ4 */   /* β4ルール：大引けサプライズ（最後のNEWSは出したあとに発表・点数2倍） */
   G.whale = G.b4 && G.players.length===2 ? {hand:[0,1,2,3,4,5], pick:null, used:[]} : null;
-  G.pw = G.b4 && S.pwOn ? pwAssign() : null;   /* 投資家カード（試作）：全員が1枚ずつ、ずっと効く能力を持つ */   /* β4：2人のときは🐋クジラ（点数を数えない大口投資家）が参加 */
+  G.pw = G.b4 && S.pwOn ? pwAssign() : null;
+  if(ch && ch.pw && PWR[ch.pw]){   /* 投資家カード編のステージ：β4で、あなたのカードは決まった1枚 */
+    G.b4=true; G.closeX=false; G.pw=pwAssign(); G.pwOpt=null; const me=G.players.findIndex(isHuman);
+    const j=G.pw.indexOf(ch.pw); if(j>=0 && j!==me){ const free=Object.keys(PWR).filter(k=>!G.pw.includes(k)); G.pw[j]=free[0]||G.pw[me]; }
+    G.pw[me]=ch.pw; G.players.forEach((p,i)=>{ p.brand = G.pw[i]==='aoi' ? (p.brand!=null?p.brand:Math.floor((G.rnd||Math.random)()*6)) : null; });
+  }   /* 投資家カード（試作）：全員が1枚ずつ、ずっと効く能力を持つ */   /* β4：2人のときは🐋クジラ（点数を数えない大口投資家）が参加 */
   G.closeX = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.closeX && !G.b4);   /* 大引け2倍：β3ルールに足す特別ルール（記録には入れない） */
   G.tac = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.tacOn && G.players.filter(isHuman).length===1) ? {used:{}, now:null} : null;   // 作戦カード（1人プレイのふだんの対戦だけ）
   if(bs) G.players[1].boss=true;
@@ -5591,6 +5599,7 @@ function pwTrack(i,p,base,k,pb,total,pre){
   if(w==='aoi' && p.pick===p.brand) g+=m;
   if(w==='ren' && m===3) g+=Math.round(total/3);
   G.pwGain=G.pwGain||G.players.map(()=>0); G.pwGain[i]+=g;
+  if(g>0){ G.pwHit=G.pwHit||G.players.map(()=>0); G.pwHit[i]++; }
 }
 function pwFinalPanel(){
   if(!G || !G.pw) return '';
@@ -6917,15 +6926,35 @@ const CHALLENGES=[
   {id:'c7', n:'シーズン開幕', d:'ロング版のデビュー戦。市況・契約・ブランドを使いこなせ。', mode:'classic', long:true, seats:['human','read','read','read'], seed:7707,
     goals:[['1位になる',r=>r.rank===1],['極秘契約を2回達成',r=>mySettles(r).filter(x=>x.done).length>=2],['決算ボーナスを2回取る',r=>mySettles(r).filter(x=>x.bonus>0).length>=2]]},
   {id:'c8', n:'最強決定戦', d:'達人CPU3人とロング版で勝負。最後の試練。', mode:'classic', long:true, seats:['human','pro','pro','pro'], seed:8808,
-    goals:[['3位以内',r=>r.rank<=3],['1位になる',r=>r.rank===1],['全部の期で決算ボーナス',r=>{ const s=mySettles(r); return s.length===r.G.rounds && s.every(x=>x.bonus>0); }]]}
+    goals:[['3位以内',r=>r.rank<=3],['1位になる',r=>r.rank===1],['全部の期で決算ボーナス',r=>{ const s=mySettles(r); return s.length===r.G.rounds && s.every(x=>x.bonus>0); }]]},
+  /* ---- 投資家カード編：決まった1枚で戦い、まずその能力を発動させる ---- */
+  {id:'p1', pw:'haru', n:'全力投資のススメ', d:'独占ボーナスが +3。だれもいない産業に飛びこもう。', mode:'classic', seats:['human','read','read','read'], seed:9101,
+    goals:[['全力投資を2回発動（独占）',r=>pwHitOf(r)>=2],['1位になる',r=>r.rank===1],['18点以上',r=>r.p.score>=18]]},
+  {id:'p2', pw:'nagi', n:'群衆の波に乗れ', d:'3人以上が集まった産業でも +1。人気の波に乗ってみよう。', mode:'classic', seats:['human','read','read','naive'], seed:9202,
+    goals:[['群衆の波を発動',r=>pwHitOf(r)>=1],['1位になる',r=>r.rank===1],['独占も1回以上',r=>r.p.uniq>=1]]},
+  {id:'p3', pw:'yui', n:'逆張りの美学', d:'+2以下の産業で独占すると +2。みんなが見ない場所をねらえ。', mode:'classic', seats:['human','read','read','read'], seed:9303,
+    goals:[['逆張りを発動',r=>pwHitOf(r)>=1],['1位になる',r=>r.rank===1],['マイナスを1回も取らない',r=>r.p.used.every(u=>u.total>=0)]]},
+  {id:'p4', pw:'aoi', n:'推しは推せるうちに', d:'推し産業はいつも +1。推しで独占できるかな？', mode:'classic', seats:['human','read','read','read'], seed:9404,
+    goals:[['推しで独占',r=>pwHitOf(r)>=1&&r.p.used.some(u=>u.ind===r.p.brand&&u.k===1)],['1位になる',r=>r.rank===1],['15点以上',r=>r.p.score>=15]]},
+  {id:'p5', pw:'minato', n:'手数料ゼロの計算', d:'先物取引の手数料が 0。次のNEWSを読み切れ。', mode:'classic', seats:['human','read','read','read'], seed:9505,
+    goals:[['先物で +3 以上',r=>r.p.used.some(u=>u.fut&&u.total>=3)],['1位になる',r=>r.rank===1],['先物で独占',r=>r.p.used.some(u=>u.fut&&u.k===1)]]},
+  {id:'p6', pw:'mio', n:'予習はスタートダッシュ', d:'1ターン目は +2。最初から差をつけよう。', mode:'classic', seats:['human','read','read','read'], seed:9606,
+    goals:[['1ターン目で独占',r=>r.p.used[0]&&r.p.used[0].k===1],['1位になる',r=>r.rank===1],['ずっと1位のまま勝つ',r=>r.rank===1&&r.p.hist.slice(1).every((v,t)=>r.G.players.every(q=>q===r.p||(q.hist[t+1]||0)<=v))]]},
+  {id:'p7', pw:'sora', n:'のんびり大引け', d:'先物を使わずに、大引けで独占すれば +2（×2で +4）。', mode:'classic', seats:['human','read','read','read'], seed:9707,
+    goals:[['マイペースを発動',r=>pwHitOf(r)>=1],['1位になる',r=>r.rank===1],['15点以上',r=>r.p.score>=15]]},
+  {id:'p8', pw:'toki', n:'老練の大引け', d:'最後のNEWSを、あなただけが先に知っている。', mode:'classic', seats:['human','read','read','pro'], seed:9808,
+    goals:[['大引けで独占',r=>{ const u=r.p.used[r.p.used.length-1]; return !!u&&u.k===1; }],['1位になる',r=>r.rank===1],['大引けで +8 以上',r=>{ const u=r.p.used[r.p.used.length-1]; return !!u&&u.total>=8; }]]},
+  {id:'p9', pw:'ren', n:'挑戦者の逆転劇', d:'最後の前に負けていれば、大引けは ×3。追いかける側が強い。', mode:'classic', seats:['human','pro','read','read'], seed:9909,
+    goals:[['挑戦者の ×3 を発動',r=>pwHitOf(r)>=1],['1位になる',r=>r.rank===1],['大引けで +12 以上',r=>{ const u=r.p.used[r.p.used.length-1]; return !!u&&u.total>=12; }]]}
 ];
+const pwHitOf = r => (r.G.pwHit||[])[r.me]||0;
 function chalCfg(ch, long){
   const b=presetCfg('rec');
   if(ch.mode==='history'){ const e=long?ERAS.all:(ERAS[ch.era]||ERAS.all); return {...b, table:HIST.map(h=>h.r), names:HIST.map(h=>h.n), hist:true, pool:e.ids.slice(), era:long?'all':(ch.era||'all')}; }
   return {...b, names:NEWS, hist:false};
 }
 const chalStars = id => (S.prof.chal||{})[id]||0;
-const chalOpen = i => i===0 || chalStars(CHALLENGES[i-1].id)>0;
+const chalOpen = i => { const c=CHALLENGES[i]; if(i===0) return true; if(c.pw && !CHALLENGES[i-1].pw) return chalStars('c1')>0; return chalStars(CHALLENGES[i-1].id)>0; };   /* 投資家カード編は、ステージ1をクリアすると開く */
 const chalTotal = () => CHALLENGES.reduce((s,c)=>s+chalStars(c.id),0);
 function startChallenge(id){ closeSheet(); startGame(false,null,id); }
 function chalResult(){   // recordResult から呼ぶ
@@ -6954,10 +6983,10 @@ function chalView(){
   const tab=S.ctab || (sDone<STORIES.length?'story':'cup');
   const tabs=[['story','ストーリー',`${sDone}/${STORIES.length}`],['cup','カップ',`${cDone}/${CUPS.length}`],['surv','サバイバル',`最高${P.survBest||0}`],['stage','ステージ',`★${total}`]];
   const body = tab==='story' ? storySection() : tab==='cup' ? cupsSection() : tab==='surv' ? survCard() : `<span class="label" style="margin:4px 0 -4px">STAGES · ★${total} / ${CHALLENGES.length*3}</span>
-    <p class="note" style="margin:0">山札と相手が決まった8つのステージ。条件をクリアして★を集めよう。</p>
+    <p class="note" style="margin:0">山札と相手が決まった${CHALLENGES.length}のステージ。後半は「🃏 投資家カード編」。条件をクリアして★を集めよう。</p>
     <div class="path">${CHALLENGES.map((c,i)=>{ const st=chalStars(c.id), open=chalOpen(i);
-      return `<button class="stg${open?'':' lock'}${st===3?' perfect':''}${c.long?' long':''}${c.mode==='history'?' hist':''}" ${open?`onclick="openSheet('chal:${c.id}')"`:'disabled'} style="--k:${i}">
-        <span class="snum">${open?i+1:'🔒'}</span><span class="sinfo"><b>${c.n}</b><span class="note">${open?c.d:'前のステージをクリアすると開きます'}</span></span>${open?starRow(st):''}</button>`; }).join('')}</div>`;
+      return `${c.pw&&!CHALLENGES[i-1].pw?'<span class="stg-sec">🃏 投資家カード編</span>':''}<button class="stg${open?'':' lock'}${st===3?' perfect':''}${c.long?' long':''}${c.mode==='history'?' hist':''}" ${open?`onclick="openSheet('chal:${c.id}')"`:'disabled'} style="--k:${i}">
+        <span class="snum">${open?(c.pw?PWR[c.pw].ic:i+1):'🔒'}</span><span class="sinfo"><b>${c.n}</b><span class="note">${open?c.d:'前のステージをクリアすると開きます'}</span></span>${open?starRow(st):''}</button>`; }).join('')}</div>`;
   return `<div class="col"><section class="chalhead yk"><div class="yk-ring"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="${R}" class="bg"/><circle cx="40" cy="40" r="${R}" class="fg" style="stroke-dasharray:${L};stroke-dashoffset:${L*(1-yk/100)}"/></svg><b>${yk}<small>%</small></b></div>
       <div><span class="label">CHALLENGE</span><h2 class="ttl">やりこみ</h2><p class="note">ストーリー・カップ・サバイバル・ステージ。ぜんぶ合わせた<b style="color:var(--gold-t)">やりこみ度</b>を100%にしよう。</p></div></section>
     <nav class="mtabs ctabs" role="tablist">${tabs.map(([k,n,b])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="S.ctab='${k}';sfx('click');render()">${n}<small>${b}</small></button>`).join('')}</nav>
@@ -6968,7 +6997,7 @@ function chalSheetBody(id){
   const i=CHALLENGES.indexOf(c), st=chalStars(id);
   const foes=c.seats.slice(1).map((t,j)=>`<span class="tagx${t==='pro'?' pro':''}">CPU ${CHAL_NAMES[j]}・${t==='naive'?'素直':t==='pro'?'達人':'読み合い'}</span>`).join(' ');
   return `<span class="label">STAGE ${i+1}${c.long?' · ロング版':''}${c.mode==='history'?' · 歴史モード':''}</span><h3 class="ttl" style="font-size:24px">${c.n}</h3>
-    <p class="note">${c.d}</p><div class="row" style="gap:6px">${foes}</div>
+    <p class="note">${c.d}</p>${c.pw?`<div class="stg-pw">${pwCardFace(c.pw,true)}</div>`:''}<div class="row" style="gap:6px">${foes}</div>
     <div class="goals">${c.goals.map((g,k)=>`<div class="goal${k<st?' on':''}"><i>★</i><span>${k===0?'クリア条件：':'追加の★：'}${g[0]}</span></div>`).join('')}</div>
     <p class="note">ベスト：${starRow(st)}</p>
     <button class="btn gold big" onclick="startChallenge('${id}')">挑戦する！</button>`;
