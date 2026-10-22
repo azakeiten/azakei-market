@@ -2082,6 +2082,16 @@ html.light .pwn{color:#fff}
 .pwpop i{font-style:normal;font-size:16px}
 @keyframes pwpop{0%{opacity:0;transform:translate(-50%,10px) scale(.5)}14%{opacity:1;transform:translate(-50%,-8px) scale(1.08)}22%{transform:translate(-50%,-6px) scale(1)}80%{opacity:1;transform:translate(-50%,-10px)}100%{opacity:0;transform:translate(-50%,-22px)}}
 .ctag{position:absolute;left:50%;bottom:30%;transform:translateX(-50%);z-index:3;padding:2px 7px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap;background:#fff;color:#1b1030;box-shadow:0 0 0 2px #ffc83a,0 4px 10px -4px #000}
+.pwd-two{display:flex;gap:12px;justify-content:center}
+.pwd-two .pwd-flip{width:156px;height:226px;border:0;padding:0;background:none;cursor:pointer;font:inherit;color:inherit}
+.pwd-two .pwd-in{animation-delay:var(--fd)}
+.pwd-two .pwd-pick:hover .pwf,.pwd-two .pwd-pick:focus-visible .pwf{box-shadow:inset 0 0 0 4px var(--pc),0 0 0 3px #ffd23a,0 18px 40px -12px #000}
+.pwd-two .pwf{padding:12px 8px;gap:4px}
+.pwd-two .pwf-ic{width:60px;height:60px;font-size:32px}
+.pwd-two .pwf-n{font-size:19px}
+.pwd-two .pwf-d{font-size:11.5px;line-height:1.45}
+.pwd-two .pwd-back span{font-size:60px}
+.pwd-hint{color:#d8dbff;text-align:center;max-width:320px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5498,6 +5508,9 @@ function pwAssign(){
   G.players.forEach((p,i)=>{ if(isHuman(p)) return; const k=Object.keys(PWR).find(x=>PWR[x].ch===charKey(p)); if(k && !used.has(k)){ out[i]=k; used.add(k); } });
   G.players.forEach((p,i)=>{ if(out[i]) return; const free=shuffle(keys.filter(k=>!used.has(k)),rnd); out[i]=free[0]; used.add(free[0]); });
   G.players.forEach((p,i)=>{ if(out[i]==='aoi') p.brand=Math.floor(rnd()*6); if(out[i]==='sora' && !isHuman(p)) p.fore='never'; });   /* CPUのソラは先物を使わずに大引けを待つ */
+  /* 1人で遊ぶときは、あなたは2枚から1枚を選べる（ドラフト） */
+  const hs=G.players.map((p,i)=>isHuman(p)?i:-1).filter(i=>i>=0);
+  if(!G.online && hs.length===1){ const me=hs[0], alt=shuffle(keys.filter(k=>!used.has(k)),rnd)[0]; if(alt){ G.pwOpt=[out[me],alt]; G.pwPicked=false; } }
   return out;
 }
 function pcfg(i){
@@ -5537,7 +5550,7 @@ function pwHint(){
 function pwBody(){
   const cur=G&&G.pw;
   return `<span class="label">INVESTOR CARDS · 試作</span><h3 class="ttl" style="font-size:22px">🃏 投資家カード</h3>
-    <p class="note">ゲームのはじめに、全員が1枚ずつもらいます。能力はゲームのあいだ、ずっと効きます。CPUは自分のキャラのカードを持ちます。</p>
+    <p class="note">ゲームのはじめに、全員が1枚ずつもらいます。能力はゲームのあいだ、ずっと効きます。CPUは自分のキャラのカードを持ちます。1人で遊ぶときは、あなたは<b>2枚から1枚をえらべます</b>（紙で遊ぶときも「2枚配って1枚えらぶ」にすると、作戦の幅が広がります）。</p>
     <div class="pw-list">${Object.entries(PWR).map(([k,x])=>{ const who=cur?G.players.map((p,i)=>G.pw[i]===k?p.name:null).filter(Boolean):[];
       return `<div class="pw-card${who.length?' on':''}"><span class="pw-ic big">${x.ic}</span><span class="pw-tx"><b>${x.n}</b><span class="note">${x.ch}のカード</span><span>${x.d}</span>${who.length?`<em>🙋 ${who.map(esc).join('・')}</em>`:''}</span></div>`; }).join('')}</div>
     <div class="row" style="gap:8px;margin:6px 0"><button class="btn gold" onclick="downloadBook('cards')">🖨 印刷用カード（PDF）</button><button class="btn ghost" onclick="downloadPng('cards')">画像で保存</button></div>
@@ -5550,6 +5563,10 @@ function pwCardFace(k, big){
 }
 function pwDealOverlay(){
   const me=myIndex(), k=pwOf(me); if(!k) return '';
+  if(G.pwOpt && !G.pwPicked) return `<div class="overlay pwdeal"><div class="pwd-rays"></div><div class="box">
+    <span class="label pwd-t">🃏 投資家カードを1枚えらぼう</span>
+    <div class="pwd-two">${G.pwOpt.map((x,j)=>`<button class="pwd-flip pwd-pick" style="--fd:${.4+j*.25}s" onclick="event.stopPropagation();pwChoose(${j})" aria-label="${PWR[x].n}をえらぶ"><div class="pwd-in"><div class="pwd-back"><span>?</span></div><div class="pwd-front">${pwCardFace(x,true)}</div></div></button>`).join('')}</div>
+    <p class="note pwd-hint">カードをタップしてえらんでね。えらばなかったカードは、だれも使いません。</p></div></div>`;
   const others=G.players.map((p,i)=>({p,i})).filter(x=>x.i!==me&&G.pw[x.i]);
   return `<div class="overlay pwdeal" onclick="pwDealDone()"><div class="pwd-rays"></div><div class="box">
     <span class="label pwd-t">🃏 あなたの投資家カード</span>
@@ -5557,7 +5574,13 @@ function pwDealOverlay(){
     <div class="pwd-others">${others.map((x,j)=>`<span class="pwd-o" style="--d:${1.5+j*.15}s"><span class="pwd-oi">${PWR[G.pw[x.i]].ic}</span><span><b>${esc(String(x.p.name).replace(/^CPU\s*/,''))}</b>${PWR[G.pw[x.i]].n}</span></span>`).join('')}</div>
     <button class="btn gold big pwd-go" onclick="event.stopPropagation();pwDealDone()">このカードで勝負！</button></div></div>`;
 }
-function pwDealDone(){ if(!G || G.ov!=='pwdeal') return; G.ov=null; sfx('select'); beginTurn(); }
+function pwDealDone(){ if(!G || G.ov!=='pwdeal' || (G.pwOpt && !G.pwPicked)) return; G.ov=null; sfx('select'); beginTurn(); }
+function pwChoose(j){
+  if(!G || !G.pwOpt || G.pwPicked) return;
+  const me=myIndex(), k=G.pwOpt[j], p=G.players[me]; if(!k || me<0) return;
+  G.pw[me]=k; p.brand = k==='aoi' ? Math.floor((G.rnd||Math.random)()*6) : null;
+  G.pwPicked=true; sfx('flip'); haptic(20); renderOv();
+}
 /* ---- 投資家カードのふりかえり：その試合で能力がいくら稼いだか。マイページには8枚の図鑑（使った回数・1位の回数） ---- */
 function pwTrack(i,p,base,k,pb,total,pre){
   if(!G.pw || !G.pw[i]) return;
