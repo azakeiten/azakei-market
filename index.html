@@ -2777,7 +2777,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   if(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
   G.league = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.league) ? leagueJoin(G.players.map(p=>p.name)) : null;   // リーグ戦の何試合目か
   G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
-  G.b4 = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.b4 && !G.cfg.hist && !long);   /* β4ルール：大引けサプライズ（最後のNEWSは出したあとに発表・点数2倍） */
+  G.b4 = !!(!daily && !ch && !cu && !sto && !sv && !bs && !du && S.b4 && !G.cfg.hist && !long);   /* オンラインでもホストの設定でβ4 */   /* β4ルール：大引けサプライズ（最後のNEWSは出したあとに発表・点数2倍） */
   G.whale = G.b4 && G.players.length===2 ? {hand:[0,1,2,3,4,5], pick:null, used:[]} : null;
   G.pw = G.b4 && S.pwOn ? pwAssign() : null;   /* 投資家カード（試作）：全員が1枚ずつ、ずっと効く能力を持つ */   /* β4：2人のときは🐋クジラ（点数を数えない大口投資家）が参加 */
   G.closeX = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.closeX && !G.b4);   /* 大引け2倍：β3ルールに足す特別ルール（記録には入れない） */
@@ -3271,11 +3271,11 @@ function netSync(){
   if(!G || !G.online || !G.host) return;
   const C=G.cfg, rev=G.phase==='reveal'||G.phase==='final';
   const st={ph:G.phase, v:++NET.ver, hostPeer:NET.myPeer, mode:C.fut?'future':C.hist?'history':'classic', era:C.era||'all',
-    r:{b:G.base?G.base.bonus:C.bonus,f:C.fore,tb:C.tiebreak?1:0,c:G.base?G.base.collide:C.collide,n:TURNS,t:C.hist?null:(G.base?G.base.table:C.table)}, turn:G.turn,
+    r:{b:G.base?G.base.bonus:C.bonus,f:C.fore,tb:C.tiebreak?1:0,c:G.base?G.base.collide:C.collide,n:TURNS,t:C.hist?null:(G.base?G.base.table:C.table).slice(0,6)}, turn:G.turn, ...netB4(),
     lg:isLong()?{rd:G.round,rds:G.rounds,mk:G.mkts,fp:G.fullPool,log:G.log,st:G.settles.length?G.settles[G.settles.length-1]:null}:null,
     shown:G.deck.slice(0, G.phase==='final'?TURNS:G.turn+1), remain:C.hist?null:G.deck.slice(G.turn+1).slice().sort((a,b)=>a-b),
     ps:G.players.map(p=>[p.name,p.type==='human'?'h':p.type==='naive'?'n':p.type==='pro'?'p':'r',p.peer||'',p.score,p.uniq,p.hist,p.used.map(u=>[u.ind,u.total,u.fut?1:0,u.k||0]),p.foreUsed?1:0,p.foreTurn,p.fut?1:0,p.pick!==null?1:0,p.hand,p.brand==null?-1:p.brand,p.contract?[p.contract.id,p.contract.x==null?-1:p.contract.x]:null,p.roundStart||0]),
-    last:rev&&G.last?G.last.map(x=>[x.ind,x.base,x.total,x.fut?1:0,x.k]):null, cnt:rev?G.cnt:null,
+    last:rev&&G.last?G.last.map(x=>[x.ind,x.base,x.total,x.fut?1:0,x.k,x.pw||'']):null, cnt:rev?G.cnt:null,
     peek:G.phase==='choose'?Object.fromEntries(G.players.filter(p=>p.peer&&p.foreUsed&&p.foreTurn===G.turn&&G.turn+1<TURNS).map(p=>[p.peer,G.deck[G.turn+1]])):{},
     divs:G.divs};
   emit('state',st);
@@ -3317,7 +3317,7 @@ function guestApply(st){
   if(!Array.isArray(st.ps) || !Array.isArray(st.shown) || !st.r) return;
   const prev=G, cfg=guestCfg(st);
   TURNS=Math.max(1,Math.min(6,+st.r.n||4));
-  const last=Array.isArray(st.last)?st.last.map(x=>({ind:x[0],base:x[1],total:x[2],fut:!!x[3],k:x[4]})):null;
+  const last=Array.isArray(st.last)?st.last.map(x=>({ind:x[0],base:x[1],total:x[2],fut:!!x[3],k:x[4],pw:typeof x[5]==='string'&&/^[^<>&"']{0,30}$/.test(x[5])?x[5]:''})):null;
   G={online:true, host:false, cfg, turn:+st.turn||0, phase:st.ph, deck:st.shown.slice(), remain:st.remain, last, cnt:st.cnt, divs:Array.isArray(st.divs)?st.divs:[], ov:null,
      players:st.ps.map((a,i)=>({seat:i,name:String(a[0]).slice(0,16),type:a[1]==='h'?'human':a[1]==='n'?'naive':a[1]==='p'?'pro':'read',peer:a[2]||null,score:+a[3]||0,uniq:+a[4]||0,hist:Array.isArray(a[5])?a[5]:[0],
        used:(a[6]||[]).map((u,j)=>({ind:u[0],total:u[1],fut:!!u[2],k:+u[3]||0,turn:j})),foreUsed:!!a[7],foreTurn:a[8],fut:!!a[9],pick:a[10]?-1:null,hand:Array.isArray(a[11])?a[11]:[],shown:+a[3]||0,
@@ -3335,6 +3335,7 @@ function guestApply(st){
   G.me=G.players.findIndex(p=>p.peer===NET.myPeer); G.active=G.me;
   // 送信済みの自分の手は、ホストの確認が届くまで・届いた後も手元で覚えておく
   if(G.me>=0 && G.phase==='choose' && prev && prev.me===G.me && prev.turn===G.turn && prev.players[G.me] && prev.players[G.me].pick!==null && prev.players[G.me].pick>=0) G.players[G.me].pick=prev.players[G.me].pick;
+  guestB4(st);
   const pk=st.peek && G.me>=0 ? st.peek[NET.myPeer] : undefined; if(Number.isInteger(pk)) G.deck[G.turn+1]=pk;
   if(last){ G.players.forEach((p,i)=>{ if(last[i]){ p.pick=last[i].ind; p.shown=p.score-last[i].total; } }); }
   const key=(G.round||0)+':'+G.turn+':'+G.phase;
@@ -3342,13 +3343,13 @@ function guestApply(st){
     NET.fxKey=key;
     if(G.phase==='choose'){ const ms=reduced()?300:introMs(); NET.introUntil=Date.now()+ms; newsSfx(); setTimeout(()=>{ if(G&&G.online&&!G.host) render(); }, ms+20); }
     if(G.phase==='settle'){ sfx('fanfare'); setTimeout(()=>{ if(G&&G.ov==='settle') confetti(); },300); }
-    if(G.phase==='countdown'){ guestCountdown(); }
+    if(G.phase==='countdown'){ if(prev && prev.osp && !prev.osp.shown && G.osp && G.osp.shown) ospShowFx(G.deck[G.turn]); guestCountdown(); }
     if(G.phase==='reveal'){ if(NET.counting){ NET.pending=true; } else { render(); playFlip(revealFx); return; } }
     if(G.phase==='final'){ recordResult(); render(); scrollTo(0,0); startCeremony(); return; }
   } else if(G.phase==='reveal' || G.phase==='final'){ G.players.forEach(p=>p.shown=p.score); }
   if(Date.now()<NET.introUntil && G.phase==='choose') G.ov='intro';
   if(G.phase==='settle') G.ov='settle';
-  if(NET.counting) G.ov='count';
+  if(NET.counting){ G.ov='count'; G.countText=(prev&&prev.countText)||'3'; }   /* カウントダウン中に新しい状態が届いても、表示中の数字を引きつぐ */
   if(FLIP_DONE && G.phase==='reveal') G.ov='flip';
   render();
 }
@@ -5425,12 +5426,17 @@ function ospPreview(c){
 }
 function ospAnnounce(){
   G.osp.shown=true; G.deck[G.turn]=G.osp.real; const n=G.osp.real;
-  render(); sfx('slam'); haptic(50);
+  render();
+  ospShowFx(n, ()=>{ if(G && G.phase==='choose') startReveal(); });
+}
+function ospShowFx(n, done){
+  if(!G || n==null || !G.cfg.table[n]) { done&&done(); return; }
+  sfx('slam'); haptic(50);
   let t=0;
   const el=document.createElement('div'); el.className='osp-ann';
-  const go=()=>{ clearTimeout(t); el.remove(); if(G && G.phase==='choose') startReveal(); };
+  const go=()=>{ clearTimeout(t); el.remove(); done&&done(); };
   el.onclick=go;
-  el.innerHTML=`<div class="osp-box"><span class="label">🔔 15:30 大引け速報</span><b class="osp-h">${esc(nm(n))}！</b>${impactChips(n,'ip-tv')}<span class="note">タップで結果へ</span></div>`;
+  el.innerHTML=`<div class="osp-box"><span class="label">🔔 15:30 大引け速報</span><b class="osp-h">${esc(nm(n))}！</b>${impactChips(n,'ip-tv')}<span class="note">${done?'タップで結果へ':'タップで閉じる'}</span></div>`;
   document.body.appendChild(el);
   try{ tone(1568,1.3,'sine',.05,0); tone(2093,1.1,'sine',.025,.02); newsFxSfx(n); }catch(e){}
   try{ if(S.tts) speakNews(n); }catch(e){}
@@ -5501,7 +5507,7 @@ function pwHint(){
   if(!G || !G.pw || G.phase!=='choose' || G.active<0) return '';
   const i=G.active, k=pwOf(i); if(!k) return '';
   let extra='';
-  if(k==='toki' && ospPending()) extra=`<br><b>最後のNEWSは「${esc(nm(G.osp.real))}」</b>（あなただけが知っています）`;
+  if(k==='toki' && ospPending() && G.osp.real!=null) extra=`<br><b>最後のNEWSは「${esc(nm(G.osp.real))}」</b>（あなただけが知っています）`;
   if(k==='aoi' && G.players[i].brand!=null) extra=`<br>推し産業：<b style="color:var(--i${G.players[i].brand})">${IND[G.players[i].brand]}</b>`;
   if(k==='yui' && G.players[i].pwUsed) extra='<br>（もう使いました）';
   if(k==='ren' && isFinalTurn()){ const pre=G.players.map(q=>q.score); extra = pwMult(i,pre)===3 ? '<br><b>条件クリア！ この大引けは ×3</b>' : '<br>いまは条件を満たしていません（×2）'; }
@@ -5557,6 +5563,28 @@ function pwDexPanel(){
     <div class="pwdex">${keys.map(k=>{ const c=PWR[k], r=st[k]||{g:0,w:0}, col=(CHARS[c.ch]||{}).c||'#ffc83a';
       return `<button class="pwdx${r.g?'':' lock'}${r.w?' win':''}" style="--pc:${col}" onclick="openSheet('pw')"><span class="pwdx-ic">${r.g?c.ic:'?'}</span><b>${r.g?c.n:'？？？'}</b><span class="note">${r.g?`${r.g}回 · 1位${r.w}回`:'まだ使っていない'}</span>${r.w?'<i class="pwdx-crown">👑</i>':''}</button>`; }).join('')}</div>
     <p class="note">「あそぶ」→ こだわり設定 →「🃏 投資家カード」をオンにすると、毎回ちがうカードが配られます。8枚すべてで1位を取ると実績「投資家マスター」。</p></section>`;
+}
+/* ---- β4・投資家カードをオンライン対戦でも：ホストが伏せたNEWSの候補・クジラ・投資家カードを送る（本当の最後のNEWSは、トキの人にだけ） ---- */
+function netB4(){
+  if(!G.b4 && !G.pw) return {};
+  const o={b4:G.b4?1:0};
+  if(G.osp) o.osp={c:G.osp.cand, i:G.osp.idx, a:G.cfg.table[G.osp.idx], s:G.osp.shown?1:0};
+  if(G.osp && !G.osp.shown && G.pw){ o.tk={}; G.players.forEach((p,i)=>{ if(G.pw[i]==='toki' && p.peer) o.tk[p.peer]=G.osp.real; }); }
+  if(G.whale) o.wh={p:G.whale.pick, h:G.whale.hand};
+  if(G.pw){ o.pw=G.pw; o.pg=G.pwGain||null; }
+  return o;
+}
+function guestB4(st){
+  G.b4=!!st.b4;
+  const ok=n=>Number.isInteger(n)&&n>=0&&n<6;
+  if(st.osp && Array.isArray(st.osp.c) && st.osp.c.every(ok) && Number.isInteger(st.osp.i) && st.osp.i>=6 && st.osp.i<40 && Array.isArray(st.osp.a) && st.osp.a.length===6 && st.osp.a.every(v=>typeof v==='number'&&isFinite(v))){
+    const C=G.cfg={...G.cfg, table:G.cfg.table.map(r=>r.slice()), names:G.cfg.names.slice()};
+    C.table[st.osp.i]=st.osp.a.slice(); C.names[st.osp.i]='？？？';
+    const mine=st.tk && NET.myPeer ? st.tk[NET.myPeer] : undefined;
+    G.osp={cand:st.osp.c.slice(), idx:st.osp.i, shown:!!st.osp.s, real:ok(mine)?mine:undefined};
+  }
+  if(st.wh && Array.isArray(st.wh.h) && st.wh.h.every(ok)) G.whale={pick:ok(st.wh.p)?st.wh.p:null, hand:st.wh.h.slice(), used:[]};
+  if(Array.isArray(st.pw) && st.pw.length===G.players.length && st.pw.every(k=>k===null||PWR[k])){ G.pw=st.pw.slice(); if(Array.isArray(st.pg)&&st.pg.length===G.players.length&&st.pg.every(v=>Number.isInteger(v))) G.pwGain=st.pg.slice(); }
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
