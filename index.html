@@ -1970,6 +1970,26 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .iv-btn:hover,.iv-btn:focus-visible{background:color-mix(in srgb,var(--gold) 22%,var(--panel2))}
 .iv-done{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:12px;font-weight:700;color:var(--muted)}
 @keyframes ivblink{50%{opacity:.25}}
+.xc{display:flex;align-items:center;gap:10px;margin:2px 0 8px;padding:6px 8px 6px 12px;border-radius:14px;background:linear-gradient(100deg,var(--k1),var(--k2) 55%,var(--k3));box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .35),0 6px 16px -10px var(--k3);color:#1a1438;transition:background .8s}
+.xc-t{display:flex;align-items:baseline;gap:6px;flex:none;font-size:12px;font-weight:800}
+.xc-t b{font-family:var(--display);font-weight:400;font-size:18px;letter-spacing:.02em}
+.xc-t small{font-size:10px;opacity:.75}
+.xc-rail{position:relative;flex:1;height:4px;margin:0 8px;border-radius:9px;background:rgb(255 255 255 / .55)}
+.xc-lunch{position:absolute;left:45.45%;width:0;top:-4px;bottom:-4px;border-left:2px dotted rgb(26 20 56 / .45)}
+.xc-rail i{position:absolute;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:rgb(255 255 255 / .7);box-shadow:0 0 0 1.5px rgb(26 20 56 / .35)}
+.xc-rail i.done{background:#1a1438;box-shadow:none}
+.xc-rail i.now{opacity:0}
+.xc-sun{position:absolute;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffbe0,#ffd23a 60%,#ff9d1a);box-shadow:0 0 0 3px rgb(255 230 120 / .45),0 0 16px #ffd23a;transform:translateY(var(--y));transition:left .9s cubic-bezier(.3,.9,.3,1),transform .9s}
+.xc-sun.eve{background:radial-gradient(circle at 40% 35%,#ffe9d0,#ff8a4c 60%,#e2463a);box-shadow:0 0 0 3px rgb(255 160 110 / .45),0 0 16px #ff7a4c}
+.xc-q{flex:none;width:24px;height:24px;border-radius:50%;border:0;font:inherit;font-size:12px;font-weight:800;cursor:pointer;background:rgb(255 255 255 / .6);color:#1a1438}
+.xc-bell{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:10px auto 0;padding:6px 14px;width:max-content;max-width:100%;border-radius:999px;background:rgb(255 255 255 / .12);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .35);color:#fff;font-size:13px;animation:achin .5s cubic-bezier(.2,.9,.3,1.3) .5s both}
+.xc-bell span{display:inline-block;animation:xcring .6s ease-in-out .7s 3}
+.xc-bell b{font-family:var(--display);font-weight:400;font-size:16px}.xc-bell em{font-style:normal;font-weight:800;opacity:.85}
+.xc-bell.last{background:rgb(255 111 111 / .22);box-shadow:inset 0 0 0 1.5px #ff8a7a}
+.xc-mini{display:flex;flex-wrap:wrap;gap:4px}.xc-mini i{font-style:normal;font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;background:linear-gradient(90deg,#bfe6ff,#ffb070);color:#1a1438}
+.xc-chip{font-family:var(--display);font-size:12px;padding:2px 8px;border-radius:999px;background:linear-gradient(90deg,var(--k1),var(--k2));color:#1a1438;white-space:nowrap}
+@media (max-width:560px){ .xc-hud{display:none} } @media (min-width:561px){ .xc-dock{display:none} }
+@keyframes xcring{0%,100%{transform:rotate(0)}25%{transform:rotate(-18deg)}75%{transform:rotate(18deg)}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3441,7 +3461,7 @@ function render(){
   if(tb) tb.innerHTML=''; document.body.classList.remove('has-tabbar');
   if(G.phase==='final'){ app.innerHTML=tape(null)+hud()+finalView(); renderOv(); return; }
   const news=G.deck[G.turn];
-  app.innerHTML=tape(news)+hud()+`<section class="rivals" aria-label="プレイヤー">${seatsView()}</section><section class="stage">${paperCard(news)}${sideInfo()}</section>${G.phase==='reveal'?revealDock():handDock(news)}`;
+  app.innerHTML=tape(news)+hud()+`<section class="rivals" aria-label="プレイヤー">${seatsView()}</section>${xcBar()}<section class="stage">${paperCard(news)}${sideInfo()}</section>${G.phase==='reveal'?revealDock():handDock(news)}`;
   renderOv();
   if(phone()){ const r=document.querySelector('.rivals'); const a=document.querySelector('.seat.active'); if(r&&a) r.scrollLeft=Math.max(0,a.offsetLeft-16); }
   const tl=document.getElementById('tl'), now=tl&&tl.querySelector('.now'); if(now) tl.scrollLeft=Math.max(0,now.offsetLeft-60);
@@ -4429,6 +4449,7 @@ function termsBody(){
     ['👑','独占（どくせん）',`その産業を出したのが自分だけのとき。ボーナス +${b} がもらえます。`, lane(4,[0],`<span class="tm-st g">独占 +${b}</span>`)],
     ['💥','被り（かぶり）',`2人以上が同じ産業を出したとき。${hitTxt}。`, lane(3,[0,1],'<span class="tm-st r">被り！</span>')],
     ['🔭',f.name,f.desc+' 1試合に1回だけ使えます。',''],
+    ['🔔','寄り付き・大引け（よりつき・おおびけ）','1試合は、株の取引所の1日。最初のターンが朝9:00の「寄り付き（取引のはじまり）」、最後のターンが15:30の「大引け（取引のおわり）」です。お昼休み（11:30〜12:30）の前を「前場（ぜんば）」、後を「後場（ごば）」といいます。','<span class="xc-mini"><i>9:00 寄り付き</i><i>前場</i><i>後場</i><i>15:30 大引け</i></span>'],
     ['🏆','POINT（ポイント）',`もらった点数の合計。${TURNS}ターン終わったとき、いちばん多い人の勝ち。${C.tiebreak?'同点なら独占の回数が多い人が上。':''}`,'']
   ];
   return `<h3 class="ttl" style="font-size:22px">ことばの説明</h3><p class="note">わからない言葉があったら、いつでもここを開いてね。</p>
@@ -4441,7 +4462,7 @@ const FURI=[['先物取引','さきものとりひき'],['脱炭素','だつた�
   ['金融','きんゆう'],['製造','せいぞう'],['小売','こうり'],['運輸','うんゆ'],['市場','しじょう'],['相場','そうば'],['結果','けっか'],['対戦','たいせん'],['試合','しあい'],['設定','せってい'],
   ['記録','きろく'],['図鑑','ずかん'],['実況','じっきょう'],['号外','ごうがい'],['新聞','しんぶん'],['指数','しすう'],['価格','かかく'],['急騰','きゅうとう'],['投資','とうし'],['資産','しさん'],
   ['消費','しょうひ'],['旅行','りょこう'],['加速','かそく'],['資源','しげん'],['円安','えんやす'],['革命','かくめい'],['予想','よそう'],['最終','さいしゅう'],['優勝','ゆうしょう'],['逆転','ぎゃくてん'],
-  ['殿堂','でんどう'],['解説','かいせつ'],['説明','せつめい'],['挑戦','ちょうせん'],['練習','れんしゅう'],['未来','みらい'],['歴史','れきし'],['名前','なまえ'],['勝利','しょうり'],['実績','じっせき'],
+  ['寄り付き','よりつき'],['大引け','おおびけ'],['前場','ぜんば'],['後場','ごば'],['殿堂','でんどう'],['解説','かいせつ'],['説明','せつめい'],['挑戦','ちょうせん'],['練習','れんしゅう'],['未来','みらい'],['歴史','れきし'],['名前','なまえ'],['勝利','しょうり'],['実績','じっせき'],
   ['報酬','ほうしゅう'],['配当','はいとう'],['規制','きせい'],['競争','きょうそう'],['好景気','こうけいき'],['景気','けいき'],['不況','ふきょう'],['決算','けっさん'],['戦略','せんりゃく'],['偵察','ていさつ'],
   ['保険','ほけん'],['作戦','さくせん'],['平均','へいきん'],['順位','じゅんい'],['自己','じこ'],['更新','こうしん'],['操作','そうさ'],['表示','ひょうじ']
 ].sort((a,b)=>b[0].length-a[0].length);
@@ -5251,6 +5272,30 @@ function ivAnswer(step,i){
   } else return;
   render();
 }
+/* ---- マーケットクロック：1試合を取引所の1日に見立てる。ターンが進むと 9:00 寄り付き → 前場 → 後場 → 15:30 大引け と空の色が変わる ---- */
+function xcAt(i,N){
+  const f = N>1 ? i/(N-1) : 0, m = Math.round(f*330/5)*5;   /* 前場150分＋後場180分 */
+  const mins = m<=150 ? 540+m : 750+(m-150), hh=Math.floor(mins/60), mm=String(mins%60).padStart(2,'0');
+  const ses = i===0 ? '寄り付き' : i===N-1 ? '大引け' : mins<690 ? '前場' : '後場';
+  const sky = f<.2 ? ['#ffd9a8','#8fc8ff','#4a7fd6'] : f<.55 ? ['#bfe6ff','#5fb2ff','#2f6fd0'] : f<.85 ? ['#ffe0a0','#ffb070','#6a78d0'] : ['#ffb27a','#ff6f6f','#5b3d9a'];
+  return {f, t:`${hh}:${mm}`, ses, sky};
+}
+const xcOn = () => !!G && !G.cfg.hist && G.phase!=='final' && G.phase!=='settle';
+function xcBar(){
+  if(!xcOn()) return '';
+  const x=xcAt(G.turn,TURNS), y=Math.round(Math.sin(x.f*Math.PI)*-10);
+  const ticks=Array.from({length:TURNS},(_,i)=>{ const a=xcAt(i,TURNS); return `<i class="${i<G.turn?'done':i===G.turn?'now':''}" style="left:${a.f*100}%"></i>`; }).join('');
+  return `<div class="xc" style="--k1:${x.sky[0]};--k2:${x.sky[1]};--k3:${x.sky[2]}" aria-label="取引所の時刻 ${x.t} ${x.ses}">
+    <span class="xc-t"><b>${x.t}</b>${x.ses}${isLong()?`<small>${termName(G.round)}</small>`:''}</span>
+    <span class="xc-rail"><span class="xc-lunch" title="お昼休み"></span>${ticks}<span class="xc-sun${x.f>=.85?' eve':''}" style="left:${x.f*100}%;--y:${y}px"></span></span>
+    <button class="xc-q" onclick="openSheet('terms')" aria-label="寄り付き・大引けの意味">？</button></div>`;
+}
+function xcBell(){
+  if(!xcOn()) return '';
+  const x=xcAt(G.turn,TURNS), first=G.turn===0, last=G.turn===TURNS-1;
+  if(first||last) setTimeout(()=>{ if(!G||G.ov!=='intro') return; tone(1568,1.3,'sine',.05,0); tone(2093,1.1,'sine',.025,.02); tone(784,1.4,'sine',.03,0); },350);
+  return `<div class="xc-bell${last?' last':''}"><span>${first||last?'🔔':'🕐'}</span><b>${x.t} ${x.ses}</b><em>${first?'取引スタート！':last?'今日さいごの取引！':'取引中'}</em></div>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5456,7 +5501,7 @@ function newsIntro(n){
   return `<div class="overlay intro news-tv${quake(n)}" onclick="endIntro()"><div class="tv-flash"></div>${newsFx(n)}<div class="box">
     <div class="tv-top"><span class="tv-live">● LIVE</span><span class="tv-ch">AZAKEI NEWS</span><span class="tv-turn">${turnLabel()}</span></div>
     <div class="tv-band"><span class="tv-tag">速報</span><span class="tv-head">${nm(n)}！</span></div>
-    ${impactChips(n,'ip-tv')}${introMkt()}${skip}</div>
+    ${impactChips(n,'ip-tv')}${introMkt()}${xcBell()}${skip}</div>
     <div class="tv-ticker"><div>${tick}${tick}</div></div></div>`;
 }
 function newsSfx(){
@@ -5518,7 +5563,7 @@ function hud(){
   const pips = isLong() ? Array.from({length:G.rounds},(_,r)=>`<span class="term${r===G.round?' cur':''}">${Array.from({length:TURNS},(_,i)=>pip(r,i)).join('')}</span>`).join('') : Array.from({length:TURNS},(_,i)=>pip(0,i)).join('');
   const left=G.phase==='final'?0:TURNS-1-G.turn;
   return `<div class="hud"><div class="logo"><span class="mk"></span><span class="hide-sm" style="color:inherit">AZAKEI</span> <span>MARKET</span>${G.cfg.fut?'<span class="modechip fut">未来</span>':G.cfg.hist?'<span class="modechip">歴史</span>':''}</div>
-    <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div>${G.demo?'<span class="demotag">DEMO · タップで遊ぶ</span>':''}<span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${G.boss&&G.phase!=="final"?(b=>`<span class="mktchip" style="--m1:${b.c};--m2:#2a0510">${b.ic} ${b.ab}</span>`)(BOSSES.find(b=>b.id===G.boss)):""}${(curMarket()||(G.evt&&MARKETS[G.evt])||(G.srule&&MARKETS[G.srule]))&&G.phase!=="final"?(()=>{ const m=curMarket()||MARKETS[G.evt||G.srule]; return `<span class="mktchip" style="--m1:${m.c1};--m2:${m.c2}">${m.ic} ${m.n}${G.evt?" WEEK":""}</span>`; })():""}
+    <div class="row" style="gap:8px"><div class="pips" aria-hidden="true">${pips}</div>${G.demo?'<span class="demotag">DEMO · タップで遊ぶ</span>':''}<span class="turnlbl">${G.phase==='final'?'GAME OVER':`${turnLabel()}`}</span>${xcOn()?(x=>`<span class="xc-chip xc-hud" style="--k1:${x.sky[0]};--k2:${x.sky[1]}" title="取引所の時刻">${x.t}</span>`)(xcAt(G.turn,TURNS)):""}${G.boss&&G.phase!=="final"?(b=>`<span class="mktchip" style="--m1:${b.c};--m2:#2a0510">${b.ic} ${b.ab}</span>`)(BOSSES.find(b=>b.id===G.boss)):""}${(curMarket()||(G.evt&&MARKETS[G.evt])||(G.srule&&MARKETS[G.srule]))&&G.phase!=="final"?(()=>{ const m=curMarket()||MARKETS[G.evt||G.srule]; return `<span class="mktchip" style="--m1:${m.c1};--m2:${m.c2}">${m.ic} ${m.n}${G.evt?" WEEK":""}</span>`; })():""}
     ${G.phase==='final'?'':`<span class="deckchip hide-sm" title="このあと出るNEWSの数"><span class="mini-back"></span>残り${left}</span>`}
     ${G.online?`<span class="codechip hide-sm">${esc(NET.code||'')}</span>`:''}<button class="btn ghost icon tblbtn" onclick="openSheet('table')" aria-label="全体の点数表">📊<span class="hide-sm"> 点数表</span></button>${helpB}${snd}<button class="btn ghost icon" onclick="quit()">${G.online?(G.host?'ロビーへ':'退出'):'やめる'}</button></div></div>`;
 }
@@ -5619,7 +5664,7 @@ function handDock(news){
   return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
     <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
-    <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span></div>
+    <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>
     ${known?`<div class="peek"><span class="label" style="color:var(--cyan-tx)">${p.fut?'先物取引':'未来予測'} · 次のNEWS（あなただけ）</span><b>${nextLabel}</b></div>`:''}
     ${isLong()&&(p.contract||p.brand!=null)?`<div class="secret">${p.contract?`<span class="ctchip"><i>極秘契約</i>${esc(contractText(p.contract))}<b>+${contractVal(p.contract)}</b></span>`:""}${p.brand!=null?`<span class="brd" style="--c:var(--i${p.brand})"><i>ブランド</i>${IND[p.brand]} +1</span>`:""}</div>`:""}
