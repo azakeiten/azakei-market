@@ -2015,6 +2015,15 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 .osp-mio .gd-ava{width:42px;height:42px;font-size:21px}
 .osp-mio-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
 .osp-mio-t b:first-child{font-size:14px}.osp-mio-t p{margin:0;font-size:13px;line-height:1.6}
+.pwc{border:0;padding:0 4px;margin-left:4px;background:none;font-size:15px;line-height:1;cursor:pointer;vertical-align:middle}
+.vspw{display:block;font-style:normal;font-size:11px;font-weight:800;line-height:1.4;margin-top:3px;padding:3px 8px;border-radius:8px;background:rgb(255 255 255 / .14);color:#ffe9a8;max-width:220px}
+.pw-hint{display:flex;gap:8px;align-items:flex-start;padding:8px 12px;border-radius:14px;font-size:12px;line-height:1.5;background:linear-gradient(100deg,rgb(255 200 58 / .16),transparent),var(--panel2);box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .55)}
+.pw-hint b:first-child{display:block}
+.pw-ic{font-size:22px;line-height:1}.pw-ic.big{flex:none;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:26px;background:radial-gradient(circle at 35% 30%,#fff,#ffc83a 85%);box-shadow:0 4px 10px -4px rgb(0 0 0 / .4)}
+.pw-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin:10px 0}
+.pw-card{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.pw-card.on{box-shadow:inset 0 0 0 2px var(--gold)}
+.pw-tx{display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:1.5;min-width:0}.pw-tx b{font-size:15px}.pw-tx em{font-style:normal;font-size:12px;font-weight:800;color:var(--gold-t)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2664,7 +2673,7 @@ function start(data){
   applyLook();
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.league===undefined) S.league=!!load('azakei-league-on');
-  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.lg===undefined) S.lg=load('azakei-league')||null;
+  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
@@ -2729,7 +2738,8 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   G.league = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.league) ? leagueJoin(G.players.map(p=>p.name)) : null;   // リーグ戦の何試合目か
   G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
   G.b4 = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.b4 && !G.cfg.hist && !long);   /* β4ルール：大引けサプライズ（最後のNEWSは出したあとに発表・点数2倍） */
-  G.whale = G.b4 && G.players.length===2 ? {hand:[0,1,2,3,4,5], pick:null, used:[]} : null;   /* β4：2人のときは🐋クジラ（点数を数えない大口投資家）が参加 */
+  G.whale = G.b4 && G.players.length===2 ? {hand:[0,1,2,3,4,5], pick:null, used:[]} : null;
+  G.pw = G.b4 && S.pwOn ? pwAssign() : null;   /* 投資家カード（試作）：全員が1枚ずつ、ずっと効く能力を持つ */   /* β4：2人のときは🐋クジラ（点数を数えない大口投資家）が参加 */
   G.closeX = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.closeX && !G.b4);   /* 大引け2倍：β3ルールに足す特別ルール（記録には入れない） */
   G.tac = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.tacOn && G.players.filter(isHuman).length===1) ? {used:{}, now:null} : null;   // 作戦カード（1人プレイのふだんの対戦だけ）
   if(bs) G.players[1].boss=true;
@@ -2750,12 +2760,12 @@ function beginTurn(){
   G.players.forEach(p=>{ p.pick=null; p.fut=false; p.shown=p.score; });
   if(G.tac) G.tac.now=null;
   ospHide();
-  G.players.forEach(p=>{ if(!isHuman(p)) p.pick = G.osp && !G.osp.shown && p.foreUsed && p.foreTurn===G.turn-1 ? cpuPick(p,whaleField(),ospRealDeck(),G.turn,G.cfg,G.rnd||Math.random) : cpuPick(p,whaleField(),G.deck,G.turn,G.cfg,G.rnd||Math.random); });
+  G.players.forEach((p,i)=>{ if(!isHuman(p)){ const know = G.osp && !G.osp.shown && ((p.foreUsed && p.foreTurn===G.turn-1) || pwOf(i)==='toki'); p.pick = cpuPick(p,whaleField(),know?ospRealDeck():G.deck,G.turn,pcfg(i),G.rnd||Math.random); } });
   G.phase='choose'; G.active=-1; G.sel=null;
   clearTimeout(introTimer);
   if(G.turn===0 && !G.online && !G.vsShown && !reduced()){   // 対戦前のVS画面 → NEWSの順
     G.vsShown=true; G.ov='vs'; render(); sfx('open'); haptic(20);
-    introTimer=setTimeout(endVs, 2400); return;
+    introTimer=setTimeout(endVs, G.pw?5200:2400); return;
   }
   G.ov='intro';
   render(); newsSfx(); netSync();
@@ -2774,7 +2784,7 @@ function vsOverlay(){
   const mode = G.duel ? (G.duel.target!=null ? `挑戦状 · ${esc(G.duel.from)}さんの ${G.duel.target}点を超えろ！` : '挑戦状 · この点数で友だちに勝負！') : bsv ? `WEEKLY BOSS · ${bsv.ic} ${bsv.n}「${bsv.ab}」` : G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : C.ex ? 'CLASSIC EX MATCH · 18種から6種' : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
       <div class="ava${i===me?frc():''}" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
-      ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b><span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
+      ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b>${G.pw&&G.pw[i]?`<em class="vspw">🃏 ${PWR[G.pw[i]].ic} ${PWR[G.pw[i]].n}</em>`:''}<span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
   return `<div class="overlay vs${fin||bsv?' final':''}" onclick="endVs()" style="${cu?`--cc:${cu.c}`:bsv?`--cc:${bsv.c}`:''}"><div class="vsbg"></div>${fin?'<div class="vsfinal">FINAL</div>':bsv?'<div class="vsfinal">BOSS</div>':''}
@@ -2853,12 +2863,12 @@ function resolveTurn(){
   const C=G.cfg, cnt=[0,0,0,0,0,0];
   G.players.forEach(p=>cnt[p.pick]++);
   if(G.whale){ const w=G.whale; w.pick=whaleNext(); cnt[w.pick]++; w.hand=w.hand.filter(c=>c!==w.pick); w.used.push(w.pick); }
-  G.last=G.players.map(p=>{
-    const base=baseFor(C,p,G.deck,G.turn,p.pick), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], gain(C,base,cnt[p.pick])))*(closeXOn()?2:1);
+  const pre=G.players.map(q=>q.score); G.last=G.players.map((p,pi)=>{
+    const pc=pcfg(pi), base=baseFor(pc,p,G.deck,G.turn,p.pick), pb=pwBonus(pi,p,base,cnt[p.pick]), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], gain(pc,base,cnt[p.pick])+pb.v))*(closeXOn()?pwMult(pi,pre):1);
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++;
     p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick]});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
-    return {ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick]};
+    return {ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t};
   });
   if(G.log) G.log.push(G.deck[G.turn]);
   G.cnt=cnt; G.phase='reveal'; G.active=G.online?G.me:-1; render(); netSync();
@@ -3443,6 +3453,7 @@ function renderSheet(){
   else if(k==='login') body=loginBody();
   else if(k==='cmp') body=hkBody();
   else if(k==='album') body=albumBody();
+  else if(k==='pw') body=pwBody();
   else if(k==='title') body=titleBody();
   else if(k==='table') body=fullTableBody();
   else if(k==='quiz') body=quizBody();
@@ -3848,7 +3859,7 @@ function glossPanel(){
 const BOARD_MAX=20;
 function boardLoad(){ const b=load('azakei-board'); return Array.isArray(b)?b:[]; }
 function boardRecord(){
-  if(!G || G.online || isLong() || G.boardDone || G.tac || G.closeX || G.cfg.my) return; G.boardDone=true;
+  if(!G || G.online || isLong() || G.boardDone || G.tac || G.closeX || G.pw || G.cfg.my) return; G.boardDone=true;
   const b=boardLoad(), now=Date.now(), mode=G.cfg.fut?'未来編':G.cfg.hist?'歴史':'クラシック', added=[];
   G.players.forEach((p,i)=>{ if(!isHuman(p)) return; const e={n:String(p.name).slice(0,12), s:p.score, u:p.uniq, m:mode, t:now, k:now+'-'+i}; b.push(e); added.push(e.k); });
   b.sort((a,c)=>c.s-a.s || c.u-a.u || a.t-c.t); const top=b.slice(0,BOARD_MAX); save('azakei-board', top);
@@ -4296,7 +4307,7 @@ const REC_DEF=[
   {k:'comeback', ic:'🔄', n:'最大の逆転勝ち', u:'点差'}
 ];
 function recordBests(p, me, won){
-  if(!G || isLong() || G.tac || G.closeX || G.demo || G.cfg.my) return [];     /* ロング版・作戦カード・デモは記録しない */
+  if(!G || isLong() || G.tac || G.closeX || G.pw || G.demo || G.cfg.my) return [];     /* ロング版・作戦カード・デモは記録しない */
   const P=S.prof, st=P.st;
   if(!P.rec){ P.rec={}; if(st.best>0) P.rec.hi={v:st.best, d:0}; }   /* 前からの最高点は引き継ぐ */
   const others=G.players.filter((q,i)=>i!==me), so=others.map(q=>q.score);
@@ -4596,7 +4607,7 @@ function setupSummary(){
   const mode={classic:'クラシック',history:'歴史モード',future:'未来編',ex:'クラシックEX',my:'マイNEWS'}[S.mode]||'クラシック';
   const hc=S.seats.filter(s=>s.type==='human').length, cpu=S.seats.length-hc, d=DIFFS.find(x=>x[0]===diffNow());
   const who = hc>1 ? `${hc}人で回す${cpu?`＋CPU ${cpu}人`:''}` : `CPU ${cpu}人${S.autoDiff?`・おまかせ（${AUTO_LV[autoLv()][1]}）`:d?`・${d[1]}`:''}`;
-  return `${mode}・${S.len==="long"?"ロング":"ショート"} ／ ${who}${S.b4&&S.mode!=="history"&&S.mode!=="future"&&S.len!=="long"?(S.seats.length===2?" ／ 🆕β4＋🐋クジラ":" ／ 🆕β4"):S.closeX?" ／ 🔔大引け2倍":""}`;
+  return `${mode}・${S.len==="long"?"ロング":"ショート"} ／ ${who}${S.b4&&S.mode!=="history"&&S.mode!=="future"&&S.len!=="long"?(S.seats.length===2?" ／ 🆕β4＋🐋クジラ":" ／ 🆕β4")+(S.pwOn?"＋🃏":""):S.closeX?" ／ 🔔大引け2倍":""}`;
 }
 /* ---- 「？」ヘルプ：いまの画面でできることを、ミオが3つにしぼって教える ---- */
 function helpCtx(){
@@ -5398,6 +5409,67 @@ function ospMio(){
   if(!ospPending() || (S.prof&&S.prof.ospSeen) || G.online) return '';
   return `<div class="osp-mio">${guideAva()}<div class="osp-mio-t"><b>ミオ：はじめての「大引けサプライズ」！</b><p>最後のNEWSは、まだ誰も知らないよ。来るのは上の${G.osp.cand.length}つのどれか。<b>どのNEWSでもそこそこ点が取れるカード</b>は安全だけど、みんなも同じことを考えるかも…？ 点数は2倍だから、ビリでも逆転できるよ！</p><button class="btn gold" onclick="S.prof.ospSeen=1;saveProfile();sfx('click');render()">わかった！</button></div></div>`;
 }
+/* ---- 投資家カード（試作）：全員が1枚、ずっと効く能力を持つ。CPUはキャラに合ったカード。
+   検証（4人・8種からランダム・各数千ゲーム）：どの能力の勝率も 20〜29%（基準25%）、同点 19.5%→5.5%、最終ターン前のトップがそのまま勝つ 75%→54% ---- */
+const PWR={
+  haru:  {ch:'ハル',   ic:'🔥', n:'全力投資', d:'独占ボーナスが +3（ふつうは +2）'},
+  nagi:  {ch:'ナギ',   ic:'🌊', n:'群衆の波', d:'3人以上が同じ産業に集まったら、その中にいても +1'},
+  yui:   {ch:'ユイ',   ic:'🌙', n:'逆張り',   d:'基本POINTが +2 以下の産業で独占したら +2（1回だけ）'},
+  aoi:   {ch:'アオイ', ic:'🎀', n:'推し活',   d:'推し産業（はじめに決まる）は いつも +1。推しで独占したら さらに +1'},
+  minato:{ch:'ミナト', ic:'📊', n:'データ派', d:'先物取引の手数料が 0'},
+  toki:  {ch:'トキ',   ic:'⌛', n:'老練の勘', d:'大引けサプライズで、最後のNEWSを先にこっそり知っている'},
+  ren:   {ch:'レン',   ic:'⚡', n:'挑戦者',   d:'最後のターンの前に、自分より点が高い人が半分以上いたら、大引けは ×3'},
+  mio:   {ch:'ミオ',   ic:'📒', n:'予習',     d:'1ターン目にもらう点数 +2'}
+};
+function setPw(on){ S.pwOn=!!on; save('azakei-pw',S.pwOn); sfx('click'); render(); }
+const pwOf = i => G && G.pw ? G.pw[i] : null;
+function pwAssign(){
+  const rnd=G.rnd||Math.random, keys=Object.keys(PWR), out=new Array(G.players.length).fill(null), used=new Set();
+  G.players.forEach((p,i)=>{ if(isHuman(p)) return; const k=Object.keys(PWR).find(x=>PWR[x].ch===charKey(p)); if(k && !used.has(k)){ out[i]=k; used.add(k); } });
+  G.players.forEach((p,i)=>{ if(out[i]) return; const free=shuffle(keys.filter(k=>!used.has(k)),rnd); out[i]=free[0]; used.add(free[0]); });
+  G.players.forEach((p,i)=>{ if(out[i]==='aoi') p.brand=Math.floor(rnd()*6); });
+  return out;
+}
+function pcfg(i){
+  const k=pwOf(i); if(!k) return G.cfg;
+  if(k==='haru') return {...G.cfg, bonus:(G.cfg.bonus||0)+1};
+  if(k==='minato') return {...G.cfg, fee:0};
+  return G.cfg;
+}
+function pwBonus(i,p,base,k){
+  const w=pwOf(i); if(!w) return {v:0,t:''};
+  if(w==='nagi' && k>=3) return {v:1,t:'🌊群衆の波 +1'};
+  if(w==='yui' && k===1 && base<=2 && !p.pwUsed){ p.pwUsed=true; return {v:2,t:'🌙逆張り +2'}; }
+  if(w==='aoi' && k===1 && p.pick===p.brand) return {v:1,t:'🎀推しで独占 +1'};
+  if(w==='mio' && G.turn===0 && !(G.round>0)) return {v:2,t:'📒予習 +2'};
+  if(w==='haru' && k===1) return {v:0,t:'🔥全力投資 +1'};
+  if(w==='minato' && p.fut && base>0) return {v:0,t:'📊手数料0'};
+  return {v:0,t:''};
+}
+function pwMult(i,pre){
+  if(pwOf(i)!=='ren') return 2;
+  const n=pre.length, above=pre.filter(v=>v>pre[i]).length;
+  return above>=Math.ceil(n/2) ? 3 : 2;
+}
+function pwChip(i){ const k=pwOf(i); return k ? `<button class="pwc" onclick="openSheet('pw')" title="${PWR[k].n}：${PWR[k].d}" aria-label="投資家カード ${PWR[k].n}">${PWR[k].ic}</button>` : ''; }
+function pwHint(){
+  if(!G || !G.pw || G.phase!=='choose' || G.active<0) return '';
+  const i=G.active, k=pwOf(i); if(!k) return '';
+  let extra='';
+  if(k==='toki' && ospPending()) extra=`<br><b>最後のNEWSは「${esc(nm(G.osp.real))}」</b>（あなただけが知っています）`;
+  if(k==='aoi' && G.players[i].brand!=null) extra=`<br>推し産業：<b style="color:var(--i${G.players[i].brand})">${IND[G.players[i].brand]}</b>`;
+  if(k==='yui' && G.players[i].pwUsed) extra='<br>（もう使いました）';
+  if(k==='ren' && isFinalTurn()){ const pre=G.players.map(q=>q.score); extra = pwMult(i,pre)===3 ? '<br><b>条件クリア！ この大引けは ×3</b>' : '<br>いまは条件を満たしていません（×2）'; }
+  return `<div class="pw-hint"><span class="pw-ic">${PWR[k].ic}</span><span><b>投資家カード「${PWR[k].n}」</b>${PWR[k].d}${extra}</span></div>`;
+}
+function pwBody(){
+  const cur=G&&G.pw;
+  return `<span class="label">INVESTOR CARDS · 試作</span><h3 class="ttl" style="font-size:22px">🃏 投資家カード</h3>
+    <p class="note">ゲームのはじめに、全員が1枚ずつもらいます。能力はゲームのあいだ、ずっと効きます。CPUは自分のキャラのカードを持ちます。</p>
+    <div class="pw-list">${Object.entries(PWR).map(([k,x])=>{ const who=cur?G.players.map((p,i)=>G.pw[i]===k?p.name:null).filter(Boolean):[];
+      return `<div class="pw-card${who.length?' on':''}"><span class="pw-ic big">${x.ic}</span><span class="pw-tx"><b>${x.n}</b><span class="note">${x.ch}のカード</span><span>${x.d}</span>${who.length?`<em>🙋 ${who.map(esc).join('・')}</em>`:''}</span></div>`; }).join('')}</div>
+    <p class="note" style="font-size:11px">CPU同士の検証では、どの能力の勝率も20〜29%（4人戦の基準は25%）に収まっています。試作なので、遊んだ感想で調整していきます。</p>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5704,7 +5776,7 @@ function seatsView(){
     const lead = p.score===top && top>0 && G.phase!=='reveal';
     return `<div class="seat${G.teams?' team t'+G.teams[i]:''}${(G.online?i===G.me:isHuman(p)&&humans()===1)?' me':''}${i===G.active?' active':''}" data-i="${i}">${lead?CROWN('crown'):''}<span class="rk">#${rk[i]}</span>
       <div class="ava${i===myIndex()?frc():''}" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</div>
-      <div class="nm">${esc(p.name)}${isHuman(p)?'':`<span class="tagx${p.type==='pro'?' pro':''}">${cpuLabel(p)}</span>`}</div>
+      <div class="nm">${esc(p.name)}${pwChip(i)}${isHuman(p)?'':`<span class="tagx${p.type==='pro'?' pro':''}">${cpuLabel(p)}</span>`}</div>
       <div class="sc" id="sc${i}">${G.phase==='reveal'?p.shown:p.score}${spark(p.hist)}</div>
       <div class="meta">${p.used.filter(u=>Math.floor(u.turn/TURNS)===(G.round||0)).map(u=>`<span class="dot c${u.ind}" title="${IND[u.ind]}" role="img" aria-label="出した産業：${IND[u.ind]}"></span>`).join('')}${p.brand!=null?`<span class="brd sm" style="--c:var(--i${p.brand})" title="ブランド">${IND[p.brand]}</span>`:""}<span class="eye${p.foreUsed?' on':''}" title="未来予測">${EYE}${p.foreUsed?FORE[G.cfg.fore].short+'済':'未使用'}</span></div>
       <div class="play">${play}</div></div>`;
@@ -5758,14 +5830,14 @@ function handDock(news){
   const C=G.cfg, p=G.players[G.active];
   const known=p.foreUsed && p.foreTurn===G.turn, next=known?G.deck[G.turn+1]:null;
   const row=p.fut?next:news, n=p.hand.length;
-  const ptsOf=c=>ospPending()?null:(p.fut?futBase(C.table[row][c],C):C.table[row][c])+(p.brand===c?1:0);
+  const ptsOf=c=>ospPending()?null:(p.fut?futBase(C.table[row][c],pcfg(G.active)):C.table[row][c])+(p.brand===c?1:0);
   const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return cardHTML(c,{click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`}); }).join('');
   const dealKey=G.turn+':'+G.active, deal=G.dealKey!==dealKey; G.dealKey=dealKey;
   const canFore=!p.foreUsed && G.turn<TURNS-1, fdef=FORE[C.fore];
   const cmpBtn = G.online ? '' : `<button class="ipf-link hk-open" onclick="openSheet('cmp')" aria-label="手札のカードを見くらべる">📊 くらべる</button>`;
   let preview=`<span>カードを選ぶと、独占したときと被ったときの点数が出ます</span>${cmpBtn}`;
   if(G.sel!==null && ospPending()) preview=ospPreview(G.sel)+cmpBtn;
-  else if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(C,b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
+  else if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(pcfg(G.active),b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
     <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}
@@ -5774,7 +5846,7 @@ function handDock(news){
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>
     ${known?`<div class="peek"><span class="label" style="color:var(--cyan-tx)">${p.fut?'先物取引':'未来予測'} · 次のNEWS（あなただけ）</span><b>${nextLabel}</b></div>`:''}
     ${isLong()&&(p.contract||p.brand!=null)?`<div class="secret">${p.contract?`<span class="ctchip"><i>極秘契約</i>${esc(contractText(p.contract))}<b>+${contractVal(p.contract)}</b></span>`:""}${p.brand!=null?`<span class="brd" style="--c:var(--i${p.brand})"><i>ブランド</i>${IND[p.brand]} +1</span>`:""}</div>`:""}
-    ${ospMio()}${whaleHint()}${speedArm(p)}${partnerHint(p)}
+    ${ospMio()}${pwHint()}${whaleHint()}${speedArm(p)}${partnerHint(p)}
     ${G.online?"":coachHTML(p)}
     <div class="preview">${preview}</div>
     ${tacRow()}
@@ -5792,7 +5864,7 @@ function myResultBar(){
   const r0=rankAt(before), r1=rankAt(G.players.map(q=>q.score)), mv=r0-r1;
   const kind = r.k===1 ? '独占！' : `${r.k}人で被り`;
   return `<div class="myres${r.k===1?' mono':''}${r.total<0?' neg':''}"><span class="mr-ind" style="background:var(--i${r.ind})">${svg(r.ind,2.2)}</span>
-    <span class="mr-t"><b>${IND[r.ind]} · ${kind}${r.fut?' · 先物':''}${closeXOn()?' · 大引け×2':''}</b><span class="note">合計 ${p.score}pt</span></span>
+    <span class="mr-t"><b>${IND[r.ind]} · ${kind}${r.fut?' · 先物':''}${closeXOn()?(r.total!==0&&G.pw&&pwOf(me)==='ren'&&pwMult(me,G.players.map((q,j)=>q.score-G.last[j].total))===3?' · 大引け×3':' · 大引け×2'):''}${r.pw?` · ${r.pw}`:''}</b><span class="note">合計 ${p.score}pt</span></span>
     <b class="mr-v">${sgn(r.total)}</b><span class="mr-rk${G.turn+(G.round||0)>0&&mv>0?" up":G.turn+(G.round||0)>0&&mv<0?" down":""}">${r1}位${G.turn+(G.round||0)===0?"":mv>0?` ▲${mv}`:mv<0?` ▼${-mv}`:''}</span></div>`;
 }
 /* ---- 実況：ターンの結果をアナウンサーがひとことで伝える（読み上げオンなら声でも） ---- */
@@ -5976,7 +6048,7 @@ function playView(){
       ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span><button class="dchip d-auto${S.autoDiff?" on":""}" onclick="setAutoDiff(true)"><i>🤖</i>おまかせ</button>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${!S.autoDiff&&diffNow()===k?" on":""}" onclick="setAutoDiff(false);setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>${S.autoDiff?`<p class="note tagnote">🤖 おまかせ：いまは「${AUTO_LV[autoLv()][1]}」。1位を取ると強く、最下位だとやさしくなります。</p>`:''}`:""}
       ${!party&&S.seats.some(s=>s.type!=="human")?oppRow():''}
       ${party?'':`<details class="adv-box"${S.advOpen?' open':''} ontoggle="S.advOpen=this.open"><summary><span>⚙️ こだわり設定</span><small>人数・CPUの性格・チーム戦などの特別ルール</small></summary>`}
-      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.b4?" on":""}" onclick="setB4(${!S.b4})"><i>🆕</i>β4ルール（大引けサプライズ）</button>${S.b4?'':`<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button>`}</div>${S.b4?'<p class="note tagnote">🆕 β4ルール：最後のターンだけ、NEWSを伏せたままカードを出します。候補の中のどれが来るかを読んで勝負。点数は2倍なので、最後まで逆転できます。オフにすると、ルールブックどおりのβ3で遊べます。</p>':''}${!S.b4&&S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
+      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.b4?" on":""}" onclick="setB4(${!S.b4})"><i>🆕</i>β4ルール（大引けサプライズ）</button>${S.b4?`<button class="dchip${S.pwOn?" on":""}" onclick="setPw(${!S.pwOn})"><i>🃏</i>投資家カード（試作）</button>`:''}${S.b4?'':`<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button>`}</div>${S.b4?'<p class="note tagnote">🆕 β4ルール：最後のターンだけ、NEWSを伏せたままカードを出します。候補の中のどれが来るかを読んで勝負。点数は2倍なので、最後まで逆転できます。オフにすると、ルールブックどおりのβ3で遊べます。</p>':''}${S.b4&&S.pwOn?'<p class="note tagnote">🃏 投資家カード（試作）：全員が1枚ずつ、ずっと効く特別な能力を持ちます。CPUはキャラに合った能力。<button class="ipf-link" onclick="openSheet(\'pw\')">8枚の能力を見る</button> 記録とランキングには入りません。</p>':''}${!S.b4&&S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
       ${leagueNote()}
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
@@ -6078,7 +6150,7 @@ function recordResult(){
   const futBest=Math.max(-99,...p.used.filter(u=>u.fut).map(u=>u.total));
   P.ind=P.ind||[0,0,0,0,0,0]; P.indm=P.indm||[0,0,0,0,0,0]; P.indp=P.indp||[0,0,0,0,0,0]; P.indc=P.indc||[0,0,0,0,0,0]; p.used.forEach(u=>{ P.ind[u.ind]++; if(u.k===1) P.indm[u.ind]++; P.indp[u.ind]+=u.total; P.indc[u.ind]++; });   // indp・indc：平均点用（数えはじめてからの点と回数）
   G.recBroke=recordBests(p, me, won);
-  st.games++; if(won) st.wins++; if(!G.closeX) st.best=Math.max(st.best,p.score); st.mono+=p.uniq; if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
+  st.games++; if(won) st.wins++; if(!G.closeX && !G.pw) st.best=Math.max(st.best,p.score); st.mono+=p.uniq; if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
   const xp = Math.round((20 + Math.max(0,p.score)*3 + p.uniq*5 + (won?40:0) + (G.online?15:0)) * (G.evt?1.5:1));   // 今週のイベント参加中はXP1.5倍
   const mis = progressMissions({p, won, rank:mine?mine.rank:9, hist:!!G.cfg.hist, daily:!!G.daily});
   const before=lvInfo(P.xp); P.xp+=xp+mis.xp; const after=lvInfo(P.xp);
@@ -6095,7 +6167,7 @@ function recordResult(){
   if(won && G.players.some(q=>q.type==='pro')) unlock('beatpro');
   if(p.uniq>=3) unlock('mono3'); if(futBest>=4) unlock('fut4');
   if(won && G.cfg.hist) unlock('hist'); if(G.online) unlock('online');
-  if(p.score>=15 && !G.closeX) unlock('big15'); if(won && lastAt3) unlock('comeback'); if(st.games>=20) unlock('games20');
+  if(p.score>=15 && !G.closeX && !G.pw) unlock('big15'); if(won && lastAt3) unlock('comeback'); if(st.games>=20) unlock('games20');
   if(G.daily){ P.daily=P.daily||{}; if(!P.daily[G.daily]) P.daily[G.daily]={score:p.score, rank:mine?mine.rank:0, grid:resultGrid(p)};
     const ks=Object.keys(P.daily).sort(); while(ks.length>60) delete P.daily[ks.shift()];
     if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
