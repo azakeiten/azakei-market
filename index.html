@@ -2095,6 +2095,36 @@ html.light .pwn{color:#fff}
 .stg-sec{display:block;width:100%;margin:6px 0 2px;font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--gold-t)}
 .stg-pw{width:180px;height:250px;margin:8px auto}
 .stg-pw .pwf{padding:12px 10px}.stg-pw .pwf-ic{width:64px;height:64px;font-size:34px}.stg-pw .pwf-n{font-size:20px}.stg-pw .pwf-d{font-size:12px}
+.lob{position:relative;overflow:hidden;margin-top:14px;padding:16px 16px 14px;border-radius:24px;background:radial-gradient(120% 90% at 100% 0%,rgb(255 200 58 / .16),transparent 55%),radial-gradient(90% 80% at 0% 100%,rgb(79 227 255 / .14),transparent 60%),linear-gradient(160deg,#2a2470,#17163f 70%);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .12),0 20px 40px -24px #000;color:#fff;display:flex;flex-direction:column;gap:12px}
+.lob-bg{position:absolute;right:-30px;top:-10px;width:230px;height:200px;opacity:.28;pointer-events:none;transform:rotate(-8deg)}
+.lob-fan{position:relative;width:100%;height:100%}.lob-fan .card{position:absolute;left:50%;top:30px;width:72px}
+.lob-brand{position:relative;display:flex;align-items:center;gap:6px;font-family:var(--display);font-size:13px;letter-spacing:.06em;color:#cfd3ff}.lob-brand b{font-weight:400;color:#ffd23a}
+.lob-brand .mk{width:16px;height:16px;border-radius:5px;background:conic-gradient(var(--i0) 0 60deg,var(--i1) 0 120deg,var(--i2) 0 180deg,var(--i3) 0 240deg,var(--i4) 0 300deg,var(--i5) 0)}
+.lob-ver{font-family:var(--body);font-size:10px;font-weight:800;padding:1px 6px;border-radius:6px;background:#ffd23a;color:#2a1a00}
+.lob-me{position:relative;display:flex;align-items:center;gap:12px}
+.lob-ava{flex:none;width:58px;height:58px;font-size:26px;border:0;cursor:pointer;grid-row:auto}
+.lob-who{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.lob-greet{font-size:12px;font-weight:800;color:#cfd3ff}.lob-title{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.15;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lob-lv{display:flex;align-items:center;gap:6px}.lob-lv i{font-style:normal;font-size:11px;font-weight:800;padding:1px 6px;border-radius:6px;background:#ffd23a;color:#2a1a00}.lob-lv .xpbar{flex:1;max-width:140px}
+.lob-rank{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;color:#fff;cursor:pointer;font:inherit}.lob-rank small{font-size:10px;font-weight:800;color:#cfd3ff}
+.lob-stats{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.lob-stats>*{display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 2px;border-radius:12px;background:rgb(255 255 255 / .08);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .1);font-size:10px;font-weight:700;color:#cfd3ff;border:0;font-family:inherit;cursor:default}
+.lob-stats button{cursor:pointer}.lob-stats b{font-size:15px;color:#fff;white-space:nowrap}
+.lob-cta{position:relative;display:flex;gap:8px}
+.lob-play{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding-block:12px}.lob-play span{font-size:22px}.lob-play small{font-family:var(--body);font-size:11px;font-weight:800;opacity:.75;max-width:100%;line-height:1.3;text-align:center}.lob-play{padding-inline:10px}
+.lob-quick{flex:none;width:92px;white-space:nowrap;padding-inline:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:linear-gradient(160deg,#3fe08f,#1fa865);color:#03210f;border:0;box-shadow:0 5px 0 #11663d}
+.lob-quick i{font-style:normal;font-size:22px;line-height:1}.lob-quick small{font-size:11px;font-weight:800}
+.lob-sub{position:relative;gap:8px}.lob-sub .btn{flex:1}
+html.light .lob{color:#fff}
+.hsec{display:flex;align-items:center;gap:10px;margin:18px 2px 2px}
+.hsec-ic{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:18px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.hsec-tx{display:flex;flex-direction:column;line-height:1.2}.hsec-tx b{font-family:var(--display);font-weight:400;font-size:17px;color:var(--ink)}.hsec-tx small{font-size:11px;color:var(--muted);font-weight:700}
+.hsec-line{flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--line),transparent)}
+.lob-jump{position:relative;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -4px;padding:0 4px}
+.lob-jump::-webkit-scrollbar{display:none}
+.lob-jump button{flex:none;display:inline-flex;align-items:center;gap:4px;padding:6px 11px;border-radius:999px;border:0;font:inherit;font-size:12px;font-weight:800;color:#fff;cursor:pointer;background:rgb(255 255 255 / .1);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .18)}
+.lob-jump i{font-style:normal}
+.hsec{scroll-margin-top:12px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5684,6 +5714,35 @@ function aiCfg(i){
   return base;
 }
 const PW_TALK={haru:'全力でいくぞ！ 独占は +3 だ！', nagi:'この波、乗るしかない！', yui:'人の行かない道に、花がある。', aoi:'推しで独占！ 最高〜！', minato:'手数料ゼロ。計算どおり。', ren:'ここからが本番だ！ ×3！', mio:'予習したとおり！', sora:'のんびり待ってて正解だった〜'};
+/* ---- ホームのロビー：2回目以降は、大きなタイトルの代わりに「あなたのロビー」。あいさつ・レベル・ランク・今日の進み具合・前回の設定ですぐ遊ぶ ---- */
+function lobbyHero(show){
+  const P=S.prof, L=lvInfo(P.xp), st=P.st||{}, it=todayItems(), done=it.filter(x=>x.ok).length;
+  const hr=new Date().getHours(), greet = hr<5?'夜ふかし中だね':hr<11?'おはよう':hr<17?'こんにちは':'こんばんは';
+  const nm=esc(NET.name||'あなた'), r=rateOf(), t=tierOf(r), day=(P.login&&P.login.day)||1, coin=P.coin||0;
+  return `<section class="lob">
+    <div class="lob-bg" aria-hidden="true"><div class="lob-fan">${show}</div></div>
+    <div class="lob-me">
+      <button class="ava lob-ava${frc()}" style="--s:${AVA_COLORS[(P.color||0)%6]}" onclick="go('me')" aria-label="マイページ">${esc(myAvatar()||initial(NET.name||'あなた'))}</button>
+      <div class="lob-who"><span class="lob-greet">${greet}、${nm}さん</span><b class="lob-title">${esc(myTitle())}</b>
+        <span class="lob-lv"><i>Lv.${L.lv}</i><span class="xpbar"><i style="width:${Math.round(L.cur/L.need*100)}%"></i></span></span></div>
+      <button class="lob-rank" onclick="go('me')" aria-label="ランク ${t?t.n:''}">${emblem(r,44)}<small>${t?t.n:''}</small></button>
+    </div>
+    <div class="lob-stats">
+      <span><b>🔥 ${day}</b>日目</span><span><b>🪙 ${coin}</b>コイン</span><span><b>${st.games||0}</b>試合</span><button onclick="jumpTo('.todaybar')"><b>${done}/${it.length}</b>今日やること</button>
+    </div>
+    <div class="lob-cta">
+      <button class="btn gold huge pulse lob-play" onclick="go('play','cpu')"><span>あそぶ</span><small>${esc(lobSummary())}</small></button>
+      <button class="btn lob-quick" onclick="lobbyQuick()" aria-label="前回の設定ですぐ始める"><i>▶</i><small>すぐ始める</small></button>
+    </div>
+    <div class="row lob-sub"><button class="btn ghost" onclick="openSheet('modes')">なにで遊ぶ？</button><button class="btn ghost" onclick="openTutorial()">遊び方</button></div>
+    <nav class="lob-jump" aria-label="ホームの中を移動">${[['📈','市場'],['🎯','おすすめ'],['🎮','あそぶ'],['📅','毎日'],['🏆','ミッション']].map(([i,n])=>`<button onclick="hsJump('${n}')"><i>${i}</i>${n}</button>`).join('')}</nav>
+  </section>`;
+}
+function lobSummary(){ const m={classic:"クラシック",history:"歴史モード",future:"未来編",ex:"クラシックEX",my:"マイNEWS"}[S.mode]||"クラシック", hc=S.seats.filter(s=>s.type==="human").length, cpu=S.seats.length-hc; return m+(S.len==="long"?"・ロング":"")+(hc>1?`・${hc}人`:`・CPU${cpu}人`)+(S.b4&&S.len!=="long"&&S.mode!=="history"&&S.mode!=="future"?"・β4":"")+(S.pwOn&&S.b4?"🃏":""); }
+function hsJump(n){ const el=document.getElementById('hs-'+n); if(!el) return; sfx('click'); el.scrollIntoView({block:'start',behavior:reduced()?'auto':'smooth'}); }
+function lobbyQuick(){ sfx('select'); if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); startGame(); }
+const HSEC_N={'きょうの市場':'市場','きょうのおすすめ':'おすすめ','あそびかたを選ぶ':'あそぶ','毎日のおたのしみ':'毎日','ミッション':'ミッション'};
+const hsec = (ic,t,sub) => `<div class="hsec" id="hs-${HSEC_N[t]||''}"><span class="hsec-ic">${ic}</span><span class="hsec-tx"><b>${t}</b><small>${sub}</small></span><i class="hsec-line"></i></div>`;
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -6195,24 +6254,28 @@ function histTable(){
 function homeView(){
   if(!homeView.ach){ homeView.ach=1; achCheck(true); }   /* 前からの進み具合で解除できる実績は、起動時にそっと解除 */
   const show=[0,1,2,3,4,5].map((c,j)=>cardHTML(c,{no:true,style:`transform:translateX(-50%) rotate(${(j-2.5)*12}deg);margin-left:${(j-2.5)*(phone()?20:28)}px;z-index:${j};animation-delay:${j*.25}s`})).join('');
-  return `<section class="hero">
+  return `${!nbNew()?lobbyHero(show):`<section class="hero">
       <div><div class="ver">CARD GAME <b>β4</b></div>
         <h1 class="title">AZAKEI<span class="m">MARKET</span></h1>
         <p class="tagline">経済を読み、相手を読み、未来を読むカードゲーム</p>
         <div class="row heroact"><button class="btn gold huge pulse" onclick="go('play','cpu')">あそぶ</button><button class="btn ghost" onclick="openTutorial()">遊び方（1分）</button><button class="btn ghost" onclick="openSheet('modes')">なにで遊ぶ？</button></div>
       </div>
-      <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>
+      <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>`}
+  ${nbNew()?'':hsec('📈','きょうの市場','ニュースで動く6つの産業')}
   ${skyScene()}
   ${nbPath()}${nbUnlocked()}
   ${nameCard()}
+  ${nbNew()?'':hsec('🎯','きょうのおすすめ','ミオが選んだ、次にやること')}
   ${nbNew()?'':homeRec()}
   ${nbNew()?'':homeTalk()}
+  ${nbNew()?'':hsec('🎮','あそびかたを選ぶ','CPU・デイリー・チャレンジ・オンライン…')}
   ${quickMenu()}
   ${nbNew()?'':pwPromo()}
-  ${nbNew()?nbLocked():`${seasonCard()}
+  ${nbNew()?nbLocked():`${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
   ${todayBar()}
   <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
   <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
+  ${hsec('🏆','ミッション','週の目標をクリアしてコインとXP')}
   ${missionsPanel()}
   ${weeklyPanel()}`}
   <nav class="homelinks"><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
