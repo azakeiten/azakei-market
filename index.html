@@ -2077,6 +2077,11 @@ html.light .cw-box{background:rgb(70 60 150 / .06)}
 html.light .pwn{color:#fff}
 .tut-osp{display:flex;flex-direction:column;align-items:center;gap:4px;width:120px;padding:12px 8px;border-radius:14px;background:linear-gradient(170deg,#fff7dd,#ffe7a6);box-shadow:inset 0 0 0 3px #1b1030;color:#1b1030}
 .tut-osp-k{font-size:11px;font-weight:800;padding:1px 8px;border-radius:6px;background:#e2463a;color:#fff}.tut-osp b{font-family:var(--display);font-weight:400;font-size:34px;line-height:1}
+.pwpop{position:absolute;left:50%;top:6px;z-index:6;display:inline-flex;align-items:center;gap:4px;padding:4px 10px 4px 6px;border-radius:999px;white-space:nowrap;font-size:12px;font-weight:800;color:#1b1030;
+  background:linear-gradient(120deg,#fff,color-mix(in srgb,var(--pc) 45%,#fff));box-shadow:0 0 0 2px var(--pc),0 6px 16px -6px var(--pc);transform:translateX(-50%);animation:pwpop 2.3s cubic-bezier(.2,1.2,.3,1) both;pointer-events:none}
+.pwpop i{font-style:normal;font-size:16px}
+@keyframes pwpop{0%{opacity:0;transform:translate(-50%,10px) scale(.5)}14%{opacity:1;transform:translate(-50%,-8px) scale(1.08)}22%{transform:translate(-50%,-6px) scale(1)}80%{opacity:1;transform:translate(-50%,-10px)}100%{opacity:0;transform:translate(-50%,-22px)}}
+.ctag{position:absolute;left:50%;bottom:30%;transform:translateX(-50%);z-index:3;padding:2px 7px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap;background:#fff;color:#1b1030;box-shadow:0 0 0 2px #ffc83a,0 4px 10px -4px #000}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3015,7 +3020,7 @@ function revealFx(){
   G.cnt.forEach((k,c)=>{ if(k===1){ anyMono=true; setTimeout(()=>burstAt(document.getElementById('lane'+c),['#ffc83a','#ffe08a','#ffffff',rootCs.getPropertyValue('--i'+c).trim()],phone()?28:44),phone()?700:420); } if(k>1) anyHit=true; });
   if(anyHit) setTimeout(()=>{ sfx('buzz'); haptic(40); },380);
   if(anyMono) setTimeout(()=>sfx('coin'),520);
-  rivalFx(prev);
+  rivalFx(prev); pwFx();
   cpuChatter(); speakLive();
   const me=myIndex(), r=me>=0?G.last[me]:null;     // 自分の見せ場はカットインで
   const streak = r ? (()=>{ const u=G.players[me].used; let n=0; for(let k=u.length-1;k>=0&&u[k].k===1;k--) n++; return n; })() : 0;
@@ -5609,6 +5614,30 @@ function pwPromo(){
       <div class="row" style="gap:8px;margin-top:6px"><button class="btn gold" onclick="pwTry()">🃏 試してみる</button><button class="btn ghost" onclick="openSheet('pw')">8枚を見る</button></div></div></section>`;
 }
 function pwTry(){ S.b4=true; save('azakei-b4',true); S.pwOn=true; save('azakei-pw',true); S.mode='classic'; S.len='short'; if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); sfx('select'); go('play'); startGame(); }
+/* ---- 能力の見える化：公開のとき、能力が効いた人の席に「発動！」。手札には、自分の能力が効くカードに小さなしるし ---- */
+function pwFx(){
+  if(!G || !G.pw || !G.last || reduced()) return;
+  G.last.forEach((r,i)=>{
+    const k=G.pw[i]; if(!k) return;
+    const x3 = k==='ren' && isFinalTurn() && r.total!==0 && pwMult(i,G.players.map((q,j)=>q.score-G.last[j].total))===3;
+    if(!r.pw && !x3) return;
+    setTimeout(()=>{
+      const el=document.querySelector(`.seat[data-i="${i}"]`); if(!el) return;
+      const c=(CHARS[PWR[k].ch]||{}).c||'#ffc83a';
+      const b=document.createElement('span'); b.className='pwpop'; b.style.setProperty('--pc',c);
+      b.innerHTML=`<i>${PWR[k].ic}</i>${PWR[k].n} 発動！${x3?' ×3':''}`;
+      el.appendChild(b); setTimeout(()=>b.remove(),2400);
+      if(i===myIndex()){ sfx('coin'); haptic(15); }
+    }, 1500+i*180);
+  });
+}
+function pwTag(p,c){
+  if(!G || !G.pw || G.phase!=='choose') return '';
+  const i=G.players.indexOf(p), k=pwOf(i); if(!k) return '';
+  if(k==='aoi' && p.brand===c) return '🎀推し';
+  if(k==='yui' && !p.pwUsed && !ospPending()){ const b=baseFor(pcfg(i),p,G.deck,G.turn,c); if(b<=2) return '🌙逆張りOK'; }
+  return '';
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -5889,7 +5918,7 @@ function cardHTML(i,o){
   return `<${tag} class="card c${i}${o.sel?' sel':''}${o.cls&&o.cls.includes('sk-')?'':skc()}${o.cls?' '+o.cls:''}" ${o.style?`style="${o.style}"`:''} ${o.click?`onclick="selectCard(${i})" aria-pressed="${!!o.sel}" aria-label="${IND[i]} ${o.pts!=null?sgn(o.pts):''}"`:''}>
     <span class="wm">${svg(i,1.4)}</span>
     ${o.pts!=null?`<span class="pt ${cls(o.pts)}">${sgn(o.pts)}</span>`:''}${o.no?`<span class="no">0${i+1}</span>`:''}
-    ${o.nx!=null?`<span class="nx">次 ${sgn(o.nx)}</span>`:''}
+    ${o.nx!=null?`<span class="nx">次 ${sgn(o.nx)}</span>`:''}${o.tag?`<span class="ctag">${o.tag}</span>`:''}
     <div class="art"><span class="disc">${svg(i)}</span></div><div class="ban">${IND[i]}</div><span class="holo"></span></${tag}>`;
 }
 const mini = i => `<div class="card mini c${i}${skc()}"><div class="art"><span class="disc">${svg(i,2.4)}</span></div><div class="ban">${IND[i]}</div></div>`;
@@ -5971,7 +6000,7 @@ function handDock(news){
   const known=p.foreUsed && p.foreTurn===G.turn, next=known?G.deck[G.turn+1]:null;
   const row=p.fut?next:news, n=p.hand.length;
   const ptsOf=c=>ospPending()?null:(p.fut?futBase(C.table[row][c],pcfg(G.active)):C.table[row][c])+(p.brand===c?1:0);
-  const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return cardHTML(c,{click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`}); }).join('');
+  const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return cardHTML(c,{tag:pwTag(p,c),click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`}); }).join('');
   const dealKey=G.turn+':'+G.active, deal=G.dealKey!==dealKey; G.dealKey=dealKey;
   const canFore=!p.foreUsed && G.turn<TURNS-1, fdef=FORE[C.fore];
   const cmpBtn = G.online ? '' : `<button class="ipf-link hk-open" onclick="openSheet('cmp')" aria-label="手札のカードを見くらべる">📊 くらべる</button>`;
