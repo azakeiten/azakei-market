@@ -2483,6 +2483,7 @@ function gain(cfg,b,k){
   else r=b;
   if(k>1 && cfg.hitPen) r-=cfg.hitPen;          // 市況「規制強化」
   if(r<0 && cfg.negMul) r*=cfg.negMul;          // 市況「不況」
+  if(cfg.ai){ if(cfg.ai.hit3 && k>=3) r+=cfg.ai.hit3; if(cfg.ai.low && k===1 && b<=2) r+=cfg.ai.low; if(cfg.ai.mono && k===1) r+=cfg.ai.mono; }   /* 投資家カードの読み（CPUとコーチの判断だけで使う。得点計算には入れない） */
   return r;
 }
 const divOf = (cfg,v) => cfg.fore==='dividend' && v>=3 ? 1 : 0;
@@ -2828,7 +2829,7 @@ function beginTurn(){
   G.players.forEach(p=>{ p.pick=null; p.fut=false; p.shown=p.score; });
   if(G.tac) G.tac.now=null;
   ospHide();
-  G.players.forEach((p,i)=>{ if(!isHuman(p)){ const know = G.osp && !G.osp.shown && ((p.foreUsed && p.foreTurn===G.turn-1) || pwOf(i)==='toki'); p.pick = cpuPick(p,whaleField(),know?ospRealDeck():G.deck,G.turn,pcfg(i),G.rnd||Math.random); } });
+  G.players.forEach((p,i)=>{ if(!isHuman(p)){ const know = G.osp && !G.osp.shown && ((p.foreUsed && p.foreTurn===G.turn-1) || pwOf(i)==='toki'); p.pick = cpuPick(p,whaleField(),know?ospRealDeck():G.deck,G.turn,aiCfg(i),G.rnd||Math.random); } });
   G.phase='choose'; G.active=-1; G.sel=null;
   clearTimeout(introTimer);
   if(G.turn===0 && G.pw && !G.pwShown && !G.online && myIndex()>=0 && !reduced()){   /* 投資家カードを配る演出 → VS → NEWS */
@@ -5242,7 +5243,7 @@ function peerIcon(peer){
 /* ---- 手札くらべ：手札のカードを1枚ずつ「独占なら／被ったら／独占できそう％／この先の強さ」で見くらべる。タップでそのカードを選ぶ ---- */
 function hkRows(){
   const p=G.players[G.active], C=G.cfg, T=C.table, t=G.turn, known=p.foreUsed&&p.foreTurn===t, row=rowFor(p,G.deck,t);
-  const vals=cardValues(C,p,G.players,G.deck,t,row,known,p.fut?futBase:null);
+  const vals=cardValues(aiCfg(G.players.indexOf(p)),p,G.players,G.deck,t,row,known,p.fut?futBase:null);
   const pool=unseen(C,G.deck,t), left=TURNS-1-t, fut=known?[G.deck[t+1]]:pool;
   const opp=G.players.filter(o=>o!==p).map(o=>oppDist(T,o,G.deck[t],pool,left));
   const base=c=>(p.fut?futBase(T[row][c],C):T[row][c])+(p.brand===c?1:0);
@@ -5653,6 +5654,7 @@ function pwFx(){
       const b=document.createElement('span'); b.className='pwpop'; b.style.setProperty('--pc',c);
       b.innerHTML=`<i>${PWR[k].ic}</i>${PWR[k].n} 発動！${x3?' ×3':''}`;
       el.appendChild(b); setTimeout(()=>b.remove(),2400);
+      if(!isHuman(G.players[i]) && PW_TALK[k]) setTimeout(()=>{ if(G && G.phase==='reveal') say(i, PW_TALK[k]); }, 700);
       if(i===myIndex()){ sfx('coin'); haptic(15); }
     }, 1500+i*180);
   });
@@ -5664,6 +5666,15 @@ function pwTag(p,c){
   if(k==='yui' && !p.pwUsed && !ospPending()){ const b=baseFor(pcfg(i),p,G.deck,G.turn,c); if(b<=2) return '🌙逆張りOK'; }
   return '';
 }
+/* ---- CPUが自分の投資家カードを理解して選ぶ：ナギは人が集まる産業に乗り、ユイは +2 以下の独占をねらい、ソラは大引けで独占をねらう ---- */
+function aiCfg(i){
+  const base=pcfg(i), k=pwOf(i), p=G.players[i]; if(!k||!p) return base;
+  if(k==='nagi') return {...base, ai:{hit3:1}};
+  if(k==='yui' && !p.pwUsed) return {...base, ai:{low:2}};
+  if(k==='sora' && isFinalTurn() && !p.foreUsed) return {...base, ai:{mono:2}};
+  return base;
+}
+const PW_TALK={haru:'全力でいくぞ！ 独占は +3 だ！', nagi:'この波、乗るしかない！', yui:'人の行かない道に、花がある。', aoi:'推しで独占！ 最高〜！', minato:'手数料ゼロ。計算どおり。', ren:'ここからが本番だ！ ×3！', mio:'予習したとおり！', sora:'のんびり待ってて正解だった〜'};
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -6467,7 +6478,7 @@ function coachHTML(p){
   if(!S.coach || !G || G.phase!=='choose') return '';
   try{
     const C=G.cfg, T=C.table, t=G.turn, known=p.foreUsed&&p.foreTurn===t, row=rowFor(p,G.deck,t);
-    const vals=cardValues(C,p,G.players,G.deck,t,row,known,p.fut?futBase:null);
+    const vals=cardValues(aiCfg(G.players.indexOf(p)),p,G.players,G.deck,t,row,known,p.fut?futBase:null);
     const pool=unseen(C,G.deck,t), left=TURNS-1-t;
     const opp=G.players.filter(o=>o!==p).map(o=>oppDist(T,o,G.deck[t],pool,left));
     const pi=G.teams?G.players.findIndex((q,k)=>q!==p&&G.teams[k]===G.teams[G.players.indexOf(p)]):-1, pp=pi>=0&&!isHuman(G.players[pi])?G.players[pi].pick:null;   // チーム戦：相棒の予定カードは被る前提
