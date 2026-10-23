@@ -2125,6 +2125,11 @@ html.light .lob{color:#fff}
 .lob-jump button{flex:none;display:inline-flex;align-items:center;gap:4px;padding:6px 11px;border-radius:999px;border:0;font:inherit;font-size:12px;font-weight:800;color:#fff;cursor:pointer;background:rgb(255 255 255 / .1);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .18)}
 .lob-jump i{font-style:normal}
 .hsec{scroll-margin-top:12px}
+.finnav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.finnav::-webkit-scrollbar{display:none}
+.finnav button{flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 12px;border-radius:999px;border:0;font:inherit;font-size:12px;font-weight:800;color:var(--ink);cursor:pointer;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.finnav i{font-style:normal}
+#fin-ch{scroll-margin-top:12px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5743,6 +5748,13 @@ function hsJump(n){ const el=document.getElementById('hs-'+n); if(!el) return; s
 function lobbyQuick(){ sfx('select'); if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); startGame(); }
 const HSEC_N={'きょうの市場':'市場','きょうのおすすめ':'おすすめ','あそびかたを選ぶ':'あそぶ','毎日のおたのしみ':'毎日','ミッション':'ミッション'};
 const hsec = (ic,t,sub) => `<div class="hsec" id="hs-${HSEC_N[t]||''}"><span class="hsec-ic">${ic}</span><span class="hsec-tx"><b>${t}</b><small>${sub}</small></span><i class="hsec-line"></i></div>`;
+/* ---- 結果画面の整理：まとまりごとに見出しをつけ、上にジャンプボタン（中身が空のまとまりは出さない） ---- */
+const fsec = (id,ic,t,body) => body && body.trim() ? `<div class="hsec" id="${id}"><span class="hsec-ic">${ic}</span><span class="hsec-tx"><b>${t}</b></span><i class="hsec-line"></i></div>${body}` : '';
+function finNav(){
+  const items=[['fin-aw','🏅','賞・能力'],['fin-iv','🎙️','号外'],['fin-an','📊','ふりかえり'],['fin-ch','📈','グラフ']];
+  return `<nav class="finnav" aria-label="結果画面の中を移動">${items.map(([id,i,n])=>`<button onclick="finJump('${id}')"><i>${i}</i>${n}</button>`).join('')}</nav>`;
+}
+function finJump(id){ const el=document.getElementById(id); if(!el){ toast('この試合にはありません'); return; } sfx('click'); el.scrollIntoView({block:'start',behavior:reduced()?'auto':'smooth'}); }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -6198,16 +6210,14 @@ function finalView(){
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
     ${mioFinal()}${autoDiffNote()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
-    ${pwFinalPanel()}${ivPanel()}
-    ${gogaiPaper()}
-    ${teamPanel()}
-    ${playAnalysis()}
     ${chalPanel()}
     ${rewardPanel()}
-    ${aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:''}
-    ${recap}
+    ${finNav()}
+    ${fsec('fin-aw','🏅','今回の賞・能力',(aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:'')+pwFinalPanel())}
+    ${fsec('fin-iv','🎙️','インタビューと号外',ivPanel()+gogaiPaper())}
+    ${fsec('fin-an','📊','ふりかえり',teamPanel()+playAnalysis()+recap)}
   </div><div class="col">
-    <section class="panel chart"><h3>POINTの推移</h3>${lineChart()}</section>
+    <section class="panel chart" id="fin-ch"><h3>POINTの推移</h3>${lineChart()}</section>
     <section class="panel"><h3>各ターンの記録</h3><p class="note">${logDeck().map((n,i)=>`T${i+1} ${C.hist?yearOf(n)+' ':''}${nm(n)}`).join(' → ')}</p>
       <div class="tbl-wrap"><table class="lt"><thead><tr><th>プレイヤー</th>${Array.from({length:totalTurns()},(_,i)=>`<th>T${i+1}</th>`).join('')}<th class="n">独占</th><th class="n">合計</th></tr></thead><tbody>${hist}</tbody></table></div></section>
   </div></div>`;
@@ -7182,7 +7192,7 @@ function pcTilt(e,el){
 const CHARS={
   'ミナト':{c:'#5f86ff', ic:'📊', d:'データ派の計算屋。期待値で冷静に動く'},
   'アオイ':{c:'#ff5c9a', ic:'🎀', d:'元気いっぱいの負けず嫌い'},
-  'ソラ':  {c:'#20c6d1', ic:'☁', d:'マイペースなのんびり屋'},
+  'ソラ':  {c:'#20c6d1', ic:'☁️', d:'マイペースなのんびり屋'},
   'ハル':  {c:'#ff7a3d', ic:'🔥', d:'全力勝負の熱血タイプ'},
   'ユイ':  {c:'#a77bff', ic:'🌙', d:'静かに稼ぐクールな策士'},
   'レン':  {c:'#eab520', ic:'⚡', d:'頂点をねらう強気な挑戦者'},
