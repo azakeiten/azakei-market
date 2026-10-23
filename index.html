@@ -2130,6 +2130,30 @@ html.light .lob{color:#fff}
 .finnav button{flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 12px;border-radius:999px;border:0;font:inherit;font-size:12px;font-weight:800;color:var(--ink);cursor:pointer;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
 .finnav i{font-style:normal}
 #fin-ch{scroll-margin-top:12px}
+.fbp{background:linear-gradient(120deg,rgb(63 224 143 / .12),transparent 60%),var(--panel)}
+.fb-faces{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:8px 0}
+.fb-faces button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;border:0;border-radius:14px;font:inherit;cursor:pointer;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink)}
+.fb-faces button:hover,.fb-faces button:focus-visible{box-shadow:inset 0 0 0 2px var(--gold)}
+.fb-faces i{font-style:normal;font-size:28px;line-height:1}.fb-faces small{font-size:10px;font-weight:800;color:var(--muted)}
+.fb-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.fb-tags button{border:0;font:inherit;font-size:12px;font-weight:800;padding:6px 11px;border-radius:999px;cursor:pointer;background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.fb-tags button.on{background:color-mix(in srgb,var(--up) 22%,var(--panel2));box-shadow:inset 0 0 0 2px var(--up)}
+.fb-say{display:flex;gap:6px}.fb-say input{flex:1;min-width:0;font:inherit;padding:8px 12px;border-radius:12px;border:0;background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.fb-kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.fb-kpi div{display:flex;flex-direction:column;align-items:center;padding:10px 4px;border-radius:14px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.fb-kpi b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--gold-t)}.fb-kpi span{font-size:11px;color:var(--muted);font-weight:700}
+.fb-dist{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:end;margin:8px 0}
+.fb-dist div{height:120px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:2px}
+.fb-dist i{width:70%;min-height:3px;max-height:70px;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,var(--gold),#e0a020)}
+.fb-dist b{font-size:12px}.fb-dist span{font-size:18px}
+.fb-h{margin:12px 0 6px;font-size:14px}
+.fb-bars{display:flex;flex-direction:column;gap:5px}
+.fb-bars div{display:grid;grid-template-columns:11.5em 1fr 2em;align-items:center;gap:8px;font-size:12px;font-weight:700}
+.fb-bars i{height:8px;border-radius:9px;background:linear-gradient(90deg,var(--up) var(--w),var(--line) var(--w))}
+.fb-bars b{text-align:right}
+.fb-grp{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.fb-grp div{display:flex;align-items:baseline;gap:6px;padding:8px 10px;border-radius:12px;background:var(--panel2);font-size:12px;font-weight:700}.fb-grp b{margin-left:auto;font-size:16px;color:var(--gold-t)}.fb-grp small{color:var(--muted)}
+.fb-says{margin:0;padding-left:1.1em;font-size:13px;line-height:1.7}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3447,7 +3471,8 @@ const BOOKS={
   history:{file:'rulebook-history.pdf', png:'rulebook-history.png', pngName:'AZAKEI_MARKET_history_rulebook.png', name:'AZAKEI_MARKET_history_rulebook.pdf', md:'AZAKEI_MARKET_history_rulebook.md', title:'歴史モード ルールブック', sub:'1964〜2022 · A4 8ページ'},
   long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況・契約カード付き · A4 8ページ'},
   future:{file:'rulebook-future.pdf', png:'rulebook-future.png', pngName:'AZAKEI_MARKET_future_rulebook.png', name:'AZAKEI_MARKET_future_rulebook.pdf', md:'AZAKEI_MARKET_future_rulebook.md', title:'未来編 ルールブック', sub:'2027〜2060 · A4 4ページ'},
-  cards:{file:'investor-cards.pdf', png:'investor-cards.png', pngName:'AZAKEI_MARKET_investor_cards.png', name:'AZAKEI_MARKET_investor_cards.pdf', title:'投資家カード（印刷用）', sub:'9枚＋クジラ · 表と裏 · A4 4ページ'}
+  cards:{file:'investor-cards.pdf', png:'investor-cards.png', pngName:'AZAKEI_MARKET_investor_cards.png', name:'AZAKEI_MARKET_investor_cards.pdf', title:'投資家カード（印刷用）', sub:'9枚＋クジラ · 表と裏 · A4 4ページ'},
+  sell:{file:'sellsheet.pdf', png:'sellsheet.png', pngName:'AZAKEI_MARKET_sellsheet.png', name:'AZAKEI_MARKET_sellsheet.pdf', title:'セルシート（商品紹介）', sub:'出版社・イベント・クラウドファンディング向け · A4 2ページ'}
 };
 // 普通のWebサイト（GitHub Pages）では、ふつうのダウンロードリンクで保存する
 function saveByLink(href,name){ const a=document.createElement('a'); a.href=href; a.download=name; a.rel='noopener'; document.body.appendChild(a); a.click(); a.remove(); closeSheet(); toast('ダウンロードを開始しました'); }
@@ -3570,6 +3595,7 @@ function renderSheet(){
   else if(k==='login') body=loginBody();
   else if(k==='cmp') body=hkBody();
   else if(k==='album') body=albumBody();
+  else if(k==='fbsum') body=fbBody();
   else if(k==='pw') body=pwBody();
   else if(k==='title') body=titleBody();
   else if(k==='table') body=fullTableBody();
@@ -5755,6 +5781,61 @@ function finNav(){
   return `<nav class="finnav" aria-label="結果画面の中を移動">${items.map(([id,i,n])=>`<button onclick="finJump('${id}')"><i>${i}</i>${n}</button>`).join('')}</nav>`;
 }
 function finJump(id){ const el=document.getElementById(id); if(!el){ toast('この試合にはありません'); return; } sfx('click'); el.scrollIntoView({block:'start',behavior:reduced()?'auto':'smooth'}); }
+/* ---- テストプレイの感想：試合のあとに「楽しかった？」を5段階＋タグ＋ひとことで記録。マイページでまとめて、コピーして送れる ---- */
+const FB_FACE=['😫','🙁','😐','🙂','🤩'];
+const FB_TAGS=['読み合いが熱い','大引けで盛り上がった','投資家カードが楽しい','経済がわかった','もう1回やりたい','ルールがむずかしい','運だと思った','長く感じた'];
+function fbPanel(){
+  if(!G || G.phase!=='final' || G.demo) return '';
+  const r=G.fbIdx!=null ? (S.prof.fb||[])[G.fbIdx] : null;
+  if(!r) return `<section class="panel fbp"><div class="row spread"><h3>📝 この試合、どうだった？</h3><span class="note">テストプレイの感想</span></div>
+    <div class="fb-faces">${FB_FACE.map((e,i)=>`<button onclick="fbRate(${i+1})" aria-label="${i+1}点"><i>${e}</i><small>${['つまらない','いまいち','ふつう','楽しい','最高！'][i]}</small></button>`).join('')}</div>
+    <p class="note">答えは、この端末のマイページ「テストプレイのまとめ」にたまります。ゲームを良くするための大事なデータです。</p></section>`;
+  return `<section class="panel fbp done"><div class="row spread"><h3>📝 ありがとう！ ${FB_FACE[r.f-1]}</h3><span class="note">あてはまるものをタップ</span></div>
+    <div class="fb-tags">${FB_TAGS.map(t=>`<button class="${r.tags.includes(t)?'on':''}" onclick="fbTag('${t}')">${t}</button>`).join('')}</div>
+    <div class="fb-say"><input id="fbsay" maxlength="60" placeholder="ひとこと（なくてもOK）" value="${esc(r.say||'')}" onchange="fbSay(this.value)"><button class="btn ghost" onclick="openSheet('fbsum')">まとめを見る</button></div></section>`;
+}
+function fbRate(f){
+  if(!G) return; const P=S.prof; P.fb=P.fb||[];
+  const me=myIndex(), rk=me>=0?ranking(G.players,G.cfg).find(x=>x.i===me):null;
+  P.fb.push({t:Date.now(), m:modeName(G.cfg), n:G.players.length, h:G.players.filter(isHuman).length, b4:!!G.b4, pw:!!G.pw, on:!!G.online, r:rk?rk.rank:0, f, tags:[], say:''});
+  if(P.fb.length>300) P.fb.shift();
+  G.fbIdx=P.fb.length-1; saveProfile(); sfx('select'); haptic(10); render();
+}
+function fbTag(t){ const r=G&&G.fbIdx!=null&&(S.prof.fb||[])[G.fbIdx]; if(!r) return; const i=r.tags.indexOf(t); if(i>=0) r.tags.splice(i,1); else r.tags.push(t); saveProfile(); sfx('click'); render(); }
+function fbSay(v){ const r=G&&G.fbIdx!=null&&(S.prof.fb||[])[G.fbIdx]; if(!r) return; r.say=String(v).replace(/[<>&"'`]/g,'').slice(0,60); saveProfile(); toast('ひとことを記録しました'); }
+function fbStats(){
+  const L=S.prof.fb||[], n=L.length, avg=a=>a.length?Math.round(a.reduce((s,x)=>s+x.f,0)/a.length*10)/10:null;
+  const tag={}; FB_TAGS.forEach(t=>tag[t]=L.filter(x=>x.tags.includes(t)).length);
+  const dist=[1,2,3,4,5].map(v=>L.filter(x=>x.f===v).length);
+  const grp=(name,fn)=>{ const a=L.filter(fn); return {name, n:a.length, avg:avg(a)}; };
+  return {n, avg:avg(L), dist, tag, again:n?Math.round(tag['もう1回やりたい']/n*100):0,
+    groups:[grp('β4ルール',x=>x.b4),grp('β3ルール',x=>!x.b4),grp('投資家カードあり',x=>x.pw),grp('人どうし（2人以上）',x=>x.h>=2||x.on),grp('CPUと1人',x=>x.h<2&&!x.on)].filter(g=>g.n),
+    says:L.filter(x=>x.say).slice(-8).reverse()};
+}
+function fbCard(){
+  const n=(S.prof.fb||[]).length; if(!n) return '';
+  const st=fbStats();
+  return `<button class="wide fb-card" onclick="openSheet('fbsum')"><span class="label">PLAYTEST</span><b>📝 テストプレイのまとめ</b><span class="desc">${n}回の感想 · 平均 ${st.avg} / 5 · もう1回やりたい ${st.again}%</span><span class="go">ひらく →</span></button>`;
+}
+function fbBody(){
+  const st=fbStats(); if(!st.n) return `<h3 class="ttl">📝 テストプレイのまとめ</h3><p class="note">まだ感想がありません。試合のあとに「この試合、どうだった？」に答えるとたまります。</p>`;
+  const mx=Math.max(1,...st.dist), tags=Object.entries(st.tag).sort((a,b)=>b[1]-a[1]);
+  return `<span class="label">PLAYTEST</span><h3 class="ttl" style="font-size:22px">📝 テストプレイのまとめ</h3>
+    <div class="fb-kpi"><div><b>${st.n}</b><span>回答</span></div><div><b>${st.avg}</b><span>平均（5点満点）</span></div><div><b>${st.again}%</b><span>もう1回やりたい</span></div></div>
+    <div class="fb-dist">${st.dist.map((v,i)=>`<div><i style="height:${Math.round(v/mx*70)}px"></i><b>${v}</b><span>${FB_FACE[i]}</span></div>`).join('')}</div>
+    <h4 class="fb-h">よく選ばれた感想</h4><div class="fb-bars">${tags.map(([t,v])=>`<div><span>${t}</span><i style="--w:${Math.round(v/st.n*100)}%"></i><b>${v}</b></div>`).join('')}</div>
+    <h4 class="fb-h">遊び方ごとの平均</h4><div class="fb-grp">${st.groups.map(g=>`<div><span>${g.name}</span><b>${g.avg}</b><small>${g.n}回</small></div>`).join('')}</div>
+    ${st.says.length?`<h4 class="fb-h">ひとこと</h4><ul class="fb-says">${st.says.map(x=>`<li>${FB_FACE[x.f-1]} ${esc(x.say)}</li>`).join('')}</ul>`:''}
+    <div class="row" style="gap:8px;margin-top:10px"><button class="btn gold big" onclick="fbCopy()">📋 まとめをコピーして送る</button></div>
+    <p class="note">友だちや家族に、それぞれのスマホで遊んでもらい、このまとめを送ってもらうと、たくさんの人の感想を集められます。</p>`;
+}
+function fbCopy(){
+  const st=fbStats();
+  const t=[`【AZAKEI MARKET テストプレイのまとめ】`, `回答 ${st.n}回 / 平均 ${st.avg}点（5点満点） / もう1回やりたい ${st.again}%`, `点数の内訳：${st.dist.map((v,i)=>`${i+1}点×${v}`).join(' ')}`,
+    `感想：${Object.entries(st.tag).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k} ${v}`).join(' / ')||'なし'}`,
+    `遊び方別：${st.groups.map(g=>`${g.name} ${g.avg}点(${g.n}回)`).join(' / ')}`, ...(st.says.length?['ひとこと：'+st.says.map(x=>x.say).join(' ／ ')]:[])].join('\n');
+  copyText(t);
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -6212,6 +6293,7 @@ function finalView(){
     ${mioFinal()}${autoDiffNote()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${chalPanel()}
     ${rewardPanel()}
+    ${fbPanel()}
     ${finNav()}
     ${fsec('fin-aw','🏅','今回の賞・能力',(aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:'')+pwFinalPanel())}
     ${fsec('fin-iv','🎙️','インタビューと号外',ivPanel()+gogaiPaper())}
@@ -6618,6 +6700,7 @@ function meView(){
     ${indPanel()}
     ${rivalsPanel()}
     ${statsCharts()}
+    ${fbCard()}
     ${historyPanel()}
     <button class="wide lab" onclick="go(\x27lab\x27)"><span class="label">LAB</span><b>バランス検証</b><span class="desc">CPU同士を大量に対戦させて、ルールの偏りを調べる開発者向けの機能。</span><span class="go">ラボを開く →</span></button>`:""}
     ${tab==="col"?`${signPanel()}${rsPanel()}${cupsPanel()}
@@ -7627,6 +7710,7 @@ function rulesView(){
       <div class="dlrow">${['classic','history','long','future'].map(k=>`<button class="dl${k==='history'?' hist':k==='long'?' long':k==='future'?' fut':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`).join('')}</div>
       <div class="row" style="gap:8px">${['classic','history','long','future'].map(k=>`<button class="btn" onclick="downloadPng('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}を画像（PNG）で保存</button>`).join('')}${['classic','history','long','future'].map(k=>`<a class="btn ghost" href="${BOOKS[k].file}" target="_blank" rel="noopener" style="text-decoration:none">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}のPDFを開く</a>`).join('')}${['classic','history','long','future'].map(k=>`<button class="btn ghost" onclick="downloadMd('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}のテキスト版（.md）</button>`).join('')}</div>
       <div class="dlrow" style="margin-top:8px"><button class="dl fut" onclick="downloadBook('cards')"><span class="dlic">PDF</span><span><b>${BOOKS.cards.title}</b><span class="note">${BOOKS.cards.sub}</span></span></button><button class="btn ghost" onclick="downloadPng('cards')">投資家カードを画像（PNG）で保存</button></div>
+      <div class="dlrow" style="margin-top:8px"><button class="dl" onclick="downloadBook('sell')"><span class="dlic">PDF</span><span><b>${BOOKS.sell.title}</b><span class="note">${BOOKS.sell.sub}</span></span></button><button class="btn ghost" onclick="downloadPng('sell')">セルシートを画像（PNG）で保存</button></div>
       <p class="note">PDFが保存できないときは「画像（PNG）で保存」を使ってください。画像は全ページを縦につないだ1枚で、どの画面でも保存できる形式です。</p></section>`;
   return `<div class="col"><div class="row spread"><h2 class="ttl">ルール</h2></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="S.rtab='${k}';sfx('click');render();scrollTo(0,0)">${l}</button>`).join('')}</div>${body}</div>`;
