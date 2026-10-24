@@ -2265,6 +2265,26 @@ html.light .lob{color:#fff}
 .gm-leg span{display:flex;align-items:center;gap:4px}.gm-leg span::before{content:"";width:14px;height:4px;border-radius:2px;background:var(--tc)}
 .gm-q{border-top:1px solid var(--line);padding:8px 0}.gm-q summary{cursor:pointer;font-size:14px;line-height:1.5}.gm-q p{margin:6px 0 0;font-size:13px;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.gm-rise,.gm-lane,.gm-lb span,.gm-stamp,.gm-p,.gm-mvp>div{animation:none}}
+.gm-unit{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 10px}
+.gm-unit button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border:0;border-radius:14px;cursor:pointer;font:inherit;text-align:left;background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.gm-unit button i{font-style:normal;font-size:22px}.gm-unit button b{font-size:14px}.gm-unit button small{font-size:11px;color:var(--muted);font-weight:700}
+.gm-unit button.on{box-shadow:inset 0 0 0 2.5px var(--gold),0 6px 16px -10px var(--gold);background:color-mix(in srgb,var(--gold) 12%,var(--panel2))}
+.gm-names .gm-ani,.gm-score .gm-ani,.gm-row .gm-ani,.gm-hrow .gm-ani,.gm-mvp .gm-ani{font-family:var(--display)}
+.pnp-card{position:relative;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:20px;overflow:hidden;color:#1b1f4b;background:linear-gradient(160deg,#fff9e6,#ffeec2);box-shadow:inset 0 0 0 2px #f2cf6b,0 10px 26px -16px #000}
+.pnp-card::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent 0 14px,rgb(27 31 75 / .035) 14px 15px);pointer-events:none}
+.pnp-fan{position:relative;flex:none;width:150px;height:118px}
+.pnp-fan i{position:absolute;left:55px;top:10px;width:44px;height:62px;border-radius:8px;display:grid;place-items:center;background:var(--c);color:#fff;box-shadow:0 0 0 2.5px #fff,0 6px 12px -6px rgb(0 0 0 / .5);transform-origin:50% 135%;transform:rotate(var(--r));animation:pnpIn .6s var(--d) both cubic-bezier(.2,1.3,.4,1)}
+.pnp-fan i svg{width:22px;height:22px}
+.pnp-news{position:absolute;left:50%;bottom:4px;transform:translateX(-50%) rotate(-4deg);padding:4px 12px;border-radius:7px;background:#1b1030;color:#ffd23a;font-family:var(--display);font-size:13px;box-shadow:0 0 0 2px #fff;white-space:nowrap}
+.pnp-tx{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.pnp-k{align-self:flex-start;font-size:10px;font-weight:800;letter-spacing:.14em;padding:2px 8px;border-radius:999px;background:#1b1f4b;color:#ffd23a}
+.pnp-tx>b{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.25}
+.pnp-d{font-size:12.5px;font-weight:700;line-height:1.6;color:#4a4060}.pnp-d b{color:#c2410c}
+.pnp-card .pnp-go{color:#1b1f4b;box-shadow:inset 0 0 0 2px #1b1f4b40;background:#fff8}
+@keyframes pnpIn{from{opacity:0;transform:rotate(0) translateY(24px)}}
+@media (max-width:480px){.pnp-card{flex-direction:column;align-items:stretch}.pnp-fan{align-self:center}}
+@media (prefers-reduced-motion:reduce){.pnp-fan i{animation:none}}
+.dl.pnp{background:linear-gradient(160deg,#fff9e6,#ffeec2);color:#1b1f4b}.dl.pnp .note{color:#6b6f8c}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2897,7 +2917,7 @@ function start(data){
   if(!data.S){ const sv=load('azakei-seats'); if(Array.isArray(sv) && sv.length>=2 && sv.length<=6 && sv.every(x=>x && typeof x.name==='string' && TYPES[x.type])) S.seats=sv; }   // 前回の席（キャラ選択）を覚えておく
   if(!S.rec) S.rec=load('azakei-rec')||{games:0,wins:0,best:0};
   if(!S.prof) S.prof=loadProfile();
-  if(!data.S){ loginStamp(); rankSeasonCheck(); duelFromUrl(); mnFromUrl(); }
+  if(!data.S){ loginStamp(); rankSeasonCheck(); duelFromUrl(); mnFromUrl(); tableFromUrl(); }
   if(S.vib===undefined){ const v=load('azakei-vib'); S.vib = v===null ? true : !!v; }
   if(S.calm===undefined) S.calm=!!load('azakei-calm');
   if(!S.len) S.len=load('azakei-len')==='long'?'long':'short';
@@ -3588,6 +3608,7 @@ const BOOKS={
   long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況・契約カード付き · A4 8ページ'},
   future:{file:'rulebook-future.pdf', png:'rulebook-future.png', pngName:'AZAKEI_MARKET_future_rulebook.png', name:'AZAKEI_MARKET_future_rulebook.pdf', md:'AZAKEI_MARKET_future_rulebook.md', title:'未来編 ルールブック', sub:'2027〜2060 · A4 4ページ'},
   cards:{file:'investor-cards.pdf', png:'investor-cards.png', pngName:'AZAKEI_MARKET_investor_cards.png', name:'AZAKEI_MARKET_investor_cards.pdf', title:'投資家カード（印刷用）', sub:'9枚＋クジラ · 表と裏 · A4 4ページ'},
+  pnp:{file:'printplay.pdf', png:'printplay.png', pngName:'AZAKEI_MARKET_print_and_play.png', name:'AZAKEI_MARKET_print_and_play.pdf', title:'印刷して遊べる体験版（無料）', sub:'産業カード36枚・NEWS6枚・場に置くカード · A4 7ページ'},
   sell:{file:'sellsheet.pdf', png:'sellsheet.png', pngName:'AZAKEI_MARKET_sellsheet.png', name:'AZAKEI_MARKET_sellsheet.pdf', title:'セルシート（商品紹介）', sub:'出版社・イベント・クラウドファンディング向け · A4 2ページ'}
 };
 // 普通のWebサイト（GitHub Pages）では、ふつうのダウンロードリンクで保存する
@@ -3939,6 +3960,7 @@ const MODES=()=>[   // 関数にして、表示するときにキャラなどを
   {g:'じっくり・ちがうルール', items:[
     ['∞','ロング版','20分','3期×6ターン。市況・極秘契約・ブランド',"closeSheet();pickLong()"],
     ['🃏','クラシックEX','5分','NEWSが18種に。毎回ちがう6種で山札ができる',"closeSheet();pickMode('ex')"],
+    ['🃏','紙のカードで遊ぶ','10分','体験版を印刷して。進行と点数はアプリにおまかせ',"closeSheet();gmOpen('player')"],
     ['📺','進行役モード','10分','教室・体験会・大人数で。最大10チームをアプリが進行',"closeSheet();gmOpen()"],
     ['📅','今月のNEWS','5分',`${monthPack().mon}は「${monthPack().theme}」。毎月6枚が入れかわる`,"closeSheet();pickMode('month')"],
     ['📜','歴史モード','5分','本当の出来事が年代順に起きる',"closeSheet();pickMode('history')"],
@@ -6085,15 +6107,20 @@ const monthPack = (d=new Date()) => MONTH_PACKS[d.getMonth()];
 /* ---- 進行役モード（教室・体験会・大人数）：アプリがNEWSの発表・相談タイマー・得点計算をする。プレイヤーは紙のカードや手で答え、
    進行役が各チームの産業を入力する。最大10チーム。チームで相談するので、会話がいちばん生まれる遊び方 ---- */
 let GM=null, GM_T=null;
+const GM_SEAT=['#e2463a','#2f6fe0','#18a06a','#d4318a','#d99a00','#7a4fe0'];   /* 体験版カードの A〜F の色 */
 const GM_ANI=['🦊','🐼','🐸','🐙','🦁','🐧','🐳','🦉','🐯','🐨'];
 const GM_COL=['#ff7a3d','#4fa0ff','#3fd0a0','#ff5c9a','#ffc83a','#a77bff','#20c6d1','#c9a46b','#8bd450','#ff8fa6'];
-function gmOpen(){ clearInterval(GM_T); GM={phase:'setup', n:4, mode:'classic', b4:true, talk:60, names:(S.prof.gmN||[]).slice(0,10)}; S.screen='gm'; render(); scrollTo(0,0); }
+function gmOpen(u){ clearInterval(GM_T); const pl=u==='player'; GM={phase:'setup', unit:pl?'player':'team', n:4, mode:'classic', b4:true, talk:pl?0:60, names:(S.prof[pl?'gmP':'gmN']||[]).slice(0,10)}; S.screen='gm'; render(); scrollTo(0,0); }
+const gu = () => GM && GM.unit==='player' ? 'プレイヤー' : 'チーム';
+const gn = () => GM && GM.unit==='player' ? '人' : 'チーム';
+function gmUnit(u){ if(GM.unit===u) return; const n=GM.n; gmOpen(u); GM.n=u==='player'?Math.min(6,n):n; render(); }
+function tableFromUrl(){ try{ if(!new URLSearchParams(location.search).get('table')) return; history.replaceState(null,'',location.pathname); setTimeout(()=>{ gmOpen('player'); toast('テーブルモード：紙のカードで遊ぶ相棒です'); },400); }catch(e){} }
 function gmSet(k,v){ GM[k]=v; sfx('click'); render(); }
 function gmStart(){
   const cfg=cfgFor(GM.mode==='month'?'month':'classic'); TURNS=4;
   GM.cfg=cfg; GM.deck=buildDeck(cfg,Math.random); GM.turn=0; GM.osp=null;
-  GM.teams=Array.from({length:GM.n},(_,i)=>({name:mnSafe(GM.names[i]||'').trim().slice(0,10)||`チーム${i+1}`, a:GM_ANI[i], c:GM_COL[i], hand:[0,1,2,3,4,5], score:0, uniq:0, pick:null, hist:[0]}));
-  GM.log=[]; S.prof.gmN=(GM.names||[]).map(x=>mnSafe(x).slice(0,10)); saveProfile();
+  GM.teams=Array.from({length:GM.n},(_,i)=>({name:mnSafe(GM.names[i]||'').trim().slice(0,10)||`${gu()}${i+1}`, a:GM.unit==='player'?'ABCDEF'[i]:GM_ANI[i], c:GM.unit==='player'?GM_SEAT[i]:GM_COL[i], hand:[0,1,2,3,4,5], score:0, uniq:0, pick:null, hist:[0]}));
+  GM.log=[]; S.prof[GM.unit==='player'?'gmP':'gmN']=(GM.names||[]).map(x=>mnSafe(x).slice(0,10)); saveProfile();
   sfx('select'); gmNews();
 }
 const gmNm = n => GM.cfg.names[n];
@@ -6139,7 +6166,7 @@ function gmRankAt(k){ const v=GM.teams.map(t=>t.hist[Math.min(k,t.hist.length-1)
 /* のこりの手札：全チームに公開。「あのチームはもう金融を出せない」と読めるのが相談のタネ */
 function gmHands(){ return `<section class="panel gm-hand"><div class="row spread"><h3>🃏 のこりの手札</h3><span class="note">使った産業はもう出せない</span></div>
   ${GM.teams.map(t=>`<div class="gm-hrow" style="--tc:${t.c}"><span class="gm-ani">${t.a}</span><b>${esc(t.name)}</b><div>${IND.map((d,c)=>`<i class="${t.hand.includes(c)?'':'used'}" style="--c:var(--i${c})" title="${d}">${svg(c,2.2)}</i>`).join('')}</div></div>`).join('')}</section>`; }
-const GM_HINT=['+3 の産業はどこ？ でも、みんなもそう思っているかも…','ほかのチームの「のこりの手札」を見てみよう','あえて +1 で独占をねらう手もある','1位のチームは、どこに出しそう？','この産業は、なぜ上がる（下がる）んだろう？','最後のために、強いカードを残しておく？'];
+const GM_HINT=['+3 の産業はどこ？ でも、みんなもそう思っているかも…','ほかの人の「のこりの手札」を見てみよう','あえて +1 で独占をねらう手もある','1位の人は、どこに出しそう？','この産業は、なぜ上がる（下がる）んだろう？','最後のために、強いカードを残しておく？'];
 function gmFull(){ try{ const d=document; if(d.fullscreenElement){ d.exitFullscreen(); return; } const p=d.documentElement.requestFullscreen&&d.documentElement.requestFullscreen(); if(p&&p.catch) p.catch(()=>toast('この画面では全画面にできません')); }catch(e){ toast('この画面では全画面にできません'); } }
 /* 試合のまとめ：名場面・グラフ・ふりかえりの問い・コピー用テキスト */
 function gmMoments(){
@@ -6150,54 +6177,56 @@ function gmMoments(){
   const L=GM.log.length, pr=gmRankAt(L-1), fr=gmRankAt(L), cb=T.map((t,i)=>({t,d:pr[i]-fr[i]})).sort((a,b)=>b.d-a.d)[0];
   if(L>1&&cb&&cb.d>0) out.push(['🔥','最終ターンの大逆転',`${cb.t.a} ${esc(cb.t.name)}が ${pr[T.indexOf(cb.t)]}位 → ${fr[T.indexOf(cb.t)]}位`]);
   let crowd=null; GM.log.forEach((L2,k)=>L2.cnt.forEach((c,ind)=>{ if(!crowd||c>crowd.c) crowd={c,ind,k}; }));
-  if(crowd&&crowd.c>=3) out.push(['🧲','いちばんの大渋滞',`T${crowd.k+1}の${IND[crowd.ind]}に ${crowd.c}チームが集中`]);
+  if(crowd&&crowd.c>=3) out.push(['🧲','いちばんの大渋滞',`T${crowd.k+1}の${IND[crowd.ind]}に ${crowd.c}${gn()}が集中`]);
   return out;
 }
 function gmChart(){
   const W=560,H=200,L=30,R=12,Tp=12,B=24, T=GM.teams, all=T.flatMap(t=>t.hist), lo=Math.min(0,...all), hi=Math.max(1,...all), N=GM.log.length;
   const x=k=>L+k*(W-L-R)/Math.max(1,N), y=v=>Tp+(hi-v)*(H-Tp-B)/(hi-lo||1);
   const ax=Array.from({length:N+1},(_,k)=>`<text x="${x(k)}" y="${H-6}" text-anchor="middle">${k?'T'+k:'開始'}</text>`).join('')+`<line x1="${L}" x2="${W-R}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line)"/>`;
-  return `<svg class="gm-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="チームごとの点数の推移">${ax}${T.map(t=>`<polyline points="${t.hist.map((v,k)=>`${x(k)},${y(v)}`).join(' ')}" fill="none" stroke="${t.c}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>${t.hist.map((v,k)=>`<circle cx="${x(k)}" cy="${y(v)}" r="4.5" fill="${t.c}" stroke="var(--panel)" stroke-width="2"><title>${esc(t.name)} ${k?'T'+k:'開始'}: ${v}pt</title></circle>`).join('')}`).join('')}</svg>`;
+  return `<svg class="gm-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${gu()}ごとの点数の推移">${ax}${T.map(t=>`<polyline points="${t.hist.map((v,k)=>`${x(k)},${y(v)}`).join(' ')}" fill="none" stroke="${t.c}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>${t.hist.map((v,k)=>`<circle cx="${x(k)}" cy="${y(v)}" r="4.5" fill="${t.c}" stroke="var(--panel)" stroke-width="2"><title>${esc(t.name)} ${k?'T'+k:'開始'}: ${v}pt</title></circle>`).join('')}`).join('')}</svg>`;
 }
 function gmQs(){ return GM.log.map((L,k)=>{ const r=GM.cfg.table[L.n], mx=Math.max(...r), up=IND.filter((d,c)=>r[c]===mx), dn=IND.filter((d,c)=>r[c]<0);
-  return `<details class="gm-q"><summary><b>Q${k+1}.</b> 「${esc(gmNm(L.n))}」で、なぜ<b>${up.join('と')}</b>が上がる？${dn.length?`（${dn.join('・')}は下がる）`:''}</summary><p>${esc(gmDesc(L.n))||'チームで理由を話し合ってみよう。'}</p></details>`; }).join(''); }
+  return `<details class="gm-q"><summary><b>Q${k+1}.</b> 「${esc(gmNm(L.n))}」で、なぜ<b>${up.join('と')}</b>が上がる？${dn.length?`（${dn.join('・')}は下がる）`:''}</summary><p>${esc(gmDesc(L.n))||'みんなで理由を話し合ってみよう。'}</p></details>`; }).join(''); }
 function gmCopy(){
-  const R=gmRank(), lines=[`AZAKEI MARKET 進行役モード（${GM.teams.length}チーム・${GM.mode==='month'?'今月のNEWS':'クラシック'}）`, 'NEWS：'+GM.log.map(L=>gmNm(L.n)).join(' → '), ...R.map(({t,r})=>`${r}位 ${t.a}${t.name} ${t.score}pt（独占${t.uniq}回）`), ...gmMoments().map(m=>`${m[0]}${m[1]}：${m[2].replace(/&[a-z#0-9]+;/g,'')}`)];
+  const R=gmRank(), lines=[`AZAKEI MARKET ${GM.unit==='player'?'テーブルモード':'進行役モード'}（${GM.teams.length}${gn()}・${GM.mode==='month'?'今月のNEWS':'クラシック'}）`, 'NEWS：'+GM.log.map(L=>gmNm(L.n)).join(' → '), ...R.map(({t,r})=>`${r}位 ${t.a}${t.name} ${t.score}pt（独占${t.uniq}回）`), ...gmMoments().map(m=>`${m[0]}${m[1]}：${m[2].replace(/&[a-z#0-9]+;/g,'')}`)];
   copyText(lines.join('\n'));
 }
 function gmName(i,v){ GM.names[i]=String(v||'').slice(0,10); }
 function gmView(){
   if(!GM) gmOpen();
-  const top=`<div class="gm-top"><span class="label">📺 進行役モード</span>${GM.phase!=='setup'?`<span class="gm-turn">TURN ${GM.turn+1}/${TURNS}${GM.b4&&gmFinal()?' · 大引け':''}</span>`:''}${document.fullscreenEnabled?'<button class="btn ghost gm-fs" onclick="gmFull()" aria-label="全画面">⛶<span> 全画面</span></button>':''}<button class="btn ghost gm-quit" onclick="gmQuit()">やめる</button></div>`;
+  const top=`<div class="gm-top"><span class="label">${GM.unit==='player'?'🃏 テーブルモード':'📺 進行役モード'}</span>${GM.phase!=='setup'?`<span class="gm-turn">TURN ${GM.turn+1}/${TURNS}${GM.b4&&gmFinal()?' · 大引け':''}</span>`:''}${document.fullscreenEnabled?'<button class="btn ghost gm-fs" onclick="gmFull()" aria-label="全画面">⛶<span> 全画面</span></button>':''}<button class="btn ghost gm-quit" onclick="gmQuit()">やめる</button></div>`;
   if(GM.phase==='setup') return `<div class="col gm">${top}
-    <section class="panel"><h2 class="ttl">みんなで遊ぶ（教室・体験会・大人数）</h2>
-      <p class="note">アプリが<b>NEWSの発表・相談タイマー・点数の計算</b>をします。各チームは紙のカードか、指で産業を決めて、進行役が入力してください。1チームの人数は何人でもOK。大きな画面やプロジェクターに映すと盛り上がります。</p>
-      <span class="label">チームの数</span><div class="gm-chips">${[2,3,4,5,6,7,8,9,10].map(v=>`<button class="${GM.n===v?'on':''}" onclick="gmSet('n',${v})">${v}</button>`).join('')}</div>
-      <span class="label">チームの名前（空欄なら「チーム1」…）</span><div class="gm-names">${Array.from({length:GM.n},(_,i)=>`<label style="--tc:${GM_COL[i]}"><span class="gm-ani">${GM_ANI[i]}</span><input maxlength="10" placeholder="チーム${i+1}" value="${esc(GM.names[i]||'')}" oninput="gmName(${i},this.value)" aria-label="チーム${i+1}の名前"></label>`).join('')}</div>
+    <section class="panel"><h2 class="ttl">${GM.unit==='player'?'紙のカードで遊ぶ（テーブルモード）':'みんなで遊ぶ（教室・体験会・大人数）'}</h2>
+      <div class="gm-unit"><button class="${GM.unit==='player'?'on':''}" onclick="gmUnit('player')"><i>🃏</i><b>紙のカードで遊ぶ</b><small>テーブルモード · 2〜6人</small></button><button class="${GM.unit!=='player'?'on':''}" onclick="gmUnit('team')"><i>📺</i><b>チーム対抗</b><small>進行役モード · 2〜10チーム</small></button></div>
+      <p class="note">${GM.unit==='player'?'印刷した体験版や製品版のカードで遊ぶときの相棒です。アプリが<b>NEWSの発表・大引けの伏せ札・点数の計算</b>をします。みんながOPENしたら、出した産業をタップするだけ。山札もメモもいりません。':'アプリが<b>NEWSの発表・相談タイマー・点数の計算</b>をします。各チームは紙のカードか、指で産業を決めて、進行役が入力してください。1チームの人数は何人でもOK。大きな画面やプロジェクターに映すと盛り上がります。'}</p>
+      <span class="label">${gu()}の数</span><div class="gm-chips">${(GM.unit==='player'?[2,3,4,5,6]:[2,3,4,5,6,7,8,9,10]).map(v=>`<button class="${GM.n===v?'on':''}" onclick="gmSet('n',${v})">${v}</button>`).join('')}</div>
+      <span class="label">${gu()}の名前（空欄なら「${gu()}1」…）</span><div class="gm-names">${Array.from({length:GM.n},(_,i)=>`<label style="--tc:${GM.unit==='player'?GM_SEAT[i]:GM_COL[i]}"><span class="gm-ani">${GM.unit==='player'?'ABCDEF'[i]:GM_ANI[i]}</span><input maxlength="10" placeholder="${gu()}${i+1}" value="${esc(GM.names[i]||'')}" oninput="gmName(${i},this.value)" aria-label="${gu()}${i+1}の名前"></label>`).join('')}</div>
       <span class="label">NEWS</span><div class="gm-chips"><button class="${GM.mode==='classic'?'on':''}" onclick="gmSet('mode','classic')">クラシック</button><button class="${GM.mode==='month'?'on':''}" onclick="gmSet('mode','month')">今月のNEWS（${monthPack().mon}）</button></div>
-      <span class="label">相談タイム</span><div class="gm-chips">${[30,60,90,120].map(v=>`<button class="${GM.talk===v?'on':''}" onclick="gmSet('talk',${v})">${v}秒</button>`).join('')}</div>
+      <span class="label">${GM.unit==='player'?'考える時間（タイマー）':'相談タイム'}</span><div class="gm-chips">${[0,30,60,90,120].map(v=>`<button class="${GM.talk===v?'on':''}" onclick="gmSet('talk',${v})">${v?v+'秒':'なし'}</button>`).join('')}</div>
       <label class="check" style="margin:8px 0"><input type="checkbox" ${GM.b4?'checked':''} onchange="gmSet('b4',this.checked)"> 最後は「大引けサプライズ」（NEWSを伏せて、点数2倍）</label>
       <button class="btn go huge" onclick="gmStart()">スタート！</button>
-      <p class="note">7チーム以上だと、同じ産業に集まりやすくなります。「みんなと被らない」読みがいっそう大事に。</p></section></div>`;
+      ${GM.unit==='player'?'<p class="note">先物取引・投資家カードは、紙のルールどおりに遊んでください（アプリの点数には入りません）。</p>':''}<p class="note" style="${GM.unit==='player'?'display:none':''}">7チーム以上だと、同じ産業に集まりやすくなります。「みんなと被らない」読みがいっそう大事に。</p></section></div>`;
   const T=GM.teams, n=GM.deck[GM.turn];
   if(GM.phase==='news'||GM.phase==='talk'){
     const paper = GM.hidden ? `<section class="gm-news osp"><span class="gm-k"><i>大引け</i>FINAL NEWS</span><b class="gm-h">最後のNEWSは伏せたまま！</b><p>来るのはこのどれか。点数は<b>2倍</b>！</p><div class="gm-cands">${GM.hidden.map(x=>`<span>${esc(gmNm(x))}</span>`).join('')}</div></section>`
       : `<section class="gm-news"><span class="gm-k"><i>速報</i>ECONOMIC NEWS</span><b class="gm-h">${esc(gmNm(n))}！</b><p>${esc(gmDesc(n))}</p>${gmPayout(n)}</section>`;
-    const talk = GM.phase==='talk' ? `<div class="gm-timer"><div class="gm-ring" id="gm-ring" style="--p:100%"><b id="gm-t">${GM.talk}</b><small>秒</small></div><p>チームで相談！ どの産業を出す？</p><p class="gm-hint">💡 ${GM_HINT[(GM.turn*2+(GM.hidden?1:0))%GM_HINT.length]}</p><button class="btn gold big" onclick="gmInput()">相談おわり → 入力へ</button></div>`
-      : `<div class="row" style="justify-content:center;gap:8px"><button class="btn go huge" onclick="gmTalk()">⏱ 相談スタート（${GM.talk}秒）</button><button class="btn ghost" onclick="gmInput()">すぐ入力</button></div>`;
+    const talk = GM.phase==='talk' ? `<div class="gm-timer"><div class="gm-ring" id="gm-ring" style="--p:100%"><b id="gm-t">${GM.talk}</b><small>秒</small></div><p>${GM.unit==='player'?'考えて、1枚選ぼう！ 相談・はったりも自由':'チームで相談！ どの産業を出す？'}</p><p class="gm-hint">💡 ${GM_HINT[(GM.turn*2+(GM.hidden?1:0))%GM_HINT.length]}</p><button class="btn gold big" onclick="gmInput()">相談おわり → 入力へ</button></div>`
+      : GM.talk ? `<div class="row" style="justify-content:center;gap:8px"><button class="btn go huge" onclick="gmTalk()">⏱ ${GM.unit==='player'?'タイマー':'相談'}スタート（${GM.talk}秒）</button><button class="btn ghost" onclick="gmInput()">すぐ入力</button></div>`
+      : `<div class="gm-timer"><p>${GM.hidden?'NEWSを伏せたまま':'みんな'}、産業カードを1枚、裏向きで出そう</p><button class="btn go huge" onclick="gmInput()">3・2・1… OPEN！ → 入力へ</button></div>`;
     return `<div class="col gm">${top}${paper}${talk}${gmBoard()}${GM.turn?gmHands():''}</div>`;
   }
   if(GM.phase==='input'){
     const all=T.every(t=>t.pick!=null);
-    return `<div class="col gm">${top}<section class="panel"><div class="row spread"><h3>各チームが出した産業を入力</h3><span class="note">${T.filter(t=>t.pick!=null).length}/${T.length}</span></div>
+    return `<div class="col gm">${top}<section class="panel"><div class="row spread"><h3>各${gu()}が出した産業を入力</h3><span class="note">${T.filter(t=>t.pick!=null).length}/${T.length}</span></div>
       <div class="gm-in">${T.map((t,i)=>`<div class="gm-row" style="--tc:${t.c}"><b><span class="gm-ani">${t.a}</span>${esc(t.name)}</b><div>${IND.map((d,c)=>`<button class="${t.pick===c?'on':''}" style="--c:var(--i${c})" ${t.hand.includes(c)?'':'disabled'} onclick="gmPick(${i},${c})" aria-label="${esc(t.name)} ${d}">${svg(c,2.2)}</button>`).join('')}</div></div>`).join('')}</div>
-      <button class="btn go huge" ${all?'':'disabled'} onclick="gmOpenUp()">${all?'3・2・1… OPEN！':'全チーム入力してね'}</button></section></div>`;
+      <button class="btn go huge" ${all?'':'disabled'} onclick="gmOpenUp()">${all?'3・2・1… OPEN！':'全${gu()}入力してね'}</button></section></div>`;
   }
   if(GM.phase==='announce'){ GM.hidden=null; const real=GM.deck[GM.turn];
     return `<div class="col gm">${top}<section class="gm-news ann"><span class="gm-k"><i>🔔</i>15:30 大引け速報</span><b class="gm-h">${esc(gmNm(real))}！</b><p>${esc(gmDesc(real))}</p>${gmPayout(real)}</section><button class="btn go huge" onclick="gmResolve()">結果を見る（点数2倍）</button></div>`; }
   if(GM.phase==='reveal'){
     const lanes=IND.map((d,c)=>{ const who=T.map((t,i)=>({t,i})).filter(x=>x.t.pick===c), k=who.length;
-      return `<div class="gm-lane${k===0?' empty':k===1?' mono':' hit'}" style="--c:var(--i${c});--d:${c*90}ms"><div class="gm-lh">${svg(c,2.2)}${d}</div><div class="gm-lb">${who.map((x,j)=>`<span style="--tc:${x.t.c};--d:${300+c*90+j*60}ms">${x.t.a} ${esc(x.t.name)} <b>${sgn(GM.last[x.i].v)}</b></span>`).join('')}</div><div class="gm-lf">${k===0?'—':k===1?'独占！':`${k}チームで被り`}</div>${k===1?'<i class="gm-stamp">独占</i>':''}</div>`; }).join('');
+      return `<div class="gm-lane${k===0?' empty':k===1?' mono':' hit'}" style="--c:var(--i${c});--d:${c*90}ms"><div class="gm-lh">${svg(c,2.2)}${d}</div><div class="gm-lb">${who.map((x,j)=>`<span style="--tc:${x.t.c};--d:${300+c*90+j*60}ms">${x.t.a} ${esc(x.t.name)} <b>${sgn(GM.last[x.i].v)}</b></span>`).join('')}</div><div class="gm-lf">${k===0?'—':k===1?'独占！':`${k}${gn()}で被り`}</div>${k===1?'<i class="gm-stamp">独占</i>':''}</div>`; }).join('');
     return `<div class="col gm">${top}<section class="gm-news gm-mini"><b class="gm-h">${esc(gmNm(n))}</b>${GM.b4&&gmFinal()?'<span class="gm-x2">×2</span>':''}</section><div class="gm-lanes">${lanes}</div>${gmBoard()}
       <button class="btn gold huge" onclick="gmNext()">${gmFinal()?'最終結果へ':'次のターンへ'}</button></div>`;
   }
@@ -6206,10 +6235,10 @@ function gmView(){
   return `<div class="col gm">${top}<section class="panel gm-fin"><span class="label">FINAL RESULT</span><div class="winner"><span>${w.map(x=>esc(x.t.name)).join('・')}</span> の勝ち！</div>
     <div class="gm-pod">${pod.map((x,j)=>`<div class="gm-p r${x.r}" style="--tc:${x.t.c};--d:${[300,700,0][j]}ms"><span class="gm-pa">${x.r===1?'👑':''}${x.t.a}</span><b>${esc(x.t.name)}</b><div style="height:${ph[x.r]||70}px"><span>${x.r}</span><small>${x.t.score}pt</small></div></div>`).join('')}</div>
     <div class="gm-score big">${R.map(({t,r})=>`<div style="--tc:${t.c}"><span class="gm-rk">${r}</span><span class="gm-ani">${t.a}</span><b>${esc(t.name)}</b><span class="note">独占 ${t.uniq}回</span><span class="gm-pt">${t.score}<small>pt</small></span></div>`).join('')}</div>
-    <div class="row" style="justify-content:center;gap:8px"><button class="btn go big" onclick="gmStart()">同じチームでもう一度</button><button class="btn big" onclick="gmOpen()">設定を変える</button><button class="btn ghost big" onclick="gmCopy()">📋 結果をコピー</button></div></section>
+    <div class="row" style="justify-content:center;gap:8px"><button class="btn go big" onclick="gmStart()">同じ${gu()}でもう一度</button><button class="btn big" onclick="gmOpen()">設定を変える</button><button class="btn ghost big" onclick="gmCopy()">📋 結果をコピー</button></div></section>
     ${mo.length?`<section class="panel"><h3>🎬 この試合の名場面</h3><div class="gm-mvp">${mo.map((m,i)=>`<div style="--d:${i*120}ms"><i>${m[0]}</i><span><small>${m[1]}</small><b>${m[2]}</b></span></div>`).join('')}</div></section>`:''}
     <section class="panel"><h3>📈 点数の推移</h3>${gmChart()}<div class="gm-leg">${GM.teams.map(t=>`<span style="--tc:${t.c}">${t.a} ${esc(t.name)}</span>`).join('')}</div></section>
-    <section class="panel"><div class="row spread"><h3>🧑‍🏫 ふりかえりの問い</h3><span class="note">タップで答えのヒント</span></div><p class="note">試合で出たNEWSについて、チームで「なぜ？」を話してみよう。</p>${gmQs()}</section></div>`;
+    <section class="panel"><div class="row spread"><h3>🧑‍🏫 ふりかえりの問い</h3><span class="note">タップで答えのヒント</span></div><p class="note">試合で出たNEWSについて、みんなで「なぜ？」を話してみよう。</p>${gmQs()}</section></div>`;
 }
 /* ---- シェアしたくなる「名場面」のひとこと：大引けの大逆転・独占の回数・投資家カード・人気予想など、その試合いちばんの見せ場を1行に ---- */
 function shareHighlight(me){
@@ -6222,6 +6251,13 @@ function shareHighlight(me){
     if(G.pw && G.pw[me]) out.push(`🃏${PWR[G.pw[me]].n}${rk===1?'で優勝':''}`);
     return out.slice(0,3).join(' ／ ');
   }catch(e){ return ''; }
+}
+/* ---- 印刷して遊べる体験版：紙のカードとアプリをつなぐ入口。PDFを刷って、テーブルモードで進行 ---- */
+function pnpPromo(){
+  const fan=[0,1,2,3,4,5].map(c=>`<i style="--c:var(--i${c});--r:${(c-2.5)*11}deg;--d:${c*.07}s">${svg(c,2.2)}</i>`).join('');
+  return `<section class="pnp-card"><div class="pnp-fan" aria-hidden="true">${fan}<span class="pnp-news">速報</span></div>
+    <div class="pnp-tx"><span class="pnp-k">PRINT &amp; PLAY · 無料</span><b>紙のカードでも遊べる！</b><span class="pnp-d">体験版のPDFを印刷して、切るだけ。2〜6人・約10分。進行と点数はアプリの<b>テーブルモード</b>におまかせ。</span>
+      <div class="row" style="gap:8px;margin-top:6px"><button class="btn gold" onclick="downloadBook('pnp')">🖨 体験版をダウンロード</button><button class="btn ghost pnp-go" onclick="gmOpen('player')">🃏 テーブルモード</button></div></div></section>`;
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
@@ -6751,6 +6787,7 @@ function homeView(){
   ${nbNew()?'':hsec('🎮','あそびかたを選ぶ','CPU・デイリー・チャレンジ・オンライン…')}
   ${quickMenu()}
   ${nbNew()?'':pwPromo()}
+  ${nbNew()?'':pnpPromo()}
   ${nbNew()?nbLocked():`${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
   ${todayBar()}
   <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
@@ -8100,6 +8137,7 @@ function rulesView(){
       <div class="dlrow">${['classic','history','long','future'].map(k=>`<button class="dl${k==='history'?' hist':k==='long'?' long':k==='future'?' fut':''}" onclick="downloadBook('${k}')"><span class="dlic">PDF</span><span><b${k==='history'?' style="font-family:var(--serif)"':''}>${BOOKS[k].title}</b><span class="note">${BOOKS[k].sub}</span></span></button>`).join('')}</div>
       <div class="row" style="gap:8px">${['classic','history','long','future'].map(k=>`<button class="btn" onclick="downloadPng('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}を画像（PNG）で保存</button>`).join('')}${['classic','history','long','future'].map(k=>`<a class="btn ghost" href="${BOOKS[k].file}" target="_blank" rel="noopener" style="text-decoration:none">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}のPDFを開く</a>`).join('')}${['classic','history','long','future'].map(k=>`<button class="btn ghost" onclick="downloadMd('${k}')">${k==='classic'?'クラシック':k==='long'?'ロング版':k==='future'?'未来編':'歴史モード'}のテキスト版（.md）</button>`).join('')}</div>
       <div class="dlrow" style="margin-top:8px"><button class="dl fut" onclick="downloadBook('cards')"><span class="dlic">PDF</span><span><b>${BOOKS.cards.title}</b><span class="note">${BOOKS.cards.sub}</span></span></button><button class="btn ghost" onclick="downloadPng('cards')">投資家カードを画像（PNG）で保存</button></div>
+      <div class="dlrow" style="margin-top:8px"><button class="dl pnp" onclick="downloadBook('pnp')"><span class="dlic">PDF</span><span><b>${BOOKS.pnp.title}</b><span class="note">${BOOKS.pnp.sub}</span></span></button><button class="btn ghost" onclick="downloadPng('pnp')">体験版を画像（PNG）で保存</button><button class="btn ghost" onclick="gmOpen('player')">🃏 テーブルモード</button></div>
       <div class="dlrow" style="margin-top:8px"><button class="dl" onclick="downloadBook('sell')"><span class="dlic">PDF</span><span><b>${BOOKS.sell.title}</b><span class="note">${BOOKS.sell.sub}</span></span></button><button class="btn ghost" onclick="downloadPng('sell')">セルシートを画像（PNG）で保存</button></div>
       <p class="note">PDFが保存できないときは「画像（PNG）で保存」を使ってください。画像は全ページを縦につないだ1枚で、どの画面でも保存できる形式です。</p></section>`;
   return `<div class="col"><div class="row spread"><h2 class="ttl">ルール</h2></div>
