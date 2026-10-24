@@ -2186,6 +2186,46 @@ html.light .lob{color:#fff}
 .ymr-c button{width:32px;height:32px;border:0;border-radius:10px;display:grid;place-items:center;cursor:pointer;background:color-mix(in srgb,var(--c) 30%,var(--panel));color:#fff;opacity:.55}
 .ymr-c button svg{width:18px;height:18px}
 .ymr-c button.on{opacity:1;background:var(--c);box-shadow:0 0 0 2px #fff,0 0 12px var(--c)}
+.gm-top{display:flex;align-items:center;gap:10px}.gm-top .btn{margin-left:auto}.gm-turn{font-family:var(--display);font-size:15px;color:var(--gold-t)}
+.gm-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.gm-chips button{min-width:44px;padding:8px 12px;border:0;border-radius:12px;font:inherit;font-weight:800;cursor:pointer;background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.gm-chips button.on{background:var(--gold);color:#2a1a00;box-shadow:none}
+.gm-news{position:relative;padding:18px 18px 16px;border-radius:20px;background:#fff7dd;color:#1b1030;box-shadow:0 14px 30px -16px #000;text-align:center}
+.gm-news.osp,.gm-news.ann{background:linear-gradient(170deg,#fff7dd,#ffe1b8)}
+.gm-k{font-size:12px;font-weight:800;letter-spacing:.14em}.gm-k i{font-style:normal;background:#e2463a;color:#fff;border-radius:5px;padding:1px 7px;margin-right:6px}
+.gm-h{display:block;font-family:var(--display);font-weight:400;font-size:clamp(30px,8vw,64px);line-height:1.15;margin:6px 0}
+.gm-news p{margin:0 0 10px;font-weight:700;font-size:clamp(13px,2.4vw,18px)}
+.gm-news.mini{padding:10px 14px}.gm-news.mini .gm-h{font-size:clamp(22px,5vw,36px);margin:0}
+.gm-x2{position:absolute;right:14px;top:8px;font-family:var(--display);font-size:28px;color:#e2463a}
+.gm-pay{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.gm-pay div{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;border-radius:12px;background:rgb(0 0 0 / .05)}
+.gm-pay .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--c);color:#fff}.gm-pay .ic svg{width:18px;height:18px}
+.gm-pay b{font-family:var(--display);font-weight:400;font-size:clamp(18px,4vw,30px)}.gm-pay small{font-size:10px;font-weight:800}
+.gm-pay .top{background:var(--gold)}.gm-pay .neg b{color:#cc3a30}
+.gm-cands{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.gm-cands span{padding:6px 12px;border-radius:999px;background:#1b1030;color:#ffd23a;font-weight:800}
+.gm-timer{display:flex;flex-direction:column;align-items:center;gap:8px}
+.gm-ring{--p:100%;width:150px;height:150px;border-radius:50%;display:grid;place-items:center;align-content:center;background:conic-gradient(var(--gold) var(--p),var(--line) 0);position:relative}
+.gm-ring::before{content:"";position:absolute;inset:10px;border-radius:50%;background:var(--panel)}
+.gm-ring b,.gm-ring small{position:relative}.gm-ring b{font-family:var(--display);font-weight:400;font-size:56px;line-height:1}.gm-ring small{font-weight:800;color:var(--muted)}
+.gm-timer p{margin:0;font-weight:800}
+.gm-score{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.gm-score div{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:var(--panel2);box-shadow:inset 4px 0 0 var(--tc)}
+.gm-score b{flex:1;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gm-rk{font-family:var(--display);font-size:16px;color:var(--gold-t);width:20px}.gm-pt{font-family:var(--display);font-size:20px}.gm-pt small{font-size:11px;color:var(--muted)}
+.gm-score.big{grid-template-columns:1fr}.gm-score.big div{padding:12px 14px}.gm-score.big .gm-pt{font-size:26px}
+.gm-in{display:flex;flex-direction:column;gap:6px;margin:8px 0 12px}
+.gm-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:12px;background:var(--panel2);box-shadow:inset 4px 0 0 var(--tc)}
+.gm-row>b{flex:none;width:68px;font-size:13px}.gm-row>div{flex:1;display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.gm-row button{height:38px;border:0;border-radius:10px;display:grid;place-items:center;cursor:pointer;background:color-mix(in srgb,var(--c) 28%,var(--panel));color:#fff}
+.gm-row button svg{width:20px;height:20px}.gm-row button.on{background:var(--c);box-shadow:0 0 0 2px #fff,0 0 12px var(--c)}.gm-row button:disabled{opacity:.15;cursor:default}
+.gm-lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+@media (min-width:900px){.gm-lanes{grid-template-columns:repeat(6,1fr)}}
+.gm-lane{border-radius:14px;overflow:hidden;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line);display:flex;flex-direction:column}
+.gm-lane.mono{box-shadow:inset 0 0 0 2.5px var(--gold),0 0 18px -6px var(--gold)}.gm-lane.hit{box-shadow:inset 0 0 0 2px #ff5c7a}.gm-lane.empty{opacity:.5}
+.gm-lh{display:flex;align-items:center;justify-content:center;gap:4px;padding:5px;background:var(--c);color:#fff;font-size:12px;font-weight:800}.gm-lh svg{width:15px;height:15px}
+.gm-lb{flex:1;display:flex;flex-direction:column;gap:3px;padding:6px;min-height:40px}
+.gm-lb span{font-size:11px;font-weight:800;padding:3px 6px;border-radius:8px;background:color-mix(in srgb,var(--tc) 25%,var(--panel));display:flex;justify-content:space-between;gap:4px}
+.gm-lf{text-align:center;font-size:11px;font-weight:800;padding:4px;color:var(--muted)}.gm-lane.mono .gm-lf{color:var(--gold-t)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3678,7 +3718,7 @@ function render(){
   if(!G){
     if(S.screen==='lobby') S.screen='play';
     const fresh=S.screen!==render.last; render.last=S.screen;
-    app.innerHTML=hud()+`<div class="screen${fresh?' in':''}">`+({home:homeView,play:playView,rules:rulesView,lab:labView,online:onlineView,me:meView,chal:chalView}[S.screen]||homeView)()+`</div>`;
+    app.innerHTML=hud()+`<div class="screen${fresh?' in':''}">`+({home:homeView,play:playView,rules:rulesView,lab:labView,online:onlineView,me:meView,chal:chalView,gm:gmView}[S.screen]||homeView)()+`</div>`;
     $('#ov').innerHTML=''; if(tb) tb.innerHTML=tabbar(); document.body.classList.add('has-tabbar'); return;
   }
   if(tb) tb.innerHTML=''; document.body.classList.remove('has-tabbar');
@@ -3860,6 +3900,7 @@ const MODES=()=>[   // 関数にして、表示するときにキャラなどを
   {g:'じっくり・ちがうルール', items:[
     ['∞','ロング版','20分','3期×6ターン。市況・極秘契約・ブランド',"closeSheet();pickLong()"],
     ['🃏','クラシックEX','5分','NEWSが18種に。毎回ちがう6種で山札ができる',"closeSheet();pickMode('ex')"],
+    ['📺','進行役モード','10分','教室・体験会・大人数で。最大10チームをアプリが進行',"closeSheet();gmOpen()"],
     ['📅','今月のNEWS','5分',`${monthPack().mon}は「${monthPack().theme}」。毎月6枚が入れかわる`,"closeSheet();pickMode('month')"],
     ['📜','歴史モード','5分','本当の出来事が年代順に起きる',"closeSheet();pickMode('history')"],
     ['✦','未来編','5分','2027→2060の未来シナリオ',"closeSheet();pickFuture()"]]},
@@ -5269,7 +5310,7 @@ function mnTake(how){
 function teachPanel(){
   const plan=[['5分','導入','「遊び方（1分）」で、NEWS・独占・被りの3つだけ確認。'],['15分','対戦','4人1組で「1台をみんなで回す」、または1人ずつCPUと。ショート（4ターン）なら1試合5分。'],['10分','ふりかえり','結果画面の「なぜ？」解説と号外新聞を見ながら、「どうしてその産業が上がったのか」を話し合う。'],['15分','発展','ワークシートで自分のNEWSを考え、「マイNEWS」に入力。QRコードでクラスに配って遊ぶ。']];
   const qs=['「旅行ブーム」で、どうして運輸と小売がもうかるのでしょう？','高い点をねらう？ だれも出さない産業で独占をねらう？ あなたはどちらを選びましたか。理由も話してみよう。','円安になると、得をする会社とこまる会社はどこでしょう？','1つのニュースで、もうかる会社とこまる会社が両方あるのはなぜでしょう？','最近の本物のニュースを1つ選んで、6つの産業の点数を考えてみよう。'];
-  const tools=[['📒','けいざい教室','需要と供給・円安・インフレなど12の授業（各1分）',"openSheet('lessons')"],['✏️','マイNEWS','オリジナルのNEWSを作り、QRコードでクラスに配れる',"openSheet('mynews')"],['🔤','ふりがな・文字の大きさ・ミオの声','低学年や読むのが苦手な子にも',"openSheet('settings')"],['🏫','ブースモード','文化祭の展示向け。だれも触らないとデモを流す',"openSheet('settings')"],['📄','ルールブック（PDF）','印刷してカードゲームとしても遊べる',"S.rtab='book';render()"]];
+  const tools=[['📺','進行役モード','クラス全体で最大10チーム。NEWSの発表・相談タイマー・点数計算をアプリが担当',"gmOpen()"],['📒','けいざい教室','需要と供給・円安・インフレなど12の授業（各1分）',"openSheet('lessons')"],['✏️','マイNEWS','オリジナルのNEWSを作り、QRコードでクラスに配れる',"openSheet('mynews')"],['🔤','ふりがな・文字の大きさ・ミオの声','低学年や読むのが苦手な子にも',"openSheet('settings')"],['🏫','ブースモード','文化祭の展示向け。だれも触らないとデモを流す',"openSheet('settings')"],['📄','ルールブック（PDF）','印刷してカードゲームとしても遊べる',"S.rtab='book';render()"]];
   return `<section class="panel tc-hero"><span class="label">FOR TEACHERS & FAMILIES</span><h3>授業や家庭での使い方</h3>
       <p>AZAKEI MARKET は、経済ニュースを読んで「どの産業がもうかるか」「ほかの人はどう動くか」を考えるカードゲームです。小学校高学年〜中学生の、社会科・総合的な学習・特別活動などで使えます。登録やインストールは不要で、ブラウザで開くだけで遊べます。</p></section>
     <section class="panel"><h3>🎯 ねらい</h3><ul class="tc-list"><li><b>ニュースと産業のつながり</b>：出来事が、どの会社のもうけにつながるかを考える</li><li><b>資料を読む力</b>：得点表（どの産業が何点か）を読み取って判断する</li><li><b>相手を予想する力</b>：みんなが選びそうなものを読み、あえて外す（ゲーム理論の入り口）</li><li><b>理由を説明する力</b>：「なぜ？」解説をきっかけに、自分のことばで説明する</li></ul></section>
@@ -6002,6 +6043,91 @@ const MONTH_SRC=[
 const MONTH_PACKS = MONTH_SRC.map(([mon,theme,rows])=>{ const K={E:0,F:1,M:2,R:3,T:4,D:5};
   return {mon, theme, names:rows.map(r=>r[0]), descs:rows.map(r=>r[1]), table:rows.map(([n,d,hi,oth])=>{ const r=[0,0,0,0,0,0]; for(const ch of hi) r[K[ch]]=3; for(const [k,v] of Object.entries(oth)) r[K[k]]=v; return r; })}; });
 const monthPack = (d=new Date()) => MONTH_PACKS[d.getMonth()];
+/* ---- 進行役モード（教室・体験会・大人数）：アプリがNEWSの発表・相談タイマー・得点計算をする。プレイヤーは紙のカードや手で答え、
+   進行役が各チームの産業を入力する。最大10チーム。チームで相談するので、会話がいちばん生まれる遊び方 ---- */
+let GM=null, GM_T=null;
+const GM_COL=['#ff7a3d','#4fa0ff','#3fd0a0','#ff5c9a','#ffc83a','#a77bff','#20c6d1','#c9a46b','#8bd450','#ff8fa6'];
+function gmOpen(){ clearInterval(GM_T); GM={phase:'setup', n:4, mode:'classic', b4:true, talk:60}; S.screen='gm'; render(); scrollTo(0,0); }
+function gmSet(k,v){ GM[k]=v; sfx('click'); render(); }
+function gmStart(){
+  const cfg=cfgFor(GM.mode==='month'?'month':'classic'); TURNS=4;
+  GM.cfg=cfg; GM.deck=buildDeck(cfg,Math.random); GM.turn=0; GM.osp=null;
+  GM.teams=Array.from({length:GM.n},(_,i)=>({name:`チーム${i+1}`, c:GM_COL[i], hand:[0,1,2,3,4,5], score:0, uniq:0, pick:null, hist:[0]}));
+  sfx('select'); gmNews();
+}
+const gmNm = n => GM.cfg.names[n];
+const gmDesc = n => GM.cfg.my ? (GM.cfg.descs&&GM.cfg.descs[n]||'') : (WHY[n]?WHY[n].s:'');
+const gmFinal = () => GM.turn===TURNS-1;
+function gmNews(){
+  GM.teams.forEach(t=>t.pick=null);
+  GM.hidden = GM.b4 && gmFinal() ? GM.deck.slice(GM.turn) : null;   /* 大引けサプライズ：最後は伏せたまま */
+  GM.phase='news'; sfx('open'); try{ if(!GM.hidden) newsFxSfx(GM.deck[GM.turn]); }catch(e){} render(); scrollTo(0,0);
+}
+function gmTalk(){ GM.phase='talk'; GM.end=Date.now()+GM.talk*1000; clearInterval(GM_T); GM_T=setInterval(gmTick,250); sfx('click'); render(); }
+function gmTick(){
+  if(!GM || GM.phase!=='talk'){ clearInterval(GM_T); return; }
+  const left=Math.max(0,Math.ceil((GM.end-Date.now())/1000)), el=document.getElementById('gm-t'), ring=document.getElementById('gm-ring');
+  if(el) el.textContent=left; if(ring) ring.style.setProperty('--p', (left/GM.talk*100)+'%');
+  if(left<=5 && left>0 && GM.lastBeep!==left){ GM.lastBeep=left; sfx('tick'); }
+  if(left===0){ clearInterval(GM_T); sfx('slam'); gmInput(); }
+}
+function gmInput(){ clearInterval(GM_T); GM.phase='input'; render(); }
+function gmPick(i,c){ const t=GM.teams[i]; if(!t || !t.hand.includes(c)) return; t.pick = t.pick===c ? null : c; sfx('click'); render(); }
+function gmOpenUp(){
+  if(GM.teams.some(t=>t.pick==null)) return;
+  if(GM.hidden){ GM.phase='announce'; sfx('slam'); haptic(40); render(); return; }
+  gmResolve();
+}
+function gmResolve(){
+  const C=GM.cfg, n=GM.deck[GM.turn], cnt=[0,0,0,0,0,0]; GM.teams.forEach(t=>cnt[t.pick]++);
+  const x2 = GM.b4 && gmFinal() ? 2 : 1;
+  GM.last=GM.teams.map(t=>{ const b=C.table[n][t.pick], k=cnt[t.pick], v=gain(C,b,k)*x2; t.score+=v; if(k===1) t.uniq++; t.hand=t.hand.filter(c=>c!==t.pick); t.hist.push(t.score); return {c:t.pick,k,v}; });
+  GM.cnt=cnt; GM.phase='reveal'; sfx('open'); setTimeout(()=>{ if(GM&&GM.phase==='reveal'){ sfx(cnt.some(k=>k===1)?'coin':'buzz'); } },500); render(); scrollTo(0,0);
+}
+function gmNext(){ if(gmFinal()){ GM.phase='final'; sfx('fanfare'); setTimeout(()=>{ try{ confetti(); }catch(e){} },200); render(); scrollTo(0,0); return; } GM.turn++; gmNews(); }
+function gmQuit(){ clearInterval(GM_T); GM=null; go('home'); }
+function gmRank(){ const s=GM.teams.map((t,i)=>({t,i})).sort((a,b)=>b.t.score-a.t.score||b.t.uniq-a.t.uniq); s.forEach((x,j)=>{ x.r = j && s[j-1].t.score===x.t.score && s[j-1].t.uniq===x.t.uniq ? s[j-1].r : j+1; }); return s; }
+function gmPayout(n){ const r=GM.cfg.table[n], mx=Math.max(...r); return `<div class="gm-pay">${IND.map((d,c)=>`<div class="${r[c]===mx?'top':''}${r[c]<0?' neg':''}" style="--c:var(--i${c})"><span class="ic">${svg(c,2.2)}</span><b>${sgn(r[c])}</b><small>${d}</small></div>`).join('')}</div>`; }
+function gmBoard(){ return `<div class="gm-score">${gmRank().map(({t,r})=>`<div style="--tc:${t.c}"><span class="gm-rk">${r}</span><b>${esc(t.name)}</b><span class="gm-pt">${t.score}<small>pt</small></span></div>`).join('')}</div>`; }
+function gmView(){
+  if(!GM) gmOpen();
+  const top=`<div class="gm-top"><span class="label">📺 進行役モード</span>${GM.phase!=='setup'?`<span class="gm-turn">TURN ${GM.turn+1}/${TURNS}${GM.b4&&gmFinal()?' · 大引け':''}</span>`:''}<button class="btn ghost" onclick="gmQuit()">やめる</button></div>`;
+  if(GM.phase==='setup') return `<div class="col gm">${top}
+    <section class="panel"><h2 class="ttl">みんなで遊ぶ（教室・体験会・大人数）</h2>
+      <p class="note">アプリが<b>NEWSの発表・相談タイマー・点数の計算</b>をします。各チームは紙のカードか、指で産業を決めて、進行役が入力してください。1チームの人数は何人でもOK。大きな画面やプロジェクターに映すと盛り上がります。</p>
+      <span class="label">チームの数</span><div class="gm-chips">${[2,3,4,5,6,7,8,9,10].map(v=>`<button class="${GM.n===v?'on':''}" onclick="gmSet('n',${v})">${v}</button>`).join('')}</div>
+      <span class="label">NEWS</span><div class="gm-chips"><button class="${GM.mode==='classic'?'on':''}" onclick="gmSet('mode','classic')">クラシック</button><button class="${GM.mode==='month'?'on':''}" onclick="gmSet('mode','month')">今月のNEWS（${monthPack().mon}）</button></div>
+      <span class="label">相談タイム</span><div class="gm-chips">${[30,60,90,120].map(v=>`<button class="${GM.talk===v?'on':''}" onclick="gmSet('talk',${v})">${v}秒</button>`).join('')}</div>
+      <label class="check" style="margin:8px 0"><input type="checkbox" ${GM.b4?'checked':''} onchange="gmSet('b4',this.checked)"> 最後は「大引けサプライズ」（NEWSを伏せて、点数2倍）</label>
+      <button class="btn go huge" onclick="gmStart()">スタート！</button>
+      <p class="note">7チーム以上だと、同じ産業に集まりやすくなります。「みんなと被らない」読みがいっそう大事に。</p></section></div>`;
+  const T=GM.teams, n=GM.deck[GM.turn];
+  if(GM.phase==='news'||GM.phase==='talk'){
+    const paper = GM.hidden ? `<section class="gm-news osp"><span class="gm-k"><i>大引け</i>FINAL NEWS</span><b class="gm-h">最後のNEWSは伏せたまま！</b><p>来るのはこのどれか。点数は<b>2倍</b>！</p><div class="gm-cands">${GM.hidden.map(x=>`<span>${esc(gmNm(x))}</span>`).join('')}</div></section>`
+      : `<section class="gm-news"><span class="gm-k"><i>速報</i>ECONOMIC NEWS</span><b class="gm-h">${esc(gmNm(n))}！</b><p>${esc(gmDesc(n))}</p>${gmPayout(n)}</section>`;
+    const talk = GM.phase==='talk' ? `<div class="gm-timer"><div class="gm-ring" id="gm-ring" style="--p:100%"><b id="gm-t">${GM.talk}</b><small>秒</small></div><p>チームで相談！ どの産業を出す？</p><button class="btn gold big" onclick="gmInput()">相談おわり → 入力へ</button></div>`
+      : `<div class="row" style="justify-content:center;gap:8px"><button class="btn go huge" onclick="gmTalk()">⏱ 相談スタート（${GM.talk}秒）</button><button class="btn ghost" onclick="gmInput()">すぐ入力</button></div>`;
+    return `<div class="col gm">${top}${paper}${talk}${gmBoard()}</div>`;
+  }
+  if(GM.phase==='input'){
+    const all=T.every(t=>t.pick!=null);
+    return `<div class="col gm">${top}<section class="panel"><div class="row spread"><h3>各チームが出した産業を入力</h3><span class="note">${T.filter(t=>t.pick!=null).length}/${T.length}</span></div>
+      <div class="gm-in">${T.map((t,i)=>`<div class="gm-row" style="--tc:${t.c}"><b>${esc(t.name)}</b><div>${IND.map((d,c)=>`<button class="${t.pick===c?'on':''}" style="--c:var(--i${c})" ${t.hand.includes(c)?'':'disabled'} onclick="gmPick(${i},${c})" aria-label="${esc(t.name)} ${d}">${svg(c,2.2)}</button>`).join('')}</div></div>`).join('')}</div>
+      <button class="btn go huge" ${all?'':'disabled'} onclick="gmOpenUp()">${all?'3・2・1… OPEN！':'全チーム入力してね'}</button></section></div>`;
+  }
+  if(GM.phase==='announce'){ GM.hidden=null; const real=GM.deck[GM.turn];
+    return `<div class="col gm">${top}<section class="gm-news ann"><span class="gm-k"><i>🔔</i>15:30 大引け速報</span><b class="gm-h">${esc(gmNm(real))}！</b><p>${esc(gmDesc(real))}</p>${gmPayout(real)}</section><button class="btn go huge" onclick="gmResolve()">結果を見る（点数2倍）</button></div>`; }
+  if(GM.phase==='reveal'){
+    const lanes=IND.map((d,c)=>{ const who=T.map((t,i)=>({t,i})).filter(x=>x.t.pick===c), k=who.length;
+      return `<div class="gm-lane${k===0?' empty':k===1?' mono':' hit'}" style="--c:var(--i${c})"><div class="gm-lh">${svg(c,2.2)}${d}</div><div class="gm-lb">${who.map(x=>`<span style="--tc:${x.t.c}">${esc(x.t.name)} <b>${sgn(GM.last[x.i].v)}</b></span>`).join('')}</div><div class="gm-lf">${k===0?'—':k===1?'独占！':`${k}チームで被り`}</div></div>`; }).join('');
+    return `<div class="col gm">${top}<section class="gm-news mini"><b class="gm-h">${esc(gmNm(n))}</b>${GM.b4&&gmFinal()?'<span class="gm-x2">×2</span>':''}</section><div class="gm-lanes">${lanes}</div>${gmBoard()}
+      <button class="btn gold huge" onclick="gmNext()">${gmFinal()?'最終結果へ':'次のターンへ'}</button></div>`;
+  }
+  const R=gmRank(), w=R.filter(x=>x.r===1);
+  return `<div class="col gm">${top}<section class="panel gm-fin"><span class="label">FINAL RESULT</span><div class="winner"><span>${w.map(x=>esc(x.t.name)).join('・')}</span> の勝ち！</div>
+    <div class="gm-score big">${R.map(({t,r})=>`<div style="--tc:${t.c}"><span class="gm-rk">${r}</span><b>${esc(t.name)}</b><span class="note">独占 ${t.uniq}回</span><span class="gm-pt">${t.score}<small>pt</small></span></div>`).join('')}</div>
+    <div class="row" style="justify-content:center;gap:8px"><button class="btn go big" onclick="gmStart()">同じチームでもう一度</button><button class="btn big" onclick="gmOpen()">設定を変える</button></div></section></div>`;
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
