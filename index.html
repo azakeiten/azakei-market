@@ -962,6 +962,7 @@ body[data-table="space"]::before{background:radial-gradient(1.5px 1.5px at 20% 3
 .homelinks{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:4px 0 10px}
 .homelinks button{border:0;font:inherit;font-size:13px;font-weight:800;color:var(--muted);background:rgb(7 8 24 / .4);border-radius:999px;padding:8px 14px;box-shadow:inset 0 0 0 1px var(--line)}
 .homelinks button:hover{color:var(--ink)}
+.homelinks .hl-about{text-decoration:none;font-size:13px;font-weight:800;color:#2a1a00;background:var(--gold);border-radius:999px;padding:8px 14px}
 @media (max-width:560px){ .hero .showcase{display:none} .hero{padding-bottom:4px} .heroact{flex-wrap:wrap;gap:8px} .heroact .btn.huge{flex:1 1 100%;white-space:nowrap} .heroact .btn.ghost{flex:1 1 0;white-space:nowrap} }
 .q-fut{--q:#7af0ff} .q-fut .qs{color:var(--cyan-t)}
 /* ---- my result on reveal ---- */
@@ -6128,6 +6129,18 @@ function gmView(){
     <div class="gm-score big">${R.map(({t,r})=>`<div style="--tc:${t.c}"><span class="gm-rk">${r}</span><b>${esc(t.name)}</b><span class="note">独占 ${t.uniq}回</span><span class="gm-pt">${t.score}<small>pt</small></span></div>`).join('')}</div>
     <div class="row" style="justify-content:center;gap:8px"><button class="btn go big" onclick="gmStart()">同じチームでもう一度</button><button class="btn big" onclick="gmOpen()">設定を変える</button></div></section></div>`;
 }
+/* ---- シェアしたくなる「名場面」のひとこと：大引けの大逆転・独占の回数・投資家カード・人気予想など、その試合いちばんの見せ場を1行に ---- */
+function shareHighlight(me){
+  try{
+    const p=G.players[me], rk=ranking(G.players,G.cfg).find(x=>x.i===me).rank, u=p.used, last=u[u.length-1], out=[];
+    const before=G.players.map(q=>q.hist[q.hist.length-2]||0), wasTop=before[me]>=Math.max(...before);
+    if(last && G.b4 && last.total>=8) out.push(rk===1&&!wasTop ? `🔔大引けで ${sgn(last.total)} の大逆転！` : `🔔大引けで ${sgn(last.total)}！`);
+    else if(rk===1 && !wasTop) out.push('🔥最後のターンで逆転優勝！');
+    if(p.uniq>=2) out.push(`独占${p.uniq}回`);
+    if(G.pw && G.pw[me]) out.push(`🃏${PWR[G.pw[me]].n}${rk===1?'で優勝':''}`);
+    return out.slice(0,3).join(' ／ ');
+  }catch(e){ return ''; }
+}
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
 const SEASONS=[
@@ -6663,7 +6676,7 @@ function homeView(){
   ${hsec('🏆','ミッション','週の目標をクリアしてコインとXP')}
   ${missionsPanel()}
   ${weeklyPanel()}`}
-  <nav class="homelinks"><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
+  <nav class="homelinks"><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
 function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
@@ -6895,7 +6908,8 @@ function shareText(){
   const me=myIndex(); if(me<0) return '';
   const p=G.players[me], rk=ranking(G.players,G.cfg).find(x=>x.i===me).rank;
   const head = G.daily ? `AZAKEI MARKET デイリー ${dailyLabel(G.daily)}（${modeName(G.cfg)}）` : `AZAKEI MARKET ${modeName(G.cfg)}${isLong()?' ロング版':''}${G.online?' オンライン':''}`;
-  return `${head}\n${resultGrid(p)} ${p.score}pt ${rk}位/${G.players.length}人\n${SHARE_URL}`;
+  const hl=shareHighlight(me);
+  return `${head}\n${resultGrid(p)} ${p.score}pt ${rk}位/${G.players.length}人${hl?'\n'+hl:''}\n#アザケイマーケット #経済カードゲーム\n${SHARE_URL}`;
 }
 function shareResult(){
   const t=shareText(); if(!t) return; sfx('click');

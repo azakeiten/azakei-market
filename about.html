@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AZAKEI MARKET｜5分で経済がわかる、読み合いカードゲーム</title>
+<meta name="description" content="ニュース1枚で6つの産業の値段が動く。みんなと被ったら負け、ひとりじめでボーナス。最後は大引けサプライズで大逆転。2〜6人・10分・10歳から。ブラウザで無料で遊べます。">
+<meta property="og:title" content="AZAKEI MARKET｜5分で経済がわかる、読み合いカードゲーム">
+<meta property="og:description" content="ニュースで値段が動く。かぶったら負け、ひとりじめでボーナス。最後は大引けで大逆転。ブラウザで無料で遊べます。">
+<meta property="og:image" content="https://azakeiten.github.io/azakei-market/og.png">
+<meta property="og:url" content="https://azakeiten.github.io/azakei-market/about.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<style>
+:root{--night:#16183a;--night2:#2a2470;--ink:#1b1f4b;--text:#2b2f45;--muted:#6b6f8c;--line:#dcdff0;--tint:#f3f4fb;--gold:#ffc83a;--paper:#fff;
+  --i0:#f26a2a;--i1:#d9a40e;--i2:#4a72f0;--i3:#ee4a8a;--i4:#13aab5;--i5:#8f62f0;
+  --display:"Dela Gothic One","M PLUS Rounded 1c",sans-serif;--body:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#f3f4ff;--text:#d8dbff;--muted:#a3a8d6;--line:#33386e;--tint:#22265a;--paper:#1b1d48}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--body);color:var(--text);background:var(--paper);line-height:1.75;font-weight:500}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+.hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(120% 90% at 100% 0%,rgb(255 200 58 / .25),transparent 55%),radial-gradient(90% 80% at 0% 100%,rgb(79 227 255 / .2),transparent 60%),linear-gradient(160deg,var(--night2),var(--night) 75%)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding-block:56px 64px}
+.kick{font-size:12px;font-weight:800;letter-spacing:.3em;color:#cfd3ff}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(44px,8vw,84px);line-height:.95;margin:10px 0 0}h1 span{display:block;color:var(--gold)}
+.tag{font-family:var(--display);font-weight:400;font-size:clamp(20px,3.4vw,30px);line-height:1.35;margin:18px 0 8px}
+.sub{color:#d8dbff;font-weight:700;margin:0}
+.specs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.specs span{padding:6px 12px;border-radius:12px;background:rgb(255 255 255 / .1);border:1px solid rgb(255 255 255 / .22);font-weight:800;font-size:14px}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:16px;font-weight:800;font-size:16px;text-decoration:none;border:0;cursor:pointer}
+.btn.gold{background:var(--gold);color:#2a1a00;box-shadow:0 5px 0 #b77d00}
+.btn.ghost{background:rgb(255 255 255 / .12);color:#fff;border:1.5px solid rgb(255 255 255 / .3)}
+.fan{position:relative;height:300px}
+.card{position:absolute;left:50%;bottom:20px;width:120px;height:168px;margin-left:-60px;border-radius:14px;transform-origin:50% 130%;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-weight:800;box-shadow:0 12px 24px rgb(0 0 0 / .4),inset 0 0 0 3px rgb(255 255 255 / .3)}
+.card svg{width:50px;height:50px}
+.news{position:absolute;right:0;top:0;width:230px;padding:12px 16px;border-radius:14px;background:#fff7dd;color:#1b1030;transform:rotate(-5deg);box-shadow:0 12px 26px rgb(0 0 0 / .45)}
+.news small{font-size:10px;font-weight:800;letter-spacing:.15em}.news small i{font-style:normal;background:#e2463a;color:#fff;border-radius:5px;padding:0 6px;margin-right:6px}
+.news b{display:block;font-family:var(--display);font-weight:400;font-size:24px}
+section.s{padding:56px 0}
+.s h2{font-family:var(--display);font-weight:400;font-size:clamp(26px,4vw,38px);color:var(--ink);margin:0 0 6px;line-height:1.25}
+.lead{font-size:16px;margin:0 0 22px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.step{padding:16px;border-radius:18px;background:var(--tint)}
+.step .no{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--gold);color:#2a1a00;font-family:var(--display)}
+.step b{display:block;font-size:17px;color:var(--ink);margin:8px 0 4px}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.f{padding:20px;border-radius:18px;border:1.5px solid var(--line);border-top:6px solid var(--c)}
+.f .ic{font-size:30px}.f b{display:block;font-size:18px;color:var(--ink);margin:6px 0}
+.inv{display:grid;grid-template-columns:repeat(9,1fr);gap:8px;margin-top:16px}
+.inv div{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border-radius:12px;border:2px solid var(--c);background:color-mix(in srgb,var(--c) 12%,var(--paper));font-size:12px;font-weight:800;color:var(--ink);text-align:center}
+.inv i{font-style:normal;font-size:24px}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.m{display:flex;gap:12px;align-items:flex-start;padding:16px;border-radius:16px;background:var(--tint)}.m .ic{font-size:26px}.m b{display:block;color:var(--ink)}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi div{text-align:center;padding:18px 8px;border-radius:16px;background:var(--tint)}.kpi b{display:block;font-family:var(--display);font-weight:400;font-size:32px;color:var(--ink);line-height:1.1}.kpi small{font-weight:800;color:var(--muted)}
+.dark{background:linear-gradient(160deg,var(--night2),var(--night));color:#d8dbff}.dark h2{color:#fff}
+.dl{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.dl a{display:flex;flex-direction:column;gap:4px;padding:18px;border-radius:16px;background:rgb(255 255 255 / .08);border:1.5px solid rgb(255 255 255 / .2);text-decoration:none}
+.dl a b{color:#fff;font-size:17px}.dl a span{font-size:13px}
+details{border-bottom:1.5px solid var(--line);padding:14px 4px}summary{cursor:pointer;font-weight:800;color:var(--ink);font-size:16px}details p{margin:8px 0 0}
+.contact{padding:24px;border-radius:20px;background:var(--tint);text-align:center}
+footer{padding:28px 0 48px;text-align:center;color:var(--muted);font-size:13px}
+@media (max-width:760px){
+  .hero .wrap{grid-template-columns:1fr;padding-block:36px 40px}.fan{height:250px}.card{width:96px;height:134px;margin-left:-48px}.news{width:200px}
+  .steps,.feat,.modes,.dl{grid-template-columns:1fr 1fr}.kpi{grid-template-columns:1fr 1fr}.inv{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:460px){.steps,.feat,.modes,.dl{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div>
+    <div class="kick">CARD GAME · ECONOMY × MIND GAME</div>
+    <h1>AZAKEI<span>MARKET</span></h1>
+    <p class="tag">5分で経済がわかる、<br>読み合いカードゲーム。</p>
+    <p class="sub">ニュース1枚で、6つの産業の値段が動く。みんなと被ったら負け、ひとりじめでボーナス。最後は「大引け」で大逆転。</p>
+    <div class="specs"><span>👥 2〜6人</span><span>⏱ 約10分</span><span>🎒 10歳〜</span><span>📚 経済の知識ゼロでOK</span></div>
+    <div class="cta"><a class="btn gold" href="./">▶ ブラウザで無料で遊ぶ</a><a class="btn ghost" href="rulebook-classic.pdf">ルールブック（PDF）</a></div>
+  </div>
+  <div class="fan" id="fan"><div class="news"><small><i>速報</i>ECONOMIC NEWS</small><b>旅行ブーム！</b><span style="font-size:12px;font-weight:800">小売 +3 ／ 運輸 +3 ／ 製造 −1</span></div></div>
+</div></header>
+
+<section class="s"><div class="wrap">
+  <h2>遊び方は、4ステップ</h2><p class="lead">説明は1分。最初の1ゲームから楽しめます。</p>
+  <div class="steps">
+    <div class="step"><span class="no">1</span><b>ニュースをめくる</b>「旅行ブーム」なら、小売と運輸が +3。今日の出来事で、6つの産業の点数が決まる。</div>
+    <div class="step"><span class="no">2</span><b>せーので1枚出す</b>全員同じ6枚の手札から、同時に1枚。一度使った産業はもう使えない。</div>
+    <div class="step"><span class="no">3</span><b>ひとりじめでボーナス</b>だれとも被らなければ +2。いちばん高い産業は、みんなも狙っている…。</div>
+    <div class="step"><span class="no">4</span><b>最後は大引けサプライズ</b>最後のニュースは伏せたまま出して、点数2倍。最下位からでも逆転できる。</div>
+  </div>
+</div></section>
+
+<section class="s" style="padding-top:0"><div class="wrap">
+  <h2>ここが、ほかのゲームとちがう</h2>
+  <div class="feat">
+    <div class="f" style="--c:#4a72f0"><span class="ic">📰</span><b>ニュースで値段が動く</b>本物の経済の“つながり”が、遊ぶだけで身につく。需要と供給、先物、寄り付き・大引け。</div>
+    <div class="f" style="--c:#ee4a8a"><span class="ic">🤝</span><b>全員同時の読み合い</b>待ち時間ゼロ。「あえて外す」か「乗る」か。会話とかけひきが止まらない。</div>
+    <div class="f" style="--c:#e2463a"><span class="ic">🔔</span><b>最後まで逆転がある</b>大引けサプライズで、最下位からの逆転は約18%。最後の1枚まで盛り上がる。</div>
+  </div>
+  <h2 style="margin-top:40px;font-size:clamp(22px,3vw,30px)">🃏 9人の投資家カード</h2>
+  <p class="lead" style="margin:0">キャラクターの個性が、そのままずっと効く能力に。毎回ちがうカードで、何度遊んでも新しい。</p>
+  <div class="inv" id="inv"></div>
+</div></section>
+
+<section class="s" style="padding-top:0"><div class="wrap">
+  <h2>アプリなら、ひとりでも、みんなでも</h2><p class="lead">ブラウザで無料。インストールも登録もいりません。</p>
+  <div class="modes">
+    <div class="m"><span class="ic">🤖</span><span><b>CPU対戦</b>9人のキャラと、3段階の強さで。</span></div>
+    <div class="m"><span class="ic">🌐</span><span><b>オンライン対戦</b>ルームコードで、遠くの友だちと。</span></div>
+    <div class="m"><span class="ic">📅</span><span><b>今月のNEWS</b>毎月、季節の話題が新しいカードに。</span></div>
+    <div class="m"><span class="ic">📺</span><span><b>進行役モード</b>教室や体験会で、最大10チーム。</span></div>
+    <div class="m"><span class="ic">📜</span><span><b>歴史モード</b>1964〜2022年の本当の出来事で。</span></div>
+    <div class="m"><span class="ic">⭐</span><span><b>ストーリー・チャレンジ</b>キャラの物語と51個の★。</span></div>
+  </div>
+</div></section>
+
+<section class="s" style="padding-top:0"><div class="wrap">
+  <h2>数字で確かめた面白さ</h2><p class="lead">コンピューター同士の数万ゲームのシミュレーションで、ルールを調整しました。</p>
+  <div class="kpi"><div><b>2.1倍</b><small>読み合いがうまい人の勝ちやすさ</small></div><div><b>18%</b><small>最下位からの逆転（大引け）</small></div><div><b>6%</b><small>同点で終わる割合（投資家カードあり）</small></div><div><b>72枚</b><small>12か月の「今月のNEWS」</small></div></div>
+</div></section>
+
+<section class="s dark"><div class="wrap">
+  <h2>先生・保護者の方へ</h2>
+  <p>社会科・家庭科・総合の時間の導入に。けいざい教室（12の1分授業）、指導案とワークシート、ふりがな・文字の大きさ・読み上げに対応しています。進行役モードなら、クラス全員でチーム対抗ができます。</p>
+  <h2 style="margin-top:30px;font-size:24px">ダウンロード</h2>
+  <div class="dl">
+    <a href="rulebook-classic.pdf"><b>📕 ルールブック</b><span>β4・A4 10ページ。印刷して遊べます</span></a>
+    <a href="investor-cards.pdf"><b>🃏 投資家カード</b><span>9枚＋場のカード・表裏の印刷用</span></a>
+    <a href="sellsheet.pdf"><b>📄 セルシート</b><span>お店・イベント・メディア向けの紹介</span></a>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <h2>よくある質問</h2>
+  <details><summary>何歳から遊べますか？</summary><p>10歳からを目安にしています。ふりがなと読み上げを使えば、もっと小さい子も大人と一緒に遊べます。</p></details>
+  <details><summary>経済の知識がなくても大丈夫？</summary><p>大丈夫です。点数はニュースカードに書いてあります。遊ぶうちに「なぜその産業がもうかるのか」が自然とわかります。</p></details>
+  <details><summary>本当に無料ですか？</summary><p>ブラウザ版は無料で遊べます。紙のカード版は、ルールブックとカードのPDFを印刷して遊べる試作版を公開中です。</p></details>
+  <details><summary>何人で遊べますか？</summary><p>2〜6人（3〜5人がおすすめ）。2人のときは「クジラ」が加わります。進行役モードなら、チームで最大10組まで。</p></details>
+  <div class="contact" style="margin-top:28px"><b style="font-size:18px;color:var(--ink)">お店・学校・メディアの方へ</b><p style="margin:6px 0 0">体験会・授業での利用、取り扱いのご相談は、お問い合わせ先（準備中）までお寄せください。</p></div>
+</div></section>
+<footer>© AZAKEI MARKET · <a href="./">ゲームで遊ぶ</a> · #アザケイマーケット</footer>
+<script>
+const ICON=['<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>','<path d="M3 9.5 12 4l9 5.5M4 20h16M6 10v7M10 10v7M14 10v7M18 10v7"/>','<path d="M3 21V11l5 3v-3l5 3V5h5v16zM3 21h18"/>','<path d="M3 4h2.2l2.3 11h10.2L20 7.5H6.3"/><circle cx="9" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/>','<path d="M2 6h11v10H2zM13 9.5h4.5l3 3.3V16H13"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>','<circle cx="12" cy="10" r="1.8"/><path d="M8.2 6.2a5.4 5.4 0 0 0 0 7.6M15.8 6.2a5.4 5.4 0 0 1 0 7.6M5.4 3.4a9.4 9.4 0 0 0 0 13.2M18.6 3.4a9.4 9.4 0 0 1 0 13.2M12 12v9"/>'];
+const IND=['エネルギー','金融','製造','小売','運輸','メディア'], COL=['#f26a2a','#d9a40e','#4a72f0','#ee4a8a','#13aab5','#8f62f0'];
+document.getElementById('fan').insertAdjacentHTML('beforeend', IND.map((n,i)=>`<div class="card" style="background:linear-gradient(160deg,${COL[i]},color-mix(in srgb,${COL[i]} 70%,#000));transform:rotate(${(i-2.5)*11}deg) translateX(${(i-2.5)*14}px);z-index:${i}"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[i]}</svg>${n}</div>`).join(''));
+const P=[['🔥','全力投資','#ff7a3d'],['🌊','群衆の波','#3fd0a0'],['🌙','逆張り','#a77bff'],['🎀','推し活','#ff5c9a'],['📊','データ派','#5f86ff'],['⌛','老練の勘','#c9a46b'],['⚡','挑戦者','#eab520'],['📒','予習','#ff9ad9'],['☁️','マイペース','#20c6d1']];
+document.getElementById('inv').innerHTML=P.map(([i,n,c])=>`<div style="--c:${c}"><i>${i}</i>${n}</div>`).join('');
+</script>
+</body>
+</html>
