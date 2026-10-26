@@ -2284,6 +2284,7 @@ html.light .lob{color:#fff}
 @keyframes pnpIn{from{opacity:0;transform:rotate(0) translateY(24px)}}
 @media (max-width:480px){.pnp-card{flex-direction:column;align-items:stretch}.pnp-fan{align-self:center}}
 @media (prefers-reduced-motion:reduce){.pnp-fan i{animation:none}}
+.pnp-box{align-self:flex-start;margin-top:4px;font-size:12px;font-weight:800;color:#5a3fd0;text-decoration:none;border-bottom:1.5px dashed #5a3fd080}
 .dl.pnp{background:linear-gradient(160deg,#fff9e6,#ffeec2);color:#1b1f4b}.dl.pnp .note{color:#6b6f8c}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
@@ -6257,7 +6258,7 @@ function pnpPromo(){
   const fan=[0,1,2,3,4,5].map(c=>`<i style="--c:var(--i${c});--r:${(c-2.5)*11}deg;--d:${c*.07}s">${svg(c,2.2)}</i>`).join('');
   return `<section class="pnp-card"><div class="pnp-fan" aria-hidden="true">${fan}<span class="pnp-news">速報</span></div>
     <div class="pnp-tx"><span class="pnp-k">PRINT &amp; PLAY · 無料</span><b>紙のカードでも遊べる！</b><span class="pnp-d">体験版のPDFを印刷して、切るだけ。2〜6人・約10分。進行と点数はアプリの<b>テーブルモード</b>におまかせ。</span>
-      <div class="row" style="gap:8px;margin-top:6px"><button class="btn gold" onclick="downloadBook('pnp')">🖨 体験版をダウンロード</button><button class="btn ghost pnp-go" onclick="gmOpen('player')">🃏 テーブルモード</button></div></div></section>`;
+      <div class="row" style="gap:8px;margin-top:6px"><button class="btn gold" onclick="downloadBook('pnp')">🖨 体験版をダウンロード</button><button class="btn ghost pnp-go" onclick="gmOpen('player')">🃏 テーブルモード</button></div><a class="pnp-box" href="${PUBLIC_URL}about.html#box" target="_blank" rel="noopener">📦 製品版の箱のイメージを見る →</a></div></section>`;
 }
 /* ---- 季節イベント：期間中はホームが飾られ、限定デザインと「期間中に5回遊ぶ」ボーナス ---- */
 const SEASON_GOAL=5, SEASON_BONUS=50;
