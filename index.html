@@ -7039,7 +7039,7 @@ function homeView(){
   ${hsec('🏆','ミッション','週の目標をクリアしてコインとXP')}
   ${missionsPanel()}
   ${weeklyPanel()}`}
-  <nav class="homelinks"><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
+  <nav class="homelinks"><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
 function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
