@@ -7562,17 +7562,19 @@ async function drawResultCard(){
   const sw=x.measureText(String(p.score)).width; x.font=`64px ${D}`; x.fillStyle=v('--gold'); x.textAlign='left'; x.fillText('pt',W/2-40+sw/2+12,640);
   // 4ターンのカード
   const items = isLong() ? Array.from({length:G.rounds},(_,r)=>{ const us=p.used.filter(u=>Math.floor(u.turn/TURNS)===r), st=G.settles[r]; return {label:termName(r), ind:null, total:us.reduce((s,u)=>s+u.total,0)+(st?st.rows[me].bonus+(st.rows[me].cv||0):0), uq:us.filter(u=>u.k?u.k===1:(u.base!=null&&u.total>u.base)).length}; }) : p.used;
-  const n=items.length, cw=200, gap=26, tot=n*cw+(n-1)*gap, x0=(W-tot)/2, y0=720, ch=280;
+  const art=!isLong(), n=items.length, cw=200, gap=26, tot=n*cw+(n-1)*gap, x0=(W-tot)/2, y0=art?690:720, ch=art?360:280;
+  const pics=art?await Promise.all(items.map(u=>u.ind!=null?svgImg(scene(u.ind),v):null)):[];   /* 出したカードの「まちの絵」 */
   items.forEach((u,i)=>{
     const cx=x0+i*(cw+gap), col=u.ind==null?v('--gold-deep'):v('--i'+u.ind), uniq=u.ind!=null && (u.k?u.k===1:(u.base!=null?u.total>u.base:false));
     x.save(); x.shadowColor='rgba(0,0,0,.5)'; x.shadowBlur=30; x.shadowOffsetY=14;
     rr(x,cx,y0,cw,ch,26); const cg=x.createLinearGradient(cx,y0,cx+cw,y0+ch); cg.addColorStop(0,'#ffffff'); cg.addColorStop(.12,col); cg.addColorStop(1,'#1a1033'); x.fillStyle=cg; x.fill(); x.restore();
     rr(x,cx,y0,cw,ch,26); x.lineWidth=6; x.strokeStyle=uniq?v('--gold'):'rgba(255,255,255,.35)'; x.stroke();
-    x.textAlign='center'; x.fillStyle='rgba(255,255,255,.85)'; x.font=`800 26px ${B}`; x.fillText(u.label||(C.hist?String(yearOf(logDeck()[u.turn])):`TURN ${u.turn+1}`),cx+cw/2,y0+50);
-    x.font=`76px ${D}`; x.fillStyle=u.total<0?'#ffd0d0':'#fff'; x.fillText(sgn(u.total).replace('±','±'),cx+cw/2,y0+160);
+    x.textAlign='center'; x.fillStyle='rgba(255,255,255,.85)'; x.font=`800 26px ${B}`; x.fillText(u.label||(C.hist?String(yearOf(logDeck()[u.turn])):`TURN ${u.turn+1}`),cx+cw/2,y0+(art?44:50));
+    if(pics[i]){ x.save(); rr(x,cx+16,y0+66,cw-32,(cw-32)*.9,16); x.fillStyle='rgba(255,255,255,.16)'; x.fill(); x.clip(); x.drawImage(pics[i],cx+16,y0+66,cw-32,(cw-32)*.9); x.restore(); rr(x,cx+16,y0+66,cw-32,(cw-32)*.9,16); x.lineWidth=2; x.strokeStyle='rgba(255,255,255,.35)'; x.stroke(); }
+    x.font=`${art?64:76}px ${D}`; x.fillStyle=u.total<0?'#ffd0d0':'#fff'; x.fillText(sgn(u.total).replace('±','±'),cx+cw/2,y0+(art?272:160));
     x.fillStyle='rgba(0,0,0,.35)'; x.save(); rr(x,cx,y0,cw,ch,26); x.clip(); x.fillRect(cx,y0+ch-62,cw,62); x.restore();
     x.fillStyle='#fff'; x.font=`800 30px ${B}`; x.fillText(u.ind==null?`独占 ${u.uq}回`:IND[u.ind],cx+cw/2,y0+ch-20);
-    if(uniq||u.fut){ const t=uniq?'独占':'先物'; x.font=`800 24px ${B}`; const tw=x.measureText(t).width+28; rr(x,cx+cw/2-tw/2,y0+186,tw,40,20); x.fillStyle=uniq?v('--gold'):v('--cyan'); x.fill(); x.fillStyle='#1a1033'; x.fillText(t,cx+cw/2,y0+215); }
+    if(uniq||u.fut){ const t=uniq?'独占':'先物'; x.font=`800 24px ${B}`; const tw=x.measureText(t).width+28; const ty=art?y0+76:y0+186, tx=art?cx+cw-tw-8:cx+cw/2-tw/2; x.save(); if(art){ x.translate(tx+tw/2,ty+20); x.rotate(.12); x.translate(-(tx+tw/2),-(ty+20)); x.shadowColor='rgba(0,0,0,.4)'; x.shadowBlur=10; } rr(x,tx,ty,tw,40,20); x.fillStyle=uniq?v('--gold'):v('--cyan'); x.fill(); x.shadowBlur=0; x.fillStyle='#1a1033'; x.fillText(t,tx+tw/2,ty+29); x.restore(); }
   });
   // ランクとレベル
   const by=1080, rate=R&&R.rate?R.rate.after:rateOf(), t=tierOf(rate), L=lvInfo(S.prof.xp);
@@ -7585,7 +7587,7 @@ async function drawResultCard(){
   x.textAlign='right'; x.font=`44px ${D}`; x.fillStyle=v('--gold'); x.fillText(`Lv.${L.lv}`,W-110,by+72);
   x.font=`800 28px ${B}`; x.fillStyle=v('--muted'); x.fillText(titleOf(L.lv),W-110,by+116);
   // フッター
-  x.textAlign='center'; x.font=`800 30px ${B}`; x.fillStyle=v('--ink'); x.fillText('経済を読み、相手を読み、未来を読むカードゲーム',W/2,1285);
+  { const hl=shareHighlight(me); x.textAlign='center'; x.font=`800 30px ${B}`; x.fillStyle=hl?v('--gold'):v('--ink'); x.fillText(hl||'5分で経済がわかる、読み合いカードゲーム',W/2,1285); }
   if(G.duel && window.QRCode){ try{ const d=document.createElement('div'), url=duelUrl(G.duel.seed, G.duel.m, p.score, NET.name||'あなた');
       new QRCode(d,{text:url,width:160,height:160,colorDark:'#0a0c22',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M}); const qc=d.querySelector('canvas');
       x.save(); rr(x,W-230,18,200,228,20); x.fillStyle='#fff'; x.fill(); x.drawImage(qc,W-210,32,160,160); x.fillStyle='#0a0c22'; x.textAlign='center'; x.font=`800 20px ${B}`; x.fillText('読みこんで挑戦！',W-130,222); x.restore(); }catch(e){} }
@@ -7647,6 +7649,12 @@ async function openPlayerCardImg(){
   const cv=await drawPlayerCard();
   CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'プレイヤーカード', name:`azakei-card-${todayKey()}.png`, note:'あなたの成績をまとめた1枚。友だちと見せ合おう！'};
   openSheet('card');
+}
+/* SVGの絵をキャンバスに描くための画像に。var(--i0) などの色は、いまの値に置きかえる */
+function svgImg(str,v){
+  const css=v||(n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim());
+  const src=String(str).replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" width="400" height="360" ').replace(/var\((--[a-z0-9-]+)\)/g,(m,k)=>css(k)||'#888');
+  return new Promise(r=>{ const im=new Image(); im.onload=()=>r(im); im.onerror=()=>r(null); im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(src); });
 }
 async function openResultCard(){
   sfx('click'); toast('画像を作っています…');
