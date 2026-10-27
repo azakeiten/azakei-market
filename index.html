@@ -2336,6 +2336,11 @@ html.light .lob{color:#fff}
 @keyframes naFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @media (max-width:420px){.paper .nphoto{width:40%}}
 @media (prefers-reduced-motion:reduce){.nart *,.nphoto{animation:none!important}}
+/* カットインに、その1枚のカードが飛びこむ */
+.ci-card{position:absolute;left:50%;top:calc(50% - 70px - clamp(96px,22vw,140px) * 1.4);width:clamp(96px,22vw,140px);aspect-ratio:5/7;margin-left:calc(clamp(96px,22vw,140px) / -2);border-radius:14px;padding:8px 7px 6px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;color:#fff;background:linear-gradient(165deg,var(--c),color-mix(in srgb,var(--c) 65%,#000));box-shadow:0 0 0 3px #fff,0 0 0 6px var(--gold),0 18px 30px -10px #000,0 0 50px var(--c);z-index:1;animation:ciCard 1.45s cubic-bezier(.2,1.4,.4,1) both}
+.ci-card svg.scene{width:100%;height:auto;border-radius:9px;background:linear-gradient(180deg,rgb(255 255 255 / .26),rgb(255 255 255 / .05));box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .3)}
+.cutin .ci-card b{line-height:1.2;margin-top:auto;font-family:var(--display);font-weight:400;font-size:clamp(13px,3vw,17px);color:#fff!important;text-shadow:none!important}
+@keyframes ciCard{0%{opacity:0;transform:translateY(60px) rotate(-30deg) scale(.3)}22%{opacity:1;transform:translateY(-8px) rotate(-4deg) scale(1.12)}34%{transform:translateY(0) rotate(-7deg) scale(1)}82%{opacity:1;transform:translateY(-4px) rotate(-6deg) scale(1)}100%{opacity:0;transform:translateY(-40px) rotate(-2deg) scale(.9)}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3310,10 +3315,10 @@ function vsOverlay(){
     <div class="vsfoot">${totalTurns()}ターン勝負${isLong()?`（${G.rounds}期・市況カードあり）`:""} · 独占 ${sgn(C.bonus)} · ${FORE[C.fore].name}</div>
     <div class="note">タップでスキップ</div></div>`;
 }
-function cutIn(text, sub, cls){
+function cutIn(text, sub, cls, ind){
   if(reduced()) return;
   const el=document.createElement('div'); el.className='cutin '+(cls||''); el.setAttribute('aria-hidden','true');
-  el.innerHTML=`<div class="band"><b>${text}</b>${sub?`<span>${sub}</span>`:''}</div>`;
+  el.innerHTML=`${ind!=null&&IND[ind]?`<div class="ci-card" style="--c:var(--i${ind})">${scene(ind)}<b>${IND[ind]}</b></div>`:''}<div class="band"><b>${text}</b>${sub?`<span>${sub}</span>`:''}</div>`;
   document.body.appendChild(el); setTimeout(()=>el.remove(),(cls||"").includes("final")?2000:1500);
 }
 const isFinalTurn = () => !!G && G.turn===TURNS-1 && (!isLong() || (G.round||0)===G.rounds-1) && totalTurns()>1;
@@ -3480,8 +3485,8 @@ function revealFx(){
   cpuChatter(); speakLive();
   const me=myIndex(), r=me>=0?G.last[me]:null;     // 自分の見せ場はカットインで
   const streak = r ? (()=>{ const u=G.players[me].used; let n=0; for(let k=u.length-1;k>=0&&u[k].k===1;k--) n++; return n; })() : 0;
-  if(r && r.k===1) setTimeout(()=>{ cutIn(streak>=2?`${streak}連続独占！`:'独占！',`${IND[r.ind]} ${sgn(r.total)}`,streak>=2?'mono combo':'mono'); if(streak>=2){ sfx('fanfare'); haptic(50); } },700);
-  else if(r && r.total>=5) setTimeout(()=>cutIn('大当たり！',`${IND[r.ind]} ${sgn(r.total)}`,'big'),700);
+  if(r && r.k===1) setTimeout(()=>{ cutIn(streak>=2?`${streak}連続独占！`:'独占！',`${IND[r.ind]} ${sgn(r.total)}`,streak>=2?'mono combo':'mono',r.ind); if(streak>=2){ sfx('fanfare'); haptic(50); } },700);
+  else if(r && r.total>=5) setTimeout(()=>cutIn('大当たり！',`${IND[r.ind]} ${sgn(r.total)}`,'big',r.ind),700);
   if(me>=0 && G.players[me].hist.length>2){   // 逆転してトップに立った瞬間
     const top=a=>{ const m=Math.max(...a); return a.filter(v=>v===m).length===1 ? a.indexOf(m) : -1; };
     const now=G.players.map(p=>p.score);
@@ -7624,6 +7629,7 @@ async function drawPlayerCard(){
   const ag=x.createRadialGradient(W/2-60,430,20,W/2,490,170); ag.addColorStop(0,'#fff7d6'); ag.addColorStop(1,AVA_COLORS[d.P.color%6]); x.beginPath(); x.arc(W/2,490,164,0,Math.PI*2); x.fillStyle=ag; x.fill();
   if(myAvatar()===MY_ICON){ const im=await new Promise(r=>{ const i=new Image(); i.onload=()=>r(i); i.onerror=()=>r(null); i.src=S.prof.myIcon; }); if(im){ x.save(); x.beginPath(); x.arc(W/2,490,164,0,Math.PI*2); x.clip(); x.drawImage(im,W/2-164,490-164,328,328); x.restore(); } }
   else { x.textAlign='center'; x.textBaseline='middle'; x.fillStyle='#2a1a00'; x.font=`150px ${D}`; x.fillText(myAvatar()||initial(NET.name||'あなた'),W/2,500); }
+  if(d.fav>=0){ const im=await svgImg(scene(d.fav),v); if(im){ x.save(); x.translate(110,606); x.rotate(-.06); rr(x,0,0,236,212,26); x.fillStyle=fc; x.fill(); x.lineWidth=6; x.strokeStyle='#fff'; x.stroke(); x.save(); rr(x,12,12,212,190,18); x.clip(); x.fillStyle='rgba(255,255,255,.18)'; x.fillRect(12,12,212,190); x.drawImage(im,12,12,212,190); x.restore(); x.restore(); } }   /* 得意な産業の「まちの絵」 */
   // エンブレム
   hexPath(x,W-200,720,130); const eg=x.createLinearGradient(W-260,650,W-140,790); eg.addColorStop(0,'#fff'); eg.addColorStop(.3,d.t.c1); eg.addColorStop(1,d.t.c2); x.fillStyle=eg; x.fill();
   hexPath(x,W-200,720,96); x.fillStyle=d.t.c2; x.fill(); x.fillStyle=d.t.c1; x.font=`800 30px ${B}`; x.fillText('★'.repeat(Math.min(3,TIERS.indexOf(d.t)%3+1)),W-200,724);
