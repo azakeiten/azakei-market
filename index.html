@@ -2364,6 +2364,28 @@ html.light .lob{color:#fff}
 .pwf-ic.pwf-face,.pw-ic.pwf-face{position:relative;overflow:visible;padding:0;background:radial-gradient(circle at 35% 30%,#fff,var(--pc) 85%)}.pwn-c .pwf-face i{width:17px!important;height:17px!important;font-size:10px!important;right:-4px!important;bottom:-2px!important;box-shadow:0 0 0 1.5px var(--pc)!important}
 .pw-ic.pwf-face i{position:absolute;right:-6px;bottom:-4px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px;background:#fff;box-shadow:0 0 0 2px var(--pc)}
 .pwf-ic.pwf-face i{position:absolute;right:-6px;bottom:-4px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:17px;background:#fff;box-shadow:0 0 0 2.5px var(--pc),0 3px 8px -3px rgb(0 0 0 / .5)}
+/* キャラのプロフィール */
+.charhead .rva.big:has(svg.face){width:112px;height:112px;margin:0 auto 6px;box-shadow:0 0 0 4px #fff,0 0 0 8px var(--rc),0 14px 28px -12px var(--rc)}
+.cprof{display:flex;flex-direction:column;gap:10px;margin:10px 0}
+.cp-say{padding:10px 14px;border-radius:16px;background:color-mix(in srgb,var(--rc,var(--gold)) 16%,var(--panel2));text-align:center}
+.cp-say b{display:block;font-family:var(--display);font-weight:400;font-size:20px;margin-top:2px}
+.cprof dl{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.cprof dl>div{padding:8px 10px;border-radius:12px;background:var(--panel2)}
+.cprof dt{font-size:11px;font-weight:800;color:var(--muted)}.cprof dd{margin:2px 0 0;font-weight:800;font-size:14px}
+.cp-fav{display:flex;align-items:center;gap:8px}.cp-fav svg.scene{width:52px;height:auto;border-radius:8px;background:var(--c);flex:none}
+.cp-style p,.cp-sec p{margin:4px 0 0;font-size:14px;line-height:1.7}
+.cp-sec{position:relative;overflow:hidden;padding:10px 14px;border-radius:14px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.cp-sec i{position:absolute;left:0;bottom:0;height:4px;background:var(--gold);border-radius:2px}
+.cp-sec.on{background:color-mix(in srgb,var(--gold) 14%,var(--panel2));box-shadow:inset 0 0 0 1.5px var(--gold);animation:cpSec .6s both cubic-bezier(.2,1.3,.4,1)}
+@keyframes cpSec{from{transform:scale(.94);opacity:.4}}
+.chgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 4px}
+.chr9{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border:0;border-radius:16px;font:inherit;color:var(--ink);cursor:pointer;background:color-mix(in srgb,var(--rc) 14%,var(--panel2));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--rc) 45%,transparent);animation:chr9In .4s var(--d) both cubic-bezier(.2,1.3,.4,1)}
+.chr9:active{transform:scale(.96)}
+.chr9-f{position:relative;width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--rc) 85%);box-shadow:0 0 0 2.5px #fff,0 6px 12px -6px var(--rc)}
+.chr9-f svg.face{width:100%;height:100%;display:block;border-radius:50%}
+.chr9-f i{position:absolute;right:-4px;bottom:-2px;font-style:normal;font-size:14px}
+.chr9 b{font-size:14px;margin-top:4px}.chr9 small{font-size:10px;font-weight:700;color:var(--muted);line-height:1.3;text-align:center}
+@keyframes chr9In{from{opacity:0;transform:translateY(10px) scale(.9)}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4089,6 +4111,7 @@ function renderSheet(){
   else if(k==='cmp') body=hkBody();
   else if(k==='album') body=albumBody();
   else if(k==='fbsum') body=fbBody();
+  else if(k==='chars') body=charsBody();
   else if(k==='pw') body=pwBody();
   else if(k==='title') body=titleBody();
   else if(k==='table') body=fullTableBody();
@@ -7154,7 +7177,7 @@ function homeView(){
   ${hsec('🏆','ミッション','週の目標をクリアしてコインとXP')}
   ${missionsPanel()}
   ${weeklyPanel()}`}
-  <nav class="homelinks"><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
+  <nav class="homelinks"><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
 function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
@@ -8099,12 +8122,42 @@ function pickCharBody(i){
       return `<button class="chc${on?' on':''}${tk?' taken':''}" style="--rc:${c.c};--k:${j}" ${tk?'disabled':''} onclick="setChar(${i},'${k}')"><span class="rva">${chIc(c)}</span><b>${k}</b><span class="note">${tk?'ほかの席で出場中':c.d}</span>${r?`<span class="rvrec"><span class="w">${r.w}勝</span><span class="l">${r.l}敗</span></span>`:'<span class="note newc">はじめまして</span>'}</button>`; }).join('')}</div>`;
 }
 function setChar(i,k){ if(!S.seats[i]) return; S.seats[i].name='CPU '+k; save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type}))); sfx('select'); closeSheet(); render(); }
+/* キャラのプロフィール。「ひみつ」は、そのキャラと3回対戦すると見られる */
+const CHAR_PROF={
+  'ハル':  {t:'熱血トレーダー', age:'17歳・高校生', fav:0, say:'全部ぶっこむ！', hobby:'早朝ランニング', style:'+3の産業にまっすぐ突っこむ。独占のボーナスが+3になる「全力投資」で、当たれば一気にトップへ。', sec:'じつは毎日10円ずつ、ブタの貯金箱にためている。'},
+  'ナギ':  {t:'サーファー投資家', age:'24歳・海の家の店長', fav:4, say:'波が来てるね〜', hobby:'サーフィンと昼寝', style:'みんなが集まる「流れ」に乗るタイプ。3人以上が同じ産業に集まっても+1もらえる。', sec:'波がない日は、こっそり株価チャートをながめている。'},
+  'ユイ':  {t:'クールな策士', age:'19歳・大学生', fav:1, say:'みんなが右なら、私は左。', hobby:'チェスと夜の読書', style:'人気のない産業で静かに独占をねらう「逆張り」。+2以下の産業で独占すると+2。', sec:'甘いものに目がなく、勝った日はパフェを食べに行く。'},
+  'アオイ':{t:'推し活ガール', age:'15歳・中学生', fav:3, say:'推しは裏切らない！', hobby:'推しのライブとグッズ集め', style:'はじめに決まる「推し産業」はいつも+1。推しで独占できたら、さらに+1。', sec:'負けた日は、ノートにびっしり反省会を書いている。'},
+  'ミナト':{t:'データ派の計算屋', age:'21歳・大学院生', fav:2, say:'期待値で考えよう。', hobby:'データ集めと鉄道の時刻表', style:'先物取引の手数料が0。次のNEWSを読んで、ムダなく点を積み上げる。', sec:'口では否定するけれど、朝の占いは毎日チェックしている。'},
+  'トキ':  {t:'老練の相場師', age:'72歳・元証券マン', fav:1, say:'相場は、くり返す。', hobby:'古い新聞の切り抜き集め', style:'大引けサプライズで、最後のNEWSを先にこっそり知っている。歴史の知恵で最後に笑う。', sec:'1964年の東京オリンピックを、沿道で生で見た。'},
+  'レン':  {t:'強気な挑戦者', age:'16歳・高校生', fav:5, say:'下からがいちばん燃える。', hobby:'eスポーツの大会めぐり', style:'最後のターンの前に負けていると、大引けが×3。最下位からの大逆転がいちばん似合う。', sec:'寝る前には、かならず牛乳を1杯飲む。'},
+  'ミオ':  {t:'まじめな優等生', age:'14歳・中学生（ゲームの案内役）', fav:4, say:'予習はばっちり！', hobby:'ノートまとめと図書館', style:'1ターン目にもらう点数が+2。スタートダッシュでリードを守りきる。', sec:'カードゲームの説明書を読むのが、いちばんの楽しみ。'},
+  'ソラ':  {t:'マイペースなのんびり屋', age:'20歳・カフェのアルバイト', fav:2, say:'まあ、のんびりいこ〜', hobby:'雲の写真を撮ること', style:'先物取引を使わずに、大引けで独占できたら+2。あわてず最後の1枚に賭ける。', sec:'のんびりして見えて、じつはこのゲームの最高点記録を持っている。'}
+};
+/* キャラクター一覧：9人の顔をタップすると、それぞれのプロフィールへ */
+function charsBody(){
+  const riv=S.prof.riv||{}, open=Object.keys(CHARS).filter(k=>{ const r=riv[k]; return r&&r.w+r.l+r.d>=3; }).length;
+  return `<span class="label">CHARACTERS</span><h3 class="ttl" style="font-size:22px">👥 9人の投資家</h3>
+    <p class="note">タップでプロフィール。3回対戦すると「ひみつ」が見られます（${open}/9 解放）。</p>
+    <div class="chgrid">${Object.keys(CHARS).map((k,j)=>{ const c=CHARS[k], p=CHAR_PROF[k]||{}, r=riv[k], g=r?r.w+r.l+r.d:0;
+      return `<button class="chr9" style="--rc:${c.c};--d:${j*45}ms" onclick="openSheet('char:${k}')"><span class="chr9-f">${face(k)}${g>=3?'<i>🔓</i>':''}</span><b>${k}</b><small>${p.t||''}</small></button>`; }).join('')}</div>`;
+}
+function charProf(k){
+  const p=CHAR_PROF[k]; if(!p) return '';
+  const r=(S.prof.riv||{})[k], g=r?r.w+r.l+r.d:0, open=g>=3;
+  return `<div class="cprof" style="--rc:${(CHARS[k]||{}).c||'#ffc83a'}"><div class="cp-say"><span class="label">口ぐせ</span><b>「${p.say}」</b></div>
+    <dl><div><dt>肩書き</dt><dd>${p.t}</dd></div><div><dt>年齢</dt><dd>${p.age}</dd></div><div><dt>趣味</dt><dd>${p.hobby}</dd></div>
+      <div><dt>好きな産業</dt><dd class="cp-fav" style="--c:var(--i${p.fav})">${scene(p.fav)}<span>${IND[p.fav]}</span></dd></div></dl>
+    <div class="cp-style"><span class="label">戦い方</span><p>${p.style}</p></div>
+    <div class="cp-sec${open?' on':''}"><span class="label">ひみつ</span>${open?`<p>${p.sec}</p>`:`<p>🔒 ${k}と3回対戦すると見られる（いま ${g}回）</p><i style="width:${Math.min(100,g/3*100)}%"></i>`}</div></div>`;
+}
 function charSheetBody(k){
   const c=CHARS[k], t=CPU_TALK[k]; if(!c) return '';
   const r=(S.prof.riv||{})[k], g=r?r.w+r.l+r.d:0;
   const lines=[['対戦前',t.vs],['独占したとき',t.mono],['被ったとき',t.hit]].filter(x=>x[1]).map(([n,a])=>`<div class="chq"><span class="label">${n}</span><span class="bub">${a[0]}</span></div>`).join('');
   return `<div class="charhead" style="--rc:${c.c}"><span class="rva big">${chIc(c)}</span><span class="label">CHARACTER</span><h3 class="ttl" style="font-size:28px">${k}</h3><p class="note">${c.d}</p></div>
     ${r?`<div class="charrec"><div><b class="w">${r.w}</b><span>勝</span></div><div><b class="l">${r.l}</b><span>敗</span></div><div><b>${r.d}</b><span>分</span></div><div><b>${Math.round(r.w/g*100)}%</b><span>勝率</span></div></div>`:''}
+    ${charProf(k)}
     ${bondBox(k)}
     <div class="chqs">${lines}</div>
     <button class="btn gold big" onclick="challengeChar('${k}')">${k}と対戦する</button>`;
