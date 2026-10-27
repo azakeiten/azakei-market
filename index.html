@@ -2341,6 +2341,23 @@ html.light .lob{color:#fff}
 .ci-card svg.scene{width:100%;height:auto;border-radius:9px;background:linear-gradient(180deg,rgb(255 255 255 / .26),rgb(255 255 255 / .05));box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .3)}
 .cutin .ci-card b{line-height:1.2;margin-top:auto;font-family:var(--display);font-weight:400;font-size:clamp(13px,3vw,17px);color:#fff!important;text-shadow:none!important}
 @keyframes ciCard{0%{opacity:0;transform:translateY(60px) rotate(-30deg) scale(.3)}22%{opacity:1;transform:translateY(-8px) rotate(-4deg) scale(1.12)}34%{transform:translateY(0) rotate(-7deg) scale(1)}82%{opacity:1;transform:translateY(-4px) rotate(-6deg) scale(1)}100%{opacity:0;transform:translateY(-40px) rotate(-2deg) scale(.9)}}
+/* NEWS発表の画面に挿し絵：テレビは「現場の映像」、新聞は写真、未来編はホログラム */
+.tv-pic{position:relative;width:min(300px,78vw);aspect-ratio:3/2;margin:10px auto 8px;border-radius:12px;overflow:hidden;background:#f3f0e6;color:#1b1030;box-shadow:0 0 0 3px #0b0c24,0 0 0 5px rgb(255 255 255 / .25),0 14px 30px -12px #000;animation:tvPicIn .45s .1s both cubic-bezier(.2,1.3,.4,1)}
+.tv-pic::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgb(0 0 0 / .05) 0 2px,transparent 2px 4px),radial-gradient(ellipse at center,transparent 60%,rgb(0 0 0 / .25));pointer-events:none}
+.tv-cam{width:100%;height:100%;animation:tvZoom 4s ease-out both}
+.tv-cam svg.nart{display:block;width:100%;height:100%}
+.tv-rec{position:absolute;left:8px;top:7px;font-size:11px;font-weight:800;color:#fff;background:#e2463a;border-radius:5px;padding:1px 7px;animation:tvRec 1s steps(2) infinite}
+@keyframes tvPicIn{from{opacity:0;transform:scale(.6) rotate(-4deg)}}
+@keyframes tvZoom{from{transform:scale(1.18) translate(4%,3%)}to{transform:scale(1) translate(0,0)}}
+@keyframes tvRec{50%{opacity:.35}}
+.np-row{display:flex;gap:10px;align-items:flex-start}.np-row .np-d{flex:1;min-width:0;margin:0}
+.np-ph{flex:none;width:38%;margin:2px 0 0;padding:3px;background:#fff;box-shadow:0 0 0 1px rgb(0 0 0 / .2);transform:rotate(1.5deg);color:#1b1030;filter:grayscale(.55) sepia(.35) contrast(1.05)}
+.np-ph svg.nart{display:block;width:100%;height:auto;background:#f3f0e6}
+.ho-pic{width:min(240px,62vw);margin:6px auto 0;color:#bff6ff;filter:drop-shadow(0 0 8px rgb(79 227 255 / .8)) hue-rotate(160deg) saturate(.7);opacity:.92;animation:hoPic 2.4s ease-in-out infinite}
+.ho-pic svg.nart{display:block;width:100%;height:auto}
+@keyframes hoPic{50%{opacity:.7;transform:translateY(-2px)}}
+@media (max-height:700px){.tv-pic{width:min(230px,62vw)}}
+@media (prefers-reduced-motion:reduce){.tv-pic,.tv-cam,.tv-rec,.ho-pic{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2756,6 +2773,7 @@ const MOTIF={
   doc:`<path d="M7 3 h16 l7 7 v23 H7z" fill="#fff" ${K_}/><path d="M23 3 v7 h7" ${K_} fill="none"/><path d="M11 27 v-5 M16 27 v-9 M21 27 v-7 M26 27 v-11" stroke="var(--i1)" stroke-width="3" stroke-linecap="round"/>`,
   cone:`<path d="M10 33 l6 -28 h4 l6 28z" fill="#ff8a2a" ${K_}/><path d="M13 22 h10 M14.5 15 h7" stroke="#fff" stroke-width="2.6"/><path d="M6 33 H30" ${K_}/>`,
   flame:`<path d="M18 33 c-8 0 -12 -6 -10 -13 c2 -6 7 -7 6 -16 c6 3 10 8 9 14 c2 -1 3 -3 3 -5 c4 5 4 10 2 14 c-2 4 -5 6 -10 6z" fill="#ff7a3d" ${K_}/><path d="M18 31 c-3 0 -5 -3 -3 -7 c1 2 3 2 3 -2 c3 2 4 6 0 9z" fill="#ffd23a"/>`,
+  rocket:`<path d="M18 2 c7 5 9 13 7 21 h-14 c-2 -8 0 -16 7 -21z" fill="#fff" ${K_}/><circle cx="18" cy="13" r="3.4" fill="#4fa0ff" ${K_}/><path d="M11 18 l-6 7 v4 l7 -3 M25 18 l6 7 v4 l-7 -3" fill="#e2463a" ${K_}/><path d="M14 23 l4 11 4 -11z" fill="#ffd23a" ${K_}/>`,
   arrowUp:`<path d="M4 32 L14 20 L20 25 L32 6" stroke="#e2463a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 5 L33 4 L32 13" stroke="#e2463a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
   arrowDown:`<path d="M4 4 L14 16 L20 11 L32 30" stroke="#4f6cff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 31 L33 32 L32 23" stroke="#4f6cff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 };
@@ -2794,7 +2812,16 @@ const MOTIF_KEYS=[
   [/受験|研究|読書|芸術|卒業/,'book'],
   [/スキー|紅葉|温泉|行楽/,'mountain'],
   [/訪日|万博|インバウンド|海外/,'globe'],
-  [/燃料|暖房|ハロウィン/,'flame']
+  [/燃料|暖房|ハロウィン/,'flame'],
+  [/再エネ|太陽光|風力|カーボン|ニュートラル/,'leaf'],[/再エネ|太陽光/,'sun'],
+  [/自動運転|タクシー/,'car'],
+  [/ロボ|分身/,'robot'],
+  [/量子|コンピュータ|サイバー/,'chip'],
+  [/サイバー|攻撃|水不足/,'arrowDown'],
+  [/通貨/,'coin'],[/通貨/,'phone'],
+  [/宇宙|月面|ロケット/,'rocket'],
+  [/建設|都市/,'cone'],[/都市|介護|家事/,'house'],[/介護/,'heart'],
+  [/水不足/,'umbrella']
 ];
 const IND_MOTIF=['bolt','bank','factory','bag','truck','phone'];
 /* 名前のことばから3つ。足りなければ、そのNEWSでいちばん上がる産業の部品で埋める */
@@ -6697,6 +6724,7 @@ function newsIntro(n){
   if(G.cfg.fut){   // 未来編：ホログラムの予報
     return `<div class="overlay intro news-holo${quake(n)}" onclick="endIntro()"><div class="holo-scan"></div><div class="holo-grid"></div>${newsFx(n)}<div class="box">
       <div class="ho-top"><span>◉ FORECAST</span><span>${turnLabel()}</span></div>
+      <div class="ho-pic">${newsArtAuto(HIST[n].n,G.cfg.table[n])}</div>
       <div class="ho-yr" data-t="${yearOf(n)}">${yearOf(n)}</div>
       <div class="ho-h">${nm(n)}</div><p class="ho-d">${HIST[n].d}</p>
       ${impactChips(n,'ip-holo')}${introMkt()}${skip}</div></div>`;
@@ -6705,13 +6733,14 @@ function newsIntro(n){
     return `<div class="overlay intro news-paper${quake(n)}" onclick="endIntro()"><div class="np-rays"></div>${newsFx(n)}<div class="box">
       <div class="np-turn">${turnLabel()}</div>
       <div class="np"><div class="np-mast"><span>AZAKEI 経済新聞</span><span class="gogai">号外</span></div>
-        <div class="np-yr">${yearOf(n)}<small>年</small></div><div class="np-h">${nm(n)}</div><p class="np-d">${HIST[n].d}</p></div>
+        <div class="np-yr">${yearOf(n)}<small>年</small></div><div class="np-h">${nm(n)}</div><div class="np-row"><p class="np-d">${HIST[n].d}</p><figure class="np-ph">${newsArtAuto(HIST[n].n,G.cfg.table[n])}</figure></div></div>
       ${impactChips(n,'ip-paper')}${introMkt()}${skip}</div></div>`;
   }
   // クラシック：テレビの臨時ニュース
   const tick=NEWS.map(x=>`<span>${x}</span>`).join('');
   return `<div class="overlay intro news-tv${quake(n)}" onclick="endIntro()"><div class="tv-flash"></div>${newsFx(n)}<div class="box">
     <div class="tv-top"><span class="tv-live">● LIVE</span><span class="tv-ch">AZAKEI NEWS</span><span class="tv-turn">${turnLabel()}</span></div>
+    <div class="tv-pic"><div class="tv-cam">${artFor(G.cfg,n,nm(n),G.cfg.table[n])}</div><span class="tv-rec">● 現場から</span></div>
     <div class="tv-band"><span class="tv-tag">速報</span><span class="tv-head">${nm(n)}！</span></div>
     ${impactChips(n,'ip-tv')}${introMkt()}${xcBell()}${skip}</div>
     <div class="tv-ticker"><div>${tick}${tick}</div></div></div>`;
