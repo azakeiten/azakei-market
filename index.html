@@ -2358,6 +2358,12 @@ html.light .lob{color:#fff}
 @keyframes hoPic{50%{opacity:.7;transform:translateY(-2px)}}
 @media (max-height:700px){.tv-pic{width:min(230px,62vw)}}
 @media (prefers-reduced-motion:reduce){.tv-pic,.tv-cam,.tv-rec,.ho-pic{animation:none}}
+/* 似顔絵 */
+:is(.ava,.rva,.pwf-ic,.pw-ic) svg.face{width:100%;height:100%;display:block;border-radius:50%}
+.ava:has(svg.face),.rva:has(svg.face){overflow:hidden;padding:0}
+.pwf-ic.pwf-face,.pw-ic.pwf-face{position:relative;overflow:visible;padding:0;background:radial-gradient(circle at 35% 30%,#fff,var(--pc) 85%)}.pwn-c .pwf-face i{width:17px!important;height:17px!important;font-size:10px!important;right:-4px!important;bottom:-2px!important;box-shadow:0 0 0 1.5px var(--pc)!important}
+.pw-ic.pwf-face i{position:absolute;right:-6px;bottom:-4px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px;background:#fff;box-shadow:0 0 0 2px var(--pc)}
+.pwf-ic.pwf-face i{position:absolute;right:-6px;bottom:-4px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:17px;background:#fff;box-shadow:0 0 0 2.5px var(--pc),0 3px 8px -3px rgb(0 0 0 / .5)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2840,6 +2846,78 @@ function newsArtAuto(name,row){
 }
 /* 基本の6枚は手描き、それ以外は部品の組み合わせ */
 const artFor = (cfg,n,name,row) => !cfg.my && !cfg.hist && n<NEWS.length && NEWS_ART[n] ? newsArt(n) : newsArtAuto(name,row);
+/* ---- 9人のキャラの顔：髪型・目・口・小物の組み合わせで描く似顔絵（100×100） ---- */
+const FACE={
+  'ハル':  {skin:'#ffd9bf', hair:'#d9481e', hs:'spiky',  eye:'sharp',  mouth:'grin',  acc:'band',   cloth:'#ff7a3d'},
+  'ナギ':  {skin:'#e9b48c', hair:'#6b3d1f', hs:'surf',   eye:'smile',  mouth:'grin',  acc:'shades', cloth:'#3fd0a0'},
+  'ユイ':  {skin:'#ffe3d0', hair:'#3b2366', hs:'long',   eye:'cool',   mouth:'small', acc:'moon',   cloth:'#a77bff'},
+  'アオイ':{skin:'#ffe0cc', hair:'#a8336a', hs:'twin',   eye:'sparkle',mouth:'open',  acc:'ribbon', cloth:'#ff5c9a'},
+  'ミナト':{skin:'#ffe0c8', hair:'#1f2a5c', hs:'neat',   eye:'dot',    mouth:'flat',  acc:'glasses',cloth:'#5f86ff'},
+  'トキ':  {skin:'#f3cfb0', hair:'#d8d8de', hs:'elder',  eye:'kind',   mouth:'stache',acc:'none',   cloth:'#8a6a3a'},
+  'レン':  {skin:'#ffdcc2', hair:'#e8b400', hs:'spiky2', eye:'sharp',  mouth:'smirk', acc:'bolt',   cloth:'#eab520'},
+  'ミオ':  {skin:'#ffe3d2', hair:'#7a3b5e', hs:'bob',    eye:'dot',    mouth:'smile', acc:'pin',    cloth:'#ff9ad9'},
+  'ソラ':  {skin:'#ffe6d6', hair:'#bfe9f2', hs:'fluffy', eye:'closed', mouth:'smile', acc:'none',   cloth:'#20c6d1'}
+};
+const FK='stroke="#2a1a33" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"';
+const HAIR_BACK={
+  long:h=>`<path d="M23 46 Q20 18 50 18 Q80 18 77 46 L82 90 L18 90z" fill="${h}" ${FK}/>`,
+  twin:h=>`<path d="M22 40 q-14 8 -12 30 q2 14 10 18 q-2 -16 6 -30z M78 40 q14 8 12 30 q-2 14 -10 18 q2 -16 -6 -30z" fill="${h}" ${FK}/>`,
+  bob:h=>`<path d="M22 58 Q18 18 50 18 Q82 18 78 58 Q78 66 70 66 H30 Q22 66 22 58z" fill="${h}" ${FK}/>`,
+  fluffy:h=>`<g fill="${h}" ${FK}><circle cx="28" cy="34" r="10"/><circle cx="40" cy="22" r="11"/><circle cx="56" cy="20" r="11"/><circle cx="71" cy="30" r="10"/><circle cx="77" cy="44" r="8"/><circle cx="23" cy="46" r="8"/></g>`
+};
+const HAIR_FRONT={
+  spiky:h=>`<path d="M25 46 L19 30 L31 33 L30 16 L42 27 L49 11 L56 26 L68 15 L69 32 L81 29 L75 46 Q66 34 50 35 Q34 34 25 46z" fill="${h}" ${FK}/>`,
+  spiky2:h=>`<path d="M26 46 L22 28 L34 32 L36 14 L46 26 L58 10 L60 26 L74 18 L72 32 L80 34 L74 46 Q64 32 48 34 Q34 36 26 46z" fill="${h}" ${FK}/><path d="M26 46 Q24 40 27 36" fill="none" ${FK}/>`,
+  surf:h=>`<path d="M25 46 Q22 22 46 19 Q70 16 77 36 Q80 44 75 47 Q72 36 62 33 Q66 40 60 42 Q56 33 46 33 Q46 39 38 40 Q40 34 34 34 Q28 38 25 46z" fill="${h}" ${FK}/>`,
+  long:h=>`<path d="M26 46 Q26 21 50 21 Q74 21 74 46 L70 38 L63 42 L58 34 L50 41 L42 34 L37 42 L30 38z" fill="${h}" ${FK}/>`,
+  twin:h=>`<path d="M25 46 Q24 20 50 20 Q76 20 75 46 Q70 36 62 37 Q58 31 50 34 Q42 31 38 37 Q30 36 25 46z" fill="${h}" ${FK}/>`,
+  neat:h=>`<path d="M25 46 Q23 20 50 19 Q77 20 75 46 Q74 34 66 31 Q52 37 36 30 Q28 34 25 46z" fill="${h}" ${FK}/><path d="M40 21 Q46 28 36 31" fill="none" stroke="#2a1a33" stroke-width="1.4"/>`,
+  elder:h=>`<path d="M25 50 Q22 36 28 30 Q30 40 30 48z M75 50 Q78 36 72 30 Q70 40 70 48z" fill="${h}" ${FK}/><path d="M34 26 Q50 18 66 26" fill="none" stroke="${h}" stroke-width="5" stroke-linecap="round"/>`,
+  bob:h=>`<path d="M25 46 Q25 21 50 21 Q75 21 75 46 L75 40 Q62 36 58 28 Q52 38 26 40z" fill="${h}" ${FK}/>`,
+  fluffy:h=>`<path d="M26 44 q4 -10 10 -6 q2 -9 10 -5 q5 -8 12 -2 q8 -4 10 5 q7 0 6 8 q-8 -6 -14 -2 q-6 -5 -12 0 q-7 -4 -12 1 q-6 -2 -10 1z" fill="${h}" ${FK}/>`
+};
+const EYES={
+  dot:`<circle cx="41" cy="51" r="3"/><circle cx="59" cy="51" r="3"/>`,
+  sharp:`<path d="M35 44 L46 47 M65 44 L54 47" stroke="#2a1a33" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="41" cy="52" rx="2.8" ry="3.4"/><ellipse cx="59" cy="52" rx="2.8" ry="3.4"/>`,
+  smile:`<path d="M37 52 Q41 47 45 52 M55 52 Q59 47 63 52" fill="none" stroke="#2a1a33" stroke-width="2.4" stroke-linecap="round"/>`,
+  cool:`<path d="M36 50 H46 M54 50 H64" stroke="#2a1a33" stroke-width="2.2" stroke-linecap="round"/><path d="M38 50 a3 3 0 0 0 6 0 M56 50 a3 3 0 0 0 6 0" fill="#2a1a33"/>`,
+  sparkle:`<ellipse cx="41" cy="51" rx="4" ry="5"/><ellipse cx="59" cy="51" rx="4" ry="5"/><circle cx="42.4" cy="49" r="1.6" fill="#fff"/><circle cx="60.4" cy="49" r="1.6" fill="#fff"/><circle cx="40" cy="53.5" r=".8" fill="#fff"/><circle cx="58" cy="53.5" r=".8" fill="#fff"/>`,
+  kind:`<path d="M37 51 Q41 48 45 51 M55 51 Q59 48 63 51" fill="none" stroke="#2a1a33" stroke-width="2.2" stroke-linecap="round"/><path d="M36 46 Q41 44 46 46 M54 46 Q59 44 64 46" fill="none" stroke="#d8d8de" stroke-width="2.6" stroke-linecap="round"/>`,
+  closed:`<path d="M37 51 Q41 54 45 51 M55 51 Q59 54 63 51" fill="none" stroke="#2a1a33" stroke-width="2.2" stroke-linecap="round"/>`
+};
+const MOUTH={
+  grin:`<path d="M43 60 Q50 68 57 60 z" fill="#fff" ${FK}/>`,
+  smile:`<path d="M45 61 Q50 65 55 61" fill="none" ${FK}/>`,
+  small:`<path d="M47 62 Q50 63.5 53 62" fill="none" ${FK}/>`,
+  open:`<path d="M44 60 Q50 70 56 60 z" fill="#e2463a" ${FK}/>`,
+  flat:`<path d="M46 62 H54" ${FK}/>`,
+  smirk:`<path d="M45 62 Q51 64 56 59" fill="none" ${FK}/>`,
+  stache:`<path d="M40 60 Q45 56 50 59 Q55 56 60 60 Q55 63 50 61 Q45 63 40 60z" fill="#d8d8de" stroke="#2a1a33" stroke-width="1.4"/>`
+};
+const ACC={
+  none:'',
+  band:`<path d="M24 38 Q50 30 76 38 L76 43 Q50 35 24 43z" fill="#fff" ${FK}/><circle cx="50" cy="35" r="3.6" fill="#e2463a" stroke="#2a1a33" stroke-width="1.4"/>`,
+  shades:`<g transform="translate(0 -14)"><rect x="33" y="40" width="14" height="8" rx="4" fill="#1b1030"/><rect x="53" y="40" width="14" height="8" rx="4" fill="#1b1030"/><path d="M47 43 H53" stroke="#1b1030" stroke-width="2"/></g>`,
+  moon:`<path d="M70 22 a7 7 0 1 0 6 9 a5.5 5.5 0 1 1 -6 -9z" fill="#ffd23a" stroke="#2a1a33" stroke-width="1.4"/>`,
+  ribbon:`<g fill="#ffd23a" stroke="#2a1a33" stroke-width="1.6" stroke-linejoin="round"><path d="M18 30 l8 -8 2 10z M30 22 l8 2 -6 8z"/><path d="M82 30 l-8 -8 -2 10z M70 22 l-8 2 6 8z"/></g>`,
+  glasses:`<g fill="rgb(255 255 255 / .35)" stroke="#2a1a33" stroke-width="2"><circle cx="41" cy="51" r="6.5"/><circle cx="59" cy="51" r="6.5"/></g><path d="M47.5 51 H52.5" stroke="#2a1a33" stroke-width="2"/>`,
+  bolt:`<path d="M71 24 l-7 9 h5 l-2 8 8 -11 h-5z" fill="#fff" stroke="#2a1a33" stroke-width="1.4" stroke-linejoin="round"/>`,
+  pin:`<rect x="62" y="30" width="12" height="4" rx="2" transform="rotate(-25 68 32)" fill="#ffd23a" stroke="#2a1a33" stroke-width="1.4"/>`
+};
+let FACE_N=0;
+function face(name, bg){
+  const f=FACE[name]; if(!f) return ''; const id='fc'+(++FACE_N);   /* 円で切りぬく。idは1枚ごとに変える */
+  return `<svg class="face" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="${id}"><circle cx="50" cy="50" r="50"/></clipPath></defs><g clip-path="url(#${id})">${bg?`<circle cx="50" cy="50" r="50" fill="${bg}"/>`:''}
+    ${(HAIR_BACK[f.hs]||(()=>''))(f.hair)}
+    <path d="M18 100 Q20 76 50 74 Q80 76 82 100z" fill="${f.cloth}" ${FK}/><path d="M42 74 L50 84 L58 74" fill="#fff" ${FK}/>
+    <rect x="44" y="64" width="12" height="12" rx="3" fill="${f.skin}" ${FK}/>
+    <ellipse cx="24.5" cy="52" rx="4" ry="5.5" fill="${f.skin}" ${FK}/><ellipse cx="75.5" cy="52" rx="4" ry="5.5" fill="${f.skin}" ${FK}/>
+    <ellipse cx="50" cy="48" rx="25" ry="24" fill="${f.skin}" ${FK}/>
+    <ellipse cx="35" cy="58" rx="4.5" ry="2.6" fill="#ff8aa0" opacity=".45"/><ellipse cx="65" cy="58" rx="4.5" ry="2.6" fill="#ff8aa0" opacity=".45"/>
+    <g fill="#2a1a33">${EYES[f.eye]}</g>${MOUTH[f.mouth]}
+    ${(HAIR_FRONT[f.hs]||(()=>''))(f.hair)}${ACC[f.acc]||''}</g></svg>`;
+}
+
 const EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>';
 const CROWN = c => `<svg class="${c}" viewBox="0 0 34 24" aria-hidden="true"><path fill="currentColor" d="M2 22 4 6l7 7 6-11 6 11 7-7 2 16z"/></svg>`;
 const SPK = on => `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/>${on?'<path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>':'<path d="m17 9 5 6M22 9l-5 6"/>'}</svg>`;
@@ -2922,6 +3000,9 @@ const $ = s => document.querySelector(s);
 const initial = n => (String(n).replace(/^CPU\s*/,'').trim()[0] || '?');
 const AVATARS=[[null,1],["🦊",1],["🐼",1],["🐯",2],["🐸",3],["🐧",4],["🦉",5],["🐙",6],["🦁",8],["🐲",10],["🤖",12],["👑",15]];   // [絵,解放レベル]、nullは名前の頭文字
 const myAvatar = () => { const P=S&&S.prof; if(!P||!P.av) return null; if(P.av==='mine') return P.myIcon?MY_ICON:null; const a=AVATARS.find(x=>x[0]===P.av); return a && lvInfo(P.xp).lv>=a[1] ? a[0] : null; };
+/* アバター：CPUのキャラは似顔絵、それ以外（自分・オンラインの相手・ボス）はこれまでどおりの絵文字や頭文字 */
+const avHTML = p => { const k=charKey(p), a=avOf(p); return (!isHuman(p) && !p.boss && FACE[k] && CHARS[k] && a===CHARS[k].ic) ? face(k) : esc(a); };
+const chIc = c => { const k=Object.keys(CHARS).find(k=>CHARS[k]===c); return k&&FACE[k] ? face(k) : (c&&c.ic)||''; };
 const avOf = p => (G && G.players.indexOf(p)===myIndex() && myAvatar()) || (G && G.online && p.peer && p.peer!==NET.myPeer && peerIcon(p.peer) ? ''+p.peer : '') || (p.boss && G && G.boss ? BOSSES.find(b=>b.id===G.boss).ic : '') || (!isHuman(p) && CHARS[charKey(p)] ? CHARS[charKey(p)].ic : initial(p.name));   // CPUはキャラのアイコン
 const myTitle = () => { const P=S.prof, a=P.title && P.ach[P.title] && ACH.find(x=>x.id===P.title); return a ? a.n : titleOf(lvInfo(P.xp).lv); };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || !!(typeof S!=='undefined' && S && S.calm);
@@ -3330,7 +3411,7 @@ function vsOverlay(){
   const bsv = G.boss && BOSSES.find(b=>b.id===G.boss);
   const mode = G.duel ? (G.duel.target!=null ? `挑戦状 · ${esc(G.duel.from)}さんの ${G.duel.target}点を超えろ！` : '挑戦状 · この点数で友だちに勝負！') : bsv ? `WEEKLY BOSS · ${bsv.ic} ${bsv.n}「${bsv.ab}」` : G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : C.ex ? 'CLASSIC EX MATCH · 18種から6種' : 'CLASSIC MATCH';
   const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
-      <div class="ava${i===me?frc():''}" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</div>
+      <div class="ava${i===me?frc():''}" style="--s:var(--s${p.seat%6});grid-row:auto">${avHTML(p)}</div>
       ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b>${G.pw&&G.pw[i]?`<em class="vspw">🃏 ${PWR[G.pw[i]].ic} ${PWR[G.pw[i]].n}</em>`:''}<span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
@@ -3448,7 +3529,7 @@ function flipOverlay(){
     return `<div class="fl ${st}${i===me?' me':''}" style="--d:${d}ms;--s2:${settle}ms">
       <div class="fl-in"><div class="fl-face fl-back back${skc()}${bkc()}"></div><div class="fl-face fl-front">${cardHTML(r.ind,{cls:'flc'})}</div></div>
       <span class="fl-tag">${r.k===1?'独占！':r.k>1?`${r.k}人被り`:''}</span>
-      <span class="fl-name"><span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</span>${esc(p.name)}</span>
+      <span class="fl-name"><span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${avHTML(p)}</span>${esc(p.name)}</span>
       <b class="fl-pts${r.total<0?' neg':''}">${sgn(r.total)}</b></div>`; }).join('');
   const wcard = G.whale&&G.whale.pick!=null ? `<div class="fl whl" style="--d:${350+n*170}ms;--s2:${350+n*170+250}ms"><div class="fl-in"><div class="fl-face fl-back back${skc()}${bkc()}"></div><div class="fl-face fl-front">${cardHTML(G.whale.pick,{cls:'flc'})}</div></div><span class="fl-tag"></span><span class="fl-name">🐋 クジラ</span><b class="fl-pts">—</b></div>` : '';
   return `<div class="overlay flipov" onclick="endFlip()"><div class="box"><div class="fl-open">OPEN!</div><div class="fl-row">${cards}${wcard}</div><div class="note">タップでスキップ</div></div></div>`;
@@ -3485,7 +3566,7 @@ function ceremonyOverlay(){
   const rk=ranking(G.players,G.cfg), n=rk.length, me=myIndex();
   const rows=rk.slice().reverse().map((x,j)=>{ const win=x.rank===1, d=win?900+(n-1)*650:900+j*650;
     return `<div class="cr${win?' win':''}${x.i===me?' me':''}" style="--d:${d}ms">${win?CROWN('crr'):''}<span class="cr-rk">${x.rank}<small>位</small></span>
-      <span class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${esc(avOf(x.p))}</span><span class="cr-n">${esc(x.p.name)}</span><b class="cr-s">${x.p.score}<small>pt</small></b></div>`; }).join('');
+      <span class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${avHTML(x.p)}</span><span class="cr-n">${esc(x.p.name)}</span><b class="cr-s">${x.p.score}<small>pt</small></b></div>`; }).join('');
   return `<div class="overlay ceremony" onclick="endCeremony()"><div class="cr-spot" style="--d:${900+(n-1)*650}ms"></div><div class="box">
     <div class="cr-title">結果発表</div><div class="cr-drum"><i></i><i></i><i></i></div>
     ${G.teams?(()=>{ const {s}=teamScores(), w=s[0]===s[1]?-1:s[0]>s[1]?0:1; return `<div class="cr-team" style="--d:${900+(n-1)*650+500}ms"><span class="${w===0?"win":""}">${TEAM_NAMES[0]} ${s[0]}</span><i>VS</i><span class="${w===1?"win":""}">${s[1]} ${TEAM_NAMES[1]}</span></div>`; })():""}
@@ -3634,7 +3715,7 @@ function startNextRound(){
 function settleOverlay(){
   const s=G.settles[G.settles.length-1], rk=ranking(G.players,G.cfg), me=myIndex(), lastTerm=G.round>=G.rounds-1;
   const rows=rk.map((x,j)=>{ const r=s.rows[x.i]; return `<div class="strow${x.i===me?' me':''}${r.bonus?' top':''}" style="animation-delay:${j*.1}s">
-      <div class="srow1"><b class="sr">${x.rank}</b><div class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${esc(avOf(x.p))}</div>
+      <div class="srow1"><b class="sr">${x.rank}</b><div class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${avHTML(x.p)}</div>
       <span class="sn">${esc(x.p.name)}</span><span class="sg num ${cls(r.gain)}">今期 ${sgn(r.gain)}</span>${r.bonus?`<span class="sb">決算 +${r.bonus}</span>`:''}<b class="st">${x.p.score}</b></div>
       <div class="srow2">${r.ct?`<span class="ctr${r.done?' ok':''}" style="animation-delay:${.8+j*.25}s"><i>契約</i>${esc(contractText(r.ct))}<b>${r.done?`達成 +${r.cv}`:'未達成'}</b></span>`:''}
         ${r.brand!=null?`<span class="brd${r.newBrand?' new':''}" style="--c:var(--i${r.brand})"><i>ブランド</i>${IND[r.brand]}${r.newBrand?' NEW':''}</span>`:''}</div></div>`; }).join('');
@@ -4682,7 +4763,7 @@ let HOME_TALK_I=null;
 function homeTalk(){
   if(HOME_TALK_I===null) HOME_TALK_I=(todayKey()*5)%HOME_TALK.length;
   const [k,t]=HOME_TALK[HOME_TALK_I], c=CHARS[k];
-  return `<button class="hmtalk" style="--rc:${c.c}" onclick="nextHomeTalk()" aria-label="次のひとこと"><span class="rva">${c.ic}</span><span class="hmt-b"><b>${k}</b>${t}<small>タップで次の話 ›</small></span></button>`;
+  return `<button class="hmtalk" style="--rc:${c.c}" onclick="nextHomeTalk()" aria-label="次のひとこと"><span class="rva">${chIc(c)}</span><span class="hmt-b"><b>${k}</b>${t}<small>タップで次の話 ›</small></span></button>`;
 }
 function nextHomeTalk(){
   HOME_TALK_I=(HOME_TALK_I+1)%HOME_TALK.length; const [k,t]=HOME_TALK[HOME_TALK_I];
@@ -5216,7 +5297,7 @@ function bondBox(k){
 function bondUpPanel(){
   const u=G&&G.bondUps; if(!u||!u.length) return '';
   return `<section class="panel nk-up"><span class="label">💗 なかよし度アップ！</span>${u.map(({k,lv})=>{ const c=CHARS[k];
-    return `<button class="nk-row" style="--rc:${c.c}" onclick="openSheet('char:${k}')"><span class="rva">${c.ic}</span><span class="nk-rt"><b>${k}と Lv${lv} ${bondHearts(lv,'sm')}</b><span class="nk-say">「${(BOND_EP[k]||[])[lv-1]||''}」</span></span><span class="nk-go">›</span></button>`; }).join('')}
+    return `<button class="nk-row" style="--rc:${c.c}" onclick="openSheet('char:${k}')"><span class="rva">${chIc(c)}</span><span class="nk-rt"><b>${k}と Lv${lv} ${bondHearts(lv,'sm')}</b><span class="nk-say">「${(BOND_EP[k]||[])[lv-1]||''}」</span></span><span class="nk-go">›</span></button>`; }).join('')}
     <p class="note">タップすると、キャラのエピソードをまとめて読めるよ。</p></section>`;
 }
 
@@ -5338,7 +5419,7 @@ function cpuWhy(){
     else t=`「${IND[best]}」はみんなが出しそうだから、あえて「${IND[c]}」（${sgn(val(c))}）でひとりじめをねらった`;
     const res = r.k===1 ? `<em class="cw-ok">→ 独占成功 ${sgn(r.total)}</em>` : `<em class="cw-ng">→ ${r.k}人で被り ${sgn(r.total)}</em>`;
     const ch=CHARS[charKey(p)];
-    return `<div class="cw-row"><span class="ava" style="--s:${ch?ch.c:`var(--s${p.seat%6})`}">${esc(avOf(p))}</span><span class="cw-bub"><b>${esc(String(p.name).replace(/^CPU\s*/,''))}</b>${t} ${res}</span></div>`;
+    return `<div class="cw-row"><span class="ava" style="--s:${ch?ch.c:`var(--s${p.seat%6})`}">${avHTML(p)}</span><span class="cw-bub"><b>${esc(String(p.name).replace(/^CPU\s*/,''))}</b>${t} ${res}</span></div>`;
   }).join('');
   const open = S.cwOpen!=null ? S.cwOpen : stepsOn();
   return `<details class="cw-box"${open?' open':''} ontoggle="S.cwOpen=this.open"><summary>🧠 CPUはなぜそれを出した？</summary><div class="cw-list">${items}</div></details>`;
@@ -5806,7 +5887,7 @@ function rivalFx(prev){
   const busy = (r.k===1 || r.total>=5) || (P[me].hist.length>2 && top(P.map(p=>p.score))===me && top(prev)!==me);
   if(busy) return;
   const pick=(arr)=>arr[Math.floor(Math.random()*arr.length)];
-  const look=p=>{ const c=CHARS[charKey(p)]; return {c:(c&&c.c)||'#ff5c7a', av:esc(avOf(p))}; };
+  const look=p=>{ const c=CHARS[charKey(p)]; return {c:(c&&c.c)||'#ff5c7a', av:avHTML(p)}; };
   if(r.k===2){
     const j=P.findIndex((q,i)=>i!==me && G.last[i].ind===r.ind); if(j<0 || isHuman(P[j])) return;
     const T=talkOf(P[j]), line=(T.hit&&pick(T.hit))||'……被ったか。', L=look(P[j]), nm=esc(String(P[j].name).replace(/^CPU\s*/,''));
@@ -5858,7 +5939,7 @@ function ivPanel(){
   if(iv.a1==null) body+=chips(q.q1,1);
   else { body+=ans(q.q1[iv.a1])+`<div class="iv-q">${ann}<p><b>アナウンサー</b>${q.won?'みごとな読みでした！':'その意気です！'} ${esc(q.ask2)}</p></div>`;
     if(iv.a2==null) body+=chips(q.q2,2);
-    else body+=ans(q.q2[iv.a2])+`<div class="iv-q iv-rv" style="--rc:${c}"><span class="ava" style="--s:${c}">${esc(avOf(q.rv))}</span><p><b>${esc(q.rn)}</b>${esc(iv.re)}</p></div>
+    else body+=ans(q.q2[iv.a2])+`<div class="iv-q iv-rv" style="--rc:${c}"><span class="ava" style="--s:${c}">${avHTML(q.rv)}</span><p><b>${esc(q.rn)}</b>${esc(iv.re)}</p></div>
       <div class="iv-done"><span>📰 このインタビューは、下の号外にのりました</span><button class="ipf-link" onclick="document.querySelector('.gzp')?.scrollIntoView({behavior:'smooth',block:'start'})">号外を見る ↓</button></div>`; }
   return `<section class="panel iv${iv.a2!=null?' done':''}"><div class="row spread"><h3>🎙️ ${q.won?'ヒーローインタビュー':'試合後インタビュー'}</h3><span class="iv-live">● ON AIR</span></div>${body}</section>`;
 }
@@ -6037,14 +6118,14 @@ function pwBody(){
   return `<span class="label">INVESTOR CARDS · 試作</span><h3 class="ttl" style="font-size:22px">🃏 投資家カード</h3>
     <p class="note">ゲームのはじめに、全員が1枚ずつもらいます。能力はゲームのあいだ、ずっと効きます。CPUは自分のキャラのカードを持ちます。1人で遊ぶときは、あなたは<b>2枚から1枚をえらべます</b>（紙で遊ぶときも「2枚配って1枚えらぶ」にすると、作戦の幅が広がります）。</p>
     <div class="pw-list">${Object.entries(PWR).map(([k,x])=>{ const who=cur?G.players.map((p,i)=>G.pw[i]===k?p.name:null).filter(Boolean):[];
-      return `<div class="pw-card${who.length?' on':''}"><span class="pw-ic big">${x.ic}</span><span class="pw-tx"><b>${x.n}</b><span class="note">${x.ch}のカード</span><span>${x.d}</span>${who.length?`<em>🙋 ${who.map(esc).join('・')}</em>`:''}</span></div>`; }).join('')}</div>
+      return `<div class="pw-card${who.length?' on':''}"><span class="pw-ic big${FACE[x.ch]?' pwf-face':''}" style="--pc:${(CHARS[x.ch]||{}).c||'#ffc83a'}">${FACE[x.ch]?`${face(x.ch)}<i>${x.ic}</i>`:x.ic}</span><span class="pw-tx"><b>${x.n}</b><span class="note">${x.ch}のカード</span><span>${x.d}</span>${who.length?`<em>🙋 ${who.map(esc).join('・')}</em>`:''}</span></div>`; }).join('')}</div>
     <div class="row" style="gap:8px;margin:6px 0"><button class="btn gold" onclick="downloadBook('cards')">🖨 印刷用カード（PDF）</button><button class="btn ghost" onclick="downloadPng('cards')">画像で保存</button></div>
     <p class="note" style="font-size:11px">CPU同士の検証では、どの能力の勝率も20〜29%（4人戦の基準は25%）に収まっています。試作なので、遊んだ感想で調整していきます。</p>`;
 }
 /* ---- 投資家カードを配る演出：自分のカードが裏から表にめくれて登場。ほかの人のカードも小さく並ぶ ---- */
 function pwCardFace(k, big){
   const x=PWR[k], c=(CHARS[x.ch]||{}).c||'#ffc83a';
-  return `<div class="pwf${big?' big':''}" style="--pc:${c}"><span class="pwf-lab">INVESTOR</span><span class="pwf-ic">${x.ic}</span><b class="pwf-n">${x.n}</b><span class="pwf-ch">${x.ch}のカード</span>${big?`<p class="pwf-d">${x.d}</p>`:''}<span class="pwf-mk">AZAKEI MARKET</span></div>`;
+  return `<div class="pwf${big?' big':''}" style="--pc:${c}"><span class="pwf-lab">INVESTOR</span><span class="pwf-ic${FACE[x.ch]?' pwf-face':''}">${FACE[x.ch]?`${face(x.ch)}<i>${x.ic}</i>`:x.ic}</span><b class="pwf-n">${x.n}</b><span class="pwf-ch">${x.ch}のカード</span>${big?`<p class="pwf-d">${x.d}</p>`:''}<span class="pwf-mk">AZAKEI MARKET</span></div>`;
 }
 function pwDealOverlay(){
   const me=myIndex(), k=pwOf(me); if(!k) return '';
@@ -6594,7 +6675,7 @@ function teamPanel(){
   if(!G.teams) return '';
   const {s}=teamScores(), me=myIndex(), w=s[0]===s[1]?-1:s[0]>s[1]?0:1;
   const col=t=>`<div class="tm-col t${t}${w===t?' win':''}"><span class="label">${TEAM_NAMES[t]}${w===t?' · WIN':''}</span><b class="tm-s">${s[t]}<small>pt</small></b>
-    <span class="tm-m">${G.players.map((p,i)=>G.teams[i]===t?`<span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${esc(avOf(p))}</span>${esc(p.name)}`:'').filter(Boolean).join(' ＋ ')}</span></div>`;
+    <span class="tm-m">${G.players.map((p,i)=>G.teams[i]===t?`<span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${avHTML(p)}</span>${esc(p.name)}`:'').filter(Boolean).join(' ＋ ')}</span></div>`;
   return `<section class="panel teampanel"><span class="label">TAG MATCH · チーム戦</span><div class="tm-row">${col(0)}<span class="tm-vs">VS</span>${col(1)}</div>${w<0?'<p class="note" style="text-align:center">合計点は同点！</p>':''}</section>`;
 }
 function partnerHint(p){
@@ -6770,7 +6851,7 @@ function renderOv(){
     ov.innerHTML = newsIntro(n);
     return; }
   if(G.ov==='handoff'){ const p=G.players[G.active]; const done=G.players.filter(q=>isHuman(q)&&q.pick!==null).length, hn=humans();
-    ov.innerHTML=`<div class="overlay handoff" style="--s:var(--s${p.seat%6})"><div class="hbg"></div><div class="box"><div class="hpass"><span>PASS</span><i>📱</i></div><div class="ava" style="--s:var(--s${p.seat%6});width:96px;height:96px;font-size:40px;grid-row:auto">${esc(avOf(p))}</div>
+    ov.innerHTML=`<div class="overlay handoff" style="--s:var(--s${p.seat%6})"><div class="hbg"></div><div class="box"><div class="hpass"><span>PASS</span><i>📱</i></div><div class="ava" style="--s:var(--s${p.seat%6});width:96px;height:96px;font-size:40px;grid-row:auto">${avHTML(p)}</div>
     <span class="label">TURN ${G.turn+1} · 次のプレイヤー</span><div class="hand-name">${esc(p.name)}<small> さんの番</small></div><div class="hdots">${G.players.filter(isHuman).map(q=>`<i class="${q===p?"now":q.pick!==null?"done":""}"></i>`).join("")}</div><span class="note">人間 ${done+1} / ${hn} 人目</span>
     <p class="note">端末を${esc(p.name)}さんに渡してください。ほかの人は画面を見ないでね。</p>
     <button class="btn gold big pulse" onclick="G.ov=null;sfx('click');render()">手札を見る</button></div></div>`; }
@@ -6842,7 +6923,7 @@ function seatsView(){
     }
     const lead = p.score===top && top>0 && G.phase!=='reveal';
     return `<div class="seat${G.teams?' team t'+G.teams[i]:''}${(G.online?i===G.me:isHuman(p)&&humans()===1)?' me':''}${i===G.active?' active':''}" data-i="${i}">${lead?CROWN('crown'):''}<span class="rk">#${rk[i]}</span>
-      <div class="ava${i===myIndex()?frc():''}" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</div>
+      <div class="ava${i===myIndex()?frc():''}" style="--s:var(--s${p.seat%6})">${avHTML(p)}</div>
       <div class="nm">${esc(p.name)}${pwChip(i)}${isHuman(p)?'':`<span class="tagx${p.type==='pro'?' pro':''}">${cpuLabel(p)}</span>`}</div>
       <div class="sc" id="sc${i}">${G.phase==='reveal'?p.shown:p.score}${spark(p.hist)}</div>
       <div class="meta">${p.used.filter(u=>Math.floor(u.turn/TURNS)===(G.round||0)).map(u=>`<span class="dot c${u.ind}" title="${IND[u.ind]}" role="img" aria-label="出した産業：${IND[u.ind]}"></span>`).join('')}${p.brand!=null?`<span class="brd sm" style="--c:var(--i${p.brand})" title="ブランド">${IND[p.brand]}</span>`:""}<span class="eye${p.foreUsed?' on':''}" title="未来予測">${EYE}${p.foreUsed?FORE[G.cfg.fore].short+'済':'未使用'}</span></div>
@@ -6981,7 +7062,7 @@ function finalView(){
   const C=G.cfg, rk=ranking(G.players,C);
   const winners=rk.filter(s=>s.rank===1).map(s=>esc(s.p.name)).join('・');
   const order=[rk[1],rk[0],rk[2]].filter(Boolean), h={1:160,2:118,3:86};
-  const pod=order.map((s,j)=>`<div class="pod p${s.rank}">${s.rank===1?CROWN('crownbig'):''}<div class="ava" style="--s:var(--s${s.p.seat%6})">${esc(avOf(s.p))}</div><span class="nm">${esc(s.p.name)}</span><div class="blk" style="height:${h[s.rank]||70}px;animation-delay:${[200,0,400][j]}ms"><span class="r">${s.rank}</span><span class="pts">${s.p.score}pt</span></div></div>`).join('');
+  const pod=order.map((s,j)=>`<div class="pod p${s.rank}">${s.rank===1?CROWN('crownbig'):''}<div class="ava" style="--s:var(--s${s.p.seat%6})">${avHTML(s.p)}</div><span class="nm">${esc(s.p.name)}</span><div class="blk" style="height:${h[s.rank]||70}px;animation-delay:${[200,0,400][j]}ms"><span class="r">${s.rank}</span><span class="pts">${s.p.score}pt</span></div></div>`).join('');
   const rest=rk.slice(3).map(s=>`<div class="row spread" style="padding:7px 4px;border-top:1px solid var(--line)"><span><b>${s.rank}位</b> ${esc(s.p.name)}</span><b style="font-family:var(--display);font-weight:400">${s.p.score}</b></div>`).join('');
   const aw=gameAwards();
   const hist=G.players.map(p=>`<tr><td>${esc(p.name)}</td>${p.used.map(u=>`<td>${chip(u.ind)} <span class="num ${cls(u.total)}">${sgn(u.total)}</span>${u.fut?' <span class="tagx cy">先物</span>':''}</td>`).join('')}<td class="n">${p.uniq}</td><td class="n"><b>${p.score}</b></td></tr>`).join('');
@@ -6991,12 +7072,12 @@ function finalView(){
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
-    ${mioFinal()}${autoDiffNote()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${CHARS[G.reward.trk].ic}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+    ${mioFinal()}${autoDiffNote()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${chalPanel()}
     ${rewardPanel()}
     ${fbPanel()}
     ${finNav()}
-    ${fsec('fin-aw','🏅','今回の賞・能力',(aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${esc(avOf(p))}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:'')+pwFinalPanel())}
+    ${fsec('fin-aw','🏅','今回の賞・能力',(aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${avHTML(p)}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:'')+pwFinalPanel())}
     ${fsec('fin-iv','🎙️','インタビューと号外',ivPanel()+gogaiPaper())}
     ${fsec('fin-an','📊','ふりかえり',teamPanel()+playAnalysis()+recap)}
   </div><div class="col">
@@ -8015,14 +8096,14 @@ function pickCharBody(i){
   return `<span class="label">席 ${i+1} のCPU</span><h3 class="ttl" style="font-size:22px">対戦相手のキャラを選ぶ</h3>
     <p class="note">強さ（素直・読み合い・達人）は席の設定のまま。キャラで変わるのはセリフとアイコンです。</p>
     <div class="chargrid">${Object.entries(CHARS).map(([k,c],j)=>{ const on=charKey(s)===k, tk=used.includes(k), r=R[k];
-      return `<button class="chc${on?' on':''}${tk?' taken':''}" style="--rc:${c.c};--k:${j}" ${tk?'disabled':''} onclick="setChar(${i},'${k}')"><span class="rva">${c.ic}</span><b>${k}</b><span class="note">${tk?'ほかの席で出場中':c.d}</span>${r?`<span class="rvrec"><span class="w">${r.w}勝</span><span class="l">${r.l}敗</span></span>`:'<span class="note newc">はじめまして</span>'}</button>`; }).join('')}</div>`;
+      return `<button class="chc${on?' on':''}${tk?' taken':''}" style="--rc:${c.c};--k:${j}" ${tk?'disabled':''} onclick="setChar(${i},'${k}')"><span class="rva">${chIc(c)}</span><b>${k}</b><span class="note">${tk?'ほかの席で出場中':c.d}</span>${r?`<span class="rvrec"><span class="w">${r.w}勝</span><span class="l">${r.l}敗</span></span>`:'<span class="note newc">はじめまして</span>'}</button>`; }).join('')}</div>`;
 }
 function setChar(i,k){ if(!S.seats[i]) return; S.seats[i].name='CPU '+k; save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type}))); sfx('select'); closeSheet(); render(); }
 function charSheetBody(k){
   const c=CHARS[k], t=CPU_TALK[k]; if(!c) return '';
   const r=(S.prof.riv||{})[k], g=r?r.w+r.l+r.d:0;
   const lines=[['対戦前',t.vs],['独占したとき',t.mono],['被ったとき',t.hit]].filter(x=>x[1]).map(([n,a])=>`<div class="chq"><span class="label">${n}</span><span class="bub">${a[0]}</span></div>`).join('');
-  return `<div class="charhead" style="--rc:${c.c}"><span class="rva big">${c.ic}</span><span class="label">CHARACTER</span><h3 class="ttl" style="font-size:28px">${k}</h3><p class="note">${c.d}</p></div>
+  return `<div class="charhead" style="--rc:${c.c}"><span class="rva big">${chIc(c)}</span><span class="label">CHARACTER</span><h3 class="ttl" style="font-size:28px">${k}</h3><p class="note">${c.d}</p></div>
     ${r?`<div class="charrec"><div><b class="w">${r.w}</b><span>勝</span></div><div><b class="l">${r.l}</b><span>敗</span></div><div><b>${r.d}</b><span>分</span></div><div><b>${Math.round(r.w/g*100)}%</b><span>勝率</span></div></div>`:''}
     ${bondBox(k)}
     <div class="chqs">${lines}</div>
@@ -8132,7 +8213,7 @@ function storyResult(rk, me){
   return {k:st.k, win, first, bonus:first?(last?STORY_FINAL_COIN:STORY_COIN):0};
 }
 const talkLine = (who,text,i) => { const me=who==='me', c=me?null:CHARS[who];
-  return `<div class="sl${me?' me':''}" style="--d:${.25+i*.55}s;${c?`--rc:${c.c}`:''}">${me?'':`<span class="rva">${c.ic}</span>`}<div class="sbub">${me?'':`<b>${who}</b>`}${text}</div>${me?`<span class="rva mea">${esc(myAvatar()||initial(NET.name||'あ'))}</span>`:''}</div>`; };
+  return `<div class="sl${me?' me':''}" style="--d:${.25+i*.55}s;${c?`--rc:${c.c}`:''}">${me?'':`<span class="rva">${chIc(c)}</span>`}<div class="sbub">${me?'':`<b>${who}</b>`}${text}</div>${me?`<span class="rva mea">${esc(myAvatar()||initial(NET.name||'あ'))}</span>`:''}</div>`; };
 function storySheetBody(k){
   const st=STORIES.find(x=>x.k===k); if(!st) return ''; const i=STORIES.indexOf(st), c=CHARS[k], m=st.rule&&MARKETS[st.rule];
   return `<div class="sthead" style="--rc:${c.c}"><span class="label">STORY ${i+1} · ${k}</span><h3 class="ttl" style="font-size:24px">${st.t}</h3>
@@ -8144,7 +8225,7 @@ function storySheetBody(k){
 function storySection(){
   const n=STORIES.filter(x=>storyDone(x.k)).length;
   return `<span class="label" style="margin:4px 0 -4px">STORY · キャラストーリー ${n} / ${STORIES.length}</span><div class="stories">${STORIES.map((st,i)=>{ const c=CHARS[st.k], open=storyOpen(i), done=storyDone(st.k);
-    return `<button class="stc${open?'':' lock'}${done?' done':''}" style="--rc:${c.c};--k:${i}" ${open?`onclick="openStory('${st.k}')"`:'disabled'}><span class="stn">${i+1}</span><span class="rva">${open?c.ic:'🔒'}</span><b>${open?st.k:'？？？'}</b><span class="note">${open?st.t:'前の話をクリア'}</span>${done?'<span class="stok">✓</span>':''}</button>`; }).join('')}</div>`;
+    return `<button class="stc${open?'':' lock'}${done?' done':''}" style="--rc:${c.c};--k:${i}" ${open?`onclick="openStory('${st.k}')"`:'disabled'}><span class="stn">${i+1}</span><span class="rva">${open?chIc(c):'🔒'}</span><b>${open?st.k:'？？？'}</b><span class="note">${open?st.t:'前の話をクリア'}</span>${done?'<span class="stok">✓</span>':''}</button>`; }).join('')}</div>`;
 }
 function storyPanel(){
   const R=G.reward&&G.reward.sty; if(!R) return '';
@@ -8158,7 +8239,7 @@ function storyPanel(){
 function signPanel(){   // コレクション：ストーリーをクリアしたキャラのサイン
   const n=STORIES.filter(x=>storyDone(x.k)).length;
   return `<section class="panel"><div class="row spread"><h3>サイン帳</h3><span class="note">${n} / ${STORIES.length}</span></div>
-    <div class="signs">${STORIES.map(st=>{ const c=CHARS[st.k], d=storyDone(st.k); return `<div class="sign${d?' on':''}" style="--rc:${c.c}"><span class="rva">${d?c.ic:'?'}</span><i>${d?st.k:''}</i></div>`; }).join('')}</div>
+    <div class="signs">${STORIES.map(st=>{ const c=CHARS[st.k], d=storyDone(st.k); return `<div class="sign${d?' on':''}" style="--rc:${c.c}"><span class="rva">${d?chIc(c):'?'}</span><i>${d?st.k:''}</i></div>`; }).join('')}</div>
     <p class="note">キャラストーリーをクリアすると、そのキャラのサインがもらえます。</p></section>`;
 }
 /* ---- 今日のチェックリスト：4つ全部やると、コンプリートボーナス ---- */
@@ -8220,7 +8301,7 @@ function rivalCard(){
   const k=todayRival(), c=CHARS[k], t=CPU_TALK[k], done=S.prof.trDay===todayKey(), r=(S.prof.riv||{})[k];
   const q=t&&t.vs ? t.vs[todayKey()%t.vs.length] : '';
   return `<section class="trcard${done?' done':''}" style="--rc:${c.c}">
-    <span class="rva tr-ava">${c.ic}</span>
+    <span class="rva tr-ava">${chIc(c)}</span>
     <span class="tr-tx"><span class="label">TODAY'S RIVAL · 今日のライバル</span><b>${k}</b><span class="tr-q">「${q}」</span>
       <span class="note">${done?`今日は撃破ずみ！ +${TR_BONUS}コイン獲得`:`${k}より上の順位になると <b style="color:var(--gold-t)">+${TR_BONUS}コイン</b>`}${r?` · 通算 ${r.w}勝${r.l}敗`:' · はじめての対戦'}</span></span>
     <button class="btn ${done?'':'gold '}" onclick="challengeChar('${k}')">${done?'また戦う':'対戦する'}</button></section>`;
@@ -8234,7 +8315,7 @@ function rivalsPanel(){
       if(!r) return `<button class="rv unk" style="--k:${i}" onclick="challengeChar('${k}')"><span class="rva">?</span><b>？？？</b><span class="note">タップで対戦してみる</span></button>`;
       const g=r.w+r.l+r.d, pct=Math.round(r.w/g*100);
       return `<button class="rv${k===nemesis?' nem':''}${r.w>=5&&pct>=60?' dom':''}" style="--rc:${c.c};--k:${i}" onclick="openSheet('char:${k}')">${k===nemesis?'<span class="rvtag">宿敵</span>':r.w>=5&&pct>=60?'<span class="rvtag dom">お得意さま</span>':''}
-        <span class="rva">${c.ic}</span><b>${k}</b><span class="note">${c.d}</span>${bondHearts(bondLv(r),'sm')}
+        <span class="rva">${chIc(c)}</span><b>${k}</b><span class="note">${c.d}</span>${bondHearts(bondLv(r),'sm')}
         <span class="rvrec"><span class="w">${r.w}勝</span><span class="l">${r.l}敗</span>${r.d?`<span>${r.d}分</span>`:''}</span>
         <span class="rvbar"><i style="width:${pct}%"></i></span></button>`; }).join('')}</div></section>`;
 }
