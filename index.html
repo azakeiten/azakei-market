@@ -2386,6 +2386,22 @@ html.light .lob{color:#fff}
 .chr9-f i{position:absolute;right:-4px;bottom:-2px;font-style:normal;font-size:14px}
 .chr9 b{font-size:14px;margin-top:4px}.chr9 small{font-size:10px;font-weight:700;color:var(--muted);line-height:1.3;text-align:center}
 @keyframes chr9In{from{opacity:0;transform:translateY(10px) scale(.9)}}
+/* 試合のおわりのひとこと */
+.etalk{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:20px;background:linear-gradient(120deg,color-mix(in srgb,var(--rc) 24%,var(--panel)),var(--panel));box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--rc) 55%,transparent)}
+.et-face{position:relative;flex:none;width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--rc) 85%);box-shadow:0 0 0 3px #fff,0 0 0 6px var(--rc),0 10px 22px -10px var(--rc);animation:etPop .6s .2s both cubic-bezier(.2,1.5,.4,1)}
+.et-face svg.face{width:100%;height:100%;display:block;border-radius:50%}
+.et-face em{position:absolute;right:-6px;top:-6px;min-width:30px;height:30px;padding:0 6px;border-radius:15px;display:grid;place-items:center;font-style:normal;font-family:var(--display);font-size:14px;background:#fff;color:#1b1030;box-shadow:0 0 0 2.5px var(--rc)}
+.et-bub{position:relative;flex:1;min-width:0;padding:10px 14px;border-radius:16px;background:#fff;color:#1b1030;animation:etBub .5s .5s both cubic-bezier(.2,1.3,.4,1)}
+.et-bub::before{content:"";position:absolute;left:-9px;top:50%;margin-top:-9px;border:9px solid transparent;border-right-color:#fff;border-left:0}
+.et-bub .label{color:color-mix(in srgb,var(--rc) 70%,#000)}
+.et-bub p{margin:2px 0 8px;font-weight:800;font-size:15px;line-height:1.55}
+.et-bub .btn{padding:5px 12px;font-size:12px;color:#1b1030!important;background:#fff!important;box-shadow:inset 0 0 0 1.5px #1b1030!important}
+.gd-ava:has(svg.face){overflow:hidden;padding:0}.gd-ava svg.face{width:100%;height:100%;display:block;border-radius:50%}
+.etalk.win .et-face{animation:etPop .6s .2s both cubic-bezier(.2,1.5,.4,1),etWin 1.6s 1s ease-in-out infinite}
+@keyframes etPop{from{opacity:0;transform:scale(.3) rotate(-20deg)}}
+@keyframes etBub{from{opacity:0;transform:translateX(-14px) scale(.9)}}
+@keyframes etWin{50%{transform:translateY(-4px) rotate(-3deg)}}
+@media (prefers-reduced-motion:reduce){.et-face,.et-bub{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5199,7 +5215,7 @@ function toggleFuri(){ S.furi=!S.furi; save('azakei-furi',S.furi); furiArm(); re
    デイリー・ミッション・イベントは3試合遊んでから開く（最初に情報が多すぎないように） ---- */
 const NB_GAMES=3;
 const GUIDE={n:'ミオ', ic:'📒', c:'#ff9ad9'};
-const guideAva = () => `<span class="gd-ava" style="--gc:${GUIDE.c}" aria-hidden="true">${GUIDE.ic}</span>`;
+const guideAva = () => `<span class="gd-ava" style="--gc:${GUIDE.c}" aria-hidden="true">${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span>`;
 const nbGames = () => { const P=(typeof S!=='undefined' && S && S.prof) || load('azakei-prof') || {}; return (P.st && P.st.games)||0; };   /* 起動の途中（Sがまだ無い）でも数えられるように */
 const nbNew = () => nbGames() < NB_GAMES;
 function nbPath(){
@@ -7095,7 +7111,7 @@ function finalView(){
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center">${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
-    ${mioFinal()}${autoDiffNote()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+    ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${chalPanel()}
     ${rewardPanel()}
     ${fbPanel()}
@@ -8141,6 +8157,31 @@ function charsBody(){
     <p class="note">タップでプロフィール。3回対戦すると「ひみつ」が見られます（${open}/9 解放）。</p>
     <div class="chgrid">${Object.keys(CHARS).map((k,j)=>{ const c=CHARS[k], p=CHAR_PROF[k]||{}, r=riv[k], g=r?r.w+r.l+r.d:0;
       return `<button class="chr9" style="--rc:${c.c};--d:${j*45}ms" onclick="openSheet('char:${k}')"><span class="chr9-f">${face(k)}${g>=3?'<i>🔓</i>':''}</span><b>${k}</b><small>${p.t||''}</small></button>`; }).join('')}</div>`;
+}
+/* 試合のおわりのひとこと：CPUが勝ったら勝ちぜりふ、あなたが勝ったら2位のキャラのくやしいせりふ */
+const END_TALK={
+  'ハル':  {win:'全力で勝ちきった！ 次もぶっこむぜ！', lose:'くっそー！ 次は全部ぶっこんで勝つ！'},
+  'ナギ':  {win:'いい波に乗れたね〜。流れは味方だったよ', lose:'今日は波がこなかったな〜。また乗りにくるよ'},
+  'ユイ':  {win:'みんなが右に行ってくれたおかげ。ありがとう', lose:'……読みが浅かった。次は、もっと静かに勝つ'},
+  'アオイ':{win:'やったー！ 推しにいい報告できる〜！', lose:'くやしい〜！ 反省会ノート書いてくる！'},
+  'ミナト':{win:'計算どおり。期待値は裏切らない', lose:'誤差の範囲……とは言えないな。データを取り直す'},
+  'トキ':  {win:'ほっほ。相場は、くり返すのじゃよ', lose:'若いもんにはかなわんのう。いい読みじゃった'},
+  'レン':  {win:'下から上がるのが、いちばん気持ちいい！', lose:'まだ終わってない。次は最下位から×3でまくる！'},
+  'ミオ':  {win:'予習の成果、出ました！', lose:'予習が足りなかったかも……。次までにノートまとめておくね'},
+  'ソラ':  {win:'あれ〜、1位だ〜。のんびりでもいけるんだね〜', lose:'まあいっか〜。楽しかったからね〜'}
+};
+function endTalk(){
+  if(!G || G.phase!=='final' || G.demo) return '';
+  const rk=ranking(G.players,G.cfg), me=myIndex(), isChar=p=>p && !isHuman(p) && !p.boss && END_TALK[charKey(p)] && FACE[charKey(p)];
+  const top=rk[0].p, meTop=me>=0 && rk.find(x=>x.i===me).rank===1;
+  let who=null, kind='';
+  if(isChar(top) && !meTop){ who=top; kind='win'; }
+  else if(meTop){ const r=rk.find(x=>x.i!==me && isChar(x.p)); if(r){ who=r.p; kind='lose'; } }
+  if(!who) return '';
+  const k=charKey(who), c=CHARS[k]||{}, place=rk.find(x=>x.p===who).rank;
+  return `<section class="etalk ${kind}" style="--rc:${c.c||'#ffc83a'}"><span class="et-face">${face(k)}<em>${kind==='win'?'👑':place+'位'}</em></span>
+    <div class="et-bub"><span class="label">${kind==='win'?'WINNER':'RIVAL'} · ${k}</span><p>${END_TALK[k][kind]}</p>
+    <button class="btn ghost" onclick="openSheet('char:${k}')">${k}のプロフィール</button></div></section>`;
 }
 function charProf(k){
   const p=CHAR_PROF[k]; if(!p) return '';
