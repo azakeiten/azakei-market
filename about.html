@@ -131,6 +131,23 @@ section.s{padding:56px 0}
 @keyframes naSwing{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}@keyframes naFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @media (max-width:760px){.fc .ba{padding:8px 6px}.fc .ba b{font-size:13px;margin:0 0 4px}.fc .ba ul{font-size:10px;line-height:1.35}.fc .ba li{padding:2px 4px}.fc .ba p{display:none}.fc .ba .k{font-size:9px}.gal{grid-template-columns:repeat(3,1fr)}.ngal{grid-template-columns:repeat(2,1fr)}}
 @media (prefers-reduced-motion:reduce){.scene *,.nart *{animation:none!important}.fc .in{transition:none}}
+/* キャラクター紹介 */
+.chs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ch{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:18px;background:color-mix(in srgb,var(--c) 12%,var(--paper));border:2px solid color-mix(in srgb,var(--c) 45%,transparent)}
+.ch-f{flex:none;width:76px;height:76px;padding:0;border:0;border-radius:50%;cursor:pointer;overflow:hidden;background:radial-gradient(circle at 35% 30%,#fff,var(--c) 85%);box-shadow:0 0 0 3px #fff,0 0 0 5px var(--c)}
+.ch-f svg{width:100%;height:100%;display:block}
+.ch-f.pop{animation:chPop .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes chPop{40%{transform:scale(1.12) rotate(-6deg)}}
+.ch-t{min-width:0}.ch-t b{display:block;font-family:var(--display);font-weight:400;font-size:20px;color:var(--ink)}
+.ch-t small{display:block;font-size:12px;font-weight:800;color:var(--muted)}
+.ch-t q{display:inline-block;margin:6px 0 4px;padding:3px 10px;border-radius:10px;background:var(--c);color:#1b1030;font-weight:800;font-size:13px;quotes:"「" "」"}
+.ch-t p{margin:0;font-size:13px;line-height:1.6}
+@media (max-width:900px){.chs{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.chs{grid-template-columns:1fr}}
+svg.face.m-happy{animation:mHappy .9s ease-in-out 2}svg.face.m-shock{animation:mShock .35s steps(2) 3}
+@keyframes mHappy{50%{transform:translateY(-3px) rotate(-4deg)}}@keyframes mShock{50%{transform:translateX(2px)}}
+svg.face.m-think .th1,svg.face.m-think .th2,svg.face.m-think .th3{animation:thDot 1.2s infinite}svg.face.m-think .th2{animation-delay:.2s}svg.face.m-think .th3{animation-delay:.4s}
+@keyframes thDot{0%,60%,100%{opacity:.25}30%{opacity:1}}
 details{border-bottom:1.5px solid var(--line);padding:14px 4px}summary{cursor:pointer;font-weight:800;color:var(--ink);font-size:16px}details p{margin:8px 0 0}
 .contact{padding:24px;border-radius:20px;background:var(--tint);text-align:center}
 footer{padding:28px 0 48px;text-align:center;color:var(--muted);font-size:13px}
@@ -184,6 +201,12 @@ footer{padding:28px 0 48px;text-align:center;color:var(--muted);font-size:13px}
   <h2 style="margin-top:40px;font-size:clamp(22px,3vw,30px)">🃏 9人の投資家カード</h2>
   <p class="lead" style="margin:0">キャラクターの個性が、そのままずっと効く能力に。毎回ちがうカードで、何度遊んでも新しい。</p>
   <div class="inv" id="inv"></div>
+</div></section>
+
+<section class="s" id="chars" style="padding-top:0"><div class="wrap">
+  <h2>🎭 9人のキャラクター</h2>
+  <p class="lead" style="margin:0 0 18px">CPU対戦の相手も、投資家カードの持ち主も、この9人。<b>顔をタップすると表情が変わります。</b></p>
+  <div class="chs" id="chs"></div>
 </div></section>
 
 <section class="s" id="box" style="padding-top:0"><div class="wrap">
@@ -296,18 +319,29 @@ const ACC={
   bolt:`<path d="M71 24 l-7 9 h5 l-2 8 8 -11 h-5z" fill="#fff" stroke="#2a1a33" stroke-width="1.4" stroke-linejoin="round"/>`,
   pin:`<rect x="62" y="30" width="12" height="4" rx="2" transform="rotate(-25 68 32)" fill="#ffd23a" stroke="#2a1a33" stroke-width="1.4"/>`
 };
+/* 表情：試合の結果に合わせて、目・口・小物が変わる（happy 独占や大当たり／shock 被り／sad マイナスや最下位） */
+const MOOD={
+  happy:{eye:`<path d="M37 52 Q41 47 45 52 M55 52 Q59 47 63 52" fill="none" stroke="#2a1a33" stroke-width="2.4" stroke-linecap="round"/>`, mouth:`<path d="M42 59 Q50 71 58 59 z" fill="#e2463a" ${FK}/>`,
+    fx:`<g fill="#ffd23a" stroke="#2a1a33" stroke-width="1"><path d="M84 18 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6z"/><path d="M14 26 l1.2 3 3 1.2 -3 1.2 -1.2 3 -1.2 -3 -3 -1.2 3 -1.2z"/></g>`},
+  shock:{eye:`<circle cx="41" cy="51" r="4.6" fill="#fff" ${FK}/><circle cx="59" cy="51" r="4.6" fill="#fff" ${FK}/><circle cx="41" cy="51" r="1.8"/><circle cx="59" cy="51" r="1.8"/>`, mouth:`<ellipse cx="50" cy="63" rx="3.6" ry="4.4" fill="#5a1a2a" ${FK}/>`,
+    fx:`<path d="M80 30 q4 7 0 10 q-4 -3 0 -10z" fill="#8fd3ff" stroke="#2a1a33" stroke-width="1.2"/>`},
+  think:{eye:`<path d="M36 46 Q41 44 46 46 M54 45 Q59 43 64 46" fill="none" stroke="#2a1a33" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="42.6" cy="50" rx="2.6" ry="3.2"/><ellipse cx="60.6" cy="50" rx="2.6" ry="3.2"/>`, mouth:`<path d="M46 62 Q49 61 53 62.5" fill="none" ${FK}/>`,
+    fx:`<g class="th"><circle cx="76" cy="20" r="11" fill="#fff" stroke="#2a1a33" stroke-width="1.4"/><circle cx="68" cy="33" r="2.6" fill="#fff" stroke="#2a1a33" stroke-width="1.2"/><circle class="th1" cx="71" cy="20" r="2" fill="#2a1a33"/><circle class="th2" cx="76" cy="20" r="2" fill="#2a1a33"/><circle class="th3" cx="81" cy="20" r="2" fill="#2a1a33"/></g>`},
+  sad:{eye:`<path d="M35 46 L45 49 M65 46 L55 49" stroke="#2a1a33" stroke-width="2" stroke-linecap="round" transform="rotate(0)"/><path d="M37 53 Q41 50 45 53 M55 53 Q59 50 63 53" fill="none" stroke="#2a1a33" stroke-width="2.2" stroke-linecap="round"/>`, mouth:`<path d="M45 64 Q50 59 55 64" fill="none" ${FK}/>`,
+    fx:`<path d="M36 56 q3 6 0 8 q-3 -2 0 -8z" fill="#8fd3ff" stroke="#2a1a33" stroke-width="1"/>`}
+};
 let FACE_N=0;
-function face(name, bg){
-  const f=FACE[name]; if(!f) return ''; const id='fc'+(++FACE_N);   /* 円で切りぬく。idは1枚ごとに変える */
-  return `<svg class="face" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="${id}"><circle cx="50" cy="50" r="50"/></clipPath></defs><g clip-path="url(#${id})">${bg?`<circle cx="50" cy="50" r="50" fill="${bg}"/>`:''}
+function face(name, bg, mood){
+  const f=FACE[name]; if(!f) return ''; const id='fc'+(++FACE_N), m=MOOD[mood];   /* 円で切りぬく。idは1枚ごとに変える */
+  return `<svg class="face${m?' m-'+mood:''}" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="${id}"><circle cx="50" cy="50" r="50"/></clipPath></defs><g clip-path="url(#${id})">${bg?`<circle cx="50" cy="50" r="50" fill="${bg}"/>`:''}
     ${(HAIR_BACK[f.hs]||(()=>''))(f.hair)}
     <path d="M18 100 Q20 76 50 74 Q80 76 82 100z" fill="${f.cloth}" ${FK}/><path d="M42 74 L50 84 L58 74" fill="#fff" ${FK}/>
     <rect x="44" y="64" width="12" height="12" rx="3" fill="${f.skin}" ${FK}/>
     <ellipse cx="24.5" cy="52" rx="4" ry="5.5" fill="${f.skin}" ${FK}/><ellipse cx="75.5" cy="52" rx="4" ry="5.5" fill="${f.skin}" ${FK}/>
     <ellipse cx="50" cy="48" rx="25" ry="24" fill="${f.skin}" ${FK}/>
     <ellipse cx="35" cy="58" rx="4.5" ry="2.6" fill="#ff8aa0" opacity=".45"/><ellipse cx="65" cy="58" rx="4.5" ry="2.6" fill="#ff8aa0" opacity=".45"/>
-    <g fill="#2a1a33">${EYES[f.eye]}</g>${MOUTH[f.mouth]}
-    ${(HAIR_FRONT[f.hs]||(()=>''))(f.hair)}${ACC[f.acc]||''}</g></svg>`;
+    <g fill="#2a1a33">${m?m.eye:EYES[f.eye]}</g>${m?m.mouth:MOUTH[f.mouth]}
+    ${(HAIR_FRONT[f.hs]||(()=>''))(f.hair)}${ACC[f.acc]||''}${m?m.fx:''}</g></svg>`;
 }
 const P=[['🔥','全力投資','#ff7a3d'],['🌊','群衆の波','#3fd0a0'],['🌙','逆張り','#a77bff'],['🎀','推し活','#ff5c9a'],['📊','データ派','#5f86ff'],['⌛','老練の勘','#c9a46b'],['⚡','挑戦者','#eab520'],['📒','予習','#ff9ad9'],['☁️','マイペース','#20c6d1']];
 /* ---- カードの絵「まちの絵」：6つの産業を小さな風景で。白と影だけで描くので、どの産業の色にもなじむ。少しだけ動く ---- */
@@ -415,6 +449,34 @@ const TIP=['石油や電気の値段しだい。上がるときは大きい','�
 document.getElementById('gal').innerHTML=IND.map((n,c)=>`<button class="fc" style="--c:${COL[c]}" aria-label="${n}のカード（タップで裏返す）" onclick="this.classList.toggle('on')"><span class="in"><span class="fa">${scene(c)}<b>${n}</b><small>${EN[c]}</small></span><span class="ba"><span class="k">+3 になるNEWS</span><b>${n}</b><ul>${NEWS.filter((x,i)=>T[i][c]===3).map(x=>`<li>${x}</li>`).join('')}</ul><p>${TIP[c]}</p></span></span></button>`).join('');
 document.querySelectorAll('#fan .card').forEach((el,i)=>{ const sv=el.querySelector('svg'); if(sv) sv.outerHTML=scene(i); });   /* ヒーローの扇も「まちの絵」に */
 document.getElementById('ngal').innerHTML=NEWS.map((n,i)=>`<figure style="--r:${[-1.5,1.2,-.6,1.6,-1.2,.8][i]}deg">${newsArt(i)}<figcaption>${n}</figcaption></figure>`).join('');
+const CHAR_PROF={
+  'ハル':  {t:'熱血トレーダー', age:'17歳・高校生', fav:0, say:'全部ぶっこむ！', hobby:'早朝ランニング', style:'+3の産業にまっすぐ突っこむ。独占のボーナスが+3になる「全力投資」で、当たれば一気にトップへ。', sec:'じつは毎日10円ずつ、ブタの貯金箱にためている。'},
+  'ナギ':  {t:'サーファー投資家', age:'24歳・海の家の店長', fav:4, say:'波が来てるね〜', hobby:'サーフィンと昼寝', style:'みんなが集まる「流れ」に乗るタイプ。3人以上が同じ産業に集まっても+1もらえる。', sec:'波がない日は、こっそり株価チャートをながめている。'},
+  'ユイ':  {t:'クールな策士', age:'19歳・大学生', fav:1, say:'みんなが右なら、私は左。', hobby:'チェスと夜の読書', style:'人気のない産業で静かに独占をねらう「逆張り」。+2以下の産業で独占すると+2。', sec:'甘いものに目がなく、勝った日はパフェを食べに行く。'},
+  'アオイ':{t:'推し活ガール', age:'15歳・中学生', fav:3, say:'推しは裏切らない！', hobby:'推しのライブとグッズ集め', style:'はじめに決まる「推し産業」はいつも+1。推しで独占できたら、さらに+1。', sec:'負けた日は、ノートにびっしり反省会を書いている。'},
+  'ミナト':{t:'データ派の計算屋', age:'21歳・大学院生', fav:2, say:'期待値で考えよう。', hobby:'データ集めと鉄道の時刻表', style:'先物取引の手数料が0。次のNEWSを読んで、ムダなく点を積み上げる。', sec:'口では否定するけれど、朝の占いは毎日チェックしている。'},
+  'トキ':  {t:'老練の相場師', age:'72歳・元証券マン', fav:1, say:'相場は、くり返す。', hobby:'古い新聞の切り抜き集め', style:'大引けサプライズで、最後のNEWSを先にこっそり知っている。歴史の知恵で最後に笑う。', sec:'1964年の東京オリンピックを、沿道で生で見た。'},
+  'レン':  {t:'強気な挑戦者', age:'16歳・高校生', fav:5, say:'下からがいちばん燃える。', hobby:'eスポーツの大会めぐり', style:'最後のターンの前に負けていると、大引けが×3。最下位からの大逆転がいちばん似合う。', sec:'寝る前には、かならず牛乳を1杯飲む。'},
+  'ミオ':  {t:'まじめな優等生', age:'14歳・中学生（ゲームの案内役）', fav:4, say:'予習はばっちり！', hobby:'ノートまとめと図書館', style:'1ターン目にもらう点数が+2。スタートダッシュでリードを守りきる。', sec:'カードゲームの説明書を読むのが、いちばんの楽しみ。'},
+  'ソラ':  {t:'マイペースなのんびり屋', age:'20歳・カフェのアルバイト', fav:2, say:'まあ、のんびりいこ〜', hobby:'雲の写真を撮ること', style:'先物取引を使わずに、大引けで独占できたら+2。あわてず最後の1枚に賭ける。', sec:'のんびりして見えて、じつはこのゲームの最高点記録を持っている。'}
+};
+const END_TALK={
+  'ハル':  {win:'全力で勝ちきった！ 次もぶっこむぜ！', lose:'くっそー！ 次は全部ぶっこんで勝つ！'},
+  'ナギ':  {win:'いい波に乗れたね〜。流れは味方だったよ', lose:'今日は波がこなかったな〜。また乗りにくるよ'},
+  'ユイ':  {win:'みんなが右に行ってくれたおかげ。ありがとう', lose:'……読みが浅かった。次は、もっと静かに勝つ'},
+  'アオイ':{win:'やったー！ 推しにいい報告できる〜！', lose:'くやしい〜！ 反省会ノート書いてくる！'},
+  'ミナト':{win:'計算どおり。期待値は裏切らない', lose:'誤差の範囲……とは言えないな。データを取り直す'},
+  'トキ':  {win:'ほっほ。相場は、くり返すのじゃよ', lose:'若いもんにはかなわんのう。いい読みじゃった'},
+  'レン':  {win:'下から上がるのが、いちばん気持ちいい！', lose:'まだ終わってない。次は最下位から×3でまくる！'},
+  'ミオ':  {win:'予習の成果、出ました！', lose:'予習が足りなかったかも……。次までにノートまとめておくね'},
+  'ソラ':  {win:'あれ〜、1位だ〜。のんびりでもいけるんだね〜', lose:'まあいっか〜。楽しかったからね〜'}
+};
+const CH_COL={'ハル':'#ff7a3d','ナギ':'#3fd0a0','ユイ':'#a77bff','アオイ':'#ff5c9a','ミナト':'#5f86ff','トキ':'#c9a46b','レン':'#eab520','ミオ':'#ff9ad9','ソラ':'#20c6d1'};
+const CH_MOODS=['','happy','shock','sad','think'];
+document.getElementById('chs').innerHTML=Object.keys(CHAR_PROF).map((k,j)=>{ const p=CHAR_PROF[k];
+  return `<article class="ch" style="--c:${CH_COL[k]};--d:${j*60}ms"><button class="ch-f" data-k="${k}" data-m="0" aria-label="${k}の表情を変える" onclick="chMood(this)">${face(k)}</button>
+    <div class="ch-t"><b>${k}</b><small>${p.t}・${p.age.replace(/（.*）/,'')}</small><q>${p.say}</q><p>${p.style}</p></div></article>`; }).join('');
+function chMood(b){ const m=(+b.dataset.m+1)%CH_MOODS.length; b.dataset.m=m; b.innerHTML=face(b.dataset.k,null,CH_MOODS[m]); b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
 /* 箱：ドラッグで回す。ボタンで表・横・裏 */
 const BX=document.getElementById('bx'), BOX=document.getElementById('box3d'); let ry=-28, rx=-8, drag=null;
 const bxSet=()=>{ BX.style.setProperty('--ry',ry+'deg'); BX.style.setProperty('--rx',rx+'deg'); };
