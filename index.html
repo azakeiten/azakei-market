@@ -2404,6 +2404,11 @@ html.light .lob{color:#fff}
 @media (prefers-reduced-motion:reduce){.et-face,.et-bub{animation:none!important}}
 svg.face.m-happy{animation:mHappy .9s ease-in-out 2}
 svg.face.m-shock{animation:mShock .35s steps(2) 3}
+svg.face.m-think .th{animation:thBob 1.6s ease-in-out infinite}
+svg.face.m-think .th1,svg.face.m-think .th2,svg.face.m-think .th3{animation:thDot 1.2s infinite}
+svg.face.m-think .th2{animation-delay:.2s}svg.face.m-think .th3{animation-delay:.4s}
+@keyframes thBob{50%{transform:translateY(-1.5px)}}
+@keyframes thDot{0%,60%,100%{opacity:.25}30%{opacity:1}}
 svg.face.m-sad{filter:saturate(.7) brightness(.95)}
 @keyframes mHappy{50%{transform:translateY(-3px) rotate(-4deg)}}
 @keyframes mShock{50%{transform:translateX(2px)}}
@@ -2962,6 +2967,8 @@ const MOOD={
     fx:`<g fill="#ffd23a" stroke="#2a1a33" stroke-width="1"><path d="M84 18 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6z"/><path d="M14 26 l1.2 3 3 1.2 -3 1.2 -1.2 3 -1.2 -3 -3 -1.2 3 -1.2z"/></g>`},
   shock:{eye:`<circle cx="41" cy="51" r="4.6" fill="#fff" ${FK}/><circle cx="59" cy="51" r="4.6" fill="#fff" ${FK}/><circle cx="41" cy="51" r="1.8"/><circle cx="59" cy="51" r="1.8"/>`, mouth:`<ellipse cx="50" cy="63" rx="3.6" ry="4.4" fill="#5a1a2a" ${FK}/>`,
     fx:`<path d="M80 30 q4 7 0 10 q-4 -3 0 -10z" fill="#8fd3ff" stroke="#2a1a33" stroke-width="1.2"/>`},
+  think:{eye:`<path d="M36 46 Q41 44 46 46 M54 45 Q59 43 64 46" fill="none" stroke="#2a1a33" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="42.6" cy="50" rx="2.6" ry="3.2"/><ellipse cx="60.6" cy="50" rx="2.6" ry="3.2"/>`, mouth:`<path d="M46 62 Q49 61 53 62.5" fill="none" ${FK}/>`,
+    fx:`<g class="th"><circle cx="76" cy="20" r="11" fill="#fff" stroke="#2a1a33" stroke-width="1.4"/><circle cx="68" cy="33" r="2.6" fill="#fff" stroke="#2a1a33" stroke-width="1.2"/><circle class="th1" cx="71" cy="20" r="2" fill="#2a1a33"/><circle class="th2" cx="76" cy="20" r="2" fill="#2a1a33"/><circle class="th3" cx="81" cy="20" r="2" fill="#2a1a33"/></g>`},
   sad:{eye:`<path d="M35 46 L45 49 M65 46 L55 49" stroke="#2a1a33" stroke-width="2" stroke-linecap="round" transform="rotate(0)"/><path d="M37 53 Q41 50 45 53 M55 53 Q59 50 63 53" fill="none" stroke="#2a1a33" stroke-width="2.2" stroke-linecap="round"/>`, mouth:`<path d="M45 64 Q50 59 55 64" fill="none" ${FK}/>`,
     fx:`<path d="M36 56 q3 6 0 8 q-3 -2 0 -8z" fill="#8fd3ff" stroke="#2a1a33" stroke-width="1"/>`}
 };
@@ -3066,6 +3073,7 @@ const avHTML = p => { const k=charKey(p), a=avOf(p); return (!isHuman(p) && !p.b
 function moodOf(p){   /* OPENのあとは結果しだい、最終結果では1位が笑顔・最下位がしょんぼり */
   if(!G) return ''; const i=G.players.indexOf(p); if(i<0) return '';
   if(G.phase==='final'){ const rk=ranking(G.players,G.cfg), me=rk.find(x=>x.i===i); if(!me) return ''; const last=Math.max(...rk.map(x=>x.rank)); return me.rank===1?'happy':(me.rank===last&&last>1?'sad':''); }
+  if((G.phase==='choose'||G.phase==='countdown') && !isHuman(p) && G.ov!=='vs') return 'think';   /* 選んでいるあいだは考えこむ顔 */
   if(G.phase==='reveal' && G.last && G.last[i]){ const r=G.last[i]; return (r.k===1||r.total>=5)?'happy':r.total<0?'sad':r.k>1?'shock':''; }
   return '';
 }
