@@ -2408,6 +2408,14 @@ svg.face.m-sad{filter:saturate(.7) brightness(.95)}
 @keyframes mHappy{50%{transform:translateY(-3px) rotate(-4deg)}}
 @keyframes mShock{50%{transform:translateX(2px)}}
 @media (prefers-reduced-motion:reduce){svg.face{animation:none!important}}
+.dg-news:has(.dg-ph){display:flex;align-items:center;gap:12px;text-align:left}
+.dg-ph{flex:none;width:118px;margin:0;padding:3px;background:#fff;border-radius:5px;color:#1b1030;transform:rotate(-2deg);box-shadow:0 6px 14px -8px #000;animation:dgPh .45s .1s both cubic-bezier(.2,1.4,.4,1)}
+.dg-ph svg.nart{display:block;width:100%;height:auto;background:#f3f0e6;border-radius:3px}
+@keyframes dgPh{from{opacity:0;transform:rotate(8deg) scale(.6)}}
+.dg-mf{display:inline-block;width:20px;height:20px;vertical-align:-5px;border-radius:50%;overflow:hidden;background:var(--s)}
+.dg-mf svg.face{width:100%;height:100%;display:block}
+.dg-wf{display:block;width:96px;height:96px;margin:0 auto 4px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 35% 30%,#fff,var(--gold) 85%);box-shadow:0 0 0 4px #fff,0 0 30px var(--gold);animation:etPop .6s .2s both cubic-bezier(.2,1.5,.4,1)}
+.dg-wf svg.face{width:100%;height:100%;display:block}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4966,12 +4974,18 @@ function digestLine(t){       /* 実況：そのターンのいちばんの見�
   if(!out.length){ const b=U.slice().sort((a,b)=>b.u[1]-a.u[1])[0]; if(b) out.push(`${sh(b.p)}の「${IND[b.u[0]]}」${sgn(b.u[1])}が最高点。静かなターン`); }
   return out.slice(0,2).join('<br>');
 }
+/* ダイジェストの顔と写真：保存された名前からキャラを見つけて、そのターンの表情に */
+const dgKey = p => String(p.n).replace(/^CPU\s*/,'').replace(/（.*$/,'');
+const dgIsChar = p => { const k=dgKey(p); return FACE[k] && CHARS[k] && p.a===CHARS[k].ic; };
+const dgMood = (p,t) => { const u=p.u[t]; if(!u) return ''; return (u[2]===1||u[1]>=5)?'happy':u[1]<0?'sad':u[2]>1?'shock':''; };
+const dgAva = (p,t) => dgIsChar(p) ? face(dgKey(p),null,t==null?'':dgMood(p,t)) : esc(p.a);
+const dgArt = n => { const i=NEWS.indexOf(n); return i>=0&&NEWS_ART[i] ? newsArt(i) : newsArtAuto(n,null); };
 function digestRace(t){       /* t ターン目のあとの累計。前のターンからバーが伸びる */
   const P=DGS.src.pl, at=k=>P.map(p=>k<=0?0:(p.h[k]!=null?p.h[k]:p.sc));
   const now=at(t+1), prev=at(t), lo=Math.min(0,...now,...prev), hi=Math.max(1,...now,...prev), span=hi-lo;
   const order=P.map((p,i)=>i).sort((a,b)=>now[b]-now[a]);
   return `<div class="dg-race">${order.map((i,r)=>{ const p=P[i], w1=Math.max(4,(now[i]-lo)/span*100), w0=Math.max(4,(prev[i]-lo)/span*100), dlt=now[i]-prev[i];
-    return `<div class="dg-row${i===DGS.src.me?' me':''}" style="--s:var(--s${p.s})"><span class="dg-rk">${r+1}</span><span class="dg-nm">${esc(p.a)} ${esc(p.n)}</span>
+    return `<div class="dg-row${i===DGS.src.me?' me':''}" style="--s:var(--s${p.s})"><span class="dg-rk">${r+1}</span><span class="dg-nm">${dgIsChar(p)?`<span class="dg-mf">${face(dgKey(p))}</span>`:esc(p.a)} ${esc(p.n)}</span>
       <span class="dg-bar"><i style="--w0:${w0}%;--w1:${w1}%"></i></span><b class="dg-pt">${now[i]}${dlt?`<small class="${dlt>0?'up':'dn'}">${sgn(dlt)}</small>`:''}</b></div>`; }).join('')}</div>`;
 }
 function digestOverlay(){
@@ -4982,17 +4996,17 @@ function digestOverlay(){
   if(d.t>=N){
     const w=src.win.length?src.win:[0];
     return `<div class="overlay dgx"><div class="box dg-box"><span class="dg-tag">DIGEST · FINAL</span>${when}${dots}
-      <div class="dg-fin">${CROWN('dg-crown')}<b>${w.map(i=>esc(P[i].n)).join('・')}</b><span>${P[w[0]].sc}pt で優勝！</span></div>
+      <div class="dg-fin">${dgIsChar(P[w[0]])?`<span class="dg-wf">${face(dgKey(P[w[0]]),null,'happy')}</span>`:''}${CROWN('dg-crown')}<b>${w.map(i=>esc(P[i].n)).join('・')}</b><span>${P[w[0]].sc}pt で優勝！</span></div>
       ${digestRace(N-1)}${ctl}</div></div>`;
   }
   const lanes=IND.map((_,c)=>{ const who=P.filter(p=>p.u[d.t]&&p.u[d.t][0]===c), k=who.length;
     const vals=who.map(p=>sgn(p.u[d.t][1])).filter((x,j,a)=>a.indexOf(x)===j).join('/'), v=k?who[0].u[d.t][1]:0;
     return `<div class="dg-lane${k===1?' mono':k>1?' hit':''}${!k?' empty':''}" style="--dl:${300+c*70}ms"><span class="chip c${c}" style="--c:var(--i${c})"><i></i>${IND[c]}</span>
-      <span class="dg-who">${who.map(p=>`<span class="ava" style="--s:var(--s${p.s})" title="${esc(p.n)}">${esc(p.a)}</span>`).join('')}</span>
+      <span class="dg-who">${who.map(p=>`<span class="ava" style="--s:var(--s${p.s})" title="${esc(p.n)}">${dgAva(p,d.t)}</span>`).join('')}</span>
       ${k?`<b class="dg-v ${v>0?'up':v<0?'dn':''}">${vals}</b>${k===1?'<span class="dg-badge">独占</span>':`<span class="dg-badge hit">${k}人</span>`}`:''}</div>`; }).join('');
   const yr=src.yrs&&src.yrs[d.t]!=null?`<span class="dg-yr">${esc(String(src.yrs[d.t]))}</span>`:'';
   return `<div class="overlay dgx"><div class="box dg-box"><span class="dg-tag">DIGEST · TURN ${d.t+1}/${N}</span>${when}${dots}
-    <div class="dg-news">${yr}<b>${esc(src.news[d.t]||'')}</b></div>
+    <div class="dg-news"><figure class="dg-ph">${dgArt(src.news[d.t]||'')}</figure><div>${yr}<b>${esc(src.news[d.t]||'')}</b></div></div>
     <div class="dg-lanes">${lanes}</div>
     <p class="dg-say">${digestLine(d.t)}</p>
     ${digestRace(d.t)}${ctl}</div></div>`;
