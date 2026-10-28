@@ -2402,6 +2402,12 @@ html.light .lob{color:#fff}
 @keyframes etBub{from{opacity:0;transform:translateX(-14px) scale(.9)}}
 @keyframes etWin{50%{transform:translateY(-4px) rotate(-3deg)}}
 @media (prefers-reduced-motion:reduce){.et-face,.et-bub{animation:none!important}}
+svg.face.m-happy{animation:mHappy .9s ease-in-out 2}
+svg.face.m-shock{animation:mShock .35s steps(2) 3}
+svg.face.m-sad{filter:saturate(.7) brightness(.95)}
+@keyframes mHappy{50%{transform:translateY(-3px) rotate(-4deg)}}
+@keyframes mShock{50%{transform:translateX(2px)}}
+@media (prefers-reduced-motion:reduce){svg.face{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -2942,18 +2948,27 @@ const ACC={
   bolt:`<path d="M71 24 l-7 9 h5 l-2 8 8 -11 h-5z" fill="#fff" stroke="#2a1a33" stroke-width="1.4" stroke-linejoin="round"/>`,
   pin:`<rect x="62" y="30" width="12" height="4" rx="2" transform="rotate(-25 68 32)" fill="#ffd23a" stroke="#2a1a33" stroke-width="1.4"/>`
 };
+/* 表情：試合の結果に合わせて、目・口・小物が変わる（happy 独占や大当たり／shock 被り／sad マイナスや最下位） */
+const MOOD={
+  happy:{eye:`<path d="M37 52 Q41 47 45 52 M55 52 Q59 47 63 52" fill="none" stroke="#2a1a33" stroke-width="2.4" stroke-linecap="round"/>`, mouth:`<path d="M42 59 Q50 71 58 59 z" fill="#e2463a" ${FK}/>`,
+    fx:`<g fill="#ffd23a" stroke="#2a1a33" stroke-width="1"><path d="M84 18 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6z"/><path d="M14 26 l1.2 3 3 1.2 -3 1.2 -1.2 3 -1.2 -3 -3 -1.2 3 -1.2z"/></g>`},
+  shock:{eye:`<circle cx="41" cy="51" r="4.6" fill="#fff" ${FK}/><circle cx="59" cy="51" r="4.6" fill="#fff" ${FK}/><circle cx="41" cy="51" r="1.8"/><circle cx="59" cy="51" r="1.8"/>`, mouth:`<ellipse cx="50" cy="63" rx="3.6" ry="4.4" fill="#5a1a2a" ${FK}/>`,
+    fx:`<path d="M80 30 q4 7 0 10 q-4 -3 0 -10z" fill="#8fd3ff" stroke="#2a1a33" stroke-width="1.2"/>`},
+  sad:{eye:`<path d="M35 46 L45 49 M65 46 L55 49" stroke="#2a1a33" stroke-width="2" stroke-linecap="round" transform="rotate(0)"/><path d="M37 53 Q41 50 45 53 M55 53 Q59 50 63 53" fill="none" stroke="#2a1a33" stroke-width="2.2" stroke-linecap="round"/>`, mouth:`<path d="M45 64 Q50 59 55 64" fill="none" ${FK}/>`,
+    fx:`<path d="M36 56 q3 6 0 8 q-3 -2 0 -8z" fill="#8fd3ff" stroke="#2a1a33" stroke-width="1"/>`}
+};
 let FACE_N=0;
-function face(name, bg){
-  const f=FACE[name]; if(!f) return ''; const id='fc'+(++FACE_N);   /* 円で切りぬく。idは1枚ごとに変える */
-  return `<svg class="face" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="${id}"><circle cx="50" cy="50" r="50"/></clipPath></defs><g clip-path="url(#${id})">${bg?`<circle cx="50" cy="50" r="50" fill="${bg}"/>`:''}
+function face(name, bg, mood){
+  const f=FACE[name]; if(!f) return ''; const id='fc'+(++FACE_N), m=MOOD[mood];   /* 円で切りぬく。idは1枚ごとに変える */
+  return `<svg class="face${m?' m-'+mood:''}" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="${id}"><circle cx="50" cy="50" r="50"/></clipPath></defs><g clip-path="url(#${id})">${bg?`<circle cx="50" cy="50" r="50" fill="${bg}"/>`:''}
     ${(HAIR_BACK[f.hs]||(()=>''))(f.hair)}
     <path d="M18 100 Q20 76 50 74 Q80 76 82 100z" fill="${f.cloth}" ${FK}/><path d="M42 74 L50 84 L58 74" fill="#fff" ${FK}/>
     <rect x="44" y="64" width="12" height="12" rx="3" fill="${f.skin}" ${FK}/>
     <ellipse cx="24.5" cy="52" rx="4" ry="5.5" fill="${f.skin}" ${FK}/><ellipse cx="75.5" cy="52" rx="4" ry="5.5" fill="${f.skin}" ${FK}/>
     <ellipse cx="50" cy="48" rx="25" ry="24" fill="${f.skin}" ${FK}/>
     <ellipse cx="35" cy="58" rx="4.5" ry="2.6" fill="#ff8aa0" opacity=".45"/><ellipse cx="65" cy="58" rx="4.5" ry="2.6" fill="#ff8aa0" opacity=".45"/>
-    <g fill="#2a1a33">${EYES[f.eye]}</g>${MOUTH[f.mouth]}
-    ${(HAIR_FRONT[f.hs]||(()=>''))(f.hair)}${ACC[f.acc]||''}</g></svg>`;
+    <g fill="#2a1a33">${m?m.eye:EYES[f.eye]}</g>${m?m.mouth:MOUTH[f.mouth]}
+    ${(HAIR_FRONT[f.hs]||(()=>''))(f.hair)}${ACC[f.acc]||''}${m?m.fx:''}</g></svg>`;
 }
 
 const EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>';
@@ -3039,7 +3054,13 @@ const initial = n => (String(n).replace(/^CPU\s*/,'').trim()[0] || '?');
 const AVATARS=[[null,1],["🦊",1],["🐼",1],["🐯",2],["🐸",3],["🐧",4],["🦉",5],["🐙",6],["🦁",8],["🐲",10],["🤖",12],["👑",15]];   // [絵,解放レベル]、nullは名前の頭文字
 const myAvatar = () => { const P=S&&S.prof; if(!P||!P.av) return null; if(P.av==='mine') return P.myIcon?MY_ICON:null; const a=AVATARS.find(x=>x[0]===P.av); return a && lvInfo(P.xp).lv>=a[1] ? a[0] : null; };
 /* アバター：CPUのキャラは似顔絵、それ以外（自分・オンラインの相手・ボス）はこれまでどおりの絵文字や頭文字 */
-const avHTML = p => { const k=charKey(p), a=avOf(p); return (!isHuman(p) && !p.boss && FACE[k] && CHARS[k] && a===CHARS[k].ic) ? face(k) : esc(a); };
+const avHTML = p => { const k=charKey(p), a=avOf(p); return (!isHuman(p) && !p.boss && FACE[k] && CHARS[k] && a===CHARS[k].ic) ? face(k,null,moodOf(p)) : esc(a); };
+function moodOf(p){   /* OPENのあとは結果しだい、最終結果では1位が笑顔・最下位がしょんぼり */
+  if(!G) return ''; const i=G.players.indexOf(p); if(i<0) return '';
+  if(G.phase==='final'){ const rk=ranking(G.players,G.cfg), me=rk.find(x=>x.i===i); if(!me) return ''; const last=Math.max(...rk.map(x=>x.rank)); return me.rank===1?'happy':(me.rank===last&&last>1?'sad':''); }
+  if(G.phase==='reveal' && G.last && G.last[i]){ const r=G.last[i]; return (r.k===1||r.total>=5)?'happy':r.total<0?'sad':r.k>1?'shock':''; }
+  return '';
+}
 const chIc = c => { const k=Object.keys(CHARS).find(k=>CHARS[k]===c); return k&&FACE[k] ? face(k) : (c&&c.ic)||''; };
 const avOf = p => (G && G.players.indexOf(p)===myIndex() && myAvatar()) || (G && G.online && p.peer && p.peer!==NET.myPeer && peerIcon(p.peer) ? ''+p.peer : '') || (p.boss && G && G.boss ? BOSSES.find(b=>b.id===G.boss).ic : '') || (!isHuman(p) && CHARS[charKey(p)] ? CHARS[charKey(p)].ic : initial(p.name));   // CPUはキャラのアイコン
 const myTitle = () => { const P=S.prof, a=P.title && P.ach[P.title] && ACH.find(x=>x.id===P.title); return a ? a.n : titleOf(lvInfo(P.xp).lv); };
