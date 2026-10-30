@@ -2470,6 +2470,41 @@ button.nk-ep:hover .bub{box-shadow:0 0 0 2px var(--rc)}
 .nv-tutbtn span{font-size:20px}.nv-tutbtn b{flex:1;font-size:15px}
 .nv-tutbtn small{padding:2px 8px;border-radius:99px;background:#ff9ad9;color:#1b1030;font-weight:900;font-size:11px}
 @media (prefers-reduced-motion:reduce){.nv-prop.in{animation:none}}
+.sky-tv{position:absolute;top:-2px;right:0;padding:3px 10px;border-radius:999px;border:1.5px solid rgb(255 255 255 / .55);background:rgb(0 0 0 / .32);color:#fff;font:inherit;font-size:11.5px;font-weight:900;cursor:pointer;text-shadow:none}
+.sky-tv.new::after{content:"";position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#ff3b5c;box-shadow:0 0 0 2px #fff;animation:tvDot 1.2s ease-in-out infinite}
+@keyframes tvDot{50%{transform:scale(.6)}}
+.nvl.tv .nv-lb{background:#d81b3c;border-color:#ff8aa0;animation:tvLive 2s ease-in-out infinite}
+@keyframes tvLive{50%{background:#a3122b}}
+.nvl.tv .nv-sh::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgb(255 255 255 / .035) 0 2px,transparent 2px 4px)}
+.tvp{display:flex;flex-direction:column;align-items:center;gap:2px}
+.tvp-k{font-size:11px;font-weight:900;letter-spacing:.12em;color:#ffd96a}
+.tvp-big{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.1;color:#fff}
+.tvp em,.tvp-ind em{font-style:normal;font-weight:900;font-size:14px}
+.tvp .up,.tvp-ind .up{color:#5ff0a0}.tvp .dn,.tvp-ind .dn{color:#ff7a8a}
+.tvp-bars{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:100%;max-width:300px;height:108px;margin:8px 0 4px}
+.tvp-bars span{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.tvp-bars i{position:absolute;left:18%;right:18%;bottom:calc(50% + 10px);height:calc(max(var(--v),0) * 38px + 2px);border-radius:4px 4px 0 0;background:var(--ic);transform-origin:bottom;animation:tvBar .6s cubic-bezier(.2,1.2,.4,1) both}
+.tvp-bars span[style*="--v:-"] i{bottom:auto;top:calc(50% + 12px);height:calc(var(--v) * -38px + 2px);border-radius:0 0 4px 4px;opacity:.6;transform-origin:top}
+.tvp-bars small{position:absolute;top:calc(50% - 10px);width:20px;height:20px;border-radius:6px;display:grid;place-items:center;background:var(--ic)}
+.tvp-bars span.luck small{box-shadow:0 0 0 2px #ffd96a,0 0 12px #ffd96a}
+@keyframes tvBar{from{transform:scaleY(0)}}
+.tvp-note{font-size:10.5px;color:#b9b0d6;font-weight:700}
+.tvp-ind{display:flex;align-items:center;gap:14px;justify-content:center}
+.tvp-sc{width:120px;border-radius:12px;background:var(--ic);padding:4px;box-shadow:0 0 0 3px rgb(255 255 255 / .8)}
+.tvp-sc svg.scene{width:100%;height:auto;display:block}
+.tvp-ind>span{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.tvp-ind b{font-family:var(--display);font-weight:400;font-size:24px;color:#fff}
+.tvp-ind em{font-size:20px}
+.tvp-news{display:flex;flex-direction:column;align-items:center;gap:4px}
+.tvp-ph{width:150px;margin:0 0 4px;padding:4px;background:#fff;border-radius:6px;color:#1b1030;transform:rotate(-2deg);box-shadow:0 8px 18px -8px #000}
+.tvp-ph svg.nart{display:block;width:100%;height:auto;background:#f3f0e6;border-radius:3px}
+.tvp-news b{font-family:var(--serif);font-size:22px;color:#fff}
+.tvp-why{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;text-align:left}
+.tvp-why li{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.55;color:#e9e4ff}
+.tvp-why li b{display:block;font-size:13.5px}
+.tvp-why li.up b{color:#5ff0a0}.tvp-why li.dn b{color:#ff7a8a}
+.tvp-ic{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center}
+@media (prefers-reduced-motion:reduce){.sky-tv.new::after,.nvl.tv .nv-lb,.tvp-bars i{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5125,7 +5160,7 @@ function skyScene(){
   const tick=IND.map((n,c)=>`<span${c===li?' class="luck"':''}><b>${c===li?'★':''}${n}</b><em class="${ch[c]>0?'up':ch[c]<0?'dn':''}">${skyPct(ch[c])}</em></span>`).join('');
   return `<section class="skyl sky-${ph}" aria-label="今日の相場（${SKY_N[ph]}）">
     ${ph==='night'?'<i class="sky-stars"></i>':''}<i class="sky-orb" style="left:${ox}%;bottom:${oy}%"></i>
-    <div class="sky-head"><span class="sky-ph">${SKY_N[ph]}</span><b>AZAKEI指数 ${idx}</b><em class="${avg>=0?'up':'dn'}">${skyPct(avg)}</em></div>
+    <div class="sky-head"><span class="sky-ph">${SKY_N[ph]}</span><b>AZAKEI指数 ${idx}</b><em class="${avg>=0?'up':'dn'}">${skyPct(avg)}</em><button class="sky-tv${S.prof.tvDay===todayKey()?'':' new'}" onclick="tvNews()" aria-label="きょうのAZAKEIニュースを見る">📺 ニュース</button></div>
     <div class="sky-city">${IND.map((n,c)=>`<button class="sky-b${c===li?' luck':''}" style="--ic:var(--i${c});--h:${Math.round(52+[10,22,4,14,0,18][c]+ch[c]*7)}px;--dl:${(c*.07).toFixed(2)}s" onclick="skyTap(${c})" aria-label="${n} ${skyPct(ch[c])}"><span class="sky-ic">${svg(c,2.2)}</span>${c===li?'<span class="sky-star">★</span>':''}<span class="sky-win"></span></button>`).join('')}</div>
     <div class="sky-tick" aria-hidden="true"><div class="sky-tk">${tick}${tick}</div></div></section>`;
 }
@@ -6753,6 +6788,7 @@ function novel(lines, o){
   o=o||{}; nvEnd(true);
   const k=o.k, c=CHARS[k], pf=CHAR_PROF[k]||{};
   const el=document.createElement('div'); el.id='nvl'; el.className='nvl'; el.style.setProperty('--rc', c?c.c:'#ffc83a');
+  if(o.cls) el.classList.add(o.cls);
   el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label', o.label||'会話');
   el.innerHTML=`<div class="nv-bg">${scene(pf.fav!=null?pf.fav:0)}</div><div class="nv-sh"></div>
     <div class="nv-top"><span class="nv-lb">${esc(o.label||'')}</span><button class="nv-skip" type="button">スキップ ▶▶</button></div>
@@ -6788,7 +6824,7 @@ function nvNext(){
 }
 function nvEnd(silent){
   if(!NV) return; const N=NV; NV=null; clearInterval(N.typing); document.removeEventListener('keydown', nvKey);
-  N.el.classList.add('out'); setTimeout(()=>N.el.remove(), 260);
+  N.el.removeAttribute('id'); N.el.classList.add('out'); setTimeout(()=>N.el.remove(), 260);
   if(!silent && N.done) N.done();
 }
 function storyScene(k){ const st=STORIES.find(x=>x.k===k); if(!st) return; novel(st.pre, {k, label:`STORY ${STORIES.indexOf(st)+1} · ${st.t}`}); }
@@ -6797,6 +6833,34 @@ function storyEndScene(){
   const L=[[R.k, R.win?st.win:st.lose, R.win?'shock':'happy']];
   if(R.first) L.push(['me', `（${R.k}のサインをもらった！）`], [R.k, STORIES.indexOf(st)===STORIES.length-1?'……全員に勝つなんて。君がこの市場の主人公だ。':'次の話でも、待ってるからね！', 'happy']);
   novel(L, {k:R.k, label:`STORY ${STORIES.indexOf(st)+1} · ${R.win?'CLEAR':'もう一歩'}`});
+}
+/* ---- 📺 AZAKEIニュース：きょうの相場（ホームの街並みと同じ数字）と「なぜ？」を、日がわりのキャスターが番組ふうに読む。
+   相場はゲームの中の演出で、本物の株価ではない ---- */
+function tvNews(){
+  const ks=Object.keys(CHARS), k=ks[(todayKey()*5+1)%ks.length], pf=CHAR_PROF[k]||{}, now=new Date(), ph=skyPhase(now.getHours());
+  const {ch,li}=todayMarket(), avg=Math.round(ch.reduce((a,v)=>a+v,0)/6*100)/100;
+  const idx=(28000+(todayKey()%997)*7+avg*310).toLocaleString('ja-JP',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const lo=ch.indexOf(Math.min(...ch)), greet=ph==='morn'?'おはようございます':ph==='day'?'こんにちは':'こんばんは';
+  const n=todayKey()%Math.min(WHY.length,ALL_NEWS.length), W=WHY[n], nn=ALL_NEWS[n];
+  const ud=(o,cl)=>Object.entries(o||{}).slice(0,2).map(([i,t])=>`<li class="${cl}"><span class="tvp-ic" style="background:var(--i${i})">${svg(+i,2)}</span><span><b>${IND[i]} ${cl==='up'?'▲':'▼'}</b>${t}</span></li>`).join('');
+  const ind=c=>`<div class="tvp-ind" style="--ic:var(--i${c})"><div class="tvp-sc">${scene(c)}</div><span><b>${IND[c]}</b><em class="${ch[c]>0?'up':ch[c]<0?'dn':''}">${skyPct(ch[c])}</em></span></div>`;
+  const mx=Math.max(...ch.map(Math.abs),1);
+  const L=[
+    [k, `${greet}！ ${SKY_N[ph]}から、AZAKEIニュースをお伝えします。きょうのキャスターは、わたし${k}です。`, 'happy',
+      `<div class="tvp"><span class="tvp-k">AZAKEI指数</span><b class="tvp-big">${idx}</b><em class="${avg>=0?'up':'dn'}">${skyPct(avg)}</em>
+        <div class="tvp-bars">${IND.map((d,c)=>`<span style="--ic:var(--i${c});--v:${(ch[c]/mx).toFixed(2)}"${c===li?' class="luck"':''}><i></i><small>${svg(c,1.6)}</small></span>`).join('')}</div>
+        <small class="tvp-note">※ゲームの中の相場です。本物の株価ではありません</small></div>`],
+    [k, `きょういちばん元気なのは<b>${IND[li]}</b>！ ${skyPct(ch[li])}と、ぐんぐん上がっています。きょうのラッキー産業です。`, 'happy', ind(li)],
+    ch[lo]<0 ? [k, `いっぽう、<b>${IND[lo]}</b>は${skyPct(ch[lo])}。ちょっと元気がないみたいです…`, 'sad', ind(lo)]
+             : [k, `きょうは、どの産業もプラス。市場ぜんたいが明るい一日です！`, 'happy', null],
+    [k, `ここで「なぜ？」のコーナー。きょうのNEWSは<b>${nn}</b>。${W.s}`, 'think',
+      `<div class="tvp-news"><figure class="tvp-ph">${dgArt(nn)}</figure><span class="tvp-k">きょうのNEWS</span><b>${nn}</b></div>`],
+    [k, `どうして上がる産業と下がる産業があるのか、画面にまとめました。ゲームでこのNEWSが出たら、思い出してくださいね。`, '',
+      `<ul class="tvp-why">${ud(W.u,'up')}${ud(W.d,'dn')}</ul>`],
+    [k, `以上、AZAKEIニュースでした。「${pf.say||'また遊ぼう！'}」 また明日、お会いしましょう！`, 'happy', null]
+  ];
+  S.prof.tvDay=todayKey(); saveProfile();
+  novel(L, {k, cls:'tv', label:`● LIVE · AZAKEIニュース ${now.getMonth()+1}/${now.getDate()}`, done:()=>{ if(S.screen==='home') render(); }});
 }
 function tutScene(){
   closeSheet();
