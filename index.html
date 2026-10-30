@@ -2505,6 +2505,23 @@ button.nk-ep:hover .bub{box-shadow:0 0 0 2px var(--rc)}
 .tvp-why li.up b{color:#5ff0a0}.tvp-why li.dn b{color:#ff7a8a}
 .tvp-ic{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center}
 @media (prefers-reduced-motion:reduce){.sky-tv.new::after,.nvl.tv .nv-lb,.tvp-bars i{animation:none}}
+/* VS：相手キャラの縦長カード */
+.vsrow:has(.vsc){grid-template-columns:1fr;justify-items:center;gap:12px}
+.vsrow:has(.vsc) .vsside.l{align-items:center}
+.vsrow:has(.vsc) .vsmark{font-size:clamp(56px,12vw,96px)}
+.vsside.r:has(.vsc:nth-child(4)) .vsq{display:none}
+.vsside.r:has(.vsc){display:flex!important;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:stretch;gap:12px 10px!important;width:100%}
+.vsp.r.vsc{flex-direction:column;justify-content:flex-start;width:min(116px,calc((100vw - 64px) / 3));box-sizing:border-box;padding:12px 6px 10px;gap:6px;text-align:center;border-radius:18px;background:linear-gradient(180deg,color-mix(in srgb,var(--cc2) 55%,#0b0c22),#0b0c22 78%);box-shadow:inset 0 0 0 2px var(--cc2),0 14px 28px -12px #000;animation:vscIn .6s cubic-bezier(.2,1.4,.3,1) both}
+@keyframes vscIn{from{opacity:0;transform:translateY(-46px) scale(1.35) rotate(-8deg)}60%{opacity:1}}
+.vsp.vsc .ava{width:min(76px,20vw)!important;height:min(76px,20vw)!important;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--cc2)}
+.vsp.vsc .vsn{align-items:center;order:2;width:100%}
+.vsp.vsc .vsn b{font-size:15px;white-space:normal}
+.vsp.vsc .vsn span{font-size:10.5px;line-height:1.35;color:#d9d2f5}
+.vsp.vsc .vsq{order:3;position:relative;top:auto;left:auto;transform:none;white-space:normal;margin-top:4px;padding:4px 7px;font-size:10.5px;line-height:1.35;border-radius:10px}
+.vsp.vsc .vsq::after{top:-5px;bottom:auto}
+.vsp.vsc::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(115deg,transparent 30%,rgb(255 255 255 / .35) 48%,transparent 62%);background-size:250% 100%;background-position:120% 0;animation:vscShine 1.1s ease .7s both;pointer-events:none}
+@keyframes vscShine{to{background-position:-60% 0}}
+@media (prefers-reduced-motion:reduce){.vsp.vsc,.vsp.vsc::before{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3569,9 +3586,11 @@ function vsOverlay(){
   const stv = G.story && STORIES.find(x=>x.k===G.story);
   const bsv = G.boss && BOSSES.find(b=>b.id===G.boss);
   const mode = G.duel ? (G.duel.target!=null ? `挑戦状 · ${esc(G.duel.from)}さんの ${G.duel.target}点を超えろ！` : '挑戦状 · この点数で友だちに勝負！') : bsv ? `WEEKLY BOSS · ${bsv.ic} ${bsv.n}「${bsv.ab}」` : G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : C.ex ? 'CLASSIC EX MATCH · 18種から6種' : 'CLASSIC MATCH';
-  const plate=(p,i,side,j)=>`<div class="vsp ${side}" style="--s:var(--s${p.seat%6});animation-delay:${.15+j*.12}s">
+  /* 相手のキャラは、顔の大きい縦長カード（肩書きつき）で1枚ずつ叩きつけるように出す */
+  const vc=(p,side)=>side==='r' && !G.teams && !isHuman(p) && !p.boss && FACE[charKey(p)] && CHAR_PROF[charKey(p)] && avOf(p)===(CHARS[charKey(p)]||{}).ic;
+  const plate=(p,i,side,j)=>`<div class="vsp ${side}${vc(p,side)?' vsc':''}" style="--s:var(--s${p.seat%6});${vc(p,side)?`--cc2:${CHARS[charKey(p)].c};`:''}animation-delay:${.15+j*.12}s">
       <div class="ava${i===me?frc():''}" style="--s:var(--s${p.seat%6});grid-row:auto">${avHTML(p)}</div>
-      ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(p.name)}</b>${G.pw&&G.pw[i]?`<em class="vspw">🃏 ${PWR[G.pw[i]].ic} ${PWR[G.pw[i]].n}</em>`:''}<span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':cpuLabel(p)+'CPU'}</span></div></div>`;
+      ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(vc(p,side)?charKey(p):p.name)}</b>${G.pw&&G.pw[i]?`<em class="vspw">🃏 ${PWR[G.pw[i]].ic} ${PWR[G.pw[i]].n}</em>`:''}<span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':vc(p,side)?`${CHAR_PROF[charKey(p)].t}<br>${cpuLabel(p)}CPU`:cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
   return `<div class="overlay vs${fin||bsv?' final':''}" onclick="endVs()" style="${cu?`--cc:${cu.c}`:bsv?`--cc:${bsv.c}`:''}"><div class="vsbg"></div>${fin?'<div class="vsfinal">FINAL</div>':bsv?'<div class="vsfinal">BOSS</div>':''}
