@@ -2470,8 +2470,9 @@ button.nk-ep:hover .bub{box-shadow:0 0 0 2px var(--rc)}
 .nv-tutbtn span{font-size:20px}.nv-tutbtn b{flex:1;font-size:15px}
 .nv-tutbtn small{padding:2px 8px;border-radius:99px;background:#ff9ad9;color:#1b1030;font-weight:900;font-size:11px}
 @media (prefers-reduced-motion:reduce){.nv-prop.in{animation:none}}
-.sky-head:has(.sky-tv){padding-right:94px}
-.sky-tv{position:absolute;top:-2px;right:0;padding:3px 10px;border-radius:999px;border:1.5px solid rgb(255 255 255 / .55);background:rgb(0 0 0 / .32);color:#fff;font:inherit;font-size:11.5px;font-weight:900;cursor:pointer;text-shadow:none}
+.sky-br{flex-basis:100%;height:0}
+.sky-head{z-index:3;row-gap:2px}
+.sky-tv{position:relative;margin-left:auto;align-self:center;padding:3px 10px;border-radius:999px;border:1.5px solid rgb(255 255 255 / .55);background:rgb(0 0 0 / .32);color:#fff;font:inherit;font-size:11.5px;font-weight:900;cursor:pointer;text-shadow:none}
 .sky-tv.new::after{content:"";position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#ff3b5c;box-shadow:0 0 0 2px #fff;animation:tvDot 1.2s ease-in-out infinite}
 @keyframes tvDot{50%{transform:scale(.6)}}
 .nvl.tv .nv-lb{background:#d81b3c;border-color:#ff8aa0;animation:tvLive 2s ease-in-out infinite}
@@ -2543,6 +2544,19 @@ button.nk-ep:hover .bub{box-shadow:0 0 0 2px var(--rc)}
 .duo-b{max-width:78%;padding:6px 10px;border-radius:14px 14px 14px 4px;background:#fff;color:#2a2140;font-size:12.5px;font-weight:700;line-height:1.5;box-shadow:inset 0 0 0 2px var(--rc)}
 .duo-l.r .duo-b{border-radius:14px 14px 4px 14px}
 .duo-b b{display:block;font-size:10.5px;color:var(--rc);filter:brightness(.8)}
+/* 街を歩くキャラ */
+.sky-ppl{position:absolute;left:10px;right:10px;bottom:31px;height:40px;pointer-events:none;z-index:2}
+.sky-pp{position:absolute;bottom:0;left:var(--a);width:34px;height:40px;padding:0;border:0;background:none;cursor:pointer;pointer-events:auto;animation:skyWalk var(--dur) linear var(--dl) infinite}
+.sky-pf{position:absolute;left:0;bottom:4px;width:34px;height:34px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--rc),0 6px 10px -4px #000;animation:skyFlip var(--dur) steps(1) var(--dl) infinite,ppBob .45s ease-in-out infinite alternate}
+.sky-pf svg.face{width:100%;height:100%;display:block}
+.sky-pp::after{content:"";position:absolute;left:7px;right:7px;bottom:0;height:4px;border-radius:50%;background:rgb(0 0 0 / .35)}
+.sky-pp.talk,.sky-pp.talk .sky-pf{animation-play-state:paused}
+@keyframes skyWalk{0%,100%{left:var(--a)}50%{left:var(--b)}}
+@keyframes skyFlip{0%{transform:scaleX(1)}50%{transform:scaleX(-1)}}
+@keyframes ppBob{to{translate:0 -3px}}
+.sky-say{position:absolute;z-index:3;max-width:min(200px,62%);padding:5px 10px;border-radius:12px;background:#fff;color:#1a1033;font-size:12px;font-weight:800;line-height:1.45;box-shadow:0 0 0 2px var(--rc),0 8px 16px -8px #000;animation:skySay .35s cubic-bezier(.2,1.4,.4,1) both;pointer-events:none}
+@keyframes skySay{from{opacity:0;transform:translateY(8px) scale(.8)}}
+@media (prefers-reduced-motion:reduce){.sky-pp,.sky-pf,.sky-say{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5200,9 +5214,29 @@ function skyScene(){
   const tick=IND.map((n,c)=>`<span${c===li?' class="luck"':''}><b>${c===li?'★':''}${n}</b><em class="${ch[c]>0?'up':ch[c]<0?'dn':''}">${skyPct(ch[c])}</em></span>`).join('');
   return `<section class="skyl sky-${ph}" aria-label="今日の相場（${SKY_N[ph]}）">
     ${ph==='night'?'<i class="sky-stars"></i>':''}<i class="sky-orb" style="left:${ox}%;bottom:${oy}%"></i>
-    <div class="sky-head"><span class="sky-ph">${SKY_N[ph]}</span><b>AZAKEI指数 ${idx}</b><em class="${avg>=0?'up':'dn'}">${skyPct(avg)}</em><button class="sky-tv${S.prof.tvDay===todayKey()?'':' new'}" onclick="tvNews()" aria-label="きょうのAZAKEIニュースを見る">📺 ニュース</button></div>
+    <div class="sky-head"><span class="sky-ph">${SKY_N[ph]}</span><button class="sky-tv${S.prof.tvDay===todayKey()?'':' new'}" onclick="tvNews()" aria-label="きょうのAZAKEIニュースを見る">📺 ニュース</button><i class="sky-br"></i><b>AZAKEI指数 ${idx}</b><em class="${avg>=0?'up':'dn'}">${skyPct(avg)}</em></div>
     <div class="sky-city">${IND.map((n,c)=>`<button class="sky-b${c===li?' luck':''}" style="--ic:var(--i${c});--h:${Math.round(52+[10,22,4,14,0,18][c]+ch[c]*7)}px;--dl:${(c*.07).toFixed(2)}s" onclick="skyTap(${c})" aria-label="${n} ${skyPct(ch[c])}"><span class="sky-ic">${svg(c,2.2)}</span>${c===li?'<span class="sky-star">★</span>':''}<span class="sky-win"></span></button>`).join('')}</div>
+    ${skyPeople(li)}
     <div class="sky-tick" aria-hidden="true"><div class="sky-tk">${tick}${tick}</div></div></section>`;
+}
+/* ---- 街を歩くキャラ：きょうのライバル・ニュースのキャスター・日がわりの1人が、ホームの街を行ったり来たり。タップで話しかけてくる ---- */
+function skyPeople(li){
+  const ks=Object.keys(CHARS), tk=todayKey(), who=[todayRival(), ks[(tk*5+1)%ks.length], ks[(tk*3+5)%ks.length], ks[(tk*11+2)%ks.length]].filter((k,i,a)=>a.indexOf(k)===i).slice(0,3);
+  const lanes=[[6,40],[34,70],[58,86]];
+  return `<div class="sky-ppl">${who.map((k,i)=>`<button class="sky-pp" style="--rc:${CHARS[k].c};--a:${lanes[i][i%2?1:0]}%;--b:${lanes[i][i%2?0:1]}%;--dur:${16+i*5}s;--dl:-${i*4}s" onclick="skyChat(this,'${k}',${li})" aria-label="${k}に話しかける"><span class="sky-pf">${face(k)}</span></button>`).join('')}</div>`;
+}
+function skyChat(btn,k,li){
+  sfx('click'); haptic(6);
+  const T=CPU_TALK[k]||{}, pf=CHAR_PROF[k]||{}, ph=SKY_N[skyPhase(new Date().getHours())];
+  const L=[`${ph}は、${IND[li]}が元気だね！`, pf.say?`「${pf.say}」`:'', ...(T.vs||[]), k===todayRival()?'きょうのライバルは、わたしだよ。勝負する？':'', `好きな産業は${IND[pf.fav]||'ひみつ'}なんだ。`].filter(Boolean);
+  const n=(+btn.dataset.n||0); btn.dataset.n=n+1; const text=L[n%L.length];
+  const sky=btn.closest('.skyl'); sky.querySelectorAll('.sky-say').forEach(x=>x.remove());
+  const a=sky.getBoundingClientRect(), b=btn.getBoundingClientRect(), x=b.left+b.width/2-a.left;
+  const el=document.createElement('span'); el.className='sky-say'; el.style.setProperty('--rc',CHARS[k].c); el.textContent=text;
+  el.style.bottom=(a.bottom-b.top+8)+'px'; if(x<a.width/2) el.style.left=Math.max(8,x-30)+'px'; else el.style.right=Math.max(8,a.width-x-30)+'px';
+  sky.appendChild(el); btn.classList.add('talk'); btn.querySelector('.sky-pf').innerHTML=face(k,null,'happy');
+  voice(k,text);
+  clearTimeout(btn._t); btn._t=setTimeout(()=>{ el.remove(); btn.classList.remove('talk'); const f=btn.querySelector('.sky-pf'); if(f) f.innerHTML=face(k); },2600);
 }
 function skyTap(c){
   sfx('click'); haptic(6); openSheet('ind:'+c); }
