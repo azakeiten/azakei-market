@@ -2470,6 +2470,7 @@ button.nk-ep:hover .bub{box-shadow:0 0 0 2px var(--rc)}
 .nv-tutbtn span{font-size:20px}.nv-tutbtn b{flex:1;font-size:15px}
 .nv-tutbtn small{padding:2px 8px;border-radius:99px;background:#ff9ad9;color:#1b1030;font-weight:900;font-size:11px}
 @media (prefers-reduced-motion:reduce){.nv-prop.in{animation:none}}
+.sky-head:has(.sky-tv){padding-right:94px}
 .sky-tv{position:absolute;top:-2px;right:0;padding:3px 10px;border-radius:999px;border:1.5px solid rgb(255 255 255 / .55);background:rgb(0 0 0 / .32);color:#fff;font:inherit;font-size:11.5px;font-weight:900;cursor:pointer;text-shadow:none}
 .sky-tv.new::after{content:"";position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#ff3b5c;box-shadow:0 0 0 2px #fff;animation:tvDot 1.2s ease-in-out infinite}
 @keyframes tvDot{50%{transform:scale(.6)}}
@@ -2522,6 +2523,26 @@ button.nk-ep:hover .bub{box-shadow:0 0 0 2px var(--rc)}
 .vsp.vsc::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(115deg,transparent 30%,rgb(255 255 255 / .35) 48%,transparent 62%);background-size:250% 100%;background-position:120% 0;animation:vscShine 1.1s ease .7s both;pointer-events:none}
 @keyframes vscShine{to{background-position:-60% 0}}
 @media (prefers-reduced-motion:reduce){.vsp.vsc,.vsp.vsc::before{animation:none}}
+.say.duo{white-space:normal;width:max-content;max-width:min(210px,58vw);text-align:center;line-height:1.4;animation-duration:3.2s;box-shadow:0 6px 16px -6px #000,0 0 0 3px var(--rc,var(--rail)),0 0 18px color-mix(in srgb,var(--rc,#fff) 60%,transparent)}
+.say.duo::before{content:"💬";position:absolute;top:-10px;left:-8px;font-size:14px}
+@media (max-width:560px){   /* スマホは相手一覧が横スクロールの枠なので、吹き出しは札の中に出す */
+  .rivals .say{top:auto;bottom:6px;transform:translate(-50%,0);animation-name:say2;font-size:11.5px}
+  .rivals .say::after{display:none}
+  .rivals .say.duo{max-width:calc(100% - 10px);font-size:11px;padding:4px 8px}
+  .rivals .say.duo::before{top:-8px;left:-4px;font-size:12px}
+}
+.duo-book{margin-top:16px;padding:14px;border-radius:18px;background:var(--panel2);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .08)}
+.duo-n{font-family:var(--display);font-weight:400;font-size:18px;color:var(--gold-t)}
+.duo-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.duo-it{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:14px;background:rgb(0 0 0 / .18)}
+.duo-it.lock{flex-direction:row;align-items:center;gap:6px;opacity:.75}
+.duo-it.lock .duo-f{filter:grayscale(1) brightness(.6)}
+.duo-l{display:flex;align-items:flex-end;gap:8px}.duo-l.r{justify-content:flex-end}
+.duo-f{flex:none;width:34px;height:34px;border-radius:50%;overflow:hidden;background:#fff}
+.duo-f svg.face{width:100%;height:100%;display:block}
+.duo-b{max-width:78%;padding:6px 10px;border-radius:14px 14px 14px 4px;background:#fff;color:#2a2140;font-size:12.5px;font-weight:700;line-height:1.5;box-shadow:inset 0 0 0 2px var(--rc)}
+.duo-l.r .duo-b{border-radius:14px 14px 4px 14px}
+.duo-b b{display:block;font-size:10.5px;color:var(--rc);filter:brightness(.8)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -8389,7 +8410,7 @@ function charsBody(){
   return `<span class="label">CHARACTERS</span><h3 class="ttl" style="font-size:22px">👥 9人の投資家</h3>
     <p class="note">タップでプロフィール。3回対戦すると「ひみつ」が見られます（${open}/9 解放）。</p>
     <div class="chgrid">${Object.keys(CHARS).map((k,j)=>{ const c=CHARS[k], p=CHAR_PROF[k]||{}, r=riv[k], g=r?r.w+r.l+r.d:0;
-      return `<button class="chr9" style="--rc:${c.c};--d:${j*45}ms" onclick="openSheet('char:${k}')"><span class="chr9-f">${face(k)}${g>=3?'<i>🔓</i>':''}</span><b>${k}</b><small>${p.t||''}</small></button>`; }).join('')}</div>`;
+      return `<button class="chr9" style="--rc:${c.c};--d:${j*45}ms" onclick="openSheet('char:${k}')"><span class="chr9-f">${face(k)}${g>=3?'<i>🔓</i>':''}</span><b>${k}</b><small>${p.t||''}</small></button>`; }).join('')}</div>${duoBook()}`;
 }
 /* 試合のおわりのひとこと：CPUが勝ったら勝ちぜりふ、あなたが勝ったら2位のキャラのくやしいせりふ */
 const END_TALK={
@@ -8650,21 +8671,67 @@ function rivalsPanel(){
         <span class="rvbar"><i style="width:${pct}%"></i></span></button>`; }).join('')}</div></section>`;
 }
 const talkOf = p => (p.boss && G && G.boss && BOSSES.find(b=>b.id===G.boss).talk) || CPU_TALK[String(p.name).replace(/^CPU\s*/,'').replace(/（.*$/,'')] || CPU_TALK['ソラ'];
+/* ---- 掛け合い：CPUのキャラ2人が同じ産業で被ったら、ふたりで会話する。
+   関係のある組み合わせ（DUO「先に話す人|返す人」）は専用の会話で、見つけると図鑑に記録。それ以外は「被ったひとこと」＋「返し」 ---- */
+const DUO={
+  'ハル|レン':[['オレの全力についてこれるか！','ついてく？ オレが先に行ってんだよ！'],['また同じとこかよ、レン！','頂点は1つ。どいてもらうぜ、ハル！']],
+  'アオイ|ハル':[['ちょっとハル、真似しないでよ！','真似じゃねえ、本気でここだと思ったんだ！'],['今日こそ負けないから！','おう、かかってこい！']],
+  'ミオ|トキ':[['トキさん、ここは予習どおりですか？','ほっほ。教科書の外にも答えはあるぞ。'],['トキさんと同じ答え…光栄です！','若いのに、よく見ておる。']],
+  'ミナト|ユイ':[['確率的に、ここは被りにくいはずだった。','計算どおりにいかないのが市場よ。'],['ユイさんと同じ判断か。','あら、気が合うわね。']],
+  'ナギ|ソラ':[['お、ソラも同じ波？','うん〜、気持ちよさそうだったから〜'],['波待ちしてたら、ソラもいた。','えへへ、ここ居心地いいよね〜']],
+  'ミナト|レン':[['勘で選ぶから、こうなる。','うるせえ！ 勘も実力のうちだ！'],['データ上、君はここに来る確率が高かった。','読んでたなら避けろよ！']],
+  'アオイ|ミオ':[['ミオちゃんも同じ？ 仲良しだね！','ノートに「アオイさんと被りやすい」って書いておきます…'],['えーっ、ミオちゃんずるい！','ずるくないです、予習です！']],
+  'トキ|ナギ':[['波を読むのも、時を読むのも同じじゃな。','じいさん、いい波乗りになれるよ。'],['ほう、若いのも同じ時を見たか。','流れに年齢は関係ないっすから。']],
+  'ユイ|ソラ':[['…あなた、何も考えてないでしょう。','えへへ、バレた〜？'],['静かに稼ぎたかったのに。','じゃあ、静かに一緒に稼ご〜']],
+  'ハル|ミナト':[['計算なんかより気合いだ！','気合いの期待値は、ゼロだよ。']],
+  'レン|トキ':[['じいさん、そろそろ引退しなよ！','ほっほ、頂点を知らぬ者に言われてもな。']]
+};
+const CPU_REP={'ミナト':['……君もか。','計算が狂ったな。'],'アオイ':['えー、一緒じゃん！','もう、真似っこ！'],'ソラ':['おそろいだね〜'],'ハル':['おっ、お前もか！'],'ユイ':['…邪魔しないで。'],'ナギ':['同じ波か。'],'ミオ':['あっ、同じです…！'],'トキ':['ほう、気が合うの。'],'レン':['ついてくんなって！']};
+const DUO_N=Object.values(DUO).reduce((a,l)=>a+l.length,0);
+const rnd = a => a[Math.random()*a.length|0];
+function duoPick(){
+  const cs=G.players.map((p,i)=>i).filter(i=>{ const p=G.players[i], r=G.last[i]; return !isHuman(p) && !p.boss && i!==G.rcutI && CPU_REP[charKey(p)] && r && r.k>=2; });
+  const pairs=[]; cs.forEach((a,x)=>cs.slice(x+1).forEach(b=>{ if(G.last[a].ind===G.last[b].ind) pairs.push([a,b]); }));
+  if(!pairs.length) return null;
+  const sp=pairs.map(([a,b])=>{ const ka=charKey(G.players[a]), kb=charKey(G.players[b]); return DUO[ka+'|'+kb]?{a,b,key:ka+'|'+kb}:DUO[kb+'|'+ka]?{a:b,b:a,key:kb+'|'+ka}:null; }).filter(Boolean);
+  if(sp.length && Math.random()<.85){
+    const d=rnd(sp), n=Math.random()*DUO[d.key].length|0, id=d.key+'#'+n, P=S.prof; P.duo=P.duo||{};
+    const nw=!P.duo[id]; if(nw){ P.duo[id]=1; saveProfile(); }
+    return {...d, l:DUO[d.key][n], nw};
+  }
+  if(Math.random()<.5) return null;
+  const [a,b]=rnd(pairs), ta=talkOf(G.players[a]).hit;
+  return ta ? {a, b, l:[rnd(ta), rnd(CPU_REP[charKey(G.players[b])])]} : null;
+}
+/* キャラ図鑑の「掛け合い図鑑」 */
+function duoBook(){
+  const got=S.prof.duo||{}, n=Object.keys(got).filter(id=>{ const [k,i]=id.split('#'); return DUO[k]&&DUO[k][i]; }).length;
+  return `<section class="duo-book"><div class="row spread"><span class="label">💬 掛け合い図鑑</span><b class="duo-n">${n} / ${DUO_N}</b></div>
+    <p class="note">CPUのキャラどうしが同じ産業で被ると、ふたりの会話が聞けることがあります。</p>
+    <div class="duo-list">${Object.keys(DUO).map(key=>{ const [a,b]=key.split('|');
+      return DUO[key].map((l,i)=>got[key+'#'+i]
+        ? `<div class="duo-it"><div class="duo-l" style="--rc:${CHARS[a].c}"><span class="duo-f">${face(a)}</span><span class="duo-b"><b>${a}</b>${l[0]}</span></div><div class="duo-l r" style="--rc:${CHARS[b].c}"><span class="duo-b"><b>${b}</b>${l[1]}</span><span class="duo-f">${face(b)}</span></div></div>`
+        : `<div class="duo-it lock"><span class="duo-f">${face(a)}</span><span class="duo-f">${face(b)}</span><span class="note">🔒 ${a}と${b}が同じ産業を選ぶと…</span></div>`).join(''); }).join('')}</div></section>`;
+}
 function cpuChatter(){
   if(!G || !G.last || reduced()) return;
   const top=Math.max(...G.players.map(p=>p.score));
-  const lines=[];
+  const lines=[], duo=duoPick();
+  if(duo){ setTimeout(()=>say(duo.a,duo.l[0],'duo'),1100); setTimeout(()=>say(duo.b,duo.l[1],'duo'),2300); if(duo.nw) setTimeout(()=>toast('💬 新しい掛け合いを見つけた！ キャラクター図鑑に記録しました'),3600); }
   G.players.forEach((p,i)=>{
     if(isHuman(p) || i===G.rcutI) return;   /* カットインで話したキャラは吹き出しを出さない */
+    if(duo && (i===duo.a || i===duo.b)) return;
     const r=G.last[i], T=talkOf(p);
     const kind = r.k===1 ? 'mono' : r.total<0 ? 'neg' : r.total>=5 ? 'big' : (r.k>=2 && Math.random()<.6) ? 'hit' : (p.score===top && Math.random()<.5) ? 'lead' : null;
     if(kind && T[kind]) lines.push({i, text:T[kind][Math.floor(Math.random()*T[kind].length)], w:kind==='mono'||kind==='neg'?2:1});
   });
-  lines.sort((a,b)=>b.w-a.w || Math.random()-.5).slice(0,2).forEach((l,j)=>setTimeout(()=>say(l.i,l.text),1100+j*700));
+  lines.sort((a,b)=>b.w-a.w || Math.random()-.5).slice(0,duo?1:2).forEach((l,j)=>setTimeout(()=>say(l.i,l.text),duo?3500:1100+j*700));
 }
-function say(i,text){
+function say(i,text,cls){
   const el=document.querySelector(`.seat[data-i="${i}"]`); if(!el) return;
-  const s=document.createElement('span'); s.className='say'; s.textContent=text; el.appendChild(s); setTimeout(()=>s.remove(),2600);
+  const s=document.createElement('span'); s.className='say'+(cls?' '+cls:''); s.textContent=text; el.appendChild(s); setTimeout(()=>s.remove(),cls==='duo'?3200:2600);
+  const sc=cls==='duo'&&el.closest('.rivals');   /* 掛け合いは、話しているキャラが見えるように相手一覧をスクロール */
+  if(sc && sc.scrollWidth>sc.clientWidth){ const a=sc.getBoundingClientRect(), b=el.getBoundingClientRect(); sc.scrollTo({left:sc.scrollLeft+(b.left-a.left)-(a.width-b.width)/2, behavior:reduced()?'auto':'smooth'}); }
   const p=G&&G.players[i]; if(p){ const c=CHARS[charKey(p)]; if(c) s.style.setProperty('--rc',c.c); voice(p.boss&&G.boss?'BOSS':charKey(p), text); }
 }
 /* ---- match history (My page) ---- */
