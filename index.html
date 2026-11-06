@@ -3233,7 +3233,7 @@ const clone = o => JSON.parse(JSON.stringify(o));
 const sgn = v => v>0 ? `+${v}` : v<0 ? `−${-v}` : '±0';
 const cls = v => v>0 ? 'up' : v<0 ? 'down' : '';
 const MY_ICON='';   /* マイアイコン（自分で描いたアイコン）の目印。esc() がこの1文字だけを画像に置きかえる */
-const esc = s => { s=String(s); if(s===MY_ICON) return myIconImg(); if(s===MY_FACE) return myFaceSvg(); if(s.charCodeAt(0)===0xE001){ const ic=peerIcon(s.slice(1)); return ic?`<img class="ava-img" src="${ic}" alt="">`:'？'; } return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); };
+const esc = s => { s=String(s); if(s===MY_ICON) return myIconImg(); if(s===MY_FACE) return myFaceSvg(); if(s.charAt(0)===PEER_FACE){ const pf=peerFace(s.slice(1)); return pf?faceDef(pf,null,'','mine'):'？'; } if(s.charCodeAt(0)===0xE001){ const ic=peerIcon(s.slice(1)); return ic?`<img class="ava-img" src="${ic}" alt="">`:'？'; } return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); };
 const MY_FACE='\uE002';   /* 似顔絵アバターの目印。esc() がこの1文字を似顔絵に置きかえる */
 const myFaceSvg = mood => (S&&S.prof&&S.prof.myFace) ? faceDef(S.prof.myFace,null,mood,'mine') : '？';
 const myIconImg = () => (S&&S.prof&&S.prof.myIcon) ? `<img class="ava-img" src="${S.prof.myIcon}" alt="">` : '？';
@@ -3287,7 +3287,7 @@ function bossFace(id, mood){
   const a=BOSS_ART[id]; if(!a) return ''; const cid='fc'+(++FACE_N), m=MOOD[mood];
   return `<svg class="face boss${m?' m-'+mood:''}" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="${cid}"><circle cx="50" cy="50" r="50"/></clipPath></defs><g clip-path="url(#${cid})">${a.back||''}${a.head}<g fill="#2a1a33">${m?m.eye:a.eye}</g>${m?m.mouth:a.mouth}${a.front||''}${m?m.fx:''}</g></svg>`;
 }
-const avHTML = p => { const k=charKey(p), a=avOf(p); if(a===MY_FACE) return myFaceSvg(moodOf(p)); if(p.boss && G && G.boss && BOSS_ART[G.boss]) return bossFace(G.boss, moodOf(p)); return (!isHuman(p) && !p.boss && FACE[k] && CHARS[k] && a===CHARS[k].ic) ? face(k,null,moodOf(p)) : esc(a); };
+const avHTML = p => { const k=charKey(p), a=avOf(p); if(a===MY_FACE) return myFaceSvg(moodOf(p)); if(a.charAt(0)===PEER_FACE){ const pf=peerFace(a.slice(1)); if(pf) return faceDef(pf,null,moodOf(p),'mine'); } if(p.boss && G && G.boss && BOSS_ART[G.boss]) return bossFace(G.boss, moodOf(p)); return (!isHuman(p) && !p.boss && FACE[k] && CHARS[k] && a===CHARS[k].ic) ? face(k,null,moodOf(p)) : esc(a); };
 function moodOf(p){   /* OPENのあとは結果しだい、最終結果では1位が笑顔・最下位がしょんぼり */
   if(!G) return ''; const i=G.players.indexOf(p); if(i<0) return '';
   if(G.phase==='final'){ const rk=ranking(G.players,G.cfg), me=rk.find(x=>x.i===i); if(!me) return ''; const last=Math.max(...rk.map(x=>x.rank)); return me.rank===1?'happy':(me.rank===last&&last>1?'sad':''); }
@@ -3296,7 +3296,7 @@ function moodOf(p){   /* OPENのあとは結果しだい、最終結果では1�
   return '';
 }
 const chIc = c => { const k=Object.keys(CHARS).find(k=>CHARS[k]===c); return k&&FACE[k] ? face(k) : (c&&c.ic)||''; };
-const avOf = p => (G && G.players.indexOf(p)===myIndex() && myAvatar()) || (G && G.online && p.peer && p.peer!==NET.myPeer && peerIcon(p.peer) ? ''+p.peer : '') || (p.boss && G && G.boss ? BOSSES.find(b=>b.id===G.boss).ic : '') || (!isHuman(p) && CHARS[charKey(p)] ? CHARS[charKey(p)].ic : initial(p.name));   // CPUはキャラのアイコン
+const avOf = p => (G && G.players.indexOf(p)===myIndex() && myAvatar()) || (G && G.online && p.peer && p.peer!==NET.myPeer && peerFace(p.peer) ? PEER_FACE+p.peer : '') || (G && G.online && p.peer && p.peer!==NET.myPeer && peerIcon(p.peer) ? ''+p.peer : '') || (p.boss && G && G.boss ? BOSSES.find(b=>b.id===G.boss).ic : '') || (!isHuman(p) && CHARS[charKey(p)] ? CHARS[charKey(p)].ic : initial(p.name));   // CPUはキャラのアイコン
 const myTitle = () => { const P=S.prof, a=P.title && P.ach[P.title] && ACH.find(x=>x.id===P.title); return a ? a.n : titleOf(lvInfo(P.xp).lv); };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || !!(typeof S!=='undefined' && S && S.calm);
 const phone = () => matchMedia('(max-width:640px)').matches;
@@ -4118,7 +4118,8 @@ async function joinRoom(code, host){
     const r=await lobby.join(code, host);
     NET.room=r; NET.code=code; NET.host=host; NET.st=null; NET.fxKey=''; NET.ver=0;
     const myIc = S.prof.av==='mine' && S.prof.myIcon && S.prof.myIcon.length<30000 ? S.prof.myIcon : null;   /* マイアイコンは名前といっしょに送る */
-    try{ await r.presence(Object.assign({name:NET.name.slice(0,12), host:host?1:0}, myIc?{ic:myIc}:{})); }
+    const myFc = S.prof.av==='face' && S.prof.myFace ? cleanFace(S.prof.myFace) : null;   /* 似顔絵は部品の組み合わせだけ送る */
+    try{ await r.presence(Object.assign({name:NET.name.slice(0,12), host:host?1:0}, myIc?{ic:myIc}:{}, myFc?{fc:myFc}:{})); }
     catch(e){ if(!myIc) throw e; await r.presence({name:NET.name.slice(0,12), host:host?1:0}); }
     NET.unsubs.push(r.onPeers(ch=>{
       NET.peers=ch.peers; const me=ch.peers.find(p=>p.sameTab); if(me) NET.myPeer=me.peer;
@@ -5768,6 +5769,7 @@ function homeRec(){
   const P=S.prof, k=todayKey(), out=[];
   if(!(P.daily||{})[k]) out.push({ic:'☀️', t:'今日のデイリーがまだだよ', d:'みんな同じNEWSで点数くらべ', go:'startDaily()'});
   const b=curBoss(); if(!(P.boss&&P.boss.wk===bossWeek())) out.push({ic:b.ic, t:`今週のボス「${b.n}」を倒そう`, d:`はじめての撃破で +${BOSS_COIN}コイン`, go:'startBoss()'});
+  if(!P.myFace && P.st && P.st.games>=1) out.push({ic:'🎨', t:'自分の似顔絵をつくろう', d:'試合で表情が変わるアバターになるよ', go:'openFaceMaker()'});
   const tr=todayRival(); if(P.trDay!==k && CHARS[tr]) out.push({ic:CHARS[tr].ic, t:`今日のライバルは ${tr}`, d:`${tr}より上の順位で +${TR_BONUS}コイン`, go:`challengeChar('${tr}')`});
   const R=P.riv||{}; const near=Object.keys(CHARS).filter(c=>R[c]).map(c=>{ const g=R[c].w+R[c].l+R[c].d, lv=bondLv(R[c]), nx=BOND_AT[lv]; return {c, lv, left:nx!=null?nx-g:99}; }).filter(x=>x.left<=2).sort((a,b)=>a.left-b.left)[0];
   if(near) out.push({ic:'💗', t:`${near.c}とあと${near.left}回でなかよしLv${near.lv+1}`, d:'新しいエピソードが読めるよ', go:`challengeChar('${near.c}')`});
@@ -6140,6 +6142,15 @@ function autoDiffNote(){
   return `<section class="trwin" style="--rc:#4fe3ff"><span class="rva">🤖</span><span><span class="label">おまかせの強さ</span><b>${m.after>m.before?'レベルアップ！':m.after<m.before?'やさしくしたよ':'このまま'}</b><span class="note">${t}</span></span></section>`;
 }
 /* ---- オンラインのマイアイコン：相手のアイコンは、その人の presence から読む（ゲームの同期データには入れない）。画像データの形をきびしくチェック ---- */
+/* 相手の似顔絵：部品は決まった名前、色は #RRGGBB だけを通す（SVGにそのまま入るので、それ以外は捨てる） */
+const OWN = (o,k) => typeof k==='string' && Object.prototype.hasOwnProperty.call(o,k);
+function cleanFace(f){
+  if(!f || typeof f!=='object') return null; const col=v=>typeof v==='string' && /^#[0-9a-fA-F]{6}$/.test(v);
+  if(!(FM_OPT.hs.includes(f.hs) && OWN(EYES,f.eye) && OWN(MOUTH,f.mouth) && OWN(ACC,f.acc) && col(f.hair) && col(f.skin) && col(f.cloth))) return null;
+  return {hs:f.hs, eye:f.eye, mouth:f.mouth, acc:f.acc, hair:f.hair, skin:f.skin, cloth:f.cloth};
+}
+function peerFace(peer){ const x=(NET.peers||[]).find(q=>q.peer===peer); return cleanFace(x&&x.presence&&x.presence.fc); }
+const PEER_FACE='';
 function peerIcon(peer){
   const x=(NET.peers||[]).find(q=>q.peer===peer), ic=x&&x.presence&&x.presence.ic;
   return (typeof ic==='string' && ic.length<30000 && /^data:image\/(jpeg|png);base64,[A-Za-z0-9+\/=]+$/.test(ic)) ? ic : null;
@@ -9032,7 +9043,7 @@ function onlineView(){
       <p class="note">${IN_CLAUDE?'閲覧のみの権限で開いた人は、操作できず観戦になります。':'端末どうしを直接つなぎます。学校や会社のWi-Fiなど、一部のネットワークではつながらないことがあります。そのときはスマホの回線に切り替えてみてください。'}途中で抜けた人の席はCPUが引き継ぎます。</p></aside></div>`;
   const st=NET.st, mode=NET.host?S.mode:(st&&st.mode)||'classic', era=NET.host?S.era:(st&&st.era)||'all', cpus=NET.host?NET.cpus:(st&&+st.cpus)||0;
   const ps=rosterPeers();
-  const roster=ps.map((p,i)=>`<div class="rosterrow"><div class="ava" style="--s:var(--s${i%6});width:36px;height:36px;font-size:15px;grid-row:auto">${(ic=>ic?`<img class="ava-img" src="${ic}" alt="">`:esc(initial(peerName(p))))(peerIcon(p.peer))}</div><b>${esc(peerName(p))}</b>${p.presence&&p.presence.host?'<span class="tagx" style="color:var(--gold-t)">ホスト</span>':''}${p.sameTab?'<span class="tagx cy">あなた</span>':''}${p.guest?'<span class="tagx">ゲスト</span>':''}</div>`).join('')
+  const roster=ps.map((p,i)=>`<div class="rosterrow"><div class="ava" style="--s:var(--s${i%6});width:36px;height:36px;font-size:15px;grid-row:auto">${(pf=>pf?faceDef(pf,null,'','mine'):'')(p.peer===NET.myPeer&&S.prof.av==='face'?cleanFace(S.prof.myFace):peerFace(p.peer))||(ic=>ic?`<img class="ava-img" src="${ic}" alt="">`:esc(initial(peerName(p))))(peerIcon(p.peer))}</div><b>${esc(peerName(p))}</b>${p.presence&&p.presence.host?'<span class="tagx" style="color:var(--gold-t)">ホスト</span>':''}${p.sameTab?'<span class="tagx cy">あなた</span>':''}${p.guest?'<span class="tagx">ゲスト</span>':''}</div>`).join('')
     + Array.from({length:cpus},(_,i)=>`<div class="rosterrow cpu"><div class="ava" style="--s:var(--s${(ps.length+i)%6});width:36px;height:36px;font-size:15px;grid-row:auto">C</div><b>CPU ${['ミナト','アオイ','ソラ','ハル','ユイ'][i]}</b><span class="tagx">CPU</span></div>`).join('');
   const total=Math.min(6,ps.length+cpus);
   const modeUI = NET.host ? `<div class="modes" role="group" aria-label="ゲームモード">
