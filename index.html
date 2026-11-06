@@ -2577,6 +2577,21 @@ button.nk-ep:hover .bub{box-shadow:0 0 0 2px var(--rc)}
 @keyframes bsShake{20%{transform:translateX(-6px) rotate(-3deg)}40%{transform:translateX(6px) rotate(3deg)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
 button.bs-ic.bs-fc{padding:0;border:0;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.nvl.boss::after,.nvl.bossln .nv-fi,.nvl.boss .nv-lb{animation:none}}
+/* 似顔絵メーカー */
+svg.face.mine{width:100%;height:100%;display:block;border-radius:50%}
+.fm-top{display:flex;flex-direction:column;align-items:center;gap:10px;margin:6px 0 10px}
+.fm-big{width:150px;height:150px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 35% 30%,#fff,color-mix(in srgb,var(--c) 70%,#fff) 85%);box-shadow:0 0 0 4px #fff,0 0 0 8px var(--c),0 14px 30px -12px #000}
+.fm-big svg.face{width:100%;height:100%;display:block}
+.fm-moods{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.fm-moods button{padding:5px 11px;border-radius:99px;border:1.5px solid var(--line,rgb(255 255 255 / .2));background:transparent;color:var(--ink);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.fm-moods button.on{background:var(--gold);color:#1b1030;border-color:var(--gold)}
+.fm-row{margin:10px 0}.fm-row .label{display:block;margin-bottom:6px}
+.fm-opts{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scroll-snap-type:x proximity}
+.fm-o{flex:none;width:58px;height:58px;padding:0;border-radius:50%;border:0;overflow:hidden;background:#fff;cursor:pointer;box-shadow:0 0 0 2px rgb(255 255 255 / .15);scroll-snap-align:start;transition:transform .15s}
+.fm-o svg.face{width:100%;height:100%;display:block}
+.fm-o.on{box-shadow:0 0 0 3px var(--gold),0 0 14px var(--gold);transform:scale(1.06)}
+.fm-o.sw{width:40px;height:40px;margin:9px 0;background:var(--c)}
+.fm-foot{position:sticky;bottom:-1px;padding:10px 0 2px;background:linear-gradient(180deg,transparent,var(--panel,#1b1d48) 30%)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3129,9 +3144,10 @@ const MOOD={
     fx:`<path d="M36 56 q3 6 0 8 q-3 -2 0 -8z" fill="#8fd3ff" stroke="#2a1a33" stroke-width="1"/>`}
 };
 let FACE_N=0;
-function face(name, bg, mood){
-  const f=FACE[name]; if(!f) return ''; const id='fc'+(++FACE_N), m=MOOD[mood];   /* 円で切りぬく。idは1枚ごとに変える */
-  return `<svg class="face${m?' m-'+mood:''}" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="${id}"><circle cx="50" cy="50" r="50"/></clipPath></defs><g clip-path="url(#${id})">${bg?`<circle cx="50" cy="50" r="50" fill="${bg}"/>`:''}
+function face(name, bg, mood){ return faceDef(FACE[name], bg, mood); }
+function faceDef(f, bg, mood, cls){   /* 部品の組み合わせ（FACEの1件と同じ形）から描く。似顔絵メーカーでも使う */
+  if(!f) return ''; const id='fc'+(++FACE_N), m=MOOD[mood];   /* 円で切りぬく。idは1枚ごとに変える */
+  return `<svg class="face${cls?' '+cls:''}${m?' m-'+mood:''}" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="${id}"><circle cx="50" cy="50" r="50"/></clipPath></defs><g clip-path="url(#${id})">${bg?`<circle cx="50" cy="50" r="50" fill="${bg}"/>`:''}
     ${(HAIR_BACK[f.hs]||(()=>''))(f.hair)}
     <path d="M18 100 Q20 76 50 74 Q80 76 82 100z" fill="${f.cloth}" ${FK}/><path d="M42 74 L50 84 L58 74" fill="#fff" ${FK}/>
     <rect x="44" y="64" width="12" height="12" rx="3" fill="${f.skin}" ${FK}/>
@@ -3217,13 +3233,15 @@ const clone = o => JSON.parse(JSON.stringify(o));
 const sgn = v => v>0 ? `+${v}` : v<0 ? `−${-v}` : '±0';
 const cls = v => v>0 ? 'up' : v<0 ? 'down' : '';
 const MY_ICON='';   /* マイアイコン（自分で描いたアイコン）の目印。esc() がこの1文字だけを画像に置きかえる */
-const esc = s => { s=String(s); if(s===MY_ICON) return myIconImg(); if(s.charCodeAt(0)===0xE001){ const ic=peerIcon(s.slice(1)); return ic?`<img class="ava-img" src="${ic}" alt="">`:'？'; } return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); };
+const esc = s => { s=String(s); if(s===MY_ICON) return myIconImg(); if(s===MY_FACE) return myFaceSvg(); if(s.charCodeAt(0)===0xE001){ const ic=peerIcon(s.slice(1)); return ic?`<img class="ava-img" src="${ic}" alt="">`:'？'; } return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); };
+const MY_FACE='\uE002';   /* 似顔絵アバターの目印。esc() がこの1文字を似顔絵に置きかえる */
+const myFaceSvg = mood => (S&&S.prof&&S.prof.myFace) ? faceDef(S.prof.myFace,null,mood,'mine') : '？';
 const myIconImg = () => (S&&S.prof&&S.prof.myIcon) ? `<img class="ava-img" src="${S.prof.myIcon}" alt="">` : '？';
 const chip = i => `<span class="chip c${i}"><i></i>${IND[i]}</span>`;
 const $ = s => document.querySelector(s);
 const initial = n => (String(n).replace(/^CPU\s*/,'').trim()[0] || '?');
 const AVATARS=[[null,1],["🦊",1],["🐼",1],["🐯",2],["🐸",3],["🐧",4],["🦉",5],["🐙",6],["🦁",8],["🐲",10],["🤖",12],["👑",15]];   // [絵,解放レベル]、nullは名前の頭文字
-const myAvatar = () => { const P=S&&S.prof; if(!P||!P.av) return null; if(P.av==='mine') return P.myIcon?MY_ICON:null; const a=AVATARS.find(x=>x[0]===P.av); return a && lvInfo(P.xp).lv>=a[1] ? a[0] : null; };
+const myAvatar = () => { const P=S&&S.prof; if(!P||!P.av) return null; if(P.av==='mine') return P.myIcon?MY_ICON:null; if(P.av==='face') return P.myFace?MY_FACE:null; const a=AVATARS.find(x=>x[0]===P.av); return a && lvInfo(P.xp).lv>=a[1] ? a[0] : null; };
 /* アバター：CPUのキャラは似顔絵、それ以外（自分・オンラインの相手・ボス）はこれまでどおりの絵文字や頭文字 */
 /* ---- ボスの似顔絵：9人と同じタッチ。目は 41/59・51、口は 62 前後にそろえてあるので、表情（MOOD）もそのまま使える ---- */
 const BODY = c => `<path d="M14 100 Q18 80 50 77 Q82 80 86 100z" fill="${c}" ${FK}/>`;
@@ -3269,7 +3287,7 @@ function bossFace(id, mood){
   const a=BOSS_ART[id]; if(!a) return ''; const cid='fc'+(++FACE_N), m=MOOD[mood];
   return `<svg class="face boss${m?' m-'+mood:''}" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="${cid}"><circle cx="50" cy="50" r="50"/></clipPath></defs><g clip-path="url(#${cid})">${a.back||''}${a.head}<g fill="#2a1a33">${m?m.eye:a.eye}</g>${m?m.mouth:a.mouth}${a.front||''}${m?m.fx:''}</g></svg>`;
 }
-const avHTML = p => { const k=charKey(p), a=avOf(p); if(p.boss && G && G.boss && BOSS_ART[G.boss]) return bossFace(G.boss, moodOf(p)); return (!isHuman(p) && !p.boss && FACE[k] && CHARS[k] && a===CHARS[k].ic) ? face(k,null,moodOf(p)) : esc(a); };
+const avHTML = p => { const k=charKey(p), a=avOf(p); if(a===MY_FACE) return myFaceSvg(moodOf(p)); if(p.boss && G && G.boss && BOSS_ART[G.boss]) return bossFace(G.boss, moodOf(p)); return (!isHuman(p) && !p.boss && FACE[k] && CHARS[k] && a===CHARS[k].ic) ? face(k,null,moodOf(p)) : esc(a); };
 function moodOf(p){   /* OPENのあとは結果しだい、最終結果では1位が笑顔・最下位がしょんぼり */
   if(!G) return ''; const i=G.players.indexOf(p); if(i<0) return '';
   if(G.phase==='final'){ const rk=ranking(G.players,G.cfg), me=rk.find(x=>x.i===i); if(!me) return ''; const last=Math.max(...rk.map(x=>x.rank)); return me.rank===1?'happy':(me.rank===last&&last>1?'sad':''); }
@@ -4379,6 +4397,7 @@ function renderSheet(){
   else if(k==='help') body=helpBody();
   else if(k==='lessons') body=lessonsBody();
   else if(k==='paint') body=paintBody();
+  else if(k==='facemaker') body=`<div id="fmw">${fmInner()}</div>`;
   else if(k==='puzzle') body=puzBody();
   else if(k==='mynews') body=myNewsBody();
   else if(k==='mynewsedit') body=myNewsEditBody();
@@ -7023,6 +7042,36 @@ function tvNews(){
   S.prof.tvDay=todayKey(); saveProfile();
   novel(L, {k, cls:'tv', label:`● LIVE · AZAKEIニュース ${now.getMonth()+1}/${now.getDate()}`, done:()=>{ if(S.screen==='home') render(); }});
 }
+/* ---- 似顔絵メーカー：9人と同じ部品（髪型・目・口・小物）と色を組み合わせて、自分の顔をつくる ---- */
+const FM_OPT={hs:['neat','spiky','spiky2','surf','long','twin','bob','fluffy','elder'], eye:Object.keys(EYES), mouth:Object.keys(MOUTH), acc:Object.keys(ACC)};
+const FM_COL={hair:['#2a1d18','#5a3420','#a0522d','#d9481e','#e8b400','#d8d8de','#3b2366','#a8336a','#1f2a5c','#3fa34d'],
+  skin:['#ffe6d6','#ffd9bf','#f3cfb0','#e9b48c','#c98d63','#8d5a3b'], cloth:['#ff7a3d','#3fd0a0','#a77bff','#ff5c9a','#5f86ff','#eab520','#20c6d1','#8a6a3a','#2b2d52']};
+const FM_LBL={hs:'髪型',hair:'髪の色',eye:'目',mouth:'口',acc:'小物',skin:'はだの色',cloth:'服の色'};
+const FM_KEYS=['hs','hair','eye','mouth','acc','skin','cloth'];
+let FM=null;
+function openFaceMaker(){
+  const P=S.prof; FM={...(P.myFace||{skin:'#ffe0cc', hair:'#2a1d18', hs:'neat', eye:'dot', mouth:'smile', acc:'none', cloth:AVA_COLORS[(P.color||0)%6]}), m:'happy'};
+  openSheet('facemaker');
+}
+function fmInner(){
+  const row=k=>{ const col=!!FM_COL[k], vals=col?FM_COL[k]:FM_OPT[k];
+    return `<div class="fm-row"><span class="label">${FM_LBL[k]}</span><div class="fm-opts">${vals.map(v=>`<button class="fm-o${FM[k]===v?' on':''}${col?' sw':''}"${col?` style="--c:${v}"`:''} onclick="fmSet('${k}','${v}')" aria-label="${FM_LBL[k]}${col?'':' '+v}" aria-pressed="${FM[k]===v}">${col?'':faceDef({...FM,[k]:v})}</button>`).join('')}</div></div>`; };
+  return `<span class="label">FACE MAKER</span><h3 class="ttl" style="font-size:22px">🎨 似顔絵メーカー</h3>
+    <div class="fm-top"><div class="fm-big" style="--c:${FM.cloth}">${faceDef(FM,null,FM.m)}</div>
+      <div class="fm-moods" role="group" aria-label="表情のためし">${[['','ふつう'],['happy','笑顔'],['shock','びっくり'],['sad','しょんぼり'],['think','考え中']].map(([m,n])=>`<button class="${FM.m===m?'on':''}" onclick="fmMood('${m}')">${n}</button>`).join('')}</div>
+      <p class="note">試合では、勝つと笑顔・被るとびっくり…と表情が変わります。</p></div>
+    ${FM_KEYS.map(row).join('')}
+    <div class="row spread fm-foot"><button class="btn ghost" onclick="fmRandom()">🎲 おまかせ</button><button class="btn gold big" onclick="fmSave()">この顔にする</button></div>`;
+}
+function fmDraw(){ const w=document.getElementById('fmw'); if(w) w.innerHTML=fmInner(); }
+function fmSet(k,v){ if(!FM) return; FM[k]=v; sfx('click'); haptic(6); fmDraw(); }
+function fmMood(m){ if(!FM) return; FM.m=m; sfx('click'); fmDraw(); }
+function fmRandom(){ if(!FM) return; FM_KEYS.forEach(k=>{ FM[k]=rnd(FM_COL[k]||FM_OPT[k]); }); FM.m='happy'; sfx('select'); fmDraw(); }
+function fmSave(){
+  if(!FM) return; const P=S.prof, d={}; FM_KEYS.forEach(k=>d[k]=FM[k]);
+  P.myFace=d; P.av='face'; saveProfile(); FM=null; sfx('fanfare'); haptic(20); closeSheet(); toast('似顔絵をアバターにしました！ 試合でも表情が変わります'); render();
+}
+function setMyFace(){ const P=S.prof; if(!P.myFace) return; P.av='face'; saveProfile(); sfx('select'); haptic(12); render(); }
 function tutScene(){
   closeSheet();
   novel(TUT.map(s=>['ミオ', s.say, null, `<b class="nv-pt">${s.t}</b><div class="tut-art">${s.art()}</div><small class="nv-pp">ポイント：${s.d}</small>`]),
@@ -7884,7 +7933,7 @@ function meView(){
     ${tab==="prof"?`${playerCard()}
     <section class="panel"><div class="row spread"><h3>アバター</h3><span class="note">レベルが上がると増えます</span></div>
       <div class="avgrid">${AVATARS.map(([a,lv],i)=>{ const ok=L.lv>=lv, on=(P.av||null)===a; return `<button class="avopt${on?' on':''}${ok?'':' lock'}" ${ok?`onclick="setAvatar(${i})"`:'disabled'} style="--s:${AVA_COLORS[P.color%6]}" aria-label="${a||'頭文字'}"><span>${a||esc(initial(NET.name||'あなた'))}</span>${ok?'':`<small>Lv.${lv}</small>`}</button>`; }).join('')}${P.myIcon?`<button class="avopt${P.av==='mine'?' on':''}" onclick="setMyIcon()" style="--s:${AVA_COLORS[P.color%6]}" aria-label="マイアイコン"><span>${myIconImg()}</span></button>`:''}</div>
-      <button class="btn ghost" style="margin-top:8px" onclick="openPaint('icon')">✏️ ${P.myIcon?'マイアイコンを描きなおす':'自分でアイコンを描く'}</button></section>
+      <div class="row" style="gap:8px;margin-top:8px;flex-wrap:wrap"><button class="btn gold" onclick="openFaceMaker()">🎨 ${P.myFace?'似顔絵をつくりなおす':'似顔絵をつくる'}</button>${P.myFace?`<button class="btn${P.av==='face'?' ghost':''}" onclick="setMyFace()" ${P.av==='face'?'disabled':''}>${P.av==='face'?'似顔絵を使用中':'似顔絵をアバターにする'}</button>`:''}<button class="btn ghost" onclick="openPaint('icon')">✏️ ${P.myIcon?'マイアイコンを描きなおす':'自分でアイコンを描く'}</button></div></section>
     ${rankCard()}
     <div class="panel"><span class="label">そのほか</span><div class="col" style="gap:8px">
         <button class="btn" onclick="openTutorial()">遊び方をもう一度見る</button>
@@ -8166,6 +8215,7 @@ async function drawPlayerCard(){
   x.beginPath(); x.arc(W/2,490,176,0,Math.PI*2); x.fillStyle='#07081a'; x.fill();
   const ag=x.createRadialGradient(W/2-60,430,20,W/2,490,170); ag.addColorStop(0,'#fff7d6'); ag.addColorStop(1,AVA_COLORS[d.P.color%6]); x.beginPath(); x.arc(W/2,490,164,0,Math.PI*2); x.fillStyle=ag; x.fill();
   if(myAvatar()===MY_ICON){ const im=await new Promise(r=>{ const i=new Image(); i.onload=()=>r(i); i.onerror=()=>r(null); i.src=S.prof.myIcon; }); if(im){ x.save(); x.beginPath(); x.arc(W/2,490,164,0,Math.PI*2); x.clip(); x.drawImage(im,W/2-164,490-164,328,328); x.restore(); } }
+  else if(myAvatar()===MY_FACE){ const im=await svgImg(myFaceSvg('happy'),v,400,400); if(im){ x.save(); x.beginPath(); x.arc(W/2,490,164,0,Math.PI*2); x.clip(); x.drawImage(im,W/2-164,490-164,328,328); x.restore(); } }
   else { x.textAlign='center'; x.textBaseline='middle'; x.fillStyle='#2a1a00'; x.font=`150px ${D}`; x.fillText(myAvatar()||initial(NET.name||'あなた'),W/2,500); }
   if(d.fav>=0){ const im=await svgImg(scene(d.fav),v); if(im){ x.save(); x.translate(110,606); x.rotate(-.06); rr(x,0,0,236,212,26); x.fillStyle=fc; x.fill(); x.lineWidth=6; x.strokeStyle='#fff'; x.stroke(); x.save(); rr(x,12,12,212,190,18); x.clip(); x.fillStyle='rgba(255,255,255,.18)'; x.fillRect(12,12,212,190); x.drawImage(im,12,12,212,190); x.restore(); x.restore(); } }   /* 得意な産業の「まちの絵」 */
   // エンブレム
