@@ -2567,6 +2567,16 @@ button.nk-ep:hover .bub{box-shadow:0 0 0 2px var(--rc)}
 .vsp.vsboss .vsn span{color:#ffd96a}
 .vsside.r:has(.vsboss) .vsboss{margin-inline:max(0px,calc((100% - min(150px,44vw)) / 2))}
 .overlay.vs:has(.vsc) .vsfinal{color:color-mix(in srgb,var(--cc) 28%,transparent);text-shadow:none}
+/* ボス登場シーン */
+.nvl.boss .nv-sh{background:radial-gradient(circle at 50% 60%,transparent 30%,rgb(120 0 20 / .55)),linear-gradient(180deg,rgb(18 10 36 / .6),rgb(18 10 36 / .05) 28%,rgb(18 10 36 / .1) 55%,rgb(18 10 36 / .88))}
+.nvl.boss .nv-lb{background:#d81b3c;border-color:#ff8aa0;animation:tvLive 1s ease-in-out infinite}
+.nvl.boss::after{content:"";position:absolute;inset:0;pointer-events:none;background:#ff2a4a;opacity:0;animation:bsFlash .9s ease-out .1s both}
+@keyframes bsFlash{15%{opacity:.45}to{opacity:0}}
+.nvl.bossln .nv-face{width:min(66vw,280px,40dvh);box-shadow:0 0 0 6px #fff,0 0 0 12px var(--rc),0 0 60px var(--rc),0 26px 50px -12px rgb(0 0 0 / .7)}
+.nvl.bossln .nv-fi{animation:bsShake .5s cubic-bezier(.3,.6,.4,1)}
+@keyframes bsShake{20%{transform:translateX(-6px) rotate(-3deg)}40%{transform:translateX(6px) rotate(3deg)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+button.bs-ic.bs-fc{padding:0;border:0;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.nvl.boss::after,.nvl.bossln .nv-fi,.nvl.boss .nv-lb{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4630,7 +4640,22 @@ function bossAdj(p, base, k, t){
   if(G.boss==='daruma' && p.boss && t<0) return 0;
   return t;
 }
-function startBoss(){ closeSheet(); startGame(false,null,null,null,null,null,curBoss().id); }
+/* ボス登場シーン：その週はじめて挑むとき、ボスが仲間2人と現れて宣戦布告してから試合へ */
+const BOSS_SCENE={bull:1, bear:1, pumpkin:3, santa:3, daruma:3, whale:4};
+function bossScene(then){
+  const b=curBoss(), id='boss:'+b.id, T=b.talk||{}, vs=T.vs||['かかってこい！'], ms=(b.mates||[]).filter(m=>CPU_TALK[m]);
+  const L=[[id, vs[0], 'happy'],
+    [id, `能力「<b>${b.ab}</b>」──${b.d}`, 'think'],
+    ...ms.map(m=>[m, rnd(CPU_TALK[m].vs), null]),
+    ['me', `（ボスより上の順位なら撃破…！ 「${b.ab}」に気をつけよう）`],
+    [id, vs[1]||vs[0], 'happy']];
+  novel(L, {k:id, cls:'boss', scene:BOSS_SCENE[b.id], label:`⚠ ボス出現！ ${b.n}`, done:then});
+}
+function startBoss(){
+  closeSheet(); const b=curBoss(), P=S.prof, key=bossWeek()+':'+b.id, go=()=>startGame(false,null,null,null,null,null,b.id);
+  if(P.bossSeen!==key){ P.bossSeen=key; saveProfile(); return bossScene(go); }
+  go();
+}
 function bossResult(rk, me){
   const P=S.prof, b=BOSSES.find(x=>x.id===G.boss), a=rk.find(x=>x.i===me), bi=G.players.findIndex(p=>p.boss), bb=rk.find(x=>x.i===bi);
   const win=!!(a&&bb&&a.rank<bb.rank), wk=bossWeek(); P.boss=P.boss||{kills:{}, wk:0};
@@ -4640,7 +4665,7 @@ function bossResult(rk, me){
 }
 function bossCard(){
   const b=curBoss(), P=S.prof, done=P.boss&&P.boss.wk===bossWeek(), k=(P.boss&&P.boss.kills&&P.boss.kills[b.id])||0;
-  return `<section class="bosscard${done?' done':''}" style="--bc:${b.c}"><span class="bs-ic bs-fc">${bossFace(b.id)||b.ic}</span>
+  return `<section class="bosscard${done?' done':''}" style="--bc:${b.c}"><button class="bs-ic bs-fc" onclick="bossScene()" aria-label="${b.n}の登場シーンを見る">${bossFace(b.id)||b.ic}</button>
     <span class="bs-tx"><span class="label">${b.season?`SEASON BOSS · ${SEASONS.find(x=>x.id===b.season).n}限定`:`WEEKLY BOSS · あと${weekLeft()}日`}</span><b>${b.n}</b><span class="bs-ab">能力「${b.ab}」：${b.d}</span>
       <span class="note">${done?`今週は撃破ずみ！ +${BOSS_COIN}コイン獲得`:`ボスより上の順位で撃破。今週はじめての撃破で <b style="color:var(--gold-t)">+${BOSS_COIN}コイン</b>`}${k?` · 撃破 ${k}回`:''}</span></span>
     <button class="btn ${done?'':'gold '}" onclick="startBoss()">${done?'また挑む':'挑戦する'}</button></section>`;
@@ -6913,13 +6938,19 @@ function pnpPromo(){
 /* ---- ノベル演出：背景の街・大きな立ち絵・表情・文字送りで、キャラの会話を見せる（ストーリー／なかよしエピソード） ---- */
 const nvMood = t => /うそ|くっそ|ぐぬぬ|想定外|！？/.test(t) ? 'shock' : /…|？/.test(t) ? 'think' : /！/.test(t) ? 'happy' : '';
 let NV=null;
+/* 話し手：ふつうはキャラ名、ボスは「boss:ID」 */
+const nvBoss = k => typeof k==='string' && k.startsWith('boss:') ? BOSSES.find(b=>b.id===k.slice(5)) : null;
+const nvHas = k => { const b=nvBoss(k); return b ? !!BOSS_ART[b.id] : !!FACE[k]; };
+const nvFace = (k,m) => { const b=nvBoss(k); return b ? bossFace(b.id,m) : face(k,null,m); };
+const nvCol = k => { const b=nvBoss(k); return b ? b.c : CHARS[k]&&CHARS[k].c; };
+const nvName = k => { const b=nvBoss(k); return b ? b.n : k; };
 function novel(lines, o){
   o=o||{}; nvEnd(true);
-  const k=o.k, c=CHARS[k], pf=CHAR_PROF[k]||{};
-  const el=document.createElement('div'); el.id='nvl'; el.className='nvl'; el.style.setProperty('--rc', c?c.c:'#ffc83a');
+  const k=o.k, pf=CHAR_PROF[k]||{};
+  const el=document.createElement('div'); el.id='nvl'; el.className='nvl'; el.style.setProperty('--rc', nvCol(k)||'#ffc83a');
   if(o.cls) el.classList.add(o.cls);
   el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label', o.label||'会話');
-  el.innerHTML=`<div class="nv-bg">${scene(pf.fav!=null?pf.fav:0)}</div><div class="nv-sh"></div>
+  el.innerHTML=`<div class="nv-bg">${scene(o.scene!=null?o.scene:pf.fav!=null?pf.fav:0)}</div><div class="nv-sh"></div>
     <div class="nv-top"><span class="nv-lb">${esc(o.label||'')}</span><button class="nv-skip" type="button">スキップ ▶▶</button></div>
     <div class="nv-stage"><div class="nv-prop"></div><div class="nv-face"></div></div>
     <div class="nv-box"><span class="nv-name"></span><span class="nv-pg"></span><p class="nv-txt" aria-live="polite"></p><span class="nv-tap" aria-hidden="true">▼</span></div>`;
@@ -6940,13 +6971,14 @@ function nvNext(){
   const pe=N.el.querySelector('.nv-prop'); N.el.classList.toggle('prop', !!pr);   /* 小道具：カードや新聞を見せながら話す */
   if(pr){ pe.innerHTML=pr; pe.classList.remove('in'); void pe.offsetWidth; pe.classList.add('in'); }
   const fc=N.el.querySelector('.nv-face');
-  if(FACE[k] && (fc.dataset.k!==k || (!me && fc.dataset.m!==mood))){
-    fc.innerHTML=`<span class="nv-fi">${face(k,null,mood)}</span>`; fc.dataset.k=k; fc.dataset.m=mood;
-    if(CHARS[k]) N.el.style.setProperty('--rc', CHARS[k].c);
+  if(nvHas(k) && (fc.dataset.k!==k || (!me && fc.dataset.m!==mood))){
+    fc.innerHTML=`<span class="nv-fi">${nvFace(k,mood)}</span>`; fc.dataset.k=k; fc.dataset.m=mood;
+    if(nvCol(k)) N.el.style.setProperty('--rc', nvCol(k));
   }
-  N.el.querySelector('.nv-name').innerHTML = me ? esc(`${myAvatar()||''} ${NET.name||'あなた'}`.trim()) : esc(who);
+  N.el.classList.toggle('bossln', !!nvBoss(who));
+  N.el.querySelector('.nv-name').innerHTML = me ? esc(`${myAvatar()||''} ${NET.name||'あなた'}`.trim()) : esc(nvName(who));
   N.el.querySelector('.nv-pg').textContent = N.lines.length>1 ? `${N.i+1} / ${N.lines.length}` : '';
-  if(!me) voice(who, text);
+  if(!me) voice(nvBoss(who)?'BOSS':who, text);
   if(reduced()){ t.innerHTML=text; N.el.classList.add('ready'); return; }
   const plain=text.replace(/<[^>]+>/g,''); let n=0; t.textContent='';   /* 太字などのタグは、打ち終わってから付ける */
   N.typing=setInterval(()=>{ t.textContent=plain.slice(0,++n); if(n>=plain.length){ clearInterval(N.typing); N.typing=null; t.innerHTML=text; N.el.classList.add('ready'); } }, 34);
