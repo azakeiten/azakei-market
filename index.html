@@ -2598,6 +2598,16 @@ svg.face.mine{width:100%;height:100%;display:block;border-radius:50%}
 .fm-buy{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 14px;border-radius:14px;background:rgb(255 200 58 / .12);box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .5);font-size:13px;font-weight:800;text-align:center}
 .fm-buy small{font-weight:700;opacity:.8}
 .nvl.me.myf .nv-face{filter:none;opacity:1}
+/* 進行役モードの司会 */
+.gm-mc{display:flex;align-items:center;gap:14px;animation:slin .45s cubic-bezier(.2,.9,.3,1.2) both}
+.gm-mcf{flex:none;width:clamp(64px,9vw,96px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 35% 30%,#fff,var(--rc) 85%);box-shadow:0 0 0 4px #fff,0 0 0 8px var(--rc),0 12px 24px -10px #000}
+.gm-mcf svg.face{width:100%;height:100%;display:block}
+.gm-mc p{position:relative;flex:1;margin:0;padding:12px 16px;border-radius:18px;background:#fff;color:#1b1030;font-size:clamp(15px,2vw,22px);font-weight:800;line-height:1.55;box-shadow:inset 0 0 0 3px var(--rc),0 10px 24px -14px #000}
+.gm-mc p::before{content:"";position:absolute;left:-9px;top:50%;width:16px;height:16px;background:#fff;transform:translateY(-50%) rotate(45deg);box-shadow:-3px 3px 0 -0px var(--rc)}
+.gm-mc p b{display:block;font-size:.72em;color:var(--rc);filter:brightness(.8)}
+.gm-mcs button{padding:2px}
+.gm-mcc{display:block;width:40px;height:40px;border-radius:50%;overflow:hidden;background:#fff}
+.gm-mcc svg.face{width:100%;height:100%;display:block}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6828,7 +6838,7 @@ let GM=null, GM_T=null;
 const GM_SEAT=['#e2463a','#2f6fe0','#18a06a','#d4318a','#d99a00','#7a4fe0'];   /* 体験版カードの A〜F の色 */
 const GM_ANI=['🦊','🐼','🐸','🐙','🦁','🐧','🐳','🦉','🐯','🐨'];
 const GM_COL=['#ff7a3d','#4fa0ff','#3fd0a0','#ff5c9a','#ffc83a','#a77bff','#20c6d1','#c9a46b','#8bd450','#ff8fa6'];
-function gmOpen(u){ if(G && !G.online && G.phase==='final') G=null; if(G){ toast('試合が終わってから開いてね'); return; } clearInterval(GM_T); const pl=u==='player'; GM={phase:'setup', unit:pl?'player':'team', n:4, mode:'classic', b4:true, talk:pl?0:60, names:(S.prof[pl?'gmP':'gmN']||[]).slice(0,10)}; S.screen='gm'; render(); scrollTo(0,0); }
+function gmOpen(u){ if(G && !G.online && G.phase==='final') G=null; if(G){ toast('試合が終わってから開いてね'); return; } clearInterval(GM_T); const pl=u==='player'; GM={phase:'setup', unit:pl?'player':'team', n:4, mode:'classic', b4:true, talk:pl?0:60, names:(S.prof[pl?'gmP':'gmN']||[]).slice(0,10), mc:(S.prof.gmMc!=null&&(S.prof.gmMc===''||FACE[S.prof.gmMc]))?S.prof.gmMc:'ミオ'}; S.screen='gm'; render(); scrollTo(0,0); }
 const gu = () => GM && GM.unit==='player' ? 'プレイヤー' : 'チーム';
 const gn = () => GM && GM.unit==='player' ? '人' : 'チーム';
 function gmUnit(u){ if(GM.unit===u) return; const n=GM.n; gmOpen(u); GM.n=u==='player'?Math.min(6,n):n; render(); }
@@ -6838,7 +6848,7 @@ function gmStart(){
   const cfg=cfgFor(GM.mode==='month'?'month':'classic'); TURNS=4;
   GM.cfg=cfg; GM.deck=buildDeck(cfg,Math.random); GM.turn=0; GM.osp=null;
   GM.teams=Array.from({length:GM.n},(_,i)=>({name:mnSafe(GM.names[i]||'').trim().slice(0,10)||`${gu()}${i+1}`, a:GM.unit==='player'?'ABCDEF'[i]:GM_ANI[i], c:GM.unit==='player'?GM_SEAT[i]:GM_COL[i], hand:[0,1,2,3,4,5], score:0, uniq:0, pick:null, hist:[0]}));
-  GM.log=[]; S.prof[GM.unit==='player'?'gmP':'gmN']=(GM.names||[]).map(x=>mnSafe(x).slice(0,10)); saveProfile();
+  GM.log=[]; S.prof[GM.unit==='player'?'gmP':'gmN']=(GM.names||[]).map(x=>mnSafe(x).slice(0,10)); S.prof.gmMc=GM.mc||''; GM.mcKey=''; saveProfile();
   sfx('select'); gmNews();
 }
 const gmNm = n => GM.cfg.names[n];
@@ -6911,15 +6921,34 @@ function gmCopy(){
   copyText(lines.join('\n'));
 }
 function gmName(i,v){ GM.names[i]=String(v||'').slice(0,10); }
+/* 司会のキャラ：場面ごとにひとこと実況（NEWS・相談・入力・大引け・OPEN・最終結果）。新しい場面に入ったときだけ声を出す */
+function gmMC(){
+  const k=GM&&GM.mc; if(!k || !FACE[k] || !GM.teams) return '';
+  const T=GM.teams, n=GM.deck[GM.turn], u=gu(); let t='', m='';
+  if(GM.phase==='news'||GM.phase==='talk'){
+    if(GM.hidden){ t='最後のNEWSは伏せたまま！ 来るのは3つのどれか。点数は2倍だよ！'; m='think'; }
+    else if(GM.phase==='talk'){ t=`相談タイム！ ほかの${u}が出しそうな産業は…？ あえて外すのも作戦だよ。`; m='think'; }
+    else { const r=GM.cfg.table[n], mx=Math.max(...r), up=IND.filter((d,c)=>r[c]===mx); t=`NEWSは「${gmNm(n)}」！ ${up.join('と')}が +${mx}。でも、みんな同じだと被っちゃうかも…？`; m='happy'; }
+  } else if(GM.phase==='input'){ t=`それぞれの${u}が出した産業を、タップで入力してね。`; }
+  else if(GM.phase==='announce'){ t=`大引けのNEWSは…「${gmNm(GM.deck[GM.turn])}」でした！`; m='shock'; }
+  else if(GM.phase==='reveal'){
+    const mono=T.filter(a=>a.pick!=null && T.filter(b=>b.pick===a.pick).length===1), best=T.map((a,i)=>({a,v:GM.last&&GM.last[i]?GM.last[i].v:0})).sort((x,y)=>y.v-x.v)[0];
+    t = mono.length ? `${mono.length===T.length?'全員バラバラ！ みんな独占だ！':mono.length>3?`${mono.length}${gn()}が独占！`:`${mono.map(a=>`「${a.name}」`).join('')}が独占！`} いちばん稼いだのは「${best.a.name}」（${sgn(best.v)}）！` : '今回は独占なし！ みんな被っちゃった…'; m = mono.length?'happy':'shock';
+  } else if(GM.phase==='final'){ const w=gmRank().filter(x=>x.r===1); t=`優勝は${w.map(x=>`「${x.t.name}」`).join('・')}！ おめでとう！ 下の「ふりかえりの問い」で「なぜ？」も話してみよう。`; m='happy'; }
+  if(!t) return '';
+  const key=GM.phase+':'+GM.turn; if(GM.mcKey!==key){ GM.mcKey=key; setTimeout(()=>voice(k,t),250); }
+  return `<div class="gm-mc" style="--rc:${CHARS[k].c}" aria-live="polite"><span class="gm-mcf">${face(k,null,m)}</span><p><b>${k}</b>${esc(t)}</p></div>`;
+}
 function gmView(){
   if(!GM) gmOpen();
   const top=`<div class="gm-top"><span class="label">${GM.unit==='player'?'🃏 テーブルモード':'📺 進行役モード'}</span>${GM.phase!=='setup'?`<span class="gm-turn">TURN ${GM.turn+1}/${TURNS}${GM.b4&&gmFinal()?' · 大引け':''}</span>`:''}${document.fullscreenEnabled?'<button class="btn ghost gm-fs" onclick="gmFull()" aria-label="全画面">⛶<span> 全画面</span></button>':''}<button class="btn ghost gm-quit" onclick="gmQuit()">やめる</button></div>`;
-  if(GM.phase==='setup') return `<div class="col gm">${top}
+  if(GM.phase==='setup') return `<div class="col gm">${top}${gmMC()}
     <section class="panel"><h2 class="ttl">${GM.unit==='player'?'紙のカードで遊ぶ（テーブルモード）':'みんなで遊ぶ（教室・体験会・大人数）'}</h2>
       <div class="gm-unit"><button class="${GM.unit==='player'?'on':''}" onclick="gmUnit('player')"><i>🃏</i><b>紙のカードで遊ぶ</b><small>テーブルモード · 2〜6人</small></button><button class="${GM.unit!=='player'?'on':''}" onclick="gmUnit('team')"><i>📺</i><b>チーム対抗</b><small>進行役モード · 2〜10チーム</small></button></div>
       <p class="note">${GM.unit==='player'?'印刷した体験版や製品版のカードで遊ぶときの相棒です。アプリが<b>NEWSの発表・大引けの伏せ札・点数の計算</b>をします。みんながOPENしたら、出した産業をタップするだけ。山札もメモもいりません。':'アプリが<b>NEWSの発表・相談タイマー・点数の計算</b>をします。各チームは紙のカードか、指で産業を決めて、進行役が入力してください。1チームの人数は何人でもOK。大きな画面やプロジェクターに映すと盛り上がります。'}</p>
       <span class="label">${gu()}の数</span><div class="gm-chips">${(GM.unit==='player'?[2,3,4,5,6]:[2,3,4,5,6,7,8,9,10]).map(v=>`<button class="${GM.n===v?'on':''}" onclick="gmSet('n',${v})">${v}</button>`).join('')}</div>
       <span class="label">${gu()}の名前（空欄なら「${gu()}1」…）</span><div class="gm-names">${Array.from({length:GM.n},(_,i)=>`<label style="--tc:${GM.unit==='player'?GM_SEAT[i]:GM_COL[i]}"><span class="gm-ani">${GM.unit==='player'?'ABCDEF'[i]:GM_ANI[i]}</span><input maxlength="10" placeholder="${gu()}${i+1}" value="${esc(GM.names[i]||'')}" oninput="gmName(${i},this.value)" aria-label="${gu()}${i+1}の名前"></label>`).join('')}</div>
+      <span class="label">司会のキャラ（大きな画面で進行を実況）</span><div class="gm-chips gm-mcs">${['ミオ',...Object.keys(CHARS).filter(k=>k!=='ミオ'),''].map(k=>`<button class="${(GM.mc||'')===k?'on':''}" onclick="gmSet('mc','${k}')" aria-label="${k||'司会なし'}">${k?`<span class="gm-mcc">${face(k)}</span>`:'なし'}</button>`).join('')}</div>
       <span class="label">NEWS</span><div class="gm-chips"><button class="${GM.mode==='classic'?'on':''}" onclick="gmSet('mode','classic')">クラシック</button><button class="${GM.mode==='month'?'on':''}" onclick="gmSet('mode','month')">今月のNEWS（${monthPack().mon}）</button></div>
       <span class="label">${GM.unit==='player'?'考える時間（タイマー）':'相談タイム'}</span><div class="gm-chips">${[0,30,60,90,120].map(v=>`<button class="${GM.talk===v?'on':''}" onclick="gmSet('talk',${v})">${v?v+'秒':'なし'}</button>`).join('')}</div>
       <label class="check" style="margin:8px 0"><input type="checkbox" ${GM.b4?'checked':''} onchange="gmSet('b4',this.checked)"> 最後は「大引けサプライズ」（NEWSを伏せて、点数2倍）</label>
@@ -6932,25 +6961,25 @@ function gmView(){
     const talk = GM.phase==='talk' ? `<div class="gm-timer"><div class="gm-ring" id="gm-ring" style="--p:100%"><b id="gm-t">${GM.talk}</b><small>秒</small></div><p>${GM.unit==='player'?'考えて、1枚選ぼう！ 相談・はったりも自由':'チームで相談！ どの産業を出す？'}</p><p class="gm-hint">💡 ${GM_HINT[(GM.turn*2+(GM.hidden?1:0))%GM_HINT.length]}</p><button class="btn gold big" onclick="gmInput()">相談おわり → 入力へ</button></div>`
       : GM.talk ? `<div class="row" style="justify-content:center;gap:8px"><button class="btn go huge" onclick="gmTalk()">⏱ ${GM.unit==='player'?'タイマー':'相談'}スタート（${GM.talk}秒）</button><button class="btn ghost" onclick="gmInput()">すぐ入力</button></div>`
       : `<div class="gm-timer"><p>${GM.hidden?'NEWSを伏せたまま':'みんな'}、産業カードを1枚、裏向きで出そう</p><button class="btn go huge" onclick="gmInput()">3・2・1… OPEN！ → 入力へ</button></div>`;
-    return `<div class="col gm">${top}${paper}${talk}${gmBoard()}${GM.turn?gmHands():''}</div>`;
+    return `<div class="col gm">${top}${gmMC()}${paper}${talk}${gmBoard()}${GM.turn?gmHands():''}</div>`;
   }
   if(GM.phase==='input'){
     const all=T.every(t=>t.pick!=null);
-    return `<div class="col gm">${top}<section class="panel"><div class="row spread"><h3>各${gu()}が出した産業を入力</h3><span class="note">${T.filter(t=>t.pick!=null).length}/${T.length}</span></div>
+    return `<div class="col gm">${top}${gmMC()}<section class="panel"><div class="row spread"><h3>各${gu()}が出した産業を入力</h3><span class="note">${T.filter(t=>t.pick!=null).length}/${T.length}</span></div>
       <div class="gm-in">${T.map((t,i)=>`<div class="gm-row" style="--tc:${t.c}"><b><span class="gm-ani">${t.a}</span>${esc(t.name)}</b><div>${IND.map((d,c)=>`<button class="${t.pick===c?'on':''}" style="--c:var(--i${c})" ${t.hand.includes(c)?'':'disabled'} onclick="gmPick(${i},${c})" aria-label="${esc(t.name)} ${d}">${svg(c,2.2)}</button>`).join('')}</div></div>`).join('')}</div>
       <button class="btn go huge" ${all?'':'disabled'} onclick="gmOpenUp()">${all?'3・2・1… OPEN！':'全${gu()}入力してね'}</button></section></div>`;
   }
   if(GM.phase==='announce'){ GM.hidden=null; const real=GM.deck[GM.turn];
-    return `<div class="col gm">${top}<section class="gm-news ann"><span class="gm-k"><i>🔔</i>15:30 大引け速報</span><b class="gm-h">${esc(gmNm(real))}！</b><p>${esc(gmDesc(real))}</p>${gmPayout(real)}</section><button class="btn go huge" onclick="gmResolve()">結果を見る（点数2倍）</button></div>`; }
+    return `<div class="col gm">${top}${gmMC()}<section class="gm-news ann"><span class="gm-k"><i>🔔</i>15:30 大引け速報</span><b class="gm-h">${esc(gmNm(real))}！</b><p>${esc(gmDesc(real))}</p>${gmPayout(real)}</section><button class="btn go huge" onclick="gmResolve()">結果を見る（点数2倍）</button></div>`; }
   if(GM.phase==='reveal'){
     const lanes=IND.map((d,c)=>{ const who=T.map((t,i)=>({t,i})).filter(x=>x.t.pick===c), k=who.length;
       return `<div class="gm-lane${k===0?' empty':k===1?' mono':' hit'}" style="--c:var(--i${c});--d:${c*90}ms"><div class="gm-lh">${svg(c,2.2)}${d}</div><div class="gm-lb">${who.map((x,j)=>`<span style="--tc:${x.t.c};--d:${300+c*90+j*60}ms">${x.t.a} ${esc(x.t.name)} <b>${sgn(GM.last[x.i].v)}</b></span>`).join('')}</div><div class="gm-lf">${k===0?'—':k===1?'独占！':`${k}${gn()}で被り`}</div>${k===1?'<i class="gm-stamp">独占</i>':''}</div>`; }).join('');
-    return `<div class="col gm">${top}<section class="gm-news gm-mini"><b class="gm-h">${esc(gmNm(n))}</b>${GM.b4&&gmFinal()?'<span class="gm-x2">×2</span>':''}</section><div class="gm-lanes">${lanes}</div>${gmBoard()}
+    return `<div class="col gm">${top}${gmMC()}<section class="gm-news gm-mini"><b class="gm-h">${esc(gmNm(n))}</b>${GM.b4&&gmFinal()?'<span class="gm-x2">×2</span>':''}</section><div class="gm-lanes">${lanes}</div>${gmBoard()}
       <button class="btn gold huge" onclick="gmNext()">${gmFinal()?'最終結果へ':'次のターンへ'}</button></div>`;
   }
   const R=gmRank(), w=R.filter(x=>x.r===1);
   const pod=[R[1],R[0],R[2]].filter(Boolean), ph={1:150,2:110,3:80}, mo=gmMoments();
-  return `<div class="col gm">${top}<section class="panel gm-fin"><span class="label">FINAL RESULT</span><div class="winner"><span>${w.map(x=>esc(x.t.name)).join('・')}</span> の勝ち！</div>
+  return `<div class="col gm">${top}${gmMC()}<section class="panel gm-fin"><span class="label">FINAL RESULT</span><div class="winner"><span>${w.map(x=>esc(x.t.name)).join('・')}</span> の勝ち！</div>
     <div class="gm-pod">${pod.map((x,j)=>`<div class="gm-p r${x.r}" style="--tc:${x.t.c};--d:${[300,700,0][j]}ms"><span class="gm-pa">${x.r===1?'👑':''}${x.t.a}</span><b>${esc(x.t.name)}</b><div style="height:${ph[x.r]||70}px"><span>${x.r}</span><small>${x.t.score}pt</small></div></div>`).join('')}</div>
     <div class="gm-score big">${R.map(({t,r})=>`<div style="--tc:${t.c}"><span class="gm-rk">${r}</span><span class="gm-ani">${t.a}</span><b>${esc(t.name)}</b><span class="note">独占 ${t.uniq}回</span><span class="gm-pt">${t.score}<small>pt</small></span></div>`).join('')}</div>
     <div class="row" style="justify-content:center;gap:8px"><button class="btn go big" onclick="gmStart()">同じ${gu()}でもう一度</button><button class="btn big" onclick="gmOpen()">設定を変える</button><button class="btn ghost big" onclick="gmCopy()">📋 結果をコピー</button></div></section>
