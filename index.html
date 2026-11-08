@@ -2749,6 +2749,38 @@ svg.face.mine{width:100%;height:100%;display:block;border-radius:50%}
 html.light .tw-stats div,html.light .tw-how{background:rgb(0 0 0 / .05)}
 html.light .tw-bar,html.light .tw-g i{background:rgb(0 0 0 / .1)}
 @media (prefers-reduced-motion:reduce){.tw-mini,.tw-up::after,.tw-up::before,.tw-info{animation:none}}
+/* マイタウン2 */
+.tw-hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tw-hd .ttl{margin:0}
+.tw-ren{padding:4px 8px;border:0;border-radius:10px;background:rgb(255 255 255 / .1);font-size:15px;cursor:pointer}
+.tw-nmi{flex:1;min-width:0;max-width:220px}
+.tw-pop{margin:2px 0 0;text-align:center}
+.tw-stage{position:relative}
+.tw-res{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none}
+.tw-rp{position:absolute;bottom:11%;left:var(--a);width:24px;height:24px;margin-left:-12px;padding:0;border:0;background:none;cursor:pointer;pointer-events:auto;animation:skyWalk var(--dur) ease-in-out var(--dl) infinite}
+.tw-rf{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px var(--rc),0 3px 6px rgb(0 0 0 / .35);animation:ppBob .45s ease-in-out infinite alternate}
+.tw-rf svg{width:100%;height:100%;display:block}
+.tw-bub{position:absolute;bottom:calc(100% + 8px);left:50%;z-index:2;width:max-content;max-width:180px;padding:6px 10px;border-radius:12px;background:#fff;color:#1b1030;font-size:12px;font-weight:800;line-height:1.45;text-align:left;box-shadow:0 0 0 2px var(--rc),0 6px 14px -6px #000;transform:translateX(-50%);animation:slin .3s both;pointer-events:none}
+.tw-bub::after{content:"";position:absolute;top:100%;left:50%;margin-left:-5px;border:5px solid transparent;border-top-color:#fff}
+.tw-rp:nth-child(n+3) .tw-bub{left:auto;right:-6px;transform:none}
+.tw-rp:nth-child(-n+1) .tw-bub{left:-6px;transform:none}
+.tw-nores{position:absolute;left:8px;right:8px;bottom:6px;margin:0;padding:3px 8px;border-radius:8px;background:rgb(0 0 0 / .45);color:#fff;font-size:10.5px;font-weight:800;text-align:center;pointer-events:none}
+.tw-shop{margin:8px 0 12px;padding:12px;border-radius:14px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .3)}
+.tw-coin{font-weight:900;color:var(--gold-t,#ffc83a)}
+.tw-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 6px}
+.tw-it{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 4px;border:0;border-radius:12px;background:rgb(255 255 255 / .07);color:inherit;font:inherit;cursor:pointer;transition:transform .15s}
+.tw-it:active{transform:scale(.95)}
+.tw-ii{font-size:26px;line-height:1.2;filter:grayscale(.6);opacity:.75}
+.tw-it b{font-size:12.5px}
+.tw-it small{font-size:11px;font-weight:800;color:var(--gold-t,#ffc83a)}
+.tw-it.own .tw-ii{filter:none;opacity:.6}
+.tw-it.own small{color:inherit;opacity:.65}
+.tw-it.on{background:rgb(92 240 162 / .16);box-shadow:inset 0 0 0 2px rgb(92 240 162 / .7)}
+.tw-it.on .tw-ii{opacity:1;animation:ppBob .9s ease-in-out infinite alternate}
+.tw-it.on small{color:#5cf0a2;opacity:1}
+html.light .tw-shop,html.light .tw-it{background:rgb(0 0 0 / .05)}
+html.light .tw-it.on small{color:#14935a}
+@media (prefers-reduced-motion:reduce){.tw-rp,.tw-rf,.tw-it.on .tw-ii{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6106,28 +6138,125 @@ function twBld(c,lv,x,o){
 }
 function townSvg(o){
   o=o||{}; const T=townSt(), L=T.pts.map(twLv), tot=T.pts.reduce((a,b)=>a+b,0), rk=twRank(tot), ph=skyPhase(new Date().getHours()), nt=ph==='night', A=!!o.anim && !reduced();
+  const D=twDecoOn();
   const SK={morn:['#ffc9a0','#cfe8ff'],day:['#6fc3ff','#dff3ff'],eve:['#6a4f9c','#ffa77a'],night:['#0a1035','#2b3a78']}[ph];
   const id='twk'+(townSvg.n=(townSvg.n||0)+1);
   let s=`<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${SK[0]}"/><stop offset="1" stop-color="${SK[1]}"/></linearGradient></defs><rect width="600" height="330" fill="url(#${id})"/>`;
   if(nt){ s+=Array.from({length:24},(_,i)=>`<circle cx="${(i*97)%590+5}" cy="${(i*53)%150+8}" r="${i%4?1:1.6}" fill="#fff" opacity="${.4+(i%3)*.2}"/>`).join('')+`<circle cx="520" cy="52" r="17" fill="#fff6cc"/><circle cx="528" cy="46" r="15" fill="${SK[0]}"/>`; }
   else s+=`<circle cx="${ph==='eve'?470:92}" cy="${ph==='eve'?132:58}" r="24" fill="#fff2a8" opacity=".95"/>`;
+  s+=twDecoSky(D,ph,A);
   [[0,40,1],[1,86,.75]].forEach(([k,y,sc])=>{ s+=`<g opacity="${nt?.25:.85}">${A?`<animateTransform attributeName="transform" type="translate" values="-${k?440:180} 0;${k?240:500} 0" dur="${70+k*25}s" begin="-${k?50:20}s" repeatCount="indefinite"/>`:''}<g transform="translate(${k?380:120} ${y}) scale(${sc})"><ellipse cx="0" cy="0" rx="34" ry="11" fill="#fff"/><ellipse cx="-12" cy="-8" rx="14" ry="11" fill="#fff"/><ellipse cx="10" cy="-10" rx="16" ry="13" fill="#fff"/></g></g>`; });
   const far=8+rk.i*5; for(let i=0;i<far;i++){ const w=18+(i*13)%22, hh=26+(i*29)%(34+rk.i*20); s+=`<rect x="${(i*61)%600-8}" y="${250-hh}" width="${w}" height="${hh+20}" fill="${nt?'#1b2452':'#ffffff'}" opacity="${nt?1:.32}"/>`; }
+  s+=twDecoBg(D,A);
   s+=`<path d="M0 252 Q80 218 170 246 T360 240 T600 234 V280 H0Z" fill="${nt?'#284a3c':'#86c98a'}"/><rect y="262" width="600" height="68" fill="${nt?'#2f5543':'#9bd98f'}"/><rect y="276" width="600" height="12" fill="${nt?'#5f6b7a':'#e9e2d0'}"/><rect y="288" width="600" height="20" fill="#575264"/>`;
   for(let i=0;i<15;i++) s+=`<rect x="${i*42+6}" y="297" width="22" height="2.4" fill="#fff" opacity=".7"/>`;
+  s+=twDecoGround(D,A);
   if(L[4]>=1){ const car=(cl,dur,beg,y0,dir)=>`<g><g transform="translate(${dir>0?150:420} ${y0})"><rect x="-14" y="-9" width="28" height="10" rx="4" fill="${cl}" stroke="#2a1a33" stroke-width="1.2"/><rect x="-8" y="-14" width="15" height="7" rx="3" fill="#cfe9ff" stroke="#2a1a33" stroke-width="1"/><circle cx="-8" cy="1.5" r="3" fill="#2a1a33"/><circle cx="8" cy="1.5" r="3" fill="#2a1a33"/>${A?`<animateTransform attributeName="transform" type="translate" values="${dir>0?-40:640} ${y0};${dir>0?640:-40} ${y0}" dur="${dur}s" begin="-${beg}s" repeatCount="indefinite"/>`:''}</g></g>`;
     s+=car('#ff5c9a',9,2,296,1); if(L[4]>=3) s+=car('#4fe3ff',12,7,306,-1); }
   if(L[4]>=5 && A) s+=`<g><path d="M0 0 l26 -4 l6 -6 l4 0 l-3 7 l10 0 l2 3 l-12 1 l-3 8 l-4 0 l2 -8 l-26 0z" fill="#fff" stroke="#2a1a33" stroke-width="1"><animateTransform attributeName="transform" type="translate" values="-60 70;660 30" dur="16s" repeatCount="indefinite"/></path></g>`;
   for(let c=0;c<6;c++){ const x=8+c*98;
     s+=`<g class="tw-plot" ${o.pick?`onclick="townPick(${c})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();townPick(${c})}" role="button" tabindex="0" aria-label="${IND[c]} Lv${L[c]}"`:''}><rect x="${x}" y="60" width="86" height="250" rx="10" fill="${o.sel===c?'rgba(255,255,255,.16)':'transparent'}" ${o.sel===c?'stroke="#fff" stroke-width="2" stroke-dasharray="6 4"':''}/>${twBld(c,L[c],x,{anim:A,night:nt})}
       <rect x="${x+11}" y="312" width="64" height="15" rx="7.5" fill="var(--i${c})" stroke="#2a1a33" stroke-width="1.2"/><text x="${x+43}" y="323" text-anchor="middle" font-size="9.5" font-weight="900" fill="#1a1033">${IND[c]} ${L[c]?'Lv'+L[c]:'—'}</text></g>`; }
+  s+=twDecoFront(D);
   const ppl=1+Math.min(4,rk.i), cols=Object.keys(CHARS).map(k=>CHARS[k].c);
   for(let i=0;i<ppl;i++){ const y0=283, d=i%2?-1:1, from=d>0?-20:620, to=d>0?620:-20; s+=`<g transform="translate(${60+i*120} ${y0})"><circle cy="-9" r="3.2" fill="#ffe0c4" stroke="#2a1a33" stroke-width=".9"/><rect x="-3" y="-6" width="6" height="7" rx="2" fill="${cols[(i*3)%cols.length]}" stroke="#2a1a33" stroke-width=".9"/>${A?`<animateTransform attributeName="transform" type="translate" values="${from} ${y0};${to} ${y0}" dur="${34+i*7}s" begin="-${i*9}s" repeatCount="indefinite"/>`:''}</g>`; }
   return `<svg class="tw-svg" viewBox="0 22 600 308" role="img" aria-label="マイタウン：${rk.n}（${IND.map((n,c)=>`${n}Lv${L[c]}`).join('、')}）">${s}</svg>`;
 }
 function townCard(){
   const tot=twTot(), rk=twRank(tot), nm=(NET.name||'').trim()||'あなた';
-  return `<button class="tw-card" onclick="openTown()"><span class="tw-cv">${townSvg({})}</span><span class="tw-ct"><span class="label">MY TOWN</span><b>🏙️ ${esc(nm)}のまち<em>${rk.ic} ${rk.n}</em></b><small>人口 ${twPop(tot).toLocaleString()}人 ・ 試合の点数でまちが育つ</small><span class="tw-go">まちを見る ›</span></span></button>`;
+  return `<button class="tw-card" onclick="openTown()"><span class="tw-cv">${townSvg({})}</span><span class="tw-ct"><span class="label">MY TOWN</span><b>🏙️ ${esc(twName())}<em>${rk.ic} ${rk.n}</em></b><small>人口 ${twPop(tot).toLocaleString()}人 ・ 試合の点数でまちが育つ</small><span class="tw-go">まちを見る ›</span></span></button>`;
+}
+/* ---- マイタウン2：まちの名前・かざり（コインで買う）・住民キャラ（なかよし Lv2 で引っこしてくる） ---- */
+const twName = () => { const P=S.prof; return (P.townName||'').trim() || `${(NET.name||'').trim()||'あなた'}のまち`; };
+function twRename(){
+  const el=document.getElementById('twHd'); if(!el) return; sfx('click');
+  el.innerHTML=`<input class="inp tw-nmi" id="twNm" maxlength="10" value="${esc(S.prof.townName||'')}" placeholder="${esc(twName())}" aria-label="まちの名前（10文字まで）"><button class="btn gold" onclick="twRenameOk()">決定</button>`;
+  const i=document.getElementById('twNm'); i.focus(); i.onkeydown=e=>{ if(e.key==='Enter') twRenameOk(); };
+}
+function twRenameOk(){
+  const i=document.getElementById('twNm'); if(!i) return; const v=mnSafe(i.value).replace(/\s+/g,' ').trim().slice(0,10);
+  S.prof.townName=v; saveProfile(); sfx('select'); toast(v?`まちの名前を「${v}」にしました`:'まちの名前をもとにもどしました');
+  const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner();
+}
+const TW_DECO=[
+  {id:'trees',  ic:'🌳', n:'街路樹',   p:60,  d:'歩道に木をならべる'},
+  {id:'birds',  ic:'🐦', n:'鳥の群れ', p:60,  d:'空を鳥がわたる'},
+  {id:'sakura', ic:'🌸', n:'桜の丘',   p:120, d:'うしろの丘に桜がさく'},
+  {id:'rainbow',ic:'🌈', n:'虹',       p:120, d:'昼の空に虹がかかる'},
+  {id:'balloon',ic:'🎈', n:'気球',     p:150, d:'空にふわふわ浮かぶ'},
+  {id:'tram',   ic:'🚃', n:'路面電車', p:180, d:'道路を電車が走る'},
+  {id:'fire',   ic:'🎆', n:'花火',     p:200, d:'夕方と夜に花火があがる'},
+  {id:'castle', ic:'🏯', n:'お城',     p:250, d:'左の丘にお城が建つ'},
+  {id:'wheel',  ic:'🎡', n:'観覧車',   p:300, d:'右の丘で観覧車がまわる'}];
+const twDecoSt = () => { const T=townSt(); T.deco=T.deco||{own:[],off:[]}; return T.deco; };
+const twDecoOn = () => { const d=twDecoSt(); return d.own.filter(id=>!d.off.includes(id)); };
+function twDeco(id){
+  const it=TW_DECO.find(x=>x.id===id); if(!it) return; const d=twDecoSt(), P=S.prof;
+  if(!d.own.includes(id)){
+    if((P.coin||0)<it.p){ toast(`コインが足りません（あと ${it.p-(P.coin||0)}）`); sfx('buzz'); return; }
+    P.coin-=it.p; d.own.push(id); sfx('coin'); haptic(20); toast(`${it.ic} 「${it.n}」をまちに置いた！`); setTimeout(()=>sfx('open'),250);
+  } else if(d.off.includes(id)){ d.off=d.off.filter(x=>x!==id); sfx('select'); toast(`${it.ic} 「${it.n}」を出した`); }
+  else { d.off.push(id); sfx('click'); toast(`${it.ic} 「${it.n}」をしまった`); }
+  saveProfile(); const w=document.getElementById('twWrap'); if(w){ const y=w.closest('.sheet,[class*="sheet"]'); const st=y?y.scrollTop:0; w.innerHTML=townInner(); if(y) y.scrollTop=st; }
+}
+function twShopHTML(){
+  const d=twDecoSt(), coin=S.prof.coin||0;
+  return `<div class="tw-shop"><div class="row spread"><b>🎨 まちを飾る</b><span class="tw-coin">🪙 ${coin}</span></div>
+    <div class="tw-items">${TW_DECO.map(x=>{ const own=d.own.includes(x.id), on=own&&!d.off.includes(x.id);
+      return `<button class="tw-it${own?' own':''}${on?' on':''}" onclick="twDeco('${x.id}')" aria-pressed="${on}"><span class="tw-ii">${x.ic}</span><b>${x.n}</b><small>${own?(on?'かざり中 ✓':'しまってある'):`🪙 ${x.p}`}</small></button>`; }).join('')}</div>
+    <p class="note">買ったかざりは、タップで出したりしまったりできるよ。虹は昼、花火は夕方と夜に見えるよ。</p></div>`;
+}
+/* かざりの絵（SVG）。A=動かす */
+function twDecoSky(D,ph,A){
+  let s='';
+  if(D.includes('rainbow') && ph!=='night') s+=`<g fill="none" opacity="${ph==='eve'?.35:.55}" stroke-width="7">${['#ff5c5c','#ffa53a','#ffe14a','#5fd36b','#4fa9ff','#8b6bff'].map((c,i)=>`<path d="M${70+i*7} 262 A${230-i*7} ${200-i*7} 0 0 1 ${530-i*7} 262" stroke="${c}"/>`).join('')}</g>`;
+  if(D.includes('fire') && (ph==='night'||ph==='eve')) [[150,80,'#ff5c9a',0],[300,56,'#ffd23a',.8],[440,92,'#4fe3ff',1.5]].forEach(([x,y,c,b])=>{
+    const rays=Array.from({length:12},(_,i)=>{ const a=i*Math.PI/6; return `<line x1="${(Math.cos(a)*6).toFixed(1)}" y1="${(Math.sin(a)*6).toFixed(1)}" x2="${(Math.cos(a)*24).toFixed(1)}" y2="${(Math.sin(a)*24).toFixed(1)}" stroke="${c}" stroke-width="2.4" stroke-linecap="round"/><circle cx="${(Math.cos(a)*27).toFixed(1)}" cy="${(Math.sin(a)*27).toFixed(1)}" r="1.8" fill="#fff"/>`; }).join('');
+    s+=`<g transform="translate(${x} ${y})"><g opacity="${A?0:.9}">${rays}${A?`<animateTransform attributeName="transform" type="scale" values=".15;1;1.15" keyTimes="0;.45;1" dur="2.6s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" keyTimes="0;.2;1" dur="2.6s" begin="${b}s" repeatCount="indefinite"/>`:''}</g></g>`; });
+  if(D.includes('balloon')) s+=`<g transform="translate(205 78)"><g>${A?'<animateTransform attributeName="transform" type="translate" values="0 0;6 -12;0 0" dur="7s" repeatCount="indefinite"/>':''}<path d="M-18 0 A18 20 0 1 1 18 0 Q10 14 4 20 H-4 Q-10 14 -18 0Z" fill="#ff7a3d" stroke="#2a1a33" stroke-width="1.4"/><path d="M-6 -19 Q-12 0 -4 20 M6 -19 Q12 0 4 20" fill="none" stroke="#ffd23a" stroke-width="3"/><line x1="-4" y1="20" x2="-4" y2="27" stroke="#2a1a33"/><line x1="4" y1="20" x2="4" y2="27" stroke="#2a1a33"/><rect x="-6" y="27" width="12" height="7" rx="1.5" fill="#a0703a" stroke="#2a1a33" stroke-width="1.1"/></g></g>`;
+  if(D.includes('birds')) s+=`<g>${A?'<animateTransform attributeName="transform" type="translate" values="-140 0;640 -30" dur="24s" repeatCount="indefinite"/>':''}${[[0,0],[16,-8],[30,4],[12,10]].map(([x,y])=>`<path d="M${60+x} ${110+y} q5 -6 10 0 q5 -6 10 0" fill="none" stroke="${ph==='night'?'#cfd6ff':'#2a1a33'}" stroke-width="1.6" stroke-linecap="round"/>`).join('')}</g>`;
+  return s;
+}
+function twDecoBg(D,A){
+  let s='';
+  if(D.includes('castle')) s+=`<g transform="translate(64 244)"><path d="M-30 0 L-24 -16 H24 L30 0Z" fill="#a9a29a" stroke="#2a1a33" stroke-width="1.3"/><rect x="-18" y="-34" width="36" height="18" fill="#fffaf0" stroke="#2a1a33" stroke-width="1.3"/><path d="M-27 -32 Q0 -40 27 -32 L20 -42 H-20Z" fill="#4a5a6a" stroke="#2a1a33" stroke-width="1.3"/><rect x="-11" y="-55" width="22" height="13" fill="#fffaf0" stroke="#2a1a33" stroke-width="1.3"/><path d="M-19 -53 Q0 -60 19 -53 L12 -63 H-12Z" fill="#4a5a6a" stroke="#2a1a33" stroke-width="1.3"/><path d="M-7 -63 h14 l-7 -9z" fill="#ffd23a" stroke="#2a1a33" stroke-width="1"/>${[-10,0,10].map(x=>`<rect x="${x-2.5}" y="-29" width="5" height="6" fill="#2a3a5a"/>`).join('')}</g>`;
+  if(D.includes('wheel')){ const cx=546, cy=188, R=44; s+=`<line x1="${cx}" y1="${cy}" x2="${cx-22}" y2="252" stroke="#2a1a33" stroke-width="4"/><line x1="${cx}" y1="${cy}" x2="${cx+22}" y2="252" stroke="#2a1a33" stroke-width="4"/><line x1="${cx}" y1="${cy}" x2="${cx-22}" y2="252" stroke="#e8e8f0" stroke-width="2"/><line x1="${cx}" y1="${cy}" x2="${cx+22}" y2="252" stroke="#e8e8f0" stroke-width="2"/>
+    <g transform="translate(${cx} ${cy})"><g>${A?'<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="40s" repeatCount="indefinite"/>':''}<circle r="${R}" fill="none" stroke="#e8e8f0" stroke-width="3"/><circle r="${R}" fill="none" stroke="#2a1a33" stroke-width=".8" opacity=".5"/>${Array.from({length:8},(_,i)=>{ const a=i*Math.PI/4, x=(Math.cos(a)*R).toFixed(1), y=(Math.sin(a)*R).toFixed(1); return `<line x1="0" y1="0" x2="${x}" y2="${y}" stroke="#e8e8f0" stroke-width="1.4"/><circle cx="${x}" cy="${y}" r="5.5" fill="var(--i${i%6})" stroke="#2a1a33" stroke-width="1.1"/>`; }).join('')}</g><circle r="5" fill="#ffd23a" stroke="#2a1a33" stroke-width="1.2"/></g>`; }
+  return s;
+}
+function twDecoGround(D,A){
+  let s='';
+  if(D.includes('sakura')) [[30,246],[130,236],[200,244],[300,240],[400,236],[470,238]].forEach(([x,y],i)=>{ s+=`<line x1="${x}" y1="${y}" x2="${x}" y2="${y+14}" stroke="#6b4a2a" stroke-width="2.4"/><circle cx="${x}" cy="${y-2}" r="10" fill="#ffb8da"/><circle cx="${x-8}" cy="${y+3}" r="7" fill="#ffc9e3"/><circle cx="${x+8}" cy="${y+3}" r="7" fill="#ff9ccb"/>`; });
+  if(D.includes('tram')) s+=`<g><g transform="translate(470 300)">${A?'<animateTransform attributeName="transform" type="translate" values="680 300;-120 300" dur="18s" begin="-6s" repeatCount="indefinite"/>':''}<line x1="0" y1="-24" x2="10" y2="-32" stroke="#2a1a33" stroke-width="1.4"/><rect x="-30" y="-24" width="66" height="22" rx="6" fill="#3fe08f" stroke="#2a1a33" stroke-width="1.4"/><rect x="-30" y="-10" width="66" height="5" fill="#fff" opacity=".7"/>${[-24,-10,4,18].map(x=>`<rect x="${x}" y="-20" width="10" height="8" rx="1.5" fill="#d6efff"/>`).join('')}<circle cx="-18" cy="-1" r="3.4" fill="#2a1a33"/><circle cx="24" cy="-1" r="3.4" fill="#2a1a33"/></g></g>`;
+  return s;
+}
+function twDecoFront(D){
+  if(!D.includes('trees')) return '';
+  return [2,100,198,296,394,492,590].map(x=>`<line x1="${x}" y1="286" x2="${x}" y2="270" stroke="#6b4a2a" stroke-width="2.4"/><circle cx="${x}" cy="264" r="9" fill="#4fbf63" stroke="#2a6b3a" stroke-width="1.2"/><circle cx="${x-3}" cy="261" r="3.5" fill="#8ee08a"/>`).join('');
+}
+/* 住民キャラ：なかよし Lv2 以上のキャラが引っこしてくる（最大5人） */
+function twResidents(){ const R=S.prof.riv||{}; return Object.keys(CHARS).filter(k=>FACE[k] && bondLv(R[k])>=2).sort((a,b)=>bondLv(R[b])-bondLv(R[a])).slice(0,5); }
+function twResHTML(){
+  const ks=twResidents();
+  if(!ks.length) return `<p class="tw-nores">キャラと「なかよし Lv2」になると、まちに引っこしてくるよ</p>`;
+  return `<div class="tw-res">${ks.map((k,i)=>`<button class="tw-rp" style="--rc:${CHARS[k].c};--a:${[6,30,52,18,70][i]}%;--b:${[44,78,90,64,96][i]}%;--dur:${18+i*4}s;--dl:-${i*3}s" onclick="twTalk(this,'${k}')" aria-label="${k}と話す"><span class="tw-rf">${face(k)}</span></button>`).join('')}</div>`;
+}
+function twTalk(btn,k){
+  sfx('click'); haptic(6);
+  const T=townSt(), pf=CHAR_PROF[k]||{}, fv=pf.fav!=null?pf.fav:0, lv=twLv(T.pts[fv]), tot=twTot(), rk=twRank(tot), D=twDecoOn();
+  const L=[
+    lv ? `${TW_NAMES[fv][lv-1]}ができて、毎日たのしいよ！` : `${IND[fv]}の建物がまだないね…。${IND[fv]}、好きなんだけどな`,
+    `このまちも「${rk.n}」かあ。人口 ${twPop(tot).toLocaleString()}人だって！`,
+    pf.say ? `「${pf.say}」` : '',
+    D.includes('wheel') ? '観覧車から、まち全体が見えるんだよ。' : '',
+    D.includes('sakura') ? '丘の桜、きれいだね。お花見しよ！' : '',
+    D.includes('castle') ? 'お城の上から見ると、どの産業が伸びてるか一目でわかるんだ。' : '',
+    D.includes('tram') ? '路面電車で、駅までひとっとび！' : '',
+    `${twName()}に住めて、うれしいな。`].filter(Boolean);
+  const t=L[Math.floor(Math.random()*L.length)];
+  btn.querySelectorAll('.tw-bub').forEach(e=>e.remove());
+  const b=document.createElement('span'); b.className='tw-bub'; b.textContent=t; btn.appendChild(b); voice(k,t);
+  setTimeout(()=>b.remove(), 3600);
 }
 let TW_SEL=null;
 function openTown(){ sfx('click'); TW_SEL=null; openSheet('town'); }
@@ -6137,15 +6266,17 @@ function townInner(){
   const T=townSt(), L=T.pts.map(twLv), tot=twTot(), rk=twRank(tot), nm=(NET.name||'').trim()||'あなた';
   if(TW_SEL==null) TW_SEL=L.indexOf(Math.max(...L));
   const c=TW_SEL, lv=L[c], nx=TW_AT[lv], pv=lv?TW_AT[lv-1]:0, pc=nx?Math.max(0,Math.min(100,(T.pts[c]-pv)/(nx-pv)*100)):100;
-  return `<span class="label">MY TOWN</span><h3 class="ttl" style="font-size:22px">🏙️ ${esc(nm)}のまち</h3>
+  return `<span class="label">MY TOWN</span><div class="tw-hd" id="twHd"><h3 class="ttl" style="font-size:22px">🏙️ ${esc(twName())}</h3><button class="tw-ren" onclick="twRename()" aria-label="まちの名前を変える">✏️</button></div>
     <div class="tw-stats"><div><b>${rk.ic} ${rk.n}</b><small>まちの大きさ</small></div><div><b>${twPop(tot).toLocaleString()}</b><small>人口（人）</small></div><div><b>${tot}</b><small>GDP（pt）</small></div></div>
+    <p class="note tw-pop">👥 住民キャラ <b>${twResidents().length}</b>人 ・ 🎨 かざり <b>${twDecoOn().length}</b>こ</p>
     <p class="note">${rk.next?`あと <b>${rk.next[0]-tot}pt</b> で「${rk.next[2]} ${rk.next[1]}」に成長！`:'最高ランク「大都市」に到達！'}</p>
-    <div class="tw-view">${townSvg({anim:1,pick:1,sel:c})}</div>
-    <p class="note tw-hint">建物をタップすると、その産業の説明が見られるよ</p>
+    <div class="tw-view"><div class="tw-stage">${townSvg({anim:1,pick:1,sel:c})}${twResHTML()}</div></div>
+    <p class="note tw-hint">建物をタップすると説明、住民をタップするとおしゃべり</p>
     <div class="tw-info" style="--ic:var(--i${c})"><div class="row spread"><b>${chip(c)} ${lv?TW_NAMES[c][lv-1]:'空き地'}</b><span class="tw-lv">Lv${lv}</span></div>
       <p>${TW_DESC[c]}</p><div class="tw-bar"><i style="width:${pc.toFixed(0)}%"></i></div>
       <small>${nx?`次の「${TW_NAMES[c][lv]}」まで あと ${nx-T.pts[c]}pt（投資 ${T.pts[c]}pt）`:`最大レベル！ まちのシンボルです（投資 ${T.pts[c]}pt）`}</small></div>
     <div class="tw-how"><b>💡 まちの育て方</b><p>試合で出したカードの点数が、その産業に「投資」されます。独占できたら、さらに +3。いろいろな産業で点を取ると、バランスのいいまちになるよ。</p><p><b>GDP</b> は、まちで1年間に生み出された“もうけ”の合計のこと。本物の国でも、経済の大きさをはかる目安に使われています。</p></div>
+    ${twShopHTML()}
     <button class="btn gold big" style="width:100%" onclick="openTownImg()">📸 まちの写真を保存</button>`;
 }
 function townFinPanel(){
@@ -6163,10 +6294,13 @@ async function openTownImg(){
   const D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', B='"M PLUS Rounded 1c",sans-serif';
   const T=townSt(), L=T.pts.map(twLv), tot=twTot(), rk=twRank(tot), nm=(NET.name||'').trim()||'あなた';
   const g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#1d2266'); g.addColorStop(1,'#07081a'); x.fillStyle=g; x.fillRect(0,0,W,H);
-  x.textAlign='center'; x.fillStyle='#fff'; let fz=72; x.font=`${fz}px ${D}`; const ttl=`${nm}のまち`; while(x.measureText(ttl).width>W-120 && fz>40){ fz-=4; x.font=`${fz}px ${D}`; } x.fillText(ttl,W/2,130);
+  x.textAlign='center'; x.fillStyle='#fff'; let fz=72; x.font=`${fz}px ${D}`; const ttl=twName(); while(x.measureText(ttl).width>W-120 && fz>40){ fz-=4; x.font=`${fz}px ${D}`; } x.fillText(ttl,W/2,130);
   x.font=`800 36px ${B}`; x.fillStyle=v('--gold'); x.fillText(`${rk.ic} ${rk.n}  ・  人口 ${twPop(tot).toLocaleString()}人  ・  GDP ${tot}`,W/2,195);
   const im=await svgImg(townSvg({}),v,1200,660);
-  x.save(); rr(x,40,240,1000,550,34); x.clip(); if(im) x.drawImage(im,40,240,1000,550); x.restore(); rr(x,40,240,1000,550,34); x.lineWidth=6; x.strokeStyle='rgba(255,255,255,.25)'; x.stroke();
+  x.save(); rr(x,40,240,1000,550,34); x.clip(); if(im) x.drawImage(im,40,240,1000,550); x.restore();
+  { const rs=twResidents(), px=[.14,.33,.52,.71,.88]; for(let i=0;i<rs.length;i++){ const fi=await svgImg(face(rs[i],null,'happy'),v,200,200), cx=40+1000*px[i], cy=694, R=26;   /* 住民キャラも写真に */
+      x.beginPath(); x.arc(cx,cy,R+4,0,Math.PI*2); x.fillStyle=CHARS[rs[i]].c; x.fill(); x.save(); x.beginPath(); x.arc(cx,cy,R,0,Math.PI*2); x.fillStyle='#fff'; x.fill(); x.clip(); if(fi) x.drawImage(fi,cx-R,cy-R,R*2,R*2); x.restore(); } }
+  rr(x,40,240,1000,550,34); x.lineWidth=6; x.strokeStyle='rgba(255,255,255,.25)'; x.stroke();
   IND.forEach((n,c)=>{ const cx=40+1000/6*(c+.5), y=860; x.beginPath(); x.arc(cx,y,30,0,Math.PI*2); x.fillStyle=v('--i'+c); x.fill(); x.fillStyle='#1a1033'; x.font=`34px ${D}`; x.fillText(String(L[c]),cx,y+12);
     x.fillStyle='#fff'; x.font=`800 24px ${B}`; x.fillText(n,cx,y+66); x.fillStyle='rgba(255,255,255,.6)'; x.font=`700 19px ${B}`; x.fillText(L[c]?TW_NAMES[c][L[c]-1]:'空き地',cx,y+94,160); });
   x.textAlign='left'; x.font=`40px ${D}`; { const aw=x.measureText('AZAKEI ').width, mw=x.measureText('MARKET').width, x0=W/2-(aw+mw)/2; x.fillStyle='#fff'; x.fillText('AZAKEI',x0,1018); x.fillStyle=v('--gold'); x.fillText('MARKET',x0+aw,1018); }
