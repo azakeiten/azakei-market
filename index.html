@@ -2638,6 +2638,53 @@ svg.face.mine{width:100%;height:100%;display:block;border-radius:50%}
 @keyframes pbPop{0%{transform:scale(2.2);opacity:0}25%{transform:scale(1);opacity:1}80%{opacity:1}100%{transform:scale(.9);opacity:0}}
 @keyframes pbFlash{0%{opacity:1}100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){.pb-f,.pb-cnt.go,.pbo{animation:none}}
+/* 📮 郵便ポスト */
+.sky-mail{margin-left:6px;padding:3px 9px}
+.mb-list{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.mb-fin{display:flex;flex-direction:column;gap:8px}
+.mb-row{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:0;border-radius:14px;background:rgb(255 255 255 / .06);box-shadow:inset 4px 0 0 var(--rc);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.mb-row.unread{background:color-mix(in srgb,var(--rc) 18%,transparent)}
+.mb-ic{flex:none;width:44px;height:44px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px var(--rc)}
+.mb-ic svg{width:100%;height:100%;display:block}
+.mb-tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.mb-tx small{opacity:.75;font-size:12px}
+.mb-env{position:relative;font-size:22px}
+.mb-row.unread .mb-env::after{content:"";position:absolute;top:0;right:-4px;width:9px;height:9px;border-radius:50%;background:#ff3b5c;box-shadow:0 0 0 2px #fff}
+.ltr{position:fixed;inset:0;z-index:60;display:grid;place-items:safe center;padding:16px;background:rgb(10 8 24 / .82);backdrop-filter:blur(4px);animation:pbIn .3s both;perspective:900px;overflow:auto}
+.ltr>*{grid-area:1/1}
+.ltr-env{position:relative;width:min(330px,88vw);aspect-ratio:1.55;border-radius:10px;background:linear-gradient(160deg,#fbf3df,#efdfbb);box-shadow:0 24px 50px -16px #000,inset 0 0 0 1px rgb(120 90 40 / .25);cursor:pointer;animation:ltrIn .6s cubic-bezier(.2,.9,.3,1.2) both;transform-style:preserve-3d;outline-offset:6px}
+.ltr-env::before{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(to top right,transparent 49.5%,rgb(120 90 40 / .18) 50%,transparent 51%) left/50% 100% no-repeat,linear-gradient(to top left,transparent 49.5%,rgb(120 90 40 / .18) 50%,transparent 51%) right/50% 100% no-repeat}
+.ltr-flap{position:absolute;left:0;right:0;top:0;height:58%;background:linear-gradient(#f6e8c8,#e9d5a8);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .5s ease-in;filter:drop-shadow(0 2px 2px rgb(0 0 0 / .2));z-index:2}
+.ltr-seal{position:absolute;left:50%;top:58%;z-index:3;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--rc) 60%,#fff),var(--rc));color:#fff;font-size:20px;box-shadow:0 0 0 3px color-mix(in srgb,var(--rc) 70%,#000),0 4px 8px rgb(0 0 0 / .35);transition:transform .3s,opacity .3s}
+.ltr-to{position:absolute;left:16px;right:45%;bottom:12px;z-index:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#3a2a14;font-family:var(--serif,serif);font-size:19px;font-weight:800}
+.ltr-from{position:absolute;right:12px;bottom:10px;z-index:1;display:flex;align-items:center;gap:6px;color:#6b5634;font-size:12px;font-weight:800}
+.ltr-fi{width:26px;height:26px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px var(--rc)}
+.ltr-fi svg,.ltr-sf svg{width:100%;height:100%;display:block}
+.ltr-tap{position:absolute;left:0;right:0;top:calc(100% + 18px);text-align:center;color:#fff;font-weight:900;animation:ltrBlink 1.4s ease-in-out infinite}
+.ltr-paper{position:relative;width:min(420px,calc(100vw - 32px));padding:22px 20px 16px;border-radius:6px;color:#2f2416;background:repeating-linear-gradient(transparent 0 31px,color-mix(in srgb,var(--rc) 30%,#e8dcc4) 31px 32px) 0 70px/100% calc(100% - 140px) no-repeat,linear-gradient(#fffdf6,#fbf4e2);box-shadow:0 30px 60px -20px #000,inset 0 0 0 6px color-mix(in srgb,var(--rc) 14%,#fff);visibility:hidden;opacity:0;transform:translateY(40px) scale(.9)}
+.ltr-stamp{position:absolute;top:14px;right:16px;width:58px;height:66px;padding:4px;background:#fff;transform:rotate(4deg);box-shadow:0 1px 3px rgb(0 0 0 / .3);-webkit-mask:radial-gradient(circle 3px at 3px 3px,transparent 98%,#000) -3px -3px/8px 8px;mask:radial-gradient(circle 3px at 3px 3px,transparent 98%,#000) -3px -3px/8px 8px}
+.ltr-stamp svg{width:100%;height:100%;display:block;background:color-mix(in srgb,var(--rc) 45%,#fff);box-shadow:inset 0 0 0 2px var(--rc)}
+.ltr-pm{position:absolute;top:30px;right:62px;width:56px;height:56px;border-radius:50%;border:2px solid rgb(180 60 50 / .55);color:rgb(180 60 50 / .7);display:grid;place-content:center;text-align:center;font-size:9px;font-weight:900;line-height:1.1;transform:rotate(-14deg)}
+.ltr-pm b{font-size:14px}
+.ltr-hd{margin:6px 0 10px;font-family:var(--serif,serif);font-size:20px;font-weight:800}
+.ltr-tx{min-height:8em;margin:0;white-space:pre-wrap;font-size:16px;line-height:32px;font-weight:700;padding-right:4px}
+.ltr-sign{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:8px;font-family:var(--serif,serif);font-weight:800;opacity:0;transition:opacity .5s}
+.ltr-sf{width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 3px var(--rc)}
+.ltr-gift{display:flex;flex-direction:column;align-items:center;margin-top:10px;padding:8px;border-radius:12px;background:rgb(255 200 58 / .25);box-shadow:inset 0 0 0 1.5px rgb(201 142 18 / .6);animation:slin .5s both}
+.ltr-gift span{font-size:11px;font-weight:800;opacity:.75}
+.ltr-gift b{font-size:20px;color:#8a5a00}
+.ltr-x{display:block;margin:12px auto 0;opacity:0;pointer-events:none;transition:opacity .4s}
+.ltr.open .ltr-flap{transform:rotateX(180deg)}
+.ltr.open .ltr-seal{transform:scale(0);opacity:0}
+.ltr.open .ltr-tap{display:none}
+.ltr.open .ltr-env{animation:ltrOut .7s .45s ease-in both;pointer-events:none}
+.ltr.open .ltr-paper{visibility:visible;animation:ltrUp .7s .7s cubic-bezier(.2,.9,.3,1.1) both}
+.ltr.done .ltr-sign,.ltr.done .ltr-x{opacity:1;pointer-events:auto}
+@keyframes ltrIn{from{transform:translateY(60px) rotate(-8deg);opacity:0}}
+@keyframes ltrOut{to{transform:translateY(70vh) rotate(6deg);opacity:0}}
+@keyframes ltrUp{from{opacity:0;transform:translateY(60px) scale(.85)}to{opacity:1;transform:none}}
+@keyframes ltrBlink{50%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){.ltr-env,.ltr-tap,.ltr.open .ltr-env,.ltr.open .ltr-paper,.ltr-gift{animation:none}.ltr.open .ltr-env{display:none}.ltr.open .ltr-paper{opacity:1;transform:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4451,6 +4498,7 @@ function renderSheet(){
   else if(k==='lessons') body=lessonsBody();
   else if(k==='paint') body=paintBody();
   else if(k==='facemaker') body=`<div id="fmw">${fmInner()}</div>`;
+  else if(k==='mail') body=mailBody();
   else if(k==='puzzle') body=puzBody();
   else if(k==='mynews') body=myNewsBody();
   else if(k==='mynewsedit') body=myNewsEditBody();
@@ -5366,7 +5414,7 @@ function skyScene(){
   const tick=IND.map((n,c)=>`<span${c===li?' class="luck"':''}><b>${c===li?'★':''}${n}</b><em class="${ch[c]>0?'up':ch[c]<0?'dn':''}">${skyPct(ch[c])}</em></span>`).join('');
   return `<section class="skyl sky-${ph}" aria-label="今日の相場（${SKY_N[ph]}）">
     ${ph==='night'?'<i class="sky-stars"></i>':''}<i class="sky-orb" style="left:${ox}%;bottom:${oy}%"></i>
-    <div class="sky-head"><span class="sky-ph">${SKY_N[ph]}</span><button class="sky-tv${S.prof.tvDay===todayKey()?'':' new'}" onclick="tvNews()" aria-label="きょうのAZAKEIニュースを見る">📺 ニュース</button><i class="sky-br"></i><b>AZAKEI指数 ${idx}</b><em class="${avg>=0?'up':'dn'}">${skyPct(avg)}</em></div>
+    <div class="sky-head"><span class="sky-ph">${SKY_N[ph]}</span><button class="sky-tv${S.prof.tvDay===todayKey()?'':' new'}" onclick="tvNews()" aria-label="きょうのAZAKEIニュースを見る">📺 ニュース</button><button class="sky-tv sky-mail${mailUnread()?' new':''}" onclick="openMail()" aria-label="郵便ポスト${mailUnread()?`（未読${mailUnread()}通）`:''}">📮</button><i class="sky-br"></i><b>AZAKEI指数 ${idx}</b><em class="${avg>=0?'up':'dn'}">${skyPct(avg)}</em></div>
     <div class="sky-city">${IND.map((n,c)=>`<button class="sky-b${c===li?' luck':''}" style="--ic:var(--i${c});--h:${Math.round(52+[10,22,4,14,0,18][c]+ch[c]*7)}px;--dl:${(c*.07).toFixed(2)}s" onclick="skyTap(${c})" aria-label="${n} ${skyPct(ch[c])}"><span class="sky-ic">${svg(c,2.2)}</span>${c===li?'<span class="sky-star">★</span>':''}<span class="sky-win"></span></button>`).join('')}</div>
     ${skyPeople(li)}
     <div class="sky-tick" aria-hidden="true"><div class="sky-tk">${tick}${tick}</div></div></section>`;
@@ -5817,8 +5865,92 @@ function cpuWhy(){
   return `<details class="cw-box"${open?' open':''} ontoggle="S.cwOpen=this.open"><summary>🧠 CPUはなぜそれを出した？</summary><div class="cw-list">${items}</div></details>`;
 }
 /* ---- ミオのきょうのおすすめ：いまの記録から「次にやること」を3つまで。デイリー・ボス・ライバル・なかよし度・けいざい教室を順に見る ---- */
+/* ---- 📮 郵便ポスト：キャラから手紙が届く（なかよし Lv3・Lv5、ミオからは節目のお祝い）。封筒を開ける演出つき。同封のコインは1回だけ ---- */
+const LETTERS=(()=>{
+  const B={
+    'ミナト':['この前の試合、きみの選び方をノートにまとめてみたんだ。\n被りそうなときに、あえて外す回数がだんだん増えてる。\nこれって「期待値」で考えられてる証拠だよ。\n次は、ぼくも計算を見直してから行くね。',
+             '正直に言うね。\nぼく、最初は数字だけで勝てると思ってた。\nでもきみと遊んで、「相手の気持ち」も数字と同じくらい大事だってわかったんだ。\nこれからも、いちばんの対戦相手でいてね。'],
+    'アオイ':['くやしいから手紙で言う！\n次の勝負は、ぜったいアオイが勝つからね！\n…でも、すっごく楽しかった。\n商店街のコロッケおごるから、また遊ぼ！',
+             '勝ちたい相手がいるって、すごく幸せなことなんだって気づいたよ。\nアオイ流にひとつ追加！\n「最高のライバルとは、何回でも遊ぶ」\nこれからもよろしくね！'],
+    'ソラ':['きょうの空は、うすい雲がゆっくり流れてたよ。\n景気も雲みたいに、急がなくても形が変わっていくんだね。\nまた、のんびり一局どうかな…。',
+            'きみと遊んでいると、時間がやさしく流れる気がする。\n撮りためた雲の写真を見ながら、この手紙を書いたよ。\nお礼のしるしを、少しだけ同封するね。…ありがとう。'],
+    'ハル':['オレ、また全力で被っちまったぜ！\nでもな、おまえと遊ぶと毎回なにか発見があるんだ。\n次は、いちばん熱い産業でぶつかろうな！！',
+            '走りこみの途中で、おまえの顔が浮かんだ。\n勝っても負けても全力なやつは、最高だ！\nこれからも、真っ向勝負だぜ！'],
+    'ユイ':['…この前、あなたが選んだ産業。\nわたしも、狙ってた。\n読まれてたなら、ちょっとうれしい。\nまた、静かに勝負しよう。',
+            '手紙なんて、はじめて書いた。\nあなたと遊ぶ時間は、にぎやかで、でも居心地がいい。\nこれからも、となりの席にいて。'],
+    'レン':['おまえの成績、チェックしている。\n悪くない。\nだが、頂点に立つのはオレだ。\n次の対局、手加減はしない。',
+            '認めよう。\nおまえは、オレが追いかける価値のあるライバルだ。\n…反省ノートの最後のページに、おまえの名前を書いておいた。'],
+    'ナギ':['海辺から書いてるよ。\n波って、来る前の静けさがいちばん大事なんだ。ブームもいっしょ。\nきみの「乗るタイミング」、うまくなってきたね。',
+            'いい波は、いい仲間と乗るともっと楽しい。\n今度、旅行ブームのNEWSが来たら…\nいっしょに乗ろうね。'],
+    'ミオ':['予習ノートにね、あなたのページを作ったよ。\n得意な産業、よく使う作戦…\n見てると、わたしも勉強になるんだ。',
+            '案内役って、ほんとは少しさみしい仕事なの。\nでも、あなたが強くなっていくのを、いちばん近くで見られる。\nそれって、わたしだけの特等席だよね。これからもよろしくね！'],
+    'トキ':['年寄りの手紙を許しておくれ。\n若いのに、場の流れを読む目がある。\n相場は人の心じゃ。その目を大事にな。',
+            '六十年、相場を見てきたが、\nこんなに楽しい対局相手は久しぶりじゃ。\n歴史はくり返す。だからこそ、また何度でも遊ぼうぞ。']
+  };
+  const out=[
+    {id:'m1', k:'ミオ', t:'はじめての試合', g:30, ok:P=>(P.st&&P.st.games||0)>=1, b:'はじめての試合、おつかれさま！\n「被ると割れる、ひとりじめは大きい」\nこの感覚がわかったら、もう立派なプレイヤーだよ。\nお祝いを同封するね！'},
+    {id:'mw', k:'ミオ', t:'はじめての勝利', g:50, ok:P=>(P.st&&P.st.wins||0)>=1, b:'はじめての勝利、おめでとう！！\n読みが当たった瞬間の気持ち、覚えておいてね。\nそれが「経済を読む」ってことなんだ。'},
+    {id:'m10', k:'ミオ', t:'10試合達成', g:50, ok:P=>(P.st&&P.st.games||0)>=10, b:'10試合、達成！\nNEWSを見て「どこが伸びるか」だけじゃなく、\n「みんながどこに集まるか」まで考えられるようになってきたね。'},
+    {id:'m30', k:'ミオ', t:'30試合達成', g:80, ok:P=>(P.st&&P.st.games||0)>=30, b:'30試合！ もう常連さんだね。\nキャラのみんなも、あなたのクセを研究しはじめてるよ。\nたまには、いつもと逆の産業を出してみるのもアリかも？'},
+    {id:'m100', k:'ミオ', t:'100試合達成', g:150, ok:P=>(P.st&&P.st.games||0)>=100, b:'100試合、本当におめでとう！！\nここまで遊んでくれて、ありがとう。\nあなたはもう、この市場の“ベテラン”だよ。\nこれからも、いっしょに経済を読んでいこうね。'}
+  ];
+  Object.keys(B).forEach(k=>B[k].forEach((b,j)=>out.push({id:`b-${k}-${j}`, k, t:`なかよし Lv${j?5:3} の手紙`, g:j?100:40, ok:P=>bondLv((P.riv||{})[k])>=(j?5:3), b})));
+  return out;
+})();
+const mailSt = () => { const P=S.prof; P.mail=P.mail||{got:{},read:{}}; return P.mail; };
+const mailRead = id => !!mailSt().read[id];
+const mailList = () => { const M=mailSt(); return LETTERS.filter(L=>M.got[L.id]).sort((a,b)=>M.got[b.id]-M.got[a.id]); };
+const mailUnread = () => mailList().filter(L=>!mailRead(L.id)).length;
+function mailCheck(){
+  const P=S.prof, M=mailSt(), fresh=[]; let t=Date.now();
+  LETTERS.forEach(L=>{ if(!M.got[L.id] && CHARS[L.k] && L.ok(P)){ M.got[L.id]=t++; fresh.push(L); } });
+  if(fresh.length) saveProfile();
+  return fresh;
+}
+function mailFinPanel(){
+  if(!G) return ''; if(!G.mailChk){ G.mailChk=1; G.mailNew=mailCheck(); }
+  const u=G.mailNew||[]; if(!u.length) return '';
+  return `<section class="panel mb-fin"><span class="label">📮 手紙が届きました</span>${u.map(L=>`<button class="mb-row${mailRead(L.id)?'':' unread'}" style="--rc:${CHARS[L.k].c}" onclick="openLetter('${L.id}')"><span class="mb-ic">${face(L.k)}</span><span class="mb-tx"><b>${L.k}より</b><small>${L.t}${L.g&&!mailRead(L.id)?` ・ 🪙同封`:''}</small></span><span class="mb-env" aria-hidden="true">✉️</span></button>`).join('')}</section>`;
+}
+function openMail(){ sfx('click'); mailCheck(); openSheet('mail'); }
+function mailBody(){
+  const L=mailList(), left=LETTERS.length-L.length;
+  return `<span class="label">MAILBOX</span><h3 class="ttl" style="font-size:22px">📮 郵便ポスト</h3>
+    ${L.length?`<div class="mb-list">${L.map(x=>`<button class="mb-row${mailRead(x.id)?'':' unread'}" style="--rc:${CHARS[x.k].c}" onclick="openLetter('${x.id}')"><span class="mb-ic">${face(x.k)}</span><span class="mb-tx"><b>${x.k}より</b><small>${x.t} ・ ${new Date(mailSt().got[x.id]).toLocaleDateString('ja-JP',{month:'numeric',day:'numeric'})}${x.g&&!mailRead(x.id)?' ・ 🪙同封':''}</small></span><span class="mb-env" aria-hidden="true">${mailRead(x.id)?'📄':'✉️'}</span></button>`).join('')}</div>`
+      :`<p class="note">まだ手紙は届いていません。1試合遊ぶと、ミオから最初の手紙が届くよ。</p>`}
+    <p class="note">まだ届いていない手紙：<b>${left}通</b>。キャラと何度も遊んで「なかよし度」を上げると届くよ。</p>`;
+}
+function openLetter(id){
+  const L=LETTERS.find(x=>x.id===id); if(!L || document.getElementById('ltr')) return;
+  const c=CHARS[L.k], pf=CHAR_PROF[L.k]||{}, nm=(NET.name||'').trim()||'あなた', d=new Date(mailSt().got[id]||Date.now());
+  const el=document.createElement('div'); el.id='ltr'; el.className='ltr'; el.style.setProperty('--rc',c.c); el.setAttribute('role','dialog'); el.setAttribute('aria-label',`${L.k}からの手紙`);
+  el.innerHTML=`<div class="ltr-env" role="button" tabindex="0" aria-label="封筒を開ける"><i class="ltr-flap"></i><span class="ltr-to">${esc(nm)} さま</span><span class="ltr-from"><span class="ltr-fi">${face(L.k)}</span>${L.k}より</span><span class="ltr-seal">♥</span><span class="ltr-tap">タップして開けよう</span></div>
+    <div class="ltr-paper" aria-live="polite"><span class="ltr-stamp">${scene(pf.fav!=null?pf.fav:0)}</span><span class="ltr-pm"><b>${d.getMonth()+1}.${d.getDate()}</b>AZAKEI</span>
+      <p class="ltr-hd"></p><p class="ltr-tx"></p><div class="ltr-sign"><span>${L.k}より</span><span class="ltr-sf">${face(L.k,null,'happy')}</span></div>
+      <div class="ltr-gift" hidden></div><button class="btn ltr-x" onclick="ltrClose()">とじる</button></div>`;
+  document.body.appendChild(el); sfx('flip');
+  const env=el.querySelector('.ltr-env'), go=()=>ltrOpen(L,nm); env.onclick=go; env.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } }; env.focus();
+}
+function ltrOpen(L,nm){
+  const el=document.getElementById('ltr'); if(!el || el.classList.contains('open')) return;
+  el.classList.add('open'); sfx('open'); haptic(15);
+  const hd=el.querySelector('.ltr-hd'), tx=el.querySelector('.ltr-tx'), full=L.b, first=!mailRead(L.id);
+  hd.textContent=`${nm}${L.k==='トキ'?' 殿':'へ'}`;
+  const M=mailSt(); M.read[L.id]=1;
+  let gift=0; if(first && L.g){ gift=L.g; S.prof.coin=(S.prof.coin||0)+gift; }
+  saveProfile();
+  const finish=()=>{ tx.textContent=full; el.classList.add('done');
+    if(gift){ const g=el.querySelector('.ltr-gift'); g.hidden=false; g.innerHTML=`<span>同封されていたもの</span><b>🪙 +${gift} コイン</b>`; sfx('coin'); } };
+  setTimeout(()=>{ if(!el.isConnected) return; voice(L.k, full);
+    if(reduced()){ finish(); return; }
+    let i=0; const tick=()=>{ if(!el.isConnected) return; if(el.classList.contains('done')) return; i+=2; tx.textContent=full.slice(0,i); if(i>=full.length) finish(); else setTimeout(tick, full[i-1]==='\n'?180:32); }; tick();
+    el.querySelector('.ltr-paper').onclick=e=>{ if(!e.target.closest('button')) finish(); };   /* タップで最後まで */
+  }, reduced()?0:900);
+}
+function ltrClose(){ const el=document.getElementById('ltr'); if(el) el.remove(); if(S.sheet==='mail') renderSheet(); else if(typeof render==='function') render(); }
 function homeRec(){
   const P=S.prof, k=todayKey(), out=[];
+  { const u=mailList().filter(L=>!mailRead(L.id)); if(u.length) out.push({ic:'📮', t:`${u[0].k}から手紙が届いています${u.length>1?`（ほか${u.length-1}通）`:''}`, d:'ポストを開けて読んでみよう', go:'openMail()'}); }
   if(!(P.daily||{})[k]) out.push({ic:'☀️', t:'今日のデイリーがまだだよ', d:'みんな同じNEWSで点数くらべ', go:'startDaily()'});
   const b=curBoss(); if(!(P.boss&&P.boss.wk===bossWeek())) out.push({ic:b.ic, t:`今週のボス「${b.n}」を倒そう`, d:`はじめての撃破で +${BOSS_COIN}コイン`, go:'startBoss()'});
   if(!P.myFace && P.st && P.st.games>=1) out.push({ic:'🎨', t:'自分の似顔絵をつくろう', d:'試合で表情が変わるアバターになるよ', go:'openFaceMaker()'});
@@ -7628,7 +7760,7 @@ function finalView(){
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center"><button class="btn big pb-btn" onclick="photoShoot()">📸 記念撮影</button>${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
-    ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+    ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${mailFinPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${chalPanel()}
     ${rewardPanel()}
     ${fbPanel()}
@@ -7682,7 +7814,8 @@ function histTable(){
 /* ================= screens ================= */
 // ホームはシンプルに：「あそぶ」→ 6つの入口 → 今日やること。説明やPDFはそれぞれの画面へ
 function homeView(){
-  if(!homeView.ach){ homeView.ach=1; achCheck(true); }   /* 前からの進み具合で解除できる実績は、起動時にそっと解除 */
+  if(!homeView.ach){ homeView.ach=1; achCheck(true); }
+  if(!homeView.mail){ homeView.mail=1; mailCheck(); }   /* 前からの進み具合で届く手紙も、起動時にポストへ */   /* 前からの進み具合で解除できる実績は、起動時にそっと解除 */
   const show=[0,1,2,3,4,5].map((c,j)=>cardHTML(c,{no:true,style:`transform:translateX(-50%) rotate(${(j-2.5)*12}deg);margin-left:${(j-2.5)*(phone()?20:28)}px;z-index:${j};animation-delay:${j*.25}s`})).join('');
   return `${!nbNew()?lobbyHero(show):`<section class="hero">
       <div><div class="ver">CARD GAME <b>β4</b></div>
