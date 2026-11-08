@@ -2685,6 +2685,26 @@ svg.face.mine{width:100%;height:100%;display:block;border-radius:50%}
 @keyframes ltrUp{from{opacity:0;transform:translateY(60px) scale(.85)}to{opacity:1;transform:none}}
 @keyframes ltrBlink{50%{opacity:.45}}
 @media (prefers-reduced-motion:reduce){.ltr-env,.ltr-tap,.ltr.open .ltr-env,.ltr.open .ltr-paper,.ltr-gift{animation:none}.ltr.open .ltr-env{display:none}.ltr.open .ltr-paper{opacity:1;transform:none}}
+/* 🎂 誕生日 */
+.sky-pp.bday::after{content:"🎈";position:absolute;top:-30px;right:-12px;font-size:20px;transform-origin:bottom center;animation:bdayBal 2.4s ease-in-out infinite alternate;pointer-events:none}
+@keyframes bdayBal{from{transform:rotate(-10deg)}to{transform:rotate(10deg) translateY(-3px)}}
+.bday-cake{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 18px 12px;border-radius:18px;background:radial-gradient(circle at 50% 30%,#fff6d8,#ffd3e6);color:#5a2140;box-shadow:inset 0 0 0 3px #ff9ad9}
+.bday-cake i{font-style:normal;font-size:64px;line-height:1;animation:bdayCk 1.4s ease-in-out infinite alternate}
+.bday-cake b{font-family:var(--display);font-weight:400;font-size:18px;letter-spacing:.06em;color:#e0457b}
+.bday-cake span{font-size:13px;font-weight:900}
+@keyframes bdayCk{to{transform:scale(1.08) rotate(-3deg)}}
+.bday-cal{margin-top:16px}
+.bday-cal h4{margin:2px 0 4px;font-size:17px}
+.bday-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+.bday-it{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border:0;border-radius:14px;background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--rc) 55%,transparent);color:inherit;font:inherit;cursor:pointer}
+.bday-it b{font-family:var(--display);font-weight:400;font-size:17px}
+.bday-it small{font-size:11px;opacity:.75}
+.bday-f{width:44px;height:44px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px var(--rc)}
+.bday-f svg{width:100%;height:100%;display:block}
+.bday-it.today{background:linear-gradient(160deg,color-mix(in srgb,var(--rc) 35%,transparent),rgb(255 154 217 / .25));box-shadow:inset 0 0 0 2px #ff9ad9,0 0 18px -4px #ff9ad9}
+.bday-it.today::before{content:"🎂";position:absolute;top:-8px;right:-4px;font-size:20px;animation:bdayCk 1s ease-in-out infinite alternate}
+.bday-it.today small{opacity:1;font-weight:900;color:#ff9ad9}
+@media (prefers-reduced-motion:reduce){.sky-pp.bday::after,.bday-cake i,.bday-it.today::before{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5421,9 +5441,9 @@ function skyScene(){
 }
 /* ---- 街を歩くキャラ：きょうのライバル・ニュースのキャスター・日がわりの1人が、ホームの街を行ったり来たり。タップで話しかけてくる ---- */
 function skyPeople(li){
-  const ks=Object.keys(CHARS), tk=todayKey(), who=[todayRival(), ks[(tk*5+1)%ks.length], ks[(tk*3+5)%ks.length], ks[(tk*11+2)%ks.length]].filter((k,i,a)=>a.indexOf(k)===i).slice(0,3);
+  const ks=Object.keys(CHARS), tk=todayKey(), who=[bdayToday(), todayRival(), ks[(tk*5+1)%ks.length], ks[(tk*3+5)%ks.length], ks[(tk*11+2)%ks.length]].filter((k,i,a)=>k && CHARS[k] && a.indexOf(k)===i).slice(0,3);
   const lanes=[[6,40],[34,70],[58,86]];
-  return `<div class="sky-ppl">${who.map((k,i)=>`<button class="sky-pp" style="--rc:${CHARS[k].c};--a:${lanes[i][i%2?1:0]}%;--b:${lanes[i][i%2?0:1]}%;--dur:${16+i*5}s;--dl:-${i*4}s" onclick="skyChat(this,'${k}',${li})" aria-label="${k}に話しかける"><span class="sky-pf">${face(k)}</span></button>`).join('')}</div>`;
+  return `<div class="sky-ppl">${who.map((k,i)=>`<button class="sky-pp${k===bdayToday()?' bday':''}" style="--rc:${CHARS[k].c};--a:${lanes[i][i%2?1:0]}%;--b:${lanes[i][i%2?0:1]}%;--dur:${16+i*5}s;--dl:-${i*4}s" onclick="skyChat(this,'${k}',${li})" aria-label="${k}に話しかける"><span class="sky-pf">${face(k)}</span></button>`).join('')}</div>`;
 }
 function skyChat(btn,k,li){
   sfx('click'); haptic(6);
@@ -5894,6 +5914,18 @@ const LETTERS=(()=>{
     {id:'m30', k:'ミオ', t:'30試合達成', g:80, ok:P=>(P.st&&P.st.games||0)>=30, b:'30試合！ もう常連さんだね。\nキャラのみんなも、あなたのクセを研究しはじめてるよ。\nたまには、いつもと逆の産業を出してみるのもアリかも？'},
     {id:'m100', k:'ミオ', t:'100試合達成', g:150, ok:P=>(P.st&&P.st.games||0)>=100, b:'100試合、本当におめでとう！！\nここまで遊んでくれて、ありがとう。\nあなたはもう、この市場の“ベテラン”だよ。\nこれからも、いっしょに経済を読んでいこうね。'}
   ];
+  const TY={
+    'ミナト':'この前は誕生日を祝ってくれて、ありがとう。\nあの日の「うれしかった度」をグラフにしたら、目盛りが足りなくなったよ。\nお礼に、少しだけコインを同封するね。',
+    'アオイ':'お誕生日のお祝い、ほんとにありがとう！！\n推しのライブと同じくらい、うれしかった！\nこれ、アオイからのお返し！ 受け取って！',
+    'ソラ':'お祝いしてくれて、ありがとう〜。\nあの日の夕方、ハートみたいな形の雲が出てたんだ。\nきっと、きみのおかげだね〜。',
+    'ハル':'この前は祝ってくれてサンキューな！！\nうれしくて、いつもの倍、走っちまったぜ！\nお返しだ、受け取ってくれ！',
+    'ユイ':'…誕生日のこと、ありがとう。\nパフェ、ほんとに2つ食べた。\nこれは、そのお礼。…ないしょね。',
+    'レン':'誕生日のこと、礼を言う。\n…祝われるのは、悪くなかった。\nこれは借りだ。いつか盤上で返す。',
+    'ナギ':'誕生日、ありがとう〜！\n海の家のみんなにも自慢しちゃったよ。\nお礼に、波のおすそわけを同封するね。',
+    'ミオ':'お誕生日、お祝いしてくれてありがとう！\n予習ノートの「たからもの」のページに、あの日のことを書いたよ。\nこれは、ミオからのお礼です！',
+    'トキ':'誕生日の祝い、まことにありがとう。\n長く生きておると、こういう日がいちばんの宝じゃ。\nわずかばかりじゃが、礼を同封しておく。'
+  };
+  Object.keys(TY).forEach(k=>out.push({id:`y-${k}`, k, t:'誕生日のお礼', g:50, ok:P=>!!(P.bday&&P.bday[k]), b:TY[k]}));
   Object.keys(B).forEach(k=>B[k].forEach((b,j)=>out.push({id:`b-${k}-${j}`, k, t:`なかよし Lv${j?5:3} の手紙`, g:j?100:40, ok:P=>bondLv((P.riv||{})[k])>=(j?5:3), b})));
   return out;
 })();
@@ -5950,6 +5982,7 @@ function ltrOpen(L,nm){
 function ltrClose(){ const el=document.getElementById('ltr'); if(el) el.remove(); if(S.sheet==='mail') renderSheet(); else if(typeof render==='function') render(); }
 function homeRec(){
   const P=S.prof, k=todayKey(), out=[];
+  { const b=bdayToday(); if(b && (P.bday||{})[b]!==new Date().getFullYear()) out.push({ic:'🎂', t:`きょうは${b}の誕生日！`, d:'お祝いすると、お礼の手紙が届くよ', go:`bdayCelebrate('${b}')`}); }
   { const u=mailList().filter(L=>!mailRead(L.id)); if(u.length) out.push({ic:'📮', t:`${u[0].k}から手紙が届いています${u.length>1?`（ほか${u.length-1}通）`:''}`, d:'ポストを開けて読んでみよう', go:'openMail()'}); }
   if(!(P.daily||{})[k]) out.push({ic:'☀️', t:'今日のデイリーがまだだよ', d:'みんな同じNEWSで点数くらべ', go:'startDaily()'});
   const b=curBoss(); if(!(P.boss&&P.boss.wk===bossWeek())) out.push({ic:b.ic, t:`今週のボス「${b.n}」を倒そう`, d:`はじめての撃破で +${BOSS_COIN}コイン`, go:'startBoss()'});
@@ -8922,12 +8955,40 @@ const CHAR_PROF={
   'ソラ':  {t:'マイペースなのんびり屋', age:'20歳・カフェのアルバイト', fav:2, say:'まあ、のんびりいこ〜', hobby:'雲の写真を撮ること', style:'先物取引を使わずに、大引けで独占できたら+2。あわてず最後の1枚に賭ける。', sec:'のんびりして見えて、じつはこのゲームの最高点記録を持っている。'}
 };
 /* キャラクター一覧：9人の顔をタップすると、それぞれのプロフィールへ */
+/* ---- 🎂 キャラの誕生日：プロフィール・空の街の風船・お祝いの場面・お礼の手紙・誕生日カレンダー ---- */
+const BDAY={
+  'ミナト':{d:[3,14], t:['えっ、ぼくの誕生日、覚えててくれたの？','3月14日は「円周率の日」でもあるんだ。3.14…って、きれいな数字だよね。','ありがとう。ことしの「うれしさの期待値」、いま一気に上がったよ。']},
+  'アオイ':{d:[8,8],  t:['えーっ！ アオイの誕生日、知っててくれたの!?','8が2つで「末広がり」！ 縁起がいい日に生まれたんだ〜。','ありがと〜！ 推しにも報告しなきゃ！ 今年もいっぱい勝負しようね！']},
+  'ソラ':  {d:[6,12], t:['あ…お祝いしてくれるの？ うれしいな〜','梅雨の晴れ間に生まれたんだって。だから雲を見るのが好きなのかも〜','ありがとう。きょうの空、いつもより青く見えるよ〜']},
+  'ハル':  {d:[4,10], t:['うおっ！ オレの誕生日じゃねーか！ 覚えててくれたのか！','春のまんなか生まれだから「ハル」なんだぜ！ そのまんまだろ！','ありがとな！ 今年も全力でぶっこむぜ！！']},
+  'ユイ':  {d:[2,22], t:['…わたしの誕生日、知ってたの？','2月22日は「ねこの日」。…ねこは好き。静かで、気まぐれで。','ありがとう。…きょうは、パフェを2つ食べてもいい日にする。']},
+  'レン':  {d:[1,15], t:['…オレの誕生日を祝う？ 物好きなやつだな。','1月15日。1年のはじめから、もう勝負は始まってるってことだ。','…ありがとな。今年こそ頂点に立つ。見てろよ。']},
+  'ナギ':  {d:[7,20], t:['おっ、覚えててくれたんだ〜！ うれしいね〜','海の日のころに生まれたんだ。だから波に呼ばれちゃうのかな〜','ありがとう！ 今年もいい波、いっしょに乗ろうね〜']},
+  'ミオ':  {d:[11,20],t:['えっ…わ、わたしの誕生日!? 予習してなかった…！','案内役なのに、お祝いしてもらう側になるなんて。ちょっと照れるね。','ありがとう！ 今年も、いっしょにいっぱい学んで、いっぱい遊ぼうね！']},
+  'トキ':  {d:[10,4], t:['ほう、この年寄りの誕生日を覚えておったか。','10月4日は「証券投資の日」。相場師に、これ以上の日はないじゃろう？','ありがとうよ。またひとつ年をとったが、対局はやめられんのう。']}
+};
+function bdayToday(d){ d=d||bdayToday.d||new Date(); const m=d.getMonth()+1, dd=d.getDate(); return Object.keys(BDAY).find(k=>CHARS[k] && BDAY[k].d[0]===m && BDAY[k].d[1]===dd) || null; }
+function bdayCelebrate(k){
+  const B=BDAY[k]; if(!B || !CHARS[k]) return; closeSheet(); sfx('fanfare'); confetti();
+  const cake=`<div class="bday-cake" aria-hidden="true"><i>🎂</i><b>HAPPY BIRTHDAY</b><span>${k}</span></div>`;
+  novel([[k,B.t[0],'shock'], ['me','お誕生日、おめでとう！',null,cake], [k,B.t[1],'happy'], [k,B.t[2],'happy']], {k, label:`🎂 ${k}の誕生日`, done:()=>{
+    const P=S.prof, y=new Date().getFullYear(); P.bday=P.bday||{}; P.bday[k]=y; saveProfile();
+    const f=mailCheck(); confetti(); if(f.length){ sfx('coin'); toast(`📮 ${k}からお礼の手紙が届いた！`); }
+    if(typeof render==='function') render();
+  }});
+}
+function bdayCal(){
+  const now=bdayToday.d||new Date(), t0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const L=Object.keys(BDAY).filter(k=>CHARS[k]).map(k=>{ const [m,d]=BDAY[k].d; let nx=new Date(t0.getFullYear(),m-1,d); if(nx<t0) nx=new Date(t0.getFullYear()+1,m-1,d); return {k,m,d,left:Math.round((nx-t0)/864e5)}; }).sort((a,b)=>a.left-b.left);
+  return `<section class="bday-cal"><span class="label">BIRTHDAYS</span><h4>🎂 誕生日カレンダー</h4><p class="note">誕生日の当日にお祝いすると、お礼の手紙が届くよ。</p>
+    <div class="bday-list">${L.map(x=>`<button class="bday-it${x.left===0?' today':''}" style="--rc:${CHARS[x.k].c}" onclick="${x.left===0?`bdayCelebrate('${x.k}')`:`openSheet('char:${x.k}')`}" aria-label="${x.k} ${x.m}月${x.d}日${x.left===0?' きょうが誕生日':''}"><span class="bday-f">${face(x.k)}</span><b>${x.m}/${x.d}</b><small>${x.left===0?'🎉 きょう！':`あと${x.left}日`}</small></button>`).join('')}</div></section>`;
+}
 function charsBody(){
   const riv=S.prof.riv||{}, open=Object.keys(CHARS).filter(k=>{ const r=riv[k]; return r&&r.w+r.l+r.d>=3; }).length;
   return `<span class="label">CHARACTERS</span><h3 class="ttl" style="font-size:22px">👥 9人の投資家</h3>
     <p class="note">タップでプロフィール。3回対戦すると「ひみつ」が見られます（${open}/9 解放）。</p>
     <div class="chgrid">${Object.keys(CHARS).map((k,j)=>{ const c=CHARS[k], p=CHAR_PROF[k]||{}, r=riv[k], g=r?r.w+r.l+r.d:0;
-      return `<button class="chr9" style="--rc:${c.c};--d:${j*45}ms" onclick="openSheet('char:${k}')"><span class="chr9-f">${face(k)}${g>=3?'<i>🔓</i>':''}</span><b>${k}</b><small>${p.t||''}</small></button>`; }).join('')}</div>${duoBook()}`;
+      return `<button class="chr9" style="--rc:${c.c};--d:${j*45}ms" onclick="openSheet('char:${k}')"><span class="chr9-f">${face(k)}${g>=3?'<i>🔓</i>':''}</span><b>${k}</b><small>${p.t||''}</small></button>`; }).join('')}</div>${bdayCal()}${duoBook()}`;
 }
 /* 試合のおわりのひとこと：CPUが勝ったら勝ちぜりふ、あなたが勝ったら2位のキャラのくやしいせりふ */
 const END_TALK={
@@ -8958,7 +9019,7 @@ function charProf(k){
   const p=CHAR_PROF[k]; if(!p) return '';
   const r=(S.prof.riv||{})[k], g=r?r.w+r.l+r.d:0, open=g>=3;
   return `<div class="cprof" style="--rc:${(CHARS[k]||{}).c||'#ffc83a'}"><div class="cp-say"><span class="label">口ぐせ</span><b>「${p.say}」</b></div>
-    <dl><div><dt>肩書き</dt><dd>${p.t}</dd></div><div><dt>年齢</dt><dd>${p.age}</dd></div><div><dt>趣味</dt><dd>${p.hobby}</dd></div>
+    <dl><div><dt>肩書き</dt><dd>${p.t}</dd></div><div><dt>年齢</dt><dd>${p.age}</dd></div>${BDAY[k]?`<div><dt>誕生日</dt><dd>${BDAY[k].d[0]}月${BDAY[k].d[1]}日${bdayToday()===k?' 🎂きょう！':''}</dd></div>`:''}<div><dt>趣味</dt><dd>${p.hobby}</dd></div>
       <div><dt>好きな産業</dt><dd class="cp-fav" style="--c:var(--i${p.fav})">${scene(p.fav)}<span>${IND[p.fav]}</span></dd></div></dl>
     <div class="cp-style"><span class="label">戦い方</span><p>${p.style}</p></div>
     <div class="cp-sec${open?' on':''}"><span class="label">ひみつ</span>${open?`<p>${p.sec}</p>`:`<p>🔒 ${k}と3回対戦すると見られる（いま ${g}回）</p><i style="width:${Math.min(100,g/3*100)}%"></i>`}</div></div>`;
