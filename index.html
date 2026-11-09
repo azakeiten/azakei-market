@@ -2803,6 +2803,90 @@ html.light .tw-it.on small{color:#14935a}
 .vs-verdict{margin:6px 0 12px;text-align:center;font-weight:900;font-size:15px}
 html.light .vs-cmp{background:rgb(0 0 0 / .05)}
 html.light .vs-k2{background:#888}
+/* 🚶 おでかけ・📔 おでかけアルバム */
+.out-entry{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 12px}
+.out-eb{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px;border:0;border-radius:16px;background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .14);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.out-eb span{font-size:26px;line-height:1}
+.out-eb b{font-size:15px}
+.out-eb small{font-size:11px;opacity:.75}
+.out-eb.go{background:linear-gradient(150deg,rgb(255 200 58 / .22),rgb(255 120 160 / .14));box-shadow:inset 0 0 0 1.5px var(--gold)}
+.out-h{display:block;margin:12px 0 6px;font-size:15px}
+.out-h small{font-weight:600;font-size:11px;opacity:.75;margin-left:4px}
+.out-fr{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:thin}
+.out-k{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;width:74px;padding:8px 4px;border:0;border-radius:14px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--rc) 45%,transparent);color:inherit;font:inherit;cursor:pointer;transition:transform .15s}
+.out-k b{font-size:13px}
+.out-k small{font-size:10px;opacity:.7}
+.out-kf{width:48px;height:48px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px var(--rc)}
+.out-kf svg,.al-f svg,.out-ef svg{width:100%;height:100%;display:block}
+.out-k.on{background:color-mix(in srgb,var(--rc) 28%,transparent);box-shadow:inset 0 0 0 2.5px var(--rc),0 6px 16px -8px var(--rc);transform:translateY(-2px)}
+.out-pl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.out-p{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px 8px;border:0;border-radius:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--ic) 22%,transparent),rgb(255 255 255 / .03));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ic) 50%,transparent);color:inherit;font:inherit;cursor:pointer;min-width:0}
+.out-p svg{width:100%;height:64px;display:block}
+.out-p b{font-size:12px;line-height:1.25;text-align:center;min-height:2.5em;display:flex;align-items:center}
+.out-p small{font-size:10px;opacity:.75}
+.out-p small em{font-style:normal;color:#ff7aa8;font-weight:900}
+.out-p.on{box-shadow:inset 0 0 0 2.5px var(--ic),0 6px 16px -8px var(--ic);background:linear-gradient(180deg,color-mix(in srgb,var(--ic) 40%,transparent),rgb(255 255 255 / .05))}
+.out-p.off{opacity:.4;cursor:default;filter:grayscale(.6)}
+.out-st{position:absolute;top:4px;right:4px;font-style:normal;font-size:14px}
+.out-go{width:100%;margin:14px 0 8px}
+.out-go:disabled{opacity:.5}
+.out-empty{display:flex;align-items:center;gap:12px;padding:14px;margin:10px 0;border-radius:16px;background:rgb(255 255 255 / .06)}
+.out-empty p{margin:0;font-size:14px;line-height:1.6}
+.out-ef{flex:none;width:60px;height:60px;border-radius:50%;overflow:hidden;background:#fff}
+.out-place{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 2px}
+.out-place svg{width:170px;height:auto;max-height:180px;filter:drop-shadow(0 8px 12px rgb(0 0 0 / .4))}
+.out-place b{font-family:var(--display);font-weight:400;font-size:22px;color:#fff}
+.out-place small{font-size:12px;opacity:.8}
+.out-trv{display:flex;align-items:center;justify-content:center;gap:10px;padding:4px}
+.out-trv span{padding:4px 10px;border-radius:99px;background:#ffd84a;color:#3a2a00;font-weight:900;font-size:13px}
+.out-trv b{font-size:16px;color:color-mix(in srgb,var(--ic) 50%,#fff)}
+.out-snap{display:flex;justify-content:center;padding:4px 0;position:relative}
+.out-snap .out-pol{width:200px;animation:outSnap .7s cubic-bezier(.2,1.2,.4,1) both}
+.out-snap::after{content:"";position:absolute;inset:-14px;border-radius:18px;background:#fff;pointer-events:none;animation:outFlash .6s ease-out both}
+@keyframes outSnap{from{transform:rotate(-14deg) scale(.6);opacity:0}to{transform:rotate(var(--rt)) scale(1);opacity:1}}
+@keyframes outFlash{from{opacity:.95}to{opacity:0}}
+.out-pol{margin:0;padding:7% 7% 4%;background:#fffdf7;border-radius:4px;box-shadow:0 8px 18px -8px rgb(0 0 0 / .55);transform:rotate(var(--rt));color:#2a1f0e}
+.out-ph{position:relative;aspect-ratio:1/1;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--ic) 40%,#fff),var(--ic))}
+.out-bg svg{position:absolute;left:0;bottom:-6%;width:100%;height:auto;display:block}
+.out-bd{position:absolute;left:3%;bottom:2%;width:40%;height:auto;max-height:70%}
+.out-f{position:absolute;right:2%;bottom:-6%;width:56%;aspect-ratio:1}
+.out-f svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 6px rgb(0 0 0 / .3))}
+.out-dt{position:absolute;top:4%;right:5%;font:700 9px/1 ui-monospace,Consolas,monospace;color:#ff8a3d;text-shadow:0 0 4px rgb(255 120 40 / .7)}
+.out-pol figcaption{display:flex;flex-direction:column;align-items:center;padding-top:6%;line-height:1.25}
+.out-pol figcaption b{font-size:13px;text-align:center}
+.out-pol figcaption small{font-size:10px;color:#7a6a4a}
+.out-snap .out-dt{font-size:11px}
+.out-snap figcaption b{font-size:15px}
+.al-prog{display:flex;align-items:center;gap:10px;margin:6px 0 10px;font-size:13px}
+.al-prog b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--gold-t,var(--gold))}
+.al-prog i{flex:1;height:10px;border-radius:99px;background:rgb(255 255 255 / .1);overflow:hidden}
+.al-prog i b{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#ff8ab8);border-radius:99px}
+.al-st{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;margin-bottom:12px}
+.al-row{display:flex;align-items:center;gap:6px;padding:4px 8px 4px 4px;border-radius:99px;background:rgb(255 255 255 / .05)}
+.al-row.full{background:color-mix(in srgb,var(--rc) 25%,transparent);box-shadow:inset 0 0 0 1.5px var(--rc)}
+.al-f{flex:none;width:28px;height:28px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 1.5px var(--rc)}
+.al-dots{display:flex;gap:4px;flex:1;justify-content:space-between}
+.al-dots i{width:12px;height:12px;border-radius:50%;background:rgb(255 255 255 / .12)}
+.al-dots i.on{background:var(--ic);box-shadow:0 0 6px -1px var(--ic)}
+.al-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px;padding:6px 2px 14px}
+.al-it{padding:0;border:0;background:none;cursor:pointer;min-width:0}
+.al-it.new .out-pol{animation:alNew 1.2s ease-in-out 3;box-shadow:0 0 0 3px var(--gold),0 8px 18px -8px rgb(0 0 0 / .55)}
+@keyframes alNew{50%{transform:rotate(0) scale(1.07)}}
+.out-walk{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,#8fd3ff,#d9f2ff 60%,#f4e8c8);overflow:hidden;animation:owIn .3s ease-out both}
+.out-walk.out{animation:owOut .35s ease-in both}
+.ow-town{position:absolute;left:0;top:0;height:100%;display:flex;animation:owScroll 1.6s linear both}
+.ow-town svg{height:100%;width:auto;display:block}
+.ow-pair{position:relative;display:flex;gap:6px;margin-top:-22vh}
+.ow-f{width:76px;height:76px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 3px #fff,0 0 0 6px var(--rc,#ffc83a),0 10px 20px -8px rgb(0 0 0 / .5);display:flex;align-items:center;justify-content:center;animation:owHop .32s ease-in-out infinite alternate}
+.ow-f+.ow-f{animation-delay:-.16s}
+.ow-f svg{width:100%;height:100%;display:block}
+.ow-f i{font-style:normal;font-size:44px}
+.ow-t{position:relative;font-family:var(--display);font-weight:400;font-size:26px;color:#fff;letter-spacing:.1em;text-shadow:0 2px 0 rgb(0 0 0 / .35),0 0 14px rgb(0 0 0 / .4)}
+@keyframes owScroll{from{transform:translateX(-8%)}to{transform:translateX(-52%)}}
+@keyframes owHop{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+@keyframes owIn{from{opacity:0}}
+@keyframes owOut{to{opacity:0}}
+@media (prefers-reduced-motion:reduce){.out-snap .out-pol,.out-snap::after,.al-it.new .out-pol{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4618,6 +4702,8 @@ function renderSheet(){
   else if(k==='facemaker') body=`<div id="fmw">${fmInner()}</div>`;
   else if(k==='mail') body=mailBody();
   else if(k==='town') body=townBody();
+  else if(k==='outing') body=outBody();
+  else if(k==='oalbum') body=oalbBody();
   else if(k==='twshare') body=`<div class="tw-wrap2">${twShareBody()}</div>`;
   else if(k==='visit') body=`<div class="tw-wrap2">${visitBody()}</div>`;
   else if(k==='puzzle') body=puzBody();
@@ -6327,6 +6413,116 @@ function visitBody(){
     <p class="vs-verdict">${verdict}</p>
     <div class="col" style="gap:8px">${played?`<button class="btn gold big" onclick="openTown()">自分のまちを見る</button>`:`<button class="btn gold big" onclick="closeSheet();go('play','cpu')">あそんで、自分のまちをつくる</button>`}<button class="btn ghost" onclick="S.visit=null;closeSheet()">とじる</button></div>`;
 }
+/* ---- 🚶 おでかけ：なかよし Lv2 のキャラと、まちの建物へ。会話＋建物の豆知識 → 思い出の写真を📔アルバムに（9人×6か所） ---- */
+const OUT_L={
+  'ハル':['うおー！ ここの電気、ぐんぐん流れてる感じがする！ オレの元気も発電できそうだぜ！','お金がいっぱいの場所って、なんか背すじがのびるな！ オレの貯金箱も連れてくりゃよかった！','機械がガシャンガシャン動いてる！ 全力で働くやつ、オレ大好きだ！','お店ってワクワクするよな！ よし、スポーツドリンク全部ぶっこむ…いや、1本にしとく！','電車もバスも速えー！ …でもオレ、走ったほうが速い気がする！','テレビに映ったら、なんて言おうかな…「全部ぶっこむ！」で決まりだな！'],
+  'ナギ':['風が気持ちいいね〜。ここの電気も、いい波に乗って家まで届くのかな〜','お金も波みたいなもんだよね〜。集まって、また流れていくの〜','工場の音って、ちょっと波の音に似てない？ ゴーッて〜','お店って、人の流れがおもしろいよね〜。みんな、どの波に乗るんだろ〜','ここ、いちばん「流れ」が見える場所なんだ〜。人もものも、ぜんぶ動いてる〜','ニュースが流れると、みんな同じ方向に動くんだよね〜。まさにビッグウェーブ〜'],
+  'ユイ':['…電気って、止まるまで誰も気にしないでしょ。みんなが見てない場所ほど、おもしろいの。','…ここ、落ち着く。お金の流れを見てると、人の気持ちが透けて見えるの。','工場は正直。いいものを作れば、ちゃんと評価される。…わたしは好き。','みんなが並んでるお店より、すいてるお店のほうが、いい発見があるの。','人が多すぎ。…でも、人の多さはそのまま、まちの元気なんだよね。','ニュースで騒がれた日は、逆を考える。…それがわたしのやり方。'],
+  'アオイ':['この電気で、推しのライブのライトが光ってるのかも…！ 感謝しかない！','ここで推し活資金を…いや、ちゃんと計画的に使うのが本当のファンだよね！','推しのグッズも、こういう工場で作られてるのかな!? 見学したい！','きゃー！ お店だ！ 推しのグッズ、置いてあるかな!? ちょっと見てくるね！','ここから遠征に行けるんだ…！ 推しのツアー、全部まわりたい！','ここ、推しに会えるかもしれない場所…！ 心臓がもたない…！'],
+  'ミナト':['発電量と使う量のバランス、ここで毎秒計算されてるんだ。美しいよね。','お金の動きはデータの宝庫だよ。金利が1%変わるだけで、景色がまるで違うんだ。','ここの生産ライン、1分間に何個つくってるか数えてみたい…。いや、数えるね。','レジの行列から、きょうの売上を予想してみよう。…たぶん、期待値どおりだ。','時刻表どおりに動く乗りものほど、信頼できるデータはないよ。ここ、好きなんだ。','視聴率や部数も、立派なデータだよね。数字の裏に、人の気持ちがあるんだ。'],
+  'トキ':['わしが若いころは、電気も貴重でな。夜のまちが、こんなに明るくなるとはのう。','ほう、ここはわしの古巣のようなもんじゃ。お金の匂いは、昔から変わらんのう。','昔、日本の工場は世界一と言われたもんじゃ。ものづくりは、国の底力じゃよ。','商店のにぎわいは、景気の温度計じゃ。にぎわっておれば、まちは元気じゃよ。','東京オリンピックのころ、新幹線が走り出してな。あれで日本の景気はぐんと伸びたんじゃ。','昔は新聞がすべてじゃった。いまは情報が速すぎて、相場もせわしないのう。'],
+  'レン':['エネルギーか。オレの燃える気持ちも、ここで電気にできそうだな。','金融…ここで勝負する大人たちも、下から這い上がってきたんだろうな。','工場って、地味だけど強い。…こういうの、嫌いじゃない。','ゲームの新作、売ってるかな。…いや、見るだけだ。見るだけ。','大会の遠征で、何度もここから出発したんだ。いつか、海外の大会にも行く。','ここが情報の発信地か。いつかオレの優勝インタビュー、ここで流してもらうぜ。'],
+  'ミオ':['エネルギーは「つくる→送る→家で使う」の順に届くんだよ。ノートにまとめてきたの！','金融のお仕事は、みんなのお金をあずかって、必要な人に貸すことなんだよ。予習ばっちり！','原料が工場で製品になると、価値が上がるの。それを「付加価値」っていうんだよ。','お店は、つくる会社とわたしたちをつなぐ役目なんだって。いつもありがとうございます！','運輸がつながると、遠くのまちとも商売ができるの。だからここが好きなんだ！','メディアは、みんなに情報を届けるお仕事。正しく伝えるって、すごく大事だよね。'],
+  'ソラ':['きょうもお日さまの力で、電気つくってるのかな〜。わたしも日なたぼっこしたい〜','お金のことは、のんびり考えるのがいちばんだよ〜。あわてると損するからね〜','工場の煙突から出る湯気、雲みたいでかわいい〜。写真とっとこ〜','お店でおやつ買っていこ〜。…あ、カフェのみんなにも、おみやげ〜','窓から見る雲って、乗りものに乗ってると、ずっと追いかけてくるんだよね〜','テレビの天気予報、毎日見てるよ〜。雲の動きが、いちばんのニュース〜']
+};
+const OUT_F={'ハル':'じつはここ、オレのいちばん好きな場所なんだ！ わかってるじゃねーか！','ナギ':'じつはここ、いちばん好きな場所なんだ〜。連れてきてくれて、ありがと〜','ユイ':'…ここ、わたしのいちばん好きな場所。…どうしてわかったの？','アオイ':'ここ、アオイのいちばん好きな場所！ もしかして、わたしのこと推してる!?','ミナト':'ここがぼくのいちばん好きな場所だって、データから読んだの？ すごいね。','トキ':'ここは、わしのいちばん好きな場所じゃ。よう覚えておったのう。','レン':'…ここ、オレのいちばん好きな場所だ。…なんでわかった？','ミオ':'ここ、わたしのいちばん好きな場所なの！ うれしい、ありがとう！','ソラ':'ここ、いちばん好きな場所なんだ〜。うれしいな〜'};
+const OUT_E={'ハル':'きょうは楽しかったな！ 次はどこ行く？ 全力でついてくぜ！','ナギ':'いい一日だったね〜。また、いっしょに流れに乗ろ〜','ユイ':'…わるくなかった。また、さそって。','アオイ':'たのしかった〜！ きょうの思い出、推しノートに書いとくね！','ミナト':'きょうの楽しさ、数値にしたら過去最高だよ。ありがとう。','トキ':'よい散歩じゃった。若い者と歩くと、わしも若返るのう。','レン':'…ま、たまにはこういうのもいいな。次は勝負だぞ。','ミオ':'きょうの見学、ノート3ページ分になったよ！ ありがとう！','ソラ':'のんびりできたね〜。また、いっしょに来よ〜'};
+const TW_TRIV=[
+  ['ソーラーパネルは、太陽の光をそのまま電気に変えるんだって。燃料がいらないんだね。','風車は、風の力で羽根を回して発電するんだ。風の強い海の近くや丘の上に多いんだよ。','日本の電気は、いまも多くが火力発電所でつくられているんだって。燃料の値段が上がると、電気代も上がるんだ。','スマート発電所は、電気を使う量を予想して、ムダなく発電するんだって。','エネルギーを自分たちでつくれる国は、外国で燃料が値上がりしても困りにくいんだって。'],
+  ['両替所では、円をドルなど外国のお金に交換できるんだ。その交換の比率が「為替レート」だよ。','信用金庫は、地元の人や会社のための金融機関なんだって。まちのお店を支えているんだ。','銀行は、あずかったお金を貸して「利息」をもらう。それが銀行のもうけになるんだよ。','証券取引所では、会社の「株」が売り買いされているんだ。株価は、みんなの期待で動くんだよ。','世界中のお金が集まる場所を「国際金融センター」っていうんだ。ニューヨークやロンドンが有名だよ。'],
+  ['日本の町工場には、世界でそこにしかない技術を持っているところもあるんだって。','1台の自動車は、約3万個もの部品からできているんだって。部品工場がなきゃ、車はつくれないね。','自動車は、日本が外国にいちばんたくさん輸出している製品なんだって。','ロボットが働くと、人が足りなくても、たくさんつくれるようになるんだ。','工場がたくさん集まると、部品や人をやりとりしやすくなる。それが「工業団地」なんだ。'],
+  ['屋台は、小さく始められるお店。商売の第一歩だね。','お店は、仕入れた値段より高く売って、その差がもうけになるんだ。それを「利益」っていうよ。','スーパーは、たくさん仕入れて、1つあたりの値段を安くしているんだ。「大量仕入れ」の力だね。','デパートのセールで人が集まると、まわりのお店まで売れることがあるんだって。','ものが売れると、つくる工場も、運ぶトラックも忙しくなる。「消費」は経済のエンジンなんだ。'],
+  ['バスは、車を持っていない人の大事な足なんだ。まちの暮らしを支えているよ。','駅ができると、まわりにお店や家が増えて、まちが大きくなるんだって。','ターミナル駅は、たくさんの路線が集まる駅。人が集まると、商売もさかんになるよ。','ネットで買ったものは、物流センターで仕分けされて届くんだ。早く届くのは、ここのおかげ。','空港ができると外国からの旅行者も来て、まちでお金を使ってくれるんだ。'],
+  ['掲示板は、むかしからある「みんなに知らせる道具」なんだ。','新聞には、株価や会社のニュースものってる。経済を知るための入り口だね。','ラジオは、停電しても電池で聞けるんだ。災害のときの大事な情報源なんだよ。','テレビのCMは、商品を知ってもらうための「広告」。広告のお金で、番組がつくられているんだ。','いまはスマホで、だれでも情報を発信できる時代。だからこそ、正しいか確かめるのが大切なんだって。']];
+const OUT_TOP=[212,212,182,152,114,50];
+let OUT_K=null, OUT_C=null, OUT_NEW=null;
+function outSt(){ const P=S.prof; if(!P.out || typeof P.out!=='object') P.out={d:0, al:{}}; if(!P.out.al || typeof P.out.al!=='object') P.out.al={}; return P.out; }
+function outFriends(){ const R=S.prof.riv||{}; return Object.keys(CHARS).filter(k=>FACE[k] && OUT_L[k] && bondLv(R[k])>=2).sort((a,b)=>bondLv(R[b])-bondLv(R[a])); }
+const outAll = () => Object.keys(CHARS).filter(k=>FACE[k] && OUT_L[k]);
+const outN = k => IND.filter((_,c)=>outSt().al[k+'|'+c]).length;
+const outBldSvg = (c,lv,o,cls) => `<svg${cls?` class="${cls}"`:''} viewBox="0 ${OUT_TOP[lv]} 102 ${280-OUT_TOP[lv]}" aria-hidden="true">${twBld(c,lv,8,o||{})}</svg>`;
+function outEntry(){
+  const n=Object.keys(outSt().al).length, F=outFriends().length;
+  return `<div class="out-entry"><button class="out-eb go" onclick="openOuting()"><span>🚶</span><b>キャラとおでかけ</b><small>${F?`${F}人とおでかけできるよ`:'なかよし Lv2 でさそえる'}</small></button><button class="out-eb" onclick="openOAlbum()"><span>📔</span><b>おでかけアルバム</b><small>${n} / ${outAll().length*6} 枚</small></button></div>`;
+}
+function openOuting(k){ sfx('click'); const F=outFriends(); OUT_K = k&&F.includes(k) ? k : OUT_K&&F.includes(OUT_K) ? OUT_K : F[0]||null; OUT_C=null; openSheet('outing'); }
+function openOAlbum(){ sfx('click'); OUT_NEW=null; openSheet('oalbum'); }
+function outPick(t,v){ if(t==='k'){ OUT_K=v; } else OUT_C=v; sfx('select'); haptic(8); const w=document.getElementById('outWrap'); if(w) w.innerHTML=outInner(); }
+function outBody(){ return `<div id="outWrap" class="tw-wrap2">${outInner()}</div>`; }
+function outInner(){
+  const F=outFriends(), L=townSt().pts.map(twLv), O=outSt(), A=O.al, today=O.d===todayKey();
+  const hd=`<span class="label">OUTING</span><h3 class="ttl" style="font-size:22px">🚶 まちへおでかけ</h3>`;
+  const back=`<div class="col" style="gap:8px"><button class="btn ghost" onclick="openSheet('town')">まちにもどる</button></div>`;
+  if(!F.length) return hd+`<div class="out-empty"><span class="out-ef">${face('ミオ',null,'happy')}</span><p>キャラと<b>3回いっしょに遊んで「なかよし Lv2」</b>になると、まちのおでかけにさそえるよ！</p></div><div class="col" style="gap:8px"><button class="btn gold big" onclick="closeSheet();go('play','cpu')">CPUと遊ぶ</button></div>`+back;
+  if(!L.some(v=>v)) return hd+`<div class="out-empty"><span class="out-ef">${face(F[0],null,'happy')}</span><p>まちに、まだ建物がないみたい。試合で点を取って、まちを育てよう！</p></div>`+back;
+  if(OUT_C!=null && !L[OUT_C]) OUT_C=null;
+  const fav=OUT_K?(CHAR_PROF[OUT_K]||{}).fav:null, ok=OUT_K && OUT_C!=null;
+  return hd+`<p class="note">${today?'きょうのコインはもらったよ。思い出あつめは何回でもできるよ。':'きょう最初のおでかけで 🪙+20。行った場所の写真がアルバムにたまるよ。'}</p>
+    <b class="out-h">① だれといく？</b>
+    <div class="out-fr">${F.map(k=>`<button class="out-k${k===OUT_K?' on':''}" style="--rc:${CHARS[k].c}" onclick="outPick('k','${k}')" aria-pressed="${k===OUT_K}"><span class="out-kf">${face(k,null,k===OUT_K?'happy':undefined)}</span><b>${k}</b><small>📸 ${outN(k)}/6</small></button>`).join('')}</div>
+    <b class="out-h">② どこへいく？${OUT_K?` <small>♥ は${OUT_K}の好きな場所</small>`:''}</b>
+    <div class="out-pl">${IND.map((n,c)=>{ const lv=L[c], has=OUT_K&&A[OUT_K+'|'+c];
+      return `<button class="out-p${c===OUT_C?' on':''}${lv?'':' off'}" style="--ic:var(--i${c})" ${lv?`onclick="outPick('c',${c})"`:'disabled'} aria-pressed="${c===OUT_C}">${outBldSvg(c,lv)}<b>${lv?TW_NAMES[c][lv-1]:'空き地'}</b><small>${IND[c]}${c===fav?' <em>♥</em>':''}</small>${has?'<i class="out-st" title="写真あり">📸</i>':''}</button>`; }).join('')}</div>
+    <button class="btn gold big out-go" ${ok?'':'disabled'} onclick="outGo()">${ok?`🚶 ${OUT_K}と「${TW_NAMES[OUT_C][L[OUT_C]-1]}」へ出発！`:'だれと・どこへ を選んでね'}</button>
+    <div class="row" style="gap:8px;justify-content:center"><button class="btn" onclick="openOAlbum()">📔 おでかけアルバム</button><button class="btn ghost" onclick="openSheet('town')">まちにもどる</button></div>`;
+}
+function outPol(k,c,e,i){
+  const lv=Math.max(1,Math.min(5,e.lv||1)), d=new Date(e.t||Date.now()), rot=[-4,3,-2,4,-3,2][(i||0)%6];
+  return `<figure class="out-pol" style="--rc:${CHARS[k].c};--ic:var(--i${c});--rt:${rot}deg"><div class="out-ph"><span class="out-bg">${scene(c)}</span>${outBldSvg(c,lv,{},'out-bd')}<span class="out-f">${face(k,null,'happy')}</span><span class="out-dt">'${String(d.getFullYear()).slice(2)} ${d.getMonth()+1} ${d.getDate()}</span></div><figcaption><b>${TW_NAMES[c][lv-1]}</b><small>${k} と</small></figcaption></figure>`;
+}
+function outGo(){
+  const k=OUT_K, c=OUT_C; if(!k || c==null || !OUT_L[k]) return; const lv=twLv(townSt().pts[c]); if(!lv) return;
+  const place=TW_NAMES[c][lv-1], fav=(CHAR_PROF[k]||{}).fav===c;
+  const bp=`<div class="out-place" style="--ic:var(--i${c})">${outBldSvg(c,lv,{anim:1})}<b>${place}</b><small>${esc(twName())} ・ ${IND[c]}</small></div>`;
+  const lines=[['me',`（${k}といっしょに、「${place}」へやってきた）`,null,bp], [k,OUT_L[k][c]], [k,TW_TRIV[c][lv-1],'happy',`<div class="out-trv" style="--ic:var(--i${c})"><span>💡 まめちしき</span><b>${IND[c]}</b></div>`], [k,fav?OUT_F[k]:OUT_E[k],'happy'], ['me','（記念に1枚、パシャッ！）',null,`<div class="out-snap">${outPol(k,c,{lv,t:Date.now()})}</div>`]];
+  closeSheet(); sfx('open');
+  const run=()=>novel(lines,{k, scene:c, label:`🚶 おでかけ · ${place}`, cls:'nv-out', done:()=>outDone(k,c,lv)});
+  if(reduced()) return run();
+  const w=document.createElement('div'); w.className='out-walk'; w.setAttribute('aria-hidden','true');
+  w.innerHTML=`<div class="ow-town">${townSvg({})}</div><div class="ow-pair"><span class="ow-f me">${S.prof.av==='face'&&S.prof.myFace?myFaceSvg('happy'):`<i>${esc([MY_ICON,MY_FACE,null].includes(myAvatar())?'🙂':myAvatar())}</i>`}</span><span class="ow-f" style="--rc:${CHARS[k].c}">${face(k,null,'happy')}</span></div><b class="ow-t">てくてく…</b>`;
+  document.body.appendChild(w); for(let i=0;i<4;i++) tone(520+(i%2)*90,.05,'triangle',.03,i*.32);
+  setTimeout(()=>{ w.classList.add('out'); run(); setTimeout(()=>w.remove(),400); },1500);
+}
+function outDone(k,c,lv){
+  const O=outSt(), id=k+'|'+c, isNew=!O.al[id], tk=todayKey(); let coin=0;
+  O.al[id]={lv, t:Date.now()};
+  if(O.d!==tk){ O.d=tk; coin=20; S.prof.coin=(S.prof.coin||0)+coin; }
+  saveProfile(); const n=Object.keys(O.al).length, full=outN(k)===6;
+  sfx(coin?'coin':'select'); if(isNew) confetti();
+  toast(`${isNew?`📔 新しい思い出！（${n}/${outAll().length*6}）`:'📔 思い出の写真を撮りなおしたよ'}${coin?` 🪙+${coin}`:''}${isNew&&full?` 🎉 ${k}と全部の場所に行けた！`:''}`);
+  OUT_NEW=id; openSheet('oalbum');
+}
+function oalbBody(){
+  const A=outSt().al, ks=outAll(), mx=ks.length*6;
+  const list=Object.entries(A).filter(([id])=>{ const [k,c]=id.split('|'); return CHARS[k] && OUT_L[k] && IND[+c]!=null; }).sort((a,b)=>(b[1].t||0)-(a[1].t||0)), n=list.length;
+  return `<div class="tw-wrap2"><span class="label">OUTING ALBUM</span><h3 class="ttl" style="font-size:22px">📔 おでかけアルバム</h3>
+    <div class="al-prog"><span><b>${n}</b> / ${mx} 枚</span><i><b style="width:${(n/mx*100).toFixed(1)}%"></b></i></div>
+    <div class="al-st">${ks.map(k=>`<div class="al-row${outN(k)===6?' full':''}" style="--rc:${CHARS[k].c}"><span class="al-f">${face(k)}</span><span class="al-dots">${IND.map((_,c)=>`<i class="${A[k+'|'+c]?'on':''}" style="--ic:var(--i${c})"></i>`).join('')}</span></div>`).join('')}</div>
+    ${n?`<p class="note">写真をタップすると、画像にして保存できるよ</p><div class="al-grid">${list.map(([id,e],i)=>{ const [k,c]=id.split('|'); return `<button class="al-it${id===OUT_NEW?' new':''}" onclick="outPhotoImg('${k}',${+c})" aria-label="${k}と${TW_NAMES[+c][Math.max(1,e.lv||1)-1]}の写真">${outPol(k,+c,e,i)}</button>`; }).join('')}</div>`:`<p class="note al-none">まだ写真がないよ。キャラといっしょに、まちへおでかけしよう！</p>`}
+    <div class="col" style="gap:8px">${outFriends().length?`<button class="btn gold big" onclick="openOuting()">🚶 おでかけする</button>`:''}<button class="btn ghost" onclick="openSheet('town')">まちにもどる</button></div></div>`;
+}
+async function outPhotoImg(k,c){
+  const e=outSt().al[k+'|'+c]; if(!e || !CHARS[k]) return; sfx('click'); toast('画像を作っています…'); try{ await document.fonts.ready; }catch(_){}
+  const W=1080, H=1300, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d'), css=getComputedStyle(document.documentElement), v=n=>css.getPropertyValue(n).trim();
+  const B='"M PLUS Rounded 1c",sans-serif', D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', lv=Math.max(1,Math.min(5,e.lv||1)), place=TW_NAMES[c][lv-1], d=new Date(e.t||Date.now()), ic=v(`--i${c}`)||'#888';
+  const g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#f6eedd'); g.addColorStop(1,'#e8dcc2'); x.fillStyle=g; x.fillRect(0,0,W,H);
+  const [sc,bd,fc]=await Promise.all([svgImg(scene(c),v,800,720), svgImg(outBldSvg(c,lv),v,300,Math.round(300*(280-OUT_TOP[lv])/102)), svgImg(face(k,null,'happy'),v,400,400)]);
+  x.save(); x.translate(W/2,H/2-20); x.rotate(-0.025);
+  x.shadowColor='rgba(60,40,10,.3)'; x.shadowBlur=44; x.shadowOffsetY=14; x.fillStyle='#fff'; x.fillRect(-450,-570,900,1080); x.shadowColor='transparent';
+  x.save(); x.beginPath(); x.rect(-400,-520,800,780); x.clip(); x.fillStyle=ic; x.fillRect(-400,-520,800,780);
+  const wg=x.createLinearGradient(0,-520,0,260); wg.addColorStop(0,'rgba(255,255,255,.65)'); wg.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=wg; x.fillRect(-400,-520,800,780);
+  if(sc) x.drawImage(sc,-400,-460,800,720);
+  if(bd) x.drawImage(bd,-380,260-bd.height-6,bd.width,bd.height);
+  if(fc) x.drawImage(fc,10,260-390,400,400);
+  x.font=`700 34px ui-monospace,Consolas,monospace`; x.textAlign='right'; x.fillStyle='#ff8a3d'; x.shadowColor='rgba(255,120,40,.6)'; x.shadowBlur=8; x.fillText(`'${String(d.getFullYear()).slice(2)}  ${d.getMonth()+1}  ${d.getDate()}`,380,-480); x.shadowColor='transparent';
+  x.restore();
+  x.textAlign='center'; x.fillStyle='#2a1f0e'; let fz=60; x.font=`800 ${fz}px ${B}`; while(x.measureText(place).width>760 && fz>36){ fz-=4; x.font=`800 ${fz}px ${B}`; } x.fillText(place,0,345);
+  x.font=`700 36px ${B}`; x.fillStyle='#6b5a3a'; const sub=`${k}と おでかけ ・ ${twName()}`; x.fillText(sub.length>26?sub.slice(0,26)+'…':sub,0,410);
+  x.restore();
+  x.textAlign='center'; x.font=`34px ${D}`; x.fillStyle='#b08a2e'; x.fillText('AZAKEI MARKET',W/2,H-56);
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'📸 思い出の写真', alt:`${k}と${place}で撮った思い出の写真`, name:`azakei-memory-${todayKey()}.png`, note:`${k}といっしょに行った「${place}」の思い出。保存して、友だちに見せてね。`};
+  openSheet('card');
+}
 let TW_SEL=null;
 function openTown(){ sfx('click'); TW_SEL=null; openSheet('town'); }
 function townPick(c){ TW_SEL=c; sfx('select'); haptic(8); const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner(); }
@@ -6345,6 +6541,7 @@ function townInner(){
       <p>${TW_DESC[c]}</p><div class="tw-bar"><i style="width:${pc.toFixed(0)}%"></i></div>
       <small>${nx?`次の「${TW_NAMES[c][lv]}」まで あと ${nx-T.pts[c]}pt（投資 ${T.pts[c]}pt）`:`最大レベル！ まちのシンボルです（投資 ${T.pts[c]}pt）`}</small></div>
     <div class="tw-how"><b>💡 まちの育て方</b><p>試合で出したカードの点数が、その産業に「投資」されます。独占できたら、さらに +3。いろいろな産業で点を取ると、バランスのいいまちになるよ。</p><p><b>GDP</b> は、まちで1年間に生み出された“もうけ”の合計のこと。本物の国でも、経済の大きさをはかる目安に使われています。</p></div>
+    ${outEntry()}
     ${twShopHTML()}
     <div class="tw-share"><button class="btn gold big" onclick="twShare()">🔗 まちを友だちに見せる</button><button class="btn big" onclick="openTownImg()">📸 写真を保存</button></div>`;
 }
@@ -6383,6 +6580,7 @@ async function openTownImg(){
 function homeRec(){
   const P=S.prof, k=todayKey(), out=[];
   { const b=bdayToday(); if(b && (P.bday||{})[b]!==new Date().getFullYear()) out.push({ic:'🎂', t:`きょうは${b}の誕生日！`, d:'お祝いすると、お礼の手紙が届くよ', go:`bdayCelebrate('${b}')`}); }
+  { const F=outFriends(); if(F.length && outSt().d!==k && twTot()>0){ const A=outSt().al, f=F.slice().sort((a,b)=>IND.filter((_,c)=>A[a+'|'+c]).length-IND.filter((_,c)=>A[b+'|'+c]).length)[0]; out.push({ic:'🚶', t:`${f}とまちへおでかけしよう`, d:'思い出の写真がとれるよ（きょう最初は 🪙+20）', go:`openOuting('${f}')`}); } }
   { const u=mailList().filter(L=>!mailRead(L.id)); if(u.length) out.push({ic:'📮', t:`${u[0].k}から手紙が届いています${u.length>1?`（ほか${u.length-1}通）`:''}`, d:'ポストを開けて読んでみよう', go:'openMail()'}); }
   if(!(P.daily||{})[k]) out.push({ic:'☀️', t:'今日のデイリーがまだだよ', d:'みんな同じNEWSで点数くらべ', go:'startDaily()'});
   const b=curBoss(); if(!(P.boss&&P.boss.wk===bossWeek())) out.push({ic:b.ic, t:`今週のボス「${b.n}」を倒そう`, d:`はじめての撃破で +${BOSS_COIN}コイン`, go:'startBoss()'});
