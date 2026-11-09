@@ -2781,6 +2781,28 @@ html.light .tw-bar,html.light .tw-g i{background:rgb(0 0 0 / .1)}
 html.light .tw-shop,html.light .tw-it{background:rgb(0 0 0 / .05)}
 html.light .tw-it.on small{color:#14935a}
 @media (prefers-reduced-motion:reduce){.tw-rp,.tw-rf,.tw-it.on .tw-ii{animation:none}}
+/* まちを訪問 */
+.tw-wrap2{flex:none;min-width:0}
+.tw-view{flex:none}
+.tw-share{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tw-share .btn{width:100%;padding-left:6px;padding-right:6px;font-size:14px}
+.tw-qr{display:flex;justify-content:center;margin:10px 0}
+.tw-qr .mn-qr{padding:10px;border-radius:14px;background:#fff}
+.vs-wel{animation:slin .5s both}
+.vs-wel .ttl{margin:2px 0 0}
+.vs-cmp{margin:10px 0;padding:12px;border-radius:14px;background:rgb(255 255 255 / .05)}
+.vs-row{display:grid;grid-template-columns:5.2em minmax(0,1fr) 3em;align-items:center;gap:8px;margin-top:6px;font-size:12.5px;font-weight:800}
+.vs-bars{display:flex;flex-direction:column;gap:2px}
+.vs-bars i{display:block;height:6px;min-width:2px;border-radius:99px;transition:width .6s}
+.vs-b1{background:var(--ic)}
+.vs-b2{background:color-mix(in srgb,var(--ic) 45%,#fff);opacity:.7}
+.vs-row em{font-style:normal;text-align:right;font-family:var(--display);font-weight:400}
+.vs-k{display:inline-block;width:10px;height:6px;margin:0 3px 0 8px;border-radius:99px;vertical-align:middle}
+.vs-k1{background:var(--gold,#ffc83a)}
+.vs-k2{background:#fff;opacity:.7}
+.vs-verdict{margin:6px 0 12px;text-align:center;font-weight:900;font-size:15px}
+html.light .vs-cmp{background:rgb(0 0 0 / .05)}
+html.light .vs-k2{background:#888}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -3761,7 +3783,7 @@ function start(data){
   if(!data.S){ const sv=load('azakei-seats'); if(Array.isArray(sv) && sv.length>=2 && sv.length<=6 && sv.every(x=>x && typeof x.name==='string' && TYPES[x.type])) S.seats=sv; }   // 前回の席（キャラ選択）を覚えておく
   if(!S.rec) S.rec=load('azakei-rec')||{games:0,wins:0,best:0};
   if(!S.prof) S.prof=loadProfile();
-  if(!data.S){ loginStamp(); rankSeasonCheck(); duelFromUrl(); mnFromUrl(); tableFromUrl(); }
+  if(!data.S){ loginStamp(); rankSeasonCheck(); duelFromUrl(); mnFromUrl(); tableFromUrl(); townFromUrl(); }
   if(S.vib===undefined){ const v=load('azakei-vib'); S.vib = v===null ? true : !!v; }
   if(S.calm===undefined) S.calm=!!load('azakei-calm');
   if(!S.len) S.len=load('azakei-len')==='long'?'long':'short';
@@ -4596,6 +4618,8 @@ function renderSheet(){
   else if(k==='facemaker') body=`<div id="fmw">${fmInner()}</div>`;
   else if(k==='mail') body=mailBody();
   else if(k==='town') body=townBody();
+  else if(k==='twshare') body=`<div class="tw-wrap2">${twShareBody()}</div>`;
+  else if(k==='visit') body=`<div class="tw-wrap2">${visitBody()}</div>`;
   else if(k==='puzzle') body=puzBody();
   else if(k==='mynews') body=myNewsBody();
   else if(k==='mynewsedit') body=myNewsEditBody();
@@ -6137,8 +6161,8 @@ function twBld(c,lv,x,o){
   return s;
 }
 function townSvg(o){
-  o=o||{}; const T=townSt(), L=T.pts.map(twLv), tot=T.pts.reduce((a,b)=>a+b,0), rk=twRank(tot), ph=skyPhase(new Date().getHours()), nt=ph==='night', A=!!o.anim && !reduced();
-  const D=twDecoOn();
+  o=o||{}; const T=o.data||townSt(), L=T.pts.map(twLv), tot=T.pts.reduce((a,b)=>a+b,0), rk=twRank(tot), ph=skyPhase(new Date().getHours()), nt=ph==='night', A=!!o.anim && !reduced();
+  const D=o.data?o.data.deco:twDecoOn();
   const SK={morn:['#ffc9a0','#cfe8ff'],day:['#6fc3ff','#dff3ff'],eve:['#6a4f9c','#ffa77a'],night:['#0a1035','#2b3a78']}[ph];
   const id='twk'+(townSvg.n=(townSvg.n||0)+1);
   let s=`<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${SK[0]}"/><stop offset="1" stop-color="${SK[1]}"/></linearGradient></defs><rect width="600" height="330" fill="url(#${id})"/>`;
@@ -6236,13 +6260,15 @@ function twDecoFront(D){
 }
 /* 住民キャラ：なかよし Lv2 以上のキャラが引っこしてくる（最大5人） */
 function twResidents(){ const R=S.prof.riv||{}; return Object.keys(CHARS).filter(k=>FACE[k] && bondLv(R[k])>=2).sort((a,b)=>bondLv(R[b])-bondLv(R[a])).slice(0,5); }
-function twResHTML(){
-  const ks=twResidents();
-  if(!ks.length) return `<p class="tw-nores">キャラと「なかよし Lv2」になると、まちに引っこしてくるよ</p>`;
-  return `<div class="tw-res">${ks.map((k,i)=>`<button class="tw-rp" style="--rc:${CHARS[k].c};--a:${[6,30,52,18,70][i]}%;--b:${[44,78,90,64,96][i]}%;--dur:${18+i*4}s;--dl:-${i*3}s" onclick="twTalk(this,'${k}')" aria-label="${k}と話す"><span class="tw-rf">${face(k)}</span></button>`).join('')}</div>`;
+function twResHTML(ks,vis){
+  ks=ks||twResidents();
+  if(!ks.length) return vis?'': `<p class="tw-nores">キャラと「なかよし Lv2」になると、まちに引っこしてくるよ</p>`;
+  return `<div class="tw-res">${ks.map((k,i)=>`<button class="tw-rp" style="--rc:${CHARS[k].c};--a:${[6,30,52,18,70][i]}%;--b:${[44,78,90,64,96][i]}%;--dur:${18+i*4}s;--dl:-${i*3}s" onclick="twTalk(this,'${k}'${vis?',1':''})" aria-label="${k}と話す"><span class="tw-rf">${face(k)}</span></button>`).join('')}</div>`;
 }
-function twTalk(btn,k){
+function twTalk(btn,k,vis){
   sfx('click'); haptic(6);
+  if(vis){ const pf=CHAR_PROF[k]||{}, V=S.visit||{}, VL=[pf.say?`「${pf.say}」`:'', `「${V.n||'このまち'}」へようこそ！ ゆっくりしていってね。`, `${IND[pf.fav]||'市場'}が好きで、ここに住んでるんだ。`, 'きみのまちにも、遊びに行ってみたいな。'].filter(Boolean), vt=VL[Math.floor(Math.random()*VL.length)];
+    btn.querySelectorAll('.tw-bub').forEach(e=>e.remove()); const vb=document.createElement('span'); vb.className='tw-bub'; vb.textContent=vt; btn.appendChild(vb); voice(k,vt); setTimeout(()=>vb.remove(),3600); return; }
   const T=townSt(), pf=CHAR_PROF[k]||{}, fv=pf.fav!=null?pf.fav:0, lv=twLv(T.pts[fv]), tot=twTot(), rk=twRank(tot), D=twDecoOn();
   const L=[
     lv ? `${TW_NAMES[fv][lv-1]}ができて、毎日たのしいよ！` : `${IND[fv]}の建物がまだないね…。${IND[fv]}、好きなんだけどな`,
@@ -6257,6 +6283,49 @@ function twTalk(btn,k){
   btn.querySelectorAll('.tw-bub').forEach(e=>e.remove());
   const b=document.createElement('span'); b.className='tw-bub'; b.textContent=t; btn.appendChild(b); voice(k,t);
   setTimeout(()=>b.remove(), 3600);
+}
+/* ---- まちを訪問：自分のまちをリンク（?town=…）にして送る。受けとった人は「まちくらべ」できる ---- */
+function twEncode(){
+  const T=townSt(), ks=Object.keys(CHARS), res=twResidents(), on=twDecoOn();
+  const o={v:1, p:T.pts.map(n=>Math.max(0,Math.min(99999,Math.floor(n||0)))), d:TW_DECO.reduce((m,x,i)=>m|(on.includes(x.id)?1<<i:0),0), r:ks.reduce((m,k,i)=>m|(res.includes(k)?1<<i:0),0), n:twName().slice(0,12)};
+  return b64u(new TextEncoder().encode(JSON.stringify(o)));
+}
+const twUrl = () => PUBLIC_URL+'?town='+twEncode();
+function twDecode(code){
+  if(typeof code!=='string' || code.length>800 || !/^[A-Za-z0-9_-]+$/.test(code)) throw new Error('bad');
+  const o=JSON.parse(new TextDecoder().decode(ub64u(code))); if(!o || o.v!==1 || !Array.isArray(o.p) || o.p.length!==6) throw new Error('bad');
+  const num=v=>{ v=Number(v); return Number.isFinite(v)?Math.max(0,Math.min(99999,Math.floor(v))):0; }, bits=v=>Number.isInteger(v)&&v>=0?v:0, ks=Object.keys(CHARS);
+  const n=mnSafe(typeof o.n==='string'?o.n:'').replace(/\s+/g,' ').trim().slice(0,12) || 'ともだちのまち';
+  return {pts:o.p.map(num), deco:TW_DECO.filter((x,i)=>bits(o.d)&(1<<i)).map(x=>x.id), res:ks.filter((k,i)=>bits(o.r)&(1<<i) && FACE[k]).slice(0,5), n};
+}
+function townFromUrl(){
+  try{ const q=new URLSearchParams(location.search).get('town'); if(!q) return; history.replaceState(null,'',location.pathname);
+    S.visit=twDecode(q); setTimeout(()=>{ sfx('open'); openSheet('visit'); },1200);
+  }catch(e){ toast('まちのリンクが読めませんでした'); }
+}
+function twShare(){ sfx('click'); openSheet('twshare'); setTimeout(()=>{ try{ fillQRs(); }catch(e){} },60); }
+function twShareBody(){
+  const url=twUrl(), canShare=!IN_CLAUDE && !!navigator.share;
+  return `<span class="label">SHARE MY TOWN</span><h3 class="ttl" style="font-size:22px">🔗 まちを友だちに見せる</h3>
+    <p class="note">このリンクやQRコードを開くと、「${esc(twName())}」に遊びに来られます。友だちのまちとくらべっこしよう！</p>
+    <div class="tw-qr"><div class="mn-qr" data-qr="${esc(url)}" data-size="190"></div></div>
+    <div class="codebox"><span class="label">リンク</span><b style="word-break:break-all;font-size:11px">${esc(url)}</b></div>
+    <div class="row" style="gap:8px;flex-wrap:wrap;justify-content:center">${canShare?`<button class="btn gold" onclick="twNativeShare()">送る（LINEなど）</button>`:''}<button class="btn${canShare?'':' gold'}" onclick="copyText(twUrl())">リンクをコピー</button><button class="btn ghost" onclick="openSheet('town')">もどる</button></div>
+    <p class="note">送られるのは、建物のレベル・かざり・住民キャラ・まちの名前だけです。</p>`;
+}
+function twNativeShare(){ navigator.share({title:'AZAKEI MARKET', text:`わたしのまち「${twName()}」に遊びに来て！`, url:twUrl()}).catch(()=>{}); }
+function visitBody(){
+  const V=S.visit; if(!V) return '<p class="note">まちが見つかりませんでした。</p>';
+  const tot=V.pts.reduce((a,b)=>a+b,0), rk=twRank(tot), L=V.pts.map(twLv), my=townSt(), ML=my.pts.map(twLv), mt=twTot(), played=(S.prof.st&&S.prof.st.games)>0;
+  const verdict = !played ? 'あなたも遊ぶと、自分だけのまちが育つよ！' : mt>tot ? `あなたのまちのほうが大きい！ （GDP ${mt} vs ${tot}）` : mt<tot ? `「${esc(V.n)}」のほうが大きい！ あと ${tot-mt}pt で追いつく！` : 'まったく同じ大きさ！ すごいぐうぜん！';
+  return `<div class="vs-wel"><span class="label">WELCOME</span><h3 class="ttl" style="font-size:22px">🏙️ 「${esc(V.n)}」へようこそ！</h3></div>
+    <div class="tw-stats"><div><b>${rk.ic} ${rk.n}</b><small>まちの大きさ</small></div><div><b>${twPop(tot).toLocaleString()}</b><small>人口（人）</small></div><div><b>${tot}</b><small>GDP（pt）</small></div></div>
+    <div class="tw-view"><div class="tw-stage">${townSvg({anim:1,data:V})}${twResHTML(V.res,1)}</div></div>
+    <p class="note tw-hint">${V.res.length?'住民をタップすると、あいさつしてくれるよ':'このまちには、まだ住民キャラがいないみたい'}</p>
+    ${played?`<div class="vs-cmp"><div class="row spread"><b>⚖️ まちくらべ</b><span class="note">濃い：${esc(V.n)} ／ うすい：あなた</span></div>
+      ${IND.map((n,c)=>`<div class="vs-row" style="--ic:var(--i${c})"><span>${n}</span><span class="vs-bars"><i class="vs-b1" style="width:${L[c]*20}%"></i><i class="vs-b2" style="width:${ML[c]*20}%"></i></span><em>${L[c]} : ${ML[c]}</em></div>`).join('')}</div>`:''}
+    <p class="vs-verdict">${verdict}</p>
+    <div class="col" style="gap:8px">${played?`<button class="btn gold big" onclick="openTown()">自分のまちを見る</button>`:`<button class="btn gold big" onclick="closeSheet();go('play','cpu')">あそんで、自分のまちをつくる</button>`}<button class="btn ghost" onclick="S.visit=null;closeSheet()">とじる</button></div>`;
 }
 let TW_SEL=null;
 function openTown(){ sfx('click'); TW_SEL=null; openSheet('town'); }
@@ -6277,7 +6346,7 @@ function townInner(){
       <small>${nx?`次の「${TW_NAMES[c][lv]}」まで あと ${nx-T.pts[c]}pt（投資 ${T.pts[c]}pt）`:`最大レベル！ まちのシンボルです（投資 ${T.pts[c]}pt）`}</small></div>
     <div class="tw-how"><b>💡 まちの育て方</b><p>試合で出したカードの点数が、その産業に「投資」されます。独占できたら、さらに +3。いろいろな産業で点を取ると、バランスのいいまちになるよ。</p><p><b>GDP</b> は、まちで1年間に生み出された“もうけ”の合計のこと。本物の国でも、経済の大きさをはかる目安に使われています。</p></div>
     ${twShopHTML()}
-    <button class="btn gold big" style="width:100%" onclick="openTownImg()">📸 まちの写真を保存</button>`;
+    <div class="tw-share"><button class="btn gold big" onclick="twShare()">🔗 まちを友だちに見せる</button><button class="btn big" onclick="openTownImg()">📸 写真を保存</button></div>`;
 }
 function townFinPanel(){
   const t=G&&G.town; if(!t) return '';
@@ -6290,7 +6359,7 @@ function townFinPanel(){
 }
 async function openTownImg(){
   sfx('click'); toast('画像を作っています…'); try{ await document.fonts.ready; }catch(e){}
-  const W=1080, H=1080, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d'), css=getComputedStyle(document.documentElement), v=n=>css.getPropertyValue(n).trim();
+  const W=1080, H=1200, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d'), css=getComputedStyle(document.documentElement), v=n=>css.getPropertyValue(n).trim();
   const D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', B='"M PLUS Rounded 1c",sans-serif';
   const T=townSt(), L=T.pts.map(twLv), tot=twTot(), rk=twRank(tot), nm=(NET.name||'').trim()||'あなた';
   const g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#1d2266'); g.addColorStop(1,'#07081a'); x.fillStyle=g; x.fillRect(0,0,W,H);
@@ -6303,8 +6372,11 @@ async function openTownImg(){
   rr(x,40,240,1000,550,34); x.lineWidth=6; x.strokeStyle='rgba(255,255,255,.25)'; x.stroke();
   IND.forEach((n,c)=>{ const cx=40+1000/6*(c+.5), y=860; x.beginPath(); x.arc(cx,y,30,0,Math.PI*2); x.fillStyle=v('--i'+c); x.fill(); x.fillStyle='#1a1033'; x.font=`34px ${D}`; x.fillText(String(L[c]),cx,y+12);
     x.fillStyle='#fff'; x.font=`800 24px ${B}`; x.fillText(n,cx,y+66); x.fillStyle='rgba(255,255,255,.6)'; x.font=`700 19px ${B}`; x.fillText(L[c]?TW_NAMES[c][L[c]-1]:'空き地',cx,y+94,160); });
-  x.textAlign='left'; x.font=`40px ${D}`; { const aw=x.measureText('AZAKEI ').width, mw=x.measureText('MARKET').width, x0=W/2-(aw+mw)/2; x.fillStyle='#fff'; x.fillText('AZAKEI',x0,1018); x.fillStyle=v('--gold'); x.fillText('MARKET',x0+aw,1018); }
-  x.textAlign='center'; x.font=`500 22px ${B}`; x.fillStyle='rgba(255,255,255,.55)'; x.fillText(PUBLIC_URL.replace(/^https:\/\//,''),W/2,1055);
+  { let qd=false; try{ if(await loadQR() && window.QRCode){ const d=document.createElement('div'); new QRCode(d,{text:twUrl(),width:150,height:150,colorDark:'#0a0c22',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M}); const qc=d.querySelector('canvas'); if(qc){ rr(x,70,984,176,176,18); x.fillStyle='#fff'; x.fill(); x.drawImage(qc,83,997,150,150); qd=true; } } }catch(e){}
+    const tx=qd?290:W/2; x.textAlign=qd?'left':'center';
+    if(qd){ x.font=`800 30px ${B}`; x.fillStyle='#fff'; x.fillText('QRを読みこむと、',tx,1030); x.fillText('このまちに遊びに行けるよ！',tx,1072); }
+    x.font=`40px ${D}`; const aw=x.measureText('AZAKEI ').width, mw=x.measureText('MARKET').width, x0=qd?tx:W/2-(aw+mw)/2; x.textAlign='left'; x.fillStyle='#fff'; x.fillText('AZAKEI',x0,qd?1134:1018); x.fillStyle=v('--gold'); x.fillText('MARKET',x0+aw,qd?1134:1018);
+    x.textAlign=qd?'left':'center'; x.font=`500 22px ${B}`; x.fillStyle='rgba(255,255,255,.55)'; x.fillText(PUBLIC_URL.replace(/^https:\/\//,''),qd?tx:W/2,qd?1168:1055); }
   CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'🏙️ まちの写真', alt:'育てたマイタウンの画像', name:`azakei-town-${todayKey()}.png`, note:'試合で育てたあなたのまち。友だちのまちとくらべてみよう！'};
   openSheet('card');
 }
