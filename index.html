@@ -2887,6 +2887,66 @@ html.light .vs-k2{background:#888}
 @keyframes owIn{from{opacity:0}}
 @keyframes owOut{to{opacity:0}}
 @media (prefers-reduced-motion:reduce){.out-snap .out-pol,.out-snap::after,.al-it.new .out-pol{animation:none}}
+/* 📢 まちの速報 */
+.tev-card{display:flex;align-items:center;gap:12px;width:100%;margin:8px 0 6px;padding:12px;border:0;border-radius:16px;background:linear-gradient(120deg,color-mix(in srgb,var(--ic) 38%,transparent),rgb(255 255 255 / .04));box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--ic) 70%,transparent);color:inherit;font:inherit;text-align:left;cursor:pointer;position:relative;overflow:hidden}
+.tev-card:not(.done){animation:tevGlow 1.8s ease-in-out infinite alternate}
+.tev-card:not(.done)::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgb(255 255 255 / .18) 50%,transparent 70%);transform:translateX(-100%);animation:tevShine 2.6s ease-in-out infinite}
+@keyframes tevGlow{to{box-shadow:inset 0 0 0 2px var(--ic),0 0 18px -4px var(--ic)}}
+@keyframes tevShine{60%,100%{transform:translateX(100%)}}
+.tev-ci{flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:28px;background:rgb(0 0 0 / .2)}
+.tev-ct{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}
+.tev-ct small{font-size:11px;font-weight:900;color:#ff6b6b;letter-spacing:.04em}
+.tev-card.done .tev-ct small{color:inherit;opacity:.65}
+.tev-ct b{font-size:16px}
+.tev-ct em{font-style:normal;font-size:12px;opacity:.8}
+.tev-brk{display:flex;align-items:center;margin:0 48px 10px 0;border-radius:10px;overflow:hidden;background:#1a0f12;box-shadow:inset 0 0 0 1.5px #ff4d4d}
+.tev-bl{flex:none;padding:6px 10px;background:#ff3b3b;color:#fff;font-weight:900;font-size:13px;animation:tevBlink 1s steps(2) infinite}
+@keyframes tevBlink{50%{background:#c41e1e}}
+.tev-tk{flex:1;overflow:hidden;white-space:nowrap;font-size:13px;color:#ffe9a8}
+.tev-tk i{display:inline-block;font-style:normal;padding-left:100%;animation:tevTick 16s linear infinite}
+@keyframes tevTick{to{transform:translateX(-100%)}}
+.tev-hero{position:relative;height:150px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--ic) 45%,#fff),var(--ic))}
+.tev-sc svg{position:absolute;left:0;bottom:-10%;width:100%;height:auto;opacity:.75}
+.tev-big{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);font-size:76px;line-height:1;filter:drop-shadow(0 8px 10px rgb(0 0 0 / .35));animation:tevPop .6s cubic-bezier(.2,1.4,.4,1) both,tevBob 2.4s ease-in-out .6s infinite alternate}
+@keyframes tevPop{from{transform:translate(-50%,-50%) scale(.2) rotate(-20deg);opacity:0}}
+@keyframes tevBob{to{transform:translate(-50%,-56%) rotate(4deg)}}
+.tev-ind{position:absolute;left:10px;top:10px}
+.tev-t{font-size:22px;margin:12px 0 2px}
+.tev-d{margin:0 0 10px;font-size:14px;line-height:1.6}
+.tev-adv{display:flex;align-items:flex-start;gap:10px;margin:10px 0}
+.tev-af{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2.5px var(--rc)}
+.tev-af svg{width:100%;height:100%;display:block}
+.tev-adv p{position:relative;flex:1;margin:0;padding:10px 12px;border-radius:4px 14px 14px 14px;background:rgb(255 255 255 / .08);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--rc) 50%,transparent);font-size:14px;line-height:1.65}
+.tev-adv p b{display:block;font-size:12px;color:var(--rc);margin-bottom:2px}
+.tev-adv p small{display:block;margin-top:8px;padding-top:8px;border-top:1px dashed rgb(255 255 255 / .2);font-size:12px;opacity:.85}
+.tev-chs{display:flex;flex-direction:column;gap:8px;margin:8px 0}
+.tev-ch{position:relative;display:flex;align-items:center;gap:10px;padding:12px;border:0;border-radius:14px;background:rgb(255 255 255 / .07);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .16);color:inherit;font:inherit;font-size:14px;font-weight:700;text-align:left;cursor:pointer;line-height:1.45;transition:transform .12s}
+button.tev-ch:active{transform:scale(.97)}
+.tev-ab{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#2a1a00;font-weight:900;font-size:14px}
+.tev-ch.res{opacity:.5;cursor:default}
+.tev-ch.res.pk{opacity:1;box-shadow:inset 0 0 0 2.5px #fff}
+.tev-ch.res.best{opacity:1;background:rgb(255 216 74 / .14);box-shadow:inset 0 0 0 2px #ffd84a}
+.tev-ch.res.pk.best{box-shadow:inset 0 0 0 3px #ffd84a,0 0 16px -4px #ffd84a}
+.tev-star{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-style:normal;font-weight:900;font-size:20px;color:#ffd84a}
+.tev-ch.res.best span:nth-child(2){padding-right:22px}
+.tev-res{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0 4px}
+.tev-gr{font-size:64px;font-weight:900;line-height:1;color:var(--gc);text-shadow:0 0 22px var(--gc)}
+.tev-res b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--gc)}
+.tev-res.in .tev-gr{animation:tevStamp .6s cubic-bezier(.2,1.6,.4,1) both}
+.tev-res.in b{animation:tevPop2 .5s .25s ease-out both}
+@keyframes tevStamp{from{transform:scale(3) rotate(-25deg);opacity:0}}
+@keyframes tevPop2{from{transform:translateY(8px);opacity:0}}
+.tev-rw{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0}
+.tev-rw span{padding:5px 12px;border-radius:99px;background:rgb(255 255 255 / .08);font-weight:800;font-size:13px}
+.tev-rw .up{background:linear-gradient(90deg,#ffd84a,#ff9ad9);color:#3a1a00}
+.tev-grow{display:flex;justify-content:center;padding:4px 0 8px}
+.tev-grow svg{width:130px;height:auto;max-height:160px;transform-origin:bottom center;animation:tevGrow .9s cubic-bezier(.2,1.5,.4,1) .5s both;filter:drop-shadow(0 0 14px var(--ic))}
+@keyframes tevGrow{from{transform:scaleY(.1);opacity:0}}
+.tev-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 14px;text-align:center}
+.tev-sum div{padding:8px 4px;border-radius:12px;background:rgb(255 255 255 / .05)}
+.tev-sum b{display:block;font-family:var(--display);font-weight:400;font-size:22px}
+.tev-sum small{font-size:11px;opacity:.7}
+@media (prefers-reduced-motion:reduce){.tev-card,.tev-card::before,.tev-bl,.tev-tk i,.tev-big,.tev-res.in .tev-gr,.tev-res.in b,.tev-grow svg{animation:none!important}.tev-tk i{padding-left:0}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4703,6 +4763,7 @@ function renderSheet(){
   else if(k==='mail') body=mailBody();
   else if(k==='town') body=townBody();
   else if(k==='outing') body=outBody();
+  else if(k==='tev') body=`<div id="tevWrap" class="tw-wrap2">${tevInner()}</div>`;
   else if(k==='oalbum') body=oalbBody();
   else if(k==='twshare') body=`<div class="tw-wrap2">${twShareBody()}</div>`;
   else if(k==='visit') body=`<div class="tw-wrap2">${visitBody()}</div>`;
@@ -6523,6 +6584,107 @@ async function outPhotoImg(k,c){
   CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'📸 思い出の写真', alt:`${k}と${place}で撮った思い出の写真`, name:`azakei-memory-${todayKey()}.png`, note:`${k}といっしょに行った「${place}」の思い出。保存して、友だちに見せてね。`};
   openSheet('card');
 }
+/* ---- 📢 まちの速報：毎日1つ、まちに出来事が起きる。3つの対応から選ぶと、経済のしくみの解説＋まちに投資（◎+10pt / ○+5pt / △+2pt） ---- */
+const TEV=[
+  {ic:'🌀',c:4,k:'ミオ',t:'台風が近づいてる！',d:'あさって、大きな台風がまちに来るみたい。運輸の会社は、どうする？',ch:[
+    ['先に荷物を運んで、倉庫に食べ物や水をためておく',2,'先回りして備えることを「リスク管理」というよ。台風のあとも、お店に品物がならぶね。'],
+    ['安全のため、1か月ぜんぶ休む',1,'安全はいちばん大事！ でも休みすぎると、まちに品物が届かない。台風が過ぎたら再開しよう。'],
+    ['いつもどおり運ぶ',0,'台風で道や線路が止まると、品物が届かなくなっちゃう。前もっての備えが大事だよ。']]},
+  {ic:'☀️',c:0,k:'ハル',t:'記録的な猛暑！',d:'毎日35℃ごえ！ エアコンで、電気がいつもよりたくさん使われそう。',ch:[
+    ['発電を増やしつつ、みんなに「節電」もお願いする',2,'使いたい量（需要）が増えたら、つくる量（供給）を増やし、使う量も減らす。両方そろうと停電を防げるよ。'],
+    ['なにもしない',0,'使う量がつくれる量をこえると、「停電」になることも…。'],
+    ['電気代を10倍にする',0,'値段を上げすぎると、暑い日にエアコンを使えない人が出て、命にかかわることも。電気は生活に欠かせないものなんだ。']]},
+  {ic:'🍜',c:3,k:'アオイ',t:'ラーメンブーム到来！',d:'テレビで紹介されて、まちのラーメン屋さんに大行列！',ch:[
+    ['材料を多めに仕入れて、行列にそなえる',2,'買いたい人（需要）が増えたら、売る量（供給）を増やす。これが商売の基本だよ。'],
+    ['値段を一気に3倍にする',1,'もうけは増えるかも。でも、お客さんが離れて、ブームが早く終わっちゃうことも。'],
+    ['ブームはすぐ終わるから、なにもしない',0,'せっかくの売るチャンスを逃しちゃったね。']]},
+  {ic:'💴',c:2,k:'ミナト',t:'円安になった！',d:'1ドルと交換できる円が増えて、外国から見ると日本の製品が安くなったよ。',ch:[
+    ['外国への輸出を増やす',2,'円安は輸出の追い風。外国の人には、日本の製品が安く感じられるんだ。'],
+    ['とりあえず様子を見る',1,'様子を見るのも1つの手。でも、輸出をのばすチャンスかも！'],
+    ['外国から材料をたくさん買う',0,'円安だと、外国から買う（輸入する）材料は高くなっちゃうんだ。']]},
+  {ic:'🏦',c:1,k:'ユイ',t:'金利が下がった！',d:'銀行からお金を借りるときの「金利」が下がって、借りやすくなったよ。',ch:[
+    ['お金を借りて、新しいお店や工場を建てる',2,'金利が低いと、借りたお金に上のせして返す「利息」が少なくてすむ。投資のチャンス！'],
+    ['半分だけ借りて、少しずつ広げる',1,'慎重な作戦もいいね。借りすぎないのも大切なことだよ。'],
+    ['お金を全部、銀行にあずける',0,'金利が低いと、あずけても利息はほとんど増えないよ。']]},
+  {ic:'📱',c:5,k:'レン',t:'新型スマホ発売！',d:'新しいスマホの発売日。みんなの注目が集まってる！',ch:[
+    ['広告を出して、新しいアプリを宣伝する',2,'注目が集まるときの広告は効果ばつぐん。メディアは「注目」を価値に変える産業だよ。'],
+    ['新聞だけで発表する',1,'新聞を読む人には届くね。でも、スマホの話題はネットでも広げたいところ。'],
+    ['ウソのウワサを流して話題にする',0,'ウソで値段や評判を動かすのは「風説の流布」といって、法律で禁止されているんだ。信用がいちばん！']]},
+  {ic:'🔩',c:2,k:'ソラ',t:'部品が足りない！',d:'世界中で、機械に使う半導体（チップ）が足りなくなってるみたい。',ch:[
+    ['いろいろな国の会社から買えるようにする',2,'仕入れ先を1つにしぼらず分けておくと、どこかが止まっても困りにくい。「分散」っていうんだ。'],
+    ['チップが少なくてすむ製品を先につくる',1,'工夫でのりきる作戦！ これもいい手だよ。'],
+    ['在庫がなくなるまで待つ',0,'部品が切れたら、工場が止まっちゃう…。']]},
+  {ic:'🧳',c:4,k:'ナギ',t:'観光客がやってくる！',d:'外国から、たくさんの観光客がまちに来ることになったよ。',ch:[
+    ['空港や駅の案内を、外国語でもつくる',2,'来た人が動きやすいと、まちでたくさんお金を使ってくれる。外国からの旅行者が来ることを「インバウンド」というよ。'],
+    ['いつもどおりにしておく',1,'来てはくれるけど、道にまよって、ちょっともったいないかも。'],
+    ['ホテル代を10倍にする',0,'高すぎると、ほかのまちへ行っちゃうね。']]},
+  {ic:'🌾',c:3,k:'アオイ',t:'小麦が値上がり！',d:'パンやめんの原料、小麦の値段が上がっちゃった。お店はどうする？',ch:[
+    ['少しだけ値上げして、理由をきちんと説明する',2,'原料が上がると、商品の値段も上がる。モノの値段が全体に上がることを「インフレ」というよ。正直に説明すれば、お客さんも納得してくれるね。'],
+    ['値段はそのまま、こっそりパンを小さくする',1,'「ステルス値上げ」と呼ばれることも。正直に伝えるほうが、長く信頼されるよ。'],
+    ['パンを売るのをやめる',0,'パンを買いたいお客さんが困っちゃう！']]},
+  {ic:'🔆',c:0,k:'ハル',t:'すごい新技術が登場！',d:'太陽光パネルを、半分の値段でつくれる新しい技術が発明された！',ch:[
+    ['パネルを増やして、電気を安くつくる',2,'技術が進むと、同じものを安くつくれる。これが、経済が成長する大きな理由なんだ。'],
+    ['研究がもっと進むまで待つ',1,'慎重だね。でも、ほかのまちに先をこされるかも。'],
+    ['古い発電所だけで十分',0,'新しい技術を使わないと、電気代が高いままになっちゃう。']]},
+  {ic:'📉',c:1,k:'トキ',t:'株価が急落！',d:'ニュースで株価が大きく下がった。みんな、あわてているみたい…。',ch:[
+    ['あわてず、長い目で見る',2,'株価は短い間に大きく上下するもの。あわてて売ると損が決まってしまう。「長期投資」の考え方じゃ。'],
+    ['少しだけ買ってみる',1,'安いときに買う「逆張り」じゃな。うまくいくこともあるが、さらに下がるリスクもあるぞ。'],
+    ['持っている株を、ぜんぶ売る',0,'みんなが一度に売ると、さらに下がることも。あわてて売る「パニック売り」には注意じゃ。']]},
+  {ic:'🛒',c:3,k:'ミナト',t:'ネット通販が大人気！',d:'お店に来ないで、ネットで買う人がどんどん増えてるよ。',ch:[
+    ['ネットでも売れるようにして、配達もはじめる',2,'お客さんの買い方が変われば、売り方も変える。時代に合わせることが、商売を続けるコツだよ。'],
+    ['値段を下げて、お客さんを呼びもどす',1,'一時的にはお客さんが来るかも。でも、もうけが減っちゃうね。'],
+    ['お店をもっと大きくする',0,'お店に来る人が減っているときに大きくしても、空回りしちゃうかも。']]},
+  {ic:'📰',c:5,k:'レン',t:'まちの新聞が10周年！',d:'まちの新聞が10周年。記念号を、どうやってつくる？',ch:[
+    ['まちのお店の広告をのせて、無料で配る',2,'広告のお金で新聞をつくれば、読む人は無料。テレビやネットも、同じしくみなんだ。'],
+    ['いつもどおりの値段で売る',1,'いつもの読者には届くね。記念号だから、もっと多くの人に読んでほしいかも。'],
+    ['記念だから値段を10倍にする',0,'高すぎて、だれも買わないかも…。']]},
+  {ic:'🚗',c:2,k:'ソラ',t:'エコカーに補助金！',d:'国が「エコカーを買う人には、お金を少し出します」と発表したよ。',ch:[
+    ['エコカーをたくさんつくる準備をする',2,'国の「補助金」で、買いたい人が増える。国の方針（政策）を先に読むのが大事なんだ。'],
+    ['様子を見て、少しずつ増やす',1,'安全な作戦。でも、売り切れで買えない人が出ちゃうかも。'],
+    ['ガソリン車だけ、つくりつづける',0,'みんながエコカーを買いに来るのに、つくっていないなんて…。']]},
+  {ic:'🎆',c:3,k:'ナギ',t:'夏祭りがやってくる！',d:'まちで夏祭り！ たくさんの人が集まるよ。',ch:[
+    ['屋台を出して、まちの名物を売る',2,'人が集まると、お金を使う「消費」が増える。お祭りは、まちの経済を元気にするイベントなんだ。'],
+    ['お店を休んで、お祭りを楽しむ',1,'楽しむのも大事！ でも、かせぎどきだったかも？'],
+    ['祭りの日だけ、値段を5倍にする',0,'お客さんがよそのお店に行っちゃうね。']]}
+];
+const TEV_PT=[2,5,10], TEV_COIN=[5,10,20], TEV_GR=[['△','うーん、おしい…','#9aa4c8'],['○','まずまずの判断！','#7fd3ff'],['◎','ナイス判断！','#ffd84a']];
+function tevSt(){ const P=S.prof; if(!P.tev || typeof P.tev!=='object') P.tev={d:0,n:0,g:0,st:0}; return P.tev; }
+function tevToday(){ const k=todayKey(); return TEV[(k*7+Math.floor(k/100)*3)%TEV.length]; }
+function tevOrder(){ const k=todayKey(); return [[0,1,2],[1,2,0],[2,0,1],[0,2,1],[1,0,2],[2,1,0]][k%6]; }
+function openTev(){ sfx('open'); openSheet('tev'); if(tevSt().d!==todayKey()) setTimeout(()=>{ for(let i=0;i<3;i++) tone(880,.08,'square',.03,i*.16); },200); }
+function tevCard(){
+  if(twTot()<=0) return ''; const T=tevSt(), E=tevToday(), done=T.d===todayKey();
+  return `<button class="tev-card${done?' done':''}" style="--ic:var(--i${E.c})" onclick="openTev()"><span class="tev-ci">${E.ic}</span><span class="tev-ct"><small>${done?'きょうの判断ずみ':'📢 まちの速報 ・ NEW'}</small><b>${E.t}</b><em>${done?`${TEV_GR[T.s][0]} ${TEV_GR[T.s][1]}`:'タップして、どうするか決めよう'}</em></span><span class="tw-go">›</span></button>`;
+}
+function tevInner(){
+  const T=tevSt(), E=tevToday(), done=T.d===todayKey(), O=tevOrder(), pf=CHAR_PROF[E.k]||{};
+  const head=`<div class="tev-brk"><span class="tev-bl">📢 速報</span><span class="tev-tk"><i>${esc(twName())}に、ニュースが入ってきました ── ${E.t} ── ${E.d}</i></span></div>
+    <div class="tev-hero" style="--ic:var(--i${E.c})"><span class="tev-sc">${scene(E.c)}</span><span class="tev-big">${E.ic}</span><span class="tev-ind">${chip(E.c)}</span></div>
+    <h3 class="ttl tev-t">${E.t}</h3><p class="tev-d">${E.d}</p>`;
+  const adv=(txt,m)=>`<div class="tev-adv" style="--rc:${CHARS[E.k].c}"><span class="tev-af">${face(E.k,null,m)}</span><p><b>${E.k}</b>${txt}</p></div>`;
+  if(!done) return head+adv('どうする？ よく考えて、まちのために判断してみて！','think')
+    +`<div class="tev-chs">${O.map((j,n)=>`<button class="tev-ch" onclick="tevPick(${j})"><span class="tev-ab">${'ABC'[n]}</span><span>${E.ch[j][0]}</span></button>`).join('')}</div>
+    <p class="note">◎ なら まちに +${TEV_PT[2]}pt 投資＆ 🪙+${TEV_COIN[2]}。1日1回、あしたは別の出来事が起きるよ。</p>`;
+  const pk=T.pick, sc=E.ch[pk][1], G3=TEV_GR[sc], best=E.ch.findIndex(c=>c[1]===2);
+  return head+`<div class="tev-chs">${O.map((j,n)=>`<div class="tev-ch res${j===pk?' pk':''}${E.ch[j][1]===2?' best':''}"><span class="tev-ab">${'ABC'[n]}</span><span>${E.ch[j][0]}</span>${E.ch[j][1]===2?'<i class="tev-star">◎</i>':''}</div>`).join('')}</div>
+    <div class="tev-res${T.anim===todayKey()?' in':''}" style="--gc:${G3[2]}"><span class="tev-gr">${G3[0]}</span><b>${G3[1]}</b></div>
+    ${adv(E.ch[pk][2]+(sc<2?`<br><small>◎ の答え：「${E.ch[best][0]}」── ${E.ch[best][2]}</small>`:''), sc===2?'happy':sc===1?undefined:'shock')}
+    <div class="tev-rw"><span>🏙️ ${IND[E.c]} +${TEV_PT[sc]}pt</span><span>🪙 +${TEV_COIN[sc]}</span>${T.up?`<span class="up">🎉 ${TW_NAMES[E.c][T.up-1]}に成長！</span>`:''}</div>
+    ${T.up?`<div class="tev-grow" style="--ic:var(--i${E.c})">${outBldSvg(E.c,T.up,{anim:1})}</div>`:''}
+    <div class="tev-sum"><div><b>${T.n}</b><small>判断した回数</small></div><div><b>${T.g}</b><small>◎ の回数</small></div><div><b>${T.st}</b><small>◎ 連続</small></div></div>
+    <div class="col" style="gap:8px"><button class="btn gold big" onclick="openTown()">まちを見る</button><button class="btn ghost" onclick="closeSheet()">とじる</button></div>`;
+}
+function tevPick(j){
+  const T=tevSt(), k=todayKey(); if(T.d===k) return; const E=tevToday(), sc=E.ch[j][1], W=townSt(), lv0=twLv(W.pts[E.c]);
+  W.pts[E.c]=(W.pts[E.c]||0)+TEV_PT[sc]; const lv1=twLv(W.pts[E.c]);
+  S.prof.coin=(S.prof.coin||0)+TEV_COIN[sc];
+  Object.assign(T,{d:k, pick:j, s:sc, n:(T.n||0)+1, g:(T.g||0)+(sc===2?1:0), st:sc===2?(T.st||0)+1:0, up:lv1>lv0?lv1:0, anim:k});
+  saveProfile(); haptic(sc===2?[20,40,20]:15);
+  if(sc===2){ sfx('fanfare'); confetti(); } else if(sc===1) sfx('select'); else for(let i=0;i<2;i++) tone(300-i*60,.12,'triangle',.05,i*.14);
+  setTimeout(()=>sfx('coin'),600); if(T.up) setTimeout(()=>{ confetti(); toast(`🏙️ ${IND[E.c]}が「${TW_NAMES[E.c][T.up-1]}」に成長！`); },1100);
+  voice(E.k, E.ch[j][2]);
+  const w=document.getElementById('tevWrap'); if(w){ w.innerHTML=tevInner(); const r=w.querySelector('.tev-res'); if(r) r.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); }
+}
 let TW_SEL=null;
 function openTown(){ sfx('click'); TW_SEL=null; openSheet('town'); }
 function townPick(c){ TW_SEL=c; sfx('select'); haptic(8); const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner(); }
@@ -6533,6 +6695,7 @@ function townInner(){
   const c=TW_SEL, lv=L[c], nx=TW_AT[lv], pv=lv?TW_AT[lv-1]:0, pc=nx?Math.max(0,Math.min(100,(T.pts[c]-pv)/(nx-pv)*100)):100;
   return `<span class="label">MY TOWN</span><div class="tw-hd" id="twHd"><h3 class="ttl" style="font-size:22px">🏙️ ${esc(twName())}</h3><button class="tw-ren" onclick="twRename()" aria-label="まちの名前を変える">✏️</button></div>
     <div class="tw-stats"><div><b>${rk.ic} ${rk.n}</b><small>まちの大きさ</small></div><div><b>${twPop(tot).toLocaleString()}</b><small>人口（人）</small></div><div><b>${tot}</b><small>GDP（pt）</small></div></div>
+    ${tevCard()}
     <p class="note tw-pop">👥 住民キャラ <b>${twResidents().length}</b>人 ・ 🎨 かざり <b>${twDecoOn().length}</b>こ</p>
     <p class="note">${rk.next?`あと <b>${rk.next[0]-tot}pt</b> で「${rk.next[2]} ${rk.next[1]}」に成長！`:'最高ランク「大都市」に到達！'}</p>
     <div class="tw-view"><div class="tw-stage">${townSvg({anim:1,pick:1,sel:c})}${twResHTML()}</div></div>
@@ -6580,6 +6743,7 @@ async function openTownImg(){
 function homeRec(){
   const P=S.prof, k=todayKey(), out=[];
   { const b=bdayToday(); if(b && (P.bday||{})[b]!==new Date().getFullYear()) out.push({ic:'🎂', t:`きょうは${b}の誕生日！`, d:'お祝いすると、お礼の手紙が届くよ', go:`bdayCelebrate('${b}')`}); }
+  if(tevSt().d!==k && twTot()>0){ const E=tevToday(); out.push({ic:'📢', t:`まちの速報：${E.t}`, d:'どうする？ 判断しだいで、まちが育つよ', go:'openTev()'}); }
   { const F=outFriends(); if(F.length && outSt().d!==k && twTot()>0){ const A=outSt().al, f=F.slice().sort((a,b)=>IND.filter((_,c)=>A[a+'|'+c]).length-IND.filter((_,c)=>A[b+'|'+c]).length)[0]; out.push({ic:'🚶', t:`${f}とまちへおでかけしよう`, d:'思い出の写真がとれるよ（きょう最初は 🪙+20）', go:`openOuting('${f}')`}); } }
   { const u=mailList().filter(L=>!mailRead(L.id)); if(u.length) out.push({ic:'📮', t:`${u[0].k}から手紙が届いています${u.length>1?`（ほか${u.length-1}通）`:''}`, d:'ポストを開けて読んでみよう', go:'openMail()'}); }
   if(!(P.daily||{})[k]) out.push({ic:'☀️', t:'今日のデイリーがまだだよ', d:'みんな同じNEWSで点数くらべ', go:'startDaily()'});
