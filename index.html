@@ -3028,6 +3028,36 @@ button.tev-ch:active{transform:scale(.97)}
 .tpp-ad{margin-top:6px;padding:6px 8px;border:2px solid #2a2118;text-align:center;font-size:13px;font-weight:800}
 .tpp-ad small{display:inline-block;margin-right:6px;padding:0 5px;background:#2a2118;color:#f3ebd6;font-size:10px}
 @media (prefers-reduced-motion:reduce){.tpp.spin,.tpp-rolls i,.tpp-strip{animation:none}}
+/* 📌 まちの掲示板 */
+.qb{margin:10px 0;padding:12px 10px 14px;border-radius:16px;background:radial-gradient(circle at 20% 30%,rgb(0 0 0 / .08) 0 2px,transparent 3px) 0 0/14px 14px,radial-gradient(circle at 70% 60%,rgb(255 255 255 / .1) 0 1.5px,transparent 2.5px) 0 0/11px 11px,linear-gradient(160deg,#c4935e,#a87644);box-shadow:inset 0 0 0 5px #7a5230,inset 0 0 0 7px #5e3d22,0 8px 18px -10px #000}
+.qb-hd{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:2px 6px 8px;color:#fff8e8;text-shadow:0 1px 0 rgb(0 0 0 / .4)}
+.qb-hd b{font-size:16px}
+.qb-hd small{font-size:11px;opacity:.9}
+.qb-ns{display:flex;flex-direction:column;gap:12px}
+.qb-n{position:relative;padding:14px 12px 10px;background:#fffbea;color:#2a2118;border-radius:3px;box-shadow:0 6px 12px -6px rgb(0 0 0 / .55),inset 0 -14px 20px -16px rgb(120 90 40 / .3);transform:rotate(var(--rt));overflow:visible}
+.qb-pin{position:absolute;top:-6px;left:50%;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff8a8a,#d22 60%,#8a0f0f);box-shadow:0 3px 4px rgb(0 0 0 / .45)}
+.qb-who{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.qb-who b{font-size:14px;color:color-mix(in srgb,var(--rc) 70%,#2a2118)}
+.qb-f{flex:none;width:36px;height:36px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px var(--rc)}
+.qb-f svg{width:100%;height:100%;display:block}
+.qb-g{margin-left:auto;padding:2px 8px;border-radius:99px;background:#2a2118;color:#ffd84a;font-size:12px;font-weight:900}
+.qb-n p{margin:0 0 8px;font-size:14px;font-weight:700;line-height:1.55}
+.qb-bar{position:relative;height:18px;border-radius:99px;background:#eadfc2;overflow:hidden;box-shadow:inset 0 0 0 1.5px #c9b88f}
+.qb-bar i{display:block;height:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--rc) 70%,#fff),var(--rc));border-radius:99px}
+.qb-bar small{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;font-weight:900;color:#2a2118}
+.qb-h{display:block;margin-top:6px;font-size:11px;color:#7a6a4a}
+.qb-go{display:block;width:100%;margin-top:8px;animation:qbGo 1.2s ease-in-out infinite alternate}
+@keyframes qbGo{to{box-shadow:0 0 0 3px rgb(255 216 74 / .5),0 0 16px rgb(255 216 74 / .7)}}
+.qb-n.done{box-shadow:0 0 0 3px #ffd84a,0 6px 16px -6px rgb(0 0 0 / .55)}
+.qb-n.empty{display:flex;align-items:center;gap:10px;padding:14px;background:rgb(255 251 234 / .35);border:2px dashed rgb(255 251 234 / .7);box-shadow:none;color:#fff8e8}
+.qb-n.empty span{font-size:24px}
+.qb-n.empty p{margin:0;font-size:13px}
+.qb-n.qb-fl{text-align:left}
+.qb-stamp{position:absolute;right:12px;top:50%;width:76px;height:76px;margin-top:-38px;border-radius:50%;display:grid;place-items:center;border:4px solid #e0302f;color:#e0302f;font-family:"Shippori Mincho B1","Yu Mincho",serif;font-weight:800;font-size:24px;transform:rotate(-14deg);background:rgb(255 255 255 / .35);animation:qbStamp .45s cubic-bezier(.2,1.6,.4,1) both;mix-blend-mode:multiply}
+@keyframes qbStamp{from{transform:rotate(-30deg) scale(3);opacity:0}}
+.qb-n.qb-fl p{padding-right:84px}
+.qb-gc{display:inline-block;font-style:normal;font-weight:900;font-size:15px;color:#b07a00;animation:tevPop2 .5s .4s ease-out both}
+@media (prefers-reduced-motion:reduce){.qb-go,.qb-stamp,.qb-gc{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6914,6 +6944,70 @@ async function tppImg(){
   CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'📰 まち新聞', alt:`${twName()}新聞の1面`, name:`azakei-paper-${todayKey()}.png`, note:'あなたのまちの1週間が1面に。友だちに見せてね！'};
   openSheet('card');
 }
+/* ---- 📌 まちの掲示板：住民キャラから依頼が届く（建物のLv・投資・1位・試合・速報◎・おでかけ）。達成したら報告して 🪙。空いた枠は次の日に補充 ---- */
+const QB_TY={'ハル':'サンキューな！！ やっぱ、きみに頼んでよかったぜ！','ナギ':'ありがと〜。いい波、来てるね〜','ユイ':'…ありがと。きみなら、やると思ってた。','アオイ':'ありがと〜！ きみ、わたしの推しかも!?','ミナト':'期待値どおり…いや、期待値以上だよ。ありがとう。','トキ':'見事じゃ。礼を言うぞ。','レン':'…やるじゃん。借りができたな。','ミオ':'すごい！ ノートに「達成」って書いておくね！','ソラ':'わあ〜、ありがとう〜。たすかったよ〜'};
+const QB_G={lv:50, inv:30, win:40, games:30, tev:30, out:30};
+let QB_FLASH=null;
+function qbSt(){
+  const P=S.prof; if(!P.qb || !Array.isArray(P.qb.s)) P.qb={s:[null,null,null], d:0, n:0};
+  const Q=P.qb, k=todayKey();
+  if(Q.d!==k && twTot()>0){ Q.d=k; Q.s=Q.s.map(q=>q||qbGen(Q.s)); saveProfile(); }
+  return Q;
+}
+function qbGen(cur){
+  const P=S.prof, st=P.st||{}, T=townSt(), L=T.pts.map(twLv), have=(cur||[]).filter(Boolean).map(q=>q.ty+(q.c!=null?q.c:''));
+  const ks=Object.keys(CHARS).filter(k=>FACE[k] && QB_TY[k]), res=twResidents(), rnd=a=>a[Math.floor(Math.random()*a.length)];
+  const byFav=c=>{ const a=ks.filter(k=>(CHAR_PROF[k]||{}).fav===c), r=a.filter(k=>res.includes(k)); return rnd(r.length?r:a.length?a:ks); };
+  const opts=[];
+  IND.forEach((_,c)=>{ if(L[c]<5 && !have.includes('lv'+c) && T.pts[c]>0) opts.push(()=>({ty:'lv', c, tg:L[c]+1, k:byFav(c)})); });
+  IND.forEach((_,c)=>{ if(!have.includes('inv'+c)) opts.push(()=>({ty:'inv', c, tg:[15,20,25][Math.floor(Math.random()*3)], b:T.pts[c], k:byFav(c)})); });
+  if(!have.includes('win')) opts.push(()=>({ty:'win', tg:Math.random()<.6?1:2, b:st.wins||0, k:rnd(ks)}));
+  if(!have.includes('games')) opts.push(()=>({ty:'games', tg:2, b:st.games||0, k:rnd(ks)}));
+  if(!have.includes('tev')) opts.push(()=>({ty:'tev', tg:1, b:tevSt().g||0, k:rnd(ks)}));
+  const F=outFriends(); if(F.length && !have.includes('out')) opts.push(()=>({ty:'out', tg:1, k:rnd(F)}));
+  const q=rnd(opts)(); q.t=Date.now(); q.g=QB_G[q.ty]; return q;
+}
+function qbProg(q){
+  const P=S.prof, st=P.st||{}, T=townSt(), cl=(v)=>Math.max(0,Math.min(q.tg,v));
+  if(q.ty==='lv') return cl(twLv(T.pts[q.c]));
+  if(q.ty==='inv') return cl(T.pts[q.c]-(q.b||0));
+  if(q.ty==='win') return cl((st.wins||0)-(q.b||0));
+  if(q.ty==='games') return cl((st.games||0)-(q.b||0));
+  if(q.ty==='tev') return cl((tevSt().g||0)-(q.b||0));
+  if(q.ty==='out') return cl((Array.isArray(P.tlog)?P.tlog:[]).filter(e=>e.y==='out' && e.k===q.k && e.t>q.t).length);
+  return 0;
+}
+const qbDone = q => qbProg(q)>=q.tg;
+function qbText(q){
+  return q.ty==='lv' ? `${IND[q.c]}の建物を Lv${q.tg}「${TW_NAMES[q.c][q.tg-1]}」にしてほしいな！`
+    : q.ty==='inv' ? `${IND[q.c]}に、あと ${q.tg}pt 投資してくれる？ まちを元気にしたいんだ。`
+    : q.ty==='win' ? `試合で${q.tg}回、1位をとってみせて！`
+    : q.ty==='games' ? `${q.tg}回、試合をしてほしいな。まちに活気がほしいんだ！`
+    : q.ty==='tev' ? 'まちの速報で、◎ の判断をしてみて！'
+    : 'こんど、いっしょにおでかけしようよ。どこでもいいよ！';
+}
+function qbHint(q){ return q.ty==='lv'||q.ty==='inv'?`${IND[q.c]}のカードで点を取ろう`:q.ty==='tev'?'まちの速報（上のカード）から':q.ty==='out'?'「キャラとおでかけ」から':'CPU戦やデイリーでOK'; }
+function qbHTML(){
+  if(twTot()<=0) return ''; const Q=qbSt();
+  const note=(q,i)=>{
+    if(QB_FLASH && QB_FLASH.i===i){ const F=QB_FLASH; return `<div class="qb-n qb-fl" style="--rc:${CHARS[F.k].c};--rt:${[-2,1.5,-1][i]}deg"><i class="qb-pin"></i><div class="qb-who"><span class="qb-f">${face(F.k,null,'happy')}</span><b>${F.k}</b></div><p>${esc(QB_TY[F.k]||'ありがとう！')}</p><span class="qb-stamp">達成</span><em class="qb-gc">🪙 +${F.g}</em></div>`; }
+    if(!q) return `<div class="qb-n empty" style="--rt:${[-2,1.5,-1][i]}deg"><span>📭</span><p>あしたの朝、新しい依頼が届くよ</p></div>`;
+    if(!CHARS[q.k]) return '';
+    const p=qbProg(q), done=p>=q.tg, unit=q.ty==='lv'?'Lv':q.ty==='inv'?'pt':'回';
+    return `<div class="qb-n${done?' done':''}" style="--rc:${CHARS[q.k].c};--rt:${[-2,1.5,-1][i]}deg"><i class="qb-pin"></i>
+      <div class="qb-who"><span class="qb-f">${face(q.k,null,done?'happy':undefined)}</span><b>${q.k}</b><span class="qb-g">🪙 ${q.g}</span></div>
+      <p>${qbText(q)}</p>
+      <div class="qb-bar"><i style="width:${(p/q.tg*100).toFixed(0)}%"></i><small>${q.ty==='lv'?`Lv${p} / Lv${q.tg}`:`${p} / ${q.tg}${unit}`}</small></div>
+      ${done?`<button class="btn gold qb-go" onclick="qbClaim(${i})">✅ 報告する</button>`:`<small class="qb-h">💡 ${qbHint(q)}</small>`}</div>`; };
+  return `<section class="qb"><div class="qb-hd"><b>📌 まちの掲示板</b><small>住民からの依頼 ・ 達成 ${Q.n||0}件</small></div><div class="qb-ns">${Q.s.map(note).join('')}</div></section>`;
+}
+function qbClaim(i){
+  const Q=qbSt(), q=Q.s[i]; if(!q || !qbDone(q) || QB_FLASH) return;
+  S.prof.coin=(S.prof.coin||0)+q.g; Q.n=(Q.n||0)+1; Q.s[i]=null; saveProfile();
+  QB_FLASH={i, k:q.k, g:q.g}; sfx('fanfare'); setTimeout(()=>sfx('coin'),500); confetti(); haptic([20,40,20]); voice(q.k, QB_TY[q.k]||'ありがとう！');
+  const re=()=>{ const w=document.getElementById('qbWrap'); if(w) w.innerHTML=qbHTML(); };
+  re(); setTimeout(()=>{ QB_FLASH=null; re(); }, 2600);
+}
 let TW_SEL=null;
 function openTown(){ sfx('click'); TW_SEL=null; openSheet('town'); }
 function townPick(c){ TW_SEL=c; sfx('select'); haptic(8); const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner(); }
@@ -6925,6 +7019,7 @@ function townInner(){
   return `<span class="label">MY TOWN</span><div class="tw-hd" id="twHd"><h3 class="ttl" style="font-size:22px">🏙️ ${esc(twName())}</h3><button class="tw-ren" onclick="twRename()" aria-label="まちの名前を変える">✏️</button></div>
     <div class="tw-stats"><div><b>${rk.ic} ${rk.n}</b><small>まちの大きさ</small></div><div><b>${twPop(tot).toLocaleString()}</b><small>人口（人）</small></div><div><b>${tot}</b><small>GDP（pt）</small></div></div>
     ${tevCard()}
+    <div id="qbWrap">${qbHTML()}</div>
     <p class="note tw-pop">👥 住民キャラ <b>${twResidents().length}</b>人 ・ 🎨 かざり <b>${twDecoOn().length}</b>こ</p>
     <p class="note">${rk.next?`あと <b>${rk.next[0]-tot}pt</b> で「${rk.next[2]} ${rk.next[1]}」に成長！`:'最高ランク「大都市」に到達！'}</p>
     <div class="tw-view"><div class="tw-stage">${townSvg({anim:1,pick:1,sel:c})}${twResHTML()}</div></div>
@@ -6975,6 +7070,7 @@ async function openTownImg(){
 function homeRec(){
   const P=S.prof, k=todayKey(), out=[];
   { const b=bdayToday(); if(b && (P.bday||{})[b]!==new Date().getFullYear()) out.push({ic:'🎂', t:`きょうは${b}の誕生日！`, d:'お祝いすると、お礼の手紙が届くよ', go:`bdayCelebrate('${b}')`}); }
+  if(twTot()>0){ const r=qbSt().s.find(q=>q && qbDone(q)); if(r) out.push({ic:'📌', t:`${r.k}の依頼を達成！ 報告しよう`, d:`まちの掲示板で 🪙+${r.g} もらえるよ`, go:'openTown()'}); }
   if(S.prof.tppWk!==bossWeek() && tppWeek().length) out.push({ic:'📰', t:'今週の「まち新聞」が届いたよ', d:'まちのできごとが記事になったよ', go:'tppOpen()'});
   if(tevSt().d!==k && twTot()>0){ const E=tevToday(); out.push({ic:'📢', t:`まちの速報：${E.t}`, d:'どうする？ 判断しだいで、まちが育つよ', go:'openTev()'}); }
   { const F=outFriends(); if(F.length && outSt().d!==k && twTot()>0){ const A=outSt().al, f=F.slice().sort((a,b)=>IND.filter((_,c)=>A[a+'|'+c]).length-IND.filter((_,c)=>A[b+'|'+c]).length)[0]; out.push({ic:'🚶', t:`${f}とまちへおでかけしよう`, d:'思い出の写真がとれるよ（きょう最初は 🪙+20）', go:`openOuting('${f}')`}); } }
