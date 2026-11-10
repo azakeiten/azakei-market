@@ -2978,6 +2978,56 @@ button.tev-ch:active{transform:scale(.97)}
 .twrp-ft{text-align:center}
 .twrp-ft p{margin:4px 0 10px;font-size:14px}
 @media (prefers-reduced-motion:reduce){.tw-wxi,.twrp-bn.in b{animation:none}}
+/* 📰 まち新聞 */
+.tpp-b{background:linear-gradient(110deg,rgb(243 235 214 / .22),rgb(255 255 255 / .05));box-shadow:inset 0 0 0 1.5px rgb(243 235 214 / .5)}
+.tpp-b span{color:#2a2118;padding-left:0}
+.tpp-press{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#14110c;color:#f3ebd6;animation:owIn .2s ease-out both}
+.tpp-press.out{animation:owOut .3s ease-in both}
+.tpp-press b{font-size:16px;letter-spacing:.1em}
+.tpp-rolls{display:flex;gap:4px}
+.tpp-rolls i{width:96px;height:96px;border-radius:50%;background:repeating-conic-gradient(#6b5a40 0 15deg,#3a3024 15deg 30deg);box-shadow:inset 0 0 0 6px #2a2118,0 0 0 3px #8a7a5a;animation:tppRoll .5s linear infinite}
+.tpp-rolls i+i{animation-direction:reverse}
+@keyframes tppRoll{to{transform:rotate(360deg)}}
+.tpp-strip{width:min(320px,80vw);height:46px;background:repeating-linear-gradient(90deg,#f3ebd6 0 40px,#e3d8bc 40px 44px,#f3ebd6 44px 70px,#2a2118 70px 72px);background-size:72px 100%;animation:tppStrip .3s linear infinite;box-shadow:0 6px 16px -6px #000}
+@keyframes tppStrip{to{background-position:-72px 0}}
+.tpp{position:relative;padding:16px 14px 14px;background:#f3ebd6;color:#2a2118;border-radius:4px;box-shadow:0 14px 30px -12px #000;font-family:"Shippori Mincho B1","Yu Mincho",serif}
+.tpp.spin{animation:tppSpin 1s cubic-bezier(.2,.8,.3,1) both}
+@keyframes tppSpin{from{transform:rotate(-720deg) scale(.05);opacity:0}60%{opacity:1}}
+.tpp-mast{text-align:center;border-bottom:4px double #2a2118;padding-bottom:6px}
+.tpp-mast small{display:block;font-family:var(--body,inherit);font-size:10.5px;font-weight:700;color:#5a4a35}
+.tpp-mast h3{margin:2px 0;font-weight:800;letter-spacing:.02em;line-height:1.2;white-space:nowrap;overflow:hidden}
+.tpp-hl{margin:10px 0 2px;font-size:clamp(22px,6.6vw,30px);font-weight:800;line-height:1.25}
+.tpp-sub{margin:0 0 8px;font-size:14px;font-weight:700;color:#5a4a35}
+.tpp-ph{margin:0 0 8px}
+.tpp-ph svg{display:block;width:100%;height:auto;border:2px solid #2a2118;filter:sepia(.25) contrast(1.05)}
+.tpp-ph figcaption{font-size:10.5px;color:#5a4a35;margin-top:3px;font-family:var(--body,inherit)}
+.tpp-cols{display:grid;grid-template-columns:1.25fr 1fr;gap:12px;padding:8px 0;border-top:1.5px solid #2a2118}
+.tpp-cols section{min-width:0}
+.tpp-cols+.tpp-cols section+section,.tpp-cols section+section{border-left:1px solid rgb(42 33 24 / .35);padding-left:10px}
+.tpp-k{display:block;font-size:14px;font-weight:800;margin-bottom:4px;border-bottom:1px solid #2a2118}
+.tpp ul{margin:0;padding:0;list-style:none;font-size:11.5px;line-height:1.5;font-family:var(--body,inherit)}
+.tpp li{padding:3px 0;border-bottom:1px dotted rgb(42 33 24 / .3)}
+.tpp li em{font-style:normal;font-weight:800;color:#8a6a3a;margin-right:4px}
+.tpp section>p{margin:0;font-size:11.5px;line-height:1.5;font-family:var(--body,inherit)}
+.tpp-dt{display:flex;flex-direction:column;gap:2px;font-size:11px;font-family:var(--body,inherit)}
+.tpp-dt span{display:flex;justify-content:space-between}
+.tpp-dt b{font-size:13px}
+.tpp-bars{display:flex;gap:3px;height:66px;margin-top:6px;align-items:flex-end}
+.tpp-bars span{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;border:1px solid #2a2118;border-bottom-width:2px;position:relative}
+.tpp-bars i{display:block;width:100%;background:var(--ic)}
+.tpp-bars small{position:absolute;bottom:-15px;font-size:8.5px;font-weight:700;white-space:nowrap;font-family:var(--body,inherit)}
+.tpp-cols:has(.tpp-bars){padding-bottom:20px}
+.tpp-q>div{display:flex;gap:6px;align-items:flex-start}
+.tpp-qf{flex:none;width:40px;height:40px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 1.5px #2a2118;filter:sepia(.2)}
+.tpp-qf svg{width:100%;height:100%;display:block}
+.tpp-q p{margin:0;font-size:11.5px;line-height:1.5;font-family:var(--body,inherit)}
+.tpp-q small{display:block;color:#5a4a35;font-weight:700;margin-top:2px}
+.tpp-wx{display:flex;flex-direction:column;align-items:center;margin:0;font-size:14px;font-weight:800}
+.tpp-wx span{font-size:34px;line-height:1.1}
+.tpp-wx small{font-size:11px;font-weight:600;color:#5a4a35}
+.tpp-ad{margin-top:6px;padding:6px 8px;border:2px solid #2a2118;text-align:center;font-size:13px;font-weight:800}
+.tpp-ad small{display:inline-block;margin-right:6px;padding:0 5px;background:#2a2118;color:#f3ebd6;font-size:10px}
+@media (prefers-reduced-motion:reduce){.tpp.spin,.tpp-rolls i,.tpp-strip{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4794,6 +4844,7 @@ function renderSheet(){
   else if(k==='mail') body=mailBody();
   else if(k==='town') body=townBody();
   else if(k==='outing') body=outBody();
+  else if(k==='tpaper') body=tppBody();
   else if(k==='tev') body=`<div id="tevWrap" class="tw-wrap2">${tevInner()}</div>`;
   else if(k==='oalbum') body=oalbBody();
   else if(k==='twshare') body=`<div class="tw-wrap2">${twShareBody()}</div>`;
@@ -6580,7 +6631,7 @@ function outGo(){
 }
 function outDone(k,c,lv){
   const O=outSt(), id=k+'|'+c, isNew=!O.al[id], tk=todayKey(); let coin=0;
-  O.al[id]={lv, t:Date.now()};
+  O.al[id]={lv, t:Date.now()}; twLog({y:'out', k, c, lv});
   if(O.d!==tk){ O.d=tk; coin=20; S.prof.coin=(S.prof.coin||0)+coin; }
   saveProfile(); const n=Object.keys(O.al).length, full=outN(k)===6;
   sfx(coin?'coin':'select'); if(isNew) confetti();
@@ -6713,6 +6764,7 @@ function tevPick(j){
   W.pts[E.c]=(W.pts[E.c]||0)+TEV_PT[sc]; const lv1=twLv(W.pts[E.c]);
   S.prof.coin=(S.prof.coin||0)+TEV_COIN[sc];
   Object.assign(T,{d:k, pick:j, s:sc, n:(T.n||0)+1, g:(T.g||0)+(sc===2?1:0), st:sc===2?(T.st||0)+1:0, up:lv1>lv0?lv1:0, anim:k});
+  twLog({y:'ev', i:TEV.indexOf(E), s:sc}); if(T.up) twLog({y:'up', c:E.c, lv:T.up}); twLogRank(W.pts.reduce((a,b)=>a+b,0)-TEV_PT[sc]);
   saveProfile(); haptic(sc===2?[20,40,20]:15);
   if(sc===2){ sfx('fanfare'); confetti(); } else if(sc===1) sfx('select'); else for(let i=0;i<2;i++) tone(300-i*60,.12,'triangle',.05,i*.14);
   setTimeout(()=>sfx('coin'),600); if(T.up) setTimeout(()=>{ confetti(); toast(`🏙️ ${IND[E.c]}が「${TW_NAMES[E.c][T.up-1]}」に成長！`); },1100);
@@ -6771,6 +6823,97 @@ function twReplay(){
   TWRP=setTimeout(step, reduced()?0:500);
 }
 function twReplayEnd(){ clearTimeout(TWRP); const el=document.getElementById('twrp'); if(el) el.remove(); }
+/* ---- 📰 まち新聞：まちの日記（試合・建物の成長・昇格・速報の判断・おでかけ）を記録して、1週間ぶんを新聞の1面にする ---- */
+function twLog(e){ const P=S.prof; if(!Array.isArray(P.tlog)) P.tlog=[]; e.t=e.t||Date.now(); P.tlog.push(e); if(P.tlog.length>150) P.tlog.splice(0,P.tlog.length-150); }
+function twLogRank(before){ const a=twRank(before).i, b=twRank(twTot()).i; if(b>a) twLog({y:'rk', i:b}); }
+function twLogGame(t,rank,score,won){
+  if(!t) return; const g=t.gain.reduce((a,b)=>a+b,0);
+  twLog({y:'g', r:rank, s:score, w:won?1:0, g});
+  t.after.forEach((lv,c)=>{ if(lv>t.before[c]) twLog({y:'up', c, lv}); });
+  twLogRank(twTot()-g);
+}
+const tppWeek = () => { const P=S.prof, t0=Date.now()-7*864e5; return (Array.isArray(P.tlog)?P.tlog:[]).filter(e=>e && e.t>=t0); };
+function tppTxt(e){
+  const d=new Date(e.t), dd=`${d.getMonth()+1}/${d.getDate()}`;
+  const t = e.y==='up' && TW_NAMES[e.c] ? `⬆️ ${IND[e.c]}が「${TW_NAMES[e.c][e.lv-1]}」に成長`
+    : e.y==='rk' && TW_RANK[e.i] ? `🎉 まちが「${TW_RANK[e.i][1]}」に昇格`
+    : e.y==='ev' && TEV[e.i] ? `📢 速報「${TEV[e.i].t}」に ${TEV_GR[e.s][0]} の判断`
+    : e.y==='out' && CHARS[e.k] && TW_NAMES[e.c] ? `🚶 ${e.k}と「${TW_NAMES[e.c][Math.max(1,e.lv||1)-1]}」へおでかけ`
+    : e.y==='g' ? `🎲 試合で${e.r?e.r+'位':'プレー'}（${e.s}点）、まちに +${e.g}pt 投資` : '';
+  return t?{dd,t}:null;
+}
+function tppData(){
+  const W=tppWeek(), P=S.prof, tot=twTot(), rk=twRank(tot), L=townSt().pts.map(twLv);
+  const G=W.filter(e=>e.y==='g'), ups=W.filter(e=>e.y==='up'), rks=W.filter(e=>e.y==='rk'), evs=W.filter(e=>e.y==='ev'), outs=W.filter(e=>e.y==='out');
+  const gain=G.reduce((a,e)=>a+(e.g||0),0)+evs.reduce((a,e)=>a+(TEV_PT[e.s]||0),0), wins=G.filter(e=>e.r===1).length, big=ups.slice().sort((a,b)=>b.lv-a.lv)[0];
+  let hl, sub, ty;
+  if(rks.length){ const r=TW_RANK[rks[rks.length-1].i]; hl=`祝・「${r[1]}」に昇格！`; sub=`人口 ${twPop(tot).toLocaleString()}人、まちに笑顔あふれる`; ty='rk'; }
+  else if(big && big.lv>=3){ hl=`「${TW_NAMES[big.c][big.lv-1]}」完成！`; sub=`${IND[big.c]}が、まちの新しい顔に`; ty='up'; }
+  else if(ups.length>=2){ hl=`建設ラッシュ！ ${ups.length}つの建物が成長`; sub='まちの景気、上向きか'; ty='up'; }
+  else if(tevSt().st>=2){ hl=`判断さえる！ ◎${tevSt().st}連続`; sub='速報への対応に、住民から高い評価'; ty='ev'; }
+  else if(G.length){ hl=`今週${G.length}試合、1位は${wins}回`; sub=`投資 ${gain}pt が、まちを育てる`; ty='g'; }
+  else if(outs.length){ hl=`${outs[outs.length-1].k}とのおでかけが話題に`; sub='まちの名所めぐり、ひそかなブーム'; ty='out'; }
+  else { hl=`${twName()}、きょうも平和`; sub='次の一手に、住民も注目'; ty='-'; }
+  const items=W.slice().reverse().map(tppTxt).filter(Boolean).slice(0,6);
+  const res=twResidents(), ks=res.length?res:Object.keys(CHARS).filter(k=>FACE[k]), k=ks[todayKey()%ks.length], pf=CHAR_PROF[k]||{};
+  const quote = gain>=40 ? `今週は +${gain}pt も育ったんだって！ この調子でいこう！` : gain>0 ? `今週は +${gain}pt。のんびりでも、まちはちゃんと育ってるよ。` : `今週はしずかな1週間。${pf.say?`「${pf.say}」――`:''}次の試合が楽しみだね！`;
+  const tm=new Date(Date.now()+864e5), twx=twWeather(tm), tse=twSeason(tm);
+  const ad = L[3] ? `${TW_NAMES[3][L[3]-1]}「${twName()}店」週末セール開催中！` : '空き地の出店者、大募集！ 小売の建物を建てよう';
+  const no=Math.max(1, Math.floor((Date.now()-(P.created||Date.now()))/6048e5)+1);
+  return {hl, sub, ty, items, gain, k, quote, twx, tse, ad, no, tot, rk, L, games:G.length, wins};
+}
+function tppOpen(){
+  closeSheet(); S.prof.tppWk=bossWeek(); saveProfile();
+  if(reduced()){ openSheet('tpaper'); return; }
+  const el=document.createElement('div'); el.className='tpp-press'; el.setAttribute('aria-hidden','true');
+  el.innerHTML=`<div class="tpp-rolls"><i></i><i></i></div><div class="tpp-strip"></div><b>輪転機がまわっています…</b>`;
+  document.body.appendChild(el); for(let i=0;i<10;i++) tone(140+(i%2)*30,.04,'square',.025,i*.11);
+  setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(),300); sfx('flip'); openSheet('tpaper'); setTimeout(()=>sfx('select'),700); },1300);
+}
+function tppBody(){
+  const D=tppData(), d=new Date(), wd='日月火水木金土'[d.getDay()], c=CHARS[D.k];
+  return `<div class="tw-wrap2"><div class="tpp${reduced()?'':' spin'}" id="tppP">
+    <div class="tpp-mast"><small>第${D.no}号 ・ ${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${wd}）</small><h3 style="font-size:${Math.max(18,Math.min(36,Math.floor(290/(twName().length+2))))}px">${esc(twName())}新聞</h3><small>${TW_WX[twWeather()][0]} ${TW_WX[twWeather()][1]} ・ 発行：まちの新聞社</small></div>
+    <h4 class="tpp-hl">${esc(D.hl)}</h4><p class="tpp-sub">${esc(D.sub)}</p>
+    <figure class="tpp-ph">${townSvg({})}<figcaption>写真：いまの${esc(twName())}（${D.rk.ic} ${D.rk.n}・人口 ${twPop(D.tot).toLocaleString()}人）</figcaption></figure>
+    <div class="tpp-cols">
+      <section><b class="tpp-k">今週のできごと</b>${D.items.length?`<ul>${D.items.map(x=>`<li><em>${x.dd}</em>${esc(x.t)}</li>`).join('')}</ul>`:'<p>まだ記事になるできごとがありません。試合をすると、ここに載るよ。</p>'}</section>
+      <section><b class="tpp-k">経済データ</b><div class="tpp-dt"><span>GDP<b>${D.tot}pt</b></span><span>今週の成長<b>+${D.gain}pt</b></span><span>試合<b>${D.games}回</b></span></div>
+        <div class="tpp-bars">${IND.map((n,c)=>`<span style="--ic:var(--i${c})"><i style="height:${D.L[c]*20}%"></i><small>${n.slice(0,2)}</small></span>`).join('')}</div></section>
+    </div>
+    <div class="tpp-cols">
+      <section class="tpp-q" style="--rc:${c?c.c:'#888'}"><b class="tpp-k">住民の声</b><div><span class="tpp-qf">${face(D.k,null,'happy')}</span><p>${esc(D.quote)}<small>── ${D.k}さん</small></p></div></section>
+      <section><b class="tpp-k">あしたの天気</b><p class="tpp-wx"><span>${TW_WX[D.twx][0]}</span>${TW_WX[D.twx][1]}<small>${TW_SE[D.tse][1]} ${TW_SE[D.tse][0]}</small></p></section>
+    </div>
+    <div class="tpp-ad"><small>広告</small>${esc(D.ad)}</div>
+  </div>
+  <div class="tw-share" style="margin-top:12px"><button class="btn gold big" onclick="tppImg()">📸 新聞を保存</button><button class="btn big" onclick="openTown()">まちを見る</button></div></div>`;
+}
+async function tppImg(){
+  sfx('click'); toast('新聞を印刷しています…'); try{ await document.fonts.ready; }catch(_){}
+  const D=tppData(), W=1080, H=1560, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d'), css=getComputedStyle(document.documentElement), v=n=>css.getPropertyValue(n).trim();
+  const SR='"Shippori Mincho B1","Yu Mincho",serif', B='"M PLUS Rounded 1c",sans-serif', INK='#2a2118', d=new Date();
+  const wrap=(t,X,Y,mw,lh,max)=>{ let line='', n=0; for(const ch of t){ if(x.measureText(line+ch).width>mw){ x.fillText(line,X,Y+n*lh); line=ch; if(++n>=max) return n; } else line+=ch; } if(line){ x.fillText(line,X,Y+n*lh); n++; } return n; };
+  x.fillStyle='#f3ebd6'; x.fillRect(0,0,W,H); x.fillStyle='rgba(120,90,40,.05)'; for(let i=0;i<400;i++) x.fillRect((i*137)%W,(i*311)%H,2,2);
+  x.fillStyle=INK; x.textAlign='center'; x.font=`600 24px ${B}`; x.fillText(`第${D.no}号 ・ ${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 ・ ${TW_WX[twWeather()][1]}`,W/2,70);
+  let fz=96; x.font=`800 ${fz}px ${SR}`; const ttl=`${twName()}新聞`; while(x.measureText(ttl).width>W-140 && fz>50){ fz-=4; x.font=`800 ${fz}px ${SR}`; } x.fillText(ttl,W/2,170);
+  x.fillRect(50,200,W-100,6); x.fillRect(50,212,W-100,2);
+  x.textAlign='left'; fz=74; x.font=`800 ${fz}px ${SR}`; while(x.measureText(D.hl).width>W-100 && fz>44){ fz-=4; x.font=`800 ${fz}px ${SR}`; } x.fillText(D.hl,50,300);
+  x.font=`700 34px ${SR}`; x.fillStyle='#5a4a35'; x.fillText(D.sub,52,352);
+  const im=await svgImg(townSvg({}),v,980,503); if(im){ x.drawImage(im,50,380,980,503); x.filter='none'; } x.strokeStyle=INK; x.lineWidth=3; x.strokeRect(50,380,980,503);
+  x.fillStyle='#5a4a35'; x.font=`500 22px ${B}`; x.fillText(`写真：いまの${twName()}（${D.rk.n}・人口 ${twPop(D.tot).toLocaleString()}人）`,52,912);
+  x.fillStyle=INK; x.fillRect(50,935,W-100,2); x.fillRect(560,955,2,470);
+  x.font=`800 32px ${SR}`; x.fillText('今週のできごと',50,990); x.font=`500 25px ${B}`;
+  let y=1036; (D.items.length?D.items:[{dd:'',t:'試合をすると、ここに載るよ'}]).forEach(it=>{ x.fillStyle='#8a6a3a'; x.fillText(it.dd,50,y); x.fillStyle=INK; y+=wrap(it.t.replace(/^\S+ /,''),136,y,404,34,2)*34+12; });
+  x.font=`800 32px ${SR}`; x.fillText('経済データ',590,990); x.font=`600 26px ${B}`; x.fillText(`GDP ${D.tot}pt ・ 今週 +${D.gain}pt`,590,1036);
+  IND.forEach((n,c)=>{ const bx=596+c*72, bh=D.L[c]*28; x.fillStyle=v(`--i${c}`)||'#888'; x.fillRect(bx,1200-bh,48,bh); x.strokeStyle=INK; x.lineWidth=2; x.strokeRect(bx,1060,48,140); x.fillStyle=INK; x.font=`700 20px ${B}`; x.textAlign='center'; x.fillText(n.slice(0,2),bx+24,1230); x.textAlign='left'; });
+  const fc=await svgImg(face(D.k,null,'happy'),v,120,120); if(fc) x.drawImage(fc,590,1262,110,110);
+  x.font=`800 28px ${SR}`; x.fillText('住民の声',716,1286); x.font=`500 23px ${B}`; const qn=wrap(`「${D.quote}」`,716,1324,320,32,3); x.fillStyle='#5a4a35'; x.fillText(`── ${D.k}さん`,716,1324+qn*32);
+  x.fillStyle=INK; x.fillRect(50,1440,W-100,2); x.strokeRect(50,1460,W-100,60); x.font=`700 26px ${B}`; x.textAlign='center'; x.fillText(`［広告］ ${D.ad}`,W/2,1500);
+  x.font=`600 20px ${B}`; x.fillStyle='#8a6a3a'; x.fillText(`AZAKEI MARKET ・ ${PUBLIC_URL.replace(/^https:\/\//,'')}`,W/2,H-14);
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'📰 まち新聞', alt:`${twName()}新聞の1面`, name:`azakei-paper-${todayKey()}.png`, note:'あなたのまちの1週間が1面に。友だちに見せてね！'};
+  openSheet('card');
+}
 let TW_SEL=null;
 function openTown(){ sfx('click'); TW_SEL=null; openSheet('town'); }
 function townPick(c){ TW_SEL=c; sfx('select'); haptic(8); const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner(); }
@@ -6787,6 +6930,7 @@ function townInner(){
     <div class="tw-view"><div class="tw-stage">${townSvg({anim:1,pick:1,sel:c})}${twResHTML()}</div></div>
     <p class="note tw-hint">建物をタップすると説明、住民をタップするとおしゃべり</p>
     ${twWxLine()}
+    <button class="tw-rpb tpp-b" onclick="tppOpen()"><span>📰</span><b>まち新聞を読む</b><small>今週のできごと</small></button>
     <button class="tw-rpb" onclick="twReplay()"><span>▶</span><b>まちの成長をふりかえる</b><small>タイムラプス</small></button>
     <div class="tw-info" style="--ic:var(--i${c})"><div class="row spread"><b>${chip(c)} ${lv?TW_NAMES[c][lv-1]:'空き地'}</b><span class="tw-lv">Lv${lv}</span></div>
       <p>${TW_DESC[c]}</p><div class="tw-bar"><i style="width:${pc.toFixed(0)}%"></i></div>
@@ -6831,6 +6975,7 @@ async function openTownImg(){
 function homeRec(){
   const P=S.prof, k=todayKey(), out=[];
   { const b=bdayToday(); if(b && (P.bday||{})[b]!==new Date().getFullYear()) out.push({ic:'🎂', t:`きょうは${b}の誕生日！`, d:'お祝いすると、お礼の手紙が届くよ', go:`bdayCelebrate('${b}')`}); }
+  if(S.prof.tppWk!==bossWeek() && tppWeek().length) out.push({ic:'📰', t:'今週の「まち新聞」が届いたよ', d:'まちのできごとが記事になったよ', go:'tppOpen()'});
   if(tevSt().d!==k && twTot()>0){ const E=tevToday(); out.push({ic:'📢', t:`まちの速報：${E.t}`, d:'どうする？ 判断しだいで、まちが育つよ', go:'openTev()'}); }
   { const F=outFriends(); if(F.length && outSt().d!==k && twTot()>0){ const A=outSt().al, f=F.slice().sort((a,b)=>IND.filter((_,c)=>A[a+'|'+c]).length-IND.filter((_,c)=>A[b+'|'+c]).length)[0]; out.push({ic:'🚶', t:`${f}とまちへおでかけしよう`, d:'思い出の写真がとれるよ（きょう最初は 🪙+20）', go:`openOuting('${f}')`}); } }
   { const u=mailList().filter(L=>!mailRead(L.id)); if(u.length) out.push({ic:'📮', t:`${u[0].k}から手紙が届いています${u.length>1?`（ほか${u.length-1}通）`:''}`, d:'ポストを開けて読んでみよう', go:'openMail()'}); }
@@ -8879,7 +9024,8 @@ function recordResult(){
   let lastAt3=false;
   if((G.rounds||1)===1 && TURNS>=4 && p.hist.length>3){ const s3=G.players.map(q=>q.hist[3]); lastAt3 = s3[me]===Math.min(...s3) && s3.some(v=>v>s3[me]); }
   const futBest=Math.max(-99,...p.used.filter(u=>u.fut).map(u=>u.total));
-  G.town=townInvest(p);   /* マイタウン：この試合の点数を産業ごとに投資（indp を足す前に呼ぶ＝初回の引きつぎが二重にならない） */
+  G.town=townInvest(p);
+  try{ twLogGame(G.town, mine?mine.rank:0, p.score, won); }catch(e){}   /* マイタウン：この試合の点数を産業ごとに投資（indp を足す前に呼ぶ＝初回の引きつぎが二重にならない） */
   P.ind=P.ind||[0,0,0,0,0,0]; P.indm=P.indm||[0,0,0,0,0,0]; P.indp=P.indp||[0,0,0,0,0,0]; P.indc=P.indc||[0,0,0,0,0,0]; p.used.forEach(u=>{ P.ind[u.ind]++; if(u.k===1) P.indm[u.ind]++; P.indp[u.ind]+=u.total; P.indc[u.ind]++; });   // indp・indc：平均点用（数えはじめてからの点と回数）
   G.recBroke=recordBests(p, me, won);
   st.games++; if(won) st.wins++; if(!G.closeX && !G.pw && !G.yomi) st.best=Math.max(st.best,p.score); st.mono+=p.uniq; if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
