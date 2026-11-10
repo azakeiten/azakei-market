@@ -3099,6 +3099,52 @@ button.tev-ch:active{transform:scale(.97)}
 .sev-cell.now .sev-ci{filter:none;opacity:1;animation:tevBob 1.6s ease-in-out infinite alternate}
 .sev-cell.got.now{background:#fffbea}
 @media (prefers-reduced-motion:reduce){.sev-bn::after,.sev-ic,.sev-prop span,.sev-card,.sev-big,.sev-cell.now .sev-ci{animation:none}}
+/* 🏦 まちの銀行 */
+.mbk-b{background:linear-gradient(110deg,rgb(255 200 58 / .22),rgb(80 200 140 / .14));box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .55)}
+.mbk-b b em{font-style:normal;font-size:12px;font-weight:800;color:var(--gold-t,var(--gold));margin-left:4px}
+.mbk-hd{display:flex;align-items:center;gap:10px;margin:4px 0 10px}
+.mbk-logo{flex:none;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:28px;background:linear-gradient(160deg,#ffe28a,#e0a82e);box-shadow:inset 0 -3px 0 rgb(0 0 0 / .2)}
+.mbk-hd b{display:block;font-size:18px}
+.mbk-hd small{font-size:12px;opacity:.8}
+.mbk-bal{display:flex;flex-direction:column;align-items:center;padding:14px;border-radius:18px;background:radial-gradient(circle at 50% 0,rgb(255 216 74 / .25),transparent 70%),rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1.5px rgb(255 216 74 / .4)}
+.mbk-bal small{font-size:12px;opacity:.8}
+.mbk-bal>b{font-family:var(--display);font-weight:400;font-size:34px;color:var(--gold-t,var(--gold));font-variant-numeric:tabular-nums}
+.mbk-bal span{font-size:12px}
+.mbk-bal span b{color:#5ce18a}
+.mbk-ops{display:grid;gap:8px;margin:10px 0}
+.mbk-op small{display:block;font-size:12px;opacity:.8;margin-bottom:4px}
+.mbk-op>div{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mbk-am{padding:9px 0;border:0;border-radius:12px;background:rgb(255 255 255 / .08);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .16);color:inherit;font:inherit;font-weight:900;font-size:14px;cursor:pointer}
+.mbk-am:active{transform:scale(.95)}
+.mbk-am.all{background:rgb(255 216 74 / .18);box-shadow:inset 0 0 0 1.5px rgb(255 216 74 / .6)}
+.mbk-pb{margin:6px 0 12px;padding:10px 10px 6px;border-radius:6px;background:repeating-linear-gradient(180deg,#eef7ee 0 27px,#cfe3cf 27px 28px);color:#1f3a2a;box-shadow:0 8px 16px -10px #000,inset 6px 0 0 #2f7a4f}
+.mbk-pbh{display:flex;justify-content:space-between;align-items:baseline;padding:0 0 4px 8px}
+.mbk-pbh b{font-size:14px}
+.mbk-pbh small{font-size:11px}
+.mbk-pb table{width:100%;border-collapse:collapse;font:600 11.5px/1 ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}
+.mbk-pb th{font:800 10.5px/1.6 inherit;text-align:right;padding:2px 4px;border-bottom:1.5px solid #2f7a4f}
+.mbk-pb th:first-child,.mbk-pb td:first-child{text-align:left;padding-left:8px}
+.mbk-pb td{height:28px;text-align:right;padding:0 4px;white-space:nowrap}
+.mbk-pb td em{font-style:normal;color:#2f7a4f;font-size:10px}
+.mbk-pb td.mbk-none{text-align:center;font-family:inherit;white-space:normal}
+.mbk-pb tr.mbk-pr{animation:mbkPr .35s steps(6) both}
+@keyframes mbkPr{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.mbk-sim{padding:10px 12px;border-radius:14px;background:rgb(255 255 255 / .05);margin-bottom:6px}
+.mbk-sim>b{display:block;font-size:13px;margin-bottom:6px}
+.mbk-sr{display:flex;align-items:center;gap:8px;margin:6px 0}
+.mbk-sr>span{flex:none;width:52px;font-size:12px;font-weight:800}
+.mbk-bars{flex:1;display:flex;flex-direction:column;gap:3px}
+.mbk-bars i{position:relative;display:block;height:14px;border-radius:4px;min-width:30px}
+.mbk-bars i.s{background:#7fb3ff}
+.mbk-bars i.c{background:linear-gradient(90deg,#ffd84a,#ff9a3d)}
+.mbk-bars em{position:absolute;right:4px;top:0;font-style:normal;font-size:10px;font-weight:900;line-height:14px;color:#1a1033}
+.mbk-lg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;margin-top:6px}
+.mbk-lg span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.mbk-lg .s::before{background:#7fb3ff}
+.mbk-lg .c::before{background:#ff9a3d}
+.mbk-fly{position:fixed;z-index:340;font-size:20px;pointer-events:none;animation:mbkFly .7s ease-in both}
+@keyframes mbkFly{from{opacity:0;transform:translateY(0) scale(.6)}30%{opacity:1}to{opacity:0;transform:translateY(var(--dy)) scale(1)}}
+@media (prefers-reduced-motion:reduce){.mbk-pb tr.mbk-pr{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4915,6 +4961,7 @@ function renderSheet(){
   else if(k==='mail') body=mailBody();
   else if(k==='town') body=townBody();
   else if(k==='outing') body=outBody();
+  else if(k==='mbank') body=`<div id="mbkWrap" class="tw-wrap2">${mbkInner()}</div>`;
   else if(k==='sevbook') body=sevBook();
   else if(k==='tpaper') body=tppBody();
   else if(k==='tev') body=`<div id="tevWrap" class="tw-wrap2">${tevInner()}</div>`;
@@ -7123,6 +7170,59 @@ function sevBook(){
       return `<${now?`button onclick="sevPlay()"`:'div'} class="sev-cell${got?' got':''}${now?' now':''}"><span class="sev-ci">${E.ic}</span><b>${E.n}</b><small>${E.f[0]}/${E.f[1]}〜${E.t[0]}/${E.t[1]}</small>${got?`<i class="sev-mk">${y}</i>`:now?'<em>開催中！</em>':past?`<em class="pv">${P[E.id]}年に参加</em>`:''}</${now?'button':'div'}>`; }).join('')}</div>
     <div class="col" style="gap:8px">${cur&&!sevGot(cur)?`<button class="btn gold big" onclick="sevPlay()">${cur.ic} ${cur.n}をお祝いする</button>`:''}<button class="btn ghost" onclick="openSheet('town')">まちにもどる</button></div></div>`;
 }
+/* ---- 🏦 まちの銀行：コインをあずけると、毎日「複利」で利息がつく。金融の建物Lvで利率アップ。通帳・単利と複利のグラフ・72の法則 ---- */
+const MBK_RATE=[0,.002,.003,.004,.005,.006], MBK_CAP=3000;
+const mbkDay = d => { d=d||mbkDay.now||new Date(); return Math.round(new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime()/864e5); };
+function mbkSt(){ const P=S.prof; if(!P.mbk || typeof P.mbk!=='object') P.mbk={b:0, d:mbkDay(), log:[], int:0, unseen:0}; return P.mbk; }
+const mbkLv = () => twLv(townSt().pts[1]);
+const mbkRate = () => MBK_RATE[mbkLv()];
+function mbkAccrue(){
+  const B=mbkSt(), today=mbkDay(), n=Math.min(90, today-(B.d||today)); if(n<=0){ B.d=today; return 0; }
+  const r=mbkRate(); let add=0; if(B.b>0 && r>0){ for(let i=0;i<n;i++){ const x=B.b*r; B.b+=x; add+=x; } }
+  B.d=today; if(add>0){ B.int=(B.int||0)+add; B.unseen=(B.unseen||0)+add; mbkLogPush({ty:'int', v:add, n}); } saveProfile(); return add;
+}
+function mbkLogPush(e){ const B=mbkSt(); e.t=Date.now(); e.bal=B.b; e.np=1; B.log.push(e); if(B.log.length>40) B.log.splice(0,B.log.length-40); }
+function mbkEntry(){
+  const lv=mbkLv(), B=mbkSt();
+  return `<button class="tw-rpb mbk-b" onclick="mbkOpen()"><span>🏦</span><b>まちの銀行${lv?` <em>残高 🪙${Math.floor(B.b).toLocaleString()}</em>`:''}</b><small>${lv?`1日 ${(mbkRate()*100).toFixed(1)}%`:'金融Lv1でオープン'}</small></button>`;
+}
+function mbkOpen(){ sfx('open'); mbkAccrue(); openSheet('mbank'); setTimeout(mbkPrint, 400); }
+const mbkFmt = v => (Math.floor(v*10)/10).toLocaleString(undefined,{minimumFractionDigits:1,maximumFractionDigits:1});
+function mbkProj(days){ const B=mbkSt(), r=mbkRate(), b=Math.max(B.b,100); return {s:b*(1+r*days), c:b*Math.pow(1+r,days), b}; }
+function mbkInner(){
+  const lv=mbkLv(), B=mbkSt(), P=S.prof;
+  if(!lv) return `<span class="label">TOWN BANK</span><h3 class="ttl" style="font-size:22px">🏦 まちの銀行</h3><div class="out-empty"><span class="out-ef">${face('トキ',null,'happy')}</span><p>まちに<b>金融の建物</b>（Lv1「${TW_NAMES[1][0]}」）ができると、銀行がオープンするぞ。金融のカードで点を取るんじゃ。</p></div><button class="btn ghost" onclick="openSheet('town')">まちにもどる</button>`;
+  const r=mbkRate(), name=TW_NAMES[1][lv-1], dbl=Math.round(72/(r*100)), rows=B.log.slice(-8), D=[30,100,365].map(d=>({d,...mbkProj(d)})), mx=Math.max(...D.map(x=>x.c));
+  const amt=(dir)=>[10,50,100].map(v=>`<button class="mbk-am" onclick="mbkMove(${dir},${v})">${dir>0?'+':'−'}${v}</button>`).join('')+`<button class="mbk-am all" onclick="mbkMove(${dir},-1)">${dir>0?'ぜんぶ':'ぜんぶ'}</button>`;
+  return `<span class="label">TOWN BANK</span>
+    <div class="mbk-hd"><span class="mbk-logo">🏦</span><div><b>${esc(twName())} ${name}</b><small>1日 ${(r*100).toFixed(1)}% ・ ふくり（複利） ・ 金融Lv${lv}</small></div></div>
+    <div class="mbk-bal"><small>あずけているコイン</small><b id="mbkBal">🪙 ${mbkFmt(B.b)}</b><span>これまでの利息 <b>+${mbkFmt(B.int||0)}</b></span></div>
+    <div class="mbk-ops"><div class="mbk-op"><small>あずける（手もち 🪙${(P.coin||0).toLocaleString()}）</small><div>${amt(1)}</div></div><div class="mbk-op"><small>ひきだす</small><div>${amt(-1)}</div></div></div>
+    <div class="mbk-pb"><div class="mbk-pbh"><b>📒 通帳</b><small>${esc(NET.name||'あなた')} 様</small></div>
+      <table><thead><tr><th>日付</th><th>おあずけ</th><th>おひきだし</th><th>残高</th></tr></thead><tbody id="mbkRows">${rows.length?rows.map(e=>{ const d=new Date(e.t); return `<tr class="${e.np?'mbk-np':''}"><td>${d.getMonth()+1}/${d.getDate()}</td><td>${e.ty==='in'?mbkFmt(e.v):e.ty==='int'?`<em>利息${e.n>1?`(${e.n}日)`:''}</em> ${mbkFmt(e.v)}`:''}</td><td>${e.ty==='out'?mbkFmt(e.v):''}</td><td>${mbkFmt(e.bal)}</td></tr>`; }).join(''):'<tr><td colspan="4" class="mbk-none">まだ記録がありません。コインをあずけてみよう！</td></tr>'}</tbody></table></div>
+    <div class="mbk-sim"><b>📈 もし ${Math.floor(D[0].b)} コインを、このまま置いておくと…</b>
+      ${D.map(x=>`<div class="mbk-sr"><span>${x.d}日後</span><div class="mbk-bars"><i class="s" style="width:${(x.s/mx*100).toFixed(1)}%"><em>${Math.floor(x.s)}</em></i><i class="c" style="width:${(x.c/mx*100).toFixed(1)}%"><em>${Math.floor(x.c)}</em></i></div></div>`).join('')}
+      <div class="mbk-lg"><span class="s">単利（元のお金にだけ利息）</span><span class="c">複利（利息にも利息）</span></div></div>
+    <div class="tev-adv" style="--rc:${CHARS['トキ']?CHARS['トキ'].c:'#888'}"><span class="tev-af">${face('トキ',null,'happy')}</span><p><b>トキ</b>利息にも利息がつくのが「複利」じゃ。長く置くほど差が開く。<br><small>💡 72の法則：72 ÷ 利率(%) ＝ お金が2倍になるまでの期間。いまの利率なら約 ${dbl}日じゃ。（本物の銀行の利率は、もっとずっと低いぞ）</small></p></div>
+    <button class="btn ghost" onclick="openSheet('town')">まちにもどる</button>`;
+}
+function mbkMove(dir,v){
+  const B=mbkSt(), P=S.prof; mbkAccrue();
+  if(dir>0){ const room=Math.max(0,MBK_CAP-Math.floor(B.b)); let a=v<0?(P.coin||0):v; a=Math.min(a,P.coin||0,room); if(a<=0){ toast(room<=0?`あずけられるのは ${MBK_CAP} コインまでだよ`:'手もちのコインが足りないよ'); return; } P.coin-=a; B.b+=a; mbkLogPush({ty:'in', v:a}); }
+  else { let a=v<0?Math.floor(B.b):v; a=Math.min(a,Math.floor(B.b)); if(a<=0){ toast('ひきだせるコインがないよ'); return; } B.b-=a; P.coin=(P.coin||0)+a; mbkLogPush({ty:'out', v:a}); }
+  saveProfile(); haptic(10);
+  for(let i=0;i<4;i++) setTimeout(()=>tone(1200+i*120,.05,'triangle',.04),i*70); setTimeout(()=>sfx('coin'),300);
+  const w=document.getElementById('mbkWrap'); if(w){ const y=w.closest('.sheet,.sheet-body')?.scrollTop; w.innerHTML=mbkInner(); mbkCoins(dir); mbkPrint(); }
+}
+function mbkCoins(dir){
+  if(reduced()) return; const t=document.getElementById('mbkBal'); if(!t) return; const r=t.getBoundingClientRect();
+  for(let i=0;i<7;i++){ const c=document.createElement('span'); c.className='mbk-fly'; c.textContent='🪙'; c.style.left=(r.left+r.width/2-10+(i-3)*14)+'px'; c.style.top=(dir>0?r.top-60:r.top+10)+'px'; c.style.setProperty('--dy',(dir>0?70:-80)+'px'); c.style.animationDelay=(i*50)+'ms'; document.body.appendChild(c); setTimeout(()=>c.remove(),1100); }
+}
+function mbkPrint(){
+  const B=mbkSt(), rows=[...document.querySelectorAll('#mbkRows tr.mbk-np')]; if(!rows.length){ B.unseen=0; return; }
+  rows.forEach((tr,i)=>{ tr.style.animationDelay=(i*260)+'ms'; tr.classList.add('mbk-pr'); if(!reduced()) setTimeout(()=>{ for(let j=0;j<5;j++) tone(900+j*40,.02,'square',.02,j*.03); }, i*260); });
+  B.log.forEach(e=>{ delete e.np; }); B.unseen=0; saveProfile();
+}
 let TW_SEL=null;
 function openTown(){ sfx('click'); TW_SEL=null; openSheet('town'); }
 function townPick(c){ TW_SEL=c; sfx('select'); haptic(8); const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner(); }
@@ -7141,6 +7241,7 @@ function townInner(){
     <p class="note tw-hint">建物をタップすると説明、住民をタップするとおしゃべり</p>
     ${twWxLine()}
     <div id="qbWrap">${qbHTML()}</div>
+    ${mbkEntry()}
     <button class="tw-rpb tpp-b" onclick="tppOpen()"><span>📰</span><b>まち新聞を読む</b><small>今週のできごと</small></button>
     <button class="tw-rpb" onclick="twReplay()"><span>▶</span><b>まちの成長をふりかえる</b><small>タイムラプス</small></button>
     <div class="tw-info" style="--ic:var(--i${c})"><div class="row spread"><b>${chip(c)} ${lv?TW_NAMES[c][lv-1]:'空き地'}</b><span class="tw-lv">Lv${lv}</span></div>
@@ -7187,6 +7288,7 @@ function homeRec(){
   const P=S.prof, k=todayKey(), out=[];
   { const b=bdayToday(); if(b && (P.bday||{})[b]!==new Date().getFullYear()) out.push({ic:'🎂', t:`きょうは${b}の誕生日！`, d:'お祝いすると、お礼の手紙が届くよ', go:`bdayCelebrate('${b}')`}); }
   { const E=sevToday(); if(E && !sevGot(E)) out.push({ic:E.ic, t:`期間限定イベント「${E.n}」開催中！`, d:`${E.k}といっしょに楽しんで、スタンプをもらおう（🪙+${SEV_COIN}）`, go:'sevPlay()'}); }
+  { const B=mbkSt(); mbkAccrue(); if(B.unseen>=1) out.push({ic:'🏦', t:`銀行の利息が +${Math.floor(B.unseen)} コインついたよ`, d:'通帳に記帳して、ふえたお金を見てみよう', go:'mbkOpen()'}); }
   if(twTot()>0){ const r=qbSt().s.find(q=>q && qbDone(q)); if(r) out.push({ic:'📌', t:`${r.k}の依頼を達成！ 報告しよう`, d:`まちの掲示板で 🪙+${r.g} もらえるよ`, go:'openTown()'}); }
   if(S.prof.tppWk!==bossWeek() && tppWeek().length) out.push({ic:'📰', t:'今週の「まち新聞」が届いたよ', d:'まちのできごとが記事になったよ', go:'tppOpen()'});
   if(tevSt().d!==k && twTot()>0){ const E=tevToday(); out.push({ic:'📢', t:`まちの速報：${E.t}`, d:'どうする？ 判断しだいで、まちが育つよ', go:'openTev()'}); }
