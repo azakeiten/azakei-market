@@ -3262,6 +3262,39 @@ html.light .tw-rkb{background:rgb(70 60 150 / .45)}
 html.light .tl-tk{background:#2a1f45}
 @media (max-width:520px){.tl-hud{left:8px;top:8px;padding:5px 9px 6px;border-radius:12px}.tl-hud b{font-size:13px}.tl-hud small{font-size:9.5px}.tl-hud small.tl-rkt{display:none}.tl-rkm{min-width:110px;height:5px;margin-top:3px}.tl-live{font-size:8.5px}.tl-wx{right:8px;top:8px;padding:4px 8px;font-size:11px}.tl-wx small{font-size:9px}}
 @media (prefers-reduced-motion:reduce){.tl-frame,.tl-stage svg.tw-svg,.tl-hud,.tl-wx,.tl-rkm i,.tl-tkr i,.tl-chip,.tl-live i{animation:none!important}}
+/* 🌅 きょうのまち */
+.dbf{position:fixed;inset:0;z-index:335;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;background:#0a0b22;color:#fff;animation:owIn .35s ease-out both}
+.dbf.out{animation:owOut .35s ease-in both}
+.dbf-town{position:absolute;left:0;right:0;bottom:0;height:46%;display:flex;justify-content:center}
+.dbf-town svg{width:100%;height:100%;display:block}
+.dbf-dawn{position:absolute;inset:0;background:linear-gradient(180deg,#0a0b22 0%,#1d2266 45%,rgb(255 150 120 / .55) 70%,transparent 100%);animation:dbfDawn 2.6s ease-out both}
+@keyframes dbfDawn{from{background-color:#05061a;opacity:1;filter:brightness(.3)}to{opacity:.92;filter:none}}
+.dbf-sun{position:absolute;left:50%;bottom:44%;width:120px;height:120px;margin-left:-60px;border-radius:50%;background:radial-gradient(circle,#fff6c2 0 30%,#ffd84a 45%,rgb(255 160 60 / .0) 70%);filter:blur(1px);animation:dbfSun 2.6s cubic-bezier(.2,.8,.3,1) both;pointer-events:none}
+@keyframes dbfSun{from{transform:translateY(120px) scale(.6);opacity:0}to{transform:translateY(0) scale(1);opacity:.9}}
+.dbf-in{position:relative;z-index:1;width:min(460px,100%);margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 16px 16px;display:flex;flex-direction:column;gap:10px;max-height:100%;overflow:auto}
+.dbf-lb{font-size:12px;font-weight:900;letter-spacing:.06em;opacity:.85;animation:tlIn .6s .3s both}
+.dbf-date{display:flex;align-items:baseline;gap:10px;animation:tlIn .7s .45s cubic-bezier(.2,1.3,.4,1) both}
+.dbf-date b{font-family:var(--display);font-weight:400;font-size:52px;line-height:1;text-shadow:0 4px 18px rgb(255 200 120 / .5)}
+.dbf-date b small{font-size:22px;margin:0 2px}
+.dbf-date em{font-style:normal;font-size:16px;font-weight:800;opacity:.9}
+.dbf-wx{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;padding:4px 12px 4px 6px;border-radius:99px;background:rgb(255 255 255 / .14);font-size:13px;font-weight:800;animation:tlIn .6s .6s both}
+.dbf-wx span{font-size:20px}
+.dbf-say{display:flex;gap:10px;align-items:flex-start;animation:tlIn .6s .8s both}
+.dbf-f{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2.5px var(--rc)}
+.dbf-f svg{width:100%;height:100%;display:block}
+.dbf-say p{flex:1;margin:0;padding:9px 12px;border-radius:4px 16px 16px 16px;background:rgb(255 255 255 / .94);color:#221a45;font-size:13.5px;line-height:1.6}
+.dbf-say p b{display:block;font-size:11px;color:color-mix(in srgb,var(--rc) 70%,#221a45)}
+.dbf-list{display:flex;flex-direction:column;gap:6px}
+.dbf-list>small{font-size:11px;font-weight:900;opacity:.8;animation:tlIn .5s 1s both}
+.dbf-it{display:flex;align-items:center;gap:10px;padding:9px 12px;border:0;border-radius:14px;background:rgb(16 12 40 / .62);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .18);color:#fff;font:inherit;text-align:left;cursor:pointer;animation:dbfIt .5s calc(1.05s + var(--i)*.12s) cubic-bezier(.2,1.3,.4,1) both}
+@keyframes dbfIt{from{opacity:0;transform:translateX(-24px)}}
+.dbf-it>span:first-child{flex:none;font-size:24px}
+.dbf-it>span:nth-child(2){flex:1;min-width:0;display:flex;flex-direction:column}
+.dbf-it b{font-size:14px}
+.dbf-it small{font-size:11px;opacity:.8}
+.dbf-it i{font-style:normal;font-size:18px;opacity:.7}
+.dbf-go{margin-top:4px;animation:tlIn .6s 1.6s both}
+@media (prefers-reduced-motion:reduce){.dbf,.dbf-dawn,.dbf-sun,.dbf-lb,.dbf-date,.dbf-wx,.dbf-say,.dbf-list>small,.dbf-it,.dbf-go{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4242,7 +4275,7 @@ function start(data){
   if(!data.S){ const sv=load('azakei-seats'); if(Array.isArray(sv) && sv.length>=2 && sv.length<=6 && sv.every(x=>x && typeof x.name==='string' && TYPES[x.type])) S.seats=sv; }   // 前回の席（キャラ選択）を覚えておく
   if(!S.rec) S.rec=load('azakei-rec')||{games:0,wins:0,best:0};
   if(!S.prof) S.prof=loadProfile();
-  if(!data.S){ loginStamp(); rankSeasonCheck(); duelFromUrl(); mnFromUrl(); tableFromUrl(); townFromUrl(); }
+  if(!data.S){ loginStamp(); rankSeasonCheck(); duelFromUrl(); mnFromUrl(); tableFromUrl(); townFromUrl(); setTimeout(dayBriefMaybe, 2200); }
   if(S.vib===undefined){ const v=load('azakei-vib'); S.vib = v===null ? true : !!v; }
   if(S.calm===undefined) S.calm=!!load('azakei-calm');
   if(!S.len) S.len=load('azakei-len')==='long'?'long':'short';
@@ -7448,6 +7481,44 @@ function townLive(){
     ${pend?`<p class="tl-pend">✨ まちで <b>${pend}つ</b> のことがあなたを待っています</p>`:''}
   </section>`;
 }
+/* ---- 🌅 きょうのまち：その日はじめて開いたとき、まちに朝が来る演出＋きょうのできごとの一覧（1日1回・スキップ可） ---- */
+function dayBriefMaybe(tries){
+  tries=tries||0; if(tries>60 || !S || !S.prof || S.prof.brief===todayKey() || twTot()<=0) return;
+  const busy = S.screen!=='home' || G || document.querySelector('#sheet .sheet, .stampfx, #nvl, #ltr, .sev-stp, #twrp, .out-walk, .tpp-press, .dbf');
+  if(busy){ setTimeout(()=>dayBriefMaybe(tries+1), 1000); return; }
+  openDayBrief();
+}
+function dayBriefItems(){
+  const k=todayKey(), it=[];
+  try{ const b=bdayToday(); if(b && (S.prof.bday||{})[b]!==new Date().getFullYear()) it.push(['🎂',`きょうは${b}の誕生日！`,'お祝いしよう',`bdayCelebrate('${b}')`]); }catch(e){}
+  try{ const E=sevToday(); if(E) it.push([E.ic,`${E.n}イベント 開催中`,sevGot(E)?'スタンプゲットずみ':`のこり${sevLeft(E)}日`,sevGot(E)?"openSheet('sevbook')":'sevPlay()']); }catch(e){}
+  try{ if(tevSt().d!==k){ const T=tevToday(); it.push(['📢',`速報：${T.t}`,'まちのためにどうする？','openTev()']); } }catch(e){}
+  try{ const Q=qbSt(), n=Q.s.filter(q=>q && q.t>Date.now()-864e5).length, d=Q.s.filter(q=>q && qbDone(q)).length; if(d) it.push(['📌',`依頼を ${d}件 達成ずみ`,'報告してコインをもらおう',"openTown('todo')"]); else if(n) it.push(['📌',`新しい依頼が ${n}件`,'掲示板をチェック',"openTown('todo')"]); }catch(e){}
+  try{ if(mshLv() && (S.prof.msh||{}).d!==k){ const P=mshProd(); it.push([P.ic,`お店：きょうの商品は「${P.n}」`,'値段を決めて営業しよう','mshOpen()']); } }catch(e){}
+  try{ if(mbkLv()){ mbkAccrue(); const u=mbkSt().unseen; if(u>=1) it.push(['🏦',`利息が +${Math.floor(u)} コイン`,'銀行で記帳しよう','mbkOpen()']); } }catch(e){}
+  try{ const F=outFriends(); if(F.length && outSt().d!==k) it.push(['🚶',`${F[k%F.length]}がおでかけしたいって`,'まちの建物へ行こう',`openOuting('${F[k%F.length]}')`]); }catch(e){}
+  return it.slice(0,5);
+}
+function openDayBrief(){
+  if(document.querySelector('.dbf')) return;
+  S.prof.brief=todayKey(); saveProfile();
+  const d=new Date(), wd='日月火水木金土'[d.getDay()], wx=twWeather(), se=twSeason(), ph=skyPhase(d.getHours()), it=dayBriefItems();
+  const greet=ph==='morn'?'おはよう':ph==='day'?'こんにちは':'こんばんは', tip=wx==='sun'?TW_WXT.sun[se]:TW_WXT[wx], host=CHARS['ミオ']?'ミオ':Object.keys(CHARS)[0];
+  const el=document.createElement('div'); el.className='dbf'; el.setAttribute('role','dialog'); el.setAttribute('aria-label','きょうのまち');
+  el.innerHTML=`<div class="dbf-town">${townSvg({anim:1})}</div><div class="dbf-dawn"></div><span class="dbf-sun"></span>
+    <div class="dbf-in"><span class="dbf-lb">🌅 ${esc(twName())}の きょう</span>
+      <div class="dbf-date"><b>${d.getMonth()+1}<small>月</small>${d.getDate()}<small>日</small></b><em>${wd}曜日</em></div>
+      <div class="dbf-wx"><span>${TW_WX[wx][0]}</span>${TW_WX[wx][1]} ・ ${TW_SE[se][1]} ${TW_SE[se][0]}</div>
+      <div class="dbf-say" style="--rc:${CHARS[host].c}"><span class="dbf-f">${face(host,null,'happy')}</span><p><b>${host}</b>${greet}、${esc((NET.name||'').trim()||'あなた')}さん！ ${esc(tip)}</p></div>
+      ${it.length?`<div class="dbf-list"><small>きょうのまちのできごと</small>${it.map(([ic,t,s,go],i)=>`<button class="dbf-it" style="--i:${i}" onclick="dayBriefGo(${JSON.stringify(go).replace(/"/g,'&quot;')})"><span>${ic}</span><span><b>${esc(t)}</b><small>${esc(s)}</small></span><i>›</i></button>`).join('')}</div>`:''}
+      <button class="btn gold big dbf-go" onclick="dayBriefClose()">🏙️ まちへ出かける</button></div>`;
+  const tsv=el.querySelector('.dbf-town svg'); if(tsv) tsv.setAttribute('preserveAspectRatio','xMidYMax slice');
+  document.body.appendChild(el); el.querySelector('.dbf-go').focus({preventScroll:true});
+  if(!reduced()){ [523,659,784,1047].forEach((f,i)=>tone(f,.18,'sine',.035,.6+i*.16)); }
+  el.addEventListener('keydown',e=>{ if(e.key==='Escape') dayBriefClose(); });
+}
+function dayBriefClose(){ const el=document.querySelector('.dbf'); if(!el) return; sfx('click'); el.classList.add('out'); setTimeout(()=>el.remove(),350); }
+function dayBriefGo(go){ dayBriefClose(); setTimeout(()=>{ try{ new Function(go)(); }catch(e){} },360); }
 let TW_SEL=null;
 function openTown(tab){ sfx('click'); TW_SEL=null; TW_TAB=typeof tab==='string'?tab:'town'; openSheet('town'); }
 function townPick(c){ TW_SEL=c; sfx('select'); haptic(8); const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner(); }
