@@ -4024,7 +4024,7 @@ function cfgFor(mode,era){
   if(mode==='my'){ const M=(S.prof&&S.prof.myNews)||[]; if(M.length>=TURNS) return {...CFG, table:M.map(x=>x.v.slice()), names:M.map(x=>mnSafe(x.n)), descs:M.map(x=>mnSafe(x.d)), hist:false, my:true}; }
   return {...CFG, names:NEWS, hist:false};
 }
-const yearOf = i => HIST[i].y;
+const yearOf = i => HIST[i] ? HIST[i].y : '？？';   /* 大引けで隠しているNEWS（仮の行）は年もふせる */
 const modeName = c => c&&c.fut ? '未来編' : c&&c.hist ? '歴史モード' : c&&c.ex ? 'クラシックEX' : c&&c.month ? `今月のNEWS（${c.month}）` : c&&c.my ? 'マイNEWS' : 'クラシック';
 
 /* ================= engine（対戦と検証で共通） ================= */
@@ -4359,7 +4359,8 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   if(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
   G.league = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.league) ? leagueJoin(G.players.map(p=>p.name)) : null;   // リーグ戦の何試合目か
   G.gid=Date.now(); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
-  G.b4 = !!(!daily && !ch && !cu && !sto && !sv && !bs && !du && S.b4 && !G.cfg.hist && !long);   /* オンラインでもホストの設定でβ4 */   /* β4ルール：大引けサプライズ（最後のNEWSは出したあとに発表・点数2倍） */
+  const freePlay = !daily && !ch && !cu && !sto && !sv && !bs && !du;
+  G.b4 = !!(!long && (freePlay ? S.b4 : true));   /* 2026-11 ルール整理：歴史・未来・デイリー・練習・ストーリー・カップ・サバイバル・ボス・挑戦状も同じ中心ルール（最後のNEWSは出したあとに発表・2倍）。ロング版は上級モードとして別 */   /* オンラインでもホストの設定でβ4 */   /* β4ルール：大引けサプライズ（最後のNEWSは出したあとに発表・点数2倍） */
   G.yomi = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.yomi);   /* 人気予想（試作）：ふだんの対戦だけ */
   G.whale = G.b4 && G.players.length===2 ? {hand:[0,1,2,3,4,5], pick:null, used:[]} : null;
   G.pw = G.b4 && S.pwOn ? pwAssign() : null;
@@ -4368,7 +4369,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
     const j=G.pw.indexOf(ch.pw); if(j>=0 && j!==me){ const free=Object.keys(PWR).filter(k=>!G.pw.includes(k)); G.pw[j]=free[0]||G.pw[me]; }
     G.pw[me]=ch.pw; G.players.forEach((p,i)=>{ p.brand = G.pw[i]==='aoi' ? (p.brand!=null?p.brand:Math.floor((G.rnd||Math.random)()*6)) : null; });
   }   /* 投資家カード（試作）：全員が1枚ずつ、ずっと効く能力を持つ */   /* β4：2人のときは🐋クジラ（点数を数えない大口投資家）が参加 */
-  if(G.b4 && !G.pw && !S.futOn) G.cfg={...G.cfg, fore:'none'};   /* ふだんのルールは先物なし */
+  if(G.b4 && !G.pw && !(S.futOn && freePlay)) G.cfg={...G.cfg, fore:'none'};   /* 先物は、ふだんの対戦で上級ルールを選んだときだけ */   /* ふだんのルールは先物なし */
   G.closeX = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.closeX && !G.b4);   /* 大引け2倍：β3ルールに足す特別ルール（記録には入れない） */
   G.tac = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.tacOn && G.players.filter(isHuman).length===1) ? {used:{}, now:null} : null;   // 作戦カード（1人プレイのふだんの対戦だけ）
   if(bs) G.players[1].boss=true;
@@ -8186,7 +8187,9 @@ const ospPending = () => !!(G && G.osp && !G.osp.shown && G.deck[G.turn]===G.osp
 function ospRealDeck(){ const d=G.deck.slice(); d[G.turn]=G.osp.real; return d; }
 function ospHide(){
   if(!G.b4 || G.osp || !isFinalTurn()) return;
-  const cand=G.deck.slice(G.turn); if(cand.length<2) return;
+  let cand=G.deck.slice(G.turn);
+  if(G.cfg.hist && G.turn>0){ const real=G.deck[G.turn], y=yearOf(G.deck[G.turn-1]), rr=G.rnd||Math.random; cand=[real, ...shuffle(G.cfg.pool.filter(i=>i!==real && yearOf(i)>y && !G.deck.slice(0,G.turn).includes(i)), rr).slice(0,4)]; cand=shuffle(cand, rr); }
+  if(cand.length<2) return;
   const C=G.cfg={...G.cfg, table:G.cfg.table.map(r=>r.slice()), names:G.cfg.names.slice(), descs:G.cfg.descs?G.cfg.descs.slice():G.cfg.descs};
   const avg=[0,1,2,3,4,5].map(c=>Math.round(cand.reduce((s,n)=>s+C.table[n][c],0)/cand.length*10)/10);
   C.table.push(avg); C.names.push('？？？');
@@ -8385,7 +8388,8 @@ function netB4(){
 function guestB4(st){
   G.b4=!!st.b4;
   const ok=n=>Number.isInteger(n)&&n>=0&&n<6;
-  if(st.osp && Array.isArray(st.osp.c) && st.osp.c.every(ok) && Number.isInteger(st.osp.i) && st.osp.i>=6 && st.osp.i<40 && Array.isArray(st.osp.a) && st.osp.a.length===6 && st.osp.a.every(v=>typeof v==='number'&&isFinite(v))){
+  const okN=n=>Number.isInteger(n)&&n>=0&&n<G.cfg.table.length;
+  if(st.osp && Array.isArray(st.osp.c) && st.osp.c.length<=8 && st.osp.c.every(okN) && Number.isInteger(st.osp.i) && st.osp.i>=6 && st.osp.i<Math.max(40,G.cfg.table.length+3) && Array.isArray(st.osp.a) && st.osp.a.length===6 && st.osp.a.every(v=>typeof v==='number'&&isFinite(v))){
     const C=G.cfg={...G.cfg, table:G.cfg.table.map(r=>r.slice()), names:G.cfg.names.slice()};
     C.table[st.osp.i]=st.osp.a.slice(); C.names[st.osp.i]='？？？';
     const mine=st.tk && NET.myPeer ? st.tk[NET.myPeer] : undefined;
@@ -9299,7 +9303,7 @@ function paperCard(news){
       return `<div class="nhd"><div class="nhd-t">${hd}</div><figure class="nphoto">${artFor(C,news,nm(news),row)}<figcaption>イメージ</figcaption></figure></div>`; })()}${pays}</section>`;
 }
 function timeline(){
-  const C=G.cfg, cur=yearOf(G.deck[G.turn]), shown=G.deck.slice(0,G.turn+1);
+  const C=G.cfg, hid=ospPending(), cur=yearOf(G.deck[hid&&G.turn>0?G.turn-1:G.turn]), shown=G.deck.slice(0,G.turn+1);
   const items=C.pool.slice().sort((a,b)=>yearOf(a)-yearOf(b)).map(i=>{
     const st = i===G.deck[G.turn] ? 'now' : shown.includes(i) ? 'done' : yearOf(i)<cur ? 'gone' : 'maybe';
     return `<div class="ev ${st}" title="${HIST[i].n}"><b>${yearOf(i)}</b><span>${HIST[i].n}</span></div>`;
@@ -10343,8 +10347,8 @@ const CHALLENGES=[
     goals:[['1位になる',r=>r.rank===1],['10点以上',r=>r.p.score>=10],['14点以上',r=>r.p.score>=14]]},
   {id:'c2', n:'独占のコツ', d:'人と被らないカードを選ぶ練習。', mode:'classic', seats:['human','read','read','read'], seed:2202,
     goals:[['独占を2回以上',r=>r.p.uniq>=2],['1位になる',r=>r.rank===1],['独占を3回以上',r=>r.p.uniq>=3]]},
-  {id:'c3', n:'先物で勝負', d:'次のNEWSを読んで、先物で大きく取ろう。', mode:'classic', seats:['human','read','read','read'], seed:3303,
-    goals:[['先物で+3以上',r=>r.p.used.some(u=>u.fut&&u.total>=3)],['1位になる',r=>r.rank===1],['15点以上',r=>r.p.score>=15]]},
+  {id:'c3', n:'大引けで逆転', d:'最後のNEWSは、みんなが出してから発表。点数2倍の最終ターンで勝負を決めよう。', mode:'classic', seats:['human','read','read','read'], seed:3303,
+    goals:[['最終ターンで独占',r=>{ const u=r.p.used[r.p.used.length-1]; return !!u && u.k===1; }],['1位になる',r=>r.rank===1],['18点以上',r=>r.p.score>=18]]},
   {id:'c4', n:'昭和の大波', d:'オイルショックからバブル崩壊まで。歴史を読んで勝ち抜け。', mode:'history', era:'showa', seats:['human','read','read','read'], seed:4404,
     goals:[['1位になる',r=>r.rank===1],['10点以上',r=>r.p.score>=10],['マイナスを1回も取らない',r=>r.p.used.every(u=>u.total>=0)]]},
   {id:'c5', n:'平成・令和サバイバル', d:'リーマン・ショックも巣ごもりも。荒れる時代を生き抜け。', mode:'history', era:'heisei', seats:['human','read','read','read'], seed:5505,
