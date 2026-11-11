@@ -3925,6 +3925,7 @@ const ERAS = {
 const FORE = {
   futures:{name:'先物取引', short:'先物', desc:'次のNEWSを自分だけ見て、このターンに出すカードを「次のNEWSの点数−1（手数料）」で計算できる。', btn:'先物取引'},
   dividend:{name:'のぞき見＋配当', short:'配当', desc:'次のNEWSを自分だけ見る。さらに全員、前のターンに出した産業が新しいNEWSで+3なら配当+1。', btn:'次を見る'},
+  none:{name:'先物なし', short:'なし', desc:'未来予測は使わない（ふだんのルール）。', btn:'—'},
   peek:{name:'のぞき見（β2）', short:'のぞき見', desc:'次のNEWSを自分だけ見る。それだけ。', btn:'次を見る'}
 };
 const PRESETS = {
@@ -4089,7 +4090,7 @@ function cardValues(cfg,p,players,deck,t,row,known,adj){
 const maxOf = o => Math.max(...Object.values(o));
 function cpuForesight(cfg,p,players,deck,t,rnd){
   const left=TURNS-1-t;
-  if(p.foreUsed || left<=0 || (p.type!=='read' && p.type!=='pro') || p.fore==='never') return;
+  if(p.foreUsed || left<=0 || (p.type!=='read' && p.type!=='pro') || p.fore==='never' || cfg.fore==='none') return;
   let use=false;
   if(p.fore==='early') use = t===0;
   else {
@@ -4294,7 +4295,7 @@ function start(data){
   applyLook();
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.league===undefined) S.league=!!load('azakei-league-on');
-  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
+  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.futOn===undefined) S.futOn=!!load('azakei-fut'); if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
@@ -4367,6 +4368,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
     const j=G.pw.indexOf(ch.pw); if(j>=0 && j!==me){ const free=Object.keys(PWR).filter(k=>!G.pw.includes(k)); G.pw[j]=free[0]||G.pw[me]; }
     G.pw[me]=ch.pw; G.players.forEach((p,i)=>{ p.brand = G.pw[i]==='aoi' ? (p.brand!=null?p.brand:Math.floor((G.rnd||Math.random)()*6)) : null; });
   }   /* 投資家カード（試作）：全員が1枚ずつ、ずっと効く能力を持つ */   /* β4：2人のときは🐋クジラ（点数を数えない大口投資家）が参加 */
+  if(G.b4 && !G.pw && !S.futOn) G.cfg={...G.cfg, fore:'none'};   /* ふだんのルールは先物なし */
   G.closeX = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.closeX && !G.b4);   /* 大引け2倍：β3ルールに足す特別ルール（記録には入れない） */
   G.tac = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.tacOn && G.players.filter(isHuman).length===1) ? {used:{}, now:null} : null;   // 作戦カード（1人プレイのふだんの対戦だけ）
   if(bs) G.players[1].boss=true;
@@ -4462,7 +4464,7 @@ function selectCard(c){
 }
 function useForesight(){
   const p=G.players[G.active];
-  if(!p || p.foreUsed || G.turn>=TURNS-1) return;
+  if(!p || p.foreUsed || G.turn>=TURNS-1 || G.cfg.fore==='none') return;
   sfx('future'); haptic(20);
   if(G.online && !G.host){ emit('act',{t:'fore',turn:G.turn}); toast(FORE[G.cfg.fore].short+'を申請しました'); return; }
   p.foreUsed=true; p.foreTurn=G.turn; if(G.cfg.fore==='futures') p.fut=true;
@@ -4886,7 +4888,7 @@ function hostAct(m){
   const p=G.players[i], d=m.data;
   if(d.turn!==G.turn || G.phase!=='choose') return;
   if(d.t==='pick' && p.pick===null && p.hand.includes(d.c)){ p.pick=d.c; render(); netSync(); checkAllPicked(); }
-  if(d.t==='fore' && p.pick===null && !p.foreUsed && G.turn<TURNS-1){ p.foreUsed=true; p.foreTurn=G.turn; if(G.cfg.fore==='futures') p.fut=true; render(); netSync(); }
+  if(d.t==='fore' && p.pick===null && !p.foreUsed && G.turn<TURNS-1 && G.cfg.fore!=='none'){ p.foreUsed=true; p.foreTurn=G.turn; if(G.cfg.fore==='futures') p.fut=true; render(); netSync(); }
 }
 function hostPeersLeft(left){
   if(!G || !G.online) { hostBroadcast(); render(); return; }
@@ -8179,6 +8181,7 @@ function setCloseX(on){ S.closeX=!!on; save('azakei-closex',S.closeX); sfx('clic
 /* ---- β4ルール「大引けサプライズ」：最後のターンは、NEWSを伏せたままカードを出す。全員が出したあとに発表し、点数は2倍。
    検証（4人・読み合いCPU）：最終ターン前のトップがそのまま勝つ割合 90%→65%、ビリからの逆転 1%→18%、読み合いの効き目 1.6倍→2.1倍 ---- */
 function setB4(on){ S.b4=!!on; save('azakei-b4',S.b4); sfx('click'); render(); }
+function setFut(on){ S.futOn=!!on; save('azakei-fut',S.futOn); sfx('click'); render(); }   /* 上級ルール：先物取引（ふだんはなし。2026-11 シミュレーションで、なしでも逆転・実力差とも同等以上と確認） */
 const ospPending = () => !!(G && G.osp && !G.osp.shown && G.deck[G.turn]===G.osp.idx);
 function ospRealDeck(){ const d=G.deck.slice(); d[G.turn]=G.osp.real; return d; }
 function ospHide(){
@@ -9330,7 +9333,7 @@ function handDock(news){
   const ptsOf=c=>ospPending()?null:(p.fut?futBase(C.table[row][c],pcfg(G.active)):C.table[row][c])+(p.brand===c?1:0);
   const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return cardHTML(c,{tag:pwTag(p,c),click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`}); }).join('');
   const dealKey=G.turn+':'+G.active, deal=G.dealKey!==dealKey; G.dealKey=dealKey;
-  const canFore=!p.foreUsed && G.turn<TURNS-1, fdef=FORE[C.fore];
+  const canFore=!p.foreUsed && G.turn<TURNS-1 && C.fore!=='none', fdef=FORE[C.fore]||FORE.futures;
   const cmpBtn = G.online ? '' : `<button class="ipf-link hk-open" onclick="openSheet('cmp')" aria-label="手札のカードを見くらべる">📊 くらべる</button>`;
   let preview=`<span>カードを選ぶと、独占したときと被ったときの点数が出ます</span>${cmpBtn}`;
   if(G.sel!==null && ospPending()) preview=ospPreview(G.sel)+cmpBtn;
@@ -9348,7 +9351,7 @@ function handDock(news){
     <div class="preview">${preview}</div>${yomiRow(p)}
     ${tacRow()}
     <div class="actions">
-      <button class="btn cyan" onclick="useForesight()" ${canFore?'':'disabled'} title="${fdef.desc}">${EYE.replace('<svg','<svg style="width:18px;height:18px;vertical-align:-4px;margin-right:4px"')}${p.foreUsed?(known?`${fdef.short}中`:'使用済み'):(G.turn>=TURNS-1?'最終ターン':`${fdef.btn}`)}</button>
+      ${C.fore==='none'?'':`<button class="btn cyan" onclick="useForesight()" ${canFore?'':'disabled'} title="${fdef.desc}">${EYE.replace('<svg','<svg style="width:18px;height:18px;vertical-align:-4px;margin-right:4px"')}${p.foreUsed?(known?`${fdef.short}中`:'使用済み'):(G.turn>=TURNS-1?'最終ターン':`${fdef.btn}`)}</button>`}
       <button class="btn go big${G.sel!==null?' pulse':''}" onclick="confirmPick()" ${G.sel===null?'disabled':''}>${G.sel===null?'カードを選んでね':`${IND[G.sel]}を出す！`}</button>
     </div>${emoteBar()}</div>`;
 }
@@ -9554,7 +9557,7 @@ function playView(){
       ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span><button class="dchip d-auto${S.autoDiff?" on":""}" onclick="setAutoDiff(true)"><i>🤖</i>おまかせ</button>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${!S.autoDiff&&diffNow()===k?" on":""}" onclick="setAutoDiff(false);setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>${S.autoDiff?`<p class="note tagnote">🤖 おまかせ：いまは「${AUTO_LV[autoLv()][1]}」。1位を取ると強く、最下位だとやさしくなります。</p>`:''}`:""}
       ${!party&&S.seats.some(s=>s.type!=="human")?oppRow():''}
       ${party?'':`<details class="adv-box"${S.advOpen?' open':''} ontoggle="S.advOpen=this.open"><summary><span>⚙️ こだわり設定</span><small>人数・CPUの性格・チーム戦などの特別ルール</small></summary>`}
-      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.b4?" on":""}" onclick="setB4(${!S.b4})"><i>🆕</i>β4ルール（大引けサプライズ）</button>${S.b4?`<button class="dchip${S.pwOn?" on":""}" onclick="setPw(${!S.pwOn})"><i>🃏</i>投資家カード（試作）</button>`:''}<button class="dchip${S.yomi?" on":""}" onclick="setYomi(${!S.yomi})"><i>🔮</i>人気予想（試作）</button>${S.b4?'':`<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button>`}</div>${S.b4?'<p class="note tagnote">🆕 β4ルール：最後のターンだけ、NEWSを伏せたままカードを出します。候補の中のどれが来るかを読んで勝負。点数は2倍なので、最後まで逆転できます。オフにすると、ルールブックどおりのβ3で遊べます。</p>':''}${S.b4&&S.pwOn?'<p class="note tagnote">🃏 投資家カード（試作）：全員が1枚ずつ、ずっと効く特別な能力を持ちます。CPUはキャラに合った能力。<button class="ipf-link" onclick="openSheet(\'pw\')">9枚の能力を見る</button> 記録とランキングには入りません。</p>':''}${!S.b4&&S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
+      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.b4?" on":""}" onclick="setB4(${!S.b4})"><i>🆕</i>β4ルール（大引けサプライズ）</button>${S.b4?`<button class="dchip${S.futOn||S.pwOn?" on":""}" onclick="setFut(${!S.futOn})" ${S.pwOn?'disabled title="投資家カードでは先物取引を使います"':''}><i>🔭</i>上級：先物取引</button>`:''}${S.b4?`<button class="dchip${S.pwOn?" on":""}" onclick="setPw(${!S.pwOn})"><i>🃏</i>投資家カード（試作）</button>`:''}<button class="dchip${S.yomi?" on":""}" onclick="setYomi(${!S.yomi})"><i>🔮</i>人気予想（試作）</button>${S.b4?'':`<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button>`}</div>${S.b4?'<p class="note tagnote">🆕 β4ルール：最後のターンだけ、NEWSを伏せたままカードを出します。候補の中のどれが来るかを読んで勝負。点数は2倍なので、最後まで逆転できます。オフにすると、ルールブックどおりのβ3で遊べます。</p>':''}${S.b4&&S.pwOn?'<p class="note tagnote">🃏 投資家カード（試作）：全員が1枚ずつ、ずっと効く特別な能力を持ちます。CPUはキャラに合った能力。<button class="ipf-link" onclick="openSheet(\'pw\')">9枚の能力を見る</button> 記録とランキングには入りません。</p>':''}${!S.b4&&S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
       ${leagueNote()}
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
@@ -9882,7 +9885,7 @@ const MISSIONS=[
 ];
 const MIS_BONUS=60;
 function todayMissions(){
-  const k=todayKey(), rnd=mulberry(k*7+3), pool=MISSIONS.slice(), out=[];
+  const k=todayKey(), rnd=mulberry(k*7+3), pool=MISSIONS.filter(m=>m.id!=='fore' || S.futOn || S.pwOn), out=[];
   while(out.length<3){ const m=pool.splice(Math.floor(rnd()*pool.length),1)[0];
     if(out.some(o=>o.id.slice(0,3)===m.id.slice(0,3))) continue;   // 似たお題は同じ日に出さない
     out.push(m); }
