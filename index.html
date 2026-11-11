@@ -3217,6 +3217,51 @@ html.light .tw-rkb{background:rgb(70 60 150 / .45)}
 .msh-l1::before{background:#4fe3ff!important;border-radius:50%!important}
 .msh-l2::before{background:#ff9a3d!important}
 @media (prefers-reduced-motion:reduce){.msh-pi,.msh-c,.msh-c i,.msh-c em,.msh-sum>b{animation:none}.msh-c em{opacity:1}}
+/* 🏙️ マイタウン・ライブ（ホーム） */
+.mtl{margin:14px 0 18px}
+.tl-frame{position:relative;border-radius:22px;overflow:hidden;padding:3px;background:linear-gradient(120deg,#ffd84a,#ff7ab8,#7c6bff,#4fe3ff,#ffd84a);background-size:300% 100%;animation:tlGlow 8s linear infinite;box-shadow:0 18px 40px -18px rgb(124 107 255 / .8)}
+@keyframes tlGlow{to{background-position:300% 0}}
+.tl-stage{border-radius:19px;overflow:hidden;background:#000}
+.tl-stage svg.tw-svg{display:block;width:100%;height:auto;transform-origin:50% 80%}
+.tl-first .tl-stage svg.tw-svg{animation:tlCam 1.6s cubic-bezier(.2,.8,.3,1) both}
+@keyframes tlCam{from{transform:scale(1.18) translateY(4%);filter:blur(3px) brightness(1.3)}}
+.tl-hud{position:absolute;left:12px;top:12px;display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:7px 12px 8px;border:0;border-radius:14px;background:rgb(10 12 40 / .55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font:inherit;text-align:left;cursor:pointer;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .25);max-width:62%}
+.tl-first .tl-hud{animation:tlIn .6s .5s cubic-bezier(.2,1.3,.4,1) both}
+.tl-hud b{font-size:16px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tl-hud small{font-size:11px;opacity:.9}
+.tl-live{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:900;letter-spacing:.12em;color:#ff6b6b}
+.tl-live i{width:7px;height:7px;border-radius:50%;background:#ff4d4d;box-shadow:0 0 6px #ff4d4d;animation:tlBlink 1.2s ease-in-out infinite}
+@keyframes tlBlink{50%{opacity:.25}}
+.tl-wx{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;align-items:center;padding:6px 10px;border-radius:14px;background:rgb(10 12 40 / .5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:900}
+.tl-first .tl-wx{animation:tlIn .6s .7s cubic-bezier(.2,1.3,.4,1) both}
+.tl-wx small{font-size:10px;font-weight:700;opacity:.9}
+@keyframes tlIn{from{opacity:0;transform:translateY(-12px) scale(.9)}}
+.tl-rkm{display:block;width:100%;min-width:150px;height:6px;margin-top:4px;border-radius:99px;background:rgb(255 255 255 / .2);overflow:hidden}
+.tl-rkm i{display:block;height:100%;background:linear-gradient(90deg,#7c6bff,#4fe3ff,#ffd84a);border-radius:99px}
+.tl-first .tl-rkm i{animation:twRkb 1.4s .8s cubic-bezier(.2,.8,.3,1) both}
+.tl-hud small.tl-rkt{font-size:10px;opacity:.85;margin-top:1px}
+.tl-tk{display:flex;align-items:center;margin-top:8px;border-radius:12px;overflow:hidden;background:#120d22;box-shadow:inset 0 0 0 1.5px #3a2a5a}
+.tl-tkl{flex:none;padding:6px 10px;background:linear-gradient(90deg,#ff5c9a,#ff9a3d);color:#fff;font-size:11px;font-weight:900;white-space:nowrap}
+.tl-tkr{flex:1;display:flex;overflow:hidden;white-space:nowrap;font-size:12px;color:#ffe9a8;font-weight:700}
+.tl-tkr i{flex:none;font-style:normal;padding-left:12px;animation:tlTick 28s linear infinite}
+@keyframes tlTick{to{transform:translateX(-100%)}}
+.tl-chips{display:flex;gap:8px;overflow-x:auto;padding:10px 2px 4px;scrollbar-width:none}
+.tl-chips::-webkit-scrollbar{display:none}
+.tl-chip{position:relative;flex:none;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:70px;padding:8px 8px 7px;border:0;border-radius:16px;background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .12);color:inherit;font:inherit;cursor:pointer}
+.tl-first .tl-chip{animation:tlChip .5s cubic-bezier(.2,1.3,.4,1) both}
+.tl-chip:nth-child(2){animation-delay:.06s}.tl-chip:nth-child(3){animation-delay:.12s}.tl-chip:nth-child(4){animation-delay:.18s}.tl-chip:nth-child(5){animation-delay:.24s}.tl-chip:nth-child(6){animation-delay:.3s}.tl-chip:nth-child(7){animation-delay:.36s}
+@keyframes tlChip{from{opacity:0;transform:translateY(10px) scale(.9)}}
+.tl-chip span{font-size:24px;line-height:1.1}
+.tl-chip b{font-size:12px}
+.tl-chip small{font-size:10px;opacity:.75;font-weight:700}
+.tl-chip.hot{background:linear-gradient(160deg,rgb(255 216 74 / .25),rgb(255 122 184 / .12));box-shadow:inset 0 0 0 1.5px #ffd84a}
+.tl-chip.hot::after{content:"";position:absolute;top:5px;right:7px;width:9px;height:9px;border-radius:50%;background:#ff4d6d;box-shadow:0 0 0 2px var(--panel2,#1b1f4a);animation:twDot 1.2s ease-in-out infinite alternate}
+.tl-chip.hot small{opacity:1;color:var(--gold-t,var(--gold))}
+.tl-pend{margin:4px 2px 0;font-size:12px;opacity:.9}
+.tl-pend b{color:var(--gold-t,var(--gold))}
+html.light .tl-tk{background:#2a1f45}
+@media (max-width:520px){.tl-hud{left:8px;top:8px;padding:5px 9px 6px;border-radius:12px}.tl-hud b{font-size:13px}.tl-hud small{font-size:9.5px}.tl-hud small.tl-rkt{display:none}.tl-rkm{min-width:110px;height:5px;margin-top:3px}.tl-live{font-size:8.5px}.tl-wx{right:8px;top:8px;padding:4px 8px;font-size:11px}.tl-wx small{font-size:9px}}
+@media (prefers-reduced-motion:reduce){.tl-frame,.tl-stage svg.tw-svg,.tl-hud,.tl-wx,.tl-rkm i,.tl-tkr i,.tl-chip,.tl-live i{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7378,6 +7423,31 @@ function mshSummary(){
     <div class="tev-adv" style="--rc:${CHARS['アオイ']?CHARS['アオイ'].c:'#888'}"><span class="tev-af">${face('アオイ',null,'happy')}</span><p><b>アオイ</b>値段を上げると、買う人は減る。下げると、増える。この右下がりの線を「需要曲線」っていうんだよ！ もうけがいちばん大きくなる値段をさがすのが、お店の腕の見せどころ！</p></div>
     <div class="tw-share"><button class="btn gold big" onclick="mshOpen()">もう一度（練習）</button><button class="btn big" onclick="openTown('place')">まちにもどる</button></div>`;
 }
+/* ---- 🏙️ マイタウン・ライブ：ホームのいちばん上に、生きているまちのパノラマ（天気・行事の飾り・歩く住民）＋状況＋ショートカット＋できごとの電光掲示板 ---- */
+function townLive(){
+  if(twTot()<=0) return '';
+  const tot=twTot(), rk=twRank(tot), nxp=rk.next?Math.max(0,Math.min(100,(tot-TW_RANK[rk.i][0])/(rk.next[0]-TW_RANK[rk.i][0])*100)):100, wx=twWeather(), se=twSeason(), E=sevToday(), k=todayKey();
+  const chips=[];
+  try{ if(tevSt().d!==k) chips.push(['📢','速報','NEW','openTev()',1]); else chips.push(['📢','速報','✓','openTev()',0]); }catch(e){}
+  try{ const d=qbSt().s.filter(q=>q && qbDone(q)).length; chips.push(['📌','依頼',d?`${d}件達成`:`${qbSt().s.filter(Boolean).length}件`,"openTown('todo')",d?1:0]); }catch(e){}
+  try{ if(E) chips.push([E.ic,E.n,sevGot(E)?'✓':`あと${sevLeft(E)}日`,sevGot(E)?"openSheet('sevbook')":'sevPlay()',sevGot(E)?0:1]); }catch(e){}
+  try{ if(outFriends().length) chips.push(['🚶','おでかけ',outSt().d!==k?'きょう未':'✓','openOuting()',outSt().d!==k?1:0]); }catch(e){}
+  try{ if(mshLv()) chips.push(['🏪','お店',(S.prof.msh||{}).d!==k?'営業前':'✓','mshOpen()',(S.prof.msh||{}).d!==k?1:0]); }catch(e){}
+  try{ if(mbkLv()) chips.push(['🏦','銀行',`🪙${Math.floor(mbkSt().b)}`,'mbkOpen()',mbkSt().unseen>=1?1:0]); }catch(e){}
+  chips.push(['📰','新聞','','tppOpen()',0]);
+  let news=[]; try{ news=tppWeek().slice().reverse().map(tppTxt).filter(Boolean).slice(0,5).map(x=>`${x.dd} ${x.t}`); }catch(e){}
+  if(!news.length) news=['試合で点を取ると、その産業に「投資」されて建物が育つよ','住民をタップすると、おしゃべりしてくれるよ'];
+  const pend=chips.filter(c=>c[4]).length;
+  const first=!townLive.done; townLive.done=1;
+  return `<section class="mtl${first?' tl-first':''}" aria-label="マイタウン・ライブ">
+    <div class="tl-frame"><div class="tw-stage tl-stage">${townSvg({anim:1})}${twResHTML()}</div>
+      <button class="tl-hud" onclick="openTown()" aria-label="マイタウンを開く"><span class="tl-live"><i></i>LIVE</span><b>🏙️ ${esc(twName())}</b><small>${rk.ic} ${rk.n} ・ 人口 ${twPop(tot).toLocaleString()}人</small><span class="tl-rkm"><i style="width:${nxp.toFixed(1)}%"></i></span><small class="tl-rkt">${rk.next?`次の「${rk.next[1]}」まで あと${rk.next[0]-tot}pt`:'最高ランク！'}</small></button>
+      <span class="tl-wx">${TW_WX[wx][0]} ${TW_WX[wx][1]}<small>${TW_SE[se][1]} ${TW_SE[se][0]}</small></span></div>
+    <div class="tl-tk" aria-hidden="true"><span class="tl-tkl">📰 まちのできごと</span><span class="tl-tkr"><i>${news.map(esc).join('　／　')}　／　</i><i>${news.map(esc).join('　／　')}　／　</i></span></div>
+    <div class="tl-chips">${chips.map(([ic,n,st,go,hot])=>`<button class="tl-chip${hot?' hot':''}" onclick="${go}"><span>${ic}</span><b>${n}</b>${st?`<small>${st}</small>`:''}</button>`).join('')}</div>
+    ${pend?`<p class="tl-pend">✨ まちで <b>${pend}つ</b> のことがあなたを待っています</p>`:''}
+  </section>`;
+}
 let TW_SEL=null;
 function openTown(tab){ sfx('click'); TW_SEL=null; TW_TAB=typeof tab==='string'?tab:'town'; openSheet('town'); }
 function townPick(c){ TW_SEL=c; sfx('select'); haptic(8); const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner(); }
@@ -9344,6 +9414,7 @@ function homeView(){
         ${heroStory()}
       </div>
       <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>`}
+  ${townLive()}
   ${nbNew()?'':hsec('📈','きょうの市場','ニュースで動く6つの産業')}
   ${skyScene()}
   ${nbPath()}${nbUnlocked()}
@@ -9353,7 +9424,6 @@ function homeView(){
   ${nbNew()?'':homeTalk()}
   ${nbNew()?'':hsec('🎮','あそびかたを選ぶ','CPU・デイリー・チャレンジ・オンライン…')}
   ${quickMenu()}
-  ${nbNew()?'':townCard()}
   ${nbNew()?'':pwPromo()}
   ${nbNew()?'':pnpPromo()}
   ${nbNew()?nbLocked():`${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
