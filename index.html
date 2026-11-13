@@ -3369,6 +3369,17 @@ html.light .mbd-bar{background:rgb(70 60 150 / .1)}
 .cr-fin.neg{color:var(--down)}
 .cr-gk{background:linear-gradient(90deg,#ff9f1a,#ff3d8b);text-align:center;max-width:100%}
 @media (prefers-reduced-motion:reduce){.rl-it,.rl-x2,.osp-rl.done .rl-ttl{animation:none;transition:none}}
+/* 読み合いレーダー */
+.card .rdr{position:absolute;left:50%;bottom:24%;transform:translateX(-50%);z-index:3;display:flex;align-items:center;padding:2px 4px;border-radius:99px;background:rgb(10 12 34 / .78);box-shadow:0 0 0 1px rgb(255 255 255 / .25);pointer-events:none;white-space:nowrap}
+.card .rdr i{display:grid;place-items:center;width:18px;height:18px;margin-left:-5px;border-radius:50%;overflow:hidden;background:var(--s,#fff);box-shadow:0 0 0 1.5px rgb(10 12 34);font-style:normal;font-size:11px}
+.card .rdr i:first-child{margin-left:0}
+.card .rdr i svg{width:100%;height:100%;display:block}
+.card .rdr em{font-style:normal;font-size:10px;font-weight:900;color:#fff;margin-left:2px}
+.card .rdr.lock{padding:3px 7px;font-size:10px;font-weight:900;color:#2a1a00;background:linear-gradient(135deg,#fff1b8,#ffc83a);box-shadow:0 0 0 1.5px #fff,0 0 14px rgb(255 200 58 / .9);animation:rdrGlow 1.4s ease-in-out infinite alternate}
+@keyframes rdrGlow{to{box-shadow:0 0 0 1.5px #fff,0 0 22px rgb(255 200 58 / 1)}}
+.rdr-pv{flex-basis:100%;font-size:12px;font-weight:700;color:var(--muted)}
+.rdr-pv.lock{color:var(--gold-t);font-weight:900}
+@media (prefers-reduced-motion:reduce){.card .rdr.lock{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7641,6 +7652,28 @@ function misBoard(where){
     <div class="mbd-bon"><span class="${D.bonus?'ok':''}"><small>きょうの3つ</small><span class="mpips">${pips(dn)}</span><b>+${MIS_BONUS}XP</b></span><span class="${W.bonus?'ok':''}"><small>今週の3つ</small><span class="mpips">${pips(wn)}</span><b>+${WM_BONUS}🪙</b></span></div>
   </section>`;
 }
+/* ---- 📡 読み合いレーダー：手札のカードごとに「その産業をまだ持っている相手」を顔で出す。だれも持っていなければ「確定独占」。出したカードは公開情報なので、そこから分かることだけ ---- */
+function rdrInfo(a){
+  if(!G || a==null || a<0 || G.phase!=='choose') return null;
+  const opp=G.players.map((q,i)=>({q,i})).filter(o=>o.i!==a);
+  const hold=c=>{ const r=opp.filter(o=>(o.q.hand||[]).includes(c)).map(o=>o.q);
+    if(G.whale && (ospPending() ? G.whale.hand.includes(c) : whaleNext()===c)) r.push({name:'クジラ', whale:true});
+    return r; };
+  const m={}; [0,1,2,3,4,5].forEach(c=>m[c]=hold(c));
+  const full=opp.length+(G.whale?1:0), hand=G.players[a].hand||[];
+  const on=hand.some(c=>m[c].length<full) || (G.whale && !ospPending());
+  return on?m:null;
+}
+function rdrCard(RD,c,html){
+  if(!RD) return html; const r=RD[c];
+  const b = r.length===0 ? `<span class="rdr lock" aria-label="だれも持っていない：確定独占">🔒確定独占</span>`
+    : `<span class="rdr" aria-label="まだ持っている相手 ${r.length}人">${r.slice(0,3).map(q=>q.whale?'<i class="rdr-w">🐋</i>':`<i class="rdr-a" style="--s:var(--s${(q.seat||0)%6})">${avHTML(q)}</i>`).join('')}${r.length>3?`<em>+${r.length-3}</em>`:''}</span>`;
+  return html.replace(/<\/(button|div)>\s*$/, m=>b+m);
+}
+function rdrLine(RD,c){
+  if(!RD || c==null) return ''; const r=RD[c];
+  return r.length===0 ? `<span class="rdr-pv lock">🔒 だれも持っていない＝確定独占！</span>` : `<span class="rdr-pv">📡 まだ持っている：${r.map(q=>esc(q.name)).join('・')}</span>`;
+}
 let TW_SEL=null;
 function openTown(tab){ sfx('click'); TW_SEL=null; TW_TAB=typeof tab==='string'?tab:'town'; openSheet('town'); }
 function townPick(c){ TW_SEL=c; sfx('select'); haptic(8); const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner(); }
@@ -9481,13 +9514,15 @@ function handDock(news){
   const known=p.foreUsed && p.foreTurn===G.turn, next=known?G.deck[G.turn+1]:null;
   const row=p.fut?next:news, n=p.hand.length;
   const ptsOf=c=>ospPending()?null:(p.fut?futBase(C.table[row][c],pcfg(G.active)):C.table[row][c])+(p.brand===c?1:0);
-  const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return cardHTML(c,{tag:pwTag(p,c),click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`}); }).join('');
+  const RD=rdrInfo(G.active);
+  const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return rdrCard(RD,c,cardHTML(c,{tag:pwTag(p,c),click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`})); }).join('');
   const dealKey=G.turn+':'+G.active, deal=G.dealKey!==dealKey; G.dealKey=dealKey;
   const canFore=!p.foreUsed && G.turn<TURNS-1 && C.fore!=='none', fdef=FORE[C.fore]||FORE.futures;
   const cmpBtn = G.online ? '' : `<button class="ipf-link hk-open" onclick="openSheet('cmp')" aria-label="手札のカードを見くらべる">📊 くらべる</button>`;
   let preview=`<span>カードを選ぶと、独占したときと被ったときの点数が出ます</span>${cmpBtn}`;
   if(G.sel!==null && ospPending()) preview=ospPreview(G.sel)+cmpBtn;
-  else if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(pcfg(G.active),b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
+  else if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(pcfg(G.active),b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}${rdrLine(RD,G.sel)}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
+  if(G.sel!==null && ospPending()) preview=preview.replace(cmpBtn, rdrLine(RD,G.sel)+cmpBtn);
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
     <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}
