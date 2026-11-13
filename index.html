@@ -3930,7 +3930,7 @@ const FORE = {
   peek:{name:'のぞき見（β2）', short:'のぞき見', desc:'次のNEWSを自分だけ見る。それだけ。', btn:'次を見る'}
 };
 const PRESETS = {
-  rec:{name:'β3（おすすめ）', desc:'+3が2つの得点表・独占+2・先物取引（手数料−1）・同点は独占回数で決着', badge:'ルールブック準拠', table:T2, bonus:2, collide:'none', tiebreak:true, fore:'futures', turns:4},
+  rec:{name:'クラシック（おすすめ）', desc:'+3が2つの得点表・独占+2・同点は独占回数で決着（先物取引は上級ルールでオン）', badge:'ルールブック準拠', table:T2, bonus:2, collide:'none', tiebreak:true, fore:'futures', turns:4},
   rec0:{name:'調整案（のぞき見）', desc:'+3が2つの得点表・独占+2・未来予測は見るだけ', table:T2, bonus:2, collide:'none', tiebreak:false, fore:'peek', turns:4},
   b2:{name:'β2 原案', desc:'PDFどおりの得点表・独占+1', table:B2, bonus:1, collide:'none', tiebreak:false, fore:'peek', turns:4}
 };
@@ -4969,8 +4969,8 @@ function showEmote(peer,data){
 function toast(t){ const el=document.getElementById('toast'); if(!el) return; el.textContent=t; el.classList.add('on'); clearTimeout(toast.tm); toast.tm=setTimeout(()=>el.classList.remove('on'),3200); }
 // ---- rulebook downloads ----
 const BOOKS={
-  classic:{file:'rulebook-classic.pdf', png:'rulebook-classic.png', pngName:'AZAKEI_MARKET_rulebook.png', name:'AZAKEI_MARKET_rulebook.pdf', md:'AZAKEI_MARKET_rulebook.md', title:'β4 ルールブック', sub:'クラシック · A4 10ページ · 大引けサプライズ・投資家カード入り'},
-  history:{file:'rulebook-history.pdf', png:'rulebook-history.png', pngName:'AZAKEI_MARKET_history_rulebook.png', name:'AZAKEI_MARKET_history_rulebook.pdf', md:'AZAKEI_MARKET_history_rulebook.md', title:'歴史モード ルールブック', sub:'1964〜2022 · A4 8ページ'},
+  classic:{file:'rulebook-classic.pdf', png:'rulebook-classic.png', pngName:'AZAKEI_MARKET_rulebook.png', name:'AZAKEI_MARKET_rulebook.pdf', md:'AZAKEI_MARKET_rulebook.md', title:'β4 ルールブック', sub:'クラシック · A4 11ページ · 大引けサプライズ・上級ルール入り'},
+  history:{file:'rulebook-history.pdf', png:'rulebook-history.png', pngName:'AZAKEI_MARKET_history_rulebook.png', name:'AZAKEI_MARKET_history_rulebook.pdf', md:'AZAKEI_MARKET_history_rulebook.md', title:'歴史モード ルールブック', sub:'1964〜2025 · A4 9ページ'},
   long:{file:'rulebook-long.pdf', png:'rulebook-long.png', pngName:'AZAKEI_MARKET_long_rulebook.png', name:'AZAKEI_MARKET_long_rulebook.pdf', md:'AZAKEI_MARKET_long_rulebook.md', title:'ロング版 ルールブック', sub:'市況・契約カード付き · A4 8ページ'},
   future:{file:'rulebook-future.pdf', png:'rulebook-future.png', pngName:'AZAKEI_MARKET_future_rulebook.png', name:'AZAKEI_MARKET_future_rulebook.pdf', md:'AZAKEI_MARKET_future_rulebook.md', title:'未来編 ルールブック', sub:'2027〜2060 · A4 4ページ'},
   cards:{file:'investor-cards.pdf', png:'investor-cards.png', pngName:'AZAKEI_MARKET_investor_cards.png', name:'AZAKEI_MARKET_investor_cards.pdf', title:'投資家カード（印刷用）', sub:'9枚＋クジラ · 表と裏 · A4 4ページ'},
