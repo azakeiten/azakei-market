@@ -3344,6 +3344,31 @@ html.light .mbd-it{background:color-mix(in srgb,var(--rc) 10%,#fff)}
 html.light .mbd-who{color:color-mix(in srgb,var(--rc) 65%,#222)}
 html.light .mbd-bar{background:rgb(70 60 150 / .1)}
 @media (prefers-reduced-motion:reduce){.mbd-it,.mbd-thx,.mbd-stamp{animation:none}}
+/* 大引けルーレット */
+.osp-rl{background:radial-gradient(circle at 50% 40%,rgb(130 30 70 / .94),rgb(7 8 24 / .97) 72%);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.osp-rl .rl-box{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(440px,100%);text-align:center}
+.osp-rl .label{color:#ffd23a;font-size:14px;letter-spacing:.1em}
+.rl-ttl{font-family:var(--display);font-weight:400;font-size:clamp(26px,7.5vw,40px);color:#fff;text-shadow:0 4px 0 #c4204f}
+.osp-rl.done .rl-ttl{animation:bang .6s cubic-bezier(.2,.9,.3,1.4) both;color:#ffd23a}
+.rl-list{display:flex;flex-direction:column;gap:6px;width:100%}
+.rl-it{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 14px;border-radius:14px;background:rgb(255 255 255 / .07);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .16);color:#fff;transition:transform .07s,background .07s,box-shadow .07s}
+.rl-it b{font-size:15px;text-align:left;line-height:1.35}
+.rl-it span{flex:none;display:flex;align-items:center;gap:3px}
+.rl-it i{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;background:var(--c);color:#fff}
+.rl-it i svg{width:14px;height:14px}
+.rl-it em{font-style:normal;font-weight:900;color:#ffd23a;margin-left:3px}
+.rl-it.on{background:#ffd23a;color:#1a1530;transform:scale(1.04);box-shadow:0 0 0 2px #fff,0 0 28px rgb(255 210 58 / .7)}
+.rl-it.on em{color:#c4204f}
+.osp-rl.done .rl-it:not(.win){display:none}
+.rl-it.win{padding:16px 18px;animation:bang .6s cubic-bezier(.2,.9,.3,1.4) both}
+.rl-it.win b{font-size:clamp(18px,5vw,24px)}
+.rl-res{display:flex;flex-direction:column;align-items:center;gap:10px}
+.rl-x2{font-family:var(--display);font-weight:400;font-size:clamp(24px,7vw,34px);color:#ffd23a;text-shadow:0 4px 0 #c4204f;animation:bang .6s .35s cubic-bezier(.2,.9,.3,1.4) both}
+.fl-x2{font-size:.5em;color:#ffd23a;margin-right:2px}
+.cr-fin{display:block;font-size:11px;font-weight:800;color:#ffd23a;opacity:.9}
+.cr-fin.neg{color:var(--down)}
+.cr-gk{background:linear-gradient(90deg,#ff9f1a,#ff3d8b);text-align:center;max-width:100%}
+@media (prefers-reduced-motion:reduce){.rl-it,.rl-x2,.osp-rl.done .rl-ttl{animation:none;transition:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4587,7 +4612,7 @@ function flipOverlay(){
       <div class="fl-in"><div class="fl-face fl-back back${skc()}${bkc()}"></div><div class="fl-face fl-front">${cardHTML(r.ind,{cls:'flc'})}</div></div>
       <span class="fl-tag">${r.k===1?'独占！':r.k>1?`${r.k}人被り`:''}</span>
       <span class="fl-name"><span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${avHTML(p)}</span>${esc(p.name)}</span>
-      <b class="fl-pts${r.total<0?' neg':''}">${sgn(r.total)}</b></div>`; }).join('');
+      <b class="fl-pts${r.total<0?' neg':''}">${G.osp&&G.osp.shown&&isFinalTurn()?'<small class="fl-x2">2倍で</small>':''}${sgn(r.total)}</b></div>`; }).join('');
   const wcard = G.whale&&G.whale.pick!=null ? `<div class="fl whl" style="--d:${350+n*170}ms;--s2:${350+n*170+250}ms"><div class="fl-in"><div class="fl-face fl-back back${skc()}${bkc()}"></div><div class="fl-face fl-front">${cardHTML(G.whale.pick,{cls:'flc'})}</div></div><span class="fl-tag"></span><span class="fl-name">🐋 クジラ</span><b class="fl-pts">—</b></div>` : '';
   return `<div class="overlay flipov" onclick="endFlip()"><div class="box"><div class="fl-open">OPEN!</div><div class="fl-row">${cards}${wcard}</div><div class="note">タップでスキップ</div></div></div>`;
 }
@@ -4602,7 +4627,16 @@ function startCeremony(){
   CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('slam'); haptic(40); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); } }, winAt));
   if(cupChamp()) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('fanfare'); confetti(); haptic(60); } }, winAt+900));
   if(G.recBroke&&G.recBroke.length) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('coin'); setTimeout(()=>sfx('select'),160); haptic(30); } }, winAt+1200));
-  CER_T.push(setTimeout(endCeremony, winAt+(cupChamp()?4600:3200)));
+  const gk=!!crComeback(ranking(G.players,G.cfg),n);
+  if(gk) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('fanfare'); haptic([30,30,60]); confetti(); } }, winAt+700));
+  CER_T.push(setTimeout(endCeremony, winAt+(cupChamp()?4600:gk?4200:3200)));
+}
+function crComeback(rk,n){
+  if(!G || !G.osp || rk.length<2) return '';
+  const ws=rk.filter(x=>x.rank===1); if(ws.length!==1) return ''; const w=ws[0];
+  const before=G.players.map(p=>{ const u=p.used[p.used.length-1]; return p.score-(u?u.total:0); }), mx=Math.max(...before);
+  if(before[w.i]>=mx) return '';
+  return `<div class="cr-close cr-gk" style="--d:${900+(n-1)*650+700}ms">🔔 大引けで大逆転！ ${esc(w.p.name)}が ${mx-before[w.i]}点差をひっくり返した</div>`;
 }
 function endCeremony(){
   CER_T.forEach(clearTimeout); CER_T=[];
@@ -4623,11 +4657,11 @@ function ceremonyOverlay(){
   const rk=ranking(G.players,G.cfg), n=rk.length, me=myIndex();
   const rows=rk.slice().reverse().map((x,j)=>{ const win=x.rank===1, d=win?900+(n-1)*650:900+j*650;
     return `<div class="cr${win?' win':''}${x.i===me?' me':''}" style="--d:${d}ms">${win?CROWN('crr'):''}<span class="cr-rk">${x.rank}<small>位</small></span>
-      <span class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${avHTML(x.p)}</span><span class="cr-n">${esc(x.p.name)}</span><b class="cr-s">${x.p.score}<small>pt</small></b></div>`; }).join('');
+      <span class="ava" style="--s:var(--s${x.p.seat%6});grid-row:auto">${avHTML(x.p)}</span><span class="cr-n">${esc(x.p.name)}${G.osp?`<small class="cr-fin${((x.p.used[x.p.used.length-1]||{}).total||0)<0?' neg':''}">大引け ${sgn((x.p.used[x.p.used.length-1]||{}).total||0)}</small>`:''}</span><b class="cr-s">${x.p.score}<small>pt</small></b></div>`; }).join('');
   return `<div class="overlay ceremony" onclick="endCeremony()"><div class="cr-spot" style="--d:${900+(n-1)*650}ms"></div><div class="box">
     <div class="cr-title">結果発表</div><div class="cr-drum"><i></i><i></i><i></i></div>
     ${G.teams?(()=>{ const {s}=teamScores(), w=s[0]===s[1]?-1:s[0]>s[1]?0:1; return `<div class="cr-team" style="--d:${900+(n-1)*650+500}ms"><span class="${w===0?"win":""}">${TEAM_NAMES[0]} ${s[0]}</span><i>VS</i><span class="${w===1?"win":""}">${s[1]} ${TEAM_NAMES[1]}</span></div>`; })():""}
-    <div class="cr-list">${rows}</div>${(()=>{ const so=G.players.map(p=>p.score).sort((a,b)=>b-a), d=so[0]-so[1]; return so.length>1&&d<=1 ? `<div class="cr-close" style="--d:${900+(n-1)*650+400}ms">${d===0?(G.cfg.tiebreak?"同点！ 独占回数で決着":"同点で並んだ！"):"わずか1点差の大接戦！"}</div>` : ""; })()}${(c=>c?`<div class="cr-cup" style="--d:${900+(n-1)*650+700}ms;--cc:${c.c}"><span class="tro huge">${c.ic}</span><b>${c.n} 優勝！</b></div>`:'')(cupChamp())}${G.recBroke&&G.recBroke.length?`<div class="cr-rec" style="--d:${900+(n-1)*650+1200}ms"><b>🏅 自己ベスト更新！</b><span>${G.recBroke.map(b=>{ const r=REC_DEF.find(x=>x.k===b.k); return `${r.n} ${b.v}${r.u}`; }).join('<br>')}</span></div>`:''}<div class="note">タップで結果画面へ</div></div></div>`;
+    <div class="cr-list">${rows}</div>${crComeback(rk,n)}${(()=>{ const so=G.players.map(p=>p.score).sort((a,b)=>b-a), d=so[0]-so[1]; return so.length>1&&d<=1 ? `<div class="cr-close" style="--d:${900+(n-1)*650+400}ms">${d===0?(G.cfg.tiebreak?"同点！ 独占回数で決着":"同点で並んだ！"):"わずか1点差の大接戦！"}</div>` : ""; })()}${(c=>c?`<div class="cr-cup" style="--d:${900+(n-1)*650+700}ms;--cc:${c.c}"><span class="tro huge">${c.ic}</span><b>${c.n} 優勝！</b></div>`:'')(cupChamp())}${G.recBroke&&G.recBroke.length?`<div class="cr-rec" style="--d:${900+(n-1)*650+1200}ms"><b>🏅 自己ベスト更新！</b><span>${G.recBroke.map(b=>{ const r=REC_DEF.find(x=>x.k===b.k); return `${r.n} ${b.v}${r.u}`; }).join('<br>')}</span></div>`:''}<div class="note">タップで結果画面へ</div></div></div>`;
 }
 function revealFx(){
   const fast=reduced();
@@ -8308,8 +8342,33 @@ function ospAnnounce(){
   render();
   ospShowFx(n, ()=>{ if(G && G.phase==='choose') startReveal(); });
 }
+/* ---- 🎰 大引けルーレット：伏せていた候補を光が回って、本物のNEWSで止まる。止まったら「点数×2」 ---- */
+function ospRoulette(n, done){
+  const cs=(G.osp&&G.osp.cand||[]).slice(), T=G.cfg.table, tgt=cs.indexOf(n), L=cs.length; if(tgt<0 || L<2) return false;
+  const el=document.createElement('div'); el.className='osp-ann osp-rl'; el.setAttribute('role','dialog'); el.setAttribute('aria-label','大引け速報');
+  const item=(c,j)=>{ const r=T[c], mx=Math.max(...r); return `<div class="rl-it"><b>${esc(nm(c))}</b><span>${r.map((v,k)=>v===mx?`<i style="--c:var(--i${k})">${svg(k,2.2)}</i>`:'').join('')}<em>${sgn(mx)}</em></span></div>`; };
+  el.innerHTML=`<div class="rl-box"><span class="label">🔔 15:30 大引け速報</span><div class="rl-ttl">最後のNEWSは……</div><div class="rl-list">${cs.map(item).join('')}</div><div class="rl-res"></div><span class="note">タップでスキップ</span></div>`;
+  document.body.appendChild(el);
+  const its=[...el.querySelectorAll('.rl-it')], total=L*3+tgt; let s=0, t=0, fin=false;
+  const hl=j=>its.forEach((e,k)=>e.classList.toggle('on',k===j));
+  const close=()=>{ clearTimeout(t); el.remove(); done&&done(); };
+  const land=()=>{ if(fin) return; fin=true; clearTimeout(t); hl(tgt); its[tgt].classList.add('win'); el.classList.add('done');
+    sfx('slam'); haptic([30,40,60]);
+    try{ tone(1568,1.3,'sine',.05,0); tone(2093,1.1,'sine',.025,.02); newsFxSfx(n); }catch(e){}
+    try{ if(S.tts) speakNews(n); }catch(e){}
+    el.querySelector('.rl-ttl').textContent='確定！';
+    el.querySelector('.rl-res').innerHTML=`${impactChips(n,'ip-tv')}<span class="rl-x2">このターンの点数 ×2</span>`;
+    el.querySelector('.note').textContent='タップで結果へ';
+    try{ burstAt(its[tgt],['#ffd23a','#fff1b8','#ffffff','#ff5c7a'],40); }catch(e){}
+    t=setTimeout(close, 3000); };
+  el.onclick=()=>{ fin?close():land(); };
+  const step=()=>{ if(fin) return; hl(s%L); sfx('tick'); haptic(4); if(s>=total){ t=setTimeout(land,260); return; } s++; t=setTimeout(step, 70+420*Math.pow(s/total,3)); };
+  sfx('drum'); t=setTimeout(step, 600);
+  return true;
+}
 function ospShowFx(n, done){
   if(!G || n==null || !G.cfg.table[n]) { done&&done(); return; }
+  if(done && !reduced() && ospRoulette(n, done)) return;
   sfx('slam'); haptic(50);
   let t=0;
   const el=document.createElement('div'); el.className='osp-ann';
