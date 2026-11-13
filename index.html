@@ -3296,6 +3296,21 @@ html.light .tl-tk{background:#2a1f45}
 .dbf-go{margin-top:4px;animation:tlIn .6s 1.6s both}
 @media (prefers-reduced-motion:reduce){.dbf,.dbf-dawn,.dbf-sun,.dbf-lb,.dbf-date,.dbf-wx,.dbf-say,.dbf-list>small,.dbf-it,.dbf-go{animation:none!important}}
 .rule.adv{opacity:.85}.rule.adv .no{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+/* ステップ4：ホームの「もっと見る」・遊び方メニューの「もっと見る」 */
+.hm-more{margin:14px 0 8px}
+.hm-more>summary{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .14);cursor:pointer;list-style:none}
+.hm-more>summary::-webkit-details-marker,.mg-more>summary::-webkit-details-marker{display:none}
+.hm-mi{font-size:22px}
+.hm-mt{flex:1;display:flex;flex-direction:column}
+.hm-mt b{font-size:15px}
+.hm-mt small{font-size:11.5px;opacity:.75}
+.hm-mc{font-size:18px;opacity:.7;transition:transform .2s}
+.hm-more[open]>summary .hm-mc,.mg-more[open]>summary .hm-mc{transform:rotate(180deg)}
+.hm-more[open]>summary{margin-bottom:6px}
+.mg-more>summary{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 12px;border-radius:14px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .12);cursor:pointer;list-style:none}
+.mg-more>summary .note{flex:1;font-size:11.5px}
+.mg-more[open]>summary{margin-bottom:8px}
+html.light .hm-more>summary,html.light .mg-more>summary{background:rgb(70 60 150 / .05);box-shadow:inset 0 0 0 1.5px rgb(70 60 150 / .16)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4296,7 +4311,7 @@ function start(data){
   applyLook();
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.league===undefined) S.league=!!load('azakei-league-on');
-  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.futOn===undefined) S.futOn=!!load('azakei-fut'); if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
+  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.futOn===undefined) S.futOn=!!load('azakei-fut'); if(S.hmMore===undefined) S.hmMore=!!load('azakei-hmmore'); if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
@@ -5327,35 +5342,35 @@ function carDots(car){ const its=[...car.children], c=car.scrollLeft+car.clientW
 function carGo(i){ const car=document.getElementById('todayCar'), it=car&&car.children[i]; if(!it) return; sfx('click'); car.scrollTo({left:it.offsetLeft-car.offsetLeft-(car.clientWidth-it.clientWidth)/2, behavior:reduced()?'auto':'smooth'}); }
 /* ---- モード案内：ぜんぶの遊び方を1枚で ---- */
 const MODES=()=>[   // 関数にして、表示するときにキャラなどを読む
-  {g:'まずはここから', items:[
-    ['✉️','挑戦状','1人 · 5分','同じ山札で友だちと点数勝負。URLを送るだけ',"closeSheet();openSheet('duelnew')"],
-    ['🎓','練習試合','1人 · 5分','ガイドつき。はじめての人はここから',"closeSheet();startPractice()"],
+  {g:'あそぶ', items:[
     ['▶','CPU対戦','1人 · 5分','いちばん基本。CPU3人と4ターン勝負',"closeSheet();go('play','cpu')"],
+    ['🎓','練習試合','1人 · 5分','ガイドつき。はじめての人はここから',"closeSheet();startPractice()"],
     ['👥','1台をみんなで','2〜6人 · 5分','スマホ1台を回して遊ぶ。文化祭にぴったり',"closeSheet();go('play');setSeatPreset('party')"],
-    ['◎','オンライン','2〜6人','合言葉で友だちと別々の端末から',"closeSheet();go('online')"]]},
-  {g:'毎日あそぶ', items:[
+    ['◎','オンライン','2〜6人','合言葉で友だちと別々の端末から',"closeSheet();go('online')"],
+    ['✉️','挑戦状','1人 · 5分','同じ山札で友だちと点数勝負。URLを送るだけ',"closeSheet();openSheet('duelnew')"]]},
+  {g:'毎日', items:[
     ['☀','デイリー','1日1回','全員同じNEWS・同じ相手で点数くらべ',"closeSheet();startDaily()"],
-    [CHARS[todayRival()].ic,'今日のライバル','1日1回','勝つと +'+TR_BONUS+'コイン',"closeSheet();challengeChar(todayRival())"],
-    ['📈','値動き予想','1分','上がる？下がる？ 連続正解に挑戦',"closeSheet();startUd()"],
-    ['?','経済クイズ','1分','5問のミニゲーム。コインがもらえる',"closeSheet();startQuiz()"]]},
-  {g:'じっくり・ちがうルール', items:[
-    ['∞','ロング版','20分','3期×6ターン。市況・極秘契約・ブランド',"closeSheet();pickLong()"],
-    ['🃏','クラシックEX','5分','NEWSが18種に。毎回ちがう6種で山札ができる',"closeSheet();pickMode('ex')"],
-    ['🃏','紙のカードで遊ぶ','10分','体験版を印刷して。進行と点数はアプリにおまかせ',"closeSheet();gmOpen('player')"],
-    ['📺','進行役モード','10分','教室・体験会・大人数で。最大10チームをアプリが進行',"closeSheet();gmOpen()"],
-    ['📅','今月のNEWS','5分',`${monthPack().mon}は「${monthPack().theme}」。毎月6枚が入れかわる`,"closeSheet();pickMode('month')"],
-    ['📜','歴史モード','5分','本当の出来事が年代順に起きる',"closeSheet();pickMode('history')"],
-    ['✦','未来編','5分','2027→2060の未来シナリオ',"closeSheet();pickFuture()"]]},
-  {g:'やりこみ', items:[
+    [CHARS[todayRival()].ic,'今日のライバル','1日1回','勝つと +'+TR_BONUS+'コイン',"closeSheet();challengeChar(todayRival())"]]},
+  {g:'もっと見る', more:true, items:[
     ['📖','キャラストーリー','全9話','キャラと会話して対決。サインを集めよう',"closeSheet();S.ctab='story';go('chal')"],
     ['🏆','カップ戦','3試合','ブロンズ→シルバー→ゴールドを制覇',"closeSheet();S.ctab='cup';go('chal')"],
     ['🛡️','サバイバル','エンドレス','負けるまで勝ち抜き。最高記録をめざす',"closeSheet();S.ctab='surv';go('chal')"],
     ['★','ステージ','全8面','条件つきの問題で★を集める',"closeSheet();S.ctab='stage';go('chal')"],
-    ['👑','リーグ戦','3試合','同じメンバーでポイントを集めて優勝決定',"closeSheet();go('play');setLeague(true)"]]}
+    ['👑','リーグ戦','3試合','同じメンバーでポイントを集めて優勝決定',"closeSheet();go('play');setLeague(true)"],
+    ['📜','歴史モード','5分','本当の出来事が年代順に起きる',"closeSheet();pickMode('history')"],
+    ['✦','未来編','5分','2027→2060の未来シナリオ',"closeSheet();pickFuture()"],
+    ['📅','今月のNEWS','5分',`${monthPack().mon}は「${monthPack().theme}」。毎月6枚が入れかわる`,"closeSheet();pickMode('month')"],
+    ['🃏','クラシックEX','5分','NEWSが18種に。毎回ちがう6種で山札ができる',"closeSheet();pickMode('ex')"],
+    ['📈','値動き予想','1分','上がる？下がる？ 連続正解に挑戦',"closeSheet();startUd()"],
+    ['?','経済クイズ','1分','5問のミニゲーム。コインがもらえる',"closeSheet();startQuiz()"],
+    ['🃏','紙のカードで遊ぶ','10分','体験版を印刷して。進行と点数はアプリにおまかせ',"closeSheet();gmOpen('player')"],
+    ['📺','進行役モード','10分','教室・体験会・大人数で。最大10チームをアプリが進行',"closeSheet();gmOpen()"],
+    ['∞','ロング版（上級）','20分','3期×6ターン。市況・極秘契約・ブランド',"closeSheet();pickLong()"]]}
 ];
 function modesBody(){
   return `<span class="label">MODE GUIDE</span><h3 class="ttl" style="font-size:24px;margin-right:46px">なにで遊ぶ？</h3>
-    ${MODES().map(g=>`<div class="mg"><span class="label">${g.g}</span><div class="mg-list">${g.items.map(([ic,n,t,d,fn],i)=>`<button class="mg-it" style="--k:${i}" onclick="${fn}"><span class="mg-ic">${ic}</span><span class="mg-tx"><b>${n}<small>${t}</small></b><span class="note">${d}</span></span><span class="mg-go">›</span></button>`).join('')}</div></div>`).join('')}`;
+    ${MODES().map(g=>{ const list=`<div class="mg-list">${g.items.map(([ic,n,t,d,fn],i)=>`<button class="mg-it" style="--k:${i}" onclick="${fn}"><span class="mg-ic">${ic}</span><span class="mg-tx"><b>${n}<small>${t}</small></b><span class="note">${d}</span></span><span class="mg-go">›</span></button>`).join('')}</div>`;
+      return g.more ? `<details class="mg mg-more"><summary><span class="label">${g.g}</span><span class="note">ストーリー・カップ戦・歴史モード・ミニゲームなど ${g.items.length}種類</span><span class="hm-mc" aria-hidden="true">⌄</span></summary>${list}</details>` : `<div class="mg"><span class="label">${g.g}</span>${list}</div>`; }).join('')}`;
 }
 /* ---- 週替わりボス戦：特殊能力をもつボスに挑む。ボスより上の順位で撃破（週1回ボーナス） ---- */
 const BOSS_COIN=50;
@@ -6918,7 +6933,7 @@ function outDone(k,c,lv){
 function oalbBody(){
   const A=outSt().al, ks=outAll(), mx=ks.length*6;
   const list=Object.entries(A).filter(([id])=>{ const [k,c]=id.split('|'); return CHARS[k] && OUT_L[k] && IND[+c]!=null; }).sort((a,b)=>(b[1].t||0)-(a[1].t||0)), n=list.length;
-  return `<div class="tw-wrap2"><span class="label">OUTING ALBUM</span><h3 class="ttl" style="font-size:22px">📔 おでかけアルバム</h3>
+  return `<div class="tw-wrap2"><span class="label">OUTING ALBUM</span><h3 class="ttl" style="font-size:22px">📔 おでかけアルバム</h3><button class="btn ghost alb-x" onclick="openSheet('album')">📸 試合と実績の「思い出アルバム」も見る ›</button>
     <div class="al-prog"><span><b>${n}</b> / ${mx} 枚</span><i><b style="width:${(n/mx*100).toFixed(1)}%"></b></i></div>
     <div class="al-st">${ks.map(k=>`<div class="al-row${outN(k)===6?' full':''}" style="--rc:${CHARS[k].c}"><span class="al-f">${face(k)}</span><span class="al-dots">${IND.map((_,c)=>`<i class="${A[k+'|'+c]?'on':''}" style="--ic:var(--i${c})"></i>`).join('')}</span></div>`).join('')}</div>
     ${n?`<p class="note">写真をタップすると、画像にして保存できるよ</p><div class="al-grid">${list.map(([id,e],i)=>{ const [k,c]=id.split('|'); return `<button class="al-it${id===OUT_NEW?' new':''}" onclick="outPhotoImg('${k}',${+c})" aria-label="${k}と${TW_NAMES[+c][Math.max(1,e.lv||1)-1]}の写真">${outPol(k,+c,e,i)}</button>`; }).join('')}</div>`:`<p class="note al-none">まだ写真がないよ。キャラといっしょに、まちへおでかけしよう！</p>`}
@@ -8069,7 +8084,7 @@ function albumBody(){
     if(L.length>=10) return `${L.length}回も対戦したね。たくさん遊んでくれてありがとう！`;
     if(k===keys[keys.length-1] && k===keys[0]) return `ここから${esc(NET.name||'あなた')}の物語がはじまったね！ これからどんな写真がふえるかな。`;
     return k===keys[keys.length-1] ? 'はじめて遊んだ月。ここからすべてがはじまったんだ。' : 'ひとつひとつの写真が、成長のあしあとだよ。'; };
-  return `<span class="label">MEMORIES</span><h3 class="ttl" style="font-size:22px">📸 思い出アルバム</h3>
+  return `<span class="label">MEMORIES</span><h3 class="ttl" style="font-size:22px">📸 思い出アルバム</h3>${Object.keys(outSt().al).length?`<button class="btn ghost alb-x" onclick="openOAlbum()">📔 キャラとの「おでかけアルバム」も見る ›</button>`:''}
     <div class="alb-sum"><div><b>${fd(first)}</b><span>はじめての記録</span></div><div><b>${days}日</b><span>いっしょに遊んだ</span></div><div><b>${ev.length}まい</b><span>思い出の写真</span></div></div>
     ${keys.map(k=>{ const g=groups[k], [y,m]=k.split('-'), L=log.filter(x=>albKey(x.t)===k);
       return `<section class="alb-month"><div class="alb-tape"><b>${y}年${+m}月</b>${L.length?`<span>対戦 ${L.length}回・1位 ${L.filter(x=>x.r===1).length}回</span>`:''}</div>
@@ -8470,7 +8485,9 @@ function lobbyHero(show){
   </section>`;
 }
 function lobSummary(){ const m={classic:"クラシック",history:"歴史モード",future:"未来編",ex:"クラシックEX",my:"マイNEWS",month:"今月のNEWS"}[S.mode]||"クラシック", hc=S.seats.filter(s=>s.type==="human").length, cpu=S.seats.length-hc; return m+(S.len==="long"?"・ロング":"")+(hc>1?`・${hc}人`:`・CPU${cpu}人`)+(S.b4&&S.len!=="long"&&S.mode!=="history"&&S.mode!=="future"?"・β4":"")+(S.pwOn&&S.b4?"🃏":"")+(S.yomi?"🔮":""); }
-function hsJump(n){ const el=document.getElementById('hs-'+n); if(!el) return; sfx('click'); el.scrollIntoView({block:'start',behavior:reduced()?'auto':'smooth'}); }
+function hmMoreToggle(d){ S.hmMore=d.open; try{ save('azakei-hmmore', d.open?1:0); }catch(e){} }
+function hmOpenFor(el){ const d=el&&el.closest('details.hm-more'); if(d && !d.open){ d.open=true; S.hmMore=true; } }
+function hsJump(n){ const el=document.getElementById('hs-'+n); if(!el) return; hmOpenFor(el); sfx('click'); el.scrollIntoView({block:'start',behavior:reduced()?'auto':'smooth'}); }
 function lobbyQuick(){ sfx('select'); if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); startGame(); }
 const HSEC_N={'きょうの市場':'市場','きょうのおすすめ':'おすすめ','あそびかたを選ぶ':'あそぶ','毎日のおたのしみ':'毎日','ミッション':'ミッション'};
 const hsec = (ic,t,sub) => `<div class="hsec" id="hs-${HSEC_N[t]||''}"><span class="hsec-ic">${ic}</span><span class="hsec-tx"><b>${t}</b><small>${sub}</small></span><i class="hsec-line"></i></div>`;
@@ -9496,24 +9513,27 @@ function homeView(){
       </div>
       <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>`}
   ${townLive()}
-  ${nbNew()?'':hsec('📈','きょうの市場','ニュースで動く6つの産業')}
-  ${skyScene()}
   ${nbPath()}${nbUnlocked()}
   ${nameCard()}
-  ${nbNew()?'':hsec('🎯','きょうのおすすめ','ミオが選んだ、次にやること')}
-  ${nbNew()?'':homeRec()}
-  ${nbNew()?'':homeTalk()}
-  ${nbNew()?'':hsec('🎮','あそびかたを選ぶ','CPU・デイリー・チャレンジ・オンライン…')}
+  ${nbNew()?`${skyScene()}${quickMenu()}${nbLocked()}`:`${hsec('🎯','きょうのおすすめ','ミオが選んだ、次にやること')}
+  ${homeRec()}
+  <details class="hm-more" id="hmMore"${S.hmMore?' open':''} ontoggle="hmMoreToggle(this)"><summary><span class="hm-mi">📂</span><span class="hm-mt"><b>もっと見る</b><small>市場・あそびかた・毎日のおたのしみ・ミッション</small></span><span class="hm-mc" aria-hidden="true">⌄</span></summary>
+  ${hsec('📈','きょうの市場','ニュースで動く6つの産業')}
+  ${skyScene()}
+  ${homeTalk()}
+  ${hsec('🎮','あそびかたを選ぶ','CPU・デイリー・チャレンジ・オンライン…')}
   ${quickMenu()}
-  ${nbNew()?'':pwPromo()}
-  ${nbNew()?'':pnpPromo()}
-  ${nbNew()?nbLocked():`${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
+  ${pwPromo()}
+  ${pnpPromo()}
+  ${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
   ${todayBar()}
   <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
   <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${hsec('🏆','ミッション','週の目標をクリアしてコインとXP')}
   ${missionsPanel()}
-  ${weeklyPanel()}`}
+  ${weeklyPanel()}
+  </details>`}
+
   <nav class="homelinks"><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
@@ -10839,7 +10859,7 @@ function todayBar(){
       <div class="tb-chips">${it.map(x=>`<button class="tbc${x.ok?' ok':''}" onclick="jumpTo('${x.sel}')"><i>${x.ok?'✓':x.ic}</i>${x.n}</button>`).join('')}</div></div>
     ${all&&!got?`<button class="btn gold pulse tb-claim" onclick="claimToday()">コンプリート！ +${TODAY_BONUS}</button>`:all?'<span class="tb-done">COMPLETE ✓</span>':''}</section>`;
 }
-function jumpTo(sel){ const el=document.querySelector(sel); if(!el) return; sfx('click');
+function jumpTo(sel){ const el=document.querySelector(sel); if(!el) return; hmOpenFor(el); sfx('click');
   const it=el.closest('.car-item'), car=it&&it.parentElement; if(car){ car.scrollTo({left:it.offsetLeft-car.offsetLeft-(car.clientWidth-it.clientWidth)/2, behavior:reduced()?'auto':'smooth'}); car.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); return; } el.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
 function claimToday(){
   const P=S.prof; if(P.tcDay===todayKey() || !todayItems().every(x=>x.ok)) return;
