@@ -3311,6 +3311,39 @@ html.light .tl-tk{background:#2a1f45}
 .mg-more>summary .note{flex:1;font-size:11.5px}
 .mg-more[open]>summary{margin-bottom:8px}
 html.light .hm-more>summary,html.light .mg-more>summary{background:rgb(70 60 150 / .05);box-shadow:inset 0 0 0 1.5px rgb(70 60 150 / .16)}
+/* ミッションボード（今日・今週・依頼をひとつに） */
+.mbd-lead{margin:2px 0 8px}
+.mbd-list{display:flex;flex-direction:column;gap:8px}
+.mbd-it{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:color-mix(in srgb,var(--rc) 9%,rgb(7 8 24 / .45));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rc) 35%,transparent);animation:achin .45s calc(var(--k)*.05s) cubic-bezier(.2,.9,.3,1.3) both}
+.mbd-f{flex:none;width:44px;height:44px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px var(--rc)}
+.mbd-f svg,.mbd-mf svg{width:100%;height:100%;display:block}
+.mbd-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.mbd-tx b{font-size:14px;line-height:1.45}
+.mbd-tx small{font-size:11px;opacity:.75}
+.mbd-who{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:color-mix(in srgb,var(--rc) 75%,#fff)}
+.mbd-tg{padding:1px 7px;border-radius:99px;font-size:10.5px;font-weight:900;color:#1a1530;background:#ffd84a}
+.ty-w .mbd-tg{background:#a9c8ff}
+.ty-q .mbd-tg{background:#ffb3d9}
+.mbd-bar{display:block;height:7px;border-radius:99px;background:rgb(255 255 255 / .1);overflow:hidden}
+.mbd-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,color-mix(in srgb,var(--rc) 60%,#fff),var(--rc))}
+.mbd-r{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-weight:900;font-size:13px}
+.mbd-r small{font-size:11px;color:var(--gold-t)}
+.mbd-done{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.mbd-done .label{width:100%}
+.mbd-dc{padding:3px 9px;border-radius:99px;font-size:11px;font-weight:700;background:rgb(92 240 162 / .12);box-shadow:inset 0 0 0 1px rgb(92 240 162 / .45);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mbd-bon{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.mbd-bon>span{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px;border-radius:12px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px var(--line);font-size:12px}
+.mbd-bon>span.ok{box-shadow:inset 0 0 0 1.5px var(--gold);background:rgb(255 200 58 / .1)}
+.mbd-bon b{color:var(--gold-t)}
+.mbd-thx{position:relative;display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:12px;border-radius:16px;background:#fffbea;color:#2a2118;box-shadow:0 0 0 3px #ffd84a;animation:achin .55s cubic-bezier(.2,.9,.3,1.4) both}
+.mbd-thx .label{color:#b07a00}
+.mbd-thx em{font-style:normal;font-weight:900;color:#b07a00;margin-right:58px}
+.mbd-stamp{position:absolute;right:10px;top:50%;width:52px;height:52px;margin-top:-26px;border-radius:50%;display:grid;place-items:center;border:3px solid #e0302f;color:#e0302f;font-weight:900;font-size:15px;transform:rotate(-14deg);animation:tevPop2 .5s .3s ease-out both}
+.mis .mic.mbd-mf{overflow:hidden;padding:0;background:#fff}
+html.light .mbd-it{background:color-mix(in srgb,var(--rc) 10%,#fff)}
+html.light .mbd-who{color:color-mix(in srgb,var(--rc) 65%,#222)}
+html.light .mbd-bar{background:rgb(70 60 150 / .1)}
+@media (prefers-reduced-motion:reduce){.mbd-it,.mbd-thx,.mbd-stamp{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7483,7 +7516,7 @@ function townLive(){
   const tot=twTot(), rk=twRank(tot), nxp=rk.next?Math.max(0,Math.min(100,(tot-TW_RANK[rk.i][0])/(rk.next[0]-TW_RANK[rk.i][0])*100)):100, wx=twWeather(), se=twSeason(), E=sevToday(), k=todayKey();
   const chips=[];
   try{ if(tevSt().d!==k) chips.push(['📢','速報','NEW','openTev()',1]); else chips.push(['📢','速報','✓','openTev()',0]); }catch(e){}
-  try{ const d=qbSt().s.filter(q=>q && qbDone(q)).length; chips.push(['📌','依頼',d?`${d}件達成`:`${qbSt().s.filter(Boolean).length}件`,"openTown('todo')",d?1:0]); }catch(e){}
+  try{ const n=misLeft(); chips.push(['📋','ミッション',n?`のこり${n}`:'✓',"openTown('todo')",0]); }catch(e){}
   try{ if(E) chips.push([E.ic,E.n,sevGot(E)?'✓':`あと${sevLeft(E)}日`,sevGot(E)?"openSheet('sevbook')":'sevPlay()',sevGot(E)?0:1]); }catch(e){}
   try{ if(outFriends().length) chips.push(['🚶','おでかけ',outSt().d!==k?'きょう未':'✓','openOuting()',outSt().d!==k?1:0]); }catch(e){}
   try{ if(mshLv()) chips.push(['🏪','お店',(S.prof.msh||{}).d!==k?'営業前':'✓','mshOpen()',(S.prof.msh||{}).d!==k?1:0]); }catch(e){}
@@ -7514,7 +7547,7 @@ function dayBriefItems(){
   try{ const b=bdayToday(); if(b && (S.prof.bday||{})[b]!==new Date().getFullYear()) it.push(['🎂',`きょうは${b}の誕生日！`,'お祝いしよう',`bdayCelebrate('${b}')`]); }catch(e){}
   try{ const E=sevToday(); if(E) it.push([E.ic,`${E.n}イベント 開催中`,sevGot(E)?'スタンプゲットずみ':`のこり${sevLeft(E)}日`,sevGot(E)?"openSheet('sevbook')":'sevPlay()']); }catch(e){}
   try{ if(tevSt().d!==k){ const T=tevToday(); it.push(['📢',`速報：${T.t}`,'まちのためにどうする？','openTev()']); } }catch(e){}
-  try{ const Q=qbSt(), n=Q.s.filter(q=>q && q.t>Date.now()-864e5).length, d=Q.s.filter(q=>q && qbDone(q)).length; if(d) it.push(['📌',`依頼を ${d}件 達成ずみ`,'報告してコインをもらおう',"openTown('todo')"]); else if(n) it.push(['📌',`新しい依頼が ${n}件`,'掲示板をチェック',"openTown('todo')"]); }catch(e){}
+  try{ const n=misLeft(), D=S.prof.mis, dn=todayMissions().filter(m=>D.done[m.id]).length; if(n) it.push(['📋',`ミッション のこり ${n}件`,`きょうの分 ${dn}/3 ・ 住民の依頼もあるよ`,"openTown('todo')"]); }catch(e){}
   try{ if(mshLv() && (S.prof.msh||{}).d!==k){ const P=mshProd(); it.push([P.ic,`お店：きょうの商品は「${P.n}」`,'値段を決めて営業しよう','mshOpen()']); } }catch(e){}
   try{ if(mbkLv()){ mbkAccrue(); const u=mbkSt().unseen; if(u>=1) it.push(['🏦',`利息が +${Math.floor(u)} コイン`,'銀行で記帳しよう','mbkOpen()']); } }catch(e){}
   try{ const F=outFriends(); if(F.length && outSt().d!==k) it.push(['🚶',`${F[k%F.length]}がおでかけしたいって`,'まちの建物へ行こう',`openOuting('${F[k%F.length]}')`]); }catch(e){}
@@ -7540,6 +7573,40 @@ function openDayBrief(){
 }
 function dayBriefClose(){ const el=document.querySelector('.dbf'); if(!el) return; sfx('click'); el.classList.add('out'); setTimeout(()=>el.remove(),350); }
 function dayBriefGo(go){ dayBriefClose(); setTimeout(()=>{ try{ new Function(go)(); }catch(e){} },360); }
+/* ---- 📋 ミッションボード：「今日のミッション」「今週のミッション」「まちの依頼」をひとつに。ぜんぶ住民キャラからのお願いで、達成したら自動でごほうび ---- */
+const MIS_K={pla:'ハル',uni:'ユイ',for:'ミナト',top:'レン',pts:'アオイ',all:'ナギ',his:'トキ',dai:'ミオ',wg:'ハル',ww:'レン',wm:'ユイ',wh:'トキ',wf:'ソラ',wl:'ミナト',wb:'ハル',wx:'ミオ',ws:'アオイ'};
+const misK = m => { const k=MIS_K[m.id.slice(0,3)]||'ミオ'; return CHARS[k]&&FACE[k]?k:Object.keys(CHARS).find(x=>FACE[x]); };
+const MBD_TAG={d:'きょう',w:'今週',q:'依頼'};
+function qbSweep(){
+  if(twTot()<=0) return []; const Q=qbSt(), got=[];
+  Q.s.forEach((q,i)=>{ if(q && CHARS[q.k] && qbDone(q)){ S.prof.coin=(S.prof.coin||0)+q.g; Q.n=(Q.n||0)+1; Q.s[i]=null; got.push({k:q.k, g:q.g, n:qbText(q)}); } });
+  if(got.length) saveProfile(); return got;
+}
+function misItems(){
+  const out=[], D=todayMissions(), M=S.prof.mis, W=weekMissions(), WM=S.prof.wmis;
+  D.forEach(m=>out.push({ty:'d', k:misK(m), n:m.n, v:M.prog[m.id]||0, t:m.t, ok:!!M.done[m.id], r:`+${m.xp}XP`}));
+  W.forEach(m=>out.push({ty:'w', k:misK(m), n:m.n, v:WM.prog[m.id]||0, t:m.t, ok:!!WM.done[m.id], r:`+${WM_COIN}🪙`}));
+  try{ if(twTot()>0) qbSt().s.forEach(q=>{ if(q && CHARS[q.k]) out.push({ty:'q', k:q.k, n:qbText(q), v:qbProg(q), t:q.tg, ok:false, r:`+${q.g}🪙`, h:qbHint(q), lv:q.ty==='lv'}); }); }catch(e){}
+  return out;
+}
+function misLeft(){ try{ return misItems().filter(x=>!x.ok).length; }catch(e){ return 0; } }
+function misBoard(where){
+  let got=[]; try{ got=qbSweep(); }catch(e){}
+  if(got.length && (where!=='home' || S.hmMore)) setTimeout(()=>{ try{ sfx('fanfare'); setTimeout(()=>sfx('coin'),450); confetti(); haptic([20,40,20]); voice(got[0].k, QB_TY[got[0].k]||'ありがとう！'); }catch(e){} }, 350);
+  const it=misItems(), open=it.filter(x=>!x.ok), done=it.filter(x=>x.ok);
+  const D=S.prof.mis, W=S.prof.wmis, dn=todayMissions().filter(m=>D.done[m.id]).length, wn=weekMissions().filter(m=>W.done[m.id]).length;
+  const pips=(n)=>[0,1,2].map(i=>`<i class="${i<n?'on':''}"></i>`).join('');
+  const card=(x,j)=>`<div class="mbd-it ty-${x.ty}" style="--rc:${CHARS[x.k].c};--k:${j}"><span class="mbd-f">${face(x.k)}</span>
+    <span class="mbd-tx"><span class="mbd-who"><span class="mbd-tg">${MBD_TAG[x.ty]}</span>${x.k}</span><b>${x.n}</b><span class="mbd-bar"><i style="width:${Math.round(Math.min(1,x.v/x.t)*100)}%"></i></span>${x.h?`<small>💡 ${x.h}</small>`:''}</span>
+    <span class="mbd-r"><span class="num">${x.lv?`Lv${x.v}/${x.t}`:`${x.v}/${x.t}`}</span><small>${x.r}</small></span></div>`;
+  return `<section class="panel missions mboard"><div class="row spread"><div><span class="label">MISSIONS</span><h3>📋 ミッションボード</h3></div><span class="note" style="text-align:right">きょう あと${untilReset()}<br>今週 あと${weekLeft()}日</span></div>
+    <p class="note mbd-lead">まちのみんなからのお願い。達成すると、自動でごほうびが届くよ。</p>
+    ${got.map(g=>`<div class="mbd-thx" style="--rc:${CHARS[g.k].c}"><span class="mbd-f">${face(g.k,null,'happy')}</span><span class="mbd-tx"><span class="label">依頼たっせい！</span><b>「${esc(QB_TY[g.k]||'ありがとう！')}」</b></span><em>🪙+${g.g}</em><span class="mbd-stamp">達成</span></div>`).join('')}
+    <div class="mbd-list">${open.map(card).join('')||'<p class="note" style="text-align:center">ぜんぶ達成！ また明日、新しいお願いが届くよ</p>'}</div>
+    ${done.length?`<div class="mbd-done"><span class="label">達成ずみ ${done.length}</span>${done.map(x=>`<span class="mbd-dc" style="--rc:${CHARS[x.k].c}">✓ ${esc(x.n)}</span>`).join('')}</div>`:''}
+    <div class="mbd-bon"><span class="${D.bonus?'ok':''}"><small>きょうの3つ</small><span class="mpips">${pips(dn)}</span><b>+${MIS_BONUS}XP</b></span><span class="${W.bonus?'ok':''}"><small>今週の3つ</small><span class="mpips">${pips(wn)}</span><b>+${WM_BONUS}🪙</b></span></div>
+  </section>`;
+}
 let TW_SEL=null;
 function openTown(tab){ sfx('click'); TW_SEL=null; TW_TAB=typeof tab==='string'?tab:'town'; openSheet('town'); }
 function townPick(c){ TW_SEL=c; sfx('select'); haptic(8); const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner(); }
@@ -7549,7 +7616,7 @@ function townInner(){
   if(TW_SEL==null) TW_SEL=L.indexOf(Math.max(...L));
   const c=TW_SEL, lv=L[c], nx=TW_AT[lv], pv=lv?TW_AT[lv-1]:0, pc=nx?Math.max(0,Math.min(100,(T.pts[c]-pv)/(nx-pv)*100)):100;
   const nxp=rk.next?Math.max(0,Math.min(100,(tot-TW_RANK[rk.i][0])/(rk.next[0]-TW_RANK[rk.i][0])*100)):100;
-  const B=twTabBadges(), tabs=[['town','🏙️','まち'],['todo','📌','やること'],['place','🏦','しせつ'],['deco','🎨','かざり']];
+  const B=twTabBadges(), tabs=[['town','🏙️','まち'],['todo','📋','やること'],['place','🏦','しせつ'],['deco','🎨','かざり']];
   if(!tabs.some(t=>t[0]===TW_TAB)) TW_TAB='town';
   let body='';
   if(TW_TAB==='town') body=`${sevBanner()}${tevCard()}
@@ -7560,8 +7627,8 @@ function townInner(){
       <small>${nx?`次の「${TW_NAMES[c][lv]}」まで あと ${nx-T.pts[c]}pt（投資 ${T.pts[c]}pt）`:`最大レベル！ まちのシンボルです（投資 ${T.pts[c]}pt）`}</small></div>
     ${twWxLine()}
     <div class="tw-share"><button class="btn gold big" onclick="twShare()">🔗 まちを友だちに見せる</button><button class="btn big" onclick="openTownImg()">📸 写真を保存</button></div>`;
-  else if(TW_TAB==='todo') body=`<p class="note tw-tabn">住民からの依頼や、キャラとのおでかけ。毎日なにかが待っているよ。</p>
-    <div id="qbWrap">${qbHTML()}</div>${outEntry()}
+  else if(TW_TAB==='todo') body=`<p class="note tw-tabn">住民からのミッションや、キャラとのおでかけ。毎日なにかが待っているよ。</p>
+    <div id="qbWrap">${misBoard('town')}</div>${outEntry()}
     <button class="tw-rpb" onclick="openSheet('sevbook')"><span>📅</span><b>季節の行事カレンダー</b><small>スタンプ ${SEV.filter(E=>(S.prof.sev||{})[E.id]===new Date().getFullYear()).length}/${SEV.length}</small></button>`;
   else if(TW_TAB==='place') body=`<p class="note tw-tabn">まちの施設。まちが育つほど、使える施設がふえていくよ。</p>
     ${mshEntry()}
@@ -7580,7 +7647,7 @@ let TW_TAB='town';
 function twTabBadges(){
   const k=todayKey(), b={town:0,todo:0,place:0,deco:0};
   try{ if(tevSt().d!==k) b.town++; const E=sevToday(); if(E && !sevGot(E)) b.town++; }catch(e){}
-  try{ b.todo+=qbSt().s.filter(q=>q && qbDone(q)).length; if(outFriends().length && outSt().d!==k) b.todo++; }catch(e){}
+  try{ if(outFriends().length && outSt().d!==k) b.todo++; }catch(e){}
   try{ if(twLv(townSt().pts[3]) && (S.prof.msh||{}).d!==k) b.place++; }catch(e){}
   try{ if(mbkLv() && mbkSt().unseen>=1) b.place++; if(S.prof.tppWk!==bossWeek() && tppWeek().length) b.place++; }catch(e){}
   return b;
@@ -7627,7 +7694,7 @@ function homeRec(){
   { const b=bdayToday(); if(b && (P.bday||{})[b]!==new Date().getFullYear()) out.push({ic:'🎂', t:`きょうは${b}の誕生日！`, d:'お祝いすると、お礼の手紙が届くよ', go:`bdayCelebrate('${b}')`}); }
   { const E=sevToday(); if(E && !sevGot(E)) out.push({ic:E.ic, t:`期間限定イベント「${E.n}」開催中！`, d:`${E.k}といっしょに楽しんで、スタンプをもらおう（🪙+${SEV_COIN}）`, go:'sevPlay()'}); }
   { const B=mbkSt(); mbkAccrue(); if(B.unseen>=1) out.push({ic:'🏦', t:`銀行の利息が +${Math.floor(B.unseen)} コインついたよ`, d:'通帳に記帳して、ふえたお金を見てみよう', go:'mbkOpen()'}); }
-  if(twTot()>0){ const r=qbSt().s.find(q=>q && qbDone(q)); if(r) out.push({ic:'📌', t:`${r.k}の依頼を達成！ 報告しよう`, d:`まちの掲示板で 🪙+${r.g} もらえるよ`, go:"openTown('todo')"}); }
+  { const D=todayMissions(), M=P.mis||{done:{}}, left=D.filter(m=>!M.done[m.id]); if(left.length===1) out.push({ic:'📋', t:`ミッションあと1つで +${MIS_BONUS}XP ボーナス`, d:`のこり：${left[0].n}`, go:twTot()>0?"openTown('todo')":"hsJump('ミッション')"}); }
   if(S.prof.tppWk!==bossWeek() && tppWeek().length) out.push({ic:'📰', t:'今週の「まち新聞」が届いたよ', d:'まちのできごとが記事になったよ', go:'tppOpen()'});
   if(tevSt().d!==k && twTot()>0){ const E=tevToday(); out.push({ic:'📢', t:`まちの速報：${E.t}`, d:'どうする？ 判断しだいで、まちが育つよ', go:'openTev()'}); }
   { const F=outFriends(); if(F.length && outSt().d!==k && twTot()>0){ const A=outSt().al, f=F.slice().sort((a,b)=>IND.filter((_,c)=>A[a+'|'+c]).length-IND.filter((_,c)=>A[b+'|'+c]).length)[0]; out.push({ic:'🚶', t:`${f}とまちへおでかけしよう`, d:'思い出の写真がとれるよ（きょう最初は 🪙+20）', go:`openOuting('${f}')`}); } }
@@ -9529,9 +9596,8 @@ function homeView(){
   ${todayBar()}
   <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
   <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
-  ${hsec('🏆','ミッション','週の目標をクリアしてコインとXP')}
-  ${missionsPanel()}
-  ${weeklyPanel()}
+  ${hsec('🏆','ミッション','きょう・今週・まちの依頼をひとつに')}
+  ${misBoard('home')}
   </details>`}
 
   <nav class="homelinks"><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
@@ -9736,10 +9802,11 @@ function recordResult(){
   const sty=G.story?storyResult(rk, me):null; if(sty&&sty.bonus){ coin+=sty.bonus; P.coin+=sty.bonus; } if(STORIES.every(x=>(P.story||{})[x.k])) unlock('story9');
   const wm=progressWeekly({p, won, rank:mine?mine.rank:9, boss:!!(bsr&&bsr.win), special:!!(G.story||G.cup||G.surv!=null)});
   if(wm.coin){ coin+=wm.coin; P.coin+=wm.coin; }
+  let qbg=[]; try{ qbg=qbSweep(); qbg.forEach(x=>coin+=x.g); }catch(e){}   // まちの依頼も、達成していれば自動でごほうび
   if(G.duel && G.duel.target!=null && p.score>G.duel.target) unlock('duelwin');
   const trb=recordRivals(rk, me); if(trb){ coin+=trb; P.coin+=trb; }
   { const RV=P.riv||{}, ks=Object.keys(CHARS); if(ks.every(k=>RV[k])) unlock('chars9'); if(ks.every(k=>RV[k]&&RV[k].w>0)) unlock('beat9'); }
-  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, sty, svr, spr, bsr, luck, wm, dex, trb, trk:trb?todayRival():null};
+  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, sty, svr, spr, bsr, luck, wm, qbg, dex, trb, trk:trb?todayRival():null};
   saveProfile();
 }
 /* ---- daily challenge: 日付で決まる同じゲームを、全員が同じ条件で遊ぶ ---- */
@@ -9896,13 +9963,22 @@ function rewardPanel(){
   return `<section class="panel reward"><div class="row spread"><h3>リザルト報酬</h3><span class="row" style="gap:8px"><b class="xpgain">+${R.xp} XP</b>${R.coin?`<b class="coingain">🪙 +${R.coin}</b>`:""}</span></div>
     <div class="lvline"><span class="lvbadge${up?' up':''}">Lv.${R.after.lv}</span><span class="xpbar big"><i class="fill" style="--from:${up?0:pct(R.before)}%;width:${pct(R.after)}%"></i></span><span class="note num">${R.after.cur}/${R.after.need}</span></div>
     ${rankDeltaPanel(R)}
-    ${R.mis&&R.mis.xp?`<div class="mclear">${R.mis.cleared.map((m,j)=>`<div class="mis ok pop" style="animation-delay:${1.2+j*.25}s"><span class="mic">✓</span><span class="mtx"><span class="label">MISSION CLEAR</span><b>${m.n}</b></span><span class="mxp">+${m.xp}XP</span></div>`).join('')}
-      ${R.mis.bonus?`<div class="mis ok pop all" style="animation-delay:${1.2+R.mis.cleared.length*.25}s"><span class="mic">★</span><span class="mtx"><span class="label">COMPLETE</span><b>今日のミッションをぜんぶ達成！</b></span><span class="mxp">+${R.mis.bonus}XP</span></div>`:''}</div>`:''}
+    ${misClearHTML(R)}
     ${up?`<div class="lvup">LEVEL UP!<span>${titleOf(R.after.lv)}</span></div>`:''}
     ${(R.dex||[]).length?`<div class="dexnew"><span class="label">NEW · マーケット図鑑に追加</span><div class="row" style="gap:6px">${R.dex.map(x=>`<span class="dexchip ${x.k}">${esc(x.n)}</span>`).join("")}</div></div>`:""}
     ${(R.skins||[]).map(s=>`<div class="newskin"><span class="sprev">${cardHTML(3,{cls:'sk-'+s.id+' pv'})}</span><span><span class="label">NEW CARD SKIN</span><b>「${s.n}」を解放！</b><span class="note">マイページで着せ替えできます</span></span><button class="btn gold" onclick="setSkin('${s.id}')">使う</button></div>`).join('')}
     ${R.got.length?`<div class="achgrid">${R.got.map(id=>{ const a=ACH.find(x=>x.id===id); return `<div class="ach on new"><span class="aic">${a.ic}</span><span><b>実績解除：${a.n}</b><span class="note">${a.d}</span></span></div>`; }).join('')}</div>`:''}
   </section>`;
+}
+function misClearHTML(R){
+  const rows=[], M=R.mis||{cleared:[]}, W=R.wm||{cleared:[]};
+  M.cleared.forEach(m=>rows.push([misK(m),'きょう',m.n,`+${m.xp}XP`,'']));
+  if(M.bonus) rows.push(['','★','きょうのミッションをぜんぶ達成！',`+${M.bonus}XP`,' all']);
+  (W.cleared||[]).forEach(m=>{ if(m && m.n) rows.push([misK(m),'今週',m.n,`+${WM_COIN}🪙`,'']); });
+  if(W.bonus) rows.push(['','★','今週のミッションをぜんぶ達成！',`+${W.bonus}🪙`,' all']);
+  (R.qbg||[]).forEach(g=>rows.push([g.k,'依頼',`${g.k}「${QB_TY[g.k]||'ありがとう！'}」`,`+${g.g}🪙`,'']));
+  if(!rows.length) return '';
+  return `<div class="mclear">${rows.map(([k,tg,n,r,c],j)=>`<div class="mis ok pop${c}" style="animation-delay:${1.2+j*.25}s"><span class="mic${k&&CHARS[k]?' mbd-mf':''}">${k&&CHARS[k]?face(k,null,'happy'):'★'}</span><span class="mtx"><span class="label">${tg==='依頼'?'依頼たっせい！':tg==='★'?'COMPLETE':tg+'のミッション クリア'}</span><b>${esc(n)}</b></span><span class="mxp">${r}</span></div>`).join('')}</div>`;
 }
 /* ---- daily missions: 日付で決まる3つのお題。達成すると自動でXP ---- */
 const MISSIONS=[
@@ -9955,9 +10031,9 @@ function weekMissions(){
 }
 function progressWeekly(r){
   const list=weekMissions(), M=S.prof.wmis; let coin=0; const cleared=[];
-  list.forEach(m=>{ if(M.done[m.id]) return; M.prog[m.id]=Math.min(m.t,(M.prog[m.id]||0)+m.f(r)); if(M.prog[m.id]>=m.t){ M.done[m.id]=1; coin+=WM_COIN; cleared.push(m.n); } });
-  if(!M.bonus && list.every(m=>M.done[m.id])){ M.bonus=true; coin+=WM_BONUS; }
-  return {coin, cleared};
+  list.forEach(m=>{ if(M.done[m.id]) return; M.prog[m.id]=Math.min(m.t,(M.prog[m.id]||0)+m.f(r)); if(M.prog[m.id]>=m.t){ M.done[m.id]=1; coin+=WM_COIN; cleared.push(m); } });
+  let bonus=0; if(!M.bonus && list.every(m=>M.done[m.id])){ M.bonus=true; coin+=WM_BONUS; bonus=WM_BONUS; }
+  return {coin, cleared, bonus};
 }
 function weeklyPanel(){
   const list=weekMissions(), M=S.prof.wmis, n=list.filter(m=>M.done[m.id]).length;
