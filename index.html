@@ -3411,6 +3411,8 @@ html.light .tt-ch{background:color-mix(in srgb,var(--c) 14%,#fff)}
 html.light .seat .tt{background:color-mix(in srgb,var(--c) 14%,#fff)}
 @media (prefers-reduced-motion:reduce){.seat .tt,.tt-st{animation:none}}
 /* あなたの宣言 */
+.decl-open{display:flex;align-items:center;gap:8px;width:100%;margin:6px 0 2px;padding:7px 12px;border:0;border-radius:12px;font:inherit;font-size:13px;font-weight:800;color:var(--ink);background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px var(--line);cursor:pointer;text-align:left}
+.decl-open small{font-size:11px;font-weight:600;opacity:.7}
 .decl{margin:6px 0 4px;padding:8px 10px;border-radius:12px;background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 1px var(--line)}
 .decl-bs{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 4px}
 .decl-b{padding:5px 11px;border:0;border-radius:99px;font:inherit;font-size:12.5px;font-weight:800;color:var(--ink);background:color-mix(in srgb,var(--c) 22%,rgb(10 12 34 / .5));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent);cursor:pointer}
@@ -3434,6 +3436,23 @@ html.light .decl-b{background:color-mix(in srgb,var(--c) 14%,#fff)}
 .obs-b i b{display:block;height:100%;border-radius:99px}
 .obs-b em{font-style:normal;text-align:right;opacity:.7}
 .obs-tip{margin:10px 0 0;padding:8px 10px;border-radius:10px;background:rgb(255 255 255 / .75);font-size:13px;font-weight:700;line-height:1.55;font-family:"Klee One","Yu Mincho",serif}
+/* 読み合いの道具 */
+.rtip{align-items:center;flex-wrap:wrap}
+.rtip .g-tx{flex:1;min-width:200px}
+.rtip-ok{margin-left:auto;padding:6px 14px;font-size:13px}
+.rt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
+.rt-it{padding:12px;border-radius:16px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px var(--line)}
+.rt-it b{font-size:15px}
+.rt-it p{margin:4px 0 0;font-size:12.5px;line-height:1.6;opacity:.9}
+.rt-vis{height:150px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;margin-bottom:8px;border-radius:12px;background:rgb(7 8 24 / .35);position:relative}
+.rt-vis .card.rt-card{width:84px;position:relative;margin:0}
+.rt-talk{flex-direction:column}
+.rt-st{position:absolute;right:10px;bottom:10px;padding:2px 9px;border-radius:99px;background:var(--down);color:#fff;font-size:11px;font-weight:900;transform:rotate(-6deg)}
+.rt-note{background:repeating-linear-gradient(180deg,transparent 0 19px,rgb(120 90 40 / .14) 19px 20px),linear-gradient(180deg,#fffaf0,#f6ecd6);color:#2a2118}
+.rt-note span{display:flex;flex-direction:column;align-items:center;padding:6px 8px;border-radius:10px;background:rgb(255 255 255 / .75)}
+.rt-note span b{font-family:var(--display);font-weight:400;font-size:20px}
+.rt-note span small{font-size:10px;font-weight:700}
+html.light .rt-vis:not(.rt-note){background:rgb(70 60 150 / .07)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5806,8 +5825,8 @@ function guideTip(){
   if(G.phase==='reveal') t = G.turn===0 ? '<b>OPEN！</b> だれとも被らなかった産業は<b>「独占」</b>でボーナス +'+G.cfg.bonus+'。被った産業は点が伸びません。下の表で、だれが何を出したか見てみよう。'
     : last ? '<b>これで4ターン終了！</b> 「最終結果へ」で順位を見よう。' : 'ターンごとに<b>独占</b>をねらうのがコツ。点数は画面上の席の数字に足されていきます。';
   else if(G.turn===0) t='<b>① NEWSを見る</b>：上の新聞の数字が、そのターンに各産業がもらえる点です。<b>② 下の手札から1枚選んで</b>「出す」を押そう。';
-  else if(G.turn===1) t='<b>コツ</b>：いちばん点が高い産業は、みんなも選びがちで<b>被りやすい</b>。2番目に高い産業で独占をねらうのも手です。';
-  else if(G.turn===2) t=`<b>${f.name}</b>：${f.desc} 1ゲームに1回だけ。手札の上のボタンから使えます。`;
+  else if(G.turn===1) t='<b>📡 カードの顔マーク</b>は、その産業を<b>まだ持っている相手</b>。顔が少ないほど独占しやすい！ 「🔒確定独占」なら必ず独占できます。';
+  else if(G.turn===2) t='<b>💬 宣言</b>：CPUの「○○でいく」は<b>ウソのことも</b>。あなたも「🗣 宣言する？」で宣言できます（1試合2回・ブラフもOK）。';
   else t='<b>最後のターン！</b> 一度使った産業はもう出せません。残ったカードでいちばん得をするものを選ぼう。';
   return `<div class="guide">${guideAva()}<span class="g-tx"><span class="label">ミオと練習試合 · ${G.phase==='reveal'?'結果':'ターン'+(G.turn+1)}</span>${t}</span></div>`;
 }
@@ -7739,6 +7758,7 @@ function rdrLine(RD,c){
 const TT_H={'ハル':.9,'ミオ':.85,'ソラ':.8,'ナギ':.7,'アオイ':.6,'ミナト':.55,'ユイ':.45,'トキ':.4,'レン':.25};
 const TT_L=['こんどは{X}でいくよ','{X}、ねらってる','{X}にかけてみる','ぜったい{X}！','{X}が来る気がする','{X}、ゆずらないよ'];
 function ttGen(){
+  if(G) G.declOpen=0;
   G.tt=null; if(!G || G.online || G.turn<1 || G.demo) return;
   const out={}; let n=0;
   G.players.forEach((p,i)=>{
@@ -7769,6 +7789,7 @@ const myHon = () => { const H=S.prof.myh; return H&&H.n>=3 ? H.h/H.n : null; };
 const canDecl = () => !!G && !G.online && !G.demo && humans()===1 && G.phase==='choose' && G.turn>=1 && G.active>=0 && isHuman(G.players[G.active]) && (G.declN||0)<2 && !(G.tt&&G.tt[G.active]);
 function declUI(){
   if(!canDecl()) return ''; const p=G.players[G.active], r=myHon();
+  if(!G.declOpen) return `<button class="decl-open" onclick="G.declOpen=1;sfx('click');render()">🗣 宣言する？<small>あと${2-(G.declN||0)}回・ブラフもOK</small></button>`;
   return `<div class="decl"><span class="label">🗣 宣言する？（あと${2-(G.declN||0)}回）</span><div class="decl-bs">${p.hand.map(c=>`<button class="decl-b" style="--c:var(--i${c})" onclick="ttDeclare(${c})">${IND[c]}</button>`).join('')}</div><small class="note">ウソでもOK。信じて避けるCPUも、わざと被せてくるCPUもいる。トップのときはねらわれやすい${r!=null?` ・ あなたの正直度 ${Math.round(r*100)}%`:''}</small></div>`;
 }
 function ttDeclare(c){
@@ -7790,6 +7811,25 @@ function ttDeclare(c){
   });
   sfx('select'); haptic(15); render(); try{ cutIn(`「${IND[c]}でいく！」`,'宣言した！ みんなは信じる？ それとも…','decl',c); }catch(e){}
   re.forEach((i,j)=>setTimeout(()=>{ try{ say(i, TT_RE[Math.floor(Math.random()*TT_RE.length)].replace('{X}',IND[c])); }catch(e){} }, 1500+j*700));
+}
+/* ---- 読み合いの道具：はじめて出たときだけ、ミオがひとこと（📡レーダー → 💬CPUの宣言 → 🗣あなたの宣言） ---- */
+function readTip(RD){
+  if(!G || G.practice || G.online || G.phase!=='choose' || !S.prof) return ''; const P=S.prof;
+  let k=null, t='';
+  if(RD && !P.tipR){ k='tipR'; t='<b>📡 読み合いレーダー</b>：カードの顔マークは、その産業を<b>まだ持っている相手</b>。顔が少ないほど独占しやすいよ。「🔒確定独占」は必ず独占！'; }
+  else if(G.tt && Object.values(G.tt).some(x=>!x.me) && !P.tipT){ k='tipT'; t='<b>💬 テーブルトーク</b>：CPUが「○○でいく」と宣言したよ。でも<b>ブラフ（ウソ）</b>のことも。キャラごとに正直さがちがうから、何度も遊ぶと見えてくるよ。'; }
+  else if(canDecl() && !P.tipD){ k='tipD'; t='<b>🗣 あなたも宣言できる</b>：「宣言する？」で産業を言うと、信じて避けるCPUも、わざと被せてくるCPUもいるよ。ウソでもOK、1試合2回まで。'; }
+  if(!k) return '';
+  return `<div class="guide rtip">${guideAva()}<span class="g-tx"><span class="label">ミオのひとこと · はじめての道具</span>${t}</span><button class="btn ghost rtip-ok" onclick="S.prof.${k}=1;saveProfile();render()">わかった</button></div>`;
+}
+function readTools(){
+  const card=cardHTML(3,{cls:'pv rt-card'}).replace(/<\/div>\s*$/, '<span class="rdr lock">🔒確定独占</span></div>');
+  return `<section class="panel rtools"><span class="label">READING TOOLS</span><h3>読み合いの3つの道具</h3><p class="note">ルールはそのまま。相手の手を読むためのヒントです。</p>
+    <div class="rt-grid">
+      <div class="rt-it"><div class="rt-vis">${card}</div><b>📡 レーダー</b><p>手札のカードに、その産業を<b>まだ持っている相手</b>の顔。だれも持っていなければ「確定独占」。</p></div>
+      <div class="rt-it"><div class="rt-vis rt-talk"><span class="tt-ch" style="--c:var(--i1)"><b>レン</b>「金融」<small>正直25%</small></span><span class="tt-ch" style="--c:var(--i3)"><b>ハル</b>「小売」<small>正直90%</small></span><span class="rt-st">ブラフ！</span></div><b>💬 宣言とブラフ</b><p>CPUは「○○でいく」と宣言。ウソのことも。あなたも1試合2回、宣言できる。</p></div>
+      <div class="rt-it"><div class="rt-vis rt-note"><span><b>30%</b><small>独占率</small></span><span><b>25%</b><small>正直度</small></span><span><b>60%</b><small>信じる</small></span></div><b>🕵️ 観察ノート</b><p>対戦するほど、キャラのクセがたまる。キャラ図鑑で読めるよ。</p></div>
+    </div></section>`;
 }
 let TW_SEL=null;
 function openTown(tab){ sfx('click'); TW_SEL=null; TW_TAB=typeof tab==='string'?tab:'town'; openSheet('town'); }
@@ -9641,7 +9681,7 @@ function handDock(news){
   else if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(pcfg(G.active),b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}${rdrLine(RD,G.sel)}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
   if(G.sel!==null && ospPending()) preview=preview.replace(cmpBtn, rdrLine(RD,G.sel)+cmpBtn);
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
-  return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
+  return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}${readTip(RD)}
     <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}${ttStrip()}${declUI()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
@@ -11442,6 +11482,7 @@ function rulesView(){
   if(tab==='teach') body=teachPanel();
   if(tab==='words') body=glossPanel();
   if(tab==='how') body=`<section class="panel"><h3>覚えることは5つだけ</h3>${ruleList()}<button class="btn gold" onclick="openTutorial()">図で見る（1分）</button><button class="btn ghost" onclick="openSheet('lessons')">📒 ミオのけいざい教室（本物の経済を学ぶ）</button></section>
+    ${readTools()}
     <div class="two">
       <section class="panel"><span class="label">MARKET BONUS</span><h3>被らなければ ${sgn(CFG.bonus)}</h3><p class="note">NEWSでいちばん高いのは+3で、どのNEWSにも2つあります。みんなが同じ方を出すと被って+3だけ。もう一方の+3を1人で出せば +3${sgn(CFG.bonus)}＝<b style="color:var(--gold-t)">+${3+CFG.bonus}</b>。</p></section>
       <section class="panel"><span class="label">FINAL TURN</span><h3>最後は「大引け」で2倍</h3><p class="note">4ターン目だけ、NEWSは全員がカードを出したあとに発表されます。来るのは、まだ出ていないNEWSのどれか。点数は2倍なので、最下位からの逆転もあります。</p><p class="note">上級ルール：慣れたら、試合の「こだわり設定」で「先物取引」をオンにできます。</p></section>
