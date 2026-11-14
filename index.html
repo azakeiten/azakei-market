@@ -3453,6 +3453,10 @@ html.light .decl-b{background:color-mix(in srgb,var(--c) 14%,#fff)}
 .rt-note span b{font-family:var(--display);font-weight:400;font-size:20px}
 .rt-note span small{font-size:10px;font-weight:700}
 html.light .rt-vis:not(.rt-note){background:rgb(70 60 150 / .07)}
+/* ブラフ成功 */
+.cutin.bluff .band{background:linear-gradient(90deg,transparent,#c4204f 12%,#ff7ab0 50%,#c4204f 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 80px rgb(255 61 139 / .85)}
+.cutin.bluff b{color:#fff6d8;text-shadow:0 3px 0 #5a0a28} .cutin.bluff span{color:#fff}
+.bl-share{display:block;width:100%;margin-top:8px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4669,7 +4673,7 @@ function resolveTurn(){
     pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,guess:p.guess};
   });
   if(G.log) G.log.push(G.deck[G.turn]);
-  try{ ttRecord(cnt); }catch(e){}
+  G.bluffNow=null; try{ ttRecord(cnt); }catch(e){}
   try{ obsRecord(cnt); }catch(e){}
   G.cnt=cnt; G.phase='reveal'; G.active=G.online?G.me:-1; render(); netSync();
   playFlip(()=>{
@@ -4772,7 +4776,8 @@ function revealFx(){
   cpuChatter(); speakLive();
   const me=myIndex(), r=me>=0?G.last[me]:null;     // 自分の見せ場はカットインで
   const streak = r ? (()=>{ const u=G.players[me].used; let n=0; for(let k=u.length-1;k>=0&&u[k].k===1;k--) n++; return n; })() : 0;
-  if(r && r.k===1) setTimeout(()=>{ if(streak<2 && r.hd>=2){ cutIn('読み勝ち！',`${r.hd}人が持っていた${IND[r.ind]}を独占 ${sgn(r.total)}`,'mono yw',r.ind); sfx('select'); haptic([20,30,40]); } else cutIn(streak>=2?`${streak}連続独占！`:'独占！',`${IND[r.ind]} ${sgn(r.total)}`,streak>=2?'mono combo':'mono',r.ind); if(streak>=2){ sfx('fanfare'); haptic(50); } },700);
+  if(r && r.k===1 && G.bluffNow) setTimeout(()=>{ const B=G.bluffNow||{}; cutIn('ブラフ成功！',`「${IND[B.said]}」と言って、${IND[r.ind]}で独占 ${sgn(r.total)}`,'mono bluff',r.ind); sfx('fanfare'); haptic([30,40,30,40,60]); },700);
+  else if(r && r.k===1) setTimeout(()=>{ if(streak<2 && r.hd>=2){ cutIn('読み勝ち！',`${r.hd}人が持っていた${IND[r.ind]}を独占 ${sgn(r.total)}`,'mono yw',r.ind); sfx('select'); haptic([20,30,40]); } else cutIn(streak>=2?`${streak}連続独占！`:'独占！',`${IND[r.ind]} ${sgn(r.total)}`,streak>=2?'mono combo':'mono',r.ind); if(streak>=2){ sfx('fanfare'); haptic(50); } },700);
   else if(r && r.total>=5) setTimeout(()=>cutIn('大当たり！',`${IND[r.ind]} ${sgn(r.total)}`,'big',r.ind),700);
   if(me>=0 && G.players[me].hist.length>2){   // 逆転してトップに立った瞬間
     const top=a=>{ const m=Math.max(...a); return a.filter(v=>v===m).length===1 ? a.indexOf(m) : -1; };
@@ -7778,7 +7783,7 @@ function ttSeat(i){
 function ttRecord(cnt){
   if(!G || !G.tt) return; const R=S.prof.ttr=S.prof.ttr||{};
   Object.keys(G.tt).forEach(i=>{ const p=G.players[i], T=G.tt[i]; T.h = T.c===p.pick;
-    if(T.me){ const H=S.prof.myh=S.prof.myh||{n:0,h:0}; H.n++; if(T.h) H.h++; else { p.bluff=(p.bluff||0)+1; if(cnt && cnt[p.pick]===1) p.bluffOK=(p.bluffOK||0)+1; } return; }
+    if(T.me){ const H=S.prof.myh=S.prof.myh||{n:0,h:0}; H.n++; if(T.h) H.h++; else { p.bluff=(p.bluff||0)+1; if(cnt && cnt[p.pick]===1){ p.bluffOK=(p.bluffOK||0)+1; const r=G.last&&G.last[i]; G.bluffNow={said:T.c, did:p.pick, total:r?r.total:0, fooled:(T.fooled||[]).slice(), turn:G.turn}; (G.bluffWins=G.bluffWins||[]).push(G.bluffNow); } } return; }
     if(T.chg) return;
     const k=charKey(p); if(!k) return; const x=R[k]=R[k]||{n:0,h:0}; x.n++; if(T.h) x.h++; });
 }
@@ -7806,7 +7811,7 @@ function ttDeclare(c){
       q.pick = np!=null && np!==c && h0.includes(np) ? np : (h0.find(x=>x!==c)!=null?h0.find(x=>x!==c):c);
     } else if(q.pick!==c && (q.hand||[]).includes(c) && (row[c]||0)>=(row[q.pick]||0)-1 && Math.random()<(lead?.35:.15)){ q.pick=c; }   // わざと被せてじゃま（トップのあなたはねらわれやすい）。v199 シミュレーション：宣言なし25%／正直28〜31%／ブラフ25〜29%
     if(q.pick!==p0 && G.tt[i]) G.tt[i].chg=true;
-    if(p0===c){ const o=obsOf(k); if(o){ o.bn++; if(q.pick!==c) o.bb++; } }   // あなたの宣言で気が変わった（正直度には数えない）
+    if(p0===c){ const o=obsOf(k); if(o){ o.bn++; if(q.pick!==c) o.bb++; } if(q.pick!==c) (G.tt[me].fooled=G.tt[me].fooled||[]).push(k); }   // あなたの宣言で気が変わった（正直度には数えない）
     if(re.length<2 && Math.random()<.7) re.push(i);
   });
   sfx('select'); haptic(15); render(); try{ cutIn(`「${IND[c]}でいく！」`,'宣言した！ みんなは信じる？ それとも…','decl',c); }catch(e){}
@@ -10358,8 +10363,37 @@ function yomiStatPanel(){
   const hit=u.filter(x=>x.k>1).length, yw=p.ywin||0, tot=(S.prof.st||{}).yw||0;
   const msg = yw>=2 ? '相手の手札を読みきった！' : yw===1 ? 'みんなが持っている産業で、ひとり勝ち！' : p.uniq ? '独占はできた。次は「持っている人が多い産業」で読み勝ちをねらおう' : '手札の顔マーク（まだ持っている相手）をヒントにしよう';
   const dn=(p.bluff||0), bo=(p.bluffOK||0), dl=G.declN||0;
-  const dline = dl ? `<p class="note ywp-d">🗣 宣言 ${dl}回 ・ ブラフ ${dn}回${dn?` ・ ブラフ成功（独占） <b>${bo}回</b>`:''}</p>` : '';
+  const dline = dl ? `<p class="note ywp-d">🗣 宣言 ${dl}回 ・ ブラフ ${dn}回${dn?` ・ ブラフ成功（独占） <b>${bo}回</b>`:''}</p>${(G.bluffWins||[]).length?`<button class="btn gold bl-share" onclick="openBluffCard()">📸 ブラフ成功カードをつくる</button>`:''}` : '';
   return `<div class="ywp"><span class="label">📡 読み合い成績</span><div class="ywp-row"><span class="ywp-c yw"><b>${yw}</b><small>読み勝ち</small></span><span class="ywp-c"><b>${p.uniq}</b><small>独占</small></span><span class="ywp-c hit"><b>${hit}</b><small>被り</small></span><span class="ywp-c tot"><b>${tot}</b><small>通算 読み勝ち</small></span></div><p class="note">${msg}</p>${dline}${G.online?'':(()=>{ const ks=G.players.filter(q=>!isHuman(q)).map(charKey).filter(k=>CHARS[k]); return ks.length?`<div class="ywp-ob"><span class="note">🕵️ 観察ノート：</span>${ks.map(k=>`<button class="decl-b" style="--c:${CHARS[k].c}" onclick="openSheet('char:${k}')">${esc(k)}</button>`).join('')}</div>`:''; })()}</div>`;
+}
+/* ---- 📸 ブラフ成功カード：「○○でいく」と言って、ちがう産業で独占した名場面を1枚の画像に ---- */
+async function openBluffCard(){
+  const B=(G&&G.bluffWins||[]).slice().sort((a,b)=>b.total-a.total)[0]; if(!B) return;
+  sfx('select'); toast('カードを作っています…');
+  try{ await document.fonts.ready; }catch(e){}
+  const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d');
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim(), D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', Bf='"M PLUS Rounded 1c",sans-serif';
+  const RR=(X,Y,w,h,r)=>{ if(x.roundRect) x.roundRect(X,Y,w,h,r); else x.rect(X,Y,w,h); };
+  const bg=x.createRadialGradient(W/2,420,60,W/2,520,900); bg.addColorStop(0,'#3a1f6e'); bg.addColorStop(1,'#0b0b24'); x.fillStyle=bg; x.fillRect(0,0,W,H);
+  x.save(); x.globalAlpha=.08; x.fillStyle='#fff'; for(let i=0;i<14;i++){ x.beginPath(); x.moveTo(W/2,-60); x.lineTo(i*90-80,H); x.lineTo(i*90-40,H); x.closePath(); x.fill(); } x.restore();
+  x.textAlign='center'; x.fillStyle='#ffd23a'; x.font=`600 34px ${Bf}`; x.fillText('AZAKEI MARKET ・ 読み合いカードゲーム',W/2,90);
+  x.font=`150px ${D}`; x.lineWidth=18; x.strokeStyle='#c4204f'; x.strokeText('ブラフ成功！',W/2,260); x.fillStyle='#fff6d8'; x.fillText('ブラフ成功！',W/2,260);
+  // 宣言の吹き出し
+  const bx=140, by=330, bw=W-280, bh=170; x.fillStyle='#fff'; x.beginPath(); RR(bx,by,bw,bh,40); x.fill(); x.beginPath(); x.moveTo(250,by+bh-4); x.lineTo(210,by+bh+60); x.lineTo(330,by+bh-4); x.fill();
+  x.fillStyle='#1a1530'; x.font=`600 34px ${Bf}`; x.fillText('あなたの宣言',W/2,by+56); x.font=`72px ${D}`; x.fillStyle=css('--i'+B.said)||'#333'; x.fillText(`「${IND[B.said]}でいく！」`,W/2,by+140);
+  x.save(); x.translate(W-220,by+40); x.rotate(.2); x.strokeStyle='#e0302f'; x.lineWidth=8; x.beginPath(); x.arc(0,0,72,0,Math.PI*2); x.stroke(); x.fillStyle='#e0302f'; x.font=`58px ${D}`; x.fillText('ウソ',0,20); x.restore();
+  // 実際の1枚
+  x.fillStyle='#fff'; x.font=`600 40px ${Bf}`; x.fillText('…でも本当に出したのは',W/2,640);
+  const cx=W/2-170, cy=680, cw=340, ch=300, cc=css('--i'+B.did)||'#888'; x.fillStyle=cc; x.beginPath(); RR(cx,cy,cw,ch,32); x.fill(); x.lineWidth=10; x.strokeStyle='#ffd23a'; x.stroke();
+  x.fillStyle='#fff'; x.font=`84px ${D}`; x.fillText(IND[B.did],W/2,cy+150); x.font=`64px ${D}`; x.fillStyle='#fff6d8'; x.fillText(`独占 ${sgn(B.total)}`,W/2,cy+250);
+  // だまされた人
+  const fo=[...new Set(B.fooled||[])].filter(k=>CHARS[k]);
+  x.fillStyle='#fff'; x.font=`600 38px ${Bf}`; x.fillText(fo.length?'まんまと信じた人たち':'だれとも被らず、ひとり勝ち',W/2,1070);
+  if(fo.length){ const sz=150, gap=30, tot=fo.length*sz+(fo.length-1)*gap; let sx=W/2-tot/2;
+    for(const k of fo){ const im=await svgImg(face(k,null,'shock'),null,sz,sz); x.save(); x.beginPath(); x.arc(sx+sz/2,1170,sz/2,0,Math.PI*2); x.fillStyle='#fff'; x.fill(); x.clip(); if(im) x.drawImage(im,sx,1170-sz/2,sz,sz); x.restore(); x.lineWidth=6; x.strokeStyle=CHARS[k].c; x.beginPath(); x.arc(sx+sz/2,1170,sz/2,0,Math.PI*2); x.stroke(); x.fillStyle='#fff'; x.font=`600 28px ${Bf}`; x.fillText(k,sx+sz/2,1275); sx+=sz+gap; } }
+  x.fillStyle='rgba(255,255,255,.6)'; x.font=`500 24px ${Bf}`; x.fillText(`${(NET.name||'').trim()||'あなた'} ・ ${new Date().getMonth()+1}/${new Date().getDate()} ・ ${PUBLIC_URL.replace(/^https:\/\//,'')}`,W/2,H-24);
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'📸 ブラフ成功カード', alt:`「${IND[B.said]}でいく」と宣言して、${IND[B.did]}で独占したカード`, name:`azakei-bluff-${todayKey()}.png`, note:'みごとなブラフ！ 友だちにも見せてみよう。'};
+  openSheet('card'); if(!reduced()) setTimeout(()=>confetti(),300);
 }
 function rankDeltaPanel(R){
   if(!R || R.rate==null) return '';
