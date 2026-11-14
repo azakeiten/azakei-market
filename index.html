@@ -3402,11 +3402,20 @@ html.light .tt-ch{background:color-mix(in srgb,var(--c) 14%,#fff)}
 .rdr-pv.tt-pv{color:var(--cyan-tx);font-weight:800}
 .tt-r{font-size:10px;opacity:.75}
 .tt-st{padding:1px 7px;border-radius:99px;font-size:10.5px;font-weight:900;animation:tevPop2 .4s .5s ease-out both}
+.tt.cg .tt-st{background:#ffd23a;color:#2a1a00}
 .tt.ok .tt-st{background:var(--up);color:#06331b}
 .tt.bl .tt-st{background:var(--down);color:#fff;transform:rotate(-4deg)}
 .tt.bl .tt-q{text-decoration:line-through;text-decoration-color:rgb(255 90 110 / .8);opacity:.8}
 html.light .seat .tt{background:color-mix(in srgb,var(--c) 14%,#fff)}
 @media (prefers-reduced-motion:reduce){.seat .tt,.tt-st{animation:none}}
+/* あなたの宣言 */
+.decl{margin:6px 0 4px;padding:8px 10px;border-radius:12px;background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 1px var(--line)}
+.decl-bs{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 4px}
+.decl-b{padding:5px 11px;border:0;border-radius:99px;font:inherit;font-size:12.5px;font-weight:800;color:var(--ink);background:color-mix(in srgb,var(--c) 22%,rgb(10 12 34 / .5));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent);cursor:pointer}
+.decl-b:active{transform:scale(.95)}
+.decl .note{font-size:11px}
+.ywp-d{margin-top:4px}
+html.light .decl-b{background:color-mix(in srgb,var(--c) 14%,#fff)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4623,7 +4632,7 @@ function resolveTurn(){
     pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,guess:p.guess};
   });
   if(G.log) G.log.push(G.deck[G.turn]);
-  try{ ttRecord(); }catch(e){}
+  try{ ttRecord(cnt); }catch(e){}
   G.cnt=cnt; G.phase='reveal'; G.active=G.online?G.me:-1; render(); netSync();
   playFlip(()=>{
     if(phone()){ const b=document.querySelector('.board'); if(b) b.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); }
@@ -7700,8 +7709,8 @@ function rdrCard(RD,c,html){
     : `<span class="rdr" aria-label="まだ持っている相手 ${r.length}人">${r.slice(0,3).map(q=>q.whale?'<i class="rdr-w">🐋</i>':`<i class="rdr-a" style="--s:var(--s${(q.seat||0)%6})">${avHTML(q)}</i>`).join('')}${r.length>3?`<em>+${r.length-3}</em>`:''}</span>`;
   return html.replace(/<\/(button|div)>\s*$/, m=>b+m);
 }
-function ttStrip(){ const T=G&&G.tt; if(!T||G.phase!=='choose') return ''; return `<div class="tt-strip"><span class="label">💬 宣言</span>${Object.keys(T).map(i=>{ const k=charKey(G.players[i]), r=ttRate(k); return `<span class="tt-ch" style="--c:var(--i${T[i].c})"><b>${esc(k)}</b>「${IND[T[i].c]}」${r!=null?`<small>正直${r}%</small>`:''}</span>`; }).join('')}</div>`; }
-function ttLine(c){ const T=G&&G.tt; if(!T||c==null) return ''; const w=Object.keys(T).filter(i=>T[i].c===c).map(i=>esc(charKey(G.players[i]))); return w.length?`<span class="rdr-pv tt-pv">💬 ${w.join('・')}が「${IND[c]}でいく」と宣言（ほんとかな？）</span>`:''; }
+function ttStrip(){ const T=G&&G.tt; if(!T||G.phase!=='choose') return ''; return `<div class="tt-strip"><span class="label">💬 宣言</span>${Object.keys(T).map(i=>{ const k=T[i].me?'あなた':charKey(G.players[i]), r=T[i].me?null:ttRate(k); return `<span class="tt-ch" style="--c:var(--i${T[i].c})"><b>${esc(k)}</b>「${IND[T[i].c]}」${r!=null?`<small>正直${r}%</small>`:''}</span>`; }).join('')}</div>`; }
+function ttLine(c){ const T=G&&G.tt; if(!T||c==null) return ''; const w=Object.keys(T).filter(i=>T[i].c===c && !T[i].me).map(i=>esc(charKey(G.players[i]))); return w.length?`<span class="rdr-pv tt-pv">💬 ${w.join('・')}が「${IND[c]}でいく」と宣言（ほんとかな？）</span>`:''; }
 function rdrLine(RD,c){
   if(!RD || c==null) return ''; const r=RD[c];
   return ttLine(c)+(r.length===0 ? `<span class="rdr-pv lock">🔒 だれも持っていない＝確定独占！</span>` : `<span class="rdr-pv">📡 まだ持っている：${r.map(q=>esc(q.name)).join('・')}</span>`);
@@ -7725,11 +7734,43 @@ function ttRate(k){ const R=(S.prof.ttr||{})[k]; return R && R.n>=4 ? Math.round
 function ttSeat(i){
   const T=G&&G.tt&&G.tt[i]; if(!T) return '';
   const p=G.players[i], k=charKey(p), rv=G.phase==='reveal', r=ttRate(k);
-  return `<div class="tt${rv?(T.h?' ok':' bl'):''}" style="--c:var(--i${T.c})"><span class="tt-q">💬「${esc(T.t)}」</span>${rv?`<b class="tt-st">${T.h?'ほんとだった':'ブラフ！'}</b>`:r!=null?`<small class="tt-r">正直度 ${r}%</small>`:''}</div>`;
+  return `<div class="tt${rv?(T.chg?' cg':T.h?' ok':' bl'):''}" style="--c:var(--i${T.c})"><span class="tt-q">💬「${esc(T.t)}」</span>${rv?`<b class="tt-st">${T.chg?'気が変わった':T.h?'ほんとだった':'ブラフ！'}</b>`:r!=null?`<small class="tt-r">正直度 ${r}%</small>`:''}</div>`;
 }
-function ttRecord(){
+function ttRecord(cnt){
   if(!G || !G.tt) return; const R=S.prof.ttr=S.prof.ttr||{};
-  Object.keys(G.tt).forEach(i=>{ const p=G.players[i], k=charKey(p); if(!k) return; const x=R[k]=R[k]||{n:0,h:0}; x.n++; if(G.tt[i].h) x.h++; });
+  Object.keys(G.tt).forEach(i=>{ const p=G.players[i], T=G.tt[i]; T.h = T.c===p.pick;
+    if(T.me){ const H=S.prof.myh=S.prof.myh||{n:0,h:0}; H.n++; if(T.h) H.h++; else { p.bluff=(p.bluff||0)+1; if(cnt && cnt[p.pick]===1) p.bluffOK=(p.bluffOK||0)+1; } return; }
+    if(T.chg) return;
+    const k=charKey(p); if(!k) return; const x=R[k]=R[k]||{n:0,h:0}; x.n++; if(T.h) x.h++; });
+}
+/* ---- 🗣 あなたの宣言：1試合2回まで。CPUはキャラの「信じやすさ」とあなたの正直度で、信じて避けるか、ブラフと見て乗りこんでくる ---- */
+const TT_T={'ハル':.95,'ソラ':.9,'ミオ':.85,'アオイ':.75,'ナギ':.7,'ミナト':.5,'トキ':.45,'ユイ':.4,'レン':.3};
+const TT_RE=['ふーん、{X}ね','ほんとかなあ…','へえ〜、{X}かあ','信じていいの？','なるほどね','…あやしい'];
+const myHon = () => { const H=S.prof.myh; return H&&H.n>=3 ? H.h/H.n : null; };
+const canDecl = () => !!G && !G.online && !G.demo && humans()===1 && G.phase==='choose' && G.turn>=1 && G.active>=0 && isHuman(G.players[G.active]) && (G.declN||0)<2 && !(G.tt&&G.tt[G.active]);
+function declUI(){
+  if(!canDecl()) return ''; const p=G.players[G.active], r=myHon();
+  return `<div class="decl"><span class="label">🗣 宣言する？（あと${2-(G.declN||0)}回）</span><div class="decl-bs">${p.hand.map(c=>`<button class="decl-b" style="--c:var(--i${c})" onclick="ttDeclare(${c})">${IND[c]}</button>`).join('')}</div><small class="note">ウソでもOK。信じて避けるCPUも、ブラフと見て乗りこむCPUもいる。トップのときは、じゃまされるかも${r!=null?` ・ あなたの正直度 ${Math.round(r*100)}%`:''}</small></div>`;
+}
+function ttDeclare(c){
+  if(!canDecl()) return; const me=G.active, p=G.players[me]; if(!p.hand.includes(c)) return;
+  G.declN=(G.declN||0)+1; G.tt=G.tt||{}; G.tt[me]={c, h:null, t:`${IND[c]}でいく！`, me:true};
+  const base=myHon()!=null?myHon():.75, row=G.cfg.table[G.deck[G.turn]]||[]; const sc=G.players.map(x=>x.score), lead=sc[me]===Math.max(...sc) && sc.filter(v=>v===sc[me]).length===1;
+  const re=[];
+  G.players.forEach((q,i)=>{
+    if(i===me || isHuman(q) || q.pick==null) return;
+    const k=charKey(q), bel=base*(TT_T[k]!=null?TT_T[k]:.6), r=Math.random();
+    const p0=q.pick;
+    if(q.pick===c && r<bel*.85){   // 信じた：その産業は被りそうなので避ける
+      const h0=q.hand; q.hand=h0.filter(x=>x!==c); let np=null; try{ np=cpuPick(q,whaleField(),G.deck,G.turn,aiCfg(i),G.rnd||Math.random); }catch(e){} q.hand=h0;
+      q.pick = np!=null && np!==c && h0.includes(np) ? np : (h0.find(x=>x!==c)!=null?h0.find(x=>x!==c):c);
+    } else if(q.pick!==c && (q.hand||[]).includes(c) && r>bel+.2 && (row[c]||0)>=(row[q.pick]||0)-1 && Math.random()<.6){ q.pick=c; }   // 疑った：ブラフなら空くはず、と乗りこむ
+    else if(q.pick!==c && (q.hand||[]).includes(c) && lead && Math.random()<.3){ q.pick=c; }   // トップのあなたの宣言は、わざと被せてじゃまされることも
+    if(q.pick!==p0 && G.tt[i]) G.tt[i].chg=true;   // あなたの宣言で気が変わった（正直度には数えない）
+    if(re.length<2 && Math.random()<.7) re.push(i);
+  });
+  sfx('select'); haptic(15); render();
+  re.forEach((i,j)=>setTimeout(()=>{ try{ say(i, TT_RE[Math.floor(Math.random()*TT_RE.length)].replace('{X}',IND[c])); }catch(e){} }, 400+j*700));
 }
 let TW_SEL=null;
 function openTown(tab){ sfx('click'); TW_SEL=null; TW_TAB=typeof tab==='string'?tab:'town'; openSheet('town'); }
@@ -9582,7 +9623,7 @@ function handDock(news){
   if(G.sel!==null && ospPending()) preview=preview.replace(cmpBtn, rdrLine(RD,G.sel)+cmpBtn);
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
-    <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}${ttStrip()}
+    <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}${ttStrip()}${declUI()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>
@@ -10257,7 +10298,9 @@ function yomiStatPanel(){
   const me=G?myIndex():-1; if(me<0) return ''; const p=G.players[me], u=p.used||[];
   const hit=u.filter(x=>x.k>1).length, yw=p.ywin||0, tot=(S.prof.st||{}).yw||0;
   const msg = yw>=2 ? '相手の手札を読みきった！' : yw===1 ? 'みんなが持っている産業で、ひとり勝ち！' : p.uniq ? '独占はできた。次は「持っている人が多い産業」で読み勝ちをねらおう' : '手札の顔マーク（まだ持っている相手）をヒントにしよう';
-  return `<div class="ywp"><span class="label">📡 読み合い成績</span><div class="ywp-row"><span class="ywp-c yw"><b>${yw}</b><small>読み勝ち</small></span><span class="ywp-c"><b>${p.uniq}</b><small>独占</small></span><span class="ywp-c hit"><b>${hit}</b><small>被り</small></span><span class="ywp-c tot"><b>${tot}</b><small>通算 読み勝ち</small></span></div><p class="note">${msg}</p></div>`;
+  const dn=(p.bluff||0), bo=(p.bluffOK||0), dl=G.declN||0;
+  const dline = dl ? `<p class="note ywp-d">🗣 宣言 ${dl}回 ・ ブラフ ${dn}回${dn?` ・ ブラフ成功（独占） <b>${bo}回</b>`:''}</p>` : '';
+  return `<div class="ywp"><span class="label">📡 読み合い成績</span><div class="ywp-row"><span class="ywp-c yw"><b>${yw}</b><small>読み勝ち</small></span><span class="ywp-c"><b>${p.uniq}</b><small>独占</small></span><span class="ywp-c hit"><b>${hit}</b><small>被り</small></span><span class="ywp-c tot"><b>${tot}</b><small>通算 読み勝ち</small></span></div><p class="note">${msg}</p>${dline}</div>`;
 }
 function rankDeltaPanel(R){
   if(!R || R.rate==null) return '';
