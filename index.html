@@ -5047,6 +5047,7 @@ function netSync(){
     lg:isLong()?{rd:G.round,rds:G.rounds,mk:G.mkts,fp:G.fullPool,log:G.log,st:G.settles.length?G.settles[G.settles.length-1]:null}:null,
     shown:G.deck.slice(0, G.phase==='final'?TURNS:G.turn+1), remain:C.hist?null:G.deck.slice(G.turn+1).slice().sort((a,b)=>a-b),
     ps:G.players.map(p=>[p.name,p.type==='human'?'h':p.type==='naive'?'n':p.type==='pro'?'p':'r',p.peer||'',p.score,p.uniq,p.hist,p.used.map(u=>[u.ind,u.total,u.fut?1:0,u.k||0]),p.foreUsed?1:0,p.foreTurn,p.fut?1:0,p.pick!==null?1:0,p.hand,p.brand==null?-1:p.brand,p.contract?[p.contract.id,p.contract.x==null?-1:p.contract.x]:null,p.roundStart||0]),
+    tt:G.tt?Object.fromEntries(Object.entries(G.tt).filter(([i,T])=>T.me).map(([i,T])=>[i,[T.c, rev&&T.h!=null?(T.h?1:0):-1]])):null, dn:G.players.map(p=>p.declN||0),
     last:rev&&G.last?G.last.map(x=>[x.ind,x.base,x.total,x.fut?1:0,x.k,x.pw||'']):null, cnt:rev?G.cnt:null,
     peek:G.phase==='choose'?Object.fromEntries(G.players.filter(p=>p.peer&&p.foreUsed&&p.foreTurn===G.turn&&G.turn+1<TURNS).map(p=>[p.peer,G.deck[G.turn+1]])):{},
     divs:G.divs};
@@ -5065,6 +5066,9 @@ function hostAct(m){
   const p=G.players[i], d=m.data;
   if(d.turn!==G.turn || G.phase!=='choose') return;
   if(d.t==='pick' && p.pick===null && p.hand.includes(d.c)){ p.pick=d.c; render(); netSync(); checkAllPicked(); }
+  if(d.t==='decl' && p.pick===null && G.turn>=1 && (p.declN||0)<2 && Number.isInteger(d.c) && p.hand.includes(d.c) && !(G.tt&&G.tt[i])){
+    p.declN=(p.declN||0)+1; G.tt=G.tt||{}; G.tt[i]={c:d.c, h:null, t:`${IND[d.c]}でいく！`, me:true};
+    render(); netSync(); setTimeout(()=>{ try{ say(i, `${IND[d.c]}でいく！`); sfx('select'); }catch(e){} }, 120); }
   if(d.t==='fore' && p.pick===null && !p.foreUsed && G.turn<TURNS-1 && G.cfg.fore!=='none'){ p.foreUsed=true; p.foreTurn=G.turn; if(G.cfg.fore==='futures') p.fut=true; render(); netSync(); }
 }
 function hostPeersLeft(left){
@@ -5095,6 +5099,14 @@ function guestApply(st){
      players:st.ps.map((a,i)=>({seat:i,name:String(a[0]).slice(0,16),type:a[1]==='h'?'human':a[1]==='n'?'naive':a[1]==='p'?'pro':'read',peer:a[2]||null,score:+a[3]||0,uniq:+a[4]||0,hist:Array.isArray(a[5])?a[5]:[0],
        used:(a[6]||[]).map((u,j)=>({ind:u[0],total:u[1],fut:!!u[2],k:+u[3]||0,turn:j})),foreUsed:!!a[7],foreTurn:a[8],fut:!!a[9],pick:a[10]?-1:null,hand:Array.isArray(a[11])?a[11]:[],shown:+a[3]||0,
        brand:Number.isInteger(a[12])&&a[12]>=0&&a[12]<6?a[12]:null, contract:Array.isArray(a[13])&&CONTRACTS[a[13][0]]?{id:a[13][0],x:a[13][1]>=0?a[13][1]:undefined}:null, roundStart:+a[14]||0}))};
+  if(Array.isArray(st.dn)) G.players.forEach((p,i)=>{ p.declN=Math.max(0,Math.min(2,+st.dn[i]||0)); });
+  { const meI=G.players.findIndex(p=>p.peer===NET.myPeer); G.tt=null;
+  if(st.tt && typeof st.tt==='object'){ G.tt={};
+    Object.keys(st.tt).forEach(k=>{ const n=+k, a=st.tt[k]; if(Number.isInteger(n) && G.players[n] && Array.isArray(a) && Number.isInteger(a[0]) && a[0]>=0 && a[0]<6) G.tt[n]={c:a[0], t:`${IND[a[0]]}でいく！`, me:true, h:a[1]===1?true:a[1]===0?false:null}; });
+  }
+    if(meI>=0 && G.phase==='choose' && prev && prev.turn===G.turn && prev.tt && prev.tt[meI] && !(G.tt&&G.tt[meI])){ G.tt=G.tt||{}; G.tt[meI]=prev.tt[meI]; G.players[meI].declN=Math.max(G.players[meI].declN||0, prev.players[meI]&&prev.players[meI].declN||0); }   // 自分の宣言がホストに届くまでのあいだも消さない
+    const pt=prev&&prev.turn===G.turn&&prev.tt||{}; if(G.tt) Object.keys(G.tt).forEach(n=>{ if(!pt[n] && +n!==meI && G.phase==='choose') setTimeout(()=>{ try{ say(+n, G.tt[n].t); sfx('select'); }catch(e){} }, 150); });
+  }
   const lg=st.lg;
   if(lg && Array.isArray(lg.mk)){                 // ロング版：期・市況・決算をホストにそろえる
     G.round=Math.max(0,+lg.rd||0); G.rounds=Math.max(1,+lg.rds||1); G.mkts=lg.mk.filter(k=>MARKETS[k]);
@@ -7752,7 +7764,7 @@ function rdrCard(RD,c,html){
     : `<span class="rdr" aria-label="まだ持っている相手 ${r.length}人">${r.slice(0,3).map(q=>q.whale?'<i class="rdr-w">🐋</i>':`<i class="rdr-a" style="--s:var(--s${(q.seat||0)%6})">${avHTML(q)}</i>`).join('')}${r.length>3?`<em>+${r.length-3}</em>`:''}</span>`;
   return html.replace(/<\/(button|div)>\s*$/, m=>b+m);
 }
-function ttStrip(){ const T=G&&G.tt; if(!T||G.phase!=='choose') return ''; return `<div class="tt-strip"><span class="label">💬 宣言</span>${Object.keys(T).map(i=>{ const k=T[i].me?'あなた':charKey(G.players[i]), r=T[i].me?null:ttRate(k); return `<span class="tt-ch" style="--c:var(--i${T[i].c})"><b>${esc(k)}</b>「${IND[T[i].c]}」${r!=null?`<small>正直${r}%</small>`:''}</span>`; }).join('')}</div>`; }
+function ttStrip(){ const T=G&&G.tt; if(!T||G.phase!=='choose') return ''; return `<div class="tt-strip"><span class="label">💬 宣言</span>${Object.keys(T).map(i=>{ const k=T[i].me?(+i===myIndex()?'あなた':G.players[i].name):charKey(G.players[i]), r=T[i].me?null:ttRate(k); return `<span class="tt-ch" style="--c:var(--i${T[i].c})"><b>${esc(k)}</b>「${IND[T[i].c]}」${r!=null?`<small>正直${r}%</small>`:''}</span>`; }).join('')}</div>`; }
 function ttLine(c){ const T=G&&G.tt; if(!T||c==null) return ''; const w=Object.keys(T).filter(i=>T[i].c===c && !T[i].me).map(i=>esc(charKey(G.players[i]))); return w.length?`<span class="rdr-pv tt-pv">💬 ${w.join('・')}が「${IND[c]}でいく」と宣言（ほんとかな？）</span>`:''; }
 function rdrLine(RD,c){
   if(!RD || c==null) return ''; const r=RD[c];
@@ -7783,7 +7795,8 @@ function ttSeat(i){
 function ttRecord(cnt){
   if(!G || !G.tt) return; const R=S.prof.ttr=S.prof.ttr||{};
   Object.keys(G.tt).forEach(i=>{ const p=G.players[i], T=G.tt[i]; T.h = T.c===p.pick;
-    if(T.me){ const H=S.prof.myh=S.prof.myh||{n:0,h:0}; H.n++; if(T.h) H.h++; else { p.bluff=(p.bluff||0)+1; if(cnt && cnt[p.pick]===1){ p.bluffOK=(p.bluffOK||0)+1; const r=G.last&&G.last[i]; G.bluffNow={said:T.c, did:p.pick, total:r?r.total:0, fooled:(T.fooled||[]).slice(), turn:G.turn}; (G.bluffWins=G.bluffWins||[]).push(G.bluffNow); } } return; }
+    if(T.me){ if(+i!==myIndex()){ if(!T.h){ p.bluff=(p.bluff||0)+1; if(cnt && cnt[p.pick]===1) p.bluffOK=(p.bluffOK||0)+1; } return; }
+      const H=S.prof.myh=S.prof.myh||{n:0,h:0}; H.n++; if(T.h) H.h++; else { p.bluff=(p.bluff||0)+1; if(cnt && cnt[p.pick]===1){ p.bluffOK=(p.bluffOK||0)+1; const r=G.last&&G.last[i]; G.bluffNow={said:T.c, did:p.pick, total:r?r.total:0, fooled:(T.fooled||[]).slice(), turn:G.turn}; (G.bluffWins=G.bluffWins||[]).push(G.bluffNow); } } return; }
     if(T.chg) return;
     const k=charKey(p); if(!k) return; const x=R[k]=R[k]||{n:0,h:0}; x.n++; if(T.h) x.h++; });
 }
@@ -7791,15 +7804,22 @@ function ttRecord(cnt){
 const TT_T={'ハル':.95,'ソラ':.9,'ミオ':.85,'アオイ':.75,'ナギ':.7,'ミナト':.5,'トキ':.45,'ユイ':.4,'レン':.3};
 const TT_RE=['ふーん、{X}ね','ほんとかなあ…','へえ〜、{X}かあ','信じていいの？','なるほどね','…あやしい'];
 const myHon = () => { const H=S.prof.myh; return H&&H.n>=3 ? H.h/H.n : null; };
-const canDecl = () => !!G && !G.online && !G.demo && humans()===1 && G.phase==='choose' && G.turn>=1 && G.active>=0 && isHuman(G.players[G.active]) && (G.declN||0)<2 && !(G.tt&&G.tt[G.active]);
+const declIdx = () => !G ? -1 : G.online ? myIndex() : G.active;
+const canDecl = () => { if(!G || G.demo || G.phase!=='choose' || G.turn<1) return false; if(!G.online && humans()!==1) return false;
+  const i=declIdx(), p=i>=0?G.players[i]:null; return !!p && isHuman(p) && p.pick===null && (p.declN||0)<2 && !(G.tt&&G.tt[i]); };
 function declUI(){
-  if(!canDecl()) return ''; const p=G.players[G.active], r=myHon();
-  if(!G.declOpen) return `<button class="decl-open" onclick="G.declOpen=1;sfx('click');render()">🗣 宣言する？<small>あと${2-(G.declN||0)}回・ブラフもOK</small></button>`;
-  return `<div class="decl"><span class="label">🗣 宣言する？（あと${2-(G.declN||0)}回）</span><div class="decl-bs">${p.hand.map(c=>`<button class="decl-b" style="--c:var(--i${c})" onclick="ttDeclare(${c})">${IND[c]}</button>`).join('')}</div><small class="note">ウソでもOK。信じて避けるCPUも、わざと被せてくるCPUもいる。トップのときはねらわれやすい${r!=null?` ・ あなたの正直度 ${Math.round(r*100)}%`:''}</small></div>`;
+  if(!canDecl()) return ''; const p=G.players[declIdx()], r=myHon(), left=2-(p.declN||0);
+  if(!G.declOpen) return `<button class="decl-open" onclick="G.declOpen=1;sfx('click');render()">🗣 宣言する？<small>あと${left}回・ブラフもOK</small></button>`;
+  if(G.online) return `<div class="decl"><span class="label">🗣 宣言する？（あと${left}回）</span><div class="decl-bs">${p.hand.map(c=>`<button class="decl-b" style="--c:var(--i${c})" onclick="ttDeclare(${c})">${IND[c]}</button>`).join('')}</div><small class="note">みんなの画面に出るよ。ウソでもOK！ 友だちは信じるかな？</small></div>`;
+  return `<div class="decl"><span class="label">🗣 宣言する？（あと${left}回）</span><div class="decl-bs">${p.hand.map(c=>`<button class="decl-b" style="--c:var(--i${c})" onclick="ttDeclare(${c})">${IND[c]}</button>`).join('')}</div><small class="note">ウソでもOK。信じて避けるCPUも、わざと被せてくるCPUもいる。トップのときはねらわれやすい${r!=null?` ・ あなたの正直度 ${Math.round(r*100)}%`:''}</small></div>`;
 }
 function ttDeclare(c){
-  if(!canDecl()) return; const me=G.active, p=G.players[me]; if(!p.hand.includes(c)) return;
-  G.declN=(G.declN||0)+1; G.tt=G.tt||{}; G.tt[me]={c, h:null, t:`${IND[c]}でいく！`, me:true};
+  if(!canDecl()) return; const me=declIdx(), p=G.players[me]; if(!p.hand.includes(c)) return;
+  p.declN=(p.declN||0)+1; G.declN=(G.declN||0)+1; G.tt=G.tt||{}; G.tt[me]={c, h:null, t:`${IND[c]}でいく！`, me:true};
+  if(G.online){   // オンライン：人どうしの宣言。CPUの反応はなし（読み合いは人間どうしで）
+    if(G.host) netSync(); else emit('act',{t:'decl',c,turn:G.turn});
+    sfx('select'); haptic(15); render(); try{ cutIn(`「${IND[c]}でいく！」`,'みんなの画面に宣言が出たよ','decl',c); }catch(e){} return;
+  }
   const base=myHon()!=null?myHon():.75, row=G.cfg.table[G.deck[G.turn]]||[]; const sc=G.players.map(x=>x.score), lead=sc[me]===Math.max(...sc) && sc.filter(v=>v===sc[me]).length===1;
   const re=[];
   G.players.forEach((q,i)=>{
@@ -10362,7 +10382,7 @@ function yomiStatPanel(){
   const me=G?myIndex():-1; if(me<0) return ''; const p=G.players[me], u=p.used||[];
   const hit=u.filter(x=>x.k>1).length, yw=p.ywin||0, tot=(S.prof.st||{}).yw||0;
   const msg = yw>=2 ? '相手の手札を読みきった！' : yw===1 ? 'みんなが持っている産業で、ひとり勝ち！' : p.uniq ? '独占はできた。次は「持っている人が多い産業」で読み勝ちをねらおう' : '手札の顔マーク（まだ持っている相手）をヒントにしよう';
-  const dn=(p.bluff||0), bo=(p.bluffOK||0), dl=G.declN||0;
+  const dn=(p.bluff||0), bo=(p.bluffOK||0), dl=p.declN||G.declN||0;
   const dline = dl ? `<p class="note ywp-d">🗣 宣言 ${dl}回 ・ ブラフ ${dn}回${dn?` ・ ブラフ成功（独占） <b>${bo}回</b>`:''}</p>${(G.bluffWins||[]).length?`<button class="btn gold bl-share" onclick="openBluffCard()">📸 ブラフ成功カードをつくる</button>`:''}` : '';
   return `<div class="ywp"><span class="label">📡 読み合い成績</span><div class="ywp-row"><span class="ywp-c yw"><b>${yw}</b><small>読み勝ち</small></span><span class="ywp-c"><b>${p.uniq}</b><small>独占</small></span><span class="ywp-c hit"><b>${hit}</b><small>被り</small></span><span class="ywp-c tot"><b>${tot}</b><small>通算 読み勝ち</small></span></div><p class="note">${msg}</p>${dline}${G.online?'':(()=>{ const ks=G.players.filter(q=>!isHuman(q)).map(charKey).filter(k=>CHARS[k]); return ks.length?`<div class="ywp-ob"><span class="note">🕵️ 観察ノート：</span>${ks.map(k=>`<button class="decl-b" style="--c:${CHARS[k].c}" onclick="openSheet('char:${k}')">${esc(k)}</button>`).join('')}</div>`:''; })()}</div>`;
 }
