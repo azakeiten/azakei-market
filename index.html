@@ -3381,6 +3381,8 @@ html.light .mbd-bar{background:rgb(70 60 150 / .1)}
 .rdr-pv.lock{color:var(--gold-t);font-weight:900}
 @media (prefers-reduced-motion:reduce){.card .rdr.lock{animation:none}}
 /* 読み勝ち */
+.cutin.decl .band{background:linear-gradient(90deg,transparent,#fff 12%,#fff6d8 50%,#fff 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 60px rgb(255 255 255 / .6)}
+.cutin.decl b{color:#1a1530} .cutin.decl span{color:#5a4a35}
 .cutin.yw .band{background:linear-gradient(90deg,transparent,#3fd8ff 12%,#fff1b8 50%,#3fd8ff 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 70px rgb(63 216 255 / .8)}
 .cutin.yw b{color:#03263a} .cutin.yw span{color:#0b4a63}
 .fl.yw .fl-tag{color:#7fe8ff;text-shadow:0 0 12px rgb(63 216 255 / .8)}
@@ -7767,7 +7769,7 @@ const myHon = () => { const H=S.prof.myh; return H&&H.n>=3 ? H.h/H.n : null; };
 const canDecl = () => !!G && !G.online && !G.demo && humans()===1 && G.phase==='choose' && G.turn>=1 && G.active>=0 && isHuman(G.players[G.active]) && (G.declN||0)<2 && !(G.tt&&G.tt[G.active]);
 function declUI(){
   if(!canDecl()) return ''; const p=G.players[G.active], r=myHon();
-  return `<div class="decl"><span class="label">🗣 宣言する？（あと${2-(G.declN||0)}回）</span><div class="decl-bs">${p.hand.map(c=>`<button class="decl-b" style="--c:var(--i${c})" onclick="ttDeclare(${c})">${IND[c]}</button>`).join('')}</div><small class="note">ウソでもOK。信じて避けるCPUも、ブラフと見て乗りこむCPUもいる。トップのときは、じゃまされるかも${r!=null?` ・ あなたの正直度 ${Math.round(r*100)}%`:''}</small></div>`;
+  return `<div class="decl"><span class="label">🗣 宣言する？（あと${2-(G.declN||0)}回）</span><div class="decl-bs">${p.hand.map(c=>`<button class="decl-b" style="--c:var(--i${c})" onclick="ttDeclare(${c})">${IND[c]}</button>`).join('')}</div><small class="note">ウソでもOK。信じて避けるCPUも、わざと被せてくるCPUもいる。トップのときはねらわれやすい${r!=null?` ・ あなたの正直度 ${Math.round(r*100)}%`:''}</small></div>`;
 }
 function ttDeclare(c){
   if(!canDecl()) return; const me=G.active, p=G.players[me]; if(!p.hand.includes(c)) return;
@@ -7778,17 +7780,16 @@ function ttDeclare(c){
     if(i===me || isHuman(q) || q.pick==null) return;
     const k=charKey(q), bel=base*(TT_T[k]!=null?TT_T[k]:.6), r=Math.random();
     const p0=q.pick;
-    if(q.pick===c && r<bel*.85){   // 信じた：その産業は被りそうなので避ける
+    if(q.pick===c && r<bel*.4){   // 信じた：その産業は被りそうなので避ける
       const h0=q.hand; q.hand=h0.filter(x=>x!==c); let np=null; try{ np=cpuPick(q,whaleField(),G.deck,G.turn,aiCfg(i),G.rnd||Math.random); }catch(e){} q.hand=h0;
       q.pick = np!=null && np!==c && h0.includes(np) ? np : (h0.find(x=>x!==c)!=null?h0.find(x=>x!==c):c);
-    } else if(q.pick!==c && (q.hand||[]).includes(c) && r>bel+.2 && (row[c]||0)>=(row[q.pick]||0)-1 && Math.random()<.6){ q.pick=c; }   // 疑った：ブラフなら空くはず、と乗りこむ
-    else if(q.pick!==c && (q.hand||[]).includes(c) && lead && Math.random()<.3){ q.pick=c; }   // トップのあなたの宣言は、わざと被せてじゃまされることも
+    } else if(q.pick!==c && (q.hand||[]).includes(c) && (row[c]||0)>=(row[q.pick]||0)-1 && Math.random()<(lead?.35:.15)){ q.pick=c; }   // わざと被せてじゃま（トップのあなたはねらわれやすい）。v199 シミュレーション：宣言なし25%／正直28〜31%／ブラフ25〜29%
     if(q.pick!==p0 && G.tt[i]) G.tt[i].chg=true;
     if(p0===c){ const o=obsOf(k); if(o){ o.bn++; if(q.pick!==c) o.bb++; } }   // あなたの宣言で気が変わった（正直度には数えない）
     if(re.length<2 && Math.random()<.7) re.push(i);
   });
-  sfx('select'); haptic(15); render();
-  re.forEach((i,j)=>setTimeout(()=>{ try{ say(i, TT_RE[Math.floor(Math.random()*TT_RE.length)].replace('{X}',IND[c])); }catch(e){} }, 400+j*700));
+  sfx('select'); haptic(15); render(); try{ cutIn(`「${IND[c]}でいく！」`,'宣言した！ みんなは信じる？ それとも…','decl',c); }catch(e){}
+  re.forEach((i,j)=>setTimeout(()=>{ try{ say(i, TT_RE[Math.floor(Math.random()*TT_RE.length)].replace('{X}',IND[c])); }catch(e){} }, 1500+j*700));
 }
 let TW_SEL=null;
 function openTown(tab){ sfx('click'); TW_SEL=null; TW_TAB=typeof tab==='string'?tab:'town'; openSheet('town'); }
@@ -11010,7 +11011,7 @@ function obsTip(k,o){
   if(hr!=null && hr<=40) return `宣言の${100-hr}%がブラフ。${k}の「○○でいく」は、逆を読むのが正解かも。`;
   if(hr!=null && hr>=80) return `${k}の宣言はほとんど本当。宣言された産業は、さけるのが安全。`;
   if(bel!=null && bel>=.6) return `あなたの宣言を信じやすい。正直に宣言すれば、${k}はその産業をゆずってくれる。`;
-  if(bel!=null && bel<=.25) return `あなたの宣言をまず疑う。ブラフで${k}をおびき寄せられるかも。`;
+  if(bel!=null && bel<=.25) return `あなたの宣言では、まず動かない。${k}には宣言より「読み」で勝負。`;
   if(sh>=.3) return `${IND[top]}を出すことが多い（${Math.round(sh*100)}%）。${IND[top]}は被りに注意。`;
   return 'もう少し対戦すると、クセが見えてくるよ。';
 }
