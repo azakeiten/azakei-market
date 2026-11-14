@@ -3415,7 +3415,23 @@ html.light .seat .tt{background:color-mix(in srgb,var(--c) 14%,#fff)}
 .decl-b:active{transform:scale(.95)}
 .decl .note{font-size:11px}
 .ywp-d{margin-top:4px}
+.ywp-ob{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:8px}
 html.light .decl-b{background:color-mix(in srgb,var(--c) 14%,#fff)}
+/* 観察ノート */
+.obs{margin:12px 0;padding:12px;border-radius:16px;background:repeating-linear-gradient(180deg,transparent 0 23px,rgb(120 90 40 / .12) 23px 24px),linear-gradient(180deg,#fffaf0,#f6ecd6);color:#2a2118;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--rc) 50%,#d9c9a3),0 6px 14px -8px #000}
+.obs .label{color:color-mix(in srgb,var(--rc) 60%,#5a4020);display:block}
+.obs .note{color:#5a4a35}
+.obs-ss{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0 2px}
+.obs-s{display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:10px;background:rgb(255 255 255 / .7);box-shadow:inset 0 0 0 1px rgb(120 90 40 / .2)}
+.obs-s b{font-family:var(--display);font-weight:400;font-size:22px;color:color-mix(in srgb,var(--rc) 70%,#2a2118)}
+.obs-s small{font-size:10.5px;font-weight:700}
+.obs-s em{font-style:normal;font-size:9.5px;opacity:.65}
+.obs-bars{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+.obs-b{display:grid;grid-template-columns:30px 1fr 22px;align-items:center;gap:6px;font-size:11px;font-weight:700}
+.obs-b i{display:block;height:9px;border-radius:99px;background:rgb(120 90 40 / .12);overflow:hidden}
+.obs-b i b{display:block;height:100%;border-radius:99px}
+.obs-b em{font-style:normal;text-align:right;opacity:.7}
+.obs-tip{margin:10px 0 0;padding:8px 10px;border-radius:10px;background:rgb(255 255 255 / .75);font-size:13px;font-weight:700;line-height:1.55;font-family:"Klee One","Yu Mincho",serif}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4633,6 +4649,7 @@ function resolveTurn(){
   });
   if(G.log) G.log.push(G.deck[G.turn]);
   try{ ttRecord(cnt); }catch(e){}
+  try{ obsRecord(cnt); }catch(e){}
   G.cnt=cnt; G.phase='reveal'; G.active=G.online?G.me:-1; render(); netSync();
   playFlip(()=>{
     if(phone()){ const b=document.querySelector('.board'); if(b) b.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); }
@@ -7766,7 +7783,8 @@ function ttDeclare(c){
       q.pick = np!=null && np!==c && h0.includes(np) ? np : (h0.find(x=>x!==c)!=null?h0.find(x=>x!==c):c);
     } else if(q.pick!==c && (q.hand||[]).includes(c) && r>bel+.2 && (row[c]||0)>=(row[q.pick]||0)-1 && Math.random()<.6){ q.pick=c; }   // 疑った：ブラフなら空くはず、と乗りこむ
     else if(q.pick!==c && (q.hand||[]).includes(c) && lead && Math.random()<.3){ q.pick=c; }   // トップのあなたの宣言は、わざと被せてじゃまされることも
-    if(q.pick!==p0 && G.tt[i]) G.tt[i].chg=true;   // あなたの宣言で気が変わった（正直度には数えない）
+    if(q.pick!==p0 && G.tt[i]) G.tt[i].chg=true;
+    if(p0===c){ const o=obsOf(k); if(o){ o.bn++; if(q.pick!==c) o.bb++; } }   // あなたの宣言で気が変わった（正直度には数えない）
     if(re.length<2 && Math.random()<.7) re.push(i);
   });
   sfx('select'); haptic(15); render();
@@ -8480,10 +8498,10 @@ function ospRoulette(n, done){
   const item=(c,j)=>{ const r=T[c], mx=Math.max(...r); return `<div class="rl-it"><b>${esc(nm(c))}</b><span>${r.map((v,k)=>v===mx?`<i style="--c:var(--i${k})">${svg(k,2.2)}</i>`:'').join('')}<em>${sgn(mx)}</em></span></div>`; };
   el.innerHTML=`<div class="rl-box"><span class="label">🔔 15:30 大引け速報</span><div class="rl-ttl">最後のNEWSは……</div><div class="rl-list">${cs.map(item).join('')}</div><div class="rl-res"></div><span class="note">タップでスキップ</span></div>`;
   document.body.appendChild(el);
-  const its=[...el.querySelectorAll('.rl-it')], total=L*3+tgt; let s=0, t=0, fin=false;
+  const its=[...el.querySelectorAll('.rl-it')], total=L*3+tgt; let s=0, t=0, fin=false; const game=G;
   const hl=j=>its.forEach((e,k)=>e.classList.toggle('on',k===j));
   const close=()=>{ clearTimeout(t); el.remove(); done&&done(); };
-  const land=()=>{ if(fin) return; fin=true; clearTimeout(t); hl(tgt); its[tgt].classList.add('win'); el.classList.add('done');
+  const land=()=>{ if(G!==game){ clearTimeout(t); el.remove(); return; } if(fin) return; fin=true; clearTimeout(t); hl(tgt); its[tgt].classList.add('win'); el.classList.add('done');
     sfx('slam'); haptic([30,40,60]);
     try{ tone(1568,1.3,'sine',.05,0); tone(2093,1.1,'sine',.025,.02); newsFxSfx(n); }catch(e){}
     try{ if(S.tts) speakNews(n); }catch(e){}
@@ -8493,7 +8511,7 @@ function ospRoulette(n, done){
     try{ burstAt(its[tgt],['#ffd23a','#fff1b8','#ffffff','#ff5c7a'],40); }catch(e){}
     t=setTimeout(close, 3000); };
   el.onclick=()=>{ fin?close():land(); };
-  const step=()=>{ if(fin) return; hl(s%L); sfx('tick'); haptic(4); if(s>=total){ t=setTimeout(land,260); return; } s++; t=setTimeout(step, 70+420*Math.pow(s/total,3)); };
+  const step=()=>{ if(G!==game){ el.remove(); return; } if(fin) return; hl(s%L); sfx('tick'); haptic(4); if(s>=total){ t=setTimeout(land,260); return; } s++; t=setTimeout(step, 70+420*Math.pow(s/total,3)); };
   sfx('drum'); t=setTimeout(step, 600);
   return true;
 }
@@ -10300,7 +10318,7 @@ function yomiStatPanel(){
   const msg = yw>=2 ? '相手の手札を読みきった！' : yw===1 ? 'みんなが持っている産業で、ひとり勝ち！' : p.uniq ? '独占はできた。次は「持っている人が多い産業」で読み勝ちをねらおう' : '手札の顔マーク（まだ持っている相手）をヒントにしよう';
   const dn=(p.bluff||0), bo=(p.bluffOK||0), dl=G.declN||0;
   const dline = dl ? `<p class="note ywp-d">🗣 宣言 ${dl}回 ・ ブラフ ${dn}回${dn?` ・ ブラフ成功（独占） <b>${bo}回</b>`:''}</p>` : '';
-  return `<div class="ywp"><span class="label">📡 読み合い成績</span><div class="ywp-row"><span class="ywp-c yw"><b>${yw}</b><small>読み勝ち</small></span><span class="ywp-c"><b>${p.uniq}</b><small>独占</small></span><span class="ywp-c hit"><b>${hit}</b><small>被り</small></span><span class="ywp-c tot"><b>${tot}</b><small>通算 読み勝ち</small></span></div><p class="note">${msg}</p>${dline}</div>`;
+  return `<div class="ywp"><span class="label">📡 読み合い成績</span><div class="ywp-row"><span class="ywp-c yw"><b>${yw}</b><small>読み勝ち</small></span><span class="ywp-c"><b>${p.uniq}</b><small>独占</small></span><span class="ywp-c hit"><b>${hit}</b><small>被り</small></span><span class="ywp-c tot"><b>${tot}</b><small>通算 読み勝ち</small></span></div><p class="note">${msg}</p>${dline}${G.online?'':(()=>{ const ks=G.players.filter(q=>!isHuman(q)).map(charKey).filter(k=>CHARS[k]); return ks.length?`<div class="ywp-ob"><span class="note">🕵️ 観察ノート：</span>${ks.map(k=>`<button class="decl-b" style="--c:${CHARS[k].c}" onclick="openSheet('char:${k}')">${esc(k)}</button>`).join('')}</div>`:''; })()}</div>`;
 }
 function rankDeltaPanel(R){
   if(!R || R.rate==null) return '';
@@ -10976,9 +10994,36 @@ function charSheetBody(k){
   return `<div class="charhead" style="--rc:${c.c}"><span class="rva big">${chIc(c)}</span><span class="label">CHARACTER</span><h3 class="ttl" style="font-size:28px">${k}</h3><p class="note">${c.d}</p></div>
     ${r?`<div class="charrec"><div><b class="w">${r.w}</b><span>勝</span></div><div><b class="l">${r.l}</b><span>敗</span></div><div><b>${r.d}</b><span>分</span></div><div><b>${Math.round(r.w/g*100)}%</b><span>勝率</span></div></div>`:''}
     ${charProf(k)}
+    ${obsNote(k)}
     ${bondBox(k)}
     <div class="chqs">${lines}</div>
     <button class="btn gold big" onclick="challengeChar('${k}')">${k}と対戦する</button>`;
+}
+/* ---- 🕵️ 観察ノート：対戦するたびに、キャラのクセがたまる（よく出す産業・独占率・宣言の正直度・あなたの宣言を信じるか）。キャラ図鑑で読める ---- */
+function obsOf(k){ if(!CHARS[k]) return null; const O=S.prof.obs=S.prof.obs||{}; return O[k]=O[k]||{n:0, ind:[0,0,0,0,0,0], m:0, h:0, bn:0, bb:0}; }
+function obsRecord(cnt){
+  if(!G || G.online || G.demo || !G.last) return;
+  G.players.forEach((p,i)=>{ if(isHuman(p)) return; const o=obsOf(charKey(p)); if(!o) return; const r=G.last[i]; o.n++; o.ind[r.ind]++; if(r.k===1) o.m++; else o.h++; });
+}
+function obsTip(k,o){
+  const hr=ttRate(k), bel=o.bn>=3?o.bb/o.bn:null, top=o.ind.indexOf(Math.max(...o.ind)), sh=o.n?o.ind[top]/o.n:0;
+  if(hr!=null && hr<=40) return `宣言の${100-hr}%がブラフ。${k}の「○○でいく」は、逆を読むのが正解かも。`;
+  if(hr!=null && hr>=80) return `${k}の宣言はほとんど本当。宣言された産業は、さけるのが安全。`;
+  if(bel!=null && bel>=.6) return `あなたの宣言を信じやすい。正直に宣言すれば、${k}はその産業をゆずってくれる。`;
+  if(bel!=null && bel<=.25) return `あなたの宣言をまず疑う。ブラフで${k}をおびき寄せられるかも。`;
+  if(sh>=.3) return `${IND[top]}を出すことが多い（${Math.round(sh*100)}%）。${IND[top]}は被りに注意。`;
+  return 'もう少し対戦すると、クセが見えてくるよ。';
+}
+function obsNote(k){
+  const o=(S.prof.obs||{})[k], c=CHARS[k];
+  if(!o || o.n<4) return `<div class="obs obs-lock" style="--rc:${c.c}"><span class="label">🕵️ 観察ノート</span><p class="note">${k}と${o?`あと${4-o.n}回カードを出し合う`:'対戦する'}と、クセのメモがたまっていくよ。</p></div>`;
+  const mx=Math.max(...o.ind,1), hr=ttRate(k), bel=o.bn>=3?Math.round(o.bb/o.bn*100):null, R=(S.prof.ttr||{})[k];
+  const bars=IND.map((n,i)=>`<div class="obs-b"><span>${n.slice(0,2)}</span><i><b style="width:${Math.round(o.ind[i]/mx*100)}%;background:var(--i${i})"></b></i><em>${o.ind[i]}</em></div>`).join('');
+  const st=(v,l,sub)=>`<div class="obs-s"><b>${v}</b><small>${l}</small>${sub?`<em>${sub}</em>`:''}</div>`;
+  return `<div class="obs" style="--rc:${c.c}"><span class="label">🕵️ 観察ノート ・ ${o.n}枚ぶん</span>
+    <div class="obs-ss">${st(Math.round(o.m/o.n*100)+'%','独占率')}${st(hr!=null?hr+'%':'？','宣言の正直度',R?`${R.n}回中`:'')}${st(bel!=null?bel+'%':'？','あなたを信じる',o.bn?`${o.bn}回中`:'宣言で分かる')}</div>
+    <span class="label" style="margin-top:8px">よく出す産業</span><div class="obs-bars">${bars}</div>
+    <p class="obs-tip">📝 ${obsTip(k,o)}</p></div>`;
 }
 function challengeChar(k){   // いまの席のまま、CPUの1人目をこのキャラにして対戦画面へ
   if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu');
