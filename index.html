@@ -3391,6 +3391,22 @@ html.light .mbd-bar{background:rgb(70 60 150 / .1)}
 .ywp-c small{font-size:10.5px;opacity:.8;text-align:center}
 .ywp-c.yw b{color:#7fe8ff} .ywp-c.hit b{color:var(--down)} .ywp-c.tot b{color:var(--gold-t)}
 html.light .ywp-c.yw b{color:#0a7fa8}
+/* テーブルトーク */
+.seat .tt{grid-column:1 / -1;margin-top:6px;padding:5px 8px;border-radius:10px;background:color-mix(in srgb,var(--c) 18%,rgb(10 12 34 / .6));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 60%,transparent);font-size:11.5px;line-height:1.35;display:flex;flex-wrap:wrap;align-items:center;gap:4px;animation:achin .45s cubic-bezier(.2,.9,.3,1.3) both}
+.tt-q{font-weight:800}
+.tt-strip{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:6px 0 2px}
+.tt-strip .label{margin-right:2px}
+.tt-ch{padding:3px 9px;border-radius:99px;font-size:12px;font-weight:700;background:color-mix(in srgb,var(--c) 20%,rgb(10 12 34 / .5));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 65%,transparent)}
+.tt-ch small{margin-left:4px;font-size:10px;opacity:.75}
+html.light .tt-ch{background:color-mix(in srgb,var(--c) 14%,#fff)}
+.rdr-pv.tt-pv{color:var(--cyan-tx);font-weight:800}
+.tt-r{font-size:10px;opacity:.75}
+.tt-st{padding:1px 7px;border-radius:99px;font-size:10.5px;font-weight:900;animation:tevPop2 .4s .5s ease-out both}
+.tt.ok .tt-st{background:var(--up);color:#06331b}
+.tt.bl .tt-st{background:var(--down);color:#fff;transform:rotate(-4deg)}
+.tt.bl .tt-q{text-decoration:line-through;text-decoration-color:rgb(255 90 110 / .8);opacity:.8}
+html.light .seat .tt{background:color-mix(in srgb,var(--c) 14%,#fff)}
+@media (prefers-reduced-motion:reduce){.seat .tt,.tt-st{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4487,6 +4503,7 @@ function beginTurn(){
   if(G.tac) G.tac.now=null;
   ospHide();
   G.players.forEach((p,i)=>{ if(!isHuman(p)){ const know = G.osp && !G.osp.shown && ((p.foreUsed && p.foreTurn===G.turn-1) || pwOf(i)==='toki'); p.pick = cpuPick(p,whaleField(),know?ospRealDeck():G.deck,G.turn,aiCfg(i),G.rnd||Math.random); } });
+  try{ ttGen(); }catch(e){ G.tt=null; }
   G.phase='choose'; G.active=-1; G.sel=null;
   clearTimeout(introTimer);
   if(G.turn===0 && G.pw && !G.pwShown && !G.online && myIndex()>=0 && !reduced()){   /* 投資家カードを配る演出 → VS → NEWS */
@@ -4606,6 +4623,7 @@ function resolveTurn(){
     pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,guess:p.guess};
   });
   if(G.log) G.log.push(G.deck[G.turn]);
+  try{ ttRecord(); }catch(e){}
   G.cnt=cnt; G.phase='reveal'; G.active=G.online?G.me:-1; render(); netSync();
   playFlip(()=>{
     if(phone()){ const b=document.querySelector('.board'); if(b) b.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); }
@@ -7682,9 +7700,36 @@ function rdrCard(RD,c,html){
     : `<span class="rdr" aria-label="まだ持っている相手 ${r.length}人">${r.slice(0,3).map(q=>q.whale?'<i class="rdr-w">🐋</i>':`<i class="rdr-a" style="--s:var(--s${(q.seat||0)%6})">${avHTML(q)}</i>`).join('')}${r.length>3?`<em>+${r.length-3}</em>`:''}</span>`;
   return html.replace(/<\/(button|div)>\s*$/, m=>b+m);
 }
+function ttStrip(){ const T=G&&G.tt; if(!T||G.phase!=='choose') return ''; return `<div class="tt-strip"><span class="label">💬 宣言</span>${Object.keys(T).map(i=>{ const k=charKey(G.players[i]), r=ttRate(k); return `<span class="tt-ch" style="--c:var(--i${T[i].c})"><b>${esc(k)}</b>「${IND[T[i].c]}」${r!=null?`<small>正直${r}%</small>`:''}</span>`; }).join('')}</div>`; }
+function ttLine(c){ const T=G&&G.tt; if(!T||c==null) return ''; const w=Object.keys(T).filter(i=>T[i].c===c).map(i=>esc(charKey(G.players[i]))); return w.length?`<span class="rdr-pv tt-pv">💬 ${w.join('・')}が「${IND[c]}でいく」と宣言（ほんとかな？）</span>`:''; }
 function rdrLine(RD,c){
   if(!RD || c==null) return ''; const r=RD[c];
-  return r.length===0 ? `<span class="rdr-pv lock">🔒 だれも持っていない＝確定独占！</span>` : `<span class="rdr-pv">📡 まだ持っている：${r.map(q=>esc(q.name)).join('・')}</span>`;
+  return ttLine(c)+(r.length===0 ? `<span class="rdr-pv lock">🔒 だれも持っていない＝確定独占！</span>` : `<span class="rdr-pv">📡 まだ持っている：${r.map(q=>esc(q.name)).join('・')}</span>`);
+}
+/* ---- 💬 テーブルトーク：選ぶあいだ、CPUキャラが「次は○○でいく」と宣言する。本当のこともあれば、ブラフのことも。
+   正直さはキャラごとにちがい、めくると「ほんと／ブラフ」が分かる。何度も遊ぶと、そのキャラの正直度が見えてくる（ルールは変えない・CPUの出し方も変えない） ---- */
+const TT_H={'ハル':.9,'ミオ':.85,'ソラ':.8,'ナギ':.7,'アオイ':.6,'ミナト':.55,'ユイ':.45,'トキ':.4,'レン':.25};
+const TT_L=['こんどは{X}でいくよ','{X}、ねらってる','{X}にかけてみる','ぜったい{X}！','{X}が来る気がする','{X}、ゆずらないよ'];
+function ttGen(){
+  G.tt=null; if(!G || G.online || G.turn<1 || G.demo) return;
+  const out={}; let n=0;
+  G.players.forEach((p,i)=>{
+    if(isHuman(p) || p.pick==null) return; const k=charKey(p); if(!CHARS[k] || Math.random()>.6) return;
+    const hon=Math.random()<(TT_H[k]!=null?TT_H[k]:.6), alt=(p.hand||[]).filter(c=>c!==p.pick);
+    const c = hon||!alt.length ? p.pick : alt[Math.floor(Math.random()*alt.length)];
+    out[i]={c, h:c===p.pick, t:TT_L[Math.floor(Math.random()*TT_L.length)].replace('{X}',IND[c])}; n++;
+  });
+  if(n) G.tt=out;
+}
+function ttRate(k){ const R=(S.prof.ttr||{})[k]; return R && R.n>=4 ? Math.round(R.h/R.n*100) : null; }
+function ttSeat(i){
+  const T=G&&G.tt&&G.tt[i]; if(!T) return '';
+  const p=G.players[i], k=charKey(p), rv=G.phase==='reveal', r=ttRate(k);
+  return `<div class="tt${rv?(T.h?' ok':' bl'):''}" style="--c:var(--i${T.c})"><span class="tt-q">💬「${esc(T.t)}」</span>${rv?`<b class="tt-st">${T.h?'ほんとだった':'ブラフ！'}</b>`:r!=null?`<small class="tt-r">正直度 ${r}%</small>`:''}</div>`;
+}
+function ttRecord(){
+  if(!G || !G.tt) return; const R=S.prof.ttr=S.prof.ttr||{};
+  Object.keys(G.tt).forEach(i=>{ const p=G.players[i], k=charKey(p); if(!k) return; const x=R[k]=R[k]||{n:0,h:0}; x.n++; if(G.tt[i].h) x.h++; });
 }
 let TW_SEL=null;
 function openTown(tab){ sfx('click'); TW_SEL=null; TW_TAB=typeof tab==='string'?tab:'town'; openSheet('town'); }
@@ -9473,7 +9518,7 @@ function seatsView(){
       <div class="nm">${esc(p.name)}${pwChip(i)}${isHuman(p)?'':`<span class="tagx${p.type==='pro'?' pro':''}">${cpuLabel(p)}</span>`}</div>
       <div class="sc" id="sc${i}">${G.phase==='reveal'?p.shown:p.score}${spark(p.hist)}</div>
       <div class="meta">${p.used.filter(u=>Math.floor(u.turn/TURNS)===(G.round||0)).map(u=>`<span class="dot c${u.ind}" title="${IND[u.ind]}" role="img" aria-label="出した産業：${IND[u.ind]}"></span>`).join('')}${p.brand!=null?`<span class="brd sm" style="--c:var(--i${p.brand})" title="ブランド">${IND[p.brand]}</span>`:""}<span class="eye${p.foreUsed?' on':''}" title="未来予測">${EYE}${p.foreUsed?FORE[G.cfg.fore].short+'済':'未使用'}</span></div>
-      <div class="play">${play}</div></div>`;
+      <div class="play">${play}</div>${ttSeat(i)}</div>`;
   }).join('');
 }
 function paperCard(news){
@@ -9537,7 +9582,7 @@ function handDock(news){
   if(G.sel!==null && ospPending()) preview=preview.replace(cmpBtn, rdrLine(RD,G.sel)+cmpBtn);
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}
-    <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}
+    <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}${ttStrip()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>
