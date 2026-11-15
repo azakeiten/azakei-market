@@ -3532,6 +3532,27 @@ html.light .yd-rank{background:rgb(70 60 150 / .08)}
 .yd-share{display:grid;grid-template-columns:1fr auto;gap:8px;margin:10px 0 4px}
 .cutin.ydrank .band{background:linear-gradient(90deg,transparent,#8a5a2b 12%,#ffd23a 50%,#8a5a2b 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 80px rgb(255 210 58 / .8)}
 .cutin.ydrank b{color:#2a1a00;text-shadow:0 2px 0 rgb(255 255 255 / .5)}.cutin.ydrank span{color:#2a1a00;font-weight:900}
+/* もしもの一手 */
+.wi-g{display:flex;align-items:center;gap:6px;padding:2px 12px 2px 4px;border-radius:99px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.wi-g b{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;font-family:var(--display);font-weight:400;font-size:20px;color:#fff;animation:wiStamp .5s .2s both}
+.wi-g small{font-size:11px;font-weight:900}
+.wi-g.gS b{background:conic-gradient(from 0deg,#ffd23a,#ff7ab0,#7af0ff,#ffd23a);color:#2a1a00;box-shadow:0 0 14px rgb(255 210 58 / .7)}.wi-g.gA b{background:#ffd23a;color:#2a1a00}.wi-g.gB b{background:#4a7dff}.wi-g.gC b{background:#8a8fb0}
+@keyframes wiStamp{0%{opacity:0;transform:scale(2.2) rotate(-25deg)}70%{transform:scale(.92)}100%{transform:none}}
+.wi-sum{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.wi-sum>span{display:flex;flex-direction:column;align-items:center;padding:8px;border-radius:12px;background:var(--panel2)}
+.wi-sum b{font-family:var(--display);font-weight:400;font-size:24px}.wi-sum b small{font-size:13px;opacity:.6}.wi-sum>span>small{font-size:11px;color:var(--muted);font-weight:700}
+.wi-list{display:flex;flex-direction:column;gap:5px}
+.wi-r{display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1.3fr);align-items:center;gap:6px;padding:6px 8px;border-radius:12px;background:var(--panel2);animation:wiIn .35s var(--d) both}
+@keyframes wiIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+.wi-r.ok{box-shadow:inset 0 0 0 1.5px rgb(255 210 58 / .55)}
+.wi-t{font-family:var(--display);font-size:12px;color:var(--muted);text-align:center}
+.wi-me{display:flex;flex-direction:column;min-width:0}.wi-me b{align-self:flex-start;padding:1px 8px;border-radius:7px;background:var(--c);color:#fff;font-size:12px}.wi-me small{font-size:11px;font-weight:700}
+.wi-alt{display:flex;align-items:center;flex-wrap:wrap;gap:3px 5px;font-size:11px;font-weight:700}
+.wi-alt b{padding:1px 7px;border-radius:7px;background:var(--c);color:#fff;font-size:12px}
+.wi-alt>small:first-child{color:var(--muted)}
+.wi-alt i{font-style:normal;font-weight:900;padding:0 6px;border-radius:99px;background:rgb(255 92 92 / .18);color:var(--down)}
+.wi-ok{justify-self:start;font-style:normal;font-weight:900;font-size:12px;padding:2px 10px;border-radius:99px;background:var(--gold);color:#2a1a00;transform:rotate(-4deg)}
+.wi .gd-talk{margin-top:10px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4743,7 +4764,8 @@ function resolveTurn(){
     const yb = G.yomi && p.guess!=null && ymx>=2 && cnt[p.guess]===ymx ? 1 : 0;
     const pc=pcfg(pi), base=baseFor(pc,p,G.deck,G.turn,p.pick), pb=pwBonus(pi,p,base,cnt[p.pick]), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], gain(pc,base,cnt[p.pick])+pb.v+yb))*(closeXOn()?pwMult(pi,pre):1);
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++; if(cnt[p.pick]===1 && hd0[pi]>=2) p.ywin=(p.ywin||0)+1;
-    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick]});
+    const alt = isHuman(p) ? (()=>{ let b=null; (p.hand||[]).forEach(c=>{ const k=cnt[c]+(c===p.pick?0:1), v=gain(pc, baseFor(pc,p,G.deck,G.turn,c), k); if(!b || v>b.v) b={c,v,k}; }); return b?{c:b.c, v:b.v, k:b.k, mine:gain(pc,base,cnt[p.pick])}:null; })() : null;   // もしもの一手：相手の出し方はそのままで、手札のどれが一番よかったか
+    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],alt});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
     pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,guess:p.guess};
   });
@@ -9597,6 +9619,25 @@ function eventCard(){
     <button class="btn ${S.evt?'':'gold '}" onclick="setEvt(${!S.evt})">${S.evt?'参加中 ✓':'参加する'}</button></section>`;
 }
 /* ---- プレイ分析：結果画面で自分のプレイをふり返る ---- */
+/* ---- 🔍 もしもの一手：ターンごとに「相手の出し方がそのままなら、手札のどれが一番よかったか」 ---- */
+function whatIf(){
+  const me=myIndex(); if(me<0 || !G.players[me]) return ''; const us=(G.players[me].used||[]).filter(u=>u.alt); if(us.length<2) return '';
+  const ld=logDeck(), lbl=u=>G.cfg.hist?`${yearOf(ld[u.turn])}年`:`T${u.turn+1}`;
+  const nb=us.filter(u=>u.alt.mine>=u.alt.v).length, r=nb/us.length, lost=us.reduce((s,u)=>s+Math.max(0,u.alt.v-u.alt.mine),0);
+  const miss=us.map(u=>({u,d:u.alt.v-u.alt.mine})).sort((a,b)=>b.d-a.d)[0];
+  const gr = lost===0?'S':lost<=us.length*.75?'A':lost<=us.length*1.75?'B':'C', gw={S:'神の一手',A:'名人級',B:'まずまず',C:'のびしろ大'}[gr];
+  const kt=k=>k===1?'独占':`${k}人被り`;
+  const rows=us.map((u,i)=>{ const a=u.alt, ok=a.mine>=a.v;
+    return `<div class="wi-r${ok?' ok':''}" style="--d:${i*90}ms"><span class="wi-t">${lbl(u)}</span><span class="wi-me" style="--c:var(--i${u.ind})"><b>${IND[u.ind]}</b><small>${kt(u.k)} ${sgn(a.mine)}</small></span>
+      ${ok?'<em class="wi-ok">ベスト！</em>':`<span class="wi-alt"><small>もしも</small><b style="--c:var(--i${a.c})">${IND[a.c]}</b><small>${kt(a.k)} ${sgn(a.v)}</small><i>+${a.v-a.mine}</i></span>`}</div>`; }).join('');
+  const say = miss.d>0 ? `いちばん惜しかったのは<strong>${lbl(miss.u)}</strong>。${IND[miss.u.alt.c]}を出していれば${kt(miss.u.alt.k)}で${sgn(miss.u.alt.v)}だったよ。${miss.u.alt.k===1&&miss.u.k>1?'被りをさけるだけで、点はぐっと上がるね。':''}`
+    : '全ターン、その場で一番いいカードを出せていたよ。完ぺきな読み！';
+  return `<section class="panel wi"><div class="row spread"><h3>🔍 もしもの一手</h3><span class="wi-g g${gr}"><b>${gr}</b><small>${gw}</small></span></div>
+    <div class="wi-sum"><span><b>${nb}<small>/${us.length}</small></b><small>ベストの一手</small></span><span><b>${lost}</b><small>取りこぼした点</small></span></div>
+    <div class="wi-list">${rows}</div>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${say}</p></div>
+    <p class="note">※ 相手が出したカードはそのままとして計算しています（倍率やパワーカードの効果は入れていません）。</p></section>`;
+}
 function playAnalysis(){
   const me=myIndex(); if(me<0) return '';
   const p=G.players[me], us=p.used; if(!us.length) return '';
@@ -10026,7 +10067,7 @@ function finalView(){
     ${finNav()}
     ${fsec('fin-aw','🏅','今回の賞・能力',(aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${avHTML(p)}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:'')+pwFinalPanel())}
     ${fsec('fin-iv','🎙️','インタビューと号外',ivPanel()+gogaiPaper())}
-    ${fsec('fin-an','📊','ふりかえり',teamPanel()+playAnalysis()+recap)}
+    ${fsec('fin-an','📊','ふりかえり',teamPanel()+whatIf()+playAnalysis()+recap)}
   </div><div class="col">
     <section class="panel chart" id="fin-ch"><h3>POINTの推移</h3>${lineChart()}</section>
     <section class="panel"><h3>各ターンの記録</h3><p class="note">${logDeck().map((n,i)=>`T${i+1} ${C.hist?yearOf(n)+' ':''}${nm(n)}`).join(' → ')}</p>
