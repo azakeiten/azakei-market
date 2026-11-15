@@ -3641,6 +3641,36 @@ html.light .chp-s b{color:#0a7f95}
 .swg-sw{font-family:var(--display);font-size:20px;padding:0 2px}.swg-sw.up{color:var(--up)}.swg-sw.dn{color:var(--down)}
 html.light .swg-sw.up{color:#12925a}html.light .swg-sw.dn{color:#c63a3a}
 @media (prefers-reduced-motion:reduce){.swg-l{stroke-dashoffset:0;animation:none}.swg-band,.swg-d.on,.swg-key,.swg-au,.swg-ad,.swg-d{animation:none}}
+/* スコアレース */
+.rce{display:flex;align-items:center;gap:8px;margin:2px 0 6px;padding:4px 10px 4px 8px;border-radius:14px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.rce-lbl{display:flex;flex-direction:column;align-items:center;font-size:14px;line-height:1}.rce-lbl small{font-size:9px;font-weight:900;color:var(--muted);margin-top:2px}
+.rce-trk{position:relative;flex:1;min-width:0;height:48px}
+.rce-ln{position:absolute;left:0;right:0;top:33px;height:6px;border-radius:99px;background:repeating-linear-gradient(90deg,var(--panel2) 0 10px,rgb(255 255 255 / .06) 10px 20px);box-shadow:inset 0 0 0 1px var(--line)}
+.rce-zero{position:absolute;top:28px;width:2px;height:16px;margin-left:-1px;background:var(--muted);opacity:.35;border-radius:2px}
+.rce-goal{position:absolute;right:-4px;top:22px;font-size:14px;opacity:.55}
+.rce.fin .rce-goal{opacity:1;animation:rceGoal .9s ease-in-out infinite alternate}
+.rce.fin .rce-ln{background:repeating-linear-gradient(90deg,rgb(255 93 93 / .25) 0 10px,rgb(255 255 255 / .06) 10px 20px);box-shadow:inset 0 0 0 1px rgb(255 93 93 / .45)}
+.rce-r{position:absolute;top:20px;width:0;transition:left .9s cubic-bezier(.3,1.3,.5,1);z-index:1}
+.rce-r.up{top:2px}.rce-r.me{z-index:3}.rce-r.lead{z-index:2}
+.rce-av{position:absolute;left:calc(-12px + var(--dx,0px));top:0;width:24px;height:24px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:12px;font-weight:900;background:var(--c);box-shadow:0 0 0 2px var(--panel),0 0 0 3.5px var(--c)}
+.rce-av>*{width:100%;height:100%}
+.rce-r.me .rce-av{box-shadow:0 0 0 2px var(--panel),0 0 0 3.5px var(--gold),0 0 12px rgb(255 200 58 / .6)}
+.rce-n{position:absolute;left:calc(4px + var(--dx,0px));top:13px;min-width:15px;padding:0 3px;border-radius:99px;background:var(--night);color:var(--ink);font-family:var(--display);font-weight:400;font-size:10.5px;line-height:15px;text-align:center;box-shadow:0 0 0 1px var(--line)}
+.rce-r.me .rce-n{background:var(--gold);color:#2a1d00}
+.rce-cr{position:absolute;left:calc(-8px + var(--dx,0px));top:-12px;font-style:normal;font-size:12px;opacity:0;transform:scale(.3) rotate(-20deg);transition:.35s cubic-bezier(.3,1.6,.5,1)}
+.rce-r.lead .rce-cr{opacity:1;transform:none}
+.rce-r.run .rce-av{animation:rceHop .3s ease-in-out 3}
+.rce-mv{position:absolute;left:calc(-12px + var(--dx,0px));top:-11px;width:24px;text-align:center;font-style:normal;font-size:9px;font-weight:900;opacity:0}
+.rce-mv.on{animation:rceMv 2.4s ease-out forwards}.rce-mv.u{color:var(--up)}.rce-mv.d{color:var(--down)}
+.rce-r.up .rce-mv{top:-9px;left:calc(12px + var(--dx,0px))}
+.rce-chip{flex:none;max-width:76px;padding:3px 7px;border-radius:10px;background:var(--panel2);font-size:10px;font-weight:900;line-height:1.25;text-align:center}
+.rce-chip.top{background:linear-gradient(135deg,#ffe08a,#ffc83a);color:#2a1d00}
+.rce-chip.hot{background:var(--red);color:#fff;animation:rceGoal .8s ease-in-out infinite alternate}
+@keyframes rceHop{50%{transform:translateY(-5px)}}
+@keyframes rceMv{0%{opacity:0;transform:translateY(4px)}15%,75%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes rceGoal{from{transform:scale(1)}to{transform:scale(1.12)}}
+html.light .rce-mv.u{color:#12925a}html.light .rce-mv.d{color:#c63a3a}
+@media (prefers-reduced-motion:reduce){.rce-r{transition:none}.rce-r.run .rce-av,.rce.fin .rce-goal,.rce-chip.hot{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4961,7 +4991,7 @@ function revealFx(){
   G.cnt.forEach((k,c)=>{ if(k===1){ anyMono=true; setTimeout(()=>burstAt(document.getElementById('lane'+c),['#ffc83a','#ffe08a','#ffffff',rootCs.getPropertyValue('--i'+c).trim()],phone()?28:44),phone()?700:420); } if(k>1) anyHit=true; });
   if(anyHit) setTimeout(()=>{ sfx('buzz'); haptic(40); },380);
   if(anyMono) setTimeout(()=>sfx('coin'),520);
-  rivalFx(prev); pwFx(); yomiFx();
+  rivalFx(prev); pwFx(); yomiFx(); try{ raceGo(prev); }catch(e){}
   cpuChatter(); speakLive();
   const me=myIndex(), r=me>=0?G.last[me]:null;     // 自分の見せ場はカットインで
   const streak = r ? (()=>{ const u=G.players[me].used; let n=0; for(let k=u.length-1;k>=0&&u[k].k===1;k--) n++; return n; })() : 0;
@@ -8949,6 +8979,41 @@ function xcAt(i,N){
   return {f, t:`${hh}:${mm}`, ses, sky};
 }
 const xcOn = () => !!G && !G.cfg.hist && G.phase!=='final' && G.phase!=='settle';
+/* ---- 🏁 スコアレース：全員の点を1本のコースに。めくったあと、顔が新しい点まで走る ---- */
+function raceRank(sc){ return sc.map(v=>1+sc.filter(w=>w>v).length); }
+function raceBar(){
+  if(!G || G.players.length<2) return '';
+  const rev=G.phase==='reveal', me=myIndex();
+  const from=G.players.map(p=>rev && p.shown!=null ? p.shown : p.score), to=G.players.map(p=>p.score);
+  const all=from.concat(to), a0=Math.min(...all), a1=Math.max(...all), pad=Math.max(2,Math.round((a1-a0)*.35)), lo=a0<0?a0-pad:Math.max(0,a0-pad), hi=Math.max(a1,lo+6);   // 差が見えるように、いちばん下の人より少し手前から
+  const X=v=>(6+86*(v-lo)/(hi-lo)).toFixed(1);
+  const mx=Math.max(...from), lead=from.filter(v=>v===mx).length===1 ? from.indexOf(mx) : -1;
+  /* 近い点の顔は上下にずらす */
+  const ord=to.map((v,i)=>i).sort((a,b)=>to[a]-to[b]||a-b), lane={}, dx={}, cl=[];
+  ord.forEach(i=>{ const c=cl[cl.length-1]; if(c && Math.abs(X(to[i])-X(to[c[0]]))<11) c.push(i); else cl.push([i]); });
+  cl.forEach(c=>c.forEach((i,j)=>{ lane[i]=j%2; dx[i]=Math.round((j-(c.length-1)/2)*13); }));   // 近い点の顔は、上下と左右に少しずつずらす
+  const fin=isFinalTurn();
+  const runners=G.players.map((p,i)=>`<span class="rce-r${i===me?' me':''}${i===lead?' lead':''}${lane[i]?' up':''}" id="rce${i}" data-to="${X(to[i])}" style="left:${X(from[i])}%;--c:var(--s${i%6});--dx:${dx[i]}px" title="${esc(i===me?'あなた':p.name)} ${from[i]}点">
+      <span class="rce-av">${avHTML(p)}</span><b class="rce-n" id="rcn${i}">${from[i]}</b><i class="rce-cr">👑</i><em class="rce-mv" id="rcm${i}"></em></span>`).join('');
+  let chip='';
+  if(me>=0){ const my=from[me], oth=from.filter((v,i)=>i!==me), best=Math.max(...oth);
+    chip = my>best ? `<span class="rce-chip top">👑 リード +${my-best}</span>` : my===best ? `<span class="rce-chip">トップと同点</span>` : `<span class="rce-chip ${fin?'hot':''}">トップまで あと${best-my}</span>`; }
+  return `<div class="rce${fin?' fin':''}" aria-label="スコアレース"><span class="rce-lbl">🏁<small>${fin?'ラスト':'レース'}</small></span>
+    <span class="rce-trk"><span class="rce-ln"></span>${lo<0?`<span class="rce-zero" style="left:${X(0)}%"></span>`:''}<span class="rce-goal">🏁</span>${runners}</span>${chip}</div>`;
+}
+function raceGo(prev){
+  const fast=reduced(), r0=raceRank(prev), r1=raceRank(G.players.map(p=>p.score));
+  G.players.forEach((p,i)=>{
+    const el=document.getElementById('rce'+i), n=document.getElementById('rcn'+i), mv=document.getElementById('rcm'+i); if(!el) return;
+    const go=()=>{ el.style.left=el.dataset.to+'%'; if(n) n.textContent=p.score;
+      if(mv && r1[i]!==r0[i]){ mv.textContent=r1[i]<r0[i]?`▲${r0[i]-r1[i]}`:`▼${r1[i]-r0[i]}`; mv.className='rce-mv on '+(r1[i]<r0[i]?'u':'d'); }
+      el.classList.toggle('run', prev[i]!==p.score); };
+    if(fast) go(); else setTimeout(go, 600+i*120);
+  });
+  /* 王冠はレースが終わってから付けかえる */
+  const sc=G.players.map(p=>p.score), mx=Math.max(...sc), ld=sc.filter(v=>v===mx).length===1?sc.indexOf(mx):-1;
+  setTimeout(()=>G.players.forEach((p,i)=>{ const el=document.getElementById('rce'+i); if(el){ el.classList.toggle('lead',i===ld); el.classList.remove('run'); } }), fast?0:600+G.players.length*120+900);
+}
 function xcBar(){
   if(!xcOn()) return '';
   const x=xcAt(G.turn,TURNS), y=Math.round(Math.sin(x.f*Math.PI)*-10);
@@ -10238,7 +10303,7 @@ function handDock(news){
   else if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(pcfg(G.active),b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}${rdrLine(RD,G.sel)}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
   if(G.sel!==null && ospPending()) preview=preview.replace(cmpBtn, rdrLine(RD,G.sel)+cmpBtn);
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
-  return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}${readTip(RD)}${ordUI()}
+  return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}${readTip(RD)}${ordUI()}${raceBar()}
     <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}${ttStrip()}${declUI()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
@@ -10303,7 +10368,7 @@ function revealDock(){
       <div class="lb">${who.map(x=>`<div class="who" style="--s:var(--s${x.p.seat%6});animation-delay:${x.i*130}ms"><span class="d"></span>${esc(x.p.name)}${G.last[x.i].fut?' <span class="tagx cy">先物</span>':''}</div>`).join('')}${wh?'<div class="who whl"><span class="d"></span>🐋 クジラ</div>':''}</div>
       <div class="lf">${foot}</div>${k>1?'<span class="stamp">被り！</span>':k===1?'<span class="stamp g">独占</span>':''}</div>`;
   }).join('');
-  return `<div class="dock">${guideTip()}${stepBar('reveal')}${myResultBar()}${mioTurn()}<div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold-t)">${mvp} ${sgn(best)}</b></span></div>
+  return `<div class="dock">${guideTip()}${stepBar('reveal')}${myResultBar()}${raceBar()}${mioTurn()}<div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold-t)">${mvp} ${sgn(best)}</b></span></div>
     ${liveBox()}
     <div class="board">${lanes}</div>${whyBox(G.deck[G.turn], G.cfg.table[G.deck[G.turn]])}${cpuWhy()}${emoteBar()}
     <div class="actions" style="justify-content:flex-end">${G.online&&!G.host?'<span class="note">ホストが次へ進めます…</span>':`<button class="btn gold big pulse" style="flex:1 1 auto;max-width:360px" onclick="nextTurn()">${G.turn===TURNS-1?'最終結果へ':'次のターンへ'}</button>`}</div></div>`;
