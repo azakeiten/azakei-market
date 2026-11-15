@@ -3611,6 +3611,36 @@ html.light .chn-h b{filter:none}
 .chp-s{display:flex;flex-direction:column;align-items:flex-end}.chp-s b{font-family:var(--display);font-weight:400;font-size:18px;color:#7af0ff}.chp-s small{font-size:10px;color:var(--muted);font-weight:700}
 html.light .chp-s b{color:#0a7f95}
 .chp-k{padding:2px 10px;border-radius:99px;background:#7af0ff;color:#04202a;font-size:12px;font-weight:900;animation:wiStamp .5s .3s both}
+/* 勝負の分かれ目 */
+.swg-svg{display:block;width:100%;height:auto;margin:6px 0 4px;overflow:visible}
+.swg-0{stroke:var(--line);stroke-width:1;stroke-dasharray:3 3}
+.swg-ax{font-size:8.5px;font-weight:800;fill:var(--muted)}
+.swg-tk{font-size:8.5px;font-weight:800;fill:var(--muted);text-anchor:middle}.swg-tk.on{fill:var(--gold-t)}
+.swg-band{fill:var(--gold);opacity:.13;animation:swgBand 1.6s 1.2s ease-in-out infinite alternate}
+.swg-au{fill:var(--gold);opacity:.2}.swg-ad{fill:var(--red);opacity:.2}
+.swg-au,.swg-ad{animation:swgFade .6s .9s both}
+.swg-l{fill:none;stroke:var(--gold);stroke-width:2;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:swgDraw 1.2s .15s ease-out forwards}
+.swg-d{fill:var(--panel);stroke:var(--gold);stroke-width:2;animation:swgFade .3s var(--d) both}
+.swg-d.on{fill:var(--gold);stroke:var(--panel);animation:swgFade .3s var(--d) both,swgPulse 1.4s 1.5s ease-in-out infinite}
+.swg-d.on{transform-box:fill-box;transform-origin:center}
+@keyframes swgDraw{to{stroke-dashoffset:0}}
+@keyframes swgFade{from{opacity:0}to{opacity:1}}
+@keyframes swgBand{from{opacity:.08}to{opacity:.22}}
+@keyframes swgPulse{50%{transform:scale(1.35)}}
+.swg-f{padding:2px 10px;border-radius:99px;background:var(--gold);color:#2a1d00;font-size:12px;font-weight:900;animation:wiStamp .5s .4s both}
+.swg.lost .swg-f{background:var(--red);color:#fff}
+.swg-key{display:grid;grid-template-columns:auto minmax(0,1fr) auto minmax(0,1fr) auto;align-items:center;gap:6px;margin:6px 0 8px;animation:swgFade .5s 1.3s both}
+.swg-t{font-family:var(--display);font-size:15px;color:var(--gold-t);text-align:center;line-height:1.1}.swg-t i{display:block;font-style:normal;font-size:9.5px;font-family:inherit;font-weight:900;color:var(--red)}
+.swg-c{display:flex;flex-direction:column;align-items:center;padding:6px 4px;border-radius:12px;background:var(--panel2);border-top:4px solid var(--c);min-width:0}
+.swg-c small{font-size:10px;font-weight:800;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.swg-c b{font-size:14px;font-weight:900}.swg-c span{font-size:10.5px;font-weight:800;color:var(--muted)}
+.swg-c em{font-style:normal;font-family:var(--display);font-size:18px}
+.swg-c.mono{box-shadow:0 0 0 1.5px var(--gold),0 0 14px rgb(255 200 58 / .35)}.swg-c.mono span{color:var(--gold-t)}
+.swg-c.me{background:linear-gradient(180deg,rgb(255 200 58 / .12),var(--panel2))}
+.swg-vs{font-family:var(--display);font-size:13px;color:var(--muted)}
+.swg-sw{font-family:var(--display);font-size:20px;padding:0 2px}.swg-sw.up{color:var(--up)}.swg-sw.dn{color:var(--down)}
+html.light .swg-sw.up{color:#12925a}html.light .swg-sw.dn{color:#c63a3a}
+@media (prefers-reduced-motion:reduce){.swg-l{stroke-dashoffset:0;animation:none}.swg-band,.swg-d.on,.swg-key,.swg-au,.swg-ad,.swg-d{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4823,7 +4853,8 @@ function resolveTurn(){
     const yb = G.yomi && p.guess!=null && ymx>=2 && cnt[p.guess]===ymx ? 1 : 0;
     const pc=pcfg(pi), base=baseFor(pc,p,G.deck,G.turn,p.pick), pb=pwBonus(pi,p,base,cnt[p.pick]), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], gain(pc,base,cnt[p.pick])+pb.v+yb))*(closeXOn()?pwMult(pi,pre):1) + chainBonus(p,cnt);
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++; if(cnt[p.pick]===1 && hd0[pi]>=2) p.ywin=(p.ywin||0)+1;
-    const alt = isHuman(p) ? (()=>{ let b=null; (p.hand||[]).forEach(c=>{ const k=cnt[c]+(c===p.pick?0:1), v=gain(pc, baseFor(pc,p,G.deck,G.turn,c), k); if(!b || v>b.v) b={c,v,k}; }); return b?{c:b.c, v:b.v, k:b.k, mine:gain(pc,base,cnt[p.pick])}:null; })() : null;   // もしもの一手：相手の出し方はそのままで、手札のどれが一番よかったか
+    const alt = isHuman(p) ? (()=>{ let b=null; const chB=c=>G.chain && p.last!=null && CHAIN_NEXT[p.last]===c ? ((p._clPrev||1)+1>=3?2:1) : 0;   // チェーン分も「もしも」に入れる
+      (p.hand||[]).forEach(c=>{ const k=cnt[c]+(c===p.pick?0:1), v=gain(pc, baseFor(pc,p,G.deck,G.turn,c), k)+chB(c); if(!b || v>b.v) b={c,v,k}; }); return b?{c:b.c, v:b.v, k:b.k, mine:gain(pc,base,cnt[p.pick])+chB(p.pick)}:null; })() : null;   // もしもの一手：相手の出し方はそのままで、手札のどれが一番よかったか
     p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],alt});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
     pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,guess:p.guess,cb:G.chain?(p._cb||0):0,cl:G.chain?(p.chainLen||1):0};
@@ -8244,7 +8275,7 @@ const CHAIN_WHY=['電気が工場を動かす','お金で資源を開発する',
 const CHAIN_RING=[0,2,4,3,5,1];
 function chainLenIf(p,c){ return p.last!=null && CHAIN_NEXT[p.last]===c ? (p.chainLen||1)+1 : 1; }
 function chainEV(p,c){ if(typeof G==='undefined' || !G || !G.chain) return 0; const ln=chainLenIf(p,c); return ln>=3?2:ln===2?1:0; }
-function chainBonus(p,cnt){ if(!G || !G.chain){ p._cb=0; return 0; } const ln=chainLenIf(p,p.pick); p.chainLen=ln; const b = ln>=2 ? (ln>=3?2:1) : 0; p._cb=b; p.cbSum=(p.cbSum||0)+b; p.clMax=Math.max(p.clMax||1,ln); return b; }
+function chainBonus(p,cnt){ if(!G || !G.chain){ p._cb=0; return 0; } p._clPrev=p.chainLen||1; const ln=chainLenIf(p,p.pick); p.chainLen=ln; const b = ln>=2 ? (ln>=3?2:1) : 0; p._cb=b; p.cbSum=(p.cbSum||0)+b; p.clMax=Math.max(p.clMax||1,ln); return b; }
 function chainMe(){ if(!G || !G.chain) return null; const i=G.online?myIndex():G.active; return i>=0 ? G.players[i] : null; }
 function chainCard(c,html){
   const p=chainMe(); if(!p || p.last==null || G.phase!=='choose' || CHAIN_NEXT[p.last]!==c) return html;
@@ -9805,6 +9836,51 @@ function chainPanel(){
     <div class="chp-list">${rows.map(line).join('')}</div>
     <p class="note">🔗 は前のカードとつながったところ。つながるたびに +1（3連目からは +2）。</p></section>`;
 }
+/* ---- ⚔️ 勝負の分かれ目（結果画面）：ライバルとの点差の流れをグラフにして、勝ち負けを決めたターンを取り出す ---- */
+function turnPoint(){
+  if(!G || G.teams) return ''; const me=myIndex(); if(me<0 || !G.players[me]) return '';
+  const P=G.players[me], ps=G.players.map((p,i)=>({p,i})).filter(o=>o.i!==me);
+  if(!ps.length || (P.used||[]).length<3) return '';
+  const top=ps.slice().sort((a,b)=>b.p.score-a.p.score)[0];
+  const won=P.score>=top.p.score, R=top.p; const n=Math.min(P.used.length,(R.used||[]).length); if(n<3) return '';
+  const d=[0]; for(let t=0;t<n;t++) d.push(d[t]+P.used[t].total-R.used[t].total);
+  const extra=(P.score-R.score)-d[n]; if(extra) d.push(d[n]+extra);   // 最後のボーナス（独占ボーナスなど）
+  const dl=t=>d[t+1]-d[t];
+  let kt=0; for(let t=1;t<n;t++){ if(won ? dl(t)>dl(kt) : dl(t)<dl(kt)) kt=t; }
+  let flip=-1; for(let t=1;t<=n;t++){ if(d[t]!==0 && d[t-1]!==0 && Math.sign(d[t])!==Math.sign(d[t-1])) flip=t-1; }
+  const ld=logDeck(), lbl=t=>G.cfg.hist?`${yearOf(ld[P.used[t].turn])}年`:`T${P.used[t].turn+1}`;
+  const a=P.used[kt], b=R.used[kt], sw=dl(kt), rn=esc(R.name.replace(/^CPU\s*/,''));
+  const kt2=k=>k===1?'独占':`${k}人被り`;
+  const last=kt===n-1 && closeXOn && closeXOn();
+  const why = sw===0 ? 'この試合は、ずっと同じくらいの点で進んだよ。'
+    : won ? (a.k===1&&b.k>1 ? `あなたは<strong>${IND[a.ind]}を独占</strong>、${rn}は被り。この ${sgn(sw)} 点の差が決め手！`
+            : a.ind===b.ind ? `同じ${IND[a.ind]}で被りあったけど、あなたの方が点が高かったよ。`
+            : `あなたの${IND[a.ind]} ${sgn(a.total)} が、${rn}の${IND[b.ind]} ${sgn(b.total)} を上回った。`)
+          : (a.k>1&&b.k===1 ? `あなたが${IND[a.ind]}で被ったターンに、${rn}は<strong>${IND[b.ind]}を独占</strong>。ここで ${-sw} 点はなされた…`
+            : b.total>a.total ? `${rn}の${IND[b.ind]} ${sgn(b.total)} に、あなたの${IND[a.ind]} ${sgn(a.total)} がとどかなかった。`
+            : `ここで ${-sw} 点の差がついたよ。`);
+  const flipTxt = flip>=0 ? `<span class="swg-f">${lbl(flip)}で${d[flip+1]>0?'逆転！':'逆転された'}</span>` : '';
+  /* グラフ：点差（あなた − ライバル）。上がリード、下がビハインド */
+  const W=300,H=112,px=14,py=12, m=Math.max(1,...d.map(Math.abs));
+  const X=i=>px+(W-2*px)*i/(d.length-1), Y=v=>H/2-(H/2-py)*v/m;
+  const pts=d.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`), line='M'+pts.join(' L');
+  const area=`${line} L${X(d.length-1).toFixed(1)},${H/2} L${X(0)},${H/2} Z`;
+  const ticks=Array.from({length:n},(_,t)=>`<text x="${X(t+1).toFixed(1)}" y="${H-1}" class="swg-tk${t===kt?' on':''}">${G.cfg.hist?'':t+1}</text>`).join('');
+  const dots=d.map((v,i)=>i===0?'':`<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${i===kt+1?5:3}" class="swg-d${i===kt+1?' on':''}" style="--d:${(i/(d.length-1)*1.1).toFixed(2)}s"><title>${i<=n?lbl(i-1)+' ':'ボーナス '}点差 ${sgn(v)}</title></circle>`).join('');
+  const svg=`<svg class="swg-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="ライバルとの点差の流れ。最後は ${sgn(d[d.length-1])}">
+    <defs><clipPath id="swgU"><rect x="0" y="0" width="${W}" height="${H/2}"/></clipPath><clipPath id="swgD"><rect x="0" y="${H/2}" width="${W}" height="${H/2}"/></clipPath></defs>
+    <rect class="swg-band" x="${(X(kt)+1).toFixed(1)}" y="${py-6}" width="${(X(kt+1)-X(kt)-2).toFixed(1)}" height="${H-2*py+4}" rx="6"/>
+    <line x1="${px}" x2="${W-px}" y1="${H/2}" y2="${H/2}" class="swg-0"/>
+    <text x="${px}" y="${py-2}" class="swg-ax">▲ リード</text><text x="${px}" y="${H-py+8}" class="swg-ax">▼ ビハインド</text>
+    <path d="${area}" class="swg-au" clip-path="url(#swgU)"/><path d="${area}" class="swg-ad" clip-path="url(#swgD)"/>
+    <path d="${line}" class="swg-l" pathLength="1"/>${dots}${ticks}</svg>`;
+  const card=(u,who,me2)=>`<div class="swg-c${me2?' me':''}${u.k===1?' mono':''}" style="--c:var(--i${u.ind})"><small>${who}</small><b>${IND[u.ind]}</b><span>${kt2(u.k)}</span><em>${sgn(u.total)}</em></div>`;
+  return `<section class="panel swg ${won?'won':'lost'}"><div class="row spread"><h3>⚔️ 勝負の分かれ目</h3>${flipTxt}</div>
+    <p class="note">ライバル：<b>${rn}</b>（${P.score===R.score?"同点":won?"2位":"1位"}）との点差の流れ</p>
+    ${svg}
+    <div class="swg-key"><span class="swg-t">${lbl(kt)}${last?' <i>大引け</i>':''}</span>${card(a,'あなた',true)}<span class="swg-vs">VS</span>${card(b,rn,false)}<span class="swg-sw ${sw>=0?'up':'dn'}">${sgn(sw)}</span></div>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${why}</p></div></section>`;
+}
 function whatIf(){
   const me=myIndex(); if(me<0 || !G.players[me]) return ''; const us=(G.players[me].used||[]).filter(u=>u.alt); if(us.length<2) return '';
   const ld=logDeck(), lbl=u=>G.cfg.hist?`${yearOf(ld[u.turn])}年`:`T${u.turn+1}`;
@@ -9821,7 +9897,7 @@ function whatIf(){
     <div class="wi-sum"><span><b>${nb}<small>/${us.length}</small></b><small>ベストの一手</small></span><span><b>${lost}</b><small>取りこぼした点</small></span></div>
     <div class="wi-list">${rows}</div>
     <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${say}</p></div>
-    <p class="note">※ 相手が出したカードはそのままとして計算しています（倍率やパワーカードの効果は入れていません）。</p></section>`;
+    <p class="note">※ 相手が出したカードはそのままとして計算しています（チェーンボーナスは入れています。倍率やパワーカードの効果は入れていません）。</p></section>`;
 }
 function playAnalysis(){
   const me=myIndex(); if(me<0) return '';
@@ -10253,7 +10329,7 @@ function finalView(){
     ${finNav()}
     ${fsec('fin-aw','🏅','今回の賞・能力',(aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${avHTML(p)}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:'')+pwFinalPanel())}
     ${fsec('fin-iv','🎙️','インタビューと号外',ivPanel()+gogaiPaper())}
-    ${fsec('fin-an','📊','ふりかえり',teamPanel()+chainPanel()+whatIf()+playAnalysis()+recap)}
+    ${fsec('fin-an','📊','ふりかえり',teamPanel()+turnPoint()+chainPanel()+whatIf()+playAnalysis()+recap)}
   </div><div class="col">
     <section class="panel chart" id="fin-ch"><h3>POINTの推移</h3>${lineChart()}</section>
     <section class="panel"><h3>各ターンの記録</h3><p class="note">${logDeck().map((n,i)=>`T${i+1} ${C.hist?yearOf(n)+' ':''}${nm(n)}`).join(' → ')}</p>
