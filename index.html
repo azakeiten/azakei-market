@@ -3514,6 +3514,24 @@ html.light .rt-vis:not(.rt-note){background:rgb(70 60 150 / .07)}
 .yd-ss b{font-family:var(--display);font-weight:400;font-size:22px}.yd-ss small{font-size:10.5px;color:var(--muted);font-weight:700}
 .yd-coin{font-weight:900;color:var(--gold-t)}
 html.light .yd-act{background:rgb(70 60 150 / .08)}
+/* 道場：段位・シェア・演出 */
+.yd-st i{display:inline-block;font-style:normal;animation:ydStar .45s var(--d) both}
+.yd-st i:not(.on){opacity:.45}
+@keyframes ydStar{0%{opacity:0;transform:scale(2.4) rotate(-30deg)}70%{transform:scale(.9)}100%{transform:none}}
+.yd-belt{animation:ydBelt .55s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes ydBelt{from{opacity:0;transform:translateY(-30px) rotate(-12deg) scale(1.4)}to{opacity:1;transform:none}}
+.yd-rank{width:100%;display:flex;flex-direction:column;gap:5px;margin-top:6px;padding:10px 12px;border-radius:14px;background:rgb(0 0 0 / .18);text-align:left}
+html.light .yd-rank{background:rgb(70 60 150 / .08)}
+.yd-rk-h{display:flex;align-items:baseline;gap:8px}.yd-rk-h b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--gold-t)}
+.yd-rk-h em{font-style:normal;font-weight:900;font-size:12px;padding:1px 8px;border-radius:99px;background:var(--gold);color:#2a1a00;animation:gdPop .5s 1.8s both}
+.yd-rank small{font-size:11.5px;color:var(--muted);font-weight:700}.yd-rank small b{color:var(--gold-t)}
+.yd-rk-bar{height:10px;border-radius:99px;background:var(--rail);overflow:hidden}.yd-rk-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ffd23a,#ff9a3c);transform-origin:left;animation:ydBar .9s .6s both}
+@keyframes ydBar{from{transform:scaleX(0)}to{transform:none}}
+.yd-rk-steps{display:flex;gap:3px}.yd-rk-steps i{flex:1;height:5px;border-radius:2px;background:var(--rail)}.yd-rk-steps i.done{background:#ffd23a}.yd-rk-steps i.now{background:#ff9a3c;box-shadow:0 0 6px #ff9a3c}
+.yd-rank.up{box-shadow:inset 0 0 0 2px var(--gold),0 0 24px rgb(255 210 58 / .35)}
+.yd-share{display:grid;grid-template-columns:1fr auto;gap:8px;margin:10px 0 4px}
+.cutin.ydrank .band{background:linear-gradient(90deg,transparent,#8a5a2b 12%,#ffd23a 50%,#8a5a2b 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 80px rgb(255 210 58 / .8)}
+.cutin.ydrank b{color:#2a1a00;text-shadow:0 2px 0 rgb(255 255 255 / .5)}.cutin.ydrank span{color:#2a1a00;font-weight:900}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7918,10 +7936,10 @@ function readTools(){
    「いちばん点が高いカード」では正解できず、宣言を読めば正解できる問題だけを自動でえらぶ ---- */
 const YD_COIN=10, YD_PERFECT=20;
 let YD=null;
-function ydGen(seed){
+function ydGen(seed,av){
   const C=presetCfg('rec'), names=Object.keys(TT_H).filter(k=>CHARS[k]); let fb=null;
   for(let v=0; v<300; v++){
-    const rnd=mulberry(seed*131+v*17+3), n=Math.floor(rnd()*6), row=C.table[n];
+    const rnd=mulberry(seed*131+v*17+3), n=Math.floor(rnd()*6), row=C.table[n]; if(av && av.includes(n)) continue;
     const my=shuffle([0,1,2,3,4,5],rnd).slice(0,3).sort((a,b)=>a-b), cs=shuffle(names.slice(),rnd).slice(0,3);
     const cp=cs.map(k=>{ const hand=shuffle([0,1,2,3,4,5],rnd).slice(0,3).sort((a,b)=>a-b);
       const w=hand.map(c=>Math.exp(row[c]*.8)), sw=w.reduce((a,b)=>a+b,0);
@@ -7941,12 +7959,62 @@ function ydGen(seed){
   return fb;
 }
 function ydRec(){ const P=S.prof, d=todayKey(); if(!P.yd || P.yd.d!==d) P.yd={d, r:[null,null,null]}; return P.yd; }
-function ydGet(q){ const d=todayKey(); if(!YD || YD.d!==d) YD={d, q:0, Z:[]}; return YD.Z[q]=YD.Z[q]||ydGen(d*10+q); }
+function ydGet(q){ const d=todayKey(); if(!YD || YD.d!==d) YD={d, q:0, Z:[]}; return YD.Z[q]=YD.Z[q]||ydGen(d*10+q, [0,1,2].slice(0,q).map(i=>ydGet(i).n)); }
 function ydScore(){ const R=ydRec(); return R.r.reduce((s,c,q)=>s+(c!=null && c===ydGet(q).ans?1:0),0); }
 function openYomiDojo(){ ydGet(0); const R=ydRec(), i=R.r.findIndex(x=>x==null); YD.q=i<0?0:i; YD.sum=i<0; sfx('click'); openSheet('yomidojo'); }
+/* ---- 🥋 道場の段位（通算の正解数で 10級 → 名人）・結果シェア（答えは出さない） ---- */
+const YD_BELT=['白帯','黄帯','茶帯','黒帯'];
+const YD_RANK=[[0,'10級'],[2,'9級'],[4,'8級'],[7,'7級'],[10,'6級'],[14,'5級'],[18,'4級'],[23,'3級'],[28,'2級'],[34,'1級'],[40,'初段'],[50,'二段'],[62,'三段'],[76,'四段'],[92,'五段'],[120,'名人']];
+function ydRank(ok){ let i=0; YD_RANK.forEach((r,j)=>{ if(ok>=r[0]) i=j; }); const nx=YD_RANK[i+1];
+  return {i, n:YD_RANK[i][1], nx:nx?nx[1]:null, need:nx?nx[0]-ok:0, pct:nx?Math.round((ok-YD_RANK[i][0])/(nx[0]-YD_RANK[i][0])*100):100}; }
+function ydRankBox(){
+  const ok=(S.prof.ydT||{}).ok||0, rk=ydRank(ok), up=YD&&YD.up; if(YD) YD.up=null;
+  return `<div class="yd-rank${up?' up':''}"><div class="yd-rk-h"><span class="label">道場の段位</span><b>${rk.n}</b>${up?'<em>UP!</em>':''}</div>
+    <div class="yd-rk-bar"><i style="width:${rk.pct}%"></i></div>
+    <small>${rk.nx?`あと<b>${rk.need}問</b>正解で「${rk.nx}」`:'最高位「名人」に到達！'} ・ 通算 ${ok}問正解</small>
+    <div class="yd-rk-steps">${YD_RANK.map((r,j)=>`<i class="${j<rk.i?'done':j===rk.i?'now':''}" title="${r[1]}"></i>`).join('')}</div></div>`;
+}
+function ydLeft(){ const n=new Date(), m=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1), t=Math.max(0,m-n), hh=Math.floor(t/36e5), mm=Math.floor(t%36e5/6e4); return hh?`${hh}時間${mm}分`:`${mm}分`; }
+function ydShareText(){
+  const R=ydRec(), ok=ydScore(), st=S.prof.ydS||{n:1}, rk=ydRank((S.prof.ydT||{}).ok||0), d=String(R.d);
+  const marks=R.r.map((c,q)=>c==null?'⬜':c===ydGet(q).ans?'🟨':'⬛').join('');
+  return `AZAKEI MARKET 🥋読み合い道場 ${+d.slice(4,6)}/${+d.slice(6)}\n${marks} ${'★'.repeat(ok)}${'☆'.repeat(3-ok)}（${YD_BELT[ok]}）\n🔥${st.n}日連続 ・ ${rk.n}\nCPUのウソ、見ぬける？ ${PUBLIC_URL}`;
+}
+function ydShare(){ const t=ydShareText(); sfx('click');
+  if(!IN_CLAUDE && navigator.share){ navigator.share({text:t}).catch(e=>{ if(!e || e.name!=='AbortError') copyText(t); }); return; } copyText(t); }
+async function openYdCard(){
+  const R=ydRec(); if(R.r.some(x=>x==null)) return; sfx('select'); toast('カードを作っています…');
+  try{ await document.fonts.ready; }catch(e){}
+  const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d');
+  const D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', Bf='"M PLUS Rounded 1c",sans-serif', RR=(X,Y,w,h,r)=>{ if(x.roundRect) x.roundRect(X,Y,w,h,r); else x.rect(X,Y,w,h); };
+  const ok=ydScore(), st=S.prof.ydS||{n:1,best:1}, T=S.prof.ydT||{n:0,ok:0}, rk=ydRank(T.ok), d=String(R.d);
+  // 道場の床（畳）
+  const bg=x.createLinearGradient(0,0,0,H); bg.addColorStop(0,'#1d1648'); bg.addColorStop(1,'#0b0b24'); x.fillStyle=bg; x.fillRect(0,0,W,H);
+  x.save(); x.globalAlpha=.06; x.strokeStyle='#fff'; x.lineWidth=4; for(let i=0;i<=6;i++){ x.beginPath(); x.moveTo(i*W/6,0); x.lineTo(i*W/6,H); x.stroke(); } for(let j=0;j<=4;j++){ x.beginPath(); x.moveTo(0,j*H/4); x.lineTo(W,j*H/4); x.stroke(); } x.restore();
+  x.textAlign='center'; x.fillStyle='#ffd23a'; x.font=`600 34px ${Bf}`; x.fillText('AZAKEI MARKET ・ 読み合いカードゲーム',W/2,90);
+  x.font=`120px ${D}`; x.lineWidth=16; x.strokeStyle='#0b0b24'; x.strokeText('読み合い道場',W/2,240); x.fillStyle='#fff6d8'; x.fillText('読み合い道場',W/2,240);
+  x.fillStyle='rgba(255,255,255,.75)'; x.font=`600 40px ${Bf}`; x.fillText(`${d.slice(0,4)}年${+d.slice(4,6)}月${+d.slice(6)}日の3問`,W/2,310);
+  // 帯
+  const bc=[['#f4f4f4','#333'],['#ffd23a','#3a2a00'],['#8a5a2b','#fff'],['#111','#ffd23a']][ok];
+  x.save(); x.translate(W/2,430); x.rotate(-.04); x.fillStyle=bc[0]; x.fillRect(-W/2-40,-56,W+80,112); x.fillStyle='rgba(0,0,0,.18)'; x.fillRect(-W/2-40,30,W+80,26);
+  x.fillStyle=bc[0]; x.beginPath(); RR(-120,-80,240,160,18); x.fill(); x.lineWidth=6; x.strokeStyle='rgba(0,0,0,.25)'; x.stroke();
+  x.fillStyle=bc[1]; x.font=`76px ${D}`; x.fillText(YD_BELT[ok],0,28); x.restore();
+  x.font=`110px ${D}`; x.fillStyle='#ffd23a'; x.fillText('★'.repeat(ok)+'☆'.repeat(3-ok),W/2,640);
+  // 3問の○×（答えは書かない）
+  R.r.forEach((c,q)=>{ const z=ydGet(q), g=c===z.ans, y=720+q*150;
+    x.fillStyle='rgba(255,255,255,.08)'; x.beginPath(); RR(120,y,W-240,124,28); x.fill();
+    x.textAlign='left'; x.fillStyle='rgba(255,255,255,.6)'; x.font=`600 30px ${Bf}`; x.fillText(`第${q+1}問`,160,y+52); x.fillStyle="#fff"; x.font=`800 52px ${Bf}`; x.fillText(NEWS[z.n],160,y+104);
+    x.textAlign='center'; x.fillStyle=g?'#ffd23a':'#ff5c8a'; x.beginPath(); x.arc(W-200,y+62,46,0,Math.PI*2); x.fill(); x.fillStyle=g?'#2a1a00':'#fff'; x.font=`64px ${D}`; x.fillText(g?'○':'×',W-200,y+86); });
+  // 成績
+  const sx=[W/2-300,W/2,W/2+300], sv=[[`${st.n}日`,'連続'],[rk.n,'段位'],[`${T.n?Math.round(T.ok/T.n*100):0}%`,'通算の正解率']];
+  sv.forEach((v,i)=>{ x.fillStyle='#fff'; x.font=`64px ${D}`; x.fillText(v[0],sx[i],1240); x.fillStyle='rgba(255,255,255,.65)'; x.font=`600 28px ${Bf}`; x.fillText(v[1],sx[i],1284); });
+  x.fillStyle='rgba(255,255,255,.55)'; x.font=`500 24px ${Bf}`; x.fillText(`CPUのウソ、見ぬける？ ・ ${PUBLIC_URL.replace(/^https:\/\//,'')}`,W/2,H-22);
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'📸 読み合い道場カード', alt:`読み合い道場 ${+d.slice(4,6)}月${+d.slice(6)}日の成績：3問中${ok}問正解、${YD_BELT[ok]}、${rk.n}`, name:`azakei-dojo-${R.d}.png`, note:'答えは書いていないから、友だちにも同じ問題を解いてもらえるよ。'};
+  openSheet('card');
+}
 function ydCard(){
   const R=ydRec(), n=R.r.filter(x=>x!=null).length, ok=n===3?ydScore():0, st=S.prof.ydS;
-  return `<button class="minicard ydc" onclick="openYomiDojo()"><span class="mc-ic">🥋</span><span class="mc-tx"><span class="label">DAILY YOMI · 毎日3問</span><b>読み合い道場</b><span class="note">${n===3?`今日の成績 ${'★'.repeat(ok)}${'☆'.repeat(3-ok)}${st&&st.n>1?` · ${st.n}日連続`:''}`:`宣言とレーダーで、正解の1枚を読もう${n?`（${n}/3）`:''}`}</span></span></button>`;
+  return `<button class="minicard ydc" onclick="openYomiDojo()"><span class="mc-ic">🥋</span><span class="mc-tx"><span class="label">DAILY YOMI · 毎日3問</span><b>読み合い道場</b><span class="note">${n===3?`今日の成績 ${'★'.repeat(ok)}${'☆'.repeat(3-ok)}${st&&st.n>1?` · 🔥${st.n}日連続`:''} · ${ydRank((S.prof.ydT||{}).ok||0).n}`:`宣言とレーダーで、正解の1枚を読もう${n?`（${n}/3）`:''}`}</span></span></button>`;
 }
 function ydGo(q){ if(!YD) return; YD.q=q; YD.sum=false; sfx('click'); ydRe(); }
 function ydRe(){ const w=document.getElementById('ydWrap'); if(w){ w.innerHTML=ydBody(); const sh=w.closest('.sheet-body,.sheet'); if(sh) sh.scrollTop=0; } else renderSheet(); }
@@ -7954,7 +8022,8 @@ function ydPick(c){
   const R=ydRec(), q=YD.q, z=ydGet(q); if(R.r[q]!=null || !z.my.includes(c)) return;
   R.r[q]=c; const P=S.prof, good=c===z.ans; YD.fresh=q;
   if(good){ P.coin=(P.coin||0)+YD_COIN; YD.gotC=(YD.gotC||0)+YD_COIN; }
-  const st=P.ydT=P.ydT||{n:0,ok:0}; st.n++; if(good) st.ok++;
+  const st=P.ydT=P.ydT||{n:0,ok:0}, rk0=ydRank(st.ok); st.n++; if(good) st.ok++;
+  const rk1=ydRank(st.ok); if(rk1.i>rk0.i){ YD.up=rk1.n; setTimeout(()=>{ try{ cutIn(rk1.i>=10?'昇段！':'昇級！',`${rk0.n} → ${rk1.n}`,'ydrank'); sfx('fanfare'); haptic([30,40,30,40,80]); }catch(e){} },1700); }
   if(R.r.every(x=>x!=null)){
     const y=todayKey(new Date(Date.now()-864e5)), S2=P.ydS=P.ydS||{last:0,n:0,best:0};
     if(S2.last!==R.d){ S2.n = S2.last===y ? S2.n+1 : 1; S2.last=R.d; S2.best=Math.max(S2.best||0,S2.n); }
@@ -7986,10 +8055,12 @@ function ydBody(){
   if(YD.sum && all){
     const ok=ydScore(), st=S.prof.ydS||{n:1,best:1}, T=S.prof.ydT||{n:0,ok:0};
     const msg=ok===3?'満点！ 宣言のウソもホントも、ぜんぶ見ぬいたね。':ok===2?'おしい！ 正直度の低いキャラの宣言は、逆に読むのがコツ。':ok===1?'まずまず。点の高さより「だれが持っているか」を先に見よう。':'今日はむずかしかったね。解説を読んで、明日またちょうせん！';
-    return `${head}<div class="yd-sum"><span class="yd-belt b${ok}">${['白帯','黄帯','茶帯','黒帯'][ok]}</span><b class="yd-st">${'★'.repeat(ok)}${'☆'.repeat(3-ok)}</b><p>${msg}</p>
+    return `${head}<div class="yd-sum"><span class="yd-belt b${ok}">${YD_BELT[ok]}</span><b class="yd-st">${[0,1,2].map(i=>`<i class="${i<ok?'on':''}" style="--d:${350+i*260}ms">${i<ok?'★':'☆'}</i>`).join('')}</b><p>${msg}</p>
       <div class="yd-ss"><span><b>${st.n}</b><small>日連続</small></span><span><b>${st.best||st.n}</b><small>最長</small></span><span><b>${T.n?Math.round(T.ok/T.n*100):0}%</b><small>通算の正解率</small></span></div>
-      ${YD.gotC?`<span class="yd-coin">🪙 +${YD.gotC}コイン</span>`:''}</div>
-      <p class="note" style="text-align:center">あしたは新しい3問。1問正解で +${YD_COIN}コイン、満点で さらに +${YD_PERFECT}。</p>
+      ${YD.gotC?`<span class="yd-coin">🪙 +${YD.gotC}コイン</span>`:''}
+      ${ydRankBox()}</div>
+      <div class="yd-share"><button class="btn gold" onclick="ydShare()">📋 結果をシェア</button><button class="btn ghost" onclick="openYdCard()">📸 画像にする</button></div>
+      <p class="note" style="text-align:center">シェアには答えは出ません。⏳ 次の3問まで あと${ydLeft()}。1問正解で +${YD_COIN}コイン、満点で さらに +${YD_PERFECT}。</p>
       <div class="row" style="gap:8px"><button class="btn ghost" onclick="ydGo(0)">解説を見なおす</button><button class="btn gold" style="margin-left:auto" onclick="closeSheet()">とじる</button></div>`;
   }
   const q=YD.q, z=ydGet(q), C=z.C, pick=R.r[q], done=pick!=null, fresh=YD.fresh===q; if(fresh) YD.fresh=null;
