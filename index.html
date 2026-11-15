@@ -3457,6 +3457,63 @@ html.light .rt-vis:not(.rt-note){background:rgb(70 60 150 / .07)}
 .cutin.bluff .band{background:linear-gradient(90deg,transparent,#c4204f 12%,#ff7ab0 50%,#c4204f 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 80px rgb(255 61 139 / .85)}
 .cutin.bluff b{color:#fff6d8;text-shadow:0 3px 0 #5a0a28} .cutin.bluff span{color:#fff}
 .bl-share{display:block;width:100%;margin-top:8px}
+/* 読み合い道場 */
+.rt-yd{display:block;width:100%;margin-top:10px}
+.yd-dots{display:flex;gap:6px;margin:6px 0 10px}
+.yd-dot{min-width:38px;height:32px;padding:0 10px;border:0;border-radius:99px;font:inherit;font-weight:900;cursor:pointer;color:var(--muted);background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.yd-dot.on{box-shadow:0 0 0 2.5px var(--gold)}.yd-dot.ok{background:var(--gold);color:#2a1a00}.yd-dot.ng{background:rgb(255 92 92 / .22);color:var(--down)}.yd-dot.sum{margin-left:auto;color:var(--text)}
+.yd-news{display:flex;flex-direction:column;align-items:center;padding:10px;border-radius:16px;background:linear-gradient(135deg,#1d1648,#3a1f6e);color:#fff;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .15)}
+.yd-news b{font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:.04em}.yd-news .label{color:#ffd23a}
+.yd-cpus{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.yd-cpu{position:relative;display:grid;grid-template-columns:40px 92px 1fr;align-items:center;gap:8px;padding:8px;border-radius:14px;background:color-mix(in srgb,var(--s) 12%,var(--panel2));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--s) 40%,transparent)}
+.yd-av{display:block;width:40px;height:40px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px var(--s)}
+.yd-av svg{display:block;width:100%;height:100%}
+.yd-ci{display:flex;flex-direction:column;gap:2px;min-width:0}.yd-ci b{font-size:14px}.yd-ci small{font-size:10.5px;color:var(--muted);font-weight:700}
+.yd-hb{display:block;height:6px;border-radius:99px;background:var(--rail);overflow:hidden}.yd-hb i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ff5c8a,#ffd23a 50%,#4ade80)}
+.yd-cr{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}
+.yd-say{position:relative;padding:4px 10px;border-radius:12px;background:#fff;color:#1a1530;font-size:13px;font-weight:900}
+.yd-say::before{content:"";position:absolute;left:-6px;top:50%;margin-top:-5px;border:5px solid transparent;border-right-color:#fff;border-left:0}
+.yd-hand{display:flex;gap:3px}#ydWrap .gd-bub strong{color:#c4204f}
+.yd-hand small{font-size:9.5px;color:var(--muted);font-weight:700;align-self:center}.yd-hand i{font-style:normal;font-size:10px;font-weight:900;padding:1px 5px;border-radius:6px;color:#fff;background:color-mix(in srgb,var(--c) 75%,#0b0d22)}
+.yd-act{grid-column:1/-1;display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:10px;background:rgb(0 0 0 / .18);font-size:12px}
+.yd-act b{padding:1px 8px;border-radius:8px;background:var(--c);color:#fff}
+.yd-act em{margin-left:auto;font-style:normal;font-weight:900;padding:1px 9px;border-radius:99px;transform:rotate(-4deg)}
+.yd-act.ok em{background:#4ade80;color:#05301a}.yd-act.ng em{background:var(--down);color:#fff}
+.yd-act.anim{animation:ydFlip .45s var(--d) both}
+@keyframes ydFlip{from{opacity:0;transform:rotateX(90deg)}to{opacity:1;transform:none}}
+.yd-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:6px 0 10px}
+.yd-c{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 30px;border:0;border-radius:16px;cursor:pointer;font:inherit;color:#fff;background:linear-gradient(180deg,var(--c),color-mix(in srgb,var(--c) 55%,#0b0d22));box-shadow:0 6px 14px -8px var(--c),inset 0 0 0 1px rgb(255 255 255 / .2);transition:transform .15s}
+.yd-c:not(:disabled):active{transform:scale(.96)}
+.yd-c i{display:grid;place-items:center}.yd-c i svg{width:30px;height:30px}
+.yd-c b{font-size:13px}.yd-c small{font-size:10px;opacity:.85}
+.yd-p{font-family:var(--display);font-size:22px;line-height:1}.yd-p em{font-family:inherit;font-style:normal;font-size:10px;margin-right:2px;vertical-align:middle;opacity:.9}
+.yd-rd{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;padding:2px 4px;border-radius:99px;background:rgb(10 12 34 / .7);white-space:nowrap;font-size:10px;font-weight:900}
+.yd-rd .yd-av{width:18px;height:18px;margin-left:-4px;box-shadow:0 0 0 1.5px var(--s)}.yd-rd .yd-av:first-child{margin-left:0}
+.yd-c:disabled{cursor:default}.yd-c:disabled:not(.on):not(.ans){opacity:.55}
+.yd-c.on{box-shadow:0 0 0 3px #fff,0 8px 18px -6px var(--c)}
+.yd-c.ans{box-shadow:0 0 0 3px var(--gold),0 0 22px rgb(255 210 58 / .55)}
+.yd-out{font-size:10.5px;font-weight:900;padding:1px 6px;border-radius:8px;background:rgb(0 0 0 / .3)}.yd-out.ok{background:var(--gold);color:#2a1a00}
+.yd-best{position:absolute;top:-8px;right:-4px;padding:1px 7px;border-radius:8px;background:var(--gold);color:#2a1a00;font-size:11px;font-weight:900;transform:rotate(8deg)}
+.yd-res{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;border-radius:16px;text-align:center}
+.yd-res b{font-family:var(--display);font-weight:400;font-size:26px}
+.yd-res.ok{background:rgb(255 200 58 / .14);box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .55)}.yd-res.ok>b{color:var(--gold-t)}
+.yd-res.ng{background:rgb(255 92 92 / .1);box-shadow:inset 0 0 0 1.5px rgb(255 92 92 / .4)}
+.yd-res.anim{animation:gdPop .45s 1.3s both}
+.yd-hit{display:flex;flex-direction:column;gap:4px;margin:10px 0;padding:10px;border-radius:14px;background:var(--panel2)}
+.yd-hit div{display:grid;grid-template-columns:70px 1fr 36px;align-items:center;gap:6px;font-size:12px;font-weight:700}
+.yd-hit span{padding:1px 6px;border-radius:6px;background:var(--c);color:#fff;text-align:center;font-size:11px}
+.yd-hit i{display:block;height:8px;border-radius:99px;background:var(--rail);overflow:hidden}.yd-hit i b{display:block;height:100%;background:var(--down)}
+.yd-hit em{font-style:normal;text-align:right}
+.yd-sum{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px;border-radius:18px;background:radial-gradient(circle at 50% 20%,rgb(255 210 58 / .2),transparent 70%),var(--panel2);text-align:center;animation:gdPop .45s both}
+.yd-belt{padding:4px 18px;border-radius:6px;font-weight:900;font-size:14px;letter-spacing:.2em;box-shadow:0 3px 0 rgb(0 0 0 / .25)}
+.yd-belt.b0{background:#f4f4f4;color:#333}.yd-belt.b1{background:#ffd23a;color:#3a2a00}.yd-belt.b2{background:#8a5a2b;color:#fff}.yd-belt.b3{background:#111;color:#ffd23a;box-shadow:0 0 0 2px #ffd23a,0 3px 0 rgb(0 0 0 / .3)}
+.yd-st{font-size:32px;color:var(--gold-t);letter-spacing:6px}
+.yd-sum p{margin:0;font-weight:700}
+.yd-ss{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%}
+.yd-ss span{display:flex;flex-direction:column;align-items:center;padding:8px 2px;border-radius:12px;background:rgb(255 255 255 / .06)}
+.yd-ss b{font-family:var(--display);font-weight:400;font-size:22px}.yd-ss small{font-size:10.5px;color:var(--muted);font-weight:700}
+.yd-coin{font-weight:900;color:var(--gold-t)}
+html.light .yd-act{background:rgb(70 60 150 / .08)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5313,6 +5370,7 @@ function renderSheet(){
   else if(k==='twshare') body=`<div class="tw-wrap2">${twShareBody()}</div>`;
   else if(k==='visit') body=`<div class="tw-wrap2">${visitBody()}</div>`;
   else if(k==='puzzle') body=puzBody();
+  else if(k==='yomidojo') body=`<div id="ydWrap">${ydBody()}</div>`;
   else if(k==='mynews') body=myNewsBody();
   else if(k==='mynewsedit') body=myNewsEditBody();
   else if(k==='mnshare') body=mnShareBody();
@@ -7854,7 +7912,107 @@ function readTools(){
       <div class="rt-it"><div class="rt-vis">${card}</div><b>📡 レーダー</b><p>手札のカードに、その産業を<b>まだ持っている相手</b>の顔。だれも持っていなければ「確定独占」。</p></div>
       <div class="rt-it"><div class="rt-vis rt-talk"><span class="tt-ch" style="--c:var(--i1)"><b>レン</b>「金融」<small>正直25%</small></span><span class="tt-ch" style="--c:var(--i3)"><b>ハル</b>「小売」<small>正直90%</small></span><span class="rt-st">ブラフ！</span></div><b>💬 宣言とブラフ</b><p>CPUは「○○でいく」と宣言。ウソのことも。あなたも1試合2回、宣言できる。</p></div>
       <div class="rt-it"><div class="rt-vis rt-note"><span><b>30%</b><small>独占率</small></span><span><b>25%</b><small>正直度</small></span><span><b>60%</b><small>信じる</small></span></div><b>🕵️ 観察ノート</b><p>対戦するほど、キャラのクセがたまる。キャラ図鑑で読めるよ。</p></div>
-    </div></section>`;
+    </div><button class="btn gold rt-yd" onclick="openYomiDojo()">🥋 読み合い道場で練習する（毎日3問）</button></section>`;
+}
+/* ---- 🥋 読み合い道場：毎日3問。CPUの宣言（正直度つき）とレーダーを読んで、1枚えらぶ。
+   「いちばん点が高いカード」では正解できず、宣言を読めば正解できる問題だけを自動でえらぶ ---- */
+const YD_COIN=10, YD_PERFECT=20;
+let YD=null;
+function ydGen(seed){
+  const C=presetCfg('rec'), names=Object.keys(TT_H).filter(k=>CHARS[k]); let fb=null;
+  for(let v=0; v<300; v++){
+    const rnd=mulberry(seed*131+v*17+3), n=Math.floor(rnd()*6), row=C.table[n];
+    const my=shuffle([0,1,2,3,4,5],rnd).slice(0,3).sort((a,b)=>a-b), cs=shuffle(names.slice(),rnd).slice(0,3);
+    const cp=cs.map(k=>{ const hand=shuffle([0,1,2,3,4,5],rnd).slice(0,3).sort((a,b)=>a-b);
+      const w=hand.map(c=>Math.exp(row[c]*.8)), sw=w.reduce((a,b)=>a+b,0);
+      let x=rnd()*sw, pick=hand[hand.length-1]; for(let i=0;i<hand.length;i++){ x-=w[i]; if(x<=0){ pick=hand[i]; break; } }
+      const h=TT_H[k], hon=rnd()<h, others=hand.filter(c=>c!==pick), said=hon?pick:others[Math.floor(rnd()*others.length)];
+      const pri={}, post={}; let sp=0; hand.forEach((c,i)=>{ pri[c]=w[i]/sw; post[c]=pri[c]*(c===said?h:(1-h)/(hand.length-1)); sp+=post[c]; }); hand.forEach(c=>post[c]/=sp);
+      return {k,hand,pick,said,hon,h,pri,post}; });
+    const act=c=>gain(C,row[c],1+cp.filter(q=>q.pick===c).length);
+    const ev=(c,key)=>{ let d=[1]; cp.forEach(q=>{ const p=q[key][c]||0, nd=new Array(d.length+1).fill(0); d.forEach((v,i)=>{ nd[i]+=v*(1-p); nd[i+1]+=v*p; }); d=nd; }); return d.reduce((s,v,i)=>s+v*gain(C,row[c],1+i),0); };
+    const A=my.map(act), E=my.map(c=>ev(c,'post')), P0=my.map(c=>ev(c,'pri')), am=a=>a.indexOf(Math.max(...a));
+    const b=am(A), naive=my.slice().sort((a,b2)=>row[b2]-row[a])[0];
+    const ok=A.filter(x=>x===A[b]).length===1 && am(E)===b && my[b]!==naive;
+    const z={C,n,row,my,cp,A,ans:my[b],naive, hit:Object.fromEntries(my.map(c=>[c, 1-cp.reduce((s,q)=>s*(1-(q.post[c]||0)),1)]))};
+    if(ok && am(P0)!==b && cp.some(q=>!q.hon)) return z;
+    if(ok && !fb) fb=z;
+  }
+  return fb;
+}
+function ydRec(){ const P=S.prof, d=todayKey(); if(!P.yd || P.yd.d!==d) P.yd={d, r:[null,null,null]}; return P.yd; }
+function ydGet(q){ const d=todayKey(); if(!YD || YD.d!==d) YD={d, q:0, Z:[]}; return YD.Z[q]=YD.Z[q]||ydGen(d*10+q); }
+function ydScore(){ const R=ydRec(); return R.r.reduce((s,c,q)=>s+(c!=null && c===ydGet(q).ans?1:0),0); }
+function openYomiDojo(){ ydGet(0); const R=ydRec(), i=R.r.findIndex(x=>x==null); YD.q=i<0?0:i; YD.sum=i<0; sfx('click'); openSheet('yomidojo'); }
+function ydCard(){
+  const R=ydRec(), n=R.r.filter(x=>x!=null).length, ok=n===3?ydScore():0, st=S.prof.ydS;
+  return `<button class="minicard ydc" onclick="openYomiDojo()"><span class="mc-ic">🥋</span><span class="mc-tx"><span class="label">DAILY YOMI · 毎日3問</span><b>読み合い道場</b><span class="note">${n===3?`今日の成績 ${'★'.repeat(ok)}${'☆'.repeat(3-ok)}${st&&st.n>1?` · ${st.n}日連続`:''}`:`宣言とレーダーで、正解の1枚を読もう${n?`（${n}/3）`:''}`}</span></span></button>`;
+}
+function ydGo(q){ if(!YD) return; YD.q=q; YD.sum=false; sfx('click'); ydRe(); }
+function ydRe(){ const w=document.getElementById('ydWrap'); if(w){ w.innerHTML=ydBody(); const sh=w.closest('.sheet-body,.sheet'); if(sh) sh.scrollTop=0; } else renderSheet(); }
+function ydPick(c){
+  const R=ydRec(), q=YD.q, z=ydGet(q); if(R.r[q]!=null || !z.my.includes(c)) return;
+  R.r[q]=c; const P=S.prof, good=c===z.ans; YD.fresh=q;
+  if(good){ P.coin=(P.coin||0)+YD_COIN; YD.gotC=(YD.gotC||0)+YD_COIN; }
+  const st=P.ydT=P.ydT||{n:0,ok:0}; st.n++; if(good) st.ok++;
+  if(R.r.every(x=>x!=null)){
+    const y=todayKey(new Date(Date.now()-864e5)), S2=P.ydS=P.ydS||{last:0,n:0,best:0};
+    if(S2.last!==R.d){ S2.n = S2.last===y ? S2.n+1 : 1; S2.last=R.d; S2.best=Math.max(S2.best||0,S2.n); }
+    if(ydScore()===3 && !R.pf){ R.pf=1; P.coin+=YD_PERFECT; YD.gotC=(YD.gotC||0)+YD_PERFECT; }
+  }
+  saveProfile(); haptic(good?[20,30,40]:[60]); sfx(good?'fanfare':'buzz'); try{ document.querySelectorAll(".ydc").forEach(e=>e.outerHTML=ydCard()); }catch(e){}
+  if(good && !reduced()) setTimeout(()=>{ try{ confetti(); }catch(e){} },900);
+  ydRe();
+}
+function ydWhy(z){
+  const pc=h=>Math.round(h*100), L=[];
+  if(z.naive!==z.ans){ const tk=z.cp.filter(q=>q.pick===z.naive).map(q=>q.k);
+    L.push(`<strong>${IND[z.naive]}</strong>は点がいちばん高いけど、${tk.length?`${tk.join('と')}も出して<strong>被った</strong>`:`被りそうな確率が${pc(z.hit[z.naive])}%もあった`}。`); }
+  const hs=z.cp.filter(q=>q.hand.includes(z.ans));
+  if(!hs.length) L.push(`<strong>${IND[z.ans]}</strong>はだれも持っていない、<strong>確定独占</strong>のカードだった。`);
+  else { const sd=hs.filter(q=>q.said===z.ans), ot=hs.filter(q=>q.said!==z.ans);
+    L.push(`<strong>${IND[z.ans]}</strong>を持っていたのは${hs.map(q=>q.k).join('と')}。`
+      + (ot.length?`でも宣言は${ot.map(q=>`${q.k}「${IND[q.said]}」（正直度${pc(q.h)}%）`).join('・')}。`:'')
+      + (sd.length?`${sd.map(q=>q.k).join('と')}は「${IND[z.ans]}」と言ったけど、正直度は${sd.map(q=>pc(q.h)+'%').join('・')}だけ。`:`だれも「${IND[z.ans]}」とは言っていない。`)
+      + `だから<strong>空きやすかった</strong>。`); }
+  const liar=z.cp.filter(q=>!q.hon).sort((a,b)=>b.h-a.h)[0];
+  if(liar) L.push(`ちなみに${liar.k}は${liar.h>=.7?'ふだん正直なのに、今回は':''}<strong>ブラフ</strong>。「${IND[liar.said]}」と言って、${IND[liar.pick]}を出したよ。`);
+  return L.join('');
+}
+function ydBody(){
+  const R=ydRec(); if(!YD) ydGet(0); const pc=h=>Math.round(h*100);
+  const dots=[0,1,2].map(i=>{ const c=R.r[i], z=ydGet(i), m=c==null?'':c===z.ans?' ok':' ng'; return `<button class="yd-dot${m}${!YD.sum&&YD.q===i?' on':''}" onclick="ydGo(${i})" aria-label="第${i+1}問">${c==null?i+1:c===z.ans?'○':'×'}</button>`; }).join('');
+  const all=R.r.every(x=>x!=null), head=`<span class="label">DAILY YOMI · ${String(R.d).slice(4,6)*1}/${String(R.d).slice(6)*1}</span><h3 class="ttl" style="font-size:22px">🥋 読み合い道場</h3><div class="yd-dots">${dots}${all?`<button class="yd-dot sum${YD.sum?' on':''}" onclick="YD.sum=true;sfx('click');ydRe()">成績</button>`:''}</div>`;
+  if(YD.sum && all){
+    const ok=ydScore(), st=S.prof.ydS||{n:1,best:1}, T=S.prof.ydT||{n:0,ok:0};
+    const msg=ok===3?'満点！ 宣言のウソもホントも、ぜんぶ見ぬいたね。':ok===2?'おしい！ 正直度の低いキャラの宣言は、逆に読むのがコツ。':ok===1?'まずまず。点の高さより「だれが持っているか」を先に見よう。':'今日はむずかしかったね。解説を読んで、明日またちょうせん！';
+    return `${head}<div class="yd-sum"><span class="yd-belt b${ok}">${['白帯','黄帯','茶帯','黒帯'][ok]}</span><b class="yd-st">${'★'.repeat(ok)}${'☆'.repeat(3-ok)}</b><p>${msg}</p>
+      <div class="yd-ss"><span><b>${st.n}</b><small>日連続</small></span><span><b>${st.best||st.n}</b><small>最長</small></span><span><b>${T.n?Math.round(T.ok/T.n*100):0}%</b><small>通算の正解率</small></span></div>
+      ${YD.gotC?`<span class="yd-coin">🪙 +${YD.gotC}コイン</span>`:''}</div>
+      <p class="note" style="text-align:center">あしたは新しい3問。1問正解で +${YD_COIN}コイン、満点で さらに +${YD_PERFECT}。</p>
+      <div class="row" style="gap:8px"><button class="btn ghost" onclick="ydGo(0)">解説を見なおす</button><button class="btn gold" style="margin-left:auto" onclick="closeSheet()">とじる</button></div>`;
+  }
+  const q=YD.q, z=ydGet(q), C=z.C, pick=R.r[q], done=pick!=null, fresh=YD.fresh===q; if(fresh) YD.fresh=null;
+  const av=(k,cls)=>`<span class="yd-av ${cls||''}" style="--s:${CHARS[k].c}">${face(k)}</span>`;
+  const cards=z.my.map(c=>{ const hs=z.cp.filter(q2=>q2.hand.includes(c)), tk=z.cp.filter(q2=>q2.pick===c).length, mine=pick===c;
+    const rd = hs.length ? `<span class="yd-rd">${hs.map(q2=>av(q2.k)).join('')}</span>` : `<span class="yd-rd lock">🔒確定独占</span>`;
+    const res = done ? `<span class="yd-out ${tk?'ng':'ok'}">${tk?`${tk+1}人で被り ${sgn(gain(C,z.row[c],tk+1))}`:`独占 ${sgn(gain(C,z.row[c],1))}`}</span>` : '';
+    return `<button class="yd-c${mine?' on':''}${done&&c===z.ans?' ans':''}" style="--c:var(--i${c})" onclick="ydPick(${c})" ${done?'disabled':''} aria-label="${IND[c]}：独占なら${sgn(gain(C,z.row[c],1))}、被ると${sgn(gain(C,z.row[c],2))}">
+      <i>${svg(c,2.6)}</i><b>${IND[c]}</b><span class="yd-p"><em>独占</em>${sgn(gain(C,z.row[c],1))}</span><small>被ると ${sgn(gain(C,z.row[c],2))}</small>${rd}${res}${done&&c===z.ans?'<span class="yd-best">正解</span>':''}</button>`; }).join('');
+  const cpus=z.cp.map((q2,j)=>`<div class="yd-cpu" style="--s:${CHARS[q2.k].c}">${av(q2.k)}<div class="yd-ci"><b>${q2.k}</b><span class="yd-hb" aria-label="正直度${pc(q2.h)}%"><i style="width:${pc(q2.h)}%"></i></span><small>正直度 ${pc(q2.h)}%</small></div>
+      <div class="yd-cr"><span class="yd-say">「${IND[q2.said]}でいく！」</span><span class="yd-hand"><small>手札</small>${q2.hand.map(c=>`<i style="--c:var(--i${c})" >${IND[c]}</i>`).join('')}</span></div>
+      ${done?`<span class="yd-act ${q2.hon?'ok':'ng'}${fresh?' anim':''}" style="--d:${200+j*350}ms"><small>出したのは</small><b style="--c:var(--i${q2.pick})">${IND[q2.pick]}</b><em>${q2.hon?'ほんと':'ブラフ！'}</em></span>`:''}</div>`).join('');
+  const good=done&&pick===z.ans;
+  return `${head}
+    <div class="yd-news"><span class="label">第${q+1}問 · 今回のニュース</span><b>${NEWS[z.n]}</b></div>
+    <div class="yd-cpus"><span class="label">💬 CPUの宣言（ウソのことも）</span>${cpus}</div>
+    <span class="label" style="margin-top:6px">あなたの手札 · どれを出す？</span>
+    <div class="yd-cards">${cards}</div>
+    ${done?`<div class="yd-res ${good?'ok':'ng'}${fresh?' anim':''}"><b>${good?'読み勝ち！ 正解':'ざんねん…'}</b><span>${good?`${IND[pick]}で${sgn(z.A[z.my.indexOf(pick)])}点。 🪙 +${YD_COIN}`:`正解は <b>${IND[z.ans]}</b>（${sgn(z.A[z.my.indexOf(z.ans)])}点）。あなたは${sgn(z.A[z.my.indexOf(pick)])}点。`}</span></div>
+      <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}の解説</b>${ydWhy(z)}</p></div>
+      <div class="yd-hit"><span class="label">宣言から読んだ「被りそう度」</span>${z.my.map(c=>`<div><span style="--c:var(--i${c})">${IND[c]}</span><i><b style="width:${pc(z.hit[c])}%"></b></i><em>${pc(z.hit[c])}%</em></div>`).join('')}</div>
+      <div class="row" style="gap:8px">${q<2?`<button class="btn gold" style="margin-left:auto" onclick="ydGo(${q+1})">次の問題へ ▶</button>`:all?`<button class="btn gold" style="margin-left:auto" onclick="YD.sum=true;sfx('click');ydRe()">今日の成績を見る ▶</button>`:`<button class="btn gold" style="margin-left:auto" onclick="ydGo(${R.r.findIndex(x=>x==null)})">のこりの問題へ ▶</button>`}</div>`
+     :`<div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${q===0?'カードの顔マークは、その産業を<strong>持っている相手</strong>。宣言と正直度を見て、だれが何を出すか読んでね。いちばん点が高いカードが正解とはかぎらないよ！':'宣言がホントかウソか、正直度で読もう。1回だけ、えらんだら決定だよ。'}</p></div>`}`;
 }
 let TW_SEL=null;
 function openTown(tab){ sfx('click'); TW_SEL=null; TW_TAB=typeof tab==='string'?tab:'town'; openSheet('town'); }
@@ -9870,7 +10028,7 @@ function homeView(){
   ${pnpPromo()}
   ${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
   ${todayBar()}
-  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
+  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
   <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${hsec('🏆','ミッション','きょう・今週・まちの依頼をひとつに')}
   ${misBoard('home')}
