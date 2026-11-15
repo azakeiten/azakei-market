@@ -3553,6 +3553,30 @@ html.light .yd-rank{background:rgb(70 60 150 / .08)}
 .wi-alt i{font-style:normal;font-weight:900;padding:0 6px;border-radius:99px;background:rgb(255 92 92 / .18);color:var(--down)}
 .wi-ok{justify-self:start;font-style:normal;font-weight:900;font-size:12px;padding:2px 10px;border-radius:99px;background:var(--gold);color:#2a1a00;transform:rotate(-4deg)}
 .wi .gd-talk{margin-top:10px}
+/* ひみつ指令 */
+.ord-pick{margin:0 0 8px;padding:8px;border-radius:14px;background:linear-gradient(135deg,rgb(30 20 60 / .9),rgb(60 30 90 / .9));box-shadow:inset 0 0 0 1.5px rgb(255 210 58 / .45);animation:gdPop .4s both}
+.ord-hd{display:flex;align-items:center;gap:6px;margin-bottom:6px}.ord-hd .label{color:#ffd23a}
+.ord-skip{margin-left:auto;border:0;background:none;color:rgb(255 255 255 / .6);font:inherit;font-size:11px;font-weight:700;cursor:pointer;text-decoration:underline}
+.ord-cs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ord-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 4px;border:0;border-radius:12px;cursor:pointer;font:inherit;color:#1a1530;background:linear-gradient(180deg,#fffaf0,#f1e4c6);box-shadow:0 3px 0 rgb(0 0 0 / .3);transition:transform .15s}
+.ord-c:active{transform:translateY(2px)}
+.ord-c i{font-style:normal;font-size:10px;color:#c98a00;letter-spacing:1px}.ord-c.d3 i{color:#c4204f}
+.ord-c b{font-size:11.5px;line-height:1.3;text-align:center}
+.ord-c small{font-size:10.5px;font-weight:900;color:#8a5a00}
+.ord-chip{display:flex;align-items:center;gap:6px;margin:0 0 6px;padding:4px 10px;border-radius:99px;background:rgb(30 20 60 / .75);color:#fff;font-size:12px;box-shadow:inset 0 0 0 1px rgb(255 210 58 / .4)}
+.ord-chip b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ord-chip em{font-style:normal;font-weight:900;padding:0 8px;border-radius:99px;background:rgb(255 255 255 / .12)}
+.ord-chip.ok{box-shadow:inset 0 0 0 1.5px #ffd23a,0 0 14px rgb(255 210 58 / .4)}.ord-chip.ok em{background:#ffd23a;color:#2a1a00}
+.ord-chip.ng{opacity:.6}.ord-chip.ng b{text-decoration:line-through}
+.cutin.ord .band{background:linear-gradient(90deg,transparent,#2a1850 12%,#5a2f8a 50%,#2a1850 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 70px rgb(160 100 255 / .7)}
+.cutin.ord b{color:#ffd23a}.cutin.ord span{color:#fff}
+.cutin.ordok .band{background:linear-gradient(90deg,transparent,#5a2f8a 12%,#ffd23a 50%,#5a2f8a 88%,transparent);box-shadow:0 0 0 4px var(--rail),0 0 80px rgb(255 210 58 / .8)}
+.cutin.ordok b{color:#2a1a00}.cutin.ordok span{color:#2a1a00;font-weight:900}
+.ord-res{background:linear-gradient(135deg,rgb(30 20 60 / .55),rgb(60 30 90 / .45)),var(--panel)}
+.ord-rb{display:flex;align-items:center;gap:10px;margin:6px 0}.ord-rb b{flex:1;font-size:17px}
+.ord-stamp{padding:4px 12px;border:3px solid currentColor;border-radius:10px;font-family:var(--display);font-size:18px;color:#8a8fb0;transform:rotate(-8deg);animation:wiStamp .5s .6s both}
+.ord-res.ok .ord-stamp{color:#ff5c8a}
+html.light .ord-res{background:linear-gradient(135deg,rgb(120 90 220 / .12),rgb(255 210 58 / .12)),var(--panel)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4772,6 +4796,7 @@ function resolveTurn(){
   if(G.log) G.log.push(G.deck[G.turn]);
   G.bluffNow=null; try{ ttRecord(cnt); }catch(e){}
   try{ obsRecord(cnt); }catch(e){}
+  try{ ordTick(); }catch(e){}
   G.cnt=cnt; G.phase='reveal'; G.active=G.online?G.me:-1; render(); netSync();
   playFlip(()=>{
     if(phone()){ const b=document.querySelector('.board'); if(b) b.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); }
@@ -8107,6 +8132,71 @@ function ydBody(){
       <div class="row" style="gap:8px">${q<2?`<button class="btn gold" style="margin-left:auto" onclick="ydGo(${q+1})">次の問題へ ▶</button>`:all?`<button class="btn gold" style="margin-left:auto" onclick="YD.sum=true;sfx('click');ydRe()">今日の成績を見る ▶</button>`:`<button class="btn gold" style="margin-left:auto" onclick="ydGo(${R.r.findIndex(x=>x==null)})">のこりの問題へ ▶</button>`}</div>`
      :`<div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b>${q===0?'カードの顔マークは、その産業を<strong>持っている相手</strong>。宣言と正直度を見て、だれが何を出すか読んでね。いちばん点が高いカードが正解とはかぎらないよ！':'宣言がホントかウソか、正直度で読もう。1回だけ、えらんだら決定だよ。'}</p></div>`}`;
 }
+/* ---- 🕵️ ひみつ指令：試合のはじめに3つから1つえらぶ、自分だけの目標。点数は変わらず、達成でコイン ---- */
+const ORD_DEF={
+  mi:{d:2, coin:15}, mn:{d:2, coin:15}, lm:{d:2, coin:15}, big:{d:2, coin:15},
+  nh:{d:1, coin:10}, pa:{d:1, coin:10},
+  yw:{d:3, coin:25}, bf:{d:3, coin:25}, tp:{d:3, coin:25}
+};
+const ordOk = () => !!G && !G.online && !G.demo && !G.practice && !G.chal && humans()===1 && myIndex()>=0;
+function ordMake(){
+  const p=G.players[myIndex()], T=totalTurns(), R=a=>a[Math.floor(Math.random()*a.length)];
+  const mk=id=>{ const o={id, ...ORD_DEF[id]};
+    if(id==='mi'){ o.c=R(p.hand); o.n=`${IND[o.c]}で独占する`; }
+    if(id==='mn'){ o.k=Math.max(2,Math.ceil(T/2)); o.n=`独占を${o.k}回する`; }
+    if(id==='lm') o.n='最後のターンで独占する';
+    if(id==='big') o.n='1ターンで +5点以上とる';
+    if(id==='nh') o.n='3人以上で被らない';
+    if(id==='pa') o.n='マイナスのターンを作らない';
+    if(id==='yw') o.n='読み勝ちを1回する';
+    if(id==='bf') o.n='ブラフで独占する';
+    if(id==='tp') o.n='1位で終える';
+    return o; };
+  const by=d=>Object.keys(ORD_DEF).filter(k=>ORD_DEF[k].d===d && !(k==='nh' && G.players.length<3));
+  return [R(by(1)), R(by(2)), R(by(3))].map(mk);
+}
+function ordEval(fin, won){
+  const O=G.ord, p=G.players[myIndex()], us=p.used||[], T=totalTurns(), left=T-us.length;
+  switch(O.id){
+    case 'mi': { const ok=us.some(u=>u.ind===O.c && u.k===1); return {ok, fail:!ok && us.some(u=>u.ind===O.c), prog:'0/1'}; }
+    case 'mn': { const m=us.filter(u=>u.k===1).length; return {ok:m>=O.k, fail:m+left<O.k, prog:`${m}/${O.k}`}; }
+    case 'lm': { const l=us.find(u=>u.turn===T-1); return {ok:!!(l && l.k===1), fail:!!(l && l.k!==1), prog:'最後に'}; }
+    case 'big': { const m=us.length?Math.max(...us.map(u=>u.total)):null; return {ok:m!=null && m>=5, fail:fin && !(m>=5), prog:m==null?'まだ':`最高 ${sgn(m)}`}; }
+    case 'nh': { const bad=us.some(u=>u.k>=3); return {ok:fin && !bad, fail:bad, prog:`${us.length}/${T}`}; }
+    case 'pa': { const bad=us.some(u=>u.total<0); return {ok:fin && !bad, fail:bad, prog:`${us.length}/${T}`}; }
+    case 'yw': { const m=p.ywin||0; return {ok:m>=1, fail:fin && !m, prog:'0/1'}; }
+    case 'bf': { const m=(G.bluffWins||[]).length; return {ok:m>=1, fail:fin && !m, prog:'0/1'}; }
+    case 'tp': return {ok:fin && !!won, fail:fin && !won, prog:'さいごに'};
+  }
+  return {ok:false, fail:true, prog:''};
+}
+function ordTick(){
+  if(!G.ord || G.ord.done || G.ord.failed) return; const r=ordEval(false);
+  if(r.ok){ G.ord.done=1; const n=G.ord.n; setTimeout(()=>{ if(!G) return; cutIn('指令達成！',n,'ordok'); sfx('fanfare'); haptic([30,40,60]); }, 2600); }
+  else if(r.fail){ G.ord.failed=1; }
+}
+function ordPick(i){ if(!G || !G.ordC || G.ord) return; G.ord=Object.assign({}, G.ordC[i]); sfx('select'); haptic(15); try{ cutIn('ひみつ指令',G.ord.n,'ord'); }catch(e){} render(); }
+function ordUI(){
+  if(!ordOk()) return '';
+  if(!G.ord){
+    if(G.turn!==0 || G.ordSkip || G.phase!=='choose') return '';
+    if(!G.ordC) G.ordC=ordMake();
+    return `<div class="ord-pick"><div class="ord-hd"><span class="label">🕵️ ひみつ指令 · 1つえらんでね（任意）</span><button class="ord-skip" onclick="G.ordSkip=1;sfx('click');render()">今回はなし</button></div>
+      <div class="ord-cs">${G.ordC.map((o,i)=>`<button class="ord-c d${o.d}" onclick="ordPick(${i})"><i>${'★'.repeat(o.d)}</i><b>${o.n}</b><small>+${o.coin}🪙</small></button>`).join('')}</div></div>`;
+  }
+  const O=G.ord, r=O.done?{ok:true}:O.failed?{fail:true}:ordEval(false);
+  return `<div class="ord-chip${r.ok?' ok':r.fail?' ng':''}"><span>🕵️</span><b>${O.n}</b><em>${r.ok?'達成！':r.fail?'失敗…':r.prog}</em></div>`;
+}
+function ordFinal(won){
+  if(!G.ord) return null; const r=ordEval(true, won), P=S.prof, st=P.ordSt=P.ordSt||{n:0,ok:0}; st.n++; if(r.ok) st.ok++;
+  return {n:G.ord.n, ok:r.ok, coin:G.ord.coin, d:G.ord.d, st:{...st}};
+}
+function ordPanel(){
+  const R=G.reward&&G.reward.ord; if(!R) return '';
+  return `<section class="panel ord-res${R.ok?' ok':''}"><span class="label">🕵️ ひみつ指令 · ${'★'.repeat(R.d)}</span>
+    <div class="ord-rb"><b>${R.n}</b><span class="ord-stamp">${R.ok?'達成':'失敗'}</span></div>
+    <p class="note">${R.ok?`ごほうび +${R.coin}🪙 ・ `:'次はちがう指令がくるよ。 ・ '}通算 ${R.st.ok}/${R.st.n}回 達成</p></section>`;
+}
 let TW_SEL=null;
 function openTown(tab){ sfx('click'); TW_SEL=null; TW_TAB=typeof tab==='string'?tab:'town'; openSheet('town'); }
 function townPick(c){ TW_SEL=c; sfx('select'); haptic(8); const w=document.getElementById('twWrap'); if(w) w.innerHTML=townInner(); }
@@ -9976,7 +10066,7 @@ function handDock(news){
   else if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(pcfg(G.active),b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}${rdrLine(RD,G.sel)}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
   if(G.sel!==null && ospPending()) preview=preview.replace(cmpBtn, rdrLine(RD,G.sel)+cmpBtn);
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
-  return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}${readTip(RD)}
+  return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}${readTip(RD)}${ordUI()}
     <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}${ttStrip()}${declUI()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
@@ -10061,7 +10151,7 @@ function finalView(){
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center"><button class="btn big pb-btn" onclick="photoShoot()">📸 記念撮影</button>${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
     ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
-    ${chalPanel()}
+    ${chalPanel()}${ordPanel()}
     ${rewardPanel()}
     ${fbPanel()}
     ${finNav()}
@@ -10348,11 +10438,12 @@ function recordResult(){
   const sty=G.story?storyResult(rk, me):null; if(sty&&sty.bonus){ coin+=sty.bonus; P.coin+=sty.bonus; } if(STORIES.every(x=>(P.story||{})[x.k])) unlock('story9');
   const wm=progressWeekly({p, won, rank:mine?mine.rank:9, boss:!!(bsr&&bsr.win), special:!!(G.story||G.cup||G.surv!=null)});
   if(wm.coin){ coin+=wm.coin; P.coin+=wm.coin; }
-  let qbg=[]; try{ qbg=qbSweep(); qbg.forEach(x=>coin+=x.g); }catch(e){}   // まちの依頼も、達成していれば自動でごほうび
+  let qbg=[]; try{ qbg=qbSweep(); qbg.forEach(x=>coin+=x.g); }catch(e){}
+  let ord=null; try{ ord=ordFinal(won); if(ord && ord.ok){ coin+=ord.coin; P.coin+=ord.coin; } }catch(e){}   // まちの依頼も、達成していれば自動でごほうび
   if(G.duel && G.duel.target!=null && p.score>G.duel.target) unlock('duelwin');
   const trb=recordRivals(rk, me); if(trb){ coin+=trb; P.coin+=trb; }
   { const RV=P.riv||{}, ks=Object.keys(CHARS); if(ks.every(k=>RV[k])) unlock('chars9'); if(ks.every(k=>RV[k]&&RV[k].w>0)) unlock('beat9'); }
-  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, sty, svr, spr, bsr, luck, wm, qbg, dex, trb, trk:trb?todayRival():null};
+  G.reward={xp:xp+mis.xp, base:xp, coin, mis, skins, before, after, got, won, rate:{before:r0, after:r1}, chal, cup, sty, svr, spr, bsr, luck, wm, qbg, ord, dex, trb, trk:trb?todayRival():null};
   saveProfile();
 }
 /* ---- daily challenge: 日付で決まる同じゲームを、全員が同じ条件で遊ぶ ---- */
@@ -10523,9 +10614,10 @@ function misClearHTML(R){
   if(M.bonus) rows.push(['','★','きょうのミッションをぜんぶ達成！',`+${M.bonus}XP`,' all']);
   (W.cleared||[]).forEach(m=>{ if(m && m.n) rows.push([misK(m),'今週',m.n,`+${WM_COIN}🪙`,'']); });
   if(W.bonus) rows.push(['','★','今週のミッションをぜんぶ達成！',`+${W.bonus}🪙`,' all']);
+  if(R.ord && R.ord.ok) rows.push(['','指令',`🕵️ ひみつ指令「${R.ord.n}」`,`+${R.ord.coin}🪙`,' all']);
   (R.qbg||[]).forEach(g=>rows.push([g.k,'依頼',`${g.k}「${QB_TY[g.k]||'ありがとう！'}」`,`+${g.g}🪙`,'']));
   if(!rows.length) return '';
-  return `<div class="mclear">${rows.map(([k,tg,n,r,c],j)=>`<div class="mis ok pop${c}" style="animation-delay:${1.2+j*.25}s"><span class="mic${k&&CHARS[k]?' mbd-mf':''}">${k&&CHARS[k]?face(k,null,'happy'):'★'}</span><span class="mtx"><span class="label">${tg==='依頼'?'依頼たっせい！':tg==='★'?'COMPLETE':tg+'のミッション クリア'}</span><b>${esc(n)}</b></span><span class="mxp">${r}</span></div>`).join('')}</div>`;
+  return `<div class="mclear">${rows.map(([k,tg,n,r,c],j)=>`<div class="mis ok pop${c}" style="animation-delay:${1.2+j*.25}s"><span class="mic${k&&CHARS[k]?' mbd-mf':''}">${k&&CHARS[k]?face(k,null,'happy'):'★'}</span><span class="mtx"><span class="label">${tg==='依頼'?'依頼たっせい！':tg==='指令'?'ひみつ指令 たっせい！':tg==='★'?'COMPLETE':tg+'のミッション クリア'}</span><b>${esc(n)}</b></span><span class="mxp">${r}</span></div>`).join('')}</div>`;
 }
 /* ---- daily missions: 日付で決まる3つのお題。達成すると自動でXP ---- */
 const MISSIONS=[
