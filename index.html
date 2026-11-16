@@ -3734,6 +3734,26 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .cgb-bar{height:7px;border-radius:99px;background:var(--panel);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}.cgb-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--c),var(--gold))}
 .cgb-tx small{font-size:11px;color:var(--muted);font-weight:700}.cgb-x{opacity:.8}
 @media (prefers-reduced-motion:reduce){.cg-f,.cgu-ray{animation:none}.cgu-old{display:none}.cgu-new,.cgu-t{opacity:1;animation:none}}
+/* OPEN! のグループ演出 */
+.flg{position:relative;display:flex;flex-direction:column;align-items:center}
+.flg-cards{display:flex;gap:clamp(8px,2.5vw,18px)}
+.flg.clash .flg-cards{gap:clamp(4px,1.5vw,10px)}
+.flg.clash .fl{z-index:var(--z)}
+.flg.clash .fl .fl-in{animation:flflip .55s cubic-bezier(.3,1.4,.5,1) both var(--d),flSq .35s cubic-bezier(.5,0,.6,1.4) both var(--s2)}
+.flg.clash .fl.hit .fl-in{animation:flflip .55s cubic-bezier(.3,1.4,.5,1) both var(--d),flSq .35s cubic-bezier(.5,0,.6,1.4) both var(--s2),flshake .45s ease both calc(var(--s2) + 300ms)}
+@keyframes flSq{from{translate:0 0}to{translate:var(--sx) 0}}
+.flg.clash .fl-tag{visibility:hidden;min-height:4px}
+.flg-x{position:absolute;left:50%;top:28%;width:0;height:0;z-index:20;pointer-events:none}
+.flg-x b{position:absolute;left:0;top:0;transform:translate(-50%,-50%) scale(0);font-size:44px;filter:drop-shadow(0 0 10px #ff5d5d);animation:flgBoom .7s cubic-bezier(.2,1.6,.4,1) both;animation-delay:calc(var(--s2) + 280ms)}
+.flg-x i{position:absolute;left:-40px;top:-40px;width:80px;height:80px;border-radius:50%;border:4px solid #ffd75a;opacity:0;animation:flgRing .6s ease-out both;animation-delay:calc(var(--s2) + 280ms)}
+.flg-tag{margin-top:2px;padding:2px 10px;border-radius:99px;background:var(--red);color:#fff;font-family:var(--display);font-weight:400;font-size:clamp(12px,3.4vw,15px);white-space:nowrap;opacity:0;animation:fltag .4s cubic-bezier(.2,.9,.3,1.6) both;animation-delay:calc(var(--s2) + 380ms)}
+.flg-tag small{font-family:var(--body);font-weight:900;font-size:.75em;opacity:.85}
+.flg-beam{position:absolute;left:50%;top:-34px;width:150%;height:calc(100% + 40px);transform:translateX(-50%);background:linear-gradient(180deg,rgb(255 215 90 / .55),rgb(255 215 90 / .12) 55%,transparent);clip-path:polygon(38% 0,62% 0,100% 100%,0 100%);opacity:0;pointer-events:none;z-index:-1;animation:flgBeam .6s ease-out both;animation-delay:var(--s2)}
+.flg.solo:has(.fl.hit) .flg-beam,.flg.solo:not(:has(.fl.mono)) .flg-beam{display:none}
+@keyframes flgBoom{0%{transform:translate(-50%,-50%) scale(0) rotate(-30deg);opacity:1}55%{transform:translate(-50%,-50%) scale(1.35) rotate(8deg);opacity:1}100%{transform:translate(-50%,-50%) scale(.9);opacity:0}}
+@keyframes flgRing{0%{opacity:1;transform:scale(.2)}100%{opacity:0;transform:scale(1.6);border-width:1px}}
+@keyframes flgBeam{from{opacity:0;transform:translateX(-50%) scaleY(.2)}to{opacity:1;transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.flg.clash .fl .fl-in{translate:var(--sx) 0}.flg-x{display:none}.flg-tag,.flg-beam{opacity:1;animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5035,14 +5055,21 @@ function endFlip(){
 }
 function flipOverlay(){
   const n=G.players.length, me=myIndex();
-  const cards=G.players.map((p,i)=>{ const r=G.last[i], st=r.k===1?(r.hd>=2?'mono yw':'mono'):r.k>1?'hit':''; const d=350+i*170, settle=350+n*170+250;
-    return `<div class="fl ${st}${i===me?' me':''}" style="--d:${d}ms;--s2:${settle}ms">
+  /* 同じ産業のカードを並べてグループに。被ったカードは寄りあってぶつかり、独占はスポットライト */
+  const settle=350+n*170+250, grp=[]; G.players.forEach((p,i)=>{ const g=grp.find(x=>x.ind===G.last[i].ind); if(g) g.m.push(i); else grp.push({ind:G.last[i].ind, m:[i]}); });
+  let slot=0; const card1=(p,i,j,k)=>{ const r=G.last[i], st=r.k===1?(r.hd>=2?'mono yw':'mono'):r.k>1?'hit':''; const d=350+(slot++)*170, sx=k>1?Math.round(((k-1)/2-j)*22):0;
+    return `<div class="fl ${st}${i===me?' me':''}" style="--d:${d}ms;--s2:${settle}ms;--sx:${sx}px;--z:${j}">
       <div class="fl-in"><div class="fl-face fl-back back${skc()}${bkc()}"></div><div class="fl-face fl-front">${cardHTML(r.ind,{cls:'flc'})}</div></div>
       <span class="fl-tag">${r.k===1?(r.hd>=2?'読み勝ち！':'独占！'):r.k>1?`${r.k}人被り`:''}</span>
-      <span class="fl-name"><span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${avHTML(p)}</span>${esc(p.name)}</span>
-      <b class="fl-pts${r.total<0?' neg':''}">${G.osp&&G.osp.shown&&isFinalTurn()?'<small class="fl-x2">2倍で</small>':''}${sgn(r.total)}</b></div>`; }).join('');
+      <span class="fl-name"><span class="ava" style="--s:var(--s${p.seat%6});grid-row:auto">${avHTML(p)}</span>${i===me?'あなた':esc(String(p.name).replace(/^CPU\s*/,''))}</span>
+      <b class="fl-pts${r.total<0?' neg':''}">${G.osp&&G.osp.shown&&isFinalTurn()?'<small class="fl-x2">2倍で</small>':''}${sgn(r.total)}</b></div>`; };
+  const whK = G.whale&&G.whale.pick!=null ? G.whale.pick : -1;
+  const cards=grp.map(g=>{ const k=g.m.length+(g.ind===whK?1:0);
+    return `<div class="flg${k>1?' clash':' solo'}" style="--s2:${settle}ms;--c:var(--i${g.ind})">${k>1?`<span class="flg-x" aria-hidden="true"><i></i><b>💥</b></span>`:'<span class="flg-beam" aria-hidden="true"></span>'}
+      <div class="flg-cards">${g.m.map((i,j)=>card1(G.players[i],i,j,g.m.length)).join('')}</div>
+      ${k>1?`<span class="flg-tag">${k}人で被り！ <small>${IND[g.ind]}</small></span>`:''}</div>`; }).join('');
   const wcard = G.whale&&G.whale.pick!=null ? `<div class="fl whl" style="--d:${350+n*170}ms;--s2:${350+n*170+250}ms"><div class="fl-in"><div class="fl-face fl-back back${skc()}${bkc()}"></div><div class="fl-face fl-front">${cardHTML(G.whale.pick,{cls:'flc'})}</div></div><span class="fl-tag"></span><span class="fl-name">🐋 クジラ</span><b class="fl-pts">—</b></div>` : '';
-  return `<div class="overlay flipov" onclick="endFlip()"><div class="box"><div class="fl-open">OPEN!</div><div class="fl-row">${cards}${wcard}</div><div class="note">タップでスキップ</div></div></div>`;
+  return `<div class="overlay flipov" onclick="endFlip()"><div class="box"><div class="fl-open">OPEN!</div><div class="fl-row">${cards}${wcard?`<div class="flg solo">${wcard}</div>`:''}</div><div class="note">タップでスキップ</div></div></div>`;
 }
 /* ---- 演出②：結果発表セレモニー。最下位から順に発表し、最後に1位をスポットライトで ---- */
 let CER_T=[];
