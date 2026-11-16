@@ -3853,6 +3853,32 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 @keyframes dkDown{from{transform:translateY(-40px)}to{transform:none}}
 @keyframes dkUnfold{from{opacity:0;transform:scaleY(.6)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.dock.dk-close,.dock.dk-close .dk-c,.dock.dk-open .dk-info{animation:none}}
+/* 需要と供給 */
+.sdr{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:5px 8px;border-radius:12px;background:linear-gradient(90deg,rgb(79 227 255 / .1),transparent);box-shadow:inset 0 0 0 1px var(--line)}
+.sdr-l{font-size:11.5px;font-weight:900;color:var(--cyan-tx,var(--cyan))}.sdr-n{font-size:11px;color:var(--muted);font-weight:800}
+.sdr-c{display:inline-flex;align-items:center;gap:3px;padding:2px 8px 2px 3px;border-radius:99px;background:var(--panel2);font-size:11.5px;font-weight:900}
+.sdr-c i{display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--c)}.sdr-c i svg{width:11px;height:11px}
+.sdr-c b{font-family:var(--display);font-weight:400}.sdr-c.up b{color:var(--up)}.sdr-c.dn b{color:var(--down)}
+.sdr-c.up{box-shadow:inset 0 0 0 1.5px var(--up)}.sdr-c.dn{box-shadow:inset 0 0 0 1.5px var(--down)}
+.sdr-q{margin-left:auto;width:20px;height:20px;border:0;border-radius:50%;background:var(--panel2);color:var(--muted);font:inherit;font-size:11px;font-weight:900;cursor:pointer}
+.sdfx{position:fixed;inset:0;z-index:28;pointer-events:none;display:flex;align-items:flex-start;justify-content:center;padding-top:18vh;animation:sigBg 2.6s ease both}
+.sdfx-b{min-width:min(340px,90vw);padding:10px 12px 12px;border-radius:16px;background:linear-gradient(180deg,#0b1130,#060a1e);box-shadow:0 0 0 2px #4fe3ff66,0 20px 50px #000a;color:#fff;font-family:ui-monospace,Menlo,Consolas,monospace;animation:sdIn 2.6s cubic-bezier(.2,.9,.3,1.2) both}
+.sdfx-h{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:900;letter-spacing:.1em;color:#7af0ff}
+.sdfx-dot{width:8px;height:8px;border-radius:50%;background:#ff5d5d;box-shadow:0 0 8px #ff5d5d;animation:flkUp .8s ease-in-out infinite}
+.sdfx-l{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+.sdfx-i{display:grid;grid-template-columns:22px 1fr auto auto;align-items:center;gap:8px;padding:4px 8px;border-radius:8px;background:#ffffff0d;font-family:var(--body);opacity:0;animation:sdRow .4s cubic-bezier(.3,1.5,.5,1) both var(--d)}
+.sdfx-i i{display:grid;place-items:center;width:22px;height:22px;border-radius:6px;background:var(--c)}.sdfx-i i svg{width:14px;height:14px}
+.sdfx-i b{font-size:14px}.sdfx-i em{font-style:normal;font-family:var(--display);font-size:17px}.sdfx-i small{font-size:10.5px;font-weight:800;opacity:.75}
+.sdfx-i.up em{color:#4dff9a;text-shadow:0 0 10px #4dff9a88}.sdfx-i.dn em{color:#ff6b6b;text-shadow:0 0 10px #ff6b6b88}
+.sdfx-t{margin-top:8px;font-family:var(--body);font-size:12px;font-weight:800;opacity:.85}
+@keyframes sdIn{0%{transform:translateY(-30px) scale(.9);opacity:0}10%,85%{transform:none;opacity:1}100%{transform:translateY(-14px);opacity:0}}
+@keyframes sdRow{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+.sdp-g{display:flex;flex-direction:column;gap:3px;margin:6px 0}
+.sdp-r{display:grid;grid-template-columns:30px repeat(6,minmax(0,1fr));gap:3px;align-items:center}
+.sdp-t{font-size:11px;font-weight:900;color:var(--muted)}
+.sdp-c{display:grid;place-items:center;height:22px;border-radius:6px;background:var(--panel2);font-size:12px;font-weight:900;color:var(--muted)}
+.sdp-c.hd{background:var(--c)}.sdp-c.hd svg{width:13px;height:13px}
+.sdp-c.up{background:rgb(77 255 154 / .18);color:var(--up);box-shadow:inset 0 0 0 1.5px var(--up)}.sdp-c.dn{background:rgb(255 93 93 / .16);color:var(--down);box-shadow:inset 0 0 0 1.5px var(--down)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4853,7 +4879,7 @@ function start(data){
   applyLook();
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.league===undefined) S.league=!!load('azakei-league-on');
-  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.chain===undefined) S.chain=!!load('azakei-chain'); if(S.draft===undefined) S.draft=!!load('azakei-draft'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.futOn===undefined) S.futOn=!!load('azakei-fut'); if(S.hmMore===undefined) S.hmMore=!!load('azakei-hmmore'); if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
+  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.chain===undefined) S.chain=!!load('azakei-chain'); if(S.draft===undefined) S.draft=!!load('azakei-draft'); if(S.sd===undefined) S.sd=!!load('azakei-sd'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.futOn===undefined) S.futOn=!!load('azakei-fut'); if(S.hmMore===undefined) S.hmMore=!!load('azakei-hmmore'); if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
   if(S.dockMin===undefined){ const d=load('azakei-dockmin'); S.dockMin = d===null ? ((S.rec&&S.rec.games)||0)>=5 : !!d; S.dockTipShown=!!load('azakei-docktip'); }
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
@@ -4925,6 +4951,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   G.whale = G.b4 && G.players.length===2 ? {hand:[0,1,2,3,4,5], pick:null, used:[]} : null;
   G.draft = !!(!online && freePlay && !long && S.draft && !G.whale && G.players.length>=3 && !G.teams);   /* 🎴 ドラフト（試作） */
   G.dr = G.draft ? draftInit() : null;
+  G.sd = (!online && freePlay && !long && S.sd) ? sdInit() : null;   /* 📈 需要と供給（試作） */
   G.pw = G.b4 && S.pwOn ? pwAssign() : null;
   if(ch && ch.pw && PWR[ch.pw]){   /* 投資家カード編のステージ：β4で、あなたのカードは決まった1枚 */
     G.b4=true; G.closeX=false; G.pw=pwAssign(); G.pwOpt=null; const me=G.players.findIndex(isHuman);
@@ -5122,6 +5149,7 @@ function endIntro(){
   if(isFinalTurn()) setTimeout(()=>{ if(G && G.phase==='choose') finalTurnCut(); },200);
   if(G.online && !G.host){ NET.introUntil=0; G.ov=null; render(); return; }
   clearTimeout(introTimer); G.ov=null;
+  if(G.sd && G.sd.fresh){ G.sd.fresh=false; setTimeout(sdFx, isFinalTurn()?2300:250); }
   if(G.online){ G.active=G.me; render(); checkAllPicked(); return; }
   nextHuman();
 }
@@ -5382,6 +5410,7 @@ function nextTurn(){
   if(!G || G.phase!=='reveal') return;   // 連打で2ターン進まないように
   if(G.online && !G.host) return;
   sfx('click'); G.turn++;
+  if(G.sd){ try{ if(G.turn>=TURNS) sdApply(G.sd.mod.map(()=>0)); else sdShift(); }catch(e){} }
   if(G.turn>=TURNS && isLong()){ settleRound(); return; }   // ロング版は最後の期も決算してから最終結果へ
   if(G.turn>=TURNS){ finishGame(); return; }
   scrollTo(0,0); beginTurn();
@@ -10702,7 +10731,7 @@ function handDock(news){
   const row=p.fut?next:news, n=p.hand.length;
   const ptsOf=c=>ospPending()?null:(p.fut?futBase(C.table[row][c],pcfg(G.active)):C.table[row][c])+(p.brand===c?1:0);
   const RD=rdrInfo(G.active);
-  const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return rdrCard(RD,c,cardHTML(c,{tag:pwTag(p,c),click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`})); }).join('');
+  const cards=p.hand.map((c,j)=>{ const off=j-(n-1)/2; return rdrCard(RD,c,cardHTML(c,{tag:pwTag(p,c)||sdTag(c),click:true,sel:G.sel===c,cls:p.brand===c?'branded':'',pts:ptsOf(c),nx:next!==null&&!p.fut?C.table[next][c]:null,style:`--r:${off*6}deg;--y:${Math.abs(off)*9}px;--i:${j};z-index:${j+1}`})); }).join('');
   const dealKey=G.turn+':'+G.active, deal=G.dealKey!==dealKey; G.dealKey=dealKey;
   const canFore=!p.foreUsed && G.turn<TURNS-1 && C.fore!=='none', fdef=FORE[C.fore]||FORE.futures;
   const cmpBtn = G.online ? '' : `<button class="ipf-link hk-open" onclick="openSheet('cmp')" aria-label="手札のカードを見くらべる">📊 くらべる</button>`;
@@ -10713,7 +10742,7 @@ function handDock(news){
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   const dmin=dockMinOn(), dan=G.dkAnim; G.dkAnim=null;
   return `<div class="dock sheet${p.fut?' futmode':''}${dmin?' min':''}${dan?' dk-'+dan:''}" aria-label="手札">${dockGrab(dmin)}${dmin?dockSum(p):''}<div class="dk-info">${guideTip()}${readTip(RD)}${ordUI()}${raceBar()}
-    ${stepBar('choose')}</div>${ttStrip()}${declUI()}
+    ${stepBar('choose')}</div>${sdRow()}${ttStrip()}${declUI()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>${G.sel!==null&&!reduced()?`<div class="flk-tip"><i>👆</i>選んだカードを<b>上へはじいて</b>も出せるよ</div>`:''}
@@ -10803,7 +10832,7 @@ function finalView(){
     ${finNav()}
     ${fsec('fin-aw','🏅','今回の賞・能力',(aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${avHTML(p)}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:'')+pwFinalPanel())}
     ${fsec('fin-iv','🎙️','インタビューと号外',ivPanel()+gogaiPaper())}
-    ${fsec('fin-an','📊','ふりかえり',teamPanel()+draftPanel()+turnPoint()+chainPanel()+whatIf()+playAnalysis()+recap)}
+    ${fsec('fin-an','📊','ふりかえり',teamPanel()+draftPanel()+sdPanel()+turnPoint()+chainPanel()+whatIf()+playAnalysis()+recap)}
   </div><div class="col">
     <section class="panel chart" id="fin-ch"><h3>POINTの推移</h3>${lineChart()}</section>
     <section class="panel"><h3>各ターンの記録</h3><p class="note">${logDeck().map((n,i)=>`T${i+1} ${C.hist?yearOf(n)+' ':''}${nm(n)}`).join(' → ')}</p>
@@ -10940,7 +10969,7 @@ function playView(){
       ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span><button class="dchip d-auto${S.autoDiff?" on":""}" onclick="setAutoDiff(true)"><i>🤖</i>おまかせ</button>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${!S.autoDiff&&diffNow()===k?" on":""}" onclick="setAutoDiff(false);setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>${S.autoDiff?`<p class="note tagnote">🤖 おまかせ：いまは「${AUTO_LV[autoLv()][1]}」。1位を取ると強く、最下位だとやさしくなります。</p>`:''}`:""}
       ${!party&&S.seats.some(s=>s.type!=="human")?oppRow():''}
       ${party?'':`<details class="adv-box"${S.advOpen?' open':''} ontoggle="S.advOpen=this.open"><summary><span>⚙️ こだわり設定</span><small>人数・CPUの性格・チーム戦などの特別ルール</small></summary>`}
-      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.b4?" on":""}" onclick="setB4(${!S.b4})"><i>🆕</i>β4ルール（大引けサプライズ）</button>${S.b4?`<button class="dchip${S.futOn||S.pwOn?" on":""}" onclick="setFut(${!S.futOn})" ${S.pwOn?'disabled title="投資家カードでは先物取引を使います"':''}><i>🔭</i>上級：先物取引</button>`:''}${S.b4?`<button class="dchip${S.pwOn?" on":""}" onclick="setPw(${!S.pwOn})"><i>🃏</i>投資家カード（試作）</button>`:''}<button class="dchip${S.chain?" on":""}" onclick="setChain(${!S.chain})"><i>🔗</i>サプライチェーン（試作）</button><button class="dchip${S.draft?" on":""}" onclick="setDraft(${!S.draft})"><i>🎴</i>ドラフト（試作）</button><button class="dchip${S.yomi?" on":""}" onclick="setYomi(${!S.yomi})"><i>🔮</i>人気予想（試作）</button>${S.b4?'':`<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button>`}</div>${S.b4?'<p class="note tagnote">🆕 β4ルール：最後のターンだけ、NEWSを伏せたままカードを出します。候補の中のどれが来るかを読んで勝負。点数は2倍なので、最後まで逆転できます。オフにすると、ルールブックどおりのβ3で遊べます。</p>':''}${S.b4&&S.pwOn?'<p class="note tagnote">🃏 投資家カード（試作）：全員が1枚ずつ、ずっと効く特別な能力を持ちます。CPUはキャラに合った能力。<button class="ipf-link" onclick="openSheet(\'pw\')">9枚の能力を見る</button> 記録とランキングには入りません。</p>':''}${!S.b4&&S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.draft?'<p class="note tagnote">🎴 ドラフト：試合の前に、みんなで順番にカードを取りあって<b>自分だけの手札4枚</b>を作る。だれが何を持っているかは全員に見えるので、読み合いが深くなります。3人以上のふだんの対戦だけ。自己ベストには入りません。</p>':''}${S.chain?'<p class="note tagnote">🔗 サプライチェーン：前のターンのカードと<b>つながる</b>カードを出すと、被っても +1（3つ続けば +2）。カードを出す<b>順番</b>が作戦になります。<button class="ipf-link" onclick="openSheet(\'chain\')">つながりを見る</button> 自己ベストには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
+      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.b4?" on":""}" onclick="setB4(${!S.b4})"><i>🆕</i>β4ルール（大引けサプライズ）</button>${S.b4?`<button class="dchip${S.futOn||S.pwOn?" on":""}" onclick="setFut(${!S.futOn})" ${S.pwOn?'disabled title="投資家カードでは先物取引を使います"':''}><i>🔭</i>上級：先物取引</button>`:''}${S.b4?`<button class="dchip${S.pwOn?" on":""}" onclick="setPw(${!S.pwOn})"><i>🃏</i>投資家カード（試作）</button>`:''}<button class="dchip${S.chain?" on":""}" onclick="setChain(${!S.chain})"><i>🔗</i>サプライチェーン（試作）</button><button class="dchip${S.draft?" on":""}" onclick="setDraft(${!S.draft})"><i>🎴</i>ドラフト（試作）</button><button class="dchip${S.sd?" on":""}" onclick="setSd(${!S.sd})"><i>📈</i>需要と供給（試作）</button><button class="dchip${S.yomi?" on":""}" onclick="setYomi(${!S.yomi})"><i>🔮</i>人気予想（試作）</button>${S.b4?'':`<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button>`}</div>${S.b4?'<p class="note tagnote">🆕 β4ルール：最後のターンだけ、NEWSを伏せたままカードを出します。候補の中のどれが来るかを読んで勝負。点数は2倍なので、最後まで逆転できます。オフにすると、ルールブックどおりのβ3で遊べます。</p>':''}${S.b4&&S.pwOn?'<p class="note tagnote">🃏 投資家カード（試作）：全員が1枚ずつ、ずっと効く特別な能力を持ちます。CPUはキャラに合った能力。<button class="ipf-link" onclick="openSheet(\'pw\')">9枚の能力を見る</button> 記録とランキングには入りません。</p>':''}${!S.b4&&S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.draft?'<p class="note tagnote">🎴 ドラフト：試合の前に、みんなで順番にカードを取りあって<b>自分だけの手札4枚</b>を作る。だれが何を持っているかは全員に見えるので、読み合いが深くなります。3人以上のふだんの対戦だけ。自己ベストには入りません。</p>':''}${S.chain?'<p class="note tagnote">🔗 サプライチェーン：前のターンのカードと<b>つながる</b>カードを出すと、被っても +1（3つ続けば +2）。カードを出す<b>順番</b>が作戦になります。<button class="ipf-link" onclick="openSheet(\'chain\')">つながりを見る</button> 自己ベストには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
       ${leagueNote()}
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
@@ -11048,7 +11077,7 @@ function recordResult(){
   P.ind=P.ind||[0,0,0,0,0,0]; P.indm=P.indm||[0,0,0,0,0,0]; P.indp=P.indp||[0,0,0,0,0,0]; P.indc=P.indc||[0,0,0,0,0,0]; p.used.forEach(u=>{ P.ind[u.ind]++; if(u.k===1) P.indm[u.ind]++; P.indp[u.ind]+=u.total; P.indc[u.ind]++; });   // indp・indc：平均点用（数えはじめてからの点と回数）
   G.cgUp=IND.map((_,c)=>({c,a:cg0[c],b:cgTier(c)})).filter(x=>x.b>x.a);   // 🃏 カード育成：この試合で進化したカード
   G.recBroke=recordBests(p, me, won);
-  st.games++; if(won) st.wins++; if(!G.closeX && !G.pw && !G.yomi && !G.chain && !G.draft) st.best=Math.max(st.best,p.score); st.mono+=p.uniq; st.yw=(st.yw||0)+(p.ywin||0); if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
+  st.games++; if(won) st.wins++; if(!G.closeX && !G.pw && !G.yomi && !G.chain && !G.draft && !G.sd) st.best=Math.max(st.best,p.score); st.mono+=p.uniq; st.yw=(st.yw||0)+(p.ywin||0); if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
   const xp = Math.round((20 + Math.max(0,p.score)*3 + p.uniq*5 + (won?40:0) + (G.online?15:0)) * (G.evt?1.5:1));   // 今週のイベント参加中はXP1.5倍
   const mis = progressMissions({p, won, rank:mine?mine.rank:9, hist:!!G.cfg.hist, daily:!!G.daily});
   const before=lvInfo(P.xp); P.xp+=xp+mis.xp; const after=lvInfo(P.xp);
@@ -11210,6 +11239,40 @@ function dockSum(p){
   chips.push(`<span class="dk-c"><i>📰</i>T${G.turn+1}<small>/${TURNS}</small></span>`);
   if(G.ord){ const O=G.ord, r=O.done?{ok:true}:O.failed?{fail:true}:ordEval(false); chips.push(`<span class="dk-c${r.ok?' ok':r.fail?' ng':''}"><i>🕵️</i>${r.ok?'達成':r.fail?'失敗':(r.prog||'')}</span>`); }
   return `<div class="dk-sum" onclick="dockToggle(false)" role="button" aria-label="説明をひらく">${chips.join('')}</div>`;
+}
+/* ---- 📈 需要と供給（試作）：だれも出さなかった産業は「品薄」で次のターン +1、2人以上が出した産業は「供給過多」で −1 ---- */
+function setSd(on){ S.sd=!!on; save('azakei-sd',S.sd); sfx('click'); render(); if(on) toast('📈 需要と供給：だれも出さなかった産業は次のターン +1（品薄）、2人以上が出した産業は −1（供給過多）'); }
+function sdInit(){ G.cfg={...G.cfg, table:G.cfg.table.map(r=>r.slice())}; return {base:G.cfg.table.map(r=>r.slice()), mod:IND.map(()=>0), prev:IND.map(()=>0), hist:[], fresh:false}; }
+function sdApply(mod){ const D=G.sd; D.mod=mod.slice(); G.cfg={...G.cfg, table:D.base.map(r=>r.map((v,c)=>v+D.mod[c]))}; }
+function sdShift(){
+  const D=G.sd, cnt=G.cnt||IND.map(()=>0); D.prev=D.mod.slice();
+  const mod=IND.map((_,c)=>cnt[c]===0?1:cnt[c]>=2?-1:0);
+  D.hist.push({turn:G.turn, mod:mod.slice(), cnt:cnt.slice()}); sdApply(mod); D.fresh=mod.some(x=>x);
+}
+function sdTag(c){ if(!G || !G.sd || G.phase!=='choose') return ''; const m=G.sd.mod[c]; return m>0?'⬆品薄 +1':m<0?'⬇過多 −1':''; }
+function sdRow(){
+  if(!G || !G.sd || G.turn===0) return ''; const D=G.sd, ch=IND.map((d,c)=>({c,m:D.mod[c]})).filter(x=>x.m);
+  if(!ch.length) return `<div class="sdr"><span class="sdr-l">📈 需要と供給</span><span class="sdr-n">今回は値動きなし</span></div>`;
+  return `<div class="sdr"><span class="sdr-l">📈 需要と供給</span>${ch.sort((a,b)=>b.m-a.m).map(x=>`<span class="sdr-c ${x.m>0?'up':'dn'}" style="--c:var(--i${x.c})"><i>${svg(x.c,2.2)}</i>${IND[x.c]}<b>${x.m>0?'+1':'−1'}</b></span>`).join('')}<button class="sdr-q" onclick="sdHelp()" aria-label="需要と供給のルール">?</button></div>`;
+}
+function sdHelp(){ toast('前のターンにだれも出さなかった産業は「品薄」で +1。2人以上が出した産業は「供給過多」で −1。このターンだけ、NEWSの点に足されます'); }
+/* ターンのはじめ：株価ボードふうに、上がった産業・下がった産業が流れこむ */
+function sdFx(){
+  if(!G || !G.sd || G.phase!=='choose' || reduced() || document.querySelector('.sdfx')) return;
+  const D=G.sd, up=IND.map((d,c)=>c).filter(c=>D.mod[c]>0), dn=IND.map((d,c)=>c).filter(c=>D.mod[c]<0); if(!up.length && !dn.length) return;
+  const it=(c,u,j)=>`<span class="sdfx-i ${u?'up':'dn'}" style="--c:var(--i${c});--d:${j*110+250}ms"><i>${svg(c,2.4)}</i><b>${IND[c]}</b><em>${u?'▲ +1':'▼ −1'}</em><small>${u?'品薄':'供給過多'}</small></span>`;
+  const el=document.createElement('div'); el.className='sdfx'; el.setAttribute('aria-hidden','true');
+  el.innerHTML=`<div class="sdfx-b"><div class="sdfx-h"><span class="sdfx-dot"></span>MARKET MOVE · 需要と供給</div><div class="sdfx-l">${up.map((c,j)=>it(c,1,j)).join('')}${dn.map((c,j)=>it(c,0,j+up.length)).join('')}</div><div class="sdfx-t">${up.length?'だれも出さなかった産業が品薄に！':''}${dn.length?' 人気だった産業は値下がり':''}</div></div>`;
+  document.body.appendChild(el); sfx(up.length?'coin':'click'); haptic(12); setTimeout(()=>el.remove(),2600);
+}
+/* 結果画面：ターンごとの値動き */
+function sdPanel(){
+  if(!G || !G.sd || !G.sd.hist.length) return ''; const H=G.sd.hist;
+  const rows=H.map(h=>`<div class="sdp-r"><span class="sdp-t">T${h.turn+1}</span>${h.mod.map((m,c)=>`<span class="sdp-c ${m>0?'up':m<0?'dn':''}" style="--c:var(--i${c})" title="${IND[c]}">${m>0?'▲':m<0?'▼':'·'}</span>`).join('')}</div>`).join('');
+  const ups=H.reduce((a,h)=>a+h.mod.filter(x=>x>0).length,0), dns=H.reduce((a,h)=>a+h.mod.filter(x=>x<0).length,0);
+  return `<section class="panel sdp"><div class="row spread"><h3>📈 需要と供給の記録</h3><span class="note">品薄 ${ups}回 · 供給過多 ${dns}回</span></div>
+    <div class="sdp-g"><div class="sdp-r hd"><span class="sdp-t"></span>${IND.map((d,c)=>`<span class="sdp-c hd" style="--c:var(--i${c})">${svg(c,2)}</span>`).join('')}</div>${rows}</div>
+    <p class="note">▲＝前のターンにだれも出さなかった（品薄 +1）　▼＝2人以上が出した（供給過多 −1）。人気が集まると値段が下がり、だれも作らないものは値段が上がる。これが「需要と供給」。</p></section>`;
 }
 function toggleCoach(){ S.coach=!S.coach; save('azakei-coach',S.coach); if(!S.coach) toast('コーチをオフにしました（設定でいつでも戻せます）'); renderSheet(); render(); }
 function setAvatar(i){ const a=AVATARS[i]; if(!a || lvInfo(S.prof.xp).lv<a[1]) return; S.prof.av=a[0]; saveProfile(); sfx('select'); haptic(12); render(); }
