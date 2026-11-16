@@ -3983,6 +3983,42 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .lmp-st{position:absolute;right:10px;top:-10px;padding:1px 8px;border:2px solid var(--up);border-radius:6px;background:var(--panel);color:var(--up);font-size:10px;font-weight:900;letter-spacing:.12em;transform:rotate(8deg);animation:lbwStamp .4s .5s cubic-bezier(.3,1.8,.5,1) both}
 .lmp-c{display:flex;flex-direction:column;align-items:center;font-family:var(--display);font-size:20px;color:var(--gold-t);line-height:1}.lmp-c small{font-family:var(--body);font-size:9px;font-weight:900}
 @media (prefers-reduced-motion:reduce){.lth::after,.lbw-lu,.lbw-lu-b,.lmp,.lmp.out,.lmp-dots i.on,.lmp-st{animation:none}}
+/* ⚡ 速報 */
+.sdm.bn{background:#ff4d4d;color:#fff}.sdm.bn.dn{background:#5a1b1b;color:#ffb3b3}
+.pay .sdm.bn{top:auto;bottom:-8px}.pay:has(.sdm.bn.up){box-shadow:0 0 0 2px #ff4d4d,0 0 14px rgb(255 77 77 / .45)}.pay:has(.sdm.bn.dn){box-shadow:0 0 0 2px #7a2a2a}
+.sdm.bnf.up{background:#ff4d4d;color:#fff}.sdm.bnf.dn{background:#5a1b1b;color:#ffb3b3}
+.bnr{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;background:linear-gradient(90deg,rgb(255 77 77 / .2),transparent 80%);box-shadow:inset 0 0 0 1.5px rgb(255 77 77 / .6);cursor:pointer;font-size:12.5px;font-weight:800}
+.bnr.dn{background:linear-gradient(90deg,rgb(120 40 40 / .35),transparent 80%);box-shadow:inset 0 0 0 1px rgb(255 120 120 / .4)}
+.bnr.calm{background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line);cursor:default;color:var(--muted)}
+.bnr-l{padding:1px 8px;border-radius:6px;background:#ff3b3b;color:#fff;font-size:11px;font-weight:900;letter-spacing:.06em;animation:bnBlink 1.4s steps(2) infinite}.bnr.calm .bnr-l{background:var(--line);animation:none;color:var(--muted)}
+@keyframes bnBlink{50%{opacity:.55}}
+.bnr-c{display:inline-flex;align-items:center;gap:4px;font-weight:900}.bnr-c i{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--c)}.bnr-c i svg{width:14px;height:14px}
+.bnr-t{color:var(--muted);font-size:11.5px}.bnr b{font-family:var(--display);font-weight:400;font-size:18px;color:#ff6b6b}.bnr.up b{color:var(--up)}.bnr small{font-size:10px;color:var(--muted)}
+.bnfx{position:fixed;inset:0;z-index:130;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:rgb(8 6 20 / .55);backdrop-filter:blur(2px);animation:bnIn .25s ease-out both;cursor:pointer}
+.bnfx.out{animation:bnOut .35s ease-in both}
+@keyframes bnIn{from{opacity:0}}@keyframes bnOut{to{opacity:0}}
+.bnfx-band{width:100%;display:flex;align-items:stretch;background:#d91e1e;box-shadow:0 6px 30px rgb(217 30 30 / .5);transform:skewY(-3deg);animation:bnBand .45s cubic-bezier(.2,.9,.3,1.1) both;overflow:hidden}
+.bnfx.dn .bnfx-band{background:#5e1414}
+@keyframes bnBand{from{transform:skewY(-3deg) translateX(-100%)}}
+.bnfx-tag{flex:none;display:flex;flex-direction:column;justify-content:center;padding:8px 14px;background:#fff;color:#d91e1e;font-size:24px;font-weight:900;line-height:1;letter-spacing:.08em}.bnfx-tag small{font-size:9px;letter-spacing:.2em}
+.bnfx-tk{flex:1;overflow:hidden;display:flex;align-items:center;color:#fff;font-weight:900;font-size:15px;white-space:nowrap}
+.bnfx-tk span{display:inline-block;padding-left:12px;animation:bnTick 6s linear infinite}
+@keyframes bnTick{to{transform:translateX(-50%)}}
+.bnfx-card{display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:20px;background:var(--panel);box-shadow:0 18px 50px rgb(0 0 0 / .5),inset 0 0 0 2px var(--c);animation:bnCard .55s .25s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes bnCard{from{opacity:0;transform:scale(.5) rotate(-6deg)}}
+.bnfx-ic{display:grid;place-items:center;width:64px;height:64px;border-radius:16px;background:var(--c)}.bnfx-ic svg{width:44px;height:44px}
+.bnfx-tx{display:flex;flex-direction:column}.bnfx-tx small{font-size:12px;font-weight:900;color:var(--muted)}.bnfx-tx b{font-size:24px}
+.bnfx-v{font-family:var(--display);font-size:46px;line-height:1;color:var(--up);text-shadow:0 0 20px rgb(77 255 154 / .5);animation:bnPop .5s .6s cubic-bezier(.3,1.8,.5,1) both}.bnfx.dn .bnfx-v{color:#ff6b6b;text-shadow:0 0 20px rgb(255 107 107 / .5)}
+@keyframes bnPop{from{opacity:0;transform:scale(2.4)}}
+.lbd.bn{gap:6px}.lbd-bk{padding:2px 7px;border-radius:5px;background:#ff3b3b;color:#fff;font-size:11px;font-weight:900;animation:bnBlink 1.4s steps(2) infinite}
+.lbd.bn i{animation:bnDemo 2.4s ease-in-out infinite}.lbd.bn i.neg{animation-delay:1.2s}.lbd.bn em{color:var(--up);font-style:normal;font-weight:900}.lbd.bn em.neg{color:#ff6b6b}
+@keyframes bnDemo{0%,100%{transform:none}20%{transform:translateY(-5px) scale(1.12)}}
+.bnp-l{display:grid;gap:6px;margin:8px 0}
+.bnp-r{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:12px;background:var(--panel2);box-shadow:inset 3px 0 0 #ff4d4d}.bnp-r.dn{box-shadow:inset 3px 0 0 #7a2a2a}
+.bnp-t{font-size:11px;font-weight:900;color:var(--muted);width:22px}.bnp-c{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--c);flex:none}.bnp-c svg{width:16px;height:16px}
+.bnp-x{flex:1;min-width:0;display:flex;flex-direction:column}.bnp-x b{font-size:12.5px}.bnp-x small{font-size:11px;color:var(--muted);font-weight:700}
+.bnp-r em{font-style:normal;font-family:var(--display);font-size:18px;color:var(--up)}.bnp-r.dn em{color:#ff6b6b}
+@media (prefers-reduced-motion:reduce){.bnr-l,.bnfx,.bnfx-band,.bnfx-tk span,.bnfx-card,.bnfx-v,.lbd-bk,.lbd.bn i{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4983,7 +5019,7 @@ function start(data){
   applyLook();
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.league===undefined) S.league=!!load('azakei-league-on');
-  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.chain===undefined) S.chain=!!load('azakei-chain'); if(S.draft===undefined) S.draft=!!load('azakei-draft'); if(S.sd===undefined) S.sd=!!load('azakei-sd'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.futOn===undefined) S.futOn=!!load('azakei-fut'); if(S.hmMore===undefined) S.hmMore=!!load('azakei-hmmore'); if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
+  if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.chain===undefined) S.chain=!!load('azakei-chain'); if(S.draft===undefined) S.draft=!!load('azakei-draft'); if(S.sd===undefined) S.sd=!!load('azakei-sd'); if(S.bn===undefined) S.bn=!!load('azakei-bn'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.futOn===undefined) S.futOn=!!load('azakei-fut'); if(S.hmMore===undefined) S.hmMore=!!load('azakei-hmmore'); if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
   if(S.dockMin===undefined){ const d=load('azakei-dockmin'); S.dockMin = d===null ? ((S.rec&&S.rec.games)||0)>=5 : !!d; S.dockTipShown=!!load('azakei-docktip'); }
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
@@ -5056,6 +5092,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   G.draft = !!(!online && freePlay && !long && S.draft && !G.whale && G.players.length>=3 && !G.teams);   /* 🎴 ドラフト（試作） */
   G.dr = G.draft ? draftInit() : null;
   G.sd = (!online && freePlay && !long && S.sd) ? sdInit() : null;   /* 📈 需要と供給（試作） */
+  G.bn = (!online && freePlay && !long && S.bn) ? {cur:null, hist:[], fresh:false} : null;   /* ⚡ 速報（試作） */
   G.pw = G.b4 && S.pwOn ? pwAssign() : null;
   if(ch && ch.pw && PWR[ch.pw]){   /* 投資家カード編のステージ：β4で、あなたのカードは決まった1枚 */
     G.b4=true; G.closeX=false; G.pw=pwAssign(); G.pwOpt=null; const me=G.players.findIndex(isHuman);
@@ -5253,6 +5290,7 @@ function endIntro(){
   if(isFinalTurn()) setTimeout(()=>{ if(G && G.phase==='choose') finalTurnCut(); },200);
   if(G.online && !G.host){ NET.introUntil=0; G.ov=null; render(); return; }
   clearTimeout(introTimer); G.ov=null;
+  if(G.bn && G.bn.fresh){ G.bn.fresh=false; setTimeout(bnFx, (isFinalTurn()?2300:250)+(G.sd&&G.sd.fresh&&!reduced()?2800:0)); }
   if(G.sd && G.sd.fresh){ G.sd.fresh=false; setTimeout(sdFx, isFinalTurn()?2300:250); }
   if(G.online){ G.active=G.me; render(); checkAllPicked(); return; }
   nextHuman();
@@ -5365,7 +5403,7 @@ function resolveTurn(){
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++; if(cnt[p.pick]===1 && hd0[pi]>=2) p.ywin=(p.ywin||0)+1;
     const alt = isHuman(p) ? (()=>{ let b=null; const chB=c=>G.chain && p.last!=null && CHAIN_NEXT[p.last]===c ? ((p._clPrev||1)+1>=3?2:1) : 0;   // チェーン分も「もしも」に入れる
       (p.hand||[]).forEach(c=>{ const k=cnt[c]+(c===p.pick?0:1), v=sdGain(pc, baseFor(pc,p,G.deck,G.turn,c), k, c)+chB(c); if(!b || v>b.v) b={c,v,k}; }); return b?{c:b.c, v:b.v, k:b.k, mine:sdGain(pc,base,cnt[p.pick],p.pick)+chB(p.pick)}:null; })() : null;   // もしもの一手：相手の出し方はそのままで、手札のどれが一番よかったか
-    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],alt,yomi:yb,sdm:G.sd?G.sd.mod[p.pick]:0});
+    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],alt,bn:bnAdj(p.pick),yomi:yb,sdm:G.sd?G.sd.mod[p.pick]:0});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
     pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,guess:p.guess,cb:G.chain?(p._cb||0):0,cl:G.chain?(p.chainLen||1):0,sdm:G.sd?G.sd.mod[p.pick]:0};
   });
@@ -5515,6 +5553,7 @@ function nextTurn(){
   if(G.online && !G.host) return;
   sfx('click'); G.turn++;
   if(G.sd){ try{ if(G.turn>=TURNS) sdApply(G.sd.mod.map(()=>0)); else sdShift(); }catch(e){} }
+  if(G.bn){ G.bn.cur=null; if(G.turn<TURNS){ try{ bnRoll(); }catch(e){} } }
   if(G.turn>=TURNS && isLong()){ settleRound(); return; }   // ロング版は最後の期も決算してから最終結果へ
   if(G.turn>=TURNS){ finishGame(); return; }
   scrollTo(0,0); beginTurn();
@@ -10847,7 +10886,7 @@ function handDock(news){
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   const dmin=dockMinOn(), dan=G.dkAnim; G.dkAnim=null;
   return `<div class="dock sheet${p.fut?' futmode':''}${dmin?' min':''}${dan?' dk-'+dan:''}" aria-label="手札">${dockGrab(dmin)}${dmin?dockSum(p):''}<div class="dk-info">${guideTip()}${readTip(RD)}${ordUI()}${raceBar()}
-    ${stepBar('choose')}</div>${sdRow()}${ttStrip()}${declUI()}
+    ${stepBar('choose')}</div>${bnRow()}${sdRow()}${ttStrip()}${declUI()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>${G.sel!==null&&!reduced()?`<div class="flk-tip"><i>👆</i>選んだカードを<b>上へはじいて</b>も出せるよ</div>`:''}
@@ -10938,7 +10977,7 @@ function finalView(){
     ${finNav()}
     ${fsec('fin-aw','🏅','今回の賞・能力',(aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${avHTML(p)}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:'')+pwFinalPanel())}
     ${fsec('fin-iv','🎙️','インタビューと号外',ivPanel()+gogaiPaper())}
-    ${fsec('fin-an','📊','ふりかえり',teamPanel()+draftPanel()+sdPanel()+turnPoint()+chainPanel()+whatIf()+playAnalysis()+recap)}
+    ${fsec('fin-an','📊','ふりかえり',teamPanel()+draftPanel()+bnPanel()+sdPanel()+turnPoint()+chainPanel()+whatIf()+playAnalysis()+recap)}
   </div><div class="col">
     <section class="panel chart" id="fin-ch"><h3>POINTの推移</h3>${lineChart()}</section>
     <section class="panel"><h3>各ターンの記録</h3><p class="note">${logDeck().map((n,i)=>`T${i+1} ${C.hist?yearOf(n)+' ':''}${nm(n)}`).join(' → ')}</p>
@@ -11349,9 +11388,11 @@ function dockSum(p){
 }
 /* ---- 📈 需要と供給（試作）：だれも出さなかった産業は「品薄」で次のターン +1、2人以上が出した産業は「供給過多」で −1 ---- */
 /* 需要と供給：品薄の +1 は独占したときだけ。被ったら品薄ボーナスは消える */
-function sdGain(cfg,b,k,c){ const m=G&&G.sd&&c!=null?G.sd.mod[c]:0; return gain(cfg, m>0&&k>1 ? b-m : b, k); }
-function sdMark(c){ if(!G || !G.sd || G.phase==='final') return ''; const m=G.sd.mod[c]; return m>0?'<em class="sdm up">▲品薄</em>':m<0?'<em class="sdm dn">▼過多</em>':''; }
-function sdFoot(c,k){ if(!G || !G.sd || !(G.sd.mod[c]>0) || !k) return ''; return k===1?' <em class="sdm up">品薄ボーナス+1</em>':' <em class="sdm off">品薄ボーナス消滅</em>'; }
+function sdGain(cfg,b,k,c){ const m=G&&G.sd&&c!=null?G.sd.mod[c]:0; return gain(cfg, m>0&&k>1 ? b-m : b, k)+bnAdj(c); }
+function sdMark(c){ return bnMark(c)+sdMark0(c); }
+function sdMark0(c){ if(!G || !G.sd || G.phase==='final') return ''; const m=G.sd.mod[c]; return m>0?'<em class="sdm up">▲品薄</em>':m<0?'<em class="sdm dn">▼過多</em>':''; }
+function sdFoot(c,k){ return bnFoot(c,k)+sdFoot0(c,k); }
+function sdFoot0(c,k){ if(!G || !G.sd || !(G.sd.mod[c]>0) || !k) return ''; return k===1?' <em class="sdm up">品薄ボーナス+1</em>':' <em class="sdm off">品薄ボーナス消滅</em>'; }
 /* ---- 🧪 試作ルール研究所：試作ルールをまとめて説明・ON/OFF・成績・おすすめの組み合わせ ---- */
 const RLAB=[
   {k:'chain', ic:'🔗', n:'サプライチェーン', c:'#4fe3ff', on:()=>!!S.chain, set:v=>setChain(v), g:()=>G&&G.chain,
@@ -11361,23 +11402,27 @@ const RLAB=[
   {k:'yomi', ic:'🔮', n:'人気予想', c:'#a77bff', on:()=>!!S.yomi, set:v=>setYomi(v), g:()=>G&&G.yomi,
    d:'カードを出すとき、いちばん人気になる産業も予想。当たれば +1。', tip:'自分は外して、みんなが集まる所を当てる。読みが2回おいしい。'},
   {k:'sd', ic:'📈', n:'需要と供給', c:'#4dff9a', on:()=>!!S.sd, set:v=>setSd(v), g:()=>G&&G.sd,
-   d:'だれも出さなかった産業は次のターン「品薄」（独占なら +1）。2人以上が出した産業は「供給過多」（−1）。', tip:'品薄にはみんなが集まりがち。あえて外すのが上級者。'}
+   d:'だれも出さなかった産業は次のターン「品薄」（独占なら +1）。2人以上が出した産業は「供給過多」（−1）。', tip:'品薄にはみんなが集まりがち。あえて外すのが上級者。'},
+  {k:'bn', ic:'⚡', n:'速報', c:'#ff6b6b', on:()=>!!S.bn, set:v=>setBn(v), g:()=>G&&G.bn,
+   d:'2ターン目から毎ターン「速報」が1つ。その産業を出した人は全員 +2 か −2（独占でも被りでも）。', tip:'+2の速報にはみんなが乗ってくる。乗って被るか、外して独占か。−2の速報は、だれも来ない穴場かも。'}
 ];
 const RLAB_COMBO=[
   {ks:['draft','sd'], n:'取りあい相場', d:'カードを取りあってから、値動きの中で戦う。読み合い最大級。'},
   {ks:['chain','yomi'], n:'流れを読む', d:'つながりを作りながら、人気の産業も当てる。'},
   {ks:['sd'], n:'経済の授業', d:'需要と供給だけ。値段が動くしくみが体でわかる。'},
-  {ks:['chain','sd'], n:'物流と相場', d:'つながりを作りながら、品薄の産業もねらう。'}
+  {ks:['chain','sd'], n:'物流と相場', d:'つながりを作りながら、品薄の産業もねらう。'},
+  {ks:['bn','sd'], n:'ニュース相場', d:'速報と品薄、2つの値動きを同時に読む。'}
 ];
 /* ---- 🎯 研究ミッションと研究レベル ---- */
 const RLAB_MIS=[
   {id:'first', ic:'🧫', n:'はじめての研究', d:'試作ルールを1つ以上ONにして1試合', t:1, coin:30, f:x=>x.any?1:0},
-  {id:'all4', ic:'🗂️', n:'ぜんぶ試した', d:'4つの試作ルールを、それぞれ1回以上遊ぶ', t:4, coin:60, abs:x=>x.kinds},
+  {id:'all4', ic:'🗂️', n:'ぜんぶ試した', d:'5つの試作ルールを、それぞれ1回以上遊ぶ', t:5, coin:60, abs:x=>x.kinds},
   {id:'ch3', ic:'🔗', n:'3連チェーン', d:'サプライチェーンで、1試合のうちに3連つなぐ', t:1, coin:40, f:x=>x.cl>=3?1:0},
   {id:'yo3', ic:'🔮', n:'未来が見える', d:'人気予想を1試合で3回当てる', t:1, coin:40, f:x=>x.yo>=3?1:0},
   {id:'sd2', ic:'📈', n:'品薄ハンター', d:'品薄の産業を1試合で2回独占する', t:1, coin:40, f:x=>x.sdm>=2?1:0},
   {id:'cbw', ic:'🎴', n:'相場師', d:'「取りあい相場」（ドラフト＋需要と供給）で1位になる', t:1, coin:80, f:x=>x.won&&x.dr&&x.sd?1:0},
-  {id:'full', ic:'🧪', n:'全部のせ', d:'4つの試作ルールをぜんぶONにして1試合', t:1, coin:80, f:x=>x.n4?1:0},
+  {id:'full', ic:'🧪', n:'全部のせ', d:'試作ルールをぜんぶONにして1試合', t:1, coin:80, f:x=>x.n4?1:0},
+  {id:'bn1', ic:'⚡', n:'速報に乗れ', d:'プラスの速報が出た産業で独占する', t:1, coin:40, f:x=>x.bnm>=1?1:0},
   {id:'g10', ic:'🏛️', n:'研究の鬼', d:'試作ルールで通算10試合', t:10, coin:100, abs:x=>x.total}
 ];
 const LAB_LV=[0,1,3,6,10,15,21,28,36];
@@ -11390,7 +11435,7 @@ function labMis(won){
   if(P.labN==null) P.labN=Math.max(1,...Object.values(st).map(v=>v.n||0))-1;
   const lv0=labLv(P.labN).l; P.labN++;
   const x={any:1, won:!!won, dr:!!G.draft, sd:!!G.sd, n4:ons.length===RLAB.length, kinds:RLAB.filter(r=>st[r.k]&&st[r.k].n>0).length, total:P.labN,
-    cl:G.chain?(p.clMax||1):0, yo:G.yomi?us.reduce((a,u)=>a+(u.yomi||0),0):0, sdm:G.sd?us.filter(u=>u.sdm>0&&u.k===1).length:0};
+    cl:G.chain?(p.clMax||1):0, yo:G.yomi?us.reduce((a,u)=>a+(u.yomi||0),0):0, sdm:G.sd?us.filter(u=>u.sdm>0&&u.k===1).length:0, bnm:G.bn?us.filter(u=>u.bn>0&&u.k===1).length:0};
   const M=P.labMis=P.labMis||{done:{},prog:{}}; const cleared=[]; let coin=0;
   RLAB_MIS.forEach(m=>{ if(M.done[m.id]) return; M.prog[m.id]=Math.min(m.t, m.abs?m.abs(x):(M.prog[m.id]||0)+m.f(x)); if(M.prog[m.id]>=m.t){ M.done[m.id]=Date.now(); coin+=m.coin; cleared.push(m.id); } });
   const lv=labLv(P.labN); let lvb=0; for(let l=lv0+1;l<=lv.l;l++) lvb+=l*20; coin+=lvb;
@@ -11405,7 +11450,7 @@ function labMisHTML(){ const M=(S.prof&&S.prof.labMis)||{done:{},prog:{}}; const
     return `<div class="lbm${d?' done':''}"><span class="lbm-ic">${m.ic}</span><span class="lbm-t"><b>${m.n}</b><small>${m.d}</small>${m.t>1&&!d?`<span class="lbm-bar"><i style="width:${pr/m.t*100}%"></i></span>`:''}</span><span class="lbm-r">${d?'<em>達成</em>':`${m.t>1?`<small>${pr}/${m.t}</small>`:''}+${m.coin}<small>コイン</small>`}</span></div>`; }).join('')}</div>`; }
 function labWinPanel(){ const L=G&&G.labGot; if(!L) return '';
   const ms=L.cleared.map(id=>RLAB_MIS.find(m=>m.id===id)).filter(Boolean), x=L.x||{};
-  const facts=[x.cl?`🔗 最長${x.cl}連`:'', G.yomi?`🔮 予想的中 ${x.yo}回`:'', G.sd?`📈 品薄で独占 ${x.sdm}回`:''].filter(Boolean);
+  const facts=[x.cl?`🔗 最長${x.cl}連`:'', G.yomi?`🔮 予想的中 ${x.yo}回`:'', G.sd?`📈 品薄で独占 ${x.sdm}回`:'', G.bn?`⚡ 速報に乗って独占 ${x.bnm||0}回`:''].filter(Boolean);
   return `<section class="panel lbw"><div class="lbw-hd"><span class="lbw-flask">🧪</span><span><span class="label">LAB REPORT</span><b>研究レポート</b></span><span class="lbw-lv">Lv.${L.lv.l}<small>${L.lv.t}</small></span></div>
     <div class="lbw-bar"><i style="--p:${L.lv.pct}%"></i></div><p class="note">${L.lv.b?`次のレベルまで、試作ルールであと ${L.lv.b-L.lv.n} 試合`:'最高レベル！'}${L.up?' · <b class="lbw-up">レベルアップ！</b>':''}</p>
     ${L.up?`<div class="lbw-lu"><span class="lbw-lu-b"><small>LEVEL UP</small>Lv.${L.lv.l}</span><span><b>「${L.lv.t}」になりました</b><small>昇進ボーナス +${L.lvb}コイン</small></span></div>`:''}${L.thb?`<div class="lbw-th"><span>📅</span><span><b>今週のテーマ「${L.th.n}」で研究</b><small>テーマボーナス +${L.thb}コイン</small></span></div>`:''}
@@ -11423,12 +11468,12 @@ function labThemeHTML(){
     <div class="lth-m"><span class="lth-ic">${th.ks.map(k=>RLAB.find(r=>r.k===k).ic).join('')}</span><span class="lth-t"><b>${th.n}</b><small>${th.d}</small></span></div>
     <div class="lth-f"><span>${got?'✅ 今週のボーナスは受け取りずみ':`このルールの組み合わせで1試合 → <b>+${LAB_THB}コイン</b>`}</span>${act?'<em>セット中</em>':`<button class="btn cyan" onclick="labCombo(${i})">セットする</button>`}</div></div>`;
 }
-function labLiveVals(p){ const us=p.used||[]; return {ch3:G.chain?(p.clMax||1):0, yo3:G.yomi?us.reduce((a,u)=>a+(u.yomi||0),0):0, sd2:G.sd?us.filter(u=>u.sdm>0&&u.k===1).length:0}; }
+function labLiveVals(p){ const us=p.used||[]; return {ch3:G.chain?(p.clMax||1):0, yo3:G.yomi?us.reduce((a,u)=>a+(u.yomi||0),0):0, sd2:G.sd?us.filter(u=>u.sdm>0&&u.k===1).length:0, bn1:G.bn?us.filter(u=>u.bn>0&&u.k===1).length:0}; }
 function labLive(){
   if(!G || !RLAB.some(r=>r.g())) return; const me=myIndex(); if(me<0) return; const p=G.players[me];
   const M=(S.prof&&S.prof.labMis)||{done:{}}, v=labLiveVals(p), seen=G.labSeen=G.labSeen||{};
-  const goal={ch3:3, yo3:3, sd2:2};
-  for(const id of ['ch3','yo3','sd2']){ const m=RLAB_MIS.find(x=>x.id===id); if(!m || M.done[id] || !v[id]) continue;
+  const goal={ch3:3, yo3:3, sd2:2, bn1:1};
+  for(const id of ['ch3','yo3','sd2','bn1']){ const m=RLAB_MIS.find(x=>x.id===id); if(!m || M.done[id] || !v[id]) continue;
     const val=Math.min(v[id],goal[id]); if((seen[id]||0)>=val) continue; const was=seen[id]||0; seen[id]=val;
     if(id==='ch3' && val<2) continue;
     setTimeout(()=>labPop(m, val, goal[id]), 1500); return; }
@@ -11450,6 +11495,7 @@ function labDemo(k){
   if(k==='chain'){ const a=0, b=CHAIN_NEXT[0], c=CHAIN_NEXT[b]; return `<div class="lbd chain">${[a,b,c].map((x,j)=>`<i style="--c:var(--i${x});--j:${j}">${svg(x,2.2)}</i>${j<2?`<b style="--j:${j}">🔗</b>`:''}`).join('')}<em>+1 → +2</em></div>`; }
   if(k==='draft') return `<div class="lbd draft">${[1,3,4].map((x,j)=>`<i style="--c:var(--i${x});--j:${j}">${svg(x,2.2)}</i>`).join('')}<span class="lbd-h"><u></u><u></u><u></u></span></div>`;
   if(k==='yomi') return `<div class="lbd yomi"><span class="lbd-ball">${[0,2,5].map((x,j)=>`<i style="--c:var(--i${x});--j:${j}">${svg(x,2.2)}</i>`).join('')}</span><em>当たり +1</em></div>`;
+  if(k==='bn') return `<div class="lbd bn"><span class="lbd-bk">速報</span><i style="--c:var(--i1)">${svg(1,2.2)}</i><em>+2</em><i class="neg" style="--c:var(--i4)">${svg(4,2.2)}</i><em class="neg">−2</em></div>`;
   return `<div class="lbd sd"><span class="up">▲ 品薄</span><span class="dn">▼ 過多</span><span class="up">▲ 品薄</span></div>`;
 }
 function labBody(){
@@ -11466,6 +11512,38 @@ function labBody(){
     <div class="lbc-list">${RLAB.map(card).join('')}</div>
     <h4 class="lab-h">🧬 おすすめの組み合わせ</h4><div class="lbx-list">${combos}</div>
     ${labMisHTML()}<button class="btn ghost" onclick="RLAB.forEach(r=>{ if(r.on()) r.set(false); });renderSheet()">ぜんぶオフにする</button></div>`;
+}
+/* ---- ⚡ 速報（試作）：2ターン目から毎ターン、1つの産業に速報。出した人は全員 ±2 ---- */
+const BN_EV=[{t:'補助金が決定',v:2,ic:'💴'},{t:'大型受注',v:2,ic:'📦'},{t:'新製品が大ヒット',v:2,ic:'🚀'},{t:'不祥事が発覚',v:-2,ic:'💥'},{t:'規制が強化',v:-2,ic:'🚫'},{t:'ストライキ',v:-2,ic:'✊'}];
+function setBn(on){ S.bn=!!on; save('azakei-bn',S.bn); sfx('click'); render(); if(on) toast('⚡ 速報：2ターン目から毎ターン、1つの産業に速報が出ます。その産業を出した人は全員 +2 か −2'); }
+function bnAdj(c){ const B=G&&G.bn&&G.bn.cur; return B && c!=null && B.c===c && G.phase!=='final' ? B.v : 0; }
+function bnRoll(){
+  const B=G.bn, prev=B.cur||B.hist[B.hist.length-1]; let c, n=0; do{ c=Math.floor(Math.random()*IND.length); }while(prev && c===prev.c && n++<9);
+  const e=BN_EV[Math.floor(Math.random()*BN_EV.length)]; B.cur={c, t:e.t, v:e.v, ic:e.ic}; B.hist.push({turn:G.turn, c, t:e.t, v:e.v, ic:e.ic}); B.fresh=true;
+}
+function bnMark(c){ const B=G&&G.bn&&G.bn.cur; if(!B || B.c!==c || G.phase==='final') return ''; return `<em class="sdm bn ${B.v>0?'up':'dn'}">⚡${B.v>0?'+':'−'}${Math.abs(B.v)}</em>`; }
+function bnFoot(c,k){ const B=G&&G.bn&&G.bn.cur; if(!B || B.c!==c || !k) return ''; return ` <em class="sdm bnf ${B.v>0?'up':'dn'}">⚡速報 ${B.v>0?'+':'−'}${Math.abs(B.v)}${k>1?'×'+k+'人':''}</em>`; }
+function bnRow(){
+  const B=G&&G.bn; if(!B) return ''; if(!B.cur) return G.turn===0?`<div class="bnr calm"><span class="bnr-l">⚡ 速報</span><span class="bnr-n">2ターン目から速報が入ります</span></div>`:'';
+  const e=B.cur, up=e.v>0;
+  return `<div class="bnr ${up?'up':'dn'}" onclick="bnFx(true)" role="button" aria-label="速報をもう一度見る"><span class="bnr-l">⚡ 速報</span><span class="bnr-c" style="--c:var(--i${e.c})"><i>${svg(e.c,2.2)}</i>${IND[e.c]}</span><span class="bnr-t">${e.ic} ${e.t}</span><b>${up?'+':'−'}${Math.abs(e.v)}</b><small>出した人全員</small></div>`;
+}
+function bnFx(force){
+  if(!G || !G.bn || !G.bn.cur || G.phase!=='choose' || document.querySelector('.bnfx')) return; if(reduced() && !force) return;
+  const e=G.bn.cur, up=e.v>0, el=document.createElement('div'); el.className='bnfx '+(up?'up':'dn'); el.setAttribute('aria-hidden','true');
+  const tick=`${e.ic} ${IND[e.c]}に速報 ── ${e.t} ── ${IND[e.c]}を出した人は全員 ${up?'+':'−'}${Math.abs(e.v)} ── `;
+  el.innerHTML=`<div class="bnfx-band"><span class="bnfx-tag">速報<small>BREAKING</small></span><span class="bnfx-tk"><span>${tick.repeat(3)}</span></span></div>
+    <div class="bnfx-card" style="--c:var(--i${e.c})"><span class="bnfx-ic">${svg(e.c,3.2)}</span><span class="bnfx-tx"><small>${e.ic} ${e.t}</small><b>${IND[e.c]}</b></span><span class="bnfx-v">${up?'+':'−'}${Math.abs(e.v)}</span></div>`;
+  el.onclick=()=>el.remove(); document.body.appendChild(el); sfx(up?'fanfare':'buzz'); haptic(up?[20,30,20]:[50]);
+  setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(),380); }, 2600);
+}
+function bnPanel(){
+  if(!G || !G.bn || !G.bn.hist.length) return ''; const me=myIndex(), LG=logDeck();
+  const rows=G.bn.hist.map(h=>{ const who=G.players.map((p,i)=>({p,i,u:(p.used||[])[h.turn]})).filter(x=>x.u&&x.u.ind===h.c), k=who.length;
+    return `<div class="bnp-r ${h.v>0?'up':'dn'}"><span class="bnp-t">T${h.turn+1}</span><span class="bnp-c" style="--c:var(--i${h.c})">${svg(h.c,2)}</span><span class="bnp-x"><b>${h.ic} ${IND[h.c]}：${h.t}</b><small>${k?who.map(x=>esc(x.i===me?'あなた':x.p.name)).join('・')+(k===1?'（独占）':`（${k}人で被り）`):'だれも出さなかった'}</small></span><em>${h.v>0?'+':'−'}${Math.abs(h.v)}</em></div>`; }).join('');
+  const mine=me>=0?G.bn.hist.filter(h=>{ const u=(G.players[me].used||[])[h.turn]; return u&&u.ind===h.c; }):[], net=mine.reduce((a,h)=>a+h.v,0);
+  return `<section class="panel bnp"><div class="row spread"><h3>⚡ 速報の記録</h3><span class="note">あなた：${mine.length}回乗って <b class="${net>0?'pos':net<0?'neg':''}">${net>0?'+':''}${net}</b></span></div><div class="bnp-l">${rows}</div>
+    <p class="note">いいニュースには人が集まり、被って点が伸びにくくなる。悪いニュースの産業は、だれも来ない「穴場」になることも。</p></section>`;
 }
 function setSd(on){ S.sd=!!on; save('azakei-sd',S.sd); sfx('click'); render(); if(on) toast('📈 需要と供給：だれも出さなかった産業は次のターン「品薄」で独占すれば +1。2人以上が出した産業は「供給過多」で −1'); }
 function sdInit(){ G.cfg={...G.cfg, table:G.cfg.table.map(r=>r.slice())}; return {base:G.cfg.table.map(r=>r.slice()), mod:IND.map(()=>0), prev:IND.map(()=>0), hist:[], fresh:false}; }
