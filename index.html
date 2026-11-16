@@ -3687,7 +3687,53 @@ html.light .rce-mv.u{color:#12925a}html.light .rce-mv.d{color:#c63a3a}
 @keyframes flkUp{0%,100%{transform:translateY(2px)}50%{transform:translateY(-4px)}}
 @keyframes flkTip{from{opacity:0;transform:translateY(4px)}}
 @keyframes flkRing{to{transform:scale(6);opacity:0;border-width:1px}}
-@keyframes flkWord{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}70%{opacity:1;transform:translate(-50%,-60%) scale(1)}100%{opacity:0;transform:translate(-50%,-90%)}}CSS
+@keyframes flkWord{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}70%{opacity:1;transform:translate(-50%,-60%) scale(1)}100%{opacity:0;transform:translate(-50%,-90%)}}
+/* カード育成のわく */
+.card.cg1{box-shadow:0 0 0 2.5px var(--rail),0 0 0 5px #c9824a,0 14px 22px -12px #000}
+.card.cg2{box-shadow:0 0 0 2.5px var(--rail),0 0 0 5px #e6edf8,0 0 14px rgb(223 231 245 / .45),0 14px 22px -12px #000}
+.card.cg3{box-shadow:0 0 0 2.5px var(--rail),0 0 0 5px #ffd75a,0 0 20px rgb(255 200 58 / .6),0 14px 22px -12px #000}
+.card.cg4{box-shadow:0 0 0 2.5px var(--rail),0 0 0 5px #fff,0 0 16px #ff5d9a,0 0 26px #4fe3ff,0 14px 22px -12px #000;animation:cgGlow 3s ease-in-out infinite alternate}
+@keyframes cgGlow{to{box-shadow:0 0 0 2.5px var(--rail),0 0 0 5px #fff,0 0 16px #ffc83a,0 0 26px #a77bff,0 14px 22px -12px #000}}
+.cg-f{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3}
+.cg-f.f1{box-shadow:inset 0 0 0 3px #c9824a,inset 0 0 0 5px rgb(0 0 0 / .25)}
+.cg-f.f2{box-shadow:inset 0 0 0 3px #dfe7f5,inset 0 0 0 5px rgb(0 0 0 / .2);background:linear-gradient(115deg,transparent 35%,rgb(255 255 255 / .35) 48%,transparent 60%) 0 0/250% 100% no-repeat;animation:cgShine 3.6s ease-in-out infinite}
+.cg-f.f3{box-shadow:inset 0 0 0 3px #ffd75a,inset 0 0 0 5px #9a6a08,inset 0 0 18px rgb(255 215 90 / .55);background:linear-gradient(115deg,transparent 35%,rgb(255 240 180 / .5) 48%,transparent 60%) 0 0/250% 100% no-repeat;animation:cgShine 2.8s ease-in-out infinite}
+.cg-f.f4{padding:3px;background:linear-gradient(90deg,#ff5d5d,#ffc83a,#5cf0a2,#4fe3ff,#a77bff,#ff5d9a,#ff5d5d) 0 0/300% 100%;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:cgRain 3s linear infinite}
+.card.cg4 .holo{opacity:.7!important;animation:holo 2.4s linear infinite}
+.cg-m{position:absolute;right:5px;bottom:24px;z-index:4;padding:0 4px;border-radius:6px;font-size:9px;font-weight:900;line-height:14px;letter-spacing:-1px;background:rgb(0 0 0 / .55);pointer-events:none}
+.cg-m1{color:#e0a272}.cg-m2{color:#eef3fb}.cg-m3{color:#ffd75a}.cg-m4{color:#fff;background:linear-gradient(90deg,#ff5d5d,#ffc83a,#5cf0a2,#4fe3ff,#a77bff);letter-spacing:0}
+@keyframes cgShine{0%,55%{background-position:120% 0}100%{background-position:-120% 0}}
+@keyframes cgRain{to{background-position:300% 0}}
+.cgn1{color:#e0a272}.cgn2{color:#dfe7f5}.cgn3{color:var(--gold-t)}.cgn4{background:linear-gradient(90deg,#ff5d5d,#ffc83a,#5cf0a2,#4fe3ff,#a77bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
+/* 進化パネル */
+.cgu{text-align:center;overflow:hidden}
+.cgu-st{position:relative;height:200px;display:grid;place-items:center;margin:4px 0}
+.cgu-st .card{width:120px}
+.cgu-old,.cgu-new{grid-area:1/1}
+.cgu-old{animation:cguOld 1.3s .3s ease-in forwards}
+.cgu-new{opacity:0;animation:cguNew .7s 1.45s cubic-bezier(.3,1.6,.5,1) forwards}
+.cgu-ray{grid-area:1/1;width:260px;height:260px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgb(255 200 58 / .28) 0 10deg,transparent 10deg 20deg);-webkit-mask:radial-gradient(circle,#000 20%,transparent 68%);mask:radial-gradient(circle,#000 20%,transparent 68%);opacity:0;animation:cguRay 1s 1.4s ease-out forwards,cguSpin 14s 1.4s linear infinite}
+.cgu-t{font-size:15px;font-weight:800;opacity:0;animation:cguIn .4s 1.9s ease-out forwards}
+@keyframes cguIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}.cgu-n{font-family:var(--display);font-weight:400;font-size:19px}
+.cgu .btn{margin-top:8px}
+@keyframes cguOld{0%{transform:none;filter:none}60%{transform:scale(1.06) rotate(-3deg);filter:brightness(1.5)}85%{transform:scale(1.12);filter:brightness(3) blur(1px);opacity:1}100%{transform:scale(1.3);filter:brightness(4) blur(4px);opacity:0}}
+@keyframes cguNew{from{opacity:0;transform:scale(.4) rotate(8deg)}to{opacity:1;transform:none}}
+@keyframes cguRay{to{opacity:1}}
+@keyframes cguSpin{to{transform:rotate(360deg)}}
+/* マイカード */
+.cgh{cursor:pointer}
+.cgh-row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:8px 0 4px}
+.cgh-c .card{width:100%}
+.cgb-tiers{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.cgb-tiers span{padding:2px 8px;border-radius:99px;background:var(--panel2);font-size:11.5px;font-weight:900}.cgb-tiers small{color:var(--muted);font-weight:700}
+.cgb{display:flex;flex-direction:column;gap:8px;margin:6px 0 12px}
+.cgb-r{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center;padding:8px;border-radius:14px;background:var(--panel2);border-left:4px solid var(--c)}
+.cgb-cd .card{width:76px}
+.cgb-tx{display:flex;flex-direction:column;gap:3px;min-width:0}.cgb-tx b{font-size:15px}
+.cgb-tn{font-size:12.5px;font-weight:900}
+.cgb-bar{height:7px;border-radius:99px;background:var(--panel);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}.cgb-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--c),var(--gold))}
+.cgb-tx small{font-size:11px;color:var(--muted);font-weight:700}.cgb-x{opacity:.8}
+@media (prefers-reduced-motion:reduce){.cg-f,.cgu-ray{animation:none}.cgu-old{display:none}.cgu-new,.cgu-t{opacity:1;animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5604,6 +5650,7 @@ function renderSheet(){
   else if(k==='visit') body=`<div class="tw-wrap2">${visitBody()}</div>`;
   else if(k==='puzzle') body=puzBody();
   else if(k==='chain') body=chainRules(true);
+  else if(k==='mycards') body=cgBody();
   else if(k==='yomidojo') body=`<div id="ydWrap">${ydBody()}</div>`;
   else if(k==='mynews') body=myNewsBody();
   else if(k==='mynewsedit') body=myNewsEditBody();
@@ -6118,7 +6165,7 @@ function indPanel(){
   const P=S.prof, n=P.ind||[0,0,0,0,0,0], m=P.indm||[0,0,0,0,0,0], pt=P.indp||null, pc=P.indc||[0,0,0,0,0,0], tot=n.reduce((a,b)=>a+b,0);
   if(!tot) return '';
   const avg=i=>pt&&pc[i]?pt[i]/pc[i]:null, mx=Math.max(...n), best=pt?[0,1,2,3,4,5].filter(i=>pc[i]>=3).sort((a,b)=>avg(b)-avg(a))[0]:null;
-  return `<section class="panel"><div class="row spread"><h3>産業別の成績</h3><span class="note">${tot}枚ぶん</span></div>
+  return `${cgHome()}<section class="panel"><div class="row spread"><h3>産業別の成績</h3><span class="note">${tot}枚ぶん</span></div>
     <div class="indst">${IND.map((d,i)=>`<div class="isr" role="button" tabindex="0" onclick="openSheet('ind:${i}')" aria-label="${d}の産業ガイド"><span class="ic" style="background:var(--i${i})">${svg(i,2.2)}</span><span class="isn">${d}</span>
       <span class="isb"><i style="width:${Math.round(n[i]/mx*100)}%;background:var(--i${i})"></i></span>
       <span class="isv"><b>${n[i]}</b>回 · 独占${n[i]?Math.round(m[i]/n[i]*100):0}%${avg(i)!=null?` · 平均${sgn(Math.round(avg(i)*10)/10)}`:''}</span></div>`).join('')}</div>
@@ -10274,14 +10321,46 @@ function hud(){
     ${G.phase==='final'?'':`<span class="deckchip hide-sm" title="このあと出るNEWSの数"><span class="mini-back"></span>残り${left}</span>`}
     ${G.online?`<span class="codechip hide-sm">${esc(NET.code||'')}</span>`:''}<button class="btn ghost icon tblbtn" onclick="openSheet('table')" aria-label="全体の点数表">📊<span class="hide-sm"> 点数表</span></button>${helpB}${snd}<button class="btn ghost icon" onclick="quit()">${G.online?(G.host?'ロビーへ':'退出'):'やめる'}</button></div></div>`;
 }
+/* ---- 🃏 カード育成：出した回数＋独占×2 で、6枚の産業カードが ブロンズ→シルバー→ゴールド→レインボー に進化（見た目だけ。点数は変わらない） ---- */
+const CG_T=[{n:'ノーマル',at:0,ic:''},{n:'ブロンズ',at:8,ic:'★'},{n:'シルバー',at:24,ic:'★★'},{n:'ゴールド',at:60,ic:'★★★'},{n:'レインボー',at:130,ic:'✦'}];
+function cgXp(c){ const P=S.prof||{}; return ((P.ind||[])[c]||0) + 2*((P.indm||[])[c]||0); }
+function cgTier(c){ const x=cgXp(c); let t=0; CG_T.forEach((d,i)=>{ if(x>=d.at) t=i; }); return t; }
+function cgCls(c){ const t=cgTier(c); return t?` cg cg${t}`:''; }
+function cgMark(t){ return t?`<span class="cg-f f${t}" aria-hidden="true"></span><span class="cg-m cg-m${t}" aria-label="${CG_T[t].n}">${CG_T[t].ic}</span>`:''; }
+function cgCard(c,t,cls){ return cardHTML(c,{cls:(t?`cg cg${t} `:'')+(cls||''), cg:t}); }
+function cgUpPanel(){
+  const up=G && G.cgUp; if(!up || !up.length) return '';
+  const srt=up.slice().sort((a,b)=>b.b-a.b||a.c-b.c), x=srt[0], more=up.length>1?`<p class="note">ほかにも ${srt.slice(1).map(u=>`<b>${IND[u.c]}</b>→${CG_T[u.b].n}`).join('・')} に進化！</p>`:'';
+  return `<section class="panel cgu"><span class="label">CARD EVOLUTION</span><h3>🃏 カードが進化した！</h3>
+    <div class="cgu-st"><span class="cgu-ray" aria-hidden="true"></span><div class="cgu-old">${cgCard(x.c,x.a)}</div><div class="cgu-new">${cgCard(x.c,x.b)}</div></div>
+    <p class="cgu-t"><b style="color:var(--i${x.c})">${IND[x.c]}</b>カードが <b class="cgu-n cgn${x.b}">${CG_T[x.b].n}</b> に！</p>${more}
+    <button class="btn" onclick="openSheet('mycards')">マイカードを見る</button></section>`;
+}
+function cgNext(c){ const t=cgTier(c), x=cgXp(c); if(t>=CG_T.length-1) return null; const need=CG_T[t+1].at-x; return {t:t+1, need, mono:Math.ceil(need/3), pct:Math.round((x-CG_T[t].at)/(CG_T[t+1].at-CG_T[t].at)*100)}; }
+function cgHome(){
+  const ts=IND.map((_,c)=>cgTier(c)), sum=ts.reduce((a,b)=>a+b,0);
+  return `<section class="panel cgh" role="button" tabindex="0" onclick="openSheet('mycards')"><div class="row spread"><h3>🃏 マイカード</h3><span class="note">進化 ${sum}/${IND.length*(CG_T.length-1)}</span></div>
+    <div class="cgh-row">${IND.map((_,c)=>`<span class="cgh-c">${cgCard(c,ts[c],'mini')}</span>`).join('')}</div>
+    <p class="note">カードは出すほど、独占するほど育つよ。タップでくわしく</p></section>`;
+}
+function cgBody(){
+  const rows=IND.map((d,c)=>{ const t=cgTier(c), nx=cgNext(c), x=cgXp(c);
+    return `<div class="cgb-r" style="--c:var(--i${c})"><span class="cgb-cd">${cgCard(c,t)}</span><span class="cgb-tx"><b>${d}</b><span class="cgb-tn cgn${t}">${CG_T[t].ic} ${CG_T[t].n}</span>
+      ${nx?`<span class="cgb-bar"><i style="width:${nx.pct}%"></i></span><small>${CG_T[nx.t].n}まで あと${nx.need}pt（独占なら約${nx.mono}回）</small>`:'<small>最高ランク！ 虹色にかがやいています</small>'}
+      <small class="cgb-x">出した ${(S.prof.ind||[])[c]||0}回 · 独占 ${(S.prof.indm||[])[c]||0}回 · ${x}pt</small></span></div>`; }).join('');
+  return `<span class="label">MY CARDS</span><h3 class="ttl" style="font-size:22px">🃏 マイカード</h3>
+    <p class="note">カードを1回出すと <b>1pt</b>、独占すると <b>さらに2pt</b>。たまると、わくが進化します（点数は変わりません）。</p>
+    <div class="cgb-tiers">${CG_T.slice(1).map((d,i)=>`<span><b class="cgn${i+1}">${d.ic} ${d.n}</b> <small>${d.at}pt</small></span>`).join('')}</div>
+    <div class="cgb">${rows}</div><button class="btn gold big" onclick="closeSheet()">とじる</button>`;
+}
 function cardHTML(i,o){
   o=o||{};
   const tag=o.click?'button':'div';
-  return `<${tag} class="card c${i}${o.sel?' sel':''}${o.cls&&o.cls.includes('sk-')?'':skc()}${o.cls?' '+o.cls:''}" ${o.style?`style="${o.style}"`:''} ${o.click?`onclick="selectCard(${i})" aria-pressed="${!!o.sel}" aria-label="${IND[i]} ${o.pts!=null?sgn(o.pts):''}"`:''}>
+  return `<${tag} class="card c${i}${o.click?cgCls(i):''}${o.sel?' sel':''}${o.cls&&o.cls.includes('sk-')?'':skc()}${o.cls?' '+o.cls:''}" ${o.style?`style="${o.style}"`:''} ${o.click?`onclick="selectCard(${i})" aria-pressed="${!!o.sel}" aria-label="${IND[i]} ${o.pts!=null?sgn(o.pts):''}"`:''}>
     <span class="wm">${svg(i,1.4)}</span>
     ${o.pts!=null?`<span class="pt ${cls(o.pts)}">${sgn(o.pts)}</span>`:''}${o.no?`<span class="no">0${i+1}</span>`:''}
     ${o.nx!=null?`<span class="nx">次 ${sgn(o.nx)}</span>`:''}${o.tag?`<span class="ctag">${o.tag}</span>`:''}
-    <div class="art">${((o.cls&&/sk-(\w+)/.exec(o.cls)||[])[1]||curSkin())==='town'?scene(i):`<span class="disc">${svg(i)}</span>`}</div><div class="ban">${IND[i]}</div><span class="holo"></span></${tag}>`;
+    <div class="art">${((o.cls&&/sk-(\w+)/.exec(o.cls)||[])[1]||curSkin())==='town'?scene(i):`<span class="disc">${svg(i)}</span>`}</div><div class="ban">${IND[i]}</div><span class="holo"></span>${o.click||o.cg!=null?cgMark(o.cg!=null?o.cg:cgTier(i)):''}</${tag}>`;
 }
 const mini = i => `<div class="card mini c${i}${skc()}"><div class="art"><span class="disc">${svg(i,2.4)}</span></div><div class="ban">${IND[i]}</div></div>`;
 function spark(h){
@@ -10458,7 +10537,7 @@ function finalView(){
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center"><button class="btn big pb-btn" onclick="photoShoot()">📸 記念撮影</button>${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
-    ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+    ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${cgUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${chalPanel()}${ordPanel()}
     ${rewardPanel()}
     ${fbPanel()}
@@ -10706,7 +10785,9 @@ function recordResult(){
   const futBest=Math.max(-99,...p.used.filter(u=>u.fut).map(u=>u.total));
   G.town=townInvest(p);
   try{ twLogGame(G.town, mine?mine.rank:0, p.score, won); }catch(e){}   /* マイタウン：この試合の点数を産業ごとに投資（indp を足す前に呼ぶ＝初回の引きつぎが二重にならない） */
+  const cg0=IND.map((_,c)=>cgTier(c));
   P.ind=P.ind||[0,0,0,0,0,0]; P.indm=P.indm||[0,0,0,0,0,0]; P.indp=P.indp||[0,0,0,0,0,0]; P.indc=P.indc||[0,0,0,0,0,0]; p.used.forEach(u=>{ P.ind[u.ind]++; if(u.k===1) P.indm[u.ind]++; P.indp[u.ind]+=u.total; P.indc[u.ind]++; });   // indp・indc：平均点用（数えはじめてからの点と回数）
+  G.cgUp=IND.map((_,c)=>({c,a:cg0[c],b:cgTier(c)})).filter(x=>x.b>x.a);   // 🃏 カード育成：この試合で進化したカード
   G.recBroke=recordBests(p, me, won);
   st.games++; if(won) st.wins++; if(!G.closeX && !G.pw && !G.yomi && !G.chain) st.best=Math.max(st.best,p.score); st.mono+=p.uniq; st.yw=(st.yw||0)+(p.ywin||0); if(p.used.some(u=>u.fut)) st.fut++; if(G.cfg.hist) st.hist++; if(G.online) st.online++;
   const xp = Math.round((20 + Math.max(0,p.score)*3 + p.uniq*5 + (won?40:0) + (G.online?15:0)) * (G.evt?1.5:1));   // 今週のイベント参加中はXP1.5倍
