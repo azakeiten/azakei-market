@@ -4039,6 +4039,30 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .lsim-nt{padding:10px 12px;border-radius:12px;background:linear-gradient(120deg,rgb(79 227 255 / .12),rgb(167 123 255 / .12));animation:dkPop .5s cubic-bezier(.3,1.5,.5,1) both}
 .lsim-nt b{font-size:13px}.lsim-nt ul{margin:6px 0 0;padding-left:18px;display:grid;gap:4px}.lsim-nt li{font-size:12px;font-weight:700;line-height:1.55}.lsim-nt li b{color:var(--gold-t);font-size:12.5px}
 @media (prefers-reduced-motion:reduce){.lsim.run .lsim-pb i,.lsim-nt{animation:none}.lsim-bar i,.lsim-pb i{transition:none}}
+/* 戦い方くらべ */
+.lsim-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:8px;border-radius:14px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.lsim-tabs button{padding:8px 6px;border:0;border-radius:10px;background:none;color:var(--muted);font:inherit;font-size:13px;font-weight:900;cursor:pointer}
+.lsim-tabs button.on{background:var(--panel);color:var(--ink);box-shadow:0 2px 10px rgb(0 0 0 / .25),inset 0 0 0 1px var(--line)}
+.ldu-ros{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ldu-p{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:6px;align-items:center;padding:7px 9px;border-radius:12px;background:var(--panel);box-shadow:inset 3px 0 0 var(--c)}
+.ldu-ic{grid-row:span 2;font-size:22px}.ldu-p b{font-size:13px}.ldu-p small{font-size:10px;color:var(--muted);font-weight:700;line-height:1.3}
+.ldu-l{font-size:11px;font-weight:900;color:var(--muted)}
+.ldu-rules{display:flex;flex-wrap:wrap;gap:6px}
+.ldu-rc{padding:5px 11px;border:0;border-radius:99px;background:var(--panel);color:var(--muted);font:inherit;font-size:12px;font-weight:900;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line)}
+.ldu-rc.on{color:var(--ink);background:linear-gradient(90deg,rgb(79 227 255 / .22),rgb(167 123 255 / .22));box-shadow:inset 0 0 0 1.5px var(--cyan)}.ldu-rc:disabled{opacity:.5}
+.ldu-r{display:grid;grid-template-columns:96px 1fr 38px 40px;align-items:center;gap:6px;padding:3px 4px;border-radius:8px}
+.ldu-r.lead{background:rgb(255 200 58 / .12)}
+.ldu-r em{font-style:normal;font-size:12.5px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.ldu-pt{font-size:10.5px;color:var(--muted);font-weight:800;text-align:right}
+.ldu-pod{display:flex;justify-content:center;align-items:flex-end;gap:8px;padding-top:24px}
+.ldu-pc{flex:1;max-width:96px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.ldu-pic{position:relative;font-size:28px;animation:dkPop .45s calc(var(--d) + .5s) cubic-bezier(.3,1.7,.5,1) both}.ldu-pc.r1 .ldu-pic{font-size:36px}
+.ldu-cr{position:absolute;left:50%;top:-22px;transform:translateX(-50%);font-size:20px;font-style:normal;animation:lduCrown 1s 1.1s cubic-bezier(.3,1.7,.5,1) both}
+@keyframes lduCrown{from{opacity:0;transform:translate(-50%,-20px) rotate(-30deg)}}
+.ldu-pc b{font-size:12.5px}
+.ldu-blk{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;border-radius:10px 10px 0 0;background:linear-gradient(180deg,var(--c),color-mix(in srgb,var(--c) 45%,transparent));transform-origin:50% 100%;animation:lduRise .6s var(--d) cubic-bezier(.2,.9,.3,1.15) both}
+.ldu-blk em{font-style:normal;font-family:var(--display);font-size:22px;line-height:1;color:#141026}.ldu-blk small{font-size:11px;font-weight:900;color:#141026}
+@keyframes lduRise{from{transform:scaleY(0)}}
+@media (prefers-reduced-motion:reduce){.ldu-pic,.ldu-cr,.ldu-blk{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -11509,24 +11533,76 @@ function labPop(m, val, goal){
 const LSIM_SC=[{k:'base',n:'ふつう',ic:'🃏',c:'#9aa3c7',sd:0,bn:0},{k:'sd',n:'需要と供給',ic:'📈',c:'#4dff9a',sd:1,bn:0},{k:'bn',n:'速報',ic:'⚡',c:'#ff6b6b',sd:0,bn:1},{k:'both',n:'ニュース相場',ic:'⚡📈',c:'#ffc83a',sd:1,bn:1}];
 const LSIM_N=200;
 let LSIM=null;
-function lsimGame(sc,acc){
-  const rnd=Math.random, cfg0={...presetCfg('rec'), names:NEWS, hist:false};
+function lsimGame(sc,acc,types){
+  const rnd=Math.random, cfg0={...presetCfg('rec'), names:NEWS, hist:false}; types=types||['read','read','read','read'];
   const deck=shuffle(cfg0.table.map((_,i)=>i),rnd).slice(0,TURNS);
-  const players=[0,1,2,3].map(i=>({name:'P'+i,type:'read',hand:[0,1,2,3,4,5],score:0,fore:'never',used:[],hist:[0],seat:i}));
-  G={players,deck,turn:0,cfg:cfg0,phase:'choose',bn:sc.bn?{cur:null,hist:[]}:null,sd:null,chain:false,players_n:4};
+  const players=types.map((t,i)=>({name:'P'+i,type:t,hand:[0,1,2,3,4,5],score:0,fore:'never',used:[],hist:[0],seat:i,guess:null,last:null}));
+  G={players,deck,turn:0,cfg:cfg0,phase:'choose',bn:sc.bn?{cur:null,hist:[]}:null,sd:null,chain:!!sc.chain,yomi:!!sc.yomi,players_n:types.length};
   if(sc.sd) G.sd=sdInit();
   for(let t=0;t<TURNS;t++){ G.turn=t;
     if(G.bn){ G.bn.cur=null; if(t>=1){ const e=BN_EV[Math.floor(rnd()*BN_EV.length)]; G.bn.cur={c:Math.floor(rnd()*6),v:e.v}; } }
-    players.forEach(p=>p.pick=cpuPick(p,players,deck,t,G.cfg,rnd));
+    players.forEach(p=>{ p.guess=null; p.pick=cpuPick(p,players,deck,t,G.cfg,rnd); });
     const cnt=[0,0,0,0,0,0]; players.forEach(p=>cnt[p.pick]++);
-    players.forEach(p=>{ const k=cnt[p.pick]; p.score+=sdGain(G.cfg,G.cfg.table[deck[t]][p.pick],k,p.pick); acc.plays++; if(k>1) acc.clash++; p.hand=p.hand.filter(c=>c!==p.pick); });
+    if(G.yomi) yomiCpu(cnt); const ymx=Math.max(...cnt);
+    players.forEach(p=>{ const k=cnt[p.pick]; let v=sdGain(G.cfg,G.cfg.table[deck[t]][p.pick],k,p.pick);
+      if(G.yomi && p.guess!=null && ymx>=2 && cnt[p.guess]===ymx) v+=1; v+=chainBonus(p,cnt);
+      p.score+=v; acc.plays++; if(k>1) acc.clash++; p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; });
     if(G.bn && G.bn.cur && G.bn.cur.v>0){ acc.upN++; acc.upG+=cnt[G.bn.cur.c]; }
     if(G.sd && t<TURNS-1){ G.cnt=cnt; sdShift(); }
   }
+  if(acc.by){ const sc=players.map(p=>p.score), mx=Math.max(...sc), nw=sc.filter(x=>x===mx).length; players.forEach((p,i)=>{ const b=acc.by[i]; b.pts+=p.score; if(p.score===mx) b.w+=1/nw; }); }
   const sc2=players.map(p=>p.score).sort((a,b)=>b-a); acc.n++; acc.top+=sc2[0]; acc.gap+=sc2[0]-sc2[1]; if(sc2[0]-sc2[1]<=1) acc.close++;
 }
+/* ---- ⚔️ 戦い方くらべ：4種類のCPUを同じ卓で戦わせて、どの考え方が強いかを見る ---- */
+const LSTY=[
+  {t:'pro', n:'達人', ic:'🎯', c:'#ffc83a', d:'相手ひとりひとりの考えをまねして読む'},
+  {t:'read', n:'読む', ic:'🧠', c:'#4fe3ff', d:'みんなが出しそうな所を、確率で読む'},
+  {t:'naive', n:'表だけ', ic:'📊', c:'#a77bff', d:'いちばん点の高い産業にとびつく'},
+  {t:'random', n:'気まぐれ', ic:'🎲', c:'#9aa3c7', d:'てきとうに出す'}
+];
+const LDUEL_R=[{k:'chain',ic:'🔗',n:'チェーン'},{k:'yomi',ic:'🔮',n:'人気予想'},{k:'sd',ic:'📈',n:'需要と供給'},{k:'bn',ic:'⚡',n:'速報'}];
+let LDUEL={rules:{chain:0,yomi:0,sd:0,bn:0}, run:false, done:0, acc:null};
+function labDuelRule(k){ if(LDUEL.run) return; LDUEL.rules[k]=LDUEL.rules[k]?0:1; LDUEL.acc=null; LDUEL.done=0; sfx('click'); haptic(6); labSimPaint(); }
+function labDuelRun(){
+  if(LDUEL.run || (LSIM && LSIM.run)) return;
+  LDUEL.run=true; LDUEL.done=0; LDUEL.err=''; LDUEL.acc={n:0,top:0,gap:0,close:0,plays:0,clash:0,upN:0,upG:0,by:LSTY.map(()=>({w:0,pts:0}))};
+  sfx('click'); haptic(10); labSimPaint();
+  const types=LSTY.map(x=>x.t);
+  const step=()=>{ const sv=G;
+    try{ for(let j=0;j<6 && LDUEL.done<LSIM_N;j++){ lsimGame(LDUEL.rules, LDUEL.acc, types); LDUEL.done++; } }
+    catch(e){ LDUEL.err=String(e&&e.message||e); LDUEL.done=LSIM_N; }
+    finally{ G=sv; }
+    if(LDUEL.done<LSIM_N){ labSimPaint(); setTimeout(step,40); } else { LDUEL.run=false; labSimPaint(); sfx('fanfare'); haptic([10,30,10,30,60]); }
+  };
+  setTimeout(step,250);
+}
+function labDuelHTML(){
+  const R=LDUEL, A=R.acc, on=LDUEL_R.filter(r=>R.rules[r.k]);
+  const chips=`<div class="ldu-rules">${LDUEL_R.map(r=>`<button class="ldu-rc${R.rules[r.k]?' on':''}" onclick="labDuelRule('${r.k}')" ${R.run?'disabled':''} aria-pressed="${!!R.rules[r.k]}">${r.ic} ${r.n}</button>`).join('')}</div>`;
+  const roster=`<div class="ldu-ros">${LSTY.map(x=>`<div class="ldu-p" style="--c:${x.c}"><span class="ldu-ic">${x.ic}</span><b>${x.n}</b><small>${x.d}</small></div>`).join('')}</div>`;
+  if(!A) return `<div class="lsim ldu" id="lsim"><p class="lsim-d">4種類のCPUが同じテーブルで <b>${LSIM_N}試合</b>。どの考え方がいちばん勝てる？ ルールを足すと、強い戦い方が変わるかも。</p>${roster}<span class="ldu-l">試すルール（なしでもOK）</span>${chips}<button class="btn gold lsim-go" onclick="labDuelRun()">⚔️ ${LSIM_N}試合たたかわせる</button></div>`;
+  const n=Math.max(1,A.n), W=A.by.map((b,i)=>({i, w:b.w/n*100, pts:b.pts/n})), order=W.slice().sort((a,b)=>b.w-a.w), lead=order[0].i;
+  const bars=W.map(x=>{ const s=LSTY[x.i]; return `<div class="ldu-r${!R.run&&x.i===lead?' lead':''}"><span class="lsim-n">${s.ic}<small>${s.n}</small></span><span class="lsim-bar"><i style="width:${x.w.toFixed(1)}%;--c:${s.c}"></i></span><em>${Math.round(x.w)}%</em><small class="ldu-pt">${x.pts.toFixed(1)}点</small></div>`; }).join('');
+  let pod='', notes='';
+  if(!R.run){
+    const pos=[order[1],order[0],order[2]].filter(Boolean), hh=[70,100,48];
+    pod=`<div class="ldu-pod">${pos.map((x,j)=>{ const s=LSTY[x.i], rk=j===1?1:j===0?2:3; return `<div class="ldu-pc r${rk}" style="--c:${s.c};--d:${[250,0,450][j]}ms"><span class="ldu-pic">${rk===1?'<i class="ldu-cr">👑</i>':''}${s.ic}</span><b>${s.n}</b><span class="ldu-blk" style="height:${hh[j]}px"><em>${rk}</em><small>${Math.round(x.w)}%</small></span></div>`; }).join('')}</div>`;
+    const by=t=>W[LSTY.findIndex(s=>s.t===t)], nv=by('naive'), rd=by('read'), rn=by('random'), pr=by('pro'), L=LSTY[lead];
+    const d=Math.round(rd.w-nv.w);
+    notes=`<div class="lsim-nt"><b>🔬 わかったこと${on.length?`（${on.map(r=>r.ic+r.n).join('＋')}）`:'（ふつうのルール）'}</b><ul>
+      <li>いちばん勝ったのは <b>${L.ic}${L.n}</b>（勝率 ${Math.round(W[lead].w)}%）。${W[lead].w-order[1].w<5?`2位の${LSTY[order[1].i].n}とは小さな差なので、回すたびに入れかわることも。`:''}</li>
+      <li>${Math.abs(d)<6?`「読む」と「表だけ」はほぼ互角（${Math.round(rd.w)}% と ${Math.round(nv.w)}%）。`:d>0?`被りを読むほうが、点の高い所にとびつくより <b>${d}ポイント</b> 勝ちやすい。`:`このルールでは、点の高い所にまっすぐ行くほうが <b>${-d}ポイント</b> 勝ちやすい。`}</li>
+      <li>${rn.w>=15?`てきとうでも ${Math.round(rn.w)}% 勝てる。運も味方につくゲーム。`:`てきとうだと ${Math.round(rn.w)}% しか勝てない。考えるほど強くなる。`}</li>
+      ${pr.w<rd.w-3?`<li>「達人」は読みすぎて、かえって外すことも（${Math.round(pr.w)}%）。</li>`:''}</ul></div>`;
+  }
+  const pct=Math.round(R.done/LSIM_N*100);
+  return `<div class="lsim ldu${R.run?' run':' done'}" id="lsim">
+    <div class="lsim-p"><span class="lsim-pb"><i style="width:${pct}%"></i></span><span class="lsim-pc">${R.run?`⚔️ たたかい中… <b>${R.done}</b> / ${LSIM_N}試合`:`✅ ${LSIM_N}試合 おわり`}</span></div>
+    ${R.err?`<p class="note">エラー：${esc(R.err)}</p>`:''}${pod}<div class="lsim-m"><div class="lsim-mh"><b>勝率</b><small>右は1試合の平均点</small></div>${bars}</div>${notes}
+    ${R.run?'':`<span class="ldu-l">ルールを変えてもう一度</span>${chips}<button class="btn lsim-go" onclick="labDuelRun()">🔁 もう一度たたかわせる</button>`}</div>`;
+}
 function labSimRun(){
-  if(LSIM && LSIM.run) return;
+  if((LSIM && LSIM.run) || (LDUEL && LDUEL.run)) return;
   LSIM={run:true, done:0, acc:LSIM_SC.map(()=>({n:0,top:0,gap:0,close:0,plays:0,clash:0,upN:0,upG:0}))};
   sfx('click'); haptic(10); labSimPaint();
   const step=()=>{ const sv=G;
@@ -11537,8 +11613,13 @@ function labSimRun(){
   };
   setTimeout(step,250);
 }
-function labSimPaint(){ const b=document.getElementById('lsim'); if(b) b.outerHTML=labSimHTML(); }
+function labSimPaint(){ const b=document.getElementById('lsimw'); if(b) b.outerHTML=labSimHTML(); }
+let LSIM_TAB=0;
+function labSimTab(i){ if((LSIM&&LSIM.run)||(LDUEL&&LDUEL.run)) return; LSIM_TAB=i; sfx('click'); labSimPaint(); }
 function labSimHTML(){
+  return `<div id="lsimw"><div class="lsim-tabs" role="tablist">${['📊 ルールくらべ','⚔️ 戦い方くらべ'].map((t,i)=>`<button role="tab" aria-selected="${LSIM_TAB===i}" class="${LSIM_TAB===i?'on':''}" onclick="labSimTab(${i})">${t}</button>`).join('')}</div>${LSIM_TAB===1?labDuelHTML():labSimRuleHTML()}</div>`;
+}
+function labSimRuleHTML(){
   const head='';
   if(!LSIM) return `${head}<div class="lsim" id="lsim"><p class="lsim-d">CPU 4人が、ルールを変えて <b>${LSIM_N}試合ずつ</b> 戦います。ルールでゲームがどう変わるか、数字で見てみよう。</p>
     <div class="lsim-sc">${LSIM_SC.map(s=>`<span style="--c:${s.c}">${s.ic} ${s.n}</span>`).join('')}</div><button class="btn gold lsim-go" onclick="labSimRun()">▶ ${LSIM_N*LSIM_SC.length}試合を回す</button></div>`;
