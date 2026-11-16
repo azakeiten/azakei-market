@@ -3754,6 +3754,24 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 @keyframes flgRing{0%{opacity:1;transform:scale(.2)}100%{opacity:0;transform:scale(1.6);border-width:1px}}
 @keyframes flgBeam{from{opacity:0;transform:translateX(-50%) scaleY(.2)}to{opacity:1;transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.flg.clash .fl .fl-in{translate:var(--sx) 0}.flg-x{display:none}.flg-tag,.flg-beam{opacity:1;animation:none}}
+/* 得意技・阻止のカットイン */
+.sigc{position:fixed;inset:0;z-index:29;pointer-events:none;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 50%,transparent 30%,rgb(0 0 0 / .45));animation:sigBg 2.4s ease both}
+.sigc-band{position:relative;width:150vw;flex:none;transform:rotate(-7deg);display:flex;align-items:center;justify-content:center;gap:14px;padding:10px 0;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--cc) 60%,#10123a) 10%,color-mix(in srgb,var(--cc) 78%,#10123a) 50%,color-mix(in srgb,var(--cc) 60%,#10123a) 90%,transparent);box-shadow:0 0 0 3px #0008,0 0 50px var(--cc);animation:sigIn 2.4s cubic-bezier(.2,.9,.3,1) both}
+.sigc-ln{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgb(255 255 255 / .0) 0 26px,rgb(255 255 255 / .35) 26px 30px);animation:sigLn .5s linear infinite;mix-blend-mode:overlay}
+.sigc-face{position:relative;width:96px;height:96px;flex:none;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 4px #fff,0 0 0 7px #0008,0 8px 24px #0009;transform:rotate(7deg);animation:sigFace .5s .15s cubic-bezier(.3,1.7,.5,1) both}
+.sigc-face>*{width:100%;height:100%}
+.sigc-tx{position:relative;display:flex;flex-direction:column;align-items:flex-start;transform:rotate(7deg);color:#fff;text-shadow:0 2px 0 #000a,0 0 3px #000}
+.sigc-tx small{font-size:12px;font-weight:900;letter-spacing:.06em;opacity:.95}
+.sigc-tx b{font-family:var(--display);font-weight:400;font-size:44px;line-height:1.05;text-shadow:0 3px 0 #000b,0 0 3px #000,0 0 22px var(--cc);animation:sigWord .5s .25s cubic-bezier(.3,1.8,.5,1) both}
+.sigc-tx span{font-size:13px;font-weight:800;max-width:52vw}
+.sigc.b .sigc-tx b{color:#e8fdff}
+@keyframes sigBg{0%,100%{opacity:0}12%,82%{opacity:1}}
+@keyframes sigIn{0%{transform:rotate(-7deg) translateX(110vw)}14%{transform:rotate(-7deg) translateX(0)}82%{transform:rotate(-7deg) translateX(-3vw);opacity:1}100%{transform:rotate(-7deg) translateX(-120vw);opacity:0}}
+@keyframes sigLn{to{background-position:30px 0}}
+@keyframes sigFace{from{transform:rotate(7deg) scale(0)}to{transform:rotate(7deg) scale(1)}}
+@keyframes sigWord{from{transform:scale(2.4);opacity:0}to{transform:none;opacity:1}}
+.vs-fav{display:inline-block;margin-top:3px;padding:0 7px;border-radius:99px;background:var(--c);color:#fff;font-style:normal;font-size:10.5px;font-weight:900}
+@media (max-width:480px){.sigc-face{width:76px;height:76px}.sigc-tx b{font-size:36px}.sigc-tx span{font-size:12px}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4881,7 +4899,7 @@ function vsOverlay(){
   const vc=(p,side)=>side==='r' && !G.teams && !isHuman(p) && (p.boss ? !!bvs : FACE[charKey(p)] && CHAR_PROF[charKey(p)] && avOf(p)===(CHARS[charKey(p)]||{}).ic);
   const plate=(p,i,side,j)=>`<div class="vsp ${side}${vc(p,side)?' vsc':''}${vc(p,side)&&p.boss?' vsboss':''}" style="--s:var(--s${p.seat%6});${vc(p,side)?`--cc2:${p.boss?bvs.c:CHARS[charKey(p)].c};`:''}animation-delay:${.15+j*.12}s">
       <div class="ava${i===me?frc():''}" style="--s:var(--s${p.seat%6});grid-row:auto">${avHTML(p)}</div>
-      ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(vc(p,side)?(p.boss?bvs.n:charKey(p)):p.name)}</b>${G.pw&&G.pw[i]?`<em class="vspw">🃏 ${PWR[G.pw[i]].ic} ${PWR[G.pw[i]].n}</em>`:''}<span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':vc(p,side)?(p.boss?`WEEKLY BOSS<br>能力「${bvs.ab}」`:`${CHAR_PROF[charKey(p)].t}<br>${cpuLabel(p)}CPU`):cpuLabel(p)+'CPU'}</span></div></div>`;
+      ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(vc(p,side)?(p.boss?bvs.n:charKey(p)):p.name)}</b>${G.pw&&G.pw[i]?`<em class="vspw">🃏 ${PWR[G.pw[i]].ic} ${PWR[G.pw[i]].n}</em>`:''}<span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':vc(p,side)?(p.boss?`WEEKLY BOSS<br>能力「${bvs.ab}」`:`${CHAR_PROF[charKey(p)].t}<br>${cpuLabel(p)}CPU<br><em class="vs-fav" style="--c:var(--i${CHAR_PROF[charKey(p)].fav})">得意：${IND[CHAR_PROF[charKey(p)].fav]}</em>`):cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
   return `<div class="overlay vs${fin||bsv?' final':''}" onclick="endVs()" style="${cu?`--cc:${cu.c}`:bsv?`--cc:${bsv.c}`:''}"><div class="vsbg"></div>${fin?'<div class="vsfinal">FINAL</div>':bsv?'<div class="vsfinal">BOSS</div>':''}
@@ -5053,6 +5071,25 @@ function endFlip(){
   G.ov=null; renderOv();
   const f=FLIP_DONE; FLIP_DONE=null; f&&f();
 }
+/* ---- ⚡ 得意技と阻止：CPUキャラが「得意な産業」を独占したら必殺技のカットイン。あなたがそこに割りこんで被らせたら「阻止！」 ---- */
+function sigFx(){
+  if(!G || G.online || reduced() || !G.last) return; const me=myIndex(); if(me<0 || !G.last[me]) return;
+  G.sigDone=G.sigDone||{}; const mr=G.last[me]; let ev=null;
+  G.players.forEach((p,i)=>{ if(ev || i===me || isHuman(p) || p.boss) return; const k=charKey(p), pf=CHAR_PROF[k], r=G.last[i]; if(!pf || !FACE[k] || !r) return;
+    if(r.ind===pf.fav && r.k===1 && r.total>=3 && !G.sigDone['s'+k]){ ev={k,i,t:'sig',r}; G.sigDone['s'+k]=1; }
+    else if(r.ind===pf.fav && mr.ind===r.ind && r.k>1 && !G.sigDone['b'+k]){ ev={k,i,t:'blk',r}; G.sigDone['b'+k]=1; } });
+  if(!ev) return; G.sigLog=(G.sigLog||[]).concat([{k:ev.k,t:ev.t,turn:G.turn}]);
+  setTimeout(()=>sigCut(ev), 1900);
+}
+function sigCut(ev){
+  if(!G || G.phase!=='reveal' || document.querySelector('.sigc')) return;
+  const pf=CHAR_PROF[ev.k], sig=ev.t==='sig', c=sig?((CHARS[ev.k]||{}).c||'#ffc83a'):'#4fe3ff';
+  const el=document.createElement('div'); el.className='sigc '+(sig?'s':'b'); el.style.setProperty('--cc',c); el.setAttribute('aria-hidden','true');
+  el.innerHTML=`<div class="sigc-band"><i class="sigc-ln"></i><span class="sigc-face">${face(ev.k,null,sig?'happy':'shock')}</span>
+    <span class="sigc-tx"><small>${sig?`${ev.k}の得意技 · ${IND[ev.r.ind]}`:`${ev.k}の得意な${IND[ev.r.ind]}`}</small><b>${sig?'得意技！':'阻止！'}</b>
+    <span>${sig?`「${pf.say}」 独占 ${sgn(ev.r.total)}`:'あなたが割りこんで、独占させなかった！'}</span></span></div>`;
+  document.body.appendChild(el); sfx(sig?'beat':'slam'); haptic(sig?[20,40,20]:[40,30,60]); setTimeout(()=>el.remove(),2400);
+}
 function flipOverlay(){
   const n=G.players.length, me=myIndex();
   /* 同じ産業のカードを並べてグループに。被ったカードは寄りあってぶつかり、独占はスポットライト */
@@ -5136,7 +5173,7 @@ function revealFx(){
   if(anyHit) setTimeout(()=>{ sfx('buzz'); haptic(40); },380);
   if(anyMono) setTimeout(()=>sfx('coin'),520);
   rivalFx(prev); pwFx(); yomiFx(); try{ raceGo(prev); }catch(e){}
-  cpuChatter(); speakLive();
+  cpuChatter(); speakLive(); try{ sigFx(); }catch(e){}
   const me=myIndex(), r=me>=0?G.last[me]:null;     // 自分の見せ場はカットインで
   const streak = r ? (()=>{ const u=G.players[me].used; let n=0; for(let k=u.length-1;k>=0&&u[k].k===1;k--) n++; return n; })() : 0;
   if(r && r.k===1 && G.bluffNow) setTimeout(()=>{ const B=G.bluffNow||{}; cutIn('ブラフ成功！',`「${IND[B.said]}」と言って、${IND[r.ind]}で独占 ${sgn(r.total)}`,'mono bluff',r.ind); sfx('fanfare'); haptic([30,40,30,40,60]); },700);
