@@ -3919,6 +3919,39 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .lbx-ic{font-size:20px;white-space:nowrap}.lbx-t{display:flex;flex-direction:column;flex:1;min-width:0}.lbx-t b{font-size:13.5px}.lbx-t small{font-size:11px;color:var(--muted);font-weight:700}
 .lbx em{font-style:normal;font-size:10.5px;font-weight:900;color:var(--gold-t);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){.lbd *{animation:none!important}.lbd-ball i:first-child{opacity:1}}
+/* 研究ミッション・研究レベル */
+.lbv{display:flex;align-items:center;gap:12px;margin:8px 0 12px;padding:10px 12px;border-radius:16px;background:linear-gradient(120deg,rgb(79 227 255 / .14),rgb(167 123 255 / .14));box-shadow:inset 0 0 0 1px var(--line)}
+.lbv-lv{display:flex;flex-direction:column;align-items:center;justify-content:center;width:52px;height:52px;flex:none;border-radius:50%;background:conic-gradient(var(--cyan),#a77bff,#4dff9a,var(--cyan));font-family:var(--display);font-size:24px;line-height:1;color:#062a33;box-shadow:0 0 18px rgb(79 227 255 / .35)}
+.lbv-lv small{font-family:var(--body);font-size:9px;font-weight:900}
+.lbv-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.lbv-t b{font-size:14px}.lbv-t small{font-size:11px;color:var(--muted);font-weight:700}
+.lbw-bar{height:8px;border-radius:99px;background:var(--panel2);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.lbw-bar i{display:block;height:100%;width:var(--p);border-radius:inherit;background:linear-gradient(90deg,var(--cyan),#a77bff);animation:lbwFill 1s .2s cubic-bezier(.2,.9,.3,1) both}
+@keyframes lbwFill{from{width:0}}
+.lbm-n{font-size:11px;color:var(--muted)}
+.lbm-list{display:grid;gap:6px;margin-bottom:12px}
+.lbm{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.lbm-ic{font-size:20px;flex:none;width:28px;text-align:center}
+.lbm-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.lbm-t b{font-size:13px}.lbm-t small{font-size:11px;color:var(--muted);font-weight:700;line-height:1.35}
+.lbm-bar{height:5px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:2px}.lbm-bar i{display:block;height:100%;background:var(--cyan)}
+.lbm-r{flex:none;font-size:13px;font-weight:900;color:var(--gold-t);display:flex;flex-direction:column;align-items:flex-end;line-height:1.2}.lbm-r small{font-size:10px;color:var(--muted)}
+.lbm.done{box-shadow:inset 0 0 0 1.5px var(--up);background:linear-gradient(90deg,rgb(77 255 154 / .12),var(--panel2))}
+.lbm.done .lbm-r em{font-style:normal;font-size:11px;padding:2px 8px;border-radius:99px;background:var(--up);color:#06331a;transform:rotate(-6deg)}
+.lbw{position:relative;overflow:hidden;box-shadow:inset 0 0 0 1.5px rgb(79 227 255 / .5)}
+.lbw-hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.lbw-hd>span:nth-child(2){flex:1;display:flex;flex-direction:column}.lbw-hd b{font-size:16px}
+.lbw-flask{font-size:30px;display:inline-block;animation:lbwBub 2.4s ease-in-out infinite}
+@keyframes lbwBub{50%{transform:translateY(-3px) rotate(-8deg)}}
+.lbw-lv{font-family:var(--display);font-size:22px;color:var(--cyan);display:flex;flex-direction:column;align-items:flex-end;line-height:1}.lbw-lv small{font-family:var(--body);font-size:10px;font-weight:900;color:var(--muted)}
+.lbw-up{color:var(--up);display:inline-block;animation:dkPop .5s .9s both}
+.lbw-f{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.lbw-f span{padding:3px 10px;border-radius:99px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line);font-size:12px;font-weight:800}
+.lbw-ms{display:grid;gap:8px;margin:12px 0}
+.lbw-m{position:relative;display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--up);animation:dkPop .45s var(--d) cubic-bezier(.3,1.6,.5,1) both}
+.lbw-m>span:nth-child(2){flex:1;display:flex;flex-direction:column;min-width:0}.lbw-m b{font-size:13px}.lbw-m small{font-size:11px;color:var(--muted);font-weight:700}
+.lbw-ic{font-size:22px}.lbw-m em{font-style:normal;font-weight:900;color:var(--gold-t);font-size:12.5px;white-space:nowrap}
+.lbw-st{position:absolute;right:8px;top:-9px;padding:1px 8px;border:2px solid var(--up);border-radius:6px;color:var(--up);font-size:10px;font-weight:900;letter-spacing:.12em;background:var(--panel);transform:rotate(8deg);animation:lbwStamp .4s calc(var(--d) + .35s) cubic-bezier(.3,1.8,.5,1) both}
+@keyframes lbwStamp{from{opacity:0;transform:rotate(8deg) scale(2.4)}}
+.dock.rv.min .board{gap:4px}.dock.rv.min .lane .lf{font-size:10.5px}
+@media (prefers-reduced-motion:reduce){.lbw-flask,.lbw-m,.lbw-st,.lbw-up,.lbw-bar i{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5301,9 +5334,9 @@ function resolveTurn(){
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++; if(cnt[p.pick]===1 && hd0[pi]>=2) p.ywin=(p.ywin||0)+1;
     const alt = isHuman(p) ? (()=>{ let b=null; const chB=c=>G.chain && p.last!=null && CHAIN_NEXT[p.last]===c ? ((p._clPrev||1)+1>=3?2:1) : 0;   // チェーン分も「もしも」に入れる
       (p.hand||[]).forEach(c=>{ const k=cnt[c]+(c===p.pick?0:1), v=sdGain(pc, baseFor(pc,p,G.deck,G.turn,c), k, c)+chB(c); if(!b || v>b.v) b={c,v,k}; }); return b?{c:b.c, v:b.v, k:b.k, mine:sdGain(pc,base,cnt[p.pick],p.pick)+chB(p.pick)}:null; })() : null;   // もしもの一手：相手の出し方はそのままで、手札のどれが一番よかったか
-    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],alt});
+    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],alt,yomi:yb,sdm:G.sd?G.sd.mod[p.pick]:0});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
-    pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,guess:p.guess,cb:G.chain?(p._cb||0):0,cl:G.chain?(p.chainLen||1):0};
+    pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,guess:p.guess,cb:G.chain?(p._cb||0):0,cl:G.chain?(p.chainLen||1):0,sdm:G.sd?G.sd.mod[p.pick]:0};
   });
   if(G.log) G.log.push(G.deck[G.turn]);
   G.bluffNow=null; try{ ttRecord(cnt); }catch(e){}
@@ -10847,9 +10880,10 @@ function revealDock(){
       <div class="lb">${who.map(x=>`<div class="who" style="--s:var(--s${x.p.seat%6});animation-delay:${x.i*130}ms"><span class="d"></span>${esc(x.p.name)}${G.last[x.i].fut?' <span class="tagx cy">先物</span>':''}</div>`).join('')}${wh?'<div class="who whl"><span class="d"></span>🐋 クジラ</div>':''}</div>
       <div class="lf">${foot}${sdFoot(c,k)}</div>${k>1?'<span class="stamp">被り！</span>':k===1?'<span class="stamp g">独占</span>':''}</div>`;
   }).join('');
-  return `<div class="dock">${guideTip()}${stepBar('reveal')}${myResultBar()}${raceBar()}${mioTurn()}<div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold-t)">${mvp} ${sgn(best)}</b></span></div>
+  const dmin=dockMinOn(), dan=G.dkAnim; G.dkAnim=null; const mp=G.players[myIndex()]; let sum=''; if(dmin&&mp){ try{ sum=dockSum(mp); }catch(e){} }
+  return `<div class="dock rv${dmin?' min':''}${dan?' dk-'+dan:''}">${dockGrab(dmin)}${sum}<div class="dk-info">${guideTip()}${stepBar('reveal')}</div>${myResultBar()}<div class="dk-info">${raceBar()}${mioTurn()}</div><div class="row spread"><h3>OPEN！ 市場の結果</h3><span class="note">MVP：<b style="color:var(--gold-t)">${mvp} ${sgn(best)}</b></span></div>
     ${liveBox()}
-    <div class="board">${lanes}</div>${whyBox(G.deck[G.turn], G.cfg.table[G.deck[G.turn]])}${cpuWhy()}${emoteBar()}
+    <div class="board">${lanes}</div><div class="dk-info">${whyBox(G.deck[G.turn], G.cfg.table[G.deck[G.turn]])}${cpuWhy()}</div>${emoteBar()}
     <div class="actions" style="justify-content:flex-end">${G.online&&!G.host?'<span class="note">ホストが次へ進めます…</span>':`<button class="btn gold big pulse" style="flex:1 1 auto;max-width:360px" onclick="nextTurn()">${G.turn===TURNS-1?'最終結果へ':'次のターンへ'}</button>`}</div></div>`;
 }
 function finalView(){
@@ -10866,7 +10900,7 @@ function finalView(){
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center"><button class="btn big pb-btn" onclick="photoShoot()">📸 記念撮影</button>${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
-    ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${cgUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+    ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${cgUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${labWinPanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${chalPanel()}${ordPanel()}
     ${rewardPanel()}
     ${fbPanel()}
@@ -11259,7 +11293,7 @@ function coachHTML(p){
   }catch(e){ return ''; }
 }
 /* ---- 📱 たためる手札シート（スマホ）：説明やレースをしまって、NEWSと場を見ながら選べる ---- */
-function dockMinOn(){ return !!(S.dockMin && phone() && G && G.phase==='choose'); }
+function dockMinOn(){ return !!(S.dockMin && phone() && G && (G.phase==='choose'||G.phase==='reveal')); }
 function dockGrab(dmin){
   return `<button class="dk-grab hide-lg" onclick="dockToggle()" onpointerdown="dockSwipe(event)" aria-expanded="${dmin?'false':'true'}" aria-label="${dmin?'説明をひらく':'説明をたたんで、場を見やすくする'}"><span class="grab"></span><small>${dmin?'▲ ひらく':'▼ たたむ'}</small></button>`;
 }
@@ -11303,8 +11337,49 @@ const RLAB_COMBO=[
   {ks:['chain','yomi'], n:'流れを読む', d:'つながりを作りながら、人気の産業も当てる。'},
   {ks:['sd'], n:'経済の授業', d:'需要と供給だけ。値段が動くしくみが体でわかる。'}
 ];
+/* ---- 🎯 研究ミッションと研究レベル ---- */
+const RLAB_MIS=[
+  {id:'first', ic:'🧫', n:'はじめての研究', d:'試作ルールを1つ以上ONにして1試合', t:1, coin:30, f:x=>x.any?1:0},
+  {id:'all4', ic:'🗂️', n:'ぜんぶ試した', d:'4つの試作ルールを、それぞれ1回以上遊ぶ', t:4, coin:60, abs:x=>x.kinds},
+  {id:'ch3', ic:'🔗', n:'3連チェーン', d:'サプライチェーンで、1試合のうちに3連つなぐ', t:1, coin:40, f:x=>x.cl>=3?1:0},
+  {id:'yo3', ic:'🔮', n:'未来が見える', d:'人気予想を1試合で3回当てる', t:1, coin:40, f:x=>x.yo>=3?1:0},
+  {id:'sd2', ic:'📈', n:'品薄ハンター', d:'品薄の産業を1試合で2回独占する', t:1, coin:40, f:x=>x.sdm>=2?1:0},
+  {id:'cbw', ic:'🎴', n:'相場師', d:'「取りあい相場」（ドラフト＋需要と供給）で1位になる', t:1, coin:80, f:x=>x.won&&x.dr&&x.sd?1:0},
+  {id:'full', ic:'🧪', n:'全部のせ', d:'4つの試作ルールをぜんぶONにして1試合', t:1, coin:80, f:x=>x.n4?1:0},
+  {id:'g10', ic:'🏛️', n:'研究の鬼', d:'試作ルールで通算10試合', t:10, coin:100, abs:x=>x.total}
+];
+const LAB_LV=[0,1,3,6,10,15,21,28,36];
+const LAB_TT=['見学者','見習い研究員','研究員','主任研究員','研究リーダー','博士','教授','副所長','所長'];
+function labLv(n){ n=n||0; let l=0; while(l+1<LAB_LV.length && n>=LAB_LV[l+1]) l++; const a=LAB_LV[l], b=LAB_LV[l+1]; return {l, t:LAB_TT[l], n, a, b, pct:b?Math.round((n-a)/(b-a)*100):100}; }
+function labMis(won){
+  const P=S.prof, me=myIndex(), p=me>=0?G.players[me]:null; if(!P || !p) return null;
+  const ons=RLAB.filter(r=>r.g()); if(!ons.length) return null;
+  const us=p.used||[], st=P.labSt||{};
+  if(P.labN==null) P.labN=Math.max(1,...Object.values(st).map(v=>v.n||0))-1;
+  const lv0=labLv(P.labN).l; P.labN++;
+  const x={any:1, won:!!won, dr:!!G.draft, sd:!!G.sd, n4:ons.length===RLAB.length, kinds:RLAB.filter(r=>st[r.k]&&st[r.k].n>0).length, total:P.labN,
+    cl:G.chain?(p.clMax||1):0, yo:G.yomi?us.reduce((a,u)=>a+(u.yomi||0),0):0, sdm:G.sd?us.filter(u=>u.sdm>0&&u.k===1).length:0};
+  const M=P.labMis=P.labMis||{done:{},prog:{}}; const cleared=[]; let coin=0;
+  RLAB_MIS.forEach(m=>{ if(M.done[m.id]) return; M.prog[m.id]=Math.min(m.t, m.abs?m.abs(x):(M.prog[m.id]||0)+m.f(x)); if(M.prog[m.id]>=m.t){ M.done[m.id]=Date.now(); coin+=m.coin; cleared.push(m.id); } });
+  P.coin=(P.coin||0)+coin; const lv=labLv(P.labN);
+  return {cleared, coin, lv, up:lv.l>lv0, x};
+}
+function labLvHTML(){ const L=labLv(S.prof&&S.prof.labN);
+  return `<div class="lbv"><span class="lbv-lv"><small>Lv</small>${L.l}</span><span class="lbv-t"><b>${L.t}</b><span class="lbw-bar"><i style="--p:${L.pct}%"></i></span><small>${L.b?`試作ルールであと${L.b-L.n}試合で「${LAB_TT[L.l+1]}」`:'最高レベル！'}</small></span></div>`; }
+function labMisHTML(){ const M=(S.prof&&S.prof.labMis)||{done:{},prog:{}}; const dn=RLAB_MIS.filter(m=>M.done[m.id]).length;
+  return `<h4 class="lab-h">🎯 研究ミッション <small class="lbm-n">${dn}/${RLAB_MIS.length}</small></h4><div class="lbm-list">${RLAB_MIS.map(m=>{ const d=!!M.done[m.id], pr=Math.min(m.t,(M.prog&&M.prog[m.id])||0);
+    return `<div class="lbm${d?' done':''}"><span class="lbm-ic">${m.ic}</span><span class="lbm-t"><b>${m.n}</b><small>${m.d}</small>${m.t>1&&!d?`<span class="lbm-bar"><i style="width:${pr/m.t*100}%"></i></span>`:''}</span><span class="lbm-r">${d?'<em>達成</em>':`${m.t>1?`<small>${pr}/${m.t}</small>`:''}+${m.coin}<small>コイン</small>`}</span></div>`; }).join('')}</div>`; }
+function labWinPanel(){ const L=G&&G.labGot; if(!L) return '';
+  const ms=L.cleared.map(id=>RLAB_MIS.find(m=>m.id===id)).filter(Boolean), x=L.x||{};
+  const facts=[x.cl?`🔗 最長${x.cl}連`:'', G.yomi?`🔮 予想的中 ${x.yo}回`:'', G.sd?`📈 品薄で独占 ${x.sdm}回`:''].filter(Boolean);
+  return `<section class="panel lbw"><div class="lbw-hd"><span class="lbw-flask">🧪</span><span><span class="label">LAB REPORT</span><b>研究レポート</b></span><span class="lbw-lv">Lv.${L.lv.l}<small>${L.lv.t}</small></span></div>
+    <div class="lbw-bar"><i style="--p:${L.lv.pct}%"></i></div><p class="note">${L.lv.b?`次のレベルまで、試作ルールであと ${L.lv.b-L.lv.n} 試合`:'最高レベル！'}${L.up?' · <b class="lbw-up">レベルアップ！</b>':''}</p>
+    ${facts.length?`<div class="lbw-f">${facts.map(t=>`<span>${t}</span>`).join('')}</div>`:''}
+    ${ms.length?`<div class="lbw-ms">${ms.map((m,i)=>`<div class="lbw-m" style="--d:${300+i*160}ms"><span class="lbw-ic">${m.ic}</span><span><b>${m.n}</b><small>${m.d}</small></span><em>+${m.coin}コイン</em><span class="lbw-st">CLEAR</span></div>`).join('')}</div>`:''}
+    <button class="btn" onclick="openSheet('lab')">🧪 研究所を見る</button></section>`; }
 function labRecord(won, score){
   const P=S.prof, st=P.labSt=P.labSt||{}; RLAB.forEach(r=>{ if(r.g()){ const x=st[r.k]=st[r.k]||{n:0,w:0,best:0}; x.n++; if(won) x.w++; x.best=Math.max(x.best||0, score||0); } });
+  G.labGot=labMis(won);
 }
 function labSet(k,on){ const r=RLAB.find(x=>x.k===k); if(!r) return; r.set(!!on); haptic(10); renderSheet(); }
 function labCombo(i){ const cb=RLAB_COMBO[i]; if(!cb) return; RLAB.forEach(r=>{ const want=cb.ks.includes(r.k); if(r.on()!==want){ const t=window.toast; window.toast=()=>{}; try{ r.set(want); }finally{ window.toast=t; } } }); sfx('fanfare'); haptic([10,30,10]); toast(`🧪「${cb.n}」をセットしました`); renderSheet(); }
@@ -11323,11 +11398,11 @@ function labBody(){
       <div class="lbc-st">${x&&x.n?`<span>${x.n}試合</span><span>勝率 <b>${rate}%</b></span><span>最高 <b>${x.best||0}</b>点</span>`:'<span class="lbc-new">まだ遊んでいません</span>'}</div></div>`; };
   const combos=RLAB_COMBO.map((cb,i)=>{ const act=RLAB.every(r=>r.on()===cb.ks.includes(r.k));
     return `<button class="lbx${act?' act':''}" onclick="labCombo(${i})"><span class="lbx-ic">${cb.ks.map(k=>RLAB.find(r=>r.k===k).ic).join('')}</span><span class="lbx-t"><b>${cb.n}</b><small>${cb.d}</small></span>${act?'<em>セット中</em>':''}</button>`; }).join('');
-  return `<div class="lab"><span class="label">LAB · 試作ルール研究所</span><h3 class="ttl lab-ttl">🧪 試作ルール研究所</h3>
+  return `<div class="lab"><span class="label">LAB · 試作ルール研究所</span><h3 class="ttl lab-ttl">🧪 試作ルール研究所</h3>${labLvHTML()}
     <p class="note">開発中の新しいルールを、好きに組み合わせて試せます。ふだんの対戦（CPU戦）で使えて、自己ベストには入りません。いまON：<b>${onN}</b>つ</p>
     <div class="lbc-list">${RLAB.map(card).join('')}</div>
     <h4 class="lab-h">🧬 おすすめの組み合わせ</h4><div class="lbx-list">${combos}</div>
-    <button class="btn ghost" onclick="RLAB.forEach(r=>{ if(r.on()) r.set(false); });renderSheet()">ぜんぶオフにする</button></div>`;
+    ${labMisHTML()}<button class="btn ghost" onclick="RLAB.forEach(r=>{ if(r.on()) r.set(false); });renderSheet()">ぜんぶオフにする</button></div>`;
 }
 function setSd(on){ S.sd=!!on; save('azakei-sd',S.sd); sfx('click'); render(); if(on) toast('📈 需要と供給：だれも出さなかった産業は次のターン「品薄」で独占すれば +1。2人以上が出した産業は「供給過多」で −1'); }
 function sdInit(){ G.cfg={...G.cfg, table:G.cfg.table.map(r=>r.slice())}; return {base:G.cfg.table.map(r=>r.slice()), mod:IND.map(()=>0), prev:IND.map(()=>0), hist:[], fresh:false}; }
