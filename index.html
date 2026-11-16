@@ -4019,6 +4019,26 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .bnp-x{flex:1;min-width:0;display:flex;flex-direction:column}.bnp-x b{font-size:12.5px}.bnp-x small{font-size:11px;color:var(--muted);font-weight:700}
 .bnp-r em{font-style:normal;font-family:var(--display);font-size:18px;color:var(--up)}.bnp-r.dn em{color:#ff6b6b}
 @media (prefers-reduced-motion:reduce){.bnr-l,.bnfx,.bnfx-band,.bnfx-tk span,.bnfx-card,.bnfx-v,.lbd-bk,.lbd.bn i{animation:none}}
+/* CPUシミュレーター */
+.lsim{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.lsim-d{margin:0;font-size:12.5px;font-weight:700;line-height:1.6}
+.lsim-sc{display:flex;flex-wrap:wrap;gap:6px}.lsim-sc span{padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;box-shadow:inset 0 0 0 1.5px var(--c)}
+.lsim-go{align-self:stretch}
+.lsim-p{display:flex;flex-direction:column;gap:5px}
+.lsim-pb{height:8px;border-radius:99px;background:var(--line);overflow:hidden}.lsim-pb i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),#a77bff);transition:width .3s}
+.lsim.run .lsim-pb i{background-size:24px 24px;background-image:linear-gradient(45deg,rgb(255 255 255 / .25) 25%,transparent 25%,transparent 50%,rgb(255 255 255 / .25) 50%,rgb(255 255 255 / .25) 75%,transparent 75%),linear-gradient(90deg,var(--cyan),#a77bff);animation:lsimStripe .6s linear infinite}
+@keyframes lsimStripe{to{background-position:24px 0,0 0}}
+.lsim-pc{font-size:12px;font-weight:800;color:var(--muted)}.lsim-pc b{color:var(--ink);font-family:var(--display);font-weight:400;font-size:15px}
+.lsim-m{display:flex;flex-direction:column;gap:4px;padding-top:8px;border-top:1px dashed var(--line)}
+.lsim-mh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.lsim-mh b{font-size:13px}.lsim-mh small{font-size:10.5px;color:var(--muted);font-weight:700}
+.lsim-r{display:grid;grid-template-columns:112px 1fr 46px;align-items:center;gap:8px}
+.lsim-n{display:flex;align-items:center;gap:4px;font-size:13px;white-space:nowrap;overflow:hidden}.lsim-n small{font-size:10.5px;font-weight:800;color:var(--muted);overflow:hidden;text-overflow:ellipsis}
+.lsim-bar{height:12px;border-radius:0 4px 4px 0;background:transparent;box-shadow:inset 1px 0 0 var(--line)}
+.lsim-bar i{display:block;height:100%;border-radius:0 4px 4px 0;background:var(--c);transition:width .35s cubic-bezier(.2,.9,.3,1)}
+.lsim-r em{font-style:normal;font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+.lsim-nt{padding:10px 12px;border-radius:12px;background:linear-gradient(120deg,rgb(79 227 255 / .12),rgb(167 123 255 / .12));animation:dkPop .5s cubic-bezier(.3,1.5,.5,1) both}
+.lsim-nt b{font-size:13px}.lsim-nt ul{margin:6px 0 0;padding-left:18px;display:grid;gap:4px}.lsim-nt li{font-size:12px;font-weight:700;line-height:1.55}.lsim-nt li b{color:var(--gold-t);font-size:12.5px}
+@media (prefers-reduced-motion:reduce){.lsim.run .lsim-pb i,.lsim-nt{animation:none}.lsim-bar i,.lsim-pb i{transition:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4791,7 +4811,7 @@ function futureCost(T,hand,c,fut,left,known){
 }
 function oppDist(T,o,news,pool,left){
   const d=[0,0,0,0,0,0], sc={}; let mx=-1e9, z=0;
-  for(const x of o.hand){ const s=T[news][x]-futureCost(T,o.hand,x,pool,left,false); sc[x]=s; if(s>mx) mx=s; }
+  for(const x of o.hand){ const s=T[news][x]+bnAdj(x)-futureCost(T,o.hand,x,pool,left,false); sc[x]=s; if(s>mx) mx=s; }
   for(const x of o.hand){ d[x]=Math.exp((sc[x]-mx)/0.9); z+=d[x]; }
   for(let i=0;i<6;i++) d[i]/=z;
   return d;
@@ -11485,6 +11505,63 @@ function labPop(m, val, goal){
   document.body.appendChild(el); if(ok){ sfx('fanfare'); haptic([20,40,20,40,60]); } else { sfx('coin'); haptic(12); }
   setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 400); }, ok?3200:2200);
 }
+/* ---- 🤖 CPUシミュレーター：CPU 4人で何百試合も回して、ルールでゲームがどう変わるかを見る ---- */
+const LSIM_SC=[{k:'base',n:'ふつう',ic:'🃏',c:'#9aa3c7',sd:0,bn:0},{k:'sd',n:'需要と供給',ic:'📈',c:'#4dff9a',sd:1,bn:0},{k:'bn',n:'速報',ic:'⚡',c:'#ff6b6b',sd:0,bn:1},{k:'both',n:'ニュース相場',ic:'⚡📈',c:'#ffc83a',sd:1,bn:1}];
+const LSIM_N=200;
+let LSIM=null;
+function lsimGame(sc,acc){
+  const rnd=Math.random, cfg0={...presetCfg('rec'), names:NEWS, hist:false};
+  const deck=shuffle(cfg0.table.map((_,i)=>i),rnd).slice(0,TURNS);
+  const players=[0,1,2,3].map(i=>({name:'P'+i,type:'read',hand:[0,1,2,3,4,5],score:0,fore:'never',used:[],hist:[0],seat:i}));
+  G={players,deck,turn:0,cfg:cfg0,phase:'choose',bn:sc.bn?{cur:null,hist:[]}:null,sd:null,chain:false,players_n:4};
+  if(sc.sd) G.sd=sdInit();
+  for(let t=0;t<TURNS;t++){ G.turn=t;
+    if(G.bn){ G.bn.cur=null; if(t>=1){ const e=BN_EV[Math.floor(rnd()*BN_EV.length)]; G.bn.cur={c:Math.floor(rnd()*6),v:e.v}; } }
+    players.forEach(p=>p.pick=cpuPick(p,players,deck,t,G.cfg,rnd));
+    const cnt=[0,0,0,0,0,0]; players.forEach(p=>cnt[p.pick]++);
+    players.forEach(p=>{ const k=cnt[p.pick]; p.score+=sdGain(G.cfg,G.cfg.table[deck[t]][p.pick],k,p.pick); acc.plays++; if(k>1) acc.clash++; p.hand=p.hand.filter(c=>c!==p.pick); });
+    if(G.bn && G.bn.cur && G.bn.cur.v>0){ acc.upN++; acc.upG+=cnt[G.bn.cur.c]; }
+    if(G.sd && t<TURNS-1){ G.cnt=cnt; sdShift(); }
+  }
+  const sc2=players.map(p=>p.score).sort((a,b)=>b-a); acc.n++; acc.top+=sc2[0]; acc.gap+=sc2[0]-sc2[1]; if(sc2[0]-sc2[1]<=1) acc.close++;
+}
+function labSimRun(){
+  if(LSIM && LSIM.run) return;
+  LSIM={run:true, done:0, acc:LSIM_SC.map(()=>({n:0,top:0,gap:0,close:0,plays:0,clash:0,upN:0,upG:0}))};
+  sfx('click'); haptic(10); labSimPaint();
+  const step=()=>{ const sv=G;
+    try{ for(let j=0;j<8 && LSIM.done<LSIM_N;j++){ LSIM_SC.forEach((sc,i)=>lsimGame(sc,LSIM.acc[i])); LSIM.done++; } }
+    catch(e){ LSIM.err=String(e&&e.message||e); LSIM.done=LSIM_N; }
+    finally{ G=sv; }
+    if(LSIM.done<LSIM_N){ labSimPaint(); setTimeout(step,45); } else { LSIM.run=false; LSIM.fin=Date.now(); labSimPaint(); sfx('fanfare'); haptic([10,30,10]); }
+  };
+  setTimeout(step,250);
+}
+function labSimPaint(){ const b=document.getElementById('lsim'); if(b) b.outerHTML=labSimHTML(); }
+function labSimHTML(){
+  const head='';
+  if(!LSIM) return `${head}<div class="lsim" id="lsim"><p class="lsim-d">CPU 4人が、ルールを変えて <b>${LSIM_N}試合ずつ</b> 戦います。ルールでゲームがどう変わるか、数字で見てみよう。</p>
+    <div class="lsim-sc">${LSIM_SC.map(s=>`<span style="--c:${s.c}">${s.ic} ${s.n}</span>`).join('')}</div><button class="btn gold lsim-go" onclick="labSimRun()">▶ ${LSIM_N*LSIM_SC.length}試合を回す</button></div>`;
+  const L=LSIM, A=L.acc.map(a=>({n:a.n, gap:a.n?a.gap/a.n:0, close:a.n?a.close/a.n*100:0, clash:a.plays?a.clash/a.plays*100:0, top:a.n?a.top/a.n:0, upG:a.upN?a.upG/a.upN:0}));
+  const pct=Math.round(L.done/LSIM_N*100);
+  const metric=(t,sub,key,fmt,full)=>{ const mx=full||Math.max(...A.map(a=>a[key]),0.01);
+    return `<div class="lsim-m"><div class="lsim-mh"><b>${t}</b><small>${sub}</small></div>${A.map((a,i)=>`<div class="lsim-r"><span class="lsim-n">${LSIM_SC[i].ic}<small>${LSIM_SC[i].n}</small></span><span class="lsim-bar"><i style="width:${(a[key]/mx*100).toFixed(1)}%;--c:${LSIM_SC[i].c}"></i></span><em>${a.n?fmt(a[key]):'—'}</em></div>`).join('')}</div>`; };
+  let body=metric('接戦になる割合','1位と2位の差が1点以内','close',v=>Math.round(v)+'%',100)
+    +metric('被った割合','出したカードのうち、ほかの人と同じだった','clash',v=>Math.round(v)+'%',100)
+    +metric('1位の平均点','点がどれくらいふえるか','top',v=>v.toFixed(1)+'点');
+  let notes='';
+  if(!L.run && A[0].n){
+    const b=A[0], d=(x,y)=>Math.round(x-y), up=A[2].upG;
+    notes=`<div class="lsim-nt"><b>🔬 わかったこと</b><ul>
+      <li>⚡速報の <b>+2</b> には、平均 <b>${up.toFixed(1)}人</b> が集まる。${up>=1.3?'「いい話」には人が集まって、被りやすい。':'意外と分かれる。'}</li>
+      <li>📈需要と供給で、被った割合は ${Math.round(b.clash)}% → <b>${Math.round(A[1].clash)}%</b>。${A[1].clash<=b.clash-3?'値動きがあると、みんなが散らばる。':A[1].clash>=b.clash+3?'値動きで、かえって人気が集まる。':'差はわずか。CPUは値動きにうまく合わせている。'}</li>
+      <li>接戦の割合は、ふつう ${Math.round(b.close)}% → ニュース相場 <b>${Math.round(A[3].close)}%</b>（${d(A[3].close,b.close)>=0?'+':''}${d(A[3].close,b.close)}）。${Math.abs(A[3].close-b.close)<4?'接戦ぐあいは、ほぼ同じ。':A[3].close>b.close?'値動きがあると、最後までもつれやすい。':'値動きで、差がつきやすくなる。'}</li></ul></div>`;
+  }
+  return `${head}<div class="lsim${L.run?' run':' done'}" id="lsim">
+    <div class="lsim-p"><span class="lsim-pb"><i style="width:${pct}%"></i></span><span class="lsim-pc">${L.run?`🤖 シミュレーション中… <b>${L.done*LSIM_SC.length}</b> / ${LSIM_N*LSIM_SC.length}試合`:`✅ ${LSIM_N*LSIM_SC.length}試合 おわり`}</span></div>
+    ${L.err?`<p class="note">エラー：${esc(L.err)}</p>`:''}${body}${notes}
+    ${L.run?'':`<button class="btn lsim-go" onclick="labSimRun()">🔁 もう一度回す</button><p class="note">CPUは毎回ちがう手を打つので、結果は少しずつ変わります。</p>`}</div>`;
+}
 function labRecord(won, score){
   const P=S.prof, st=P.labSt=P.labSt||{}; RLAB.forEach(r=>{ if(r.g()){ const x=st[r.k]=st[r.k]||{n:0,w:0,best:0}; x.n++; if(won) x.w++; x.best=Math.max(x.best||0, score||0); } });
   G.labGot=labMis(won);
@@ -11511,7 +11588,7 @@ function labBody(){
     <p class="note">開発中の新しいルールを、好きに組み合わせて試せます。ふだんの対戦（CPU戦）で使えて、自己ベストには入りません。いまON：<b>${onN}</b>つ</p>
     <div class="lbc-list">${RLAB.map(card).join('')}</div>
     <h4 class="lab-h">🧬 おすすめの組み合わせ</h4><div class="lbx-list">${combos}</div>
-    ${labMisHTML()}<button class="btn ghost" onclick="RLAB.forEach(r=>{ if(r.on()) r.set(false); });renderSheet()">ぜんぶオフにする</button></div>`;
+    <h4 class="lab-h">🤖 CPUシミュレーター</h4>${labSimHTML()}${labMisHTML()}<button class="btn ghost" onclick="RLAB.forEach(r=>{ if(r.on()) r.set(false); });renderSheet()">ぜんぶオフにする</button></div>`;
 }
 /* ---- ⚡ 速報（試作）：2ターン目から毎ターン、1つの産業に速報。出した人は全員 ±2 ---- */
 const BN_EV=[{t:'補助金が決定',v:2,ic:'💴'},{t:'大型受注',v:2,ic:'📦'},{t:'新製品が大ヒット',v:2,ic:'🚀'},{t:'不祥事が発覚',v:-2,ic:'💥'},{t:'規制が強化',v:-2,ic:'🚫'},{t:'ストライキ',v:-2,ic:'✊'}];
