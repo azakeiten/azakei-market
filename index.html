@@ -3885,6 +3885,40 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .sdp-c{display:grid;place-items:center;height:22px;border-radius:6px;background:var(--panel2);font-size:12px;font-weight:900;color:var(--muted)}
 .sdp-c.hd{background:var(--c)}.sdp-c.hd svg{width:13px;height:13px}
 .sdp-c.up{background:rgb(77 255 154 / .18);color:var(--up);box-shadow:inset 0 0 0 1.5px var(--up)}.sdp-c.dn{background:rgb(255 93 93 / .16);color:var(--down);box-shadow:inset 0 0 0 1.5px var(--down)}
+/* 試作ルール研究所 */
+.lab-chip{border-style:dashed}.lab-n{display:inline-grid;place-items:center;min-width:16px;height:16px;margin-left:4px;border-radius:99px;background:var(--cyan);color:#062a33;font-size:10px}
+.lab{display:flex;flex-direction:column;gap:10px}.lab-ttl{font-size:24px}.lab-h{margin:4px 0 0;font-size:14px}
+.lbc-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.lbc{position:relative;display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden;transition:box-shadow .2s}
+.lbc::before{content:'';position:absolute;inset:0 0 auto 0;height:3px;background:var(--lc);opacity:.35}
+.lbc.on{box-shadow:inset 0 0 0 2px var(--lc),0 0 20px color-mix(in srgb,var(--lc) 30%,transparent)}.lbc.on::before{opacity:1}
+.lbc-top{display:flex;align-items:center;gap:8px}.lbc-ic{font-size:26px;line-height:1}
+.lbc-nm{display:flex;flex-direction:column;flex:1;min-width:0}.lbc-nm b{font-size:15px}.lbc-nm small{font-size:10.5px;font-weight:800;color:var(--muted)}
+.lbc-sw{position:relative;width:46px;height:26px;flex:none;border:0;border-radius:99px;background:var(--line);cursor:pointer;transition:background .2s}
+.lbc-sw i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 4px #0006;transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+.lbc-sw.on{background:var(--lc)}.lbc-sw.on i{transform:translateX(20px)}
+.lbc-d{margin:0;font-size:12.5px;font-weight:800;line-height:1.5}.lbc-tip{margin:0;font-size:11.5px;color:var(--muted);line-height:1.5}
+.lbc-st{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;font-weight:800;color:var(--muted)}.lbc-st b{color:var(--ink);font-family:var(--display);font-weight:400;font-size:14px}.lbc-new{font-style:italic}
+.lbd{display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border-radius:12px;background:rgb(0 0 0 / .18)}
+.lbd i{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--c)}.lbd i svg{width:18px;height:18px}
+.lbd em{font-style:normal;font-family:var(--display);font-size:14px;color:var(--up)}
+.lbd.chain i{animation:lbGlow 2.4s calc(var(--j)*.4s) infinite}.lbd.chain b{font-size:13px;opacity:.3;animation:lbLink 2.4s calc(var(--j)*.4s + .2s) infinite}
+@keyframes lbGlow{0%,100%{transform:none;box-shadow:none}15%{transform:scale(1.15);box-shadow:0 0 12px var(--c)}}
+@keyframes lbLink{0%,100%{opacity:.3}15%,60%{opacity:1}}
+.lbd.draft i{animation:lbDraw 2.6s calc(var(--j)*.5s) infinite both}.lbd-h{display:flex;gap:3px;margin-left:8px}.lbd-h u{width:16px;height:22px;border-radius:5px;box-shadow:inset 0 0 0 1.5px var(--line)}
+@keyframes lbDraw{0%,10%{transform:translateY(-6px) rotate(-6deg);opacity:.5}30%,100%{transform:none;opacity:1}}
+.lbd-ball{position:relative;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8,#a77bff55 45%,#3b1d7a);box-shadow:0 0 14px #a77bff88}
+.lbd-ball i{position:absolute;inset:6px;width:auto;height:auto;opacity:0;animation:lbBall 3s calc(var(--j)*1s) infinite;border-radius:50%}
+@keyframes lbBall{0%,5%{opacity:0;transform:scale(.6)}12%,30%{opacity:1;transform:none}36%,100%{opacity:0}}
+.lbd.sd{gap:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;font-weight:900}.lbd.sd .up{color:#4dff9a}.lbd.sd .dn{color:#ff6b6b}
+.lbd.sd span{animation:lbTick 1.6s infinite}.lbd.sd span:nth-child(2){animation-delay:.3s}.lbd.sd span:nth-child(3){animation-delay:.6s}
+@keyframes lbTick{0%,100%{transform:none}25%{transform:translateY(-4px)}}
+.lbx-list{display:flex;flex-direction:column;gap:6px}
+.lbx{display:flex;align-items:center;gap:10px;padding:8px 12px;border:0;border-radius:14px;background:var(--panel2);color:var(--ink);font:inherit;text-align:left;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line)}
+.lbx.act{box-shadow:inset 0 0 0 2px var(--gold)}.lbx:active{transform:scale(.98)}
+.lbx-ic{font-size:20px;white-space:nowrap}.lbx-t{display:flex;flex-direction:column;flex:1;min-width:0}.lbx-t b{font-size:13.5px}.lbx-t small{font-size:11px;color:var(--muted);font-weight:700}
+.lbx em{font-style:normal;font-size:10.5px;font-weight:900;color:var(--gold-t);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.lbd *{animation:none!important}.lbd-ball i:first-child{opacity:1}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4670,7 +4704,7 @@ function cardValues(cfg,p,players,deck,t,row,known,adj){
     let dist=[1];
     for(const od of opp){ const q=od[c], nd=new Array(dist.length+1).fill(0); for(let k=0;k<dist.length;k++){ nd[k]+=dist[k]*(1-q); nd[k+1]+=dist[k]*q; } dist=nd; }
     const b0=(adj?adj(T[row][c],cfg):T[row][c])+(p.brand===c?1:0);
-    let ev=0; for(let k=0;k<dist.length;k++) ev+=dist[k]*gain(cfg,b0,k+1);
+    let ev=0; for(let k=0;k<dist.length;k++) ev+=dist[k]*sdGain(cfg,b0,k+1,c);
     let carry=0;
     if(cfg.fore==='dividend' && left>0 && fut.length){ if(known) carry=divOf(cfg,T[deck[t+1]][c]); else { for(const u of pool) carry+=divOf(cfg,T[u][c]); carry/=pool.length; } }
     vals[c]=ev+carry-futureCost(T,p.hand,c,fut,left,known);
@@ -4721,7 +4755,7 @@ function proPick(p,players,deck,turn,cfg,rnd,known){
     let dist=[1];
     for(const od of opp){ const q=od[c], nd=new Array(dist.length+1).fill(0); for(let k=0;k<dist.length;k++){ nd[k]+=dist[k]*(1-q); nd[k+1]+=dist[k]*q; } dist=nd; }
     const b0=(p.fut?futBase(T[row][c],cfg):T[row][c])+(p.brand===c?1:0);
-    let ev=0; for(let k=0;k<dist.length;k++) ev+=dist[k]*gain(cfg,b0,k+1);
+    let ev=0; for(let k=0;k<dist.length;k++) ev+=dist[k]*sdGain(cfg,b0,k+1,c);
     let x=ev+chainEV(p,c)*.5-futureCost(T,p.hand,c,fut,left,known)+rnd()*0.1;
     if(ct && ct.id==='mono' && ct.x===c) x+=dist[0]*contractVal(ct)*.6;   // 独占できそうなら契約ぶんも上乗せ
     if(ct && ct.id==='clean' && ev<0) x-=1;
@@ -5943,6 +5977,7 @@ function renderSheet(){
   else if(k==='puzzle') body=puzBody();
   else if(k==='chain') body=chainRules(true);
   else if(k==='mycards') body=cgBody();
+  else if(k==='lab') body=labBody();
   else if(k==='yomidojo') body=`<div id="ydWrap">${ydBody()}</div>`;
   else if(k==='mynews') body=myNewsBody();
   else if(k==='mynewsedit') body=myNewsEditBody();
@@ -10975,7 +11010,7 @@ function playView(){
       ${S.seats.some(s=>s.type!=="human")?`<div class="diff" role="group" aria-label="CPUの強さ"><span class="label">CPUの強さ</span><button class="dchip d-auto${S.autoDiff?" on":""}" onclick="setAutoDiff(true)"><i>🤖</i>おまかせ</button>${DIFFS.map(([k,n,ic])=>`<button class="dchip d-${k}${!S.autoDiff&&diffNow()===k?" on":""}" onclick="setAutoDiff(false);setDifficulty('${k}')"><i>${ic}</i>${n}</button>`).join("")}</div>${S.autoDiff?`<p class="note tagnote">🤖 おまかせ：いまは「${AUTO_LV[autoLv()][1]}」。1位を取ると強く、最下位だとやさしくなります。</p>`:''}`:""}
       ${!party&&S.seats.some(s=>s.type!=="human")?oppRow():''}
       ${party?'':`<details class="adv-box"${S.advOpen?' open':''} ontoggle="S.advOpen=this.open"><summary><span>⚙️ こだわり設定</span><small>人数・CPUの性格・チーム戦などの特別ルール</small></summary>`}
-      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.b4?" on":""}" onclick="setB4(${!S.b4})"><i>🆕</i>β4ルール（大引けサプライズ）</button>${S.b4?`<button class="dchip${S.futOn||S.pwOn?" on":""}" onclick="setFut(${!S.futOn})" ${S.pwOn?'disabled title="投資家カードでは先物取引を使います"':''}><i>🔭</i>上級：先物取引</button>`:''}${S.b4?`<button class="dchip${S.pwOn?" on":""}" onclick="setPw(${!S.pwOn})"><i>🃏</i>投資家カード（試作）</button>`:''}<button class="dchip${S.chain?" on":""}" onclick="setChain(${!S.chain})"><i>🔗</i>サプライチェーン（試作）</button><button class="dchip${S.draft?" on":""}" onclick="setDraft(${!S.draft})"><i>🎴</i>ドラフト（試作）</button><button class="dchip${S.sd?" on":""}" onclick="setSd(${!S.sd})"><i>📈</i>需要と供給（試作）</button><button class="dchip${S.yomi?" on":""}" onclick="setYomi(${!S.yomi})"><i>🔮</i>人気予想（試作）</button>${S.b4?'':`<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button>`}</div>${S.b4?'<p class="note tagnote">🆕 β4ルール：最後のターンだけ、NEWSを伏せたままカードを出します。候補の中のどれが来るかを読んで勝負。点数は2倍なので、最後まで逆転できます。オフにすると、ルールブックどおりのβ3で遊べます。</p>':''}${S.b4&&S.pwOn?'<p class="note tagnote">🃏 投資家カード（試作）：全員が1枚ずつ、ずっと効く特別な能力を持ちます。CPUはキャラに合った能力。<button class="ipf-link" onclick="openSheet(\'pw\')">9枚の能力を見る</button> 記録とランキングには入りません。</p>':''}${!S.b4&&S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.draft?'<p class="note tagnote">🎴 ドラフト：試合の前に、みんなで順番にカードを取りあって<b>自分だけの手札4枚</b>を作る。だれが何を持っているかは全員に見えるので、読み合いが深くなります。3人以上のふだんの対戦だけ。自己ベストには入りません。</p>':''}${S.chain?'<p class="note tagnote">🔗 サプライチェーン：前のターンのカードと<b>つながる</b>カードを出すと、被っても +1（3つ続けば +2）。カードを出す<b>順番</b>が作戦になります。<button class="ipf-link" onclick="openSheet(\'chain\')">つながりを見る</button> 自己ベストには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
+      ${S.seats.some(s=>s.type!=="human")?`<div class="opts"><span class="label">特別ルール</span>${S.seats.length===4&&hc===1?`<button class="dchip${S.team?" on":""}" onclick="setTeam(${!S.team})"><i>🤝</i>チーム戦（2対2）</button>`:""}<button class="dchip${S.speed?" on":""}" onclick="setSpeed(${!S.speed})"><i>⏱</i>スピード（${SPEED_SEC}秒）</button><button class="dchip${S.league?" on":""}" onclick="setLeague(${!S.league})"><i>🏆</i>リーグ戦（${LEAGUE_GAMES}試合）</button>${hc===1?`<button class="dchip${S.tacOn?" on":""}" onclick="setTac(${!S.tacOn})"><i>🃏</i>作戦カード</button>`:""}<button class="dchip${S.b4?" on":""}" onclick="setB4(${!S.b4})"><i>🆕</i>β4ルール（大引けサプライズ）</button>${S.b4?`<button class="dchip${S.futOn||S.pwOn?" on":""}" onclick="setFut(${!S.futOn})" ${S.pwOn?'disabled title="投資家カードでは先物取引を使います"':''}><i>🔭</i>上級：先物取引</button>`:''}${S.b4?`<button class="dchip${S.pwOn?" on":""}" onclick="setPw(${!S.pwOn})"><i>🃏</i>投資家カード（試作）</button>`:''}<button class="dchip${S.chain?" on":""}" onclick="setChain(${!S.chain})"><i>🔗</i>サプライチェーン（試作）</button><button class="dchip${S.draft?" on":""}" onclick="setDraft(${!S.draft})"><i>🎴</i>ドラフト（試作）</button><button class="dchip${S.sd?" on":""}" onclick="setSd(${!S.sd})"><i>📈</i>需要と供給（試作）</button><button class="dchip lab-chip" onclick="openSheet('lab')"><i>🧪</i>研究所${RLAB.filter(r=>r.on()).length?`<b class="lab-n">${RLAB.filter(r=>r.on()).length}</b>`:''}</button><button class="dchip${S.yomi?" on":""}" onclick="setYomi(${!S.yomi})"><i>🔮</i>人気予想（試作）</button>${S.b4?'':`<button class="dchip${S.closeX?" on":""}" onclick="setCloseX(${!S.closeX})"><i>🔔</i>大引け2倍</button>`}</div>${S.b4?'<p class="note tagnote">🆕 β4ルール：最後のターンだけ、NEWSを伏せたままカードを出します。候補の中のどれが来るかを読んで勝負。点数は2倍なので、最後まで逆転できます。オフにすると、ルールブックどおりのβ3で遊べます。</p>':''}${S.b4&&S.pwOn?'<p class="note tagnote">🃏 投資家カード（試作）：全員が1枚ずつ、ずっと効く特別な能力を持ちます。CPUはキャラに合った能力。<button class="ipf-link" onclick="openSheet(\'pw\')">9枚の能力を見る</button> 記録とランキングには入りません。</p>':''}${!S.b4&&S.closeX?'<p class="note tagnote">🔔 大引け2倍：最後のターン（15:30 大引け）だけ、もらう点数もマイナスも2倍。最後まで逆転のチャンスがある特別ルール。自己ベストとランキングには入りません。</p>':''}${S.tacOn&&hc===1?'<p class="note tagnote">🃏 作戦カード：偵察・保険・独占ブーストを1回ずつ使える。強くなるぶん、ランクのレートとランキングには入りません。</p>':''}${S.draft?'<p class="note tagnote">🎴 ドラフト：試合の前に、みんなで順番にカードを取りあって<b>自分だけの手札4枚</b>を作る。だれが何を持っているかは全員に見えるので、読み合いが深くなります。3人以上のふだんの対戦だけ。自己ベストには入りません。</p>':''}${S.chain?'<p class="note tagnote">🔗 サプライチェーン：前のターンのカードと<b>つながる</b>カードを出すと、被っても +1（3つ続けば +2）。カードを出す<b>順番</b>が作戦になります。<button class="ipf-link" onclick="openSheet(\'chain\')">つながりを見る</button> 自己ベストには入りません。</p>':''}${S.team&&S.seats.length===4&&hc===1?'<p class="note tagnote">チーム戦：あなたと上から2番目の席が<b>チームA</b>、残り2人が<b>チームB</b>。合計点で勝負。相棒CPUは出すつもりのカードを教えてくれます。</p>':''}`:""}
       ${leagueNote()}
       <div style="display:flex;flex-direction:column;gap:8px">${seats}</div>
       <div class="row"><button class="btn" onclick="addSeat('human')" ${S.seats.length>=6?'disabled':''}>＋ 人</button><button class="btn" onclick="addSeat('read')" ${S.seats.length>=6?'disabled':''}>＋ CPU</button><span class="note">${S.seats.length}人（2〜6人）</span></div>
@@ -11073,6 +11108,7 @@ function recordResult(){
   if(me<0) return;
   const P=S.prof, st=P.st, p=G.players[me];
   const rk=ranking(G.players,G.cfg), mine=rk.find(x=>x.i===me), won=G.teams ? teamWon(me) : !!(mine && mine.rank===1);
+  try{ labRecord(won, p.score); }catch(e){}
   // 3ターン目終了時点の順位（逆転劇の判定）
   let lastAt3=false;
   if((G.rounds||1)===1 && TURNS>=4 && p.hist.length>3){ const s3=G.players.map(q=>q.hist[3]); lastAt3 = s3[me]===Math.min(...s3) && s3.some(v=>v>s3[me]); }
@@ -11251,6 +11287,48 @@ function dockSum(p){
 function sdGain(cfg,b,k,c){ const m=G&&G.sd&&c!=null?G.sd.mod[c]:0; return gain(cfg, m>0&&k>1 ? b-m : b, k); }
 function sdMark(c){ if(!G || !G.sd || G.phase==='final') return ''; const m=G.sd.mod[c]; return m>0?'<em class="sdm up">▲品薄</em>':m<0?'<em class="sdm dn">▼過多</em>':''; }
 function sdFoot(c,k){ if(!G || !G.sd || !(G.sd.mod[c]>0) || !k) return ''; return k===1?' <em class="sdm up">品薄ボーナス+1</em>':' <em class="sdm off">品薄ボーナス消滅</em>'; }
+/* ---- 🧪 試作ルール研究所：試作ルールをまとめて説明・ON/OFF・成績・おすすめの組み合わせ ---- */
+const RLAB=[
+  {k:'chain', ic:'🔗', n:'サプライチェーン', c:'#4fe3ff', on:()=>!!S.chain, set:v=>setChain(v), g:()=>G&&G.chain,
+   d:'前のターンのカードと「つながる」産業を出すと +1。3連目からは +2。', tip:'エネルギー→製造→運輸→小売→メディア→金融→エネルギー…の輪。点の高さより、流れを作るのが大事。'},
+  {k:'draft', ic:'🎴', n:'ドラフト', c:'#ff9ad9', on:()=>!!S.draft, set:v=>setDraft(v), g:()=>G&&G.draft, need:'3人以上',
+   d:'試合の前に、みんなで順番にカードを取りあって、自分だけの手札4枚を作る。', tip:'強い産業はみんなが取る＝被りやすい。被りマップを見て、出す順番をずらそう。'},
+  {k:'yomi', ic:'🔮', n:'人気予想', c:'#a77bff', on:()=>!!S.yomi, set:v=>setYomi(v), g:()=>G&&G.yomi,
+   d:'カードを出すとき、いちばん人気になる産業も予想。当たれば +1。', tip:'自分は外して、みんなが集まる所を当てる。読みが2回おいしい。'},
+  {k:'sd', ic:'📈', n:'需要と供給', c:'#4dff9a', on:()=>!!S.sd, set:v=>setSd(v), g:()=>G&&G.sd,
+   d:'だれも出さなかった産業は次のターン「品薄」（独占なら +1）。2人以上が出した産業は「供給過多」（−1）。', tip:'品薄にはみんなが集まりがち。あえて外すのが上級者。'}
+];
+const RLAB_COMBO=[
+  {ks:['draft','sd'], n:'取りあい相場', d:'カードを取りあってから、値動きの中で戦う。読み合い最大級。'},
+  {ks:['chain','yomi'], n:'流れを読む', d:'つながりを作りながら、人気の産業も当てる。'},
+  {ks:['sd'], n:'経済の授業', d:'需要と供給だけ。値段が動くしくみが体でわかる。'}
+];
+function labRecord(won, score){
+  const P=S.prof, st=P.labSt=P.labSt||{}; RLAB.forEach(r=>{ if(r.g()){ const x=st[r.k]=st[r.k]||{n:0,w:0,best:0}; x.n++; if(won) x.w++; x.best=Math.max(x.best||0, score||0); } });
+}
+function labSet(k,on){ const r=RLAB.find(x=>x.k===k); if(!r) return; r.set(!!on); haptic(10); renderSheet(); }
+function labCombo(i){ const cb=RLAB_COMBO[i]; if(!cb) return; RLAB.forEach(r=>{ const want=cb.ks.includes(r.k); if(r.on()!==want){ const t=window.toast; window.toast=()=>{}; try{ r.set(want); }finally{ window.toast=t; } } }); sfx('fanfare'); haptic([10,30,10]); toast(`🧪「${cb.n}」をセットしました`); renderSheet(); }
+function labDemo(k){
+  if(k==='chain'){ const a=0, b=CHAIN_NEXT[0], c=CHAIN_NEXT[b]; return `<div class="lbd chain">${[a,b,c].map((x,j)=>`<i style="--c:var(--i${x});--j:${j}">${svg(x,2.2)}</i>${j<2?`<b style="--j:${j}">🔗</b>`:''}`).join('')}<em>+1 → +2</em></div>`; }
+  if(k==='draft') return `<div class="lbd draft">${[1,3,4].map((x,j)=>`<i style="--c:var(--i${x});--j:${j}">${svg(x,2.2)}</i>`).join('')}<span class="lbd-h"><u></u><u></u><u></u></span></div>`;
+  if(k==='yomi') return `<div class="lbd yomi"><span class="lbd-ball">${[0,2,5].map((x,j)=>`<i style="--c:var(--i${x});--j:${j}">${svg(x,2.2)}</i>`).join('')}</span><em>当たり +1</em></div>`;
+  return `<div class="lbd sd"><span class="up">▲ 品薄</span><span class="dn">▼ 過多</span><span class="up">▲ 品薄</span></div>`;
+}
+function labBody(){
+  const st=(S.prof&&S.prof.labSt)||{}, onN=RLAB.filter(r=>r.on()).length;
+  const card=r=>{ const x=st[r.k], on=r.on(), rate=x&&x.n?Math.round(x.w/x.n*100):null;
+    return `<div class="lbc${on?' on':''}" style="--lc:${r.c}"><div class="lbc-top"><span class="lbc-ic">${r.ic}</span><span class="lbc-nm"><b>${r.n}</b><small>試作${r.need?` · ${r.need}`:''}</small></span>
+      <button class="lbc-sw${on?' on':''}" onclick="labSet('${r.k}',${!on})" role="switch" aria-checked="${on}" aria-label="${r.n}を${on?'オフ':'オン'}にする"><i></i></button></div>
+      ${labDemo(r.k)}<p class="lbc-d">${r.d}</p><p class="lbc-tip">💡 ${r.tip}</p>
+      <div class="lbc-st">${x&&x.n?`<span>${x.n}試合</span><span>勝率 <b>${rate}%</b></span><span>最高 <b>${x.best||0}</b>点</span>`:'<span class="lbc-new">まだ遊んでいません</span>'}</div></div>`; };
+  const combos=RLAB_COMBO.map((cb,i)=>{ const act=RLAB.every(r=>r.on()===cb.ks.includes(r.k));
+    return `<button class="lbx${act?' act':''}" onclick="labCombo(${i})"><span class="lbx-ic">${cb.ks.map(k=>RLAB.find(r=>r.k===k).ic).join('')}</span><span class="lbx-t"><b>${cb.n}</b><small>${cb.d}</small></span>${act?'<em>セット中</em>':''}</button>`; }).join('');
+  return `<div class="lab"><span class="label">LAB · 試作ルール研究所</span><h3 class="ttl lab-ttl">🧪 試作ルール研究所</h3>
+    <p class="note">開発中の新しいルールを、好きに組み合わせて試せます。ふだんの対戦（CPU戦）で使えて、自己ベストには入りません。いまON：<b>${onN}</b>つ</p>
+    <div class="lbc-list">${RLAB.map(card).join('')}</div>
+    <h4 class="lab-h">🧬 おすすめの組み合わせ</h4><div class="lbx-list">${combos}</div>
+    <button class="btn ghost" onclick="RLAB.forEach(r=>{ if(r.on()) r.set(false); });renderSheet()">ぜんぶオフにする</button></div>`;
+}
 function setSd(on){ S.sd=!!on; save('azakei-sd',S.sd); sfx('click'); render(); if(on) toast('📈 需要と供給：だれも出さなかった産業は次のターン「品薄」で独占すれば +1。2人以上が出した産業は「供給過多」で −1'); }
 function sdInit(){ G.cfg={...G.cfg, table:G.cfg.table.map(r=>r.slice())}; return {base:G.cfg.table.map(r=>r.slice()), mod:IND.map(()=>0), prev:IND.map(()=>0), hist:[], fresh:false}; }
 function sdApply(mod){ const D=G.sd; D.mod=mod.slice(); G.cfg={...G.cfg, table:D.base.map(r=>r.map((v,c)=>v+D.mod[c]))}; }
