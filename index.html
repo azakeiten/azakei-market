@@ -3832,6 +3832,27 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .drp-say{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800}
 .drp-face{width:34px;height:34px;flex:none;border-radius:50%;overflow:hidden;background:#fff}.drp-face>*{width:100%;height:100%}
 @media (prefers-reduced-motion:reduce){.dr-hm{opacity:1;animation:none}.dr-hm.h0{opacity:.5}.dr-rec{animation:none}}
+/* たためる手札シート */
+.dk-grab{display:flex;flex-direction:column;align-items:center;gap:1px;align-self:stretch;margin:-6px auto -2px;padding:4px 30px 2px;border:0;background:none;color:var(--muted);font:inherit;cursor:pointer;touch-action:none;-webkit-tap-highlight-color:transparent}
+.dk-grab small{font-size:10px;font-weight:900;letter-spacing:.06em;opacity:.8}
+.dk-grab:active .grab{background:var(--cyan)}
+.dock.min .dk-info,.dock.min .emotes,.dock.min .coach .note,.dock.min .flk-tip{display:none}
+.dock.min .dk-info:has(.ord-pick){display:block}.dock.min .dk-info:has(.ord-pick)>:not(.ord-pick){display:none}
+.dock.min .coach{padding:6px 10px}.dock.min .coach .ci{font-size:16px}
+.dock.min .preview:not(:has(b))>span{display:none}.dock.min .preview:not(:has(b)){justify-content:flex-end;min-height:0;padding:0}
+.dock.min>.row.spread:has(h3){display:none}
+.dock.min .ord-pick{padding:6px 8px}.dock.min .ord-c{padding:5px 4px;font-size:11px}.dock.min .ord-c b{font-size:11px;line-height:1.25}.dock.min .ord-c i,.dock.min .ord-c small{font-size:10px}
+.dk-sum{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;cursor:pointer}
+.dk-c{display:inline-flex;align-items:baseline;gap:3px;padding:3px 10px;border-radius:99px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line);font-size:12.5px;font-weight:900;white-space:nowrap}
+.dk-c i{font-style:normal;font-size:12px}.dk-c small{font-size:10px;font-weight:800;color:var(--muted)}
+.dk-c.top{box-shadow:inset 0 0 0 1.5px var(--gold);color:var(--gold-t)}.dk-c.ok{box-shadow:inset 0 0 0 1.5px var(--up);color:var(--up)}.dk-c.ng{opacity:.6}
+.dock.dk-close .dk-c{animation:dkPop .35s cubic-bezier(.3,1.7,.5,1) both}.dock.dk-close .dk-c:nth-child(2){animation-delay:.05s}.dock.dk-close .dk-c:nth-child(3){animation-delay:.1s}
+.dock.dk-close{animation:dkDown .35s cubic-bezier(.2,.9,.3,1.15)}
+.dock.dk-open .dk-info{animation:dkUnfold .35s cubic-bezier(.2,.9,.3,1.1) both;transform-origin:50% 100%}
+@keyframes dkPop{from{opacity:0;transform:translateY(8px) scale(.8)}to{opacity:1;transform:none}}
+@keyframes dkDown{from{transform:translateY(-40px)}to{transform:none}}
+@keyframes dkUnfold{from{opacity:0;transform:scaleY(.6)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.dock.dk-close,.dock.dk-close .dk-c,.dock.dk-open .dk-info{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4834,6 +4855,7 @@ function start(data){
   if(S.league===undefined) S.league=!!load('azakei-league-on');
   if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.chain===undefined) S.chain=!!load('azakei-chain'); if(S.draft===undefined) S.draft=!!load('azakei-draft'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.futOn===undefined) S.futOn=!!load('azakei-fut'); if(S.hmMore===undefined) S.hmMore=!!load('azakei-hmmore'); if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
+  if(S.dockMin===undefined){ const d=load('azakei-dockmin'); S.dockMin = d===null ? ((S.rec&&S.rec.games)||0)>=5 : !!d; S.dockTipShown=!!load('azakei-docktip'); }
   if(S.coach===undefined){ const c=load('azakei-coach'); S.coach = c===null ? ((S.rec&&S.rec.games)||0)<5 : !!c; }
   document.body.classList.toggle('calm',!!S.calm);
   const firstRun = !data.S && !load('azakei-tut');
@@ -10689,8 +10711,9 @@ function handDock(news){
   else if(G.sel!==null){ const b=ptsOf(G.sel), xm=closeXOn()?2:1; preview=`<span>${IND[G.sel]}：</span><span>独占なら</span><b>${sgn(gain(pcfg(G.active),b,1)*xm)}</b><span class="pv-sep">/</span><span>被ったら</span><b style="color:var(--ink)">${sgn(gain(C,b,2)*xm)}</b>${xm>1?'<span class="cx-tag">🔔×2</span>':''}${rdrLine(RD,G.sel)}<button class="ipf-link" onclick="openSheet('ind:${G.sel}')" aria-label="${IND[G.sel]}の産業ガイド">📖 ガイド</button>${cmpBtn}`; }
   if(G.sel!==null && ospPending()) preview=preview.replace(cmpBtn, rdrLine(RD,G.sel)+cmpBtn);
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
-  return `<div class="dock sheet${p.fut?' futmode':''}" aria-label="手札">${guideTip()}${readTip(RD)}${ordUI()}${raceBar()}
-    <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}${ttStrip()}${declUI()}
+  const dmin=dockMinOn(), dan=G.dkAnim; G.dkAnim=null;
+  return `<div class="dock sheet${p.fut?' futmode':''}${dmin?' min':''}${dan?' dk-'+dan:''}" aria-label="手札">${dockGrab(dmin)}${dmin?dockSum(p):''}<div class="dk-info">${guideTip()}${readTip(RD)}${ordUI()}${raceBar()}
+    ${stepBar('choose')}</div>${ttStrip()}${declUI()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>${G.sel!==null&&!reduced()?`<div class="flk-tip"><i>👆</i>選んだカードを<b>上へはじいて</b>も出せるよ</div>`:''}
@@ -11163,6 +11186,30 @@ function coachHTML(p){
     if(!p.foreUsed && t<TURNS-1 && C.fore==='futures'){ const nx=G.deck[t+1]; if(known===false && left>0) tip+=' 迷ったら「先物取引」で次のNEWSを見てから決めるのも手。'; }
     return `<div class="coach"><span class="ci">💡</span><span class="ct"><b>コーチのおすすめ：${IND[best]}</b><span class="cp">${sgn(base(best))} · 独占できそう ${alone(best)}%</span><span class="note">${tip}</span></span><button class="cx" onclick="toggleCoach()" aria-label="コーチを非表示">✕</button></div>`;
   }catch(e){ return ''; }
+}
+/* ---- 📱 たためる手札シート（スマホ）：説明やレースをしまって、NEWSと場を見ながら選べる ---- */
+function dockMinOn(){ return !!(S.dockMin && phone() && G && G.phase==='choose'); }
+function dockGrab(dmin){
+  return `<button class="dk-grab hide-lg" onclick="dockToggle()" onpointerdown="dockSwipe(event)" aria-expanded="${dmin?'false':'true'}" aria-label="${dmin?'説明をひらく':'説明をたたんで、場を見やすくする'}"><span class="grab"></span><small>${dmin?'▲ ひらく':'▼ たたむ'}</small></button>`;
+}
+function dockToggle(v){
+  if(DK_SW){ DK_SW=0; return; }
+  const on = v===undefined ? !S.dockMin : !!v; if(on===!!S.dockMin) return;
+  S.dockMin=on; save('azakei-dockmin',on); G.dkAnim=on?'close':'open'; sfx('click'); haptic(8); render();
+  if(on && !S.dockTipShown){ S.dockTipShown=1; save('azakei-docktip',1); toast('手札シートをたたみました。NEWSと場を見ながら選べます（▲でひらく）'); }
+}
+let DK_SW=0;
+function dockSwipe(e){
+  const y0=e.clientY, mv=ev=>{ const dy=ev.clientY-y0; if(Math.abs(dy)>28){ off(); DK_SW=1; dockToggle(dy>0); setTimeout(()=>DK_SW=0,400); } }, off=()=>{ removeEventListener('pointermove',mv); removeEventListener('pointerup',off); removeEventListener('pointercancel',off); };
+  addEventListener('pointermove',mv); addEventListener('pointerup',off); addEventListener('pointercancel',off);
+}
+/* たたんだときの1行まとめ：順位・ひみつ指令・コーチ */
+function dockSum(p){
+  const i=G.players.indexOf(p), sc=G.players.map(q=>q.score), mine=sc[i], rk=1+sc.filter(x=>x>mine).length, gap=Math.max(...sc)-mine;
+  const chips=[`<span class="dk-c dk-rk${rk===1?' top':''}"><i>🏁</i>${rk}位<small>${rk===1?(G.players.length>1&&sc.filter(x=>x===mine).length>1?'同点':'トップ'):`あと${gap}`}</small></span>`];
+  chips.push(`<span class="dk-c"><i>📰</i>T${G.turn+1}<small>/${TURNS}</small></span>`);
+  if(G.ord){ const O=G.ord, r=O.done?{ok:true}:O.failed?{fail:true}:ordEval(false); chips.push(`<span class="dk-c${r.ok?' ok':r.fail?' ng':''}"><i>🕵️</i>${r.ok?'達成':r.fail?'失敗':(r.prog||'')}</span>`); }
+  return `<div class="dk-sum" onclick="dockToggle(false)" role="button" aria-label="説明をひらく">${chips.join('')}</div>`;
 }
 function toggleCoach(){ S.coach=!S.coach; save('azakei-coach',S.coach); if(!S.coach) toast('コーチをオフにしました（設定でいつでも戻せます）'); renderSheet(); render(); }
 function setAvatar(i){ const a=AVATARS[i]; if(!a || lvInfo(S.prof.xp).lv<a[1]) return; S.prof.av=a[0]; saveProfile(); sfx('select'); haptic(12); render(); }
