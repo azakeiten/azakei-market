@@ -4063,6 +4063,23 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .ldu-blk em{font-style:normal;font-family:var(--display);font-size:22px;line-height:1;color:#141026}.ldu-blk small{font-size:11px;font-weight:900;color:#141026}
 @keyframes lduRise{from{transform:scaleY(0)}}
 @media (prefers-reduced-motion:reduce){.ldu-pic,.ldu-cr,.ldu-blk{animation:none}}
+/* 🧬 戦い方診断 */
+.sty-card{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--c,#9aa3c7) 20%,transparent),transparent 70%),var(--panel);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c,#9aa3c7) 60%,transparent)}
+.sty-card.wait{flex-direction:row;align-items:center;gap:10px;box-shadow:inset 0 0 0 1px var(--line);background:var(--panel)}
+.sty-top{display:flex;align-items:center;gap:12px}
+.sty-ic{display:grid;place-items:center;width:52px;height:52px;flex:none;border-radius:50%;font-size:28px;background:color-mix(in srgb,var(--c,#9aa3c7) 25%,var(--panel2));box-shadow:0 0 0 2px var(--c,var(--line)),0 0 18px color-mix(in srgb,var(--c,#9aa3c7) 40%,transparent);animation:styIn .6s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes styIn{from{transform:scale(.3) rotate(-20deg);opacity:0}}
+.sty-tx{display:flex;flex-direction:column;min-width:0}.sty-tx small{font-size:10.5px;font-weight:900;color:var(--muted)}.sty-tx b{font-size:20px;color:var(--c,var(--ink))}.sty-tx em{font-style:normal;font-size:12px;font-weight:700;line-height:1.45}
+.sty-m{display:grid;grid-template-columns:118px 1fr 38px;align-items:center;gap:8px;font-size:11.5px;font-weight:800}
+.sty-bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}.sty-bar i{display:block;height:100%;width:var(--w);border-radius:inherit;background:var(--c);animation:lbwFill .9s .2s cubic-bezier(.2,.9,.3,1) both}
+.sty-m b{text-align:right;font-variant-numeric:tabular-nums}
+.sty-tip{margin:2px 0 0;font-size:12px;font-weight:700;line-height:1.5}.sty-gh{margin:0;font-size:11px;color:var(--muted);font-weight:700}
+.sty-now{display:flex;align-items:center;gap:10px;margin-top:8px;padding:8px 10px;border-radius:14px;background:var(--panel2)}
+.sty-now>span:nth-child(2){flex:1;display:flex;flex-direction:column}.sty-now small{font-size:10.5px;font-weight:900;color:var(--muted)}.sty-now b{font-size:16px;color:var(--c)}
+.sty-now .sty-ic{width:40px;height:40px;font-size:22px}.sty-now .btn{flex:none;padding:7px 12px;font-size:12px}
+.sty-now.chg{box-shadow:inset 0 0 0 1.5px var(--c);animation:dkPop .5s .5s both}.sty-now.chg small{color:var(--c)}
+.ldu-rc.ghost.on{background:linear-gradient(90deg,rgb(77 255 154 / .25),rgb(79 227 255 / .2));box-shadow:inset 0 0 0 1.5px var(--up)}
+@media (prefers-reduced-motion:reduce){.sty-ic,.sty-bar i,.sty-now.chg{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5441,13 +5458,14 @@ function resolveTurn(){
   if(G.whale){ const w=G.whale; w.pick=whaleNext(); cnt[w.pick]++; w.hand=w.hand.filter(c=>c!==w.pick); w.used.push(w.pick); }
   const pre=G.players.map(q=>q.score); yomiCpu(cnt); const ymx=Math.max(...cnt);
   const hd0=G.players.map((p,pi)=>G.turn<1?0:G.players.filter((q,qi)=>qi!==pi && (q.hand||[]).includes(p.pick)).length);   // 読み合いレーダー：出す前に、同じ産業を持っていた相手の数
+  const styT=G.players.map(p=>isHuman(p)?styTag(p):null);
   G.last=G.players.map((p,pi)=>{
     const yb = G.yomi && p.guess!=null && ymx>=2 && cnt[p.guess]===ymx ? 1 : 0;
     const pc=pcfg(pi), base=baseFor(pc,p,G.deck,G.turn,p.pick), pb=pwBonus(pi,p,base,cnt[p.pick]), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], sdGain(pc,base,cnt[p.pick],p.pick)+pb.v+yb))*(closeXOn()?pwMult(pi,pre):1) + chainBonus(p,cnt);
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++; if(cnt[p.pick]===1 && hd0[pi]>=2) p.ywin=(p.ywin||0)+1;
     const alt = isHuman(p) ? (()=>{ let b=null; const chB=c=>G.chain && p.last!=null && CHAIN_NEXT[p.last]===c ? ((p._clPrev||1)+1>=3?2:1) : 0;   // チェーン分も「もしも」に入れる
       (p.hand||[]).forEach(c=>{ const k=cnt[c]+(c===p.pick?0:1), v=sdGain(pc, baseFor(pc,p,G.deck,G.turn,c), k, c)+chB(c); if(!b || v>b.v) b={c,v,k}; }); return b?{c:b.c, v:b.v, k:b.k, mine:sdGain(pc,base,cnt[p.pick],p.pick)+chB(p.pick)}:null; })() : null;   // もしもの一手：相手の出し方はそのままで、手札のどれが一番よかったか
-    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],alt,bn:bnAdj(p.pick),yomi:yb,sdm:G.sd?G.sd.mod[p.pick]:0});
+    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],alt,sty:styT[pi],bn:bnAdj(p.pick),yomi:yb,sdm:G.sd?G.sd.mod[p.pick]:0});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
     pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,guess:p.guess,cb:G.chain?(p._cb||0):0,cl:G.chain?(p.chainLen||1):0,sdm:G.sd?G.sd.mod[p.pick]:0};
   });
@@ -11021,7 +11039,7 @@ function finalView(){
     ${finNav()}
     ${fsec('fin-aw','🏅','今回の賞・能力',(aw.length?`<section class="panel"><div class="row spread"><h3>🏅 今回の賞</h3><span class="note">${aw.length}つ</span></div><div class="awards">${aw.map((a,i)=>`<div class="award aw2" style="--ac:${a.c};--d:${i*90}ms"><span class="aw-ic">${a.ic}</span><span class="aw-tx"><span class="t">${a.t}</span><span class="aw-who">${a.ps.map(p=>`<span class="ava" style="--s:var(--s${p.seat%6})">${avHTML(p)}</span>`).join('')}<b class="w">${esc(a.ps.map(p=>p.name).join('・'))}</b></span><span class="note">${a.d}</span></span></div>`).join('')}</div></section>`:'')+pwFinalPanel())}
     ${fsec('fin-iv','🎙️','インタビューと号外',ivPanel()+gogaiPaper())}
-    ${fsec('fin-an','📊','ふりかえり',teamPanel()+draftPanel()+bnPanel()+sdPanel()+turnPoint()+chainPanel()+whatIf()+playAnalysis()+recap)}
+    ${fsec('fin-an','📊','ふりかえり',styPanel()+teamPanel()+draftPanel()+bnPanel()+sdPanel()+turnPoint()+chainPanel()+whatIf()+playAnalysis()+recap)}
   </div><div class="col">
     <section class="panel chart" id="fin-ch"><h3>POINTの推移</h3>${lineChart()}</section>
     <section class="panel"><h3>各ターンの記録</h3><p class="note">${logDeck().map((n,i)=>`T${i+1} ${C.hist?yearOf(n)+' ':''}${nm(n)}`).join(' → ')}</p>
@@ -11257,6 +11275,7 @@ function recordResult(){
   const P=S.prof, st=P.st, p=G.players[me];
   const rk=ranking(G.players,G.cfg), mine=rk.find(x=>x.i===me), won=G.teams ? teamWon(me) : !!(mine && mine.rank===1);
   try{ labRecord(won, p.score); }catch(e){}
+  try{ G.styGot=styRecord(p); }catch(e){}
   // 3ターン目終了時点の順位（逆転劇の判定）
   let lastAt3=false;
   if((G.rounds||1)===1 && TURNS>=4 && p.hist.length>3){ const s3=G.players.map(q=>q.hist[3]); lastAt3 = s3[me]===Math.min(...s3) && s3.some(v=>v>s3[me]); }
@@ -11541,7 +11560,7 @@ function lsimGame(sc,acc,types){
   if(sc.sd) G.sd=sdInit();
   for(let t=0;t<TURNS;t++){ G.turn=t;
     if(G.bn){ G.bn.cur=null; if(t>=1){ const e=BN_EV[Math.floor(rnd()*BN_EV.length)]; G.bn.cur={c:Math.floor(rnd()*6),v:e.v}; } }
-    players.forEach(p=>{ p.guess=null; p.pick=cpuPick(p,players,deck,t,G.cfg,rnd); });
+    players.forEach(p=>{ p.guess=null; p.pick = p.type==='ghost' ? ghostPick(p,players,deck,t,G.cfg,rnd) : cpuPick(p,players,deck,t,G.cfg,rnd); });
     const cnt=[0,0,0,0,0,0]; players.forEach(p=>cnt[p.pick]++);
     if(G.yomi) yomiCpu(cnt); const ymx=Math.max(...cnt);
     players.forEach(p=>{ const k=cnt[p.pick]; let v=sdGain(G.cfg,G.cfg.table[deck[t]][p.pick],k,p.pick);
@@ -11562,12 +11581,67 @@ const LSTY=[
 ];
 const LDUEL_R=[{k:'chain',ic:'🔗',n:'チェーン'},{k:'yomi',ic:'🔮',n:'人気予想'},{k:'sd',ic:'📈',n:'需要と供給'},{k:'bn',ic:'⚡',n:'速報'}];
 let LDUEL={rules:{chain:0,yomi:0,sd:0,bn:0}, run:false, done:0, acc:null};
+/* ---- 🧬 あなたの戦い方診断 ＆ 分身CPU ---- */
+function styTag(p){
+  try{ if(p.pick==null || !p.hand || p.hand.length<2) return null;
+    const row=rowFor(p,G.deck,G.turn), T=G.cfg.table; if(!T[row]) return null;
+    const mx=Math.max(...p.hand.map(c=>T[row][c]));
+    const v=cardValues(G.cfg,p,G.players,G.deck,G.turn,row,false,p.fut?futBase:null); let bc=p.hand[0]; p.hand.forEach(c=>{ if(v[c]>v[bc]) bc=c; });
+    return {nv:T[row][p.pick]===mx?1:0, rd:p.pick===bc?1:0};
+  }catch(e){ return null; }
+}
+function styRecord(p){
+  const us=(p.used||[]).filter(u=>u.sty); if(!us.length) return null;
+  const g={n:us.length, nv:us.filter(u=>u.sty.nv).length, rd:us.filter(u=>u.sty.rd).length, mono:us.filter(u=>u.k===1).length};
+  const P=S.prof, st=P.sty=P.sty||{t:0,nv:0,rd:0,mono:0,games:0,h:[]};
+  const before=styType(st).k;
+  st.t+=g.n; st.nv+=g.nv; st.rd+=g.rd; st.mono+=g.mono; st.games++; st.h=(st.h||[]).concat([g]).slice(-20);
+  const after=styType(st); return {g, type:after, changed:before!==after.k && st.games>=3};
+}
+const STY_T={
+  wait:{k:'wait', ic:'🔍', n:'しんだん中', c:'#9aa3c7', d:'あと少し遊ぶと、あなたのタイプがわかります。', tip:'まずは気楽に3試合。'},
+  read:{k:'read', ic:'🧠', n:'読みの名人', c:'#4fe3ff', d:'みんなの手を読んで、被らない所を選べている。', tip:'最後の「大引け」で、あえて読み合いを外すと、さらに強い。'},
+  fox:{k:'fox', ic:'🦊', n:'逆張りギツネ', c:'#ff9a3c', d:'点が低めでも、だれも来ない所で独占をとる。', tip:'点の高いNEWSのときは、まっすぐ行くのも作戦。'},
+  str:{k:'str', ic:'📊', n:'まっすぐ型', c:'#a77bff', d:'表でいちばん高い所に、まっすぐ行く。わかりやすくて強い。', tip:'みんなも同じ所に来やすい。人気の産業はときどき外そう。'},
+  free:{k:'free', ic:'🎲', n:'自由人', c:'#ff9ad9', d:'その時の気分で出す、読めないタイプ。', tip:'表の点と、相手の手札を1回ずつ見てから出してみよう。'},
+  bal:{k:'bal', ic:'⚖️', n:'バランス型', c:'#4dff9a', d:'表の点と読み合いを、うまく使い分けている。', tip:'勝負どころで、もう一歩ふみこんで独占をねらおう。'}
+};
+function styRates(st){ const t=Math.max(1,st.t||0); return {nv:(st.nv||0)/t, rd:(st.rd||0)/t, mono:(st.mono||0)/t, t:st.t||0}; }
+function styType(st){
+  if(!st || (st.t||0)<8) return STY_T.wait; const r=styRates(st);
+  if(r.rd>=.55 && r.mono>=.4) return STY_T.read;
+  if(r.nv<.35 && r.mono>=.4) return STY_T.fox;
+  if(r.nv>=.6) return STY_T.str;
+  if(r.rd<.3 && r.nv<.4) return STY_T.free;
+  return STY_T.bal;
+}
+function styGhostOk(){ const st=S.prof&&S.prof.sty; return !!(st && st.t>=8); }
+function styMeters(r){ const m=(ic,n,v,c)=>`<div class="sty-m"><span>${ic} ${n}</span><span class="sty-bar"><i style="--w:${Math.round(v*100)}%;--c:${c}"></i></span><b>${Math.round(v*100)}%</b></div>`;
+  return m('🧠','読みが当たった',r.rd,'#4fe3ff')+m('📊','表どおりに出した',r.nv,'#a77bff')+m('👑','独占できた',r.mono,'#ffc83a'); }
+function styCard(lab){
+  const st=S.prof&&S.prof.sty, T=styType(st), r=styRates(st||{});
+  if(T.k==='wait') return `<div class="sty-card wait"><span class="sty-ic">${T.ic}</span><span class="sty-tx"><small>🧬 あなたの戦い方診断</small><b>${T.n}</b><em>${T.d}${st&&st.t?`（いま ${st.t}/8 ターン）`:''}</em></span></div>`;
+  return `<div class="sty-card" style="--c:${T.c}"><div class="sty-top"><span class="sty-ic">${T.ic}</span><span class="sty-tx"><small>🧬 あなたの戦い方診断 · ${st.games}試合</small><b>${T.n}</b><em>${T.d}</em></span></div>${styMeters(r)}<p class="sty-tip">💡 ${T.tip}</p>${lab?'<p class="sty-gh">「🧬 分身を入れる」で、あなたのクセをまねたCPUが達人たちと戦います。</p>':''}</div>`;
+}
+function styPanel(){
+  const R=G&&G.styGot; if(!R) return ''; const g=R.g, r={nv:g.nv/g.n, rd:g.rd/g.n, mono:g.mono/g.n}, T=R.type;
+  return `<section class="panel sty-p" style="--c:${T.c}"><div class="row spread"><h3>🧬 今回の戦い方</h3><span class="note">${g.n}ターン</span></div>${styMeters(r)}
+    <div class="sty-now${R.changed?' chg':''}"><span class="sty-ic">${T.ic}</span><span><small>${R.changed?'タイプが変わりました！':'いまのあなたのタイプ'}</small><b>${T.n}</b></span><button class="btn" onclick="LSIM_TAB=1;LDUEL.ghost=${styGhostOk()?1:0};LDUEL.acc=null;openSheet('lab')">⚔️ 分身を戦わせる</button></div></section>`;
+}
+function labDuelSeats(){ const s=LSTY.slice(); if(LDUEL.ghost && styGhostOk()){ const T=styType(S.prof.sty); s[3]={t:'ghost', n:'あなたの分身', ic:'🧬', c:T.c||'#4dff9a', d:`${T.n}のクセをまねて打つ`}; } return s; }
+function labDuelGhost(){ if(LDUEL.run || !styGhostOk()) return; LDUEL.ghost=!LDUEL.ghost; LDUEL.acc=null; LDUEL.done=0; sfx('click'); haptic(8); labSimPaint(); }
+function ghostPick(p,players,deck,t,cfg,rnd){
+  const r=styRates(S.prof.sty), x=rnd(), T=cfg.table, row=deck[t];
+  if(x<r.rd){ p.type='read'; try{ return cpuPick(p,players,deck,t,cfg,rnd); } finally{ p.type='ghost'; } }
+  if(x<r.rd+(1-r.rd)*r.nv){ const mx=Math.max(...p.hand.map(c=>T[row][c])); const cs=p.hand.filter(c=>T[row][c]===mx); return cs[Math.floor(rnd()*cs.length)]; }
+  return p.hand[Math.floor(rnd()*p.hand.length)];
+}
 function labDuelRule(k){ if(LDUEL.run) return; LDUEL.rules[k]=LDUEL.rules[k]?0:1; LDUEL.acc=null; LDUEL.done=0; sfx('click'); haptic(6); labSimPaint(); }
 function labDuelRun(){
   if(LDUEL.run || (LSIM && LSIM.run)) return;
-  LDUEL.run=true; LDUEL.done=0; LDUEL.err=''; LDUEL.acc={n:0,top:0,gap:0,close:0,plays:0,clash:0,upN:0,upG:0,by:LSTY.map(()=>({w:0,pts:0}))};
+  LDUEL.run=true; LDUEL.done=0; LDUEL.err=''; LDUEL.seats=labDuelSeats(); LDUEL.acc={n:0,top:0,gap:0,close:0,plays:0,clash:0,upN:0,upG:0,by:LSTY.map(()=>({w:0,pts:0}))};
   sfx('click'); haptic(10); labSimPaint();
-  const types=LSTY.map(x=>x.t);
+  const types=labDuelSeats().map(x=>x.t);
   const step=()=>{ const sv=G;
     try{ for(let j=0;j<6 && LDUEL.done<LSIM_N;j++){ lsimGame(LDUEL.rules, LDUEL.acc, types); LDUEL.done++; } }
     catch(e){ LDUEL.err=String(e&&e.message||e); LDUEL.done=LSIM_N; }
@@ -11578,21 +11652,22 @@ function labDuelRun(){
 }
 function labDuelHTML(){
   const R=LDUEL, A=R.acc, on=LDUEL_R.filter(r=>R.rules[r.k]);
-  const chips=`<div class="ldu-rules">${LDUEL_R.map(r=>`<button class="ldu-rc${R.rules[r.k]?' on':''}" onclick="labDuelRule('${r.k}')" ${R.run?'disabled':''} aria-pressed="${!!R.rules[r.k]}">${r.ic} ${r.n}</button>`).join('')}</div>`;
-  const roster=`<div class="ldu-ros">${LSTY.map(x=>`<div class="ldu-p" style="--c:${x.c}"><span class="ldu-ic">${x.ic}</span><b>${x.n}</b><small>${x.d}</small></div>`).join('')}</div>`;
+  const chips=`<div class="ldu-rules">${styGhostOk()?`<button class="ldu-rc ghost${R.ghost?' on':''}" onclick="labDuelGhost()" ${R.run?'disabled':''} aria-pressed="${!!R.ghost}">🧬 分身を入れる</button>`:''}${LDUEL_R.map(r=>`<button class="ldu-rc${R.rules[r.k]?' on':''}" onclick="labDuelRule('${r.k}')" ${R.run?'disabled':''} aria-pressed="${!!R.rules[r.k]}">${r.ic} ${r.n}</button>`).join('')}</div>`;
+  const SE=labDuelSeats(), roster=`${styCard(true)}<div class="ldu-ros">${SE.map(x=>`<div class="ldu-p" style="--c:${x.c}"><span class="ldu-ic">${x.ic}</span><b>${x.n}</b><small>${x.d}</small></div>`).join('')}</div>`;
   if(!A) return `<div class="lsim ldu" id="lsim"><p class="lsim-d">4種類のCPUが同じテーブルで <b>${LSIM_N}試合</b>。どの考え方がいちばん勝てる？ ルールを足すと、強い戦い方が変わるかも。</p>${roster}<span class="ldu-l">試すルール（なしでもOK）</span>${chips}<button class="btn gold lsim-go" onclick="labDuelRun()">⚔️ ${LSIM_N}試合たたかわせる</button></div>`;
-  const n=Math.max(1,A.n), W=A.by.map((b,i)=>({i, w:b.w/n*100, pts:b.pts/n})), order=W.slice().sort((a,b)=>b.w-a.w), lead=order[0].i;
-  const bars=W.map(x=>{ const s=LSTY[x.i]; return `<div class="ldu-r${!R.run&&x.i===lead?' lead':''}"><span class="lsim-n">${s.ic}<small>${s.n}</small></span><span class="lsim-bar"><i style="width:${x.w.toFixed(1)}%;--c:${s.c}"></i></span><em>${Math.round(x.w)}%</em><small class="ldu-pt">${x.pts.toFixed(1)}点</small></div>`; }).join('');
+  const n=Math.max(1,A.n), W=A.by.map((b,i)=>({i, w:b.w/n*100, pts:b.pts/n})), order=W.slice().sort((a,b)=>b.w-a.w), lead=order[0].i, LS=R.seats||LSTY;
+  const bars=W.map(x=>{ const s=LS[x.i]; return `<div class="ldu-r${!R.run&&x.i===lead?' lead':''}"><span class="lsim-n">${s.ic}<small>${s.n}</small></span><span class="lsim-bar"><i style="width:${x.w.toFixed(1)}%;--c:${s.c}"></i></span><em>${Math.round(x.w)}%</em><small class="ldu-pt">${x.pts.toFixed(1)}点</small></div>`; }).join('');
   let pod='', notes='';
   if(!R.run){
     const pos=[order[1],order[0],order[2]].filter(Boolean), hh=[70,100,48];
-    pod=`<div class="ldu-pod">${pos.map((x,j)=>{ const s=LSTY[x.i], rk=j===1?1:j===0?2:3; return `<div class="ldu-pc r${rk}" style="--c:${s.c};--d:${[250,0,450][j]}ms"><span class="ldu-pic">${rk===1?'<i class="ldu-cr">👑</i>':''}${s.ic}</span><b>${s.n}</b><span class="ldu-blk" style="height:${hh[j]}px"><em>${rk}</em><small>${Math.round(x.w)}%</small></span></div>`; }).join('')}</div>`;
-    const by=t=>W[LSTY.findIndex(s=>s.t===t)], nv=by('naive'), rd=by('read'), rn=by('random'), pr=by('pro'), L=LSTY[lead];
+    pod=`<div class="ldu-pod">${pos.map((x,j)=>{ const s=LS[x.i], rk=j===1?1:j===0?2:3; return `<div class="ldu-pc r${rk}" style="--c:${s.c};--d:${[250,0,450][j]}ms"><span class="ldu-pic">${rk===1?'<i class="ldu-cr">👑</i>':''}${s.ic}</span><b>${s.n}</b><span class="ldu-blk" style="height:${hh[j]}px"><em>${rk}</em><small>${Math.round(x.w)}%</small></span></div>`; }).join('')}</div>`;
+    const by=t=>W[LS.findIndex(s=>s.t===t)]||{w:0}, nv=by('naive'), rd=by('read'), rn=by('random'), pr=by('pro'), gh=by('ghost'), L=LS[lead], hasG=LS.some(s=>s.t==='ghost');
     const d=Math.round(rd.w-nv.w);
     notes=`<div class="lsim-nt"><b>🔬 わかったこと${on.length?`（${on.map(r=>r.ic+r.n).join('＋')}）`:'（ふつうのルール）'}</b><ul>
       <li>いちばん勝ったのは <b>${L.ic}${L.n}</b>（勝率 ${Math.round(W[lead].w)}%）。${W[lead].w-order[1].w<5?`2位の${LSTY[order[1].i].n}とは小さな差なので、回すたびに入れかわることも。`:''}</li>
       <li>${Math.abs(d)<6?`「読む」と「表だけ」はほぼ互角（${Math.round(rd.w)}% と ${Math.round(nv.w)}%）。`:d>0?`被りを読むほうが、点の高い所にとびつくより <b>${d}ポイント</b> 勝ちやすい。`:`このルールでは、点の高い所にまっすぐ行くほうが <b>${-d}ポイント</b> 勝ちやすい。`}</li>
-      <li>${rn.w>=15?`てきとうでも ${Math.round(rn.w)}% 勝てる。運も味方につくゲーム。`:`てきとうだと ${Math.round(rn.w)}% しか勝てない。考えるほど強くなる。`}</li>
+      ${hasG?`<li>🧬 <b>あなたの分身</b>は ${LS.filter((s,i)=>W[i].w>gh.w).length+1}位（勝率 ${Math.round(gh.w)}%）。${gh.w>=Math.max(nv.w,rd.w,pr.w)?'CPUたちに勝ち越し！ その戦い方、本物です。':gh.w>=25?'CPUと互角にわたりあえています。':'「読む」CPUのまねを少し増やすと、もっと勝てそう。'}</li>`:''}
+      ${hasG?'':`<li>${rn.w>=15?`てきとうでも ${Math.round(rn.w)}% 勝てる。運も味方につくゲーム。`:`てきとうだと ${Math.round(rn.w)}% しか勝てない。考えるほど強くなる。`}</li>`}
       ${pr.w<rd.w-3?`<li>「達人」は読みすぎて、かえって外すことも（${Math.round(pr.w)}%）。</li>`:''}</ul></div>`;
   }
   const pct=Math.round(R.done/LSIM_N*100);
