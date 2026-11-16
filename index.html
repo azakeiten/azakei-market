@@ -3671,6 +3671,23 @@ html.light .swg-sw.up{color:#12925a}html.light .swg-sw.dn{color:#c63a3a}
 @keyframes rceGoal{from{transform:scale(1)}to{transform:scale(1.12)}}
 html.light .rce-mv.u{color:#12925a}html.light .rce-mv.d{color:#c63a3a}
 @media (prefers-reduced-motion:reduce){.rce-r{transition:none}.rce-r.run .rce-av,.rce.fin .rce-goal,.rce-chip.hot{animation:none}}
+/* はじいて出す */
+.fan .card.sel{touch-action:none}
+.fan .card.flk{opacity:.22;transition:opacity .15s}
+.flk-ghost{box-shadow:0 0 0 3px var(--rail),0 0 0 6px var(--gold),0 0 36px var(--gold),0 22px 30px -12px #000}
+.flk-ghost .holo{opacity:1}
+.flk-ghost.flk-go{box-shadow:0 0 0 3px var(--rail),0 0 0 6px #fff,0 0 46px var(--gold),0 0 90px rgb(255 200 58 / .55)}
+.flycard{transform-origin:center;will-change:transform}
+.flk-tip{display:flex;align-items:center;justify-content:center;gap:4px;margin:2px 0 4px;font-size:11.5px;font-weight:800;color:var(--muted);animation:flkTip .4s ease-out both}
+.flk-tip b{color:var(--gold-t)}
+.flk-tip i{font-style:normal;display:inline-block;animation:flkUp 1.4s ease-in-out infinite}
+.flk-land{position:fixed;z-index:71;pointer-events:none;transform:translate(-50%,-50%)}
+.flk-land i{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid var(--gold);animation:flkRing .7s ease-out forwards}
+.flk-land b{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;font-family:var(--display);font-weight:400;font-size:20px;color:var(--gold);text-shadow:0 2px 0 #000,0 0 14px rgb(255 200 58 / .7);animation:flkWord .9s ease-out forwards}
+@keyframes flkUp{0%,100%{transform:translateY(2px)}50%{transform:translateY(-4px)}}
+@keyframes flkTip{from{opacity:0;transform:translateY(4px)}}
+@keyframes flkRing{to{transform:scale(6);opacity:0;border-width:1px}}
+@keyframes flkWord{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}70%{opacity:1;transform:translate(-50%,-60%) scale(1)}100%{opacity:0;transform:translate(-50%,-90%)}}CSS
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4850,8 +4867,62 @@ function useForesight(){
   render(); netSync();
   burstAt(document.querySelector('.dock'),['#4fe3ff','#b8f6ff','#ffffff'],34);
 }
+/* ---- 🃏 はじいて出す：選んだカードを上へスワイプすると、そのまま「出す」。出したカードは場へ飛んでいく ---- */
+let FLK=null, FLY_EL=null, FLK_SUP=0;
+function flyCard(el){
+  if(!el || reduced() || !el.isConnected) return;
+  const r=el.getBoundingClientRect(); if(!r.width) return;
+  const cl=el.cloneNode(true); if(el.classList.contains('flk-ghost')) el.remove();
+  cl.removeAttribute('onclick'); cl.removeAttribute('aria-pressed'); cl.setAttribute('aria-hidden','true');
+  cl.classList.remove('flk','flk-go','flk-ghost'); cl.classList.add('flycard');
+  cl.style.cssText=`position:fixed;left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;margin:0;z-index:70;pointer-events:none`;
+  document.body.appendChild(cl);
+  const tx=innerWidth/2-(r.left+r.width/2), ty=Math.min(110,innerHeight*.16)-(r.top+r.height/2);
+  const a=cl.animate([
+    {transform:'none', filter:'brightness(1.1)'},
+    {transform:`translate(${tx*.35}px,${ty*.55}px) rotate(-10deg) scale(1.15)`, filter:'brightness(1.35) drop-shadow(0 0 18px #ffc83a)', offset:.45},
+    {transform:`translate(${tx}px,${ty}px) rotate(6deg) rotateY(180deg) scale(.42)`, filter:'brightness(.9)', opacity:.95, offset:.9},
+    {transform:`translate(${tx}px,${ty}px) rotate(6deg) rotateY(180deg) scale(.38)`, opacity:0}
+  ],{duration:620, easing:'cubic-bezier(.3,.7,.3,1)', fill:'forwards'});
+  sfx('deal');
+  a.onfinish=()=>{ cl.remove();
+    const ld=document.createElement('div'); ld.className='flk-land'; ld.style.left=(innerWidth/2)+'px'; ld.style.top=Math.min(110,innerHeight*.16)+'px';
+    ld.innerHTML='<i></i><b>出した！</b>'; document.body.appendChild(ld); sfx('slam'); haptic(18); setTimeout(()=>ld.remove(),900); };
+}
+document.addEventListener('pointerdown',e=>{
+  const c=e.target.closest && e.target.closest('.fan .card.sel[onclick]'); if(!c || !G || G.phase!=='choose' || G.sel===null) return;
+  const m=/selectCard\((\d+)\)/.exec(c.getAttribute('onclick')||''); if(!m || +m[1]!==G.sel) return;
+  FLK={c, i:+m[1], x:e.clientX, y:e.clientY, id:e.pointerId, on:false, g:null};
+},{passive:true});
+/* 手札の列は横スクロールで上がはみ出せないので、指についてくるのは画面に浮かせた「分身」 */
+function flkGhost(c){
+  const r=c.getBoundingClientRect(), g=c.cloneNode(true); g.removeAttribute('onclick'); g.setAttribute('aria-hidden','true'); g.classList.add('flk-ghost');
+  g.style.cssText=`position:fixed;left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;margin:0;z-index:70;pointer-events:none;transition:none`;
+  document.body.appendChild(g); return g;
+}
+document.addEventListener('pointermove',e=>{
+  if(!FLK || e.pointerId!==FLK.id) return; const dx=e.clientX-FLK.x, dy=e.clientY-FLK.y;
+  if(!FLK.on){
+    if(dy<-8 && Math.abs(dy)>Math.abs(dx)){ FLK.on=true; FLK.g=flkGhost(FLK.c); FLK.c.classList.add('flk'); try{ FLK.c.setPointerCapture(e.pointerId); }catch(_){} }
+    else if(Math.abs(dx)>10 || dy>10){ FLK=null; return; } else return;
+  }
+  const d=Math.max(-170,Math.min(0,dy)), rot=Math.max(-12,Math.min(12,dx/10));
+  FLK.g.style.transform=`translate(${(dx*.3).toFixed(0)}px,${d}px) rotate(${rot.toFixed(1)}deg) scale(${(1.04-d/1200).toFixed(3)})`;
+  const go=d<-60; if(go!==FLK.g.classList.contains('flk-go')){ FLK.g.classList.toggle('flk-go',go); if(go){ haptic(10); sfx('tick'); } }
+},{passive:true});
+function flkEnd(e){
+  if(!FLK || e.pointerId!==FLK.id) return; const f=FLK; FLK=null; if(!f.on) return;
+  FLK_SUP=Date.now();
+  if(e.type==='pointerup' && f.g.classList.contains('flk-go') && G && G.phase==='choose' && G.sel===f.i){ FLY_EL=f.g; confirmPick(); return; }
+  const g=f.g; g.style.transition='transform .25s cubic-bezier(.3,1.4,.5,1)'; g.style.transform='none';
+  setTimeout(()=>{ g.remove(); document.querySelectorAll('.fan .card.flk').forEach(x=>x.classList.remove('flk')); },260);
+}
+document.addEventListener('pointerup',flkEnd,{passive:true});
+document.addEventListener('pointercancel',flkEnd,{passive:true});
+document.addEventListener('click',e=>{ if(Date.now()-FLK_SUP<400 && e.target.closest && e.target.closest('.fan .card')){ e.stopPropagation(); e.preventDefault(); } },true);
 function confirmPick(){
   if(G.sel===null) return; sfx('click'); haptic(12);
+  try{ flyCard(FLY_EL || document.querySelector('.fan .card.sel')); }catch(e){} FLY_EL=null;
   const p=G.players[G.active];
   if(G.online){
     if(G.host){ p.pick=G.sel; render(); netSync(); checkAllPicked(); }
@@ -8993,7 +9064,7 @@ function raceBar(){
   ord.forEach(i=>{ const c=cl[cl.length-1]; if(c && Math.abs(X(to[i])-X(to[c[0]]))<11) c.push(i); else cl.push([i]); });
   cl.forEach(c=>c.forEach((i,j)=>{ lane[i]=j%2; dx[i]=Math.round((j-(c.length-1)/2)*13); }));   // 近い点の顔は、上下と左右に少しずつずらす
   const fin=isFinalTurn();
-  const runners=G.players.map((p,i)=>`<span class="rce-r${i===me?' me':''}${i===lead?' lead':''}${lane[i]?' up':''}" id="rce${i}" data-to="${X(to[i])}" style="left:${X(from[i])}%;--c:var(--s${i%6});--dx:${dx[i]}px" title="${esc(i===me?'あなた':p.name)} ${from[i]}点">
+  const runners=G.players.map((p,i)=>`<span class="rce-r${i===me?' me':''}${i===lead?' lead':''}${lane[i]?' up':''}" id="rce${i}" data-to="clamp(34px,${X(to[i])}%,calc(100% - 28px))" style="left:clamp(34px,${X(from[i])}%,calc(100% - 28px));--c:var(--s${i%6});--dx:${dx[i]}px" title="${esc(i===me?'あなた':p.name)} ${from[i]}点">
       <span class="rce-av">${avHTML(p)}</span><b class="rce-n" id="rcn${i}">${from[i]}</b><i class="rce-cr">👑</i><em class="rce-mv" id="rcm${i}"></em></span>`).join('');
   let chip='';
   if(me>=0){ const my=from[me], oth=from.filter((v,i)=>i!==me), best=Math.max(...oth);
@@ -9005,7 +9076,7 @@ function raceGo(prev){
   const fast=reduced(), r0=raceRank(prev), r1=raceRank(G.players.map(p=>p.score));
   G.players.forEach((p,i)=>{
     const el=document.getElementById('rce'+i), n=document.getElementById('rcn'+i), mv=document.getElementById('rcm'+i); if(!el) return;
-    const go=()=>{ el.style.left=el.dataset.to+'%'; if(n) n.textContent=p.score;
+    const go=()=>{ el.style.left=el.dataset.to; if(n) n.textContent=p.score;
       if(mv && r1[i]!==r0[i]){ mv.textContent=r1[i]<r0[i]?`▲${r0[i]-r1[i]}`:`▼${r1[i]-r0[i]}`; mv.className='rce-mv on '+(r1[i]<r0[i]?'u':'d'); }
       el.classList.toggle('run', prev[i]!==p.score); };
     if(fast) go(); else setTimeout(go, 600+i*120);
@@ -10307,7 +10378,7 @@ function handDock(news){
     <span class="grab hide-lg" aria-hidden="true"></span>${stepBar('choose')}${ttStrip()}${declUI()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
-    <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>
+    <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>${G.sel!==null&&!reduced()?`<div class="flk-tip"><i>👆</i>選んだカードを<b>上へはじいて</b>も出せるよ</div>`:''}
     ${known?`<div class="peek"><span class="label" style="color:var(--cyan-tx)">${p.fut?'先物取引':'未来予測'} · 次のNEWS（あなただけ）</span><b>${nextLabel}</b></div>`:''}
     ${isLong()&&(p.contract||p.brand!=null)?`<div class="secret">${p.contract?`<span class="ctchip"><i>極秘契約</i>${esc(contractText(p.contract))}<b>+${contractVal(p.contract)}</b></span>`:""}${p.brand!=null?`<span class="brd" style="--c:var(--i${p.brand})"><i>ブランド</i>${IND[p.brand]} +1</span>`:""}</div>`:""}
     ${ospMio()}${pwHint()}${whaleHint()}${speedArm(p)}${partnerHint(p)}
