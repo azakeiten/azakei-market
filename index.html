@@ -4161,6 +4161,27 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 @keyframes mirCr{50%{transform:translateY(-4px) rotate(-6deg)}}
 .mir-top>span:last-child{display:flex;flex-direction:column;gap:1px;min-width:0}.mir-top small{font-size:10.5px;font-weight:900;color:var(--gold-t)}.mir-top b{font-size:17px}.mir-top em{font-style:normal;font-size:11px;font-weight:700;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.vsfl,.mir-top,.mir-crown{animation:none}}
+/* 🔮 鏡読み */
+.mrr{display:flex;flex-direction:column;gap:6px;padding:7px 10px;border-radius:14px;background:linear-gradient(100deg,rgb(77 255 154 / .14),transparent 70%),var(--panel2);box-shadow:inset 0 0 0 1.5px rgb(77 255 154 / .45)}
+.mrr.set{box-shadow:inset 0 0 0 2px #4dff9a,0 0 16px rgb(77 255 154 / .25)}
+.mrr-h{display:flex;align-items:center;gap:8px}
+.mrr-l{flex:1;min-width:0;display:flex;flex-direction:column;font-size:12.5px;font-weight:900;line-height:1.25}.mrr-l small{font-size:10.5px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mrr-l small b{color:#4dff9a}
+.mrr-q{flex:none;border:0;border-radius:99px;padding:4px 10px;font:inherit;font-size:11px;font-weight:800;color:inherit;background:rgb(77 255 154 / .16);box-shadow:inset 0 0 0 1px rgb(77 255 154 / .5);cursor:pointer}
+.mrr-k{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:12px;font-weight:800;animation:dkPop .3s both}.mrr-k b{font-family:var(--display);font-weight:400;font-size:14px;margin-left:2px}.mrr-k em{flex-basis:100%;font-style:normal;font-size:10px;font-weight:700;color:var(--muted)}
+.mrr-c{display:flex;gap:5px;justify-content:space-between}
+.mrr-c button{flex:1;max-width:46px;height:34px;border:0;border-radius:10px;display:grid;place-items:center;cursor:pointer;background:color-mix(in srgb,var(--c) 30%,var(--panel));color:#fff;opacity:.6;transition:transform .15s,opacity .15s}
+.mrr-c button.on{opacity:1;transform:translateY(-3px);box-shadow:0 0 0 2px #4dff9a,0 6px 14px rgb(77 255 154 / .35)}
+.mrr-c button.no{opacity:.18;cursor:not-allowed;filter:grayscale(1)}
+.mp-rd{position:absolute;left:12px;top:-12px;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:900;white-space:nowrap;animation:lbwStamp .4s .25s cubic-bezier(.3,1.8,.5,1) both}
+.mp-rd.ok{background:#4dff9a;color:#04261a}.mp-rd.ok b{margin-left:4px;font-family:var(--display);font-weight:400;font-size:13px}
+.mp-rd.ng{background:var(--panel2);color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
+.mirpop{margin-top:6px}
+.mir-rd{font-style:normal;font-size:12px;margin-left:1px;opacity:.35;filter:grayscale(1)}.mir-rd.ok{opacity:1;filter:drop-shadow(0 0 4px #4dff9a)}
+.mir-t{grid-template-columns:28px 1fr 22px 1fr 34px}
+.mir-rdm{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:12px;background:rgb(77 255 154 / .1);font-size:12.5px;font-weight:900}
+.mir-rdd{display:flex;gap:4px;flex:1}.mir-rdd i{width:16px;height:7px;border-radius:99px;background:var(--line)}.mir-rdd i.on{background:#4dff9a;animation:dkPop .3s calc(.5s + var(--j)*.12s) both}
+.mir-rdm em{font-style:normal;color:#4dff9a;font-family:var(--display);font-weight:400;font-size:15px}
+@media (prefers-reduced-motion:reduce){.mrr-k,.mp-rd,.mir-rdd i.on{animation:none}.mrr-c button{transition:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5263,6 +5284,7 @@ function beginTurn(){
   if(C.fore==='dividend' && G.turn>0) G.players.forEach(p=>{ const d=divOf(C,C.table[news][p.last]); if(d){ p.score+=d; G.divs.push({name:p.name,ind:p.last,d}); } });
   G.players.forEach(p=>{ p.pick=null; p.fut=false; p.shown=p.score; p.guess=null; });
   if(G.tac) G.tac.now=null;
+  if(G.mirror){ G.mirror.guess=null; G.mirror.hint=0; }
   ospHide();
   G.players.forEach((p,i)=>{ if(!isHuman(p)){ const know = G.osp && !G.osp.shown && ((p.foreUsed && p.foreTurn===G.turn-1) || pwOf(i)==='toki'); p.pick = cpuPick(p,whaleField(),know?ospRealDeck():G.deck,G.turn,aiCfg(i),G.rnd||Math.random); } });
   try{ ttGen(); }catch(e){ G.tt=null; }
@@ -5544,13 +5566,14 @@ function resolveTurn(){
   const styT=G.players.map(p=>isHuman(p)?styTag(p):null);
   G.last=G.players.map((p,pi)=>{
     const yb = G.yomi && p.guess!=null && ymx>=2 && cnt[p.guess]===ymx ? 1 : 0;
-    const pc=pcfg(pi), base=baseFor(pc,p,G.deck,G.turn,p.pick), pb=pwBonus(pi,p,base,cnt[p.pick]), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], sdGain(pc,base,cnt[p.pick],p.pick)+pb.v+yb))*(closeXOn()?pwMult(pi,pre):1) + chainBonus(p,cnt);
+    const mb = mirReadHit(p) ? 1 : 0;   /* 🪞 鏡読み：分身の一手を当てたら +1 */
+    const pc=pcfg(pi), base=baseFor(pc,p,G.deck,G.turn,p.pick), pb=pwBonus(pi,p,base,cnt[p.pick]), total=tacAdj(p, cnt[p.pick], bossAdj(p, base, cnt[p.pick], sdGain(pc,base,cnt[p.pick],p.pick)+pb.v+yb+mb))*(closeXOn()?pwMult(pi,pre):1) + chainBonus(p,cnt);
     p.shown=p.score; p.score+=total; if(cnt[p.pick]===1) p.uniq++; if(cnt[p.pick]===1 && hd0[pi]>=2) p.ywin=(p.ywin||0)+1;
     const alt = isHuman(p) ? (()=>{ let b=null; const chB=c=>G.chain && p.last!=null && CHAIN_NEXT[p.last]===c ? ((p._clPrev||1)+1>=3?2:1) : 0;   // チェーン分も「もしも」に入れる
       (p.hand||[]).forEach(c=>{ const k=cnt[c]+(c===p.pick?0:1), v=sdGain(pc, baseFor(pc,p,G.deck,G.turn,c), k, c)+chB(c); if(!b || v>b.v) b={c,v,k}; }); return b?{c:b.c, v:b.v, k:b.k, mine:sdGain(pc,base,cnt[p.pick],p.pick)+chB(p.pick)}:null; })() : null;   // もしもの一手：相手の出し方はそのままで、手札のどれが一番よかったか
-    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],alt,sty:styT[pi],gw:p.type==='ghost'?(p.gWhy||null):undefined,bn:bnAdj(p.pick),yomi:yb,sdm:G.sd?G.sd.mod[p.pick]:0});
+    p.used.push({turn:(G.round||0)*TURNS+G.turn,ind:p.pick,base,total,fut:p.fut,k:cnt[p.pick],alt,sty:styT[pi],gw:p.type==='ghost'?(p.gWhy||null):undefined,bn:bnAdj(p.pick),yomi:yb,mb,mg:isHuman(p)&&G.mirror&&G.mirror.guess!=null?1:0,sdm:G.sd?G.sd.mod[p.pick]:0});
     p.hand=p.hand.filter(c=>c!==p.pick); p.last=p.pick; p.hist.push(p.score);
-    pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,guess:p.guess,cb:G.chain?(p._cb||0):0,cl:G.chain?(p.chainLen||1):0,sdm:G.sd?G.sd.mod[p.pick]:0};
+    pwTrack(pi,p,base,cnt[p.pick],pb,total,pre); return {ind:p.pick,hd:hd0[pi],base,total,fut:p.fut,k:cnt[p.pick],pw:pb.t,yomi:yb,mb,guess:p.guess,cb:G.chain?(p._cb||0):0,cl:G.chain?(p.chainLen||1):0,sdm:G.sd?G.sd.mod[p.pick]:0};
   });
   if(G.log) G.log.push(G.deck[G.turn]);
   G.bluffNow=null; try{ ttRecord(cnt); }catch(e){}
@@ -11031,7 +11054,7 @@ function handDock(news){
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   const dmin=dockMinOn(), dan=G.dkAnim; G.dkAnim=null;
   return `<div class="dock sheet${p.fut?' futmode':''}${dmin?' min':''}${dan?' dk-'+dan:''}" aria-label="手札">${dockGrab(dmin)}${dmin?dockSum(p):''}<div class="dk-info">${guideTip()}${readTip(RD)}${ordUI()}${raceBar()}
-    ${stepBar('choose')}</div>${bnRow()}${sdRow()}${ttStrip()}${declUI()}
+    ${stepBar('choose')}</div>${mirRow()}${bnRow()}${sdRow()}${ttStrip()}${declUI()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
     <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>${G.sel!==null&&!reduced()?`<div class="flk-tip"><i>👆</i>選んだカードを<b>上へはじいて</b>も出せるよ</div>`:''}
@@ -11749,26 +11772,40 @@ function mirLive(){
   const key=(G.round||0)*100+G.turn; if(G.mirSeen===key) return; G.mirSeen=key;
   const a=G.players[me].pick; if(a==null) return;
   const hit=gs.filter(i=>G.players[i].pick===a), gi=hit.length?hit[0]:gs[0], b=G.players[gi].pick; if(b==null) return;
-  const w=MIR_WHY[G.players[gi].gWhy]||MIR_WHY.free, same=hit.length>0;
+  const w=MIR_WHY[G.players[gi].gWhy]||MIR_WHY.free, same=hit.length>0, rh=G.mirror.guess!=null, rok=rh && mirReadHit(G.players[me]);
   setTimeout(()=>{ if(!G || !G.mirror) return;
     document.querySelectorAll('.mirpop').forEach(e=>e.remove());
     const el=document.createElement('div'); el.className='mirpop'+(same?' sync':''); el.setAttribute('role','status');
     el.innerHTML=same ? `<span class="mp-ic">🪞</span><span class="mp-t"><small>SYNCHRO!${hit.length>1?` ×${hit.length}`:''}</small><b>${hit.length>1?`分身${hit.length}人`:'分身'}も同じ「${esc(IND[b])}」</b><em>考えることは、そっくり</em></span>`
       : `<span class="mp-ic">${w.ic}</span><span class="mp-t"><small>🧬 ${esc(G.players[gi].name)}の一手</small><b>${esc(IND[b])}</b><em>${w.n}のクセで選んだ</em></span>`;
-    document.body.appendChild(el); if(same){ sfx('flip'); haptic([15,30,15]); }
+    if(rh) el.insertAdjacentHTML('afterbegin', `<span class="mp-rd ${rok?'ok':'ng'}">${rok?'🔮 鏡読み 的中！<b>+1</b>':`🔮 鏡読み はずれ（予想：${esc(IND[G.mirror.guess])}）`}</span>`);
+    document.body.appendChild(el); if(rok){ sfx('coin'); haptic([10,20,10,20,40]); } else if(same){ sfx('flip'); haptic([15,30,15]); }
     setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 400); }, same?2600:1900);
   }, 700);
 }
+/* ---- 🔮 鏡読み：自分のクセを知っているのは自分。分身（1人目）が出すカードを当てると +1 ---- */
+function mirReadHit(p){ if(!G || !G.mirror || !isHuman(p) || G.mirror.guess==null) return false; const gi=mirIdx(); return gi>=0 && G.players[gi].pick===G.mirror.guess; }
+function mirRow(){
+  if(!G || !G.mirror || G.phase!=='choose' || G.active<0 || !isHuman(G.players[G.active])) return '';
+  const gi=mirIdx(); if(gi<0) return ''; const g=G.players[gi], M=G.mirror, r=styRates(M.st||{}), boost=g.gBoost||0, rd=Math.min(.95,r.rd+boost);
+  const pr=[['🧠',rd],['📊',(1-rd)*r.nv],['🎲',(1-rd)*(1-r.nv)]];
+  return `<div class="mrr${M.guess!=null?' set':''}"><div class="mrr-h"><span class="mrr-l">🔮 鏡読み <small>${esc(g.name)}が出すのは？ 当たれば <b>+1</b></small></span>
+      <button class="mrr-q" onclick="mirHint()" aria-expanded="${M.hint?'true':'false'}">${M.hint?'クセを隠す':'クセを見る'}</button></div>
+    ${M.hint?`<div class="mrr-k">${pr.map(([ic,v])=>`<span>${ic}<b>${Math.round(v*100)}%</b></span>`).join('')}<em>🧠読むCPUの一手 / 📊表で最高点 / 🎲手札から適当</em></div>`:''}
+    <div class="mrr-c">${IND.map((n,c)=>{ const has=(g.hand||[]).includes(c); return `<button class="${M.guess===c?'on':''}${has?'':' no'}" style="--c:var(--i${c})" ${has?`onclick="mirGuess(${c})"`:'disabled'} aria-label="${n}${has?'を出すと予想':'（分身の手札にない）'}" aria-pressed="${M.guess===c}">${svg(c,2.2)}</button>`; }).join('')}</div></div>`;
+}
+function mirGuess(c){ if(!G||!G.mirror||G.phase!=='choose') return; G.mirror.guess = G.mirror.guess===c ? null : c; G.players.forEach(p=>{ if(isHuman(p)) p.mg=G.mirror.guess!=null; }); sfx('click'); haptic(8); render(); }
+function mirHint(){ if(!G||!G.mirror) return; G.mirror.hint=G.mirror.hint?0:1; sfx('click'); haptic(6); render(); }
 function mirRecord(me){
   if(!G.mirror) return null; const gs=mirGs(); if(!gs.length) return null;
   const P=S.prof, M=P.mir=P.mir||{w:0,l:0,d:0,sync:0,day:0,streak:0,best:0,fl:0};
   const a=G.players[me].score, sc=gs.map(i=>G.players[i].score), mx=Math.max(...sc), gi=gs[sc.indexOf(mx)];
   const res=a>mx?'w':a<mx?'l':'d'; M[res]=(M[res]||0)+1;
-  const pu=G.players[me].used; let sync=0; pu.forEach((u,t)=>{ if(gs.some(i=>{ const g=G.players[i].used[t]; return g && g.ind===u.ind; })) sync++; }); M.sync=(M.sync||0)+sync;
+  const pu=G.players[me].used, rdN=pu.filter(u=>u.mb).length, rdT=pu.filter(u=>u.mg).length; M.rd=(M.rd||0)+rdN; M.rdT=(M.rdT||0)+rdT; let sync=0; pu.forEach((u,t)=>{ if(gs.some(i=>{ const g=G.players[i].used[t]; return g && g.ind===u.ind; })) sync++; }); M.sync=(M.sync||0)+sync;
   const fl=G.mirror.fl||0, F=MIR_FL[fl]; let coin=0, clear=false, first=false;
   if(res==='w'){ clear=true; if((M.fl||0)<=fl){ M.fl=fl+1; first=true; coin=F.coin; } else if(M.day!==todayKey()){ M.day=todayKey(); coin=MIR_COIN; } P.coin=(P.coin||0)+coin; }
   M.streak = res==='w' ? (M.streak||0)+1 : 0; M.best=Math.max(M.best||0, M.streak);
-  saveProfile(); return {res, a, b:mx, sync, coin, gi, gs, fl, clear, first, streak:M.streak, beat:gs.filter(i=>a>G.players[i].score).length};
+  saveProfile(); return {res, a, b:mx, sync, coin, gi, gs, fl, clear, first, rdN, rdT, streak:M.streak, beat:gs.filter(i=>a>G.players[i].score).length};
 }
 function mirTower(cur, anim, click){
   const done=mirProg();
@@ -11785,7 +11822,7 @@ function mirPanel(){
     : R.res==='l' ? '分身は、あなたのいつものクセで打っています。いつもとちがう一手で、裏をかこう。'
     : '点数まで同じ。まさに鏡あわせ。';
   const tl = pm.used.map((u,t)=>{ const g=pg.used[t]; if(!g) return ''; const same=g.ind===u.ind, w=MIR_WHY[g.gw]||null;
-    return `<div class="mir-t${same?' same':''}" style="--d:${t*80}ms"><span class="mir-tn">T${t+1}</span><span class="mir-c">${chip(u.ind)}<em class="num ${cls(u.total)}">${sgn(u.total)}</em></span><span class="mir-eq">${same?'🪞':'｜'}</span><span class="mir-c">${chip(g.ind)}<em class="num ${cls(g.total)}">${sgn(g.total)}</em></span><span class="mir-w">${w?w.ic:''}</span></div>`; }).join('');
+    return `<div class="mir-t${same?' same':''}" style="--d:${t*80}ms"><span class="mir-tn">T${t+1}</span><span class="mir-c">${chip(u.ind)}<em class="num ${cls(u.total)}">${sgn(u.total)}</em></span><span class="mir-eq">${same?'🪞':'｜'}</span><span class="mir-c">${chip(g.ind)}<em class="num ${cls(g.total)}">${sgn(g.total)}</em></span><span class="mir-w">${w?w.ic:''}${u.mg?`<i class="mir-rd ${u.mb?'ok':''}" title="鏡読み${u.mb?'的中':'はずれ'}">🔮</i>`:''}</span></div>`; }).join('');
   return `<section class="panel mir-p ${R.res}${R.first?' first':''}${R.first&&last?' top':''}" style="--c:${T.c||'#4dff9a'}"><span class="mir-glass" aria-hidden="true"></span>
     <div class="mir-hd"><span class="label">MIRROR TOWER · ${R.fl+1}F ${F.n}</span><b>${head}</b>${R.res==='w'?`<span class="mir-st">${R.first?'CLEAR':'WIN'}</span>`:''}</div>
     ${R.first&&last?`<div class="mir-top"><span class="mir-crown">👑</span><span><small>称号を手に入れた</small><b>🪞 鏡を超えた者</b><em>マイページの称号から、名前の横に付けられます</em></span></div>`:''}
@@ -11794,7 +11831,7 @@ function mirPanel(){
       <span class="mir-x">VS</span>
       <div class="mir-side gh"><div class="ava" style="--s:var(--s${pg.seat%6})">${avHTML(pg)}</div><small>${multi?`${esc(pg.name)}（分身の最高点）`:`分身 · ${T.ic}${T.n}`}</small><b>${R.b}</b></div></div>
     <div class="mir-tl"><div class="mir-t hd"><span></span><span>あなた</span><span></span><span>${multi?esc(pg.name):'分身'}</span><span>理由</span></div>${tl}</div>
-    <p class="mir-msg">${msg}${R.sync?` 分身と同じカードを出したのは <b>${R.sync}回</b>。`:''}</p>
+    ${R.rdT?`<div class="mir-rdm"><span>🔮 鏡読み</span><span class="mir-rdd">${Array.from({length:R.rdT},(_,i)=>`<i class="${i<R.rdN?'on':''}" style="--j:${i}"></i>`).join('')}</span><b>${R.rdN}/${R.rdT} 的中</b><em>${R.rdN?`+${R.rdN}点`:''}</em></div>`:''}<p class="mir-msg">${msg}${R.sync?` 分身と同じカードを出したのは <b>${R.sync}回</b>。`:''}</p>
     <div class="mir-rec"><span>通算 <b>${M.w||0}</b>勝 <b>${M.l||0}</b>敗${M.d?` <b>${M.d}</b>分`:''}</span>${R.streak>=2?`<span>🔥 ${R.streak}連勝</span>`:''}${R.coin?`<span class="mir-coin">+${R.coin} コイン${R.first?'（初突破）':''}</span>`:R.res==='w'?'<span class="note">コインは1日1回</span>':''}</div>
     <div class="row" style="justify-content:center">${R.res==='w'&&R.first&&!last?`<button class="btn gold" onclick="startMirror(${R.fl+1})">⬆ ${R.fl+2}Fへ</button><button class="btn" onclick="startMirror(${R.fl})">もう一度</button>`:`<button class="btn gold" onclick="startMirror(${R.fl})">🪞 ${R.res==='w'?'もう一度':'リベンジ'}</button>`}</div></section>`;
 }
