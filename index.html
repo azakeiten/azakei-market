@@ -4182,6 +4182,38 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .mir-rdd{display:flex;gap:4px;flex:1}.mir-rdd i{width:16px;height:7px;border-radius:99px;background:var(--line)}.mir-rdd i.on{background:#4dff9a;animation:dkPop .3s calc(.5s + var(--j)*.12s) both}
 .mir-rdm em{font-style:normal;color:#4dff9a;font-family:var(--display);font-weight:400;font-size:15px}
 @media (prefers-reduced-motion:reduce){.mrr-k,.mp-rd,.mir-rdd i.on{animation:none}.mrr-c button{transition:none}}
+/* 📖 鏡の塔の記録帳 */
+.mbk{display:flex;flex-direction:column;gap:12px}
+.mbt{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:30px 12px 0;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#0b1030,#14224a 60%,#0f2e28)}
+.mbt-sky{position:absolute;inset:0;background:radial-gradient(1px 1px at 20% 20%,#fff,transparent),radial-gradient(1px 1px at 70% 12%,#fff,transparent),radial-gradient(1.5px 1.5px at 85% 40%,#d8fff0,transparent),radial-gradient(1px 1px at 35% 55%,#fff,transparent),radial-gradient(1px 1px at 12% 70%,#fff,transparent);opacity:.7;pointer-events:none}
+.mbt-crown{position:absolute;top:4px;font-size:22px;filter:grayscale(1);opacity:.35}.mbt-crown.on{filter:drop-shadow(0 0 10px var(--gold-t));opacity:1;animation:mirCr 1.8s ease-in-out infinite}
+.mbt-f{position:relative;width:var(--w);display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px 8px 3px 3px;background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .12);color:#eef;animation:dkPop .4s calc(.1s + var(--j)*.08s) both}
+.mbt-n{font-family:var(--display);font-size:13px;opacity:.8;flex:none}.mbt-ic{font-size:16px;flex:none}.mbt-t{font-size:12.5px;font-weight:800;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.mbt-f.ok{background:linear-gradient(90deg,color-mix(in srgb,var(--gold-t) 26%,transparent),color-mix(in srgb,var(--gold-t) 10%,transparent));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--gold-t) 70%,transparent)}
+.mbt-f.ok>i{font-style:normal;flex:none;width:18px;height:18px;border-radius:50%;background:var(--gold-t);color:#1a1300;font-size:11px;font-weight:900;display:grid;place-items:center}
+.mbt-f.now{background:linear-gradient(90deg,rgb(77 255 154 / .3),rgb(77 255 154 / .08));box-shadow:inset 0 0 0 2px #4dff9a,0 0 18px rgb(77 255 154 / .35);animation:dkPop .4s calc(.1s + var(--j)*.08s) both,mtwGl 1.8s 1s ease-in-out infinite}
+.mbt-f.lock{opacity:.45}
+.mbt-gh{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:16px;overflow:hidden;background:var(--panel);transform:scaleX(-1);filter:hue-rotate(150deg) saturate(1.4) drop-shadow(0 0 6px rgb(77 255 154 / .8));animation:ghFl 3.2s ease-in-out infinite}.mbt-gh svg{width:100%;height:100%}
+.mbt-base{width:100%;height:12px;margin-top:2px;background:linear-gradient(180deg,#2a3b5c,#1a2640);border-radius:4px 4px 0 0}
+.mbk-cap{margin:0;font-size:13px;font-weight:700;line-height:1.6;text-align:center}.mbk-cap b{color:var(--c)}
+.mbss{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mbs{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 4px;border-radius:12px;background:var(--panel2);text-align:center;min-width:0}
+.mbs>span{font-size:16px}.mbs b{font-family:var(--display);font-weight:400;font-size:17px;line-height:1.1;white-space:nowrap}.mbs b i{font-style:normal;font-family:var(--body);font-size:10px;font-weight:800;margin:0 1px}.mbs small{font-size:10px;font-weight:800;color:var(--muted);line-height:1.3}
+.mbrs{display:flex;flex-direction:column;gap:6px}
+.mbr{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:14px;background:var(--panel2)}
+.mbr.ok{box-shadow:inset 3px 0 0 var(--gold-t)}.mbr.now{box-shadow:inset 3px 0 0 #4dff9a}.mbr.lock{opacity:.55}
+.mbr-ic{font-size:22px;flex:none}.mbr-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.mbr-tx b{font-size:13.5px}.mbr-tx small{font-size:11px;font-weight:700;color:var(--muted);line-height:1.4}
+.mbr-st{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:10.5px;font-weight:800;color:var(--muted)}.mbr-st em{font-style:normal;color:var(--gold-t);letter-spacing:.05em}.mbr-st b{color:var(--ink)}
+.mbr .btn{flex:none;padding:6px 14px;font-size:13px}
+.mev{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:14px;background:var(--panel2)}
+.mev svg{width:100%;height:auto;display:block}
+.mev-l{stroke-dasharray:600;stroke-dashoffset:600;animation:mevDraw 1.2s .3s ease-out forwards}
+@keyframes mevDraw{to{stroke-dashoffset:0}}
+.mev-lg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;font-weight:800}.mev-lg i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.mev-n{margin:0;font-size:11.5px;font-weight:700;color:var(--muted);line-height:1.55}.mev-n b{color:var(--ink)}
+.mc-btns{display:flex;gap:6px;margin-top:6px}.mc-btns .mc-go{flex:1;margin-top:0}.mc-bk{flex:none;padding-left:14px;padding-right:14px}
+.mrr{margin-top:8px}
+@media (prefers-reduced-motion:reduce){.mbt-f,.mbt-f.now,.mbt-gh,.mbt-crown.on{animation:none}.mev-l{animation:none;stroke-dashoffset:0}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6249,6 +6281,7 @@ function renderSheet(){
   else if(k==='chain') body=chainRules(true);
   else if(k==='mycards') body=cgBody();
   else if(k==='lab') body=labBody();
+  else if(k==='mirbook') body=mirBook();
   else if(k==='yomidojo') body=`<div id="ydWrap">${ydBody()}</div>`;
   else if(k==='mynews') body=myNewsBody();
   else if(k==='mynewsedit') body=myNewsEditBody();
@@ -11054,10 +11087,10 @@ function handDock(news){
   const nextLabel = next===null ? '' : (C.hist?`${yearOf(next)}年 ${nm(next)}`:nm(next));
   const dmin=dockMinOn(), dan=G.dkAnim; G.dkAnim=null;
   return `<div class="dock sheet${p.fut?' futmode':''}${dmin?' min':''}${dan?' dk-'+dan:''}" aria-label="手札">${dockGrab(dmin)}${dmin?dockSum(p):''}<div class="dk-info">${guideTip()}${readTip(RD)}${ordUI()}${raceBar()}
-    ${stepBar('choose')}</div>${mirRow()}${bnRow()}${sdRow()}${ttStrip()}${declUI()}
+    ${stepBar('choose')}</div>${bnRow()}${sdRow()}${ttStrip()}${declUI()}
     ${p.fut?'<span class="futbar">FUTURES · 点数は次のNEWS −1</span>':''}
     <div class="row spread"><h3>${esc(p.name)} の手札</h3><span class="note hide-sm">左上の数字が${p.fut?'先物での':'このターンの'}点数</span>${xcOn()?(x=>`<span class="xc-chip xc-dock" style="--k1:${x.sky[0]};--k2:${x.sky[1]}">${x.t} ${x.ses}</span>`)(xcAt(G.turn,TURNS)):""}</div>
-    <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>${G.sel!==null&&!reduced()?`<div class="flk-tip"><i>👆</i>選んだカードを<b>上へはじいて</b>も出せるよ</div>`:''}
+    <div class="fan${deal&&!reduced()?' deal':''}">${cards}</div>${G.sel!==null&&!reduced()?`<div class="flk-tip"><i>👆</i>選んだカードを<b>上へはじいて</b>も出せるよ</div>`:''}${mirRow()}
     ${known?`<div class="peek"><span class="label" style="color:var(--cyan-tx)">${p.fut?'先物取引':'未来予測'} · 次のNEWS（あなただけ）</span><b>${nextLabel}</b></div>`:''}
     ${isLong()&&(p.contract||p.brand!=null)?`<div class="secret">${p.contract?`<span class="ctchip"><i>極秘契約</i>${esc(contractText(p.contract))}<b>+${contractVal(p.contract)}</b></span>`:""}${p.brand!=null?`<span class="brd" style="--c:var(--i${p.brand})"><i>ブランド</i>${IND[p.brand]} +1</span>`:""}</div>`:""}
     ${ospMio()}${pwHint()}${whaleHint()}${speedArm(p)}${partnerHint(p)}
@@ -11796,6 +11829,35 @@ function mirRow(){
 }
 function mirGuess(c){ if(!G||!G.mirror||G.phase!=='choose') return; G.mirror.guess = G.mirror.guess===c ? null : c; G.players.forEach(p=>{ if(isHuman(p)) p.mg=G.mirror.guess!=null; }); sfx('click'); haptic(8); render(); }
 function mirHint(){ if(!G||!G.mirror) return; G.mirror.hint=G.mirror.hint?0:1; sfx('click'); haptic(6); render(); }
+/* ---- 📖 鏡の塔の記録帳：塔の全景・階ごとの記録・分身の変化グラフ ---- */
+function mirBook(){
+  const P=S.prof||{}, st=P.sty, M=P.mir||{}, ok=styGhostOk(), T=styType(st), done=mirProg(), cur=Math.min(done,MIR_FL.length-1), av=esc(myAvatar()||'🙂');
+  const flo=MIR_FL.map((F,i)=>({F,i})).reverse().map(({F,i})=>{ const s=i<done?'ok':i===cur&&done<MIR_FL.length?'now':'lock', fr=(M.f||{})[i]||{};
+    return `<div class="mbt-f ${s}" style="--w:${100-i*9}%;--j:${4-i}"><span class="mbt-n">${i+1}F</span><span class="mbt-ic">${s==='lock'?'🔒':F.ic}</span><span class="mbt-t">${s==='lock'?'？？？':F.n}</span>${s==='now'&&ok?`<span class="mbt-gh">${av}</span>`:''}${s==='ok'?'<i>✓</i>':''}</div>`; }).join('');
+  const rows=MIR_FL.map((F,i)=>{ const s=i<done?'ok':i===cur&&done<MIR_FL.length?'now':'lock', fr=(M.f||{})[i]||{};
+    return `<div class="mbr ${s}"><span class="mbr-ic">${s==='lock'?'🔒':F.ic}</span><span class="mbr-tx"><b>${i+1}F ${s==='lock'?'？？？':F.n}</b><small>${s==='lock'?'下の階を突破すると開く':F.d}</small>
+      <span class="mbr-st"><em>${'★'.repeat(F.lv||1)}${'☆'.repeat(5-(F.lv||1))}</em>${fr.n?`<span>挑戦 ${fr.n} · 勝ち ${fr.w||0}</span>`:''}${fr.best!=null?`<span>最大 <b>+${fr.best}</b>点差</span>`:''}</span></span>
+      ${s!=='lock'&&ok?`<button class="btn${s==='now'?' gold':''}" onclick="closeSheet();startMirror(${i})">${s==='now'?'挑む':'再戦'}</button>`:''}</div>`; }).join('');
+  const rate=M.rdT?Math.round((M.rd||0)/M.rdT*100):null;
+  const stat=(ic,n,v,sub)=>`<div class="mbs"><span>${ic}</span><b>${v}</b><small>${n}${sub?`<br>${sub}`:''}</small></div>`;
+  return `<div class="mbk" style="--c:${T.c||'#4dff9a'}"><span class="label">MIRROR TOWER · 塔の記録帳</span><h3 class="ttl">🪞 鏡の塔</h3>
+    <div class="mbt"><div class="mbt-sky" aria-hidden="true"></div><div class="mbt-crown${done>=MIR_FL.length?' on':''}">👑</div>${flo}<div class="mbt-base"></div></div>
+    <p class="mbk-cap">${!ok?'まだ分身がいません。あと少し遊ぶと生まれます。':done>=MIR_FL.length?'🏆 すべての階を突破しました。いつでも好きな階で、分身と再戦できます。':`いま <b>${cur+1}F「${MIR_FL[cur].n}」</b>で、あなたの分身が待っています。`}</p>
+    <div class="mbss">${stat('⚔️','通算',`${M.w||0}<i>勝</i>${M.l||0}<i>敗</i>`,M.d?`${M.d}分`:'')}${stat('🔥','最多連勝',M.best||0)}${stat('🔮','鏡読み',rate==null?'—':rate+'%',M.rdT?`${M.rd||0}/${M.rdT} 的中`:'')}${stat('🪞','シンクロ',M.sync||0,'同じカード')}</div>
+    <h4 class="lab-h">🏯 階ごとの記録</h4><div class="mbrs">${rows}</div>
+    <h4 class="lab-h">🧬 分身の変化</h4>${mirEvo(st,T)}
+    <button class="btn ghost" onclick="closeSheet()">とじる</button></div>`;
+}
+function mirEvo(st,T){
+  const h=(st&&st.h)||[]; if(h.length<2) return `<p class="note">2試合以上あそぶと、あなた（＝分身）のクセがどう変わってきたかのグラフが出ます。</p>`;
+  const W=300, H=120, px=i=>14+i*(W-28)/(h.length-1), py=v=>H-14-v*(H-28);
+  const L=[['rd','🧠 読みが当たった','#4fe3ff'],['nv','📊 表どおり','#a77bff'],['mono','👑 独占','#ffc83a']];
+  const line=([k,,c])=>{ const pts=h.map((g,i)=>[px(i),py(g.n?g[k]/g.n:0)]); return `<polyline points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" class="mev-l"/>${pts.length?`<circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="4" fill="${c}" stroke="var(--panel2)" stroke-width="2"/>`:''}`; };
+  const grid=[0,.5,1].map(v=>`<line x1="14" x2="${W-14}" y1="${py(v)}" y2="${py(v)}" stroke="var(--line)" stroke-width="1" ${v===.5?'stroke-dasharray="3 4"':''}/><text x="${W-12}" y="${py(v)+3}" font-size="8" fill="var(--muted)">${v*100}%</text>`).join('');
+  return `<div class="mev"><svg viewBox="0 0 ${W+6} ${H}" role="img" aria-label="試合ごとのクセの変化">${grid}${L.map(line).join('')}</svg>
+    <div class="mev-lg">${L.map(([,n,c])=>`<span><i style="background:${c}"></i>${n}</span>`).join('')}</div>
+    <p class="mev-n">左が昔、右がいちばん新しい試合（最大20試合）。いまのタイプは <b>${T.ic} ${T.n}</b>。分身は、ここまでの通算のクセで打ちます。</p></div>`;
+}
 function mirRecord(me){
   if(!G.mirror) return null; const gs=mirGs(); if(!gs.length) return null;
   const P=S.prof, M=P.mir=P.mir||{w:0,l:0,d:0,sync:0,day:0,streak:0,best:0,fl:0};
@@ -11803,6 +11865,7 @@ function mirRecord(me){
   const res=a>mx?'w':a<mx?'l':'d'; M[res]=(M[res]||0)+1;
   const pu=G.players[me].used, rdN=pu.filter(u=>u.mb).length, rdT=pu.filter(u=>u.mg).length; M.rd=(M.rd||0)+rdN; M.rdT=(M.rdT||0)+rdT; let sync=0; pu.forEach((u,t)=>{ if(gs.some(i=>{ const g=G.players[i].used[t]; return g && g.ind===u.ind; })) sync++; }); M.sync=(M.sync||0)+sync;
   const fl=G.mirror.fl||0, F=MIR_FL[fl]; let coin=0, clear=false, first=false;
+  M.f=M.f||{}; const fr=M.f[fl]=M.f[fl]||{n:0,w:0,best:null}; fr.n++; if(res==='w'){ fr.w++; fr.best=Math.max(fr.best==null?-99:fr.best, a-mx); }
   if(res==='w'){ clear=true; if((M.fl||0)<=fl){ M.fl=fl+1; first=true; coin=F.coin; } else if(M.day!==todayKey()){ M.day=todayKey(); coin=MIR_COIN; } P.coin=(P.coin||0)+coin; }
   M.streak = res==='w' ? (M.streak||0)+1 : 0; M.best=Math.max(M.best||0, M.streak);
   saveProfile(); return {res, a, b:mx, sync, coin, gi, gs, fl, clear, first, rdN, rdT, streak:M.streak, beat:gs.filter(i=>a>G.players[i].score).length};
@@ -11833,7 +11896,7 @@ function mirPanel(){
     <div class="mir-tl"><div class="mir-t hd"><span></span><span>あなた</span><span></span><span>${multi?esc(pg.name):'分身'}</span><span>理由</span></div>${tl}</div>
     ${R.rdT?`<div class="mir-rdm"><span>🔮 鏡読み</span><span class="mir-rdd">${Array.from({length:R.rdT},(_,i)=>`<i class="${i<R.rdN?'on':''}" style="--j:${i}"></i>`).join('')}</span><b>${R.rdN}/${R.rdT} 的中</b><em>${R.rdN?`+${R.rdN}点`:''}</em></div>`:''}<p class="mir-msg">${msg}${R.sync?` 分身と同じカードを出したのは <b>${R.sync}回</b>。`:''}</p>
     <div class="mir-rec"><span>通算 <b>${M.w||0}</b>勝 <b>${M.l||0}</b>敗${M.d?` <b>${M.d}</b>分`:''}</span>${R.streak>=2?`<span>🔥 ${R.streak}連勝</span>`:''}${R.coin?`<span class="mir-coin">+${R.coin} コイン${R.first?'（初突破）':''}</span>`:R.res==='w'?'<span class="note">コインは1日1回</span>':''}</div>
-    <div class="row" style="justify-content:center">${R.res==='w'&&R.first&&!last?`<button class="btn gold" onclick="startMirror(${R.fl+1})">⬆ ${R.fl+2}Fへ</button><button class="btn" onclick="startMirror(${R.fl})">もう一度</button>`:`<button class="btn gold" onclick="startMirror(${R.fl})">🪞 ${R.res==='w'?'もう一度':'リベンジ'}</button>`}</div></section>`;
+    <div class="row" style="justify-content:center"><button class="btn" onclick="openSheet('mirbook')">📖 記録帳</button>${R.res==='w'&&R.first&&!last?`<button class="btn gold" onclick="startMirror(${R.fl+1})">⬆ ${R.fl+2}Fへ</button><button class="btn" onclick="startMirror(${R.fl})">もう一度</button>`:`<button class="btn gold" onclick="startMirror(${R.fl})">🪞 ${R.res==='w'?'もう一度':'リベンジ'}</button>`}</div></section>`;
 }
 function mirCard(){
   const P=S.prof||{}, st=P.sty, t=(st&&st.t)||0, ok=styGhostOk(), T=styType(st), M=P.mir||{}, av=esc(myAvatar()||'🙂');
@@ -11842,7 +11905,7 @@ function mirCard(){
   const pr=mirProg(), all=pr>=MIR_FL.length, nx=Math.min(pr,MIR_FL.length-1), F=MIR_FL[nx];
   return `<section class="mircard tw" style="--c:${T.c||'#4dff9a'}"><div class="mc-top"><span class="mc-mir"><span class="mc-a">${av}</span><i class="mc-line"></i><span class="mc-a gh">${av}</span></span>
     <span class="mc-tx"><span class="label">MIRROR TOWER · ${T.ic} ${T.n}</span><b>${all?'🏆 鏡の塔 制覇！':`${nx+1}F ${F.ic} ${F.n}`}</b><span class="note">${all?`通算 ${M.w||0}勝。いつでも好きな階に挑めます。`:`${F.d}。<span class="mc-lv">むずかしさ <i>${'★'.repeat(F.lv)}</i>${'☆'.repeat(5-F.lv)}</span> 突破で <b style="color:var(--gold-t)">+${F.coin}コイン</b>`}</span></span></div>
-    ${mirTower(nx,0,1)}${pr?'<p class="mc-hint">階をタップすると、突破した階にも挑めます</p>':''}<button class="btn ${all?'':'gold '}mc-go" onclick="startMirror()">🪞 ${all?'5Fに挑む':`${nx+1}Fに挑む`}</button></section>`;
+    ${mirTower(nx,0,1)}${pr?'<p class="mc-hint">階をタップすると、突破した階にも挑めます</p>':''}<div class="mc-btns"><button class="btn ${all?'':'gold '}mc-go" onclick="startMirror()">🪞 ${all?'5Fに挑む':`${nx+1}Fに挑む`}</button><button class="btn mc-bk" onclick="openSheet('mirbook')" aria-label="鏡の塔の記録帳">📖</button></div></section>`;
 }
 function labDuelRule(k){ if(LDUEL.run) return; LDUEL.rules[k]=LDUEL.rules[k]?0:1; LDUEL.acc=null; LDUEL.done=0; sfx('click'); haptic(6); labSimPaint(); }
 function labDuelRun(){
