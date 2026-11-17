@@ -4147,6 +4147,20 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .mircard.tw .mtw-f{background:rgb(255 255 255 / .05)}.mircard.tw .mtw-f.ok{background:linear-gradient(180deg,color-mix(in srgb,var(--gold-t) 30%,transparent),color-mix(in srgb,var(--gold-t) 10%,transparent))}.mircard.tw .mtw-f.now{background:linear-gradient(180deg,rgb(77 255 154 / .28),rgb(77 255 154 / .06))}
 .mc-go{align-self:stretch;margin-top:6px}
 @media (prefers-reduced-motion:reduce){.mtw-f,.mtw-f.now,.mtw-f.just,.mtw-f.just .mtw-ck{animation:none}}
+/* 鏡の塔 v229 */
+.vsfl{position:absolute;left:50%;top:50%;transform:translate(-50%,-62%);font-family:var(--display);font-weight:400;font-size:min(46vw,220px);line-height:1;color:transparent;-webkit-text-stroke:2px rgb(216 255 240 / .35);text-shadow:0 0 40px rgb(77 255 154 / .25);white-space:nowrap;animation:vsFl 1.4s .1s cubic-bezier(.2,.9,.3,1) both;z-index:-1}
+@keyframes vsFl{from{opacity:0;transform:translate(-50%,-62%) scale(1.6)}to{opacity:1;transform:translate(-50%,-62%) scale(1)}}
+.vsmir{z-index:0}
+button.mtw-f{font:inherit;color:inherit;border:0;cursor:pointer}button.mtw-f:active{transform:translateY(2px)}
+button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.mc-hint{margin:0;font-size:10.5px;font-weight:700;color:#9fb0cf;text-align:center}
+.mc-lv{white-space:nowrap;font-weight:800}.mc-lv i{font-style:normal;color:var(--gold-t)}
+.mir-p.top{box-shadow:inset 0 0 0 2px var(--gold-t),0 0 40px color-mix(in srgb,var(--gold-t) 40%,transparent)}
+.mir-top{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:14px;background:linear-gradient(110deg,color-mix(in srgb,var(--gold-t) 25%,transparent),color-mix(in srgb,var(--gold-t) 6%,transparent));box-shadow:inset 0 0 0 1.5px var(--gold-t);animation:dkPop .6s .6s cubic-bezier(.3,1.5,.5,1) both}
+.mir-crown{font-size:34px;animation:mirCr 1.8s 1.2s ease-in-out infinite}
+@keyframes mirCr{50%{transform:translateY(-4px) rotate(-6deg)}}
+.mir-top>span:last-child{display:flex;flex-direction:column;gap:1px;min-width:0}.mir-top small{font-size:10.5px;font-weight:900;color:var(--gold-t)}.mir-top b{font-size:17px}.mir-top em{font-style:normal;font-size:11px;font-weight:700;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.vsfl,.mir-top,.mir-crown{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5393,7 +5407,7 @@ function vsOverlay(){
       ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(vc(p,side)?(p.boss?bvs.n:charKey(p)):p.name)}</b>${G.pw&&G.pw[i]?`<em class="vspw">🃏 ${PWR[G.pw[i]].ic} ${PWR[G.pw[i]].n}</em>`:''}<span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':vc(p,side)?(p.boss?`WEEKLY BOSS<br>能力「${bvs.ab}」`:`${CHAR_PROF[charKey(p)].t}<br>${cpuLabel(p)}CPU<br><em class="vs-fav" style="--c:var(--i${CHAR_PROF[charKey(p)].fav})">得意：${IND[CHAR_PROF[charKey(p)].fav]}</em>`):cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
-  return `<div class="overlay vs${fin||bsv?' final':''}${G.mirror?' mirror':''}" onclick="endVs()" style="${cu?`--cc:${cu.c}`:bsv?`--cc:${bsv.c}`:''}"><div class="vsbg"></div>${G.mirror?`<div class="vsmir"><i></i><span>MIRROR · ${(G.mirror.fl||0)+1}F</span></div>`:''}${fin?'<div class="vsfinal">FINAL</div>':bsv?'<div class="vsfinal">BOSS</div>':''}
+  return `<div class="overlay vs${fin||bsv?' final':''}${G.mirror?' mirror':''}" onclick="endVs()" style="${cu?`--cc:${cu.c}`:bsv?`--cc:${bsv.c}`:''}"><div class="vsbg"></div>${G.mirror?`<div class="vsmir"><b class="vsfl">${(G.mirror.fl||0)+1}F</b><i></i><span>MIRROR · ${(MIR_FL[G.mirror.fl]||MIR_FL[0]).n}</span></div>`:''}${fin?'<div class="vsfinal">FINAL</div>':bsv?'<div class="vsfinal">BOSS</div>':''}
     <div class="vsmode">${mode}</div>
     <div class="vsrow"><div class="vsside l">${left.map((i,j)=>plate(G.players[i],i,'l',j)).join('')}</div>
       <div class="vsmark">VS</div>
@@ -6542,12 +6556,12 @@ function weeklyBody(){
 const ACH_GROUPS=[
   ['はじめての一歩', ['first','win1','online','long1','hist','futwin']],
   ['腕前', ['mono3','fut4','big15','comeback','beatpro','longwin','sweep','ct5','ud10','duelwin']],
-  ['やりこみ', ['win10','games20','daily3','daily7','gold','chal24','surv5','cupgold']],
+  ['やりこみ', ['win10','games20','daily3','daily7','gold','chal24','surv5','mirtop','cupgold']],
   ['コレクション', ['mkall','dexall','story9','chars9','beat9','boss3','party5']],
   ['まなび・創作', ['lsn1','lsnall','pz3','artist','bond5','rec6']],
   ['投資家カード', ['pw1','pwall']]
 ];
-const ACH_TIER={pwall:3,pz3:2,rec6:2,lsnall:3,bond5:3,win10:2,games20:2,daily3:2,ct5:2,mono3:2,fut4:2,big15:2,longwin:2,chars9:2,gold:2,mkall:2, comeback:3,beatpro:3,sweep:3,daily7:3,chal24:3,surv5:3,cupgold:3,dexall:3,story9:3,beat9:3,boss3:3};
+const ACH_TIER={pwall:3,pz3:2,rec6:2,lsnall:3,bond5:3,win10:2,games20:2,daily3:2,ct5:2,mono3:2,fut4:2,big15:2,longwin:2,chars9:2,gold:2,mkall:2, comeback:3,beatpro:3,sweep:3,daily7:3,chal24:3,surv5:3,mirtop:3,cupgold:3,dexall:3,story9:3,beat9:3,boss3:3};
 const ACH_TN=['','銅','銀','金'];
 function achPanel(){
   const P=S.prof, got=ACH.filter(a=>P.ach[a.id]), tier=id=>ACH_TIER[id]||1;
@@ -11303,6 +11317,7 @@ const ACH=[
   {id:'party5', n:'みんなの市場', d:'1台をみんなで回して5回遊ぶ', ic:'🎉'},
   {id:'boss3', n:'ボスハンター', d:'3種類のボスをすべて倒す', ic:'👹'},
   {id:'surv5', n:'しぶとい投資家', d:'サバイバルで5戦連続突破', ic:'🛡️'},
+  {id:'mirtop', n:'鏡を超えた者', d:'鏡の塔の5F「鏡の間」を突破', ic:'🪞'},
   {id:'story9', n:'物語の主人公', d:'キャラストーリーを9話すべてクリア', ic:'📖'},
   {id:'chars9', n:'顔なじみ', d:'9人のキャラ全員と対戦する', ic:'👥'},
   {id:'beat9', n:'全員撃破', d:'9人のキャラ全員に1回以上勝つ', ic:'⚔'},
@@ -11362,6 +11377,7 @@ function recordResult(){
   const before=lvInfo(P.xp); P.xp+=xp+mis.xp; const after=lvInfo(P.xp);
   const skins=SKINS.filter(s=>s.lv>before.lv && s.lv<=after.lv);
   const got=[]; const unlock=id=>{ if(!P.ach[id]){ P.ach[id]=Date.now(); got.push(id); } };
+  if(G.mirGot && G.mirGot.res==='w' && G.mirGot.fl===MIR_FL.length-1) unlock('mirtop');
   unlock('first');
   if(won) unlock('win1'); if(st.wins>=10) unlock('win10');
   if(won && G.cfg.fut) unlock('futwin');
@@ -11713,11 +11729,11 @@ const GHOST_TALK={vs:['ぼくは、きみだよ。','きみのクセは、ぜん
 const MIR_WHY={rd:{ic:'🧠',n:'読み'}, nv:{ic:'📊',n:'表どおり'}, free:{ic:'🎲',n:'気まぐれ'}};
 /* 🪞 鏡の塔：5階。上の階ほど分身が増える・強くなる。その階の「分身ぜんぶ」より上の点で突破 */
 const MIR_FL=[
-  {n:'はじめての鏡', ic:'🪞', d:'分身とのんびり屋2人', coin:20, seats:[['あなたの分身','ghost',0],['CPU ソラ','naive'],['CPU アオイ','naive']]},
-  {n:'鏡と計算屋', ic:'🧮', d:'分身＋読み合いのミナト', coin:30, seats:[['あなたの分身','ghost',0],['CPU ミナト','read'],['CPU ソラ','naive']]},
-  {n:'ふたりの分身', ic:'👥', d:'分身が2人。2人とも上回れ', coin:40, seats:[['あなたの分身','ghost',0],['分身B','ghost',0],['CPU ミナト','read']]},
-  {n:'進化した分身', ic:'⚡', d:'読みが鋭くなった分身（読み+25%）', coin:50, seats:[['進化した分身','ghost',.25],['CPU ミナト','read'],['CPU アオイ','read']]},
-  {n:'鏡の間', ic:'💠', d:'3人ぜんぶが、あなたの分身', coin:100, seats:[['あなたの分身','ghost',0],['分身B','ghost',.15],['分身C','ghost',.3]]}
+  {n:'はじめての鏡', ic:'🪞', d:'分身と、のんびり屋・気まぐれ屋', lv:1, coin:20, seats:[['あなたの分身','ghost',0],['CPU ソラ','naive'],['CPU アオイ','random']]},
+  {n:'鏡と計算屋', ic:'🧮', d:'分身＋読み合いのミナト', lv:2, coin:30, seats:[['あなたの分身','ghost',0],['CPU ミナト','read'],['CPU ソラ','naive']]},
+  {n:'ふたりの分身', ic:'👥', d:'分身が2人。2人とも上回れ', lv:3, coin:40, seats:[['あなたの分身','ghost',0],['分身B','ghost',0],['CPU ミナト','read']]},
+  {n:'進化した分身', ic:'⚡', d:'読みが鋭い分身（読み+35%）と、もう1人の分身', lv:4, coin:50, seats:[['進化した分身','ghost',.35],['分身B','ghost',0],['CPU ミナト','read']]},
+  {n:'鏡の間', ic:'💠', d:'3人ぜんぶが、あなたの分身', lv:5, coin:100, seats:[['あなたの分身','ghost',0],['分身B','ghost',.15],['分身C','ghost',.3]]}
 ];
 let MIR_FL_NOW=0;
 function mirProg(){ const M=(S.prof&&S.prof.mir)||{}; return Math.min(MIR_FL.length, M.fl||0); }   // 突破した階の数
@@ -11754,11 +11770,12 @@ function mirRecord(me){
   M.streak = res==='w' ? (M.streak||0)+1 : 0; M.best=Math.max(M.best||0, M.streak);
   saveProfile(); return {res, a, b:mx, sync, coin, gi, gs, fl, clear, first, streak:M.streak, beat:gs.filter(i=>a>G.players[i].score).length};
 }
-function mirTower(cur, anim){
+function mirTower(cur, anim, click){
   const done=mirProg();
   return `<div class="mtw" role="list">${MIR_FL.map((F,i)=>{ const st=i<done?'ok':i===Math.min(done,MIR_FL.length-1)&&done<MIR_FL.length?'now':i<=done?'ok':'lock';
     const just=anim && i===anim-1;
-    return `<div class="mtw-f ${st}${i===cur?' cur':''}${just?' just':''}" role="listitem" style="--h:${34+i*11}px;--j:${i}" title="${i+1}F ${F.n}"><span class="mtw-ic">${st==='lock'?'🔒':F.ic}</span><b>${i+1}F</b>${st==='ok'?'<i class="mtw-ck">✓</i>':''}</div>`; }).join('')}</div>`;
+    const tag=click&&st!=='lock'?'button':'div';
+    return `<${tag} class="mtw-f ${st}${i===cur?' cur':''}${just?' just':''}" role="listitem" style="--h:${34+i*11}px;--j:${i}" title="${i+1}F ${F.n}"${tag==='button'?` onclick="startMirror(${i})" aria-label="${i+1}F ${F.n}に挑む"`:''}><span class="mtw-ic">${st==='lock'?'🔒':F.ic}</span><b>${i+1}F</b>${st==='ok'?'<i class="mtw-ck">✓</i>':''}</${tag}>`; }).join('')}</div>`;
 }
 function mirPanel(){
   const R=G&&G.mirGot; if(!R) return ''; const me=myIndex(), pm=G.players[me], pg=G.players[R.gi]; if(!pm||!pg) return '';
@@ -11769,8 +11786,9 @@ function mirPanel(){
     : '点数まで同じ。まさに鏡あわせ。';
   const tl = pm.used.map((u,t)=>{ const g=pg.used[t]; if(!g) return ''; const same=g.ind===u.ind, w=MIR_WHY[g.gw]||null;
     return `<div class="mir-t${same?' same':''}" style="--d:${t*80}ms"><span class="mir-tn">T${t+1}</span><span class="mir-c">${chip(u.ind)}<em class="num ${cls(u.total)}">${sgn(u.total)}</em></span><span class="mir-eq">${same?'🪞':'｜'}</span><span class="mir-c">${chip(g.ind)}<em class="num ${cls(g.total)}">${sgn(g.total)}</em></span><span class="mir-w">${w?w.ic:''}</span></div>`; }).join('');
-  return `<section class="panel mir-p ${R.res}${R.first?' first':''}" style="--c:${T.c||'#4dff9a'}"><span class="mir-glass" aria-hidden="true"></span>
+  return `<section class="panel mir-p ${R.res}${R.first?' first':''}${R.first&&last?' top':''}" style="--c:${T.c||'#4dff9a'}"><span class="mir-glass" aria-hidden="true"></span>
     <div class="mir-hd"><span class="label">MIRROR TOWER · ${R.fl+1}F ${F.n}</span><b>${head}</b>${R.res==='w'?`<span class="mir-st">${R.first?'CLEAR':'WIN'}</span>`:''}</div>
+    ${R.first&&last?`<div class="mir-top"><span class="mir-crown">👑</span><span><small>称号を手に入れた</small><b>🪞 鏡を超えた者</b><em>マイページの称号から、名前の横に付けられます</em></span></div>`:''}
     ${mirTower(R.fl, R.first?R.fl+1:0)}
     <div class="mir-vs"><div class="mir-side"><div class="ava" style="--s:var(--s${pm.seat%6})">${avHTML(pm)}</div><small>あなた</small><b>${R.a}</b></div>
       <span class="mir-x">VS</span>
@@ -11786,8 +11804,8 @@ function mirCard(){
     <span class="mc-tx"><span class="label">MIRROR TOWER</span><b>あなたの分身</b><span class="note">あと <b>${Math.max(0,8-t)}</b> ターン遊ぶと、あなたのクセをまねた分身が生まれます。</span><span class="mc-bar"><i style="width:${Math.min(100,t/8*100)}%"></i></span></span></section>`;
   const pr=mirProg(), all=pr>=MIR_FL.length, nx=Math.min(pr,MIR_FL.length-1), F=MIR_FL[nx];
   return `<section class="mircard tw" style="--c:${T.c||'#4dff9a'}"><div class="mc-top"><span class="mc-mir"><span class="mc-a">${av}</span><i class="mc-line"></i><span class="mc-a gh">${av}</span></span>
-    <span class="mc-tx"><span class="label">MIRROR TOWER · ${T.ic} ${T.n}</span><b>${all?'🏆 鏡の塔 制覇！':`${nx+1}F ${F.ic} ${F.n}`}</b><span class="note">${all?`通算 ${M.w||0}勝。いつでも好きな階に挑めます。`:`${F.d}。突破で <b style="color:var(--gold-t)">+${F.coin}コイン</b>`}</span></span></div>
-    ${mirTower(nx,0)}<button class="btn ${all?'':'gold '}mc-go" onclick="startMirror()">🪞 ${all?'5Fに挑む':`${nx+1}Fに挑む`}</button></section>`;
+    <span class="mc-tx"><span class="label">MIRROR TOWER · ${T.ic} ${T.n}</span><b>${all?'🏆 鏡の塔 制覇！':`${nx+1}F ${F.ic} ${F.n}`}</b><span class="note">${all?`通算 ${M.w||0}勝。いつでも好きな階に挑めます。`:`${F.d}。<span class="mc-lv">むずかしさ <i>${'★'.repeat(F.lv)}</i>${'☆'.repeat(5-F.lv)}</span> 突破で <b style="color:var(--gold-t)">+${F.coin}コイン</b>`}</span></span></div>
+    ${mirTower(nx,0,1)}${pr?'<p class="mc-hint">階をタップすると、突破した階にも挑めます</p>':''}<button class="btn ${all?'':'gold '}mc-go" onclick="startMirror()">🪞 ${all?'5Fに挑む':`${nx+1}Fに挑む`}</button></section>`;
 }
 function labDuelRule(k){ if(LDUEL.run) return; LDUEL.rules[k]=LDUEL.rules[k]?0:1; LDUEL.acc=null; LDUEL.done=0; sfx('click'); haptic(6); labSimPaint(); }
 function labDuelRun(){
