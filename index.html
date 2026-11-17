@@ -4214,6 +4214,26 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .mc-btns{display:flex;gap:6px;margin-top:6px}.mc-btns .mc-go{flex:1;margin-top:0}.mc-bk{flex:none;padding-left:14px;padding-right:14px}
 .mrr{margin-top:8px}
 @media (prefers-reduced-motion:reduce){.mbt-f,.mbt-f.now,.mbt-gh,.mbt-crown.on{animation:none}.mev-l{animation:none;stroke-dashoffset:0}}
+/* ✉️ 分身の挑戦状 */
+.ghin{display:flex;flex-direction:column;align-items:stretch;gap:12px;text-align:center}
+.ghin .ttl{font-size:22px;line-height:1.35}
+.ghin-env{position:relative;align-self:center;width:120px;height:78px;margin-top:6px;border-radius:8px;background:linear-gradient(180deg,#f3ead2,#e2d3ad);box-shadow:0 10px 26px rgb(0 0 0 / .35);animation:ghEnv .7s cubic-bezier(.3,1.5,.5,1) both}
+.ghin-flap{position:absolute;left:0;right:0;top:0;height:46px;background:linear-gradient(180deg,#e8dcbb,#d8c79c);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;animation:ghFlap .6s .6s ease-in-out both}
+.ghin-seal{position:absolute;left:50%;top:30px;transform:translateX(-50%);font-size:24px;filter:drop-shadow(0 2px 4px rgb(0 0 0 / .3))}
+@keyframes ghEnv{from{opacity:0;transform:translateY(30px) rotate(-8deg) scale(.7)}to{opacity:1;transform:none}}
+@keyframes ghFlap{to{transform:rotateX(180deg)}}
+.ghin-gh{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 55%,transparent);text-align:left}
+.ghin-ava{flex:none;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:30px;background:var(--panel);transform:scaleX(-1);filter:hue-rotate(150deg) saturate(1.3) drop-shadow(0 0 8px rgb(77 255 154 / .7));animation:ghFl 3.2s ease-in-out infinite}
+.ghin-gh>span:last-child{display:flex;flex-direction:column;gap:2px;min-width:0}.ghin-gh small{font-size:11px;font-weight:800;color:var(--muted)}.ghin-gh b{font-size:18px;color:var(--c)}.ghin-gh em{font-style:normal;font-size:12px;font-weight:700;line-height:1.5}
+.ghin-pv{font-size:11px}
+.ghs-btn{display:flex;flex-direction:column;align-items:center;gap:2px}.ghs-btn small{font-size:10.5px;font-weight:700;opacity:.8}
+.ghl{display:flex;flex-direction:column;gap:6px}
+.ghl-r{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;background:var(--panel2);box-shadow:inset 3px 0 0 var(--c)}
+.ghl-ic{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:20px;background:var(--panel);transform:scaleX(-1);filter:hue-rotate(150deg) saturate(1.3)}
+.ghl-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}.ghl-tx b{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ghl-tx small{font-size:11px;font-weight:700;color:var(--muted)}
+.ghl-r .btn{flex:none;padding:6px 14px;font-size:13px}
+.mir-p.gh .mir-hd .label{color:var(--c)}
+@media (prefers-reduced-motion:reduce){.ghin-env,.ghin-flap,.ghin-ava{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -4926,7 +4946,7 @@ function moodOf(p){   /* OPENのあとは結果しだい、最終結果では1�
   return '';
 }
 const chIc = c => { const k=Object.keys(CHARS).find(k=>CHARS[k]===c); return k&&FACE[k] ? face(k) : (c&&c.ic)||''; };
-const avOf = p => (p.type==='ghost' && (myAvatar()||'🧬')) || (G && G.players.indexOf(p)===myIndex() && myAvatar()) || (G && G.online && p.peer && p.peer!==NET.myPeer && peerFace(p.peer) ? PEER_FACE+p.peer : '') || (G && G.online && p.peer && p.peer!==NET.myPeer && peerIcon(p.peer) ? ''+p.peer : '') || (p.boss && G && G.boss ? BOSSES.find(b=>b.id===G.boss).ic : '') || (!isHuman(p) && CHARS[charKey(p)] ? CHARS[charKey(p)].ic : initial(p.name));   // CPUはキャラのアイコン
+const avOf = p => (p.type==='ghost' && (p.gSty ? (p.gIc||'🧬') : (myAvatar()||'🧬'))) || (G && G.players.indexOf(p)===myIndex() && myAvatar()) || (G && G.online && p.peer && p.peer!==NET.myPeer && peerFace(p.peer) ? PEER_FACE+p.peer : '') || (G && G.online && p.peer && p.peer!==NET.myPeer && peerIcon(p.peer) ? ''+p.peer : '') || (p.boss && G && G.boss ? BOSSES.find(b=>b.id===G.boss).ic : '') || (!isHuman(p) && CHARS[charKey(p)] ? CHARS[charKey(p)].ic : initial(p.name));   // CPUはキャラのアイコン
 const myTitle = () => { const P=S.prof, a=P.title && P.ach[P.title] && ACH.find(x=>x.id===P.title); return a ? a.n : titleOf(lvInfo(P.xp).lv); };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || !!(typeof S!=='undefined' && S && S.calm);
 const phone = () => matchMedia('(max-width:640px)').matches;
@@ -5197,7 +5217,7 @@ function start(data){
   if(!data.S){ const sv=load('azakei-seats'); if(Array.isArray(sv) && sv.length>=2 && sv.length<=6 && sv.every(x=>x && typeof x.name==='string' && TYPES[x.type])) S.seats=sv; }   // 前回の席（キャラ選択）を覚えておく
   if(!S.rec) S.rec=load('azakei-rec')||{games:0,wins:0,best:0};
   if(!S.prof) S.prof=loadProfile();
-  if(!data.S){ loginStamp(); rankSeasonCheck(); duelFromUrl(); mnFromUrl(); tableFromUrl(); townFromUrl(); setTimeout(dayBriefMaybe, 2200); }
+  if(!data.S){ loginStamp(); rankSeasonCheck(); duelFromUrl(); ghFromUrl(); mnFromUrl(); tableFromUrl(); townFromUrl(); setTimeout(dayBriefMaybe, 2200); }
   if(S.vib===undefined){ const v=load('azakei-vib'); S.vib = v===null ? true : !!v; }
   if(S.calm===undefined) S.calm=!!load('azakei-calm');
   if(!S.len) S.len=load('azakei-len')==='long'?'long':'short';
@@ -5280,7 +5300,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   G.players.forEach(p=>p.roundStart=0);
   if(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && !MIR_ON) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
   G.league = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && !MIR_ON && S.league) ? leagueJoin(G.players.map(p=>p.name)) : null;   // リーグ戦の何試合目か
-  G.gid=Date.now(); G.mirror=MIR_ON&&S.prof.sty?{st:JSON.parse(JSON.stringify(S.prof.sty)), fl:MIR_FL_NOW}:null; if(G.mirror) G.players.forEach((p,i)=>{ if(seats[i]&&seats[i].boost) p.gBoost=seats[i].boost; }); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
+  G.gid=Date.now(); G.mirror=MIR_ON&&(GH_NOW||S.prof.sty)?{st:GH_NOW?ghSty(GH_NOW):JSON.parse(JSON.stringify(S.prof.sty)), fl:GH_NOW?0:MIR_FL_NOW, gh:GH_NOW||null}:null; if(G.mirror) G.players.forEach((p,i)=>{ const s=seats[i]; if(s&&s.boost) p.gBoost=s.boost; if(s&&s.gSty){ p.gSty=s.gSty; p.gIc=s.gIc; } }); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
   const freePlay = !daily && !ch && !cu && !sto && !sv && !bs && !du;
   G.b4 = !!(!long && (freePlay ? S.b4 : true));   /* 2026-11 ルール整理：歴史・未来・デイリー・練習・ストーリー・カップ・サバイバル・ボス・挑戦状も同じ中心ルール（最後のNEWSは出したあとに発表・2倍）。ロング版は上級モードとして別 */   /* オンラインでもホストの設定でβ4 */   /* β4ルール：大引けサプライズ（最後のNEWSは出したあとに発表・点数2倍） */
   G.yomi = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.yomi);
@@ -5306,7 +5326,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   scrollTo(0,0);
   beginTurn();
 }
-function restartGame(){ if(G && G.mirror) startMirror(G.mirror.fl); else if(G && G.online){ if(G.host) startOnlineGame(); } else if(G && G.daily) startDaily(); else if(G && G.chal) startGame(false,null,G.chal); else if(G && G.cup) cupNext(G.cup.id); else if(G && G.story) startStory(G.story); else if(G && G.surv!=null) survNext(); else if(G && G.boss) startBoss(); else if(G && G.duel) startDuel(G.duel); else startGame(); }
+function restartGame(){ if(G && G.mirror) (G.mirror.gh ? startGhostDuel(G.mirror.gh) : startMirror(G.mirror.fl)); else if(G && G.online){ if(G.host) startOnlineGame(); } else if(G && G.daily) startDaily(); else if(G && G.chal) startGame(false,null,G.chal); else if(G && G.cup) cupNext(G.cup.id); else if(G && G.story) startStory(G.story); else if(G && G.surv!=null) survNext(); else if(G && G.boss) startBoss(); else if(G && G.duel) startDuel(G.duel); else startGame(); }
 const isHuman = p => p.type==='human';
 const humans = () => G.players.filter(isHuman).length;
 const nm = i => G.cfg.names[i];
@@ -5461,7 +5481,7 @@ function vsOverlay(){
       ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(vc(p,side)?(p.boss?bvs.n:charKey(p)):p.name)}</b>${G.pw&&G.pw[i]?`<em class="vspw">🃏 ${PWR[G.pw[i]].ic} ${PWR[G.pw[i]].n}</em>`:''}<span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':vc(p,side)?(p.boss?`WEEKLY BOSS<br>能力「${bvs.ab}」`:`${CHAR_PROF[charKey(p)].t}<br>${cpuLabel(p)}CPU<br><em class="vs-fav" style="--c:var(--i${CHAR_PROF[charKey(p)].fav})">得意：${IND[CHAR_PROF[charKey(p)].fav]}</em>`):cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
-  return `<div class="overlay vs${fin||bsv?' final':''}${G.mirror?' mirror':''}" onclick="endVs()" style="${cu?`--cc:${cu.c}`:bsv?`--cc:${bsv.c}`:''}"><div class="vsbg"></div>${G.mirror?`<div class="vsmir"><b class="vsfl">${(G.mirror.fl||0)+1}F</b><i></i><span>MIRROR · ${(MIR_FL[G.mirror.fl]||MIR_FL[0]).n}</span></div>`:''}${fin?'<div class="vsfinal">FINAL</div>':bsv?'<div class="vsfinal">BOSS</div>':''}
+  return `<div class="overlay vs${fin||bsv?' final':''}${G.mirror?' mirror':''}" onclick="endVs()" style="${cu?`--cc:${cu.c}`:bsv?`--cc:${bsv.c}`:''}"><div class="vsbg"></div>${G.mirror?`<div class="vsmir"><b class="vsfl">${G.mirror.gh?'✉':(G.mirror.fl||0)+1+'F'}</b><i></i><span>${G.mirror.gh?'GHOST · '+esc(G.mirror.gh.from):'MIRROR · '+(MIR_FL[G.mirror.fl]||MIR_FL[0]).n}</span></div>`:''}${fin?'<div class="vsfinal">FINAL</div>':bsv?'<div class="vsfinal">BOSS</div>':''}
     <div class="vsmode">${mode}</div>
     <div class="vsrow"><div class="vsside l">${left.map((i,j)=>plate(G.players[i],i,'l',j)).join('')}</div>
       <div class="vsmark">VS</div>
@@ -6243,6 +6263,7 @@ function renderSheet(){
   else if(k==='share') body=shareBody();
   else if(k==='qr') body=qrBody();
   else if(k==='duelin') body=duelInBody();
+  else if(k==='ghin') body=ghInBody();
   else if(k==='updown') body=udBody();
   else if(k==='xfer') body=xferBody();
   else if(k==='duelnew') body=duelNewBody();
@@ -11773,7 +11794,7 @@ function styPanel(){
 function labDuelSeats(){ const s=LSTY.slice(); if(LDUEL.ghost && styGhostOk()){ const T=styType(S.prof.sty); s[3]={t:'ghost', n:'あなたの分身', ic:'🧬', c:T.c||'#4dff9a', d:`${T.n}のクセをまねて打つ`}; } return s; }
 function labDuelGhost(){ if(LDUEL.run || !styGhostOk()) return; LDUEL.ghost=!LDUEL.ghost; LDUEL.acc=null; LDUEL.done=0; sfx('click'); haptic(8); labSimPaint(); }
 function ghostPick(p,players,deck,t,cfg,rnd){
-  const r0=styRates(S.prof.sty), r={...r0, rd:Math.min(.95, r0.rd+(p.gBoost||0))}, x=rnd(), T=cfg.table, row=deck[t];
+  const r0=styRates(p.gSty||S.prof.sty), r={...r0, rd:Math.min(.95, r0.rd+(p.gBoost||0))}, x=rnd(), T=cfg.table, row=deck[t];
   if(x<r.rd){ p.gWhy='rd'; p.type='read'; try{ return cpuPick(p,players,deck,t,cfg,rnd); } finally{ p.type='ghost'; } }
   if(x<r.rd+(1-r.rd)*r.nv){ p.gWhy='nv'; const mx=Math.max(...p.hand.map(c=>T[row][c])); const cs=p.hand.filter(c=>T[row][c]===mx); return cs[Math.floor(rnd()*cs.length)]; }
   p.gWhy='free'; return p.hand[Math.floor(rnd()*p.hand.length)];
@@ -11793,11 +11814,11 @@ const MIR_FL=[
 ];
 let MIR_FL_NOW=0;
 function mirProg(){ const M=(S.prof&&S.prof.mir)||{}; return Math.min(MIR_FL.length, M.fl||0); }   // 突破した階の数
-function mirSeats(){ const F=MIR_FL[MIR_FL_NOW]||MIR_FL[0]; return [{name:NET.name||'あなた', type:'human'}, ...F.seats.map(([n,t,b])=>({name:n, type:t, boost:b||0}))]; }
+function mirSeats(){ if(GH_NOW) return [{name:NET.name||'あなた', type:'human'}, {name:GH_NOW.from+'の分身', type:'ghost', gSty:ghSty(GH_NOW), gIc:(STY_T[GH_NOW.k]||STY_T.bal).ic}, {name:'CPU ミナト', type:'read'}, {name:'CPU ソラ', type:'naive'}]; const F=MIR_FL[MIR_FL_NOW]||MIR_FL[0]; return [{name:NET.name||'あなた', type:'human'}, ...F.seats.map(([n,t,b])=>({name:n, type:t, boost:b||0}))]; }
 function startMirror(fl){ if(!styGhostOk()){ toast('あと少し遊ぶと、分身が生まれます'); return; }
   const top=Math.min(mirProg(), MIR_FL.length-1); MIR_FL_NOW = fl==null ? top : Math.max(0, Math.min(fl, top));
   MIR_ON=1; try{ startGame(); } finally{ MIR_ON=0; } }
-function mirVsLabel(){ const F=MIR_FL[G.mirror.fl]||MIR_FL[0]; return `MIRROR TOWER ${G.mirror.fl+1}F · ${F.ic} ${F.n}`; }
+function mirVsLabel(){ if(G.mirror.gh) return `GHOST LETTER · ✉️ ${esc(G.mirror.gh.from)}さんの分身`; const F=MIR_FL[G.mirror.fl]||MIR_FL[0]; return `MIRROR TOWER ${G.mirror.fl+1}F · ${F.ic} ${F.n}`; }
 function mirGs(){ return G&&G.players ? G.players.map((q,i)=>q.type==='ghost'?i:-1).filter(i=>i>=0) : []; }
 function mirIdx(){ const g=mirGs(); return g.length?g[0]:-1; }
 function mirLive(){
@@ -11844,7 +11865,7 @@ function mirBook(){
     <div class="mbt"><div class="mbt-sky" aria-hidden="true"></div><div class="mbt-crown${done>=MIR_FL.length?' on':''}">👑</div>${flo}<div class="mbt-base"></div></div>
     <p class="mbk-cap">${!ok?'まだ分身がいません。あと少し遊ぶと生まれます。':done>=MIR_FL.length?'🏆 すべての階を突破しました。いつでも好きな階で、分身と再戦できます。':`いま <b>${cur+1}F「${MIR_FL[cur].n}」</b>で、あなたの分身が待っています。`}</p>
     <div class="mbss">${stat('⚔️','通算',`${M.w||0}<i>勝</i>${M.l||0}<i>敗</i>`,M.d?`${M.d}分`:'')}${stat('🔥','最多連勝',M.best||0)}${stat('🔮','鏡読み',rate==null?'—':rate+'%',M.rdT?`${M.rd||0}/${M.rdT} 的中`:'')}${stat('🪞','シンクロ',M.sync||0,'同じカード')}</div>
-    <h4 class="lab-h">🏯 階ごとの記録</h4><div class="mbrs">${rows}</div>
+    ${ok?`<button class="btn cyan ghs-btn" onclick="ghSend()">✉️ 分身を友だちに送る<small>リンクを開いた人が、あなたの分身と勝負できます</small></button>`:''}${ghListHTML()}<h4 class="lab-h">🏯 階ごとの記録</h4><div class="mbrs">${rows}</div>
     <h4 class="lab-h">🧬 分身の変化</h4>${mirEvo(st,T)}
     <button class="btn ghost" onclick="closeSheet()">とじる</button></div>`;
 }
@@ -11858,11 +11879,76 @@ function mirEvo(st,T){
     <div class="mev-lg">${L.map(([,n,c])=>`<span><i style="background:${c}"></i>${n}</span>`).join('')}</div>
     <p class="mev-n">左が昔、右がいちばん新しい試合（最大20試合）。いまのタイプは <b>${T.ic} ${T.n}</b>。分身は、ここまでの通算のクセで打ちます。</p></div>`;
 }
+/* ---- ✉️ 分身の挑戦状：自分の分身（クセの数字だけ）をリンクで送ると、友だちがその分身と勝負できる ---- */
+let GH_NOW=null; const GH_COIN=20;
+const GHOST_TALK_F={vs:['この打ち方、読めるかな？','持ち主のクセ、見せてあげる。','手紙に乗って、やってきたよ。'], mono:['持ち主なら、ここを選ぶ。','クセどおりの独占さ。'], hit:['おっと、同じところか。','読まれてた？'], big:['持ち主ゆずりの一手！','いい読みでしょ？'], neg:['持ち主も、ここでよく失敗するんだ。','あちゃー。'], lead:['このまま持ち主に報告するよ。']};
+function ghSty(g){ return {t:100, rd:g.rd, nv:g.nv, mono:g.mono}; }
+function ghMine(){ const st=S.prof&&S.prof.sty; if(!st||!styGhostOk()) return null; const r=styRates(st); return {rd:Math.round(r.rd*100), nv:Math.round(r.nv*100), mono:Math.round(r.mono*100), k:styType(st).k, from:String(NET.name||'友だち').slice(0,12)}; }
+const ghUrl = g => `${PUBLIC_URL}?gh=${g.rd}-${g.nv}-${g.mono}-${g.k}-${encodeURIComponent(g.from)}`;
+function ghSend(){
+  const g=ghMine(); if(!g){ toast('あと少し遊ぶと、分身が生まれます'); return; } const T=STY_T[g.k]||STY_T.bal;
+  const t=`✉️ わたしの分身（${T.ic}${T.n}）から挑戦状！ AZAKEI MARKET で勝負して → ${ghUrl(g)}`;
+  sfx('click'); haptic(10);
+  if(!IN_CLAUDE && navigator.share){ navigator.share({text:t}).catch(e=>{ if(!e || e.name!=='AbortError') copyText(t); }); return; } copyText(t);
+}
+function ghParse(q){
+  const [rd,nv,mono,k,...nm]=String(q||'').split('-'); const n=v=>{ const x=parseInt(v,10); return Number.isFinite(x)&&x>=0&&x<=100?x:null; };
+  const g={rd:n(rd), nv:n(nv), mono:n(mono), k:STY_T[k]&&k!=='wait'?k:'bal', from:''}; if(g.rd==null||g.nv==null||g.mono==null) return null;
+  try{ g.from=decodeURIComponent(nm.join('-')||'友だち').replace(/[<>&"']/g,'').slice(0,12)||'友だち'; }catch(e){ g.from='友だち'; }
+  g.id=[g.rd,g.nv,g.mono,g.k,g.from].join('|'); return g;
+}
+function ghFromUrl(){
+  try{ const q=new URLSearchParams(location.search).get('gh'); if(!q) return; const g=ghParse(q); history.replaceState(null,'',location.pathname); if(!g) return;
+    S.ghIn=g; setTimeout(()=>openSheet('ghin'),1200); }catch(e){}
+}
+function ghInBody(){
+  const g=S.ghIn; if(!g) return ''; const T=STY_T[g.k]||STY_T.bal, rec=((S.prof.ghc||[]).find(x=>x.id===g.id));
+  return `<div class="ghin" style="--c:${T.c}"><div class="ghin-env" aria-hidden="true"><i class="ghin-flap"></i><span class="ghin-seal">✉️</span></div>
+    <span class="label">GHOST LETTER</span><h3 class="ttl">${esc(g.from)}さんの分身が、<br>勝負しにきた！</h3>
+    <div class="ghin-gh"><span class="ghin-ava">${T.ic}</span><span><small>${esc(g.from)}さんのタイプ</small><b>${T.n}</b><em>${T.d}</em></span></div>
+    ${styMeters({rd:g.rd/100, nv:g.nv/100, mono:g.mono/100})}
+    <p class="note">${esc(g.from)}さんの打ち方のクセ（上の3つの割合）をまねるCPUと、ミナト・ソラの4人で1試合。分身より高い点で勝ち！ はじめて勝つと <b style="color:var(--gold-t)">+${GH_COIN}コイン</b>。${rec?`<br>これまで ${rec.w}勝${rec.l}敗。`:''}</p>
+    <p class="note ghin-pv">🔒 送られてくるのは「クセの割合」と名前だけです。</p>
+    <button class="btn gold big pulse" onclick="startGhostDuel(S.ghIn)">受けて立つ！</button></div>`;
+}
+function startGhostDuel(g){ if(!g) return; closeSheet(); GH_NOW=g; MIR_FL_NOW=0; MIR_ON=1; try{ startGame(); } finally{ MIR_ON=0; GH_NOW=null; } }
+function ghRecord(me,res,a,mx,gi,gs){
+  const P=S.prof, g=G.mirror.gh, L=P.ghc=P.ghc||[]; let e=L.find(x=>x.id===g.id);
+  if(!e){ e={id:g.id, rd:g.rd, nv:g.nv, mono:g.mono, k:g.k, from:g.from, w:0, l:0, d:0, best:null}; L.unshift(e); if(L.length>12) L.pop(); }
+  else { L.splice(L.indexOf(e),1); L.unshift(e); }
+  e[res]=(e[res]||0)+1; if(res==='w') e.best=Math.max(e.best==null?-99:e.best, a-mx);
+  const pu=G.players[me].used, rdN=pu.filter(u=>u.mb).length, rdT=pu.filter(u=>u.mg).length; let sync=0; pu.forEach((u,t)=>{ const q=G.players[gi].used[t]; if(q&&q.ind===u.ind) sync++; });
+  let coin=0; if(res==='w' && !e.cw){ e.cw=1; coin=GH_COIN; P.coin=(P.coin||0)+coin; }
+  saveProfile(); return {res, a, b:mx, sync, coin, gi, gs, fl:0, gh:g, rec:e, rdN, rdT, streak:0, beat:gs.filter(i=>a>G.players[i].score).length};
+}
+function ghPanel(R){
+  const me=myIndex(), pm=G.players[me], pg=G.players[R.gi]; if(!pm||!pg) return ''; const g=R.gh, T=STY_T[g.k]||STY_T.bal, e=R.rec||{};
+  const head = R.res==='w' ? `${esc(g.from)}さんの分身に勝った！` : R.res==='l' ? `${esc(g.from)}さんの分身に負けた…` : '引き分け！';
+  const tl = pm.used.map((u,t)=>{ const q=pg.used[t]; if(!q) return ''; const same=q.ind===u.ind, w=MIR_WHY[q.gw]||null;
+    return `<div class="mir-t${same?' same':''}" style="--d:${t*80}ms"><span class="mir-tn">T${t+1}</span><span class="mir-c">${chip(u.ind)}<em class="num ${cls(u.total)}">${sgn(u.total)}</em></span><span class="mir-eq">${same?'🪞':'｜'}</span><span class="mir-c">${chip(q.ind)}<em class="num ${cls(q.total)}">${sgn(q.total)}</em></span><span class="mir-w">${w?w.ic:''}${u.mg?`<i class="mir-rd ${u.mb?'ok':''}">🔮</i>`:''}</span></div>`; }).join('');
+  const rep=`✉️ ${g.from}さんの分身と勝負した！ ${R.a}点 vs ${R.b}点で${R.res==='w'?'勝ち':R.res==='l'?'負け':'引き分け'}。`;
+  return `<section class="panel mir-p gh ${R.res}" style="--c:${T.c}"><span class="mir-glass" aria-hidden="true"></span>
+    <div class="mir-hd"><span class="label">GHOST LETTER · ${T.ic} ${T.n}</span><b>${head}</b>${R.res==='w'?'<span class="mir-st">WIN</span>':''}</div>
+    <div class="mir-vs"><div class="mir-side"><div class="ava" style="--s:var(--s${pm.seat%6})">${avHTML(pm)}</div><small>あなた</small><b>${R.a}</b></div>
+      <span class="mir-x">VS</span>
+      <div class="mir-side gh"><div class="ava" style="--s:var(--s${pg.seat%6})">${avHTML(pg)}</div><small>${esc(g.from)}さんの分身</small><b>${R.b}</b></div></div>
+    <div class="mir-tl"><div class="mir-t hd"><span></span><span>あなた</span><span></span><span>分身</span><span>理由</span></div>${tl}</div>
+    ${R.rdT?`<div class="mir-rdm"><span>🔮 鏡読み</span><span class="mir-rdd">${Array.from({length:R.rdT},(_,i)=>`<i class="${i<R.rdN?'on':''}" style="--j:${i}"></i>`).join('')}</span><b>${R.rdN}/${R.rdT} 的中</b><em>${R.rdN?`+${R.rdN}点`:''}</em></div>`:''}
+    <p class="mir-msg">${R.res==='w'?`${esc(g.from)}さんのクセを読み切りました。結果を知らせてあげよう！`:`${esc(g.from)}さんは「${T.n}」。${T.tip}`}</p>
+    <div class="mir-rec"><span>この分身に <b>${e.w||0}</b>勝 <b>${e.l||0}</b>敗</span>${R.coin?`<span class="mir-coin">+${R.coin} コイン（初勝利）</span>`:''}</div>
+    <div class="row" style="justify-content:center;flex-wrap:wrap"><button class="btn cyan" onclick='ghReport(${JSON.stringify(rep).replace(/'/g,"&#39;")})'>📣 結果を知らせる</button><button class="btn gold" onclick="startGhostDuel(G.mirror.gh)">✉️ ${R.res==='w'?'もう一度':'リベンジ'}</button>${ghMine()?'<button class="btn" onclick="ghSend()">🧬 自分の分身を送り返す</button>':''}</div></section>`;
+}
+function ghReport(t){ t=t+' '+PUBLIC_URL; sfx('click'); if(!IN_CLAUDE && navigator.share){ navigator.share({text:t}).catch(e=>{ if(!e || e.name!=='AbortError') copyText(t); }); return; } copyText(t); }
+function ghListHTML(){
+  const L=(S.prof&&S.prof.ghc)||[]; if(!L.length) return '';
+  return `<h4 class="lab-h">📮 届いた分身</h4><div class="ghl">${L.map((e,i)=>{ const T=STY_T[e.k]||STY_T.bal;
+    return `<div class="ghl-r" style="--c:${T.c}"><span class="ghl-ic">${T.ic}</span><span class="ghl-tx"><b>${esc(e.from)}さんの分身</b><small>${T.n} · ${e.w||0}勝${e.l||0}敗${e.best!=null?` · 最大 +${e.best}点差`:''}</small></span><button class="btn" onclick="closeSheet();startGhostDuel(S.prof.ghc[${i}])">勝負</button></div>`; }).join('')}</div>`;
+}
 function mirRecord(me){
   if(!G.mirror) return null; const gs=mirGs(); if(!gs.length) return null;
   const P=S.prof, M=P.mir=P.mir||{w:0,l:0,d:0,sync:0,day:0,streak:0,best:0,fl:0};
   const a=G.players[me].score, sc=gs.map(i=>G.players[i].score), mx=Math.max(...sc), gi=gs[sc.indexOf(mx)];
-  const res=a>mx?'w':a<mx?'l':'d'; M[res]=(M[res]||0)+1;
+  const res=a>mx?'w':a<mx?'l':'d'; if(G.mirror.gh) return ghRecord(me,res,a,mx,gi,gs); M[res]=(M[res]||0)+1;
   const pu=G.players[me].used, rdN=pu.filter(u=>u.mb).length, rdT=pu.filter(u=>u.mg).length; M.rd=(M.rd||0)+rdN; M.rdT=(M.rdT||0)+rdT; let sync=0; pu.forEach((u,t)=>{ if(gs.some(i=>{ const g=G.players[i].used[t]; return g && g.ind===u.ind; })) sync++; }); M.sync=(M.sync||0)+sync;
   const fl=G.mirror.fl||0, F=MIR_FL[fl]; let coin=0, clear=false, first=false;
   M.f=M.f||{}; const fr=M.f[fl]=M.f[fl]||{n:0,w:0,best:null}; fr.n++; if(res==='w'){ fr.w++; fr.best=Math.max(fr.best==null?-99:fr.best, a-mx); }
@@ -11878,7 +11964,7 @@ function mirTower(cur, anim, click){
     return `<${tag} class="mtw-f ${st}${i===cur?' cur':''}${just?' just':''}" role="listitem" style="--h:${34+i*11}px;--j:${i}" title="${i+1}F ${F.n}"${tag==='button'?` onclick="startMirror(${i})" aria-label="${i+1}F ${F.n}に挑む"`:''}><span class="mtw-ic">${st==='lock'?'🔒':F.ic}</span><b>${i+1}F</b>${st==='ok'?'<i class="mtw-ck">✓</i>':''}</${tag}>`; }).join('')}</div>`;
 }
 function mirPanel(){
-  const R=G&&G.mirGot; if(!R) return ''; const me=myIndex(), pm=G.players[me], pg=G.players[R.gi]; if(!pm||!pg) return '';
+  const R=G&&G.mirGot; if(!R) return ''; if(R.gh) return ghPanel(R); const me=myIndex(), pm=G.players[me], pg=G.players[R.gi]; if(!pm||!pg) return '';
   const T=styType(G.mirror.st), M=S.prof.mir||{}, F=MIR_FL[R.fl]||MIR_FL[0], multi=R.gs.length>1, last=R.fl===MIR_FL.length-1;
   const head = R.res==='w' ? (R.first ? (last?'鏡の塔、制覇！':`${R.fl+1}F 突破！`) : '分身に勝った！') : R.res==='l' ? (multi?`分身に届かず…（${R.beat}/${R.gs.length}人に勝ち）`:'分身に負けた…') : '分身と引き分け';
   const msg = R.res==='w' ? (R.first && !last ? `いつものクセを、自分で超えました。次は ${R.fl+2}F「${MIR_FL[R.fl+1].n}」。` : last && R.first ? 'すべての鏡を超えました。あなたは、もう昨日のあなたじゃない。' : 'いつものクセを、自分で超えました。分身とちがう手を出したターンが勝因かも。')
@@ -13239,7 +13325,7 @@ function rivalsPanel(){
         <span class="rvrec"><span class="w">${r.w}勝</span><span class="l">${r.l}敗</span>${r.d?`<span>${r.d}分</span>`:''}</span>
         <span class="rvbar"><i style="width:${pct}%"></i></span></button>`; }).join('')}</div></section>`;
 }
-const talkOf = p => (p.type==='ghost' && GHOST_TALK) || (p.boss && G && G.boss && BOSSES.find(b=>b.id===G.boss).talk) || CPU_TALK[String(p.name).replace(/^CPU\s*/,'').replace(/（.*$/,'')] || CPU_TALK['ソラ'];
+const talkOf = p => (p.type==='ghost' && (p.gSty ? GHOST_TALK_F : GHOST_TALK)) || (p.boss && G && G.boss && BOSSES.find(b=>b.id===G.boss).talk) || CPU_TALK[String(p.name).replace(/^CPU\s*/,'').replace(/（.*$/,'')] || CPU_TALK['ソラ'];
 /* ---- 掛け合い：CPUのキャラ2人が同じ産業で被ったら、ふたりで会話する。
    関係のある組み合わせ（DUO「先に話す人|返す人」）は専用の会話で、見つけると図鑑に記録。それ以外は「被ったひとこと」＋「返し」 ---- */
 const DUO={
