@@ -4128,6 +4128,25 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .mc-bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}.mc-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),#4dff9a)}
 .sty-mir{align-self:stretch;margin-top:4px}
 @media (prefers-reduced-motion:reduce){.ghav,.mc-a.gh,.mir-glass,.vsmir i,.mirpop,.mir-t{animation:none}}
+/* 🪞 鏡の塔 */
+.mtw{display:flex;align-items:flex-end;justify-content:center;gap:6px;padding:4px 0 2px}
+.mtw-f{position:relative;flex:1 1 0;max-width:58px;height:var(--h);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:1px;padding-bottom:4px;border-radius:9px 9px 3px 3px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line);animation:dkPop .4s calc(.15s + var(--j)*.07s) both}
+.mtw-f b{font-family:var(--display);font-weight:400;font-size:12px;line-height:1}.mtw-ic{font-size:15px;line-height:1}
+.mtw-f.ok{background:linear-gradient(180deg,color-mix(in srgb,var(--gold-t) 30%,transparent),color-mix(in srgb,var(--gold-t) 10%,transparent));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--gold-t) 70%,transparent)}
+.mtw-f.now{background:linear-gradient(180deg,rgb(77 255 154 / .28),rgb(77 255 154 / .06));box-shadow:inset 0 0 0 2px #4dff9a,0 0 16px rgb(77 255 154 / .35);animation:dkPop .4s calc(.15s + var(--j)*.07s) both,mtwGl 1.8s 1s ease-in-out infinite}
+.mtw-f.lock{opacity:.5}.mtw-f.lock b{color:var(--muted)}
+.mtw-f.cur::after{content:'▲';position:absolute;bottom:-14px;font-size:9px;color:var(--c,#4dff9a)}
+.mtw-ck{position:absolute;top:-7px;right:-5px;width:17px;height:17px;border-radius:50%;background:var(--gold-t);color:#1a1300;font-style:normal;font-size:10px;font-weight:900;display:grid;place-items:center}
+.mtw-f.just{animation:mtwUp .9s .5s cubic-bezier(.3,1.6,.5,1) both}.mtw-f.just .mtw-ck{animation:lbwStamp .45s 1.2s cubic-bezier(.3,1.8,.5,1) both}
+@keyframes mtwGl{50%{box-shadow:inset 0 0 0 2px #4dff9a,0 0 26px rgb(77 255 154 / .6)}}
+@keyframes mtwUp{0%{transform:translateY(8px) scale(.9);filter:brightness(1)}55%{transform:translateY(-6px) scale(1.08);filter:brightness(1.8)}100%{transform:none;filter:none}}
+.mir-p .mtw{margin-bottom:8px}
+.mir-p.first{box-shadow:inset 0 0 0 2px var(--gold-t),0 0 30px color-mix(in srgb,var(--gold-t) 25%,transparent)}
+.mircard.tw{flex-direction:column;align-items:stretch;gap:10px}
+.mc-top{display:flex;align-items:center;gap:10px}
+.mircard.tw .mtw-f{background:rgb(255 255 255 / .05)}.mircard.tw .mtw-f.ok{background:linear-gradient(180deg,color-mix(in srgb,var(--gold-t) 30%,transparent),color-mix(in srgb,var(--gold-t) 10%,transparent))}.mircard.tw .mtw-f.now{background:linear-gradient(180deg,rgb(77 255 154 / .28),rgb(77 255 154 / .06))}
+.mc-go{align-self:stretch;margin-top:6px}
+@media (prefers-reduced-motion:reduce){.mtw-f,.mtw-f.now,.mtw-f.just,.mtw-f.just .mtw-ck{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5194,7 +5213,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   G.players.forEach(p=>p.roundStart=0);
   if(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && !MIR_ON) save('azakei-seats', S.seats.map(x=>({name:x.name, type:x.type})));
   G.league = (!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && !MIR_ON && S.league) ? leagueJoin(G.players.map(p=>p.name)) : null;   // リーグ戦の何試合目か
-  G.gid=Date.now(); G.mirror=MIR_ON&&S.prof.sty?{st:JSON.parse(JSON.stringify(S.prof.sty))}:null; G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
+  G.gid=Date.now(); G.mirror=MIR_ON&&S.prof.sty?{st:JSON.parse(JSON.stringify(S.prof.sty)), fl:MIR_FL_NOW}:null; if(G.mirror) G.players.forEach((p,i)=>{ if(seats[i]&&seats[i].boost) p.gBoost=seats[i].boost; }); G.evt=evtKey; G.cup=cu?{id:cu.id, stage:cupRun.stage}:null; G.story=sto?sto.k:null; G.srule=sto?sto.rule:sv?sv.rule:null; G.surv=sv?sv.lv:null; G.boss=bs?bs.id:null; G.duel=du;
   const freePlay = !daily && !ch && !cu && !sto && !sv && !bs && !du;
   G.b4 = !!(!long && (freePlay ? S.b4 : true));   /* 2026-11 ルール整理：歴史・未来・デイリー・練習・ストーリー・カップ・サバイバル・ボス・挑戦状も同じ中心ルール（最後のNEWSは出したあとに発表・2倍）。ロング版は上級モードとして別 */   /* オンラインでもホストの設定でβ4 */   /* β4ルール：大引けサプライズ（最後のNEWSは出したあとに発表・点数2倍） */
   G.yomi = !!(!online && !daily && !ch && !cu && !sto && !sv && !bs && !du && S.yomi);
@@ -5220,7 +5239,7 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   scrollTo(0,0);
   beginTurn();
 }
-function restartGame(){ if(G && G.mirror) startMirror(); else if(G && G.online){ if(G.host) startOnlineGame(); } else if(G && G.daily) startDaily(); else if(G && G.chal) startGame(false,null,G.chal); else if(G && G.cup) cupNext(G.cup.id); else if(G && G.story) startStory(G.story); else if(G && G.surv!=null) survNext(); else if(G && G.boss) startBoss(); else if(G && G.duel) startDuel(G.duel); else startGame(); }
+function restartGame(){ if(G && G.mirror) startMirror(G.mirror.fl); else if(G && G.online){ if(G.host) startOnlineGame(); } else if(G && G.daily) startDaily(); else if(G && G.chal) startGame(false,null,G.chal); else if(G && G.cup) cupNext(G.cup.id); else if(G && G.story) startStory(G.story); else if(G && G.surv!=null) survNext(); else if(G && G.boss) startBoss(); else if(G && G.duel) startDuel(G.duel); else startGame(); }
 const isHuman = p => p.type==='human';
 const humans = () => G.players.filter(isHuman).length;
 const nm = i => G.cfg.names[i];
@@ -5365,7 +5384,7 @@ function vsOverlay(){
   const cu = G.cup && CUPS.find(c=>c.id===G.cup.id), fin = cu && G.cup.stage===cu.m.length-1;
   const stv = G.story && STORIES.find(x=>x.k===G.story);
   const bsv = G.boss && BOSSES.find(b=>b.id===G.boss);
-  const mode = G.mirror ? 'MIRROR MATCH · 🧬 あなたの分身と勝負！' : G.duel ? (G.duel.target!=null ? `挑戦状 · ${esc(G.duel.from)}さんの ${G.duel.target}点を超えろ！` : '挑戦状 · この点数で友だちに勝負！') : bsv ? `WEEKLY BOSS · ${bsv.ic} ${bsv.n}「${bsv.ab}」` : G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : C.ex ? 'CLASSIC EX MATCH · 18種から6種' : 'CLASSIC MATCH';
+  const mode = G.mirror ? mirVsLabel() : G.duel ? (G.duel.target!=null ? `挑戦状 · ${esc(G.duel.from)}さんの ${G.duel.target}点を超えろ！` : '挑戦状 · この点数で友だちに勝負！') : bsv ? `WEEKLY BOSS · ${bsv.ic} ${bsv.n}「${bsv.ab}」` : G.surv!=null ? `SURVIVAL · 第${G.surv+1}戦` : stv ? `STORY ${STORIES.indexOf(stv)+1} · ${stv.t}` : cu ? `${cu.ic} ${cu.n} · ${CUP_STAGE[G.cup.stage]}` : G.teams ? 'TAG MATCH · 2対2のチーム戦' : G.daily ? `DAILY CHALLENGE · ${dailyLabel(G.daily)}` : C.fut ? 'FUTURE MATCH · 2027→2060' : C.hist ? `HISTORY MATCH · ${(ERAS[C.era]||ERAS.all).name}` : C.ex ? 'CLASSIC EX MATCH · 18種から6種' : 'CLASSIC MATCH';
   /* 相手のキャラは、顔の大きい縦長カード（肩書きつき）で1枚ずつ叩きつけるように出す */
   const bvs=bsv&&BOSS_ART[bsv.id]?bsv:null;
   const vc=(p,side)=>side==='r' && !G.teams && !isHuman(p) && (p.boss ? !!bvs : FACE[charKey(p)] && CHAR_PROF[charKey(p)] && avOf(p)===(CHARS[charKey(p)]||{}).ic);
@@ -5374,7 +5393,7 @@ function vsOverlay(){
       ${!isHuman(p)&&talkOf(p).vs?`<span class="vsq" style="animation-delay:${.9+j*.15}s">${talkOf(p).vs[Math.floor(Math.random()*talkOf(p).vs.length)]}</span>`:""}<div class="vsn"><b>${esc(vc(p,side)?(p.boss?bvs.n:charKey(p)):p.name)}</b>${G.pw&&G.pw[i]?`<em class="vspw">🃏 ${PWR[G.pw[i]].ic} ${PWR[G.pw[i]].n}</em>`:''}<span>${i===me?`${emblem(rateOf(),16)} ${esc(myTitle())} · Lv.${L.lv}`:isHuman(p)?'プレイヤー':vc(p,side)?(p.boss?`WEEKLY BOSS<br>能力「${bvs.ab}」`:`${CHAR_PROF[charKey(p)].t}<br>${cpuLabel(p)}CPU<br><em class="vs-fav" style="--c:var(--i${CHAR_PROF[charKey(p)].fav})">得意：${IND[CHAR_PROF[charKey(p)].fav]}</em>`):cpuLabel(p)+'CPU'}</span></div></div>`;
   const left = G.teams ? [0,1] : me>=0 ? [me] : G.players.map((p,i)=>i).filter(i=>i%2===0);
   const right = G.players.map((p,i)=>i).filter(i=>!left.includes(i));
-  return `<div class="overlay vs${fin||bsv?' final':''}${G.mirror?' mirror':''}" onclick="endVs()" style="${cu?`--cc:${cu.c}`:bsv?`--cc:${bsv.c}`:''}"><div class="vsbg"></div>${G.mirror?'<div class="vsmir"><i></i><span>MIRROR</span></div>':''}${fin?'<div class="vsfinal">FINAL</div>':bsv?'<div class="vsfinal">BOSS</div>':''}
+  return `<div class="overlay vs${fin||bsv?' final':''}${G.mirror?' mirror':''}" onclick="endVs()" style="${cu?`--cc:${cu.c}`:bsv?`--cc:${bsv.c}`:''}"><div class="vsbg"></div>${G.mirror?`<div class="vsmir"><i></i><span>MIRROR · ${(G.mirror.fl||0)+1}F</span></div>`:''}${fin?'<div class="vsfinal">FINAL</div>':bsv?'<div class="vsfinal">BOSS</div>':''}
     <div class="vsmode">${mode}</div>
     <div class="vsrow"><div class="vsside l">${left.map((i,j)=>plate(G.players[i],i,'l',j)).join('')}</div>
       <div class="vsmark">VS</div>
@@ -9672,7 +9691,7 @@ function raceGo(prev){
   });
   /* 王冠はレースが終わってから付けかえる */
   const sc=G.players.map(p=>p.score), mx=Math.max(...sc), ld=sc.filter(v=>v===mx).length===1?sc.indexOf(mx):-1;
-  setTimeout(()=>G.players.forEach((p,i)=>{ const el=document.getElementById('rce'+i); if(el){ el.classList.toggle('lead',i===ld); el.classList.remove('run'); } }), fast?0:600+G.players.length*120+900);
+  setTimeout(()=>G&&G.players.forEach((p,i)=>{ const el=document.getElementById('rce'+i); if(el){ el.classList.toggle('lead',i===ld); el.classList.remove('run'); } }), fast?0:600+G.players.length*120+900);
 }
 function xcBar(){
   if(!xcOn()) return '';
@@ -11682,7 +11701,7 @@ function styPanel(){
 function labDuelSeats(){ const s=LSTY.slice(); if(LDUEL.ghost && styGhostOk()){ const T=styType(S.prof.sty); s[3]={t:'ghost', n:'あなたの分身', ic:'🧬', c:T.c||'#4dff9a', d:`${T.n}のクセをまねて打つ`}; } return s; }
 function labDuelGhost(){ if(LDUEL.run || !styGhostOk()) return; LDUEL.ghost=!LDUEL.ghost; LDUEL.acc=null; LDUEL.done=0; sfx('click'); haptic(8); labSimPaint(); }
 function ghostPick(p,players,deck,t,cfg,rnd){
-  const r=styRates(S.prof.sty), x=rnd(), T=cfg.table, row=deck[t];
+  const r0=styRates(S.prof.sty), r={...r0, rd:Math.min(.95, r0.rd+(p.gBoost||0))}, x=rnd(), T=cfg.table, row=deck[t];
   if(x<r.rd){ p.gWhy='rd'; p.type='read'; try{ return cpuPick(p,players,deck,t,cfg,rnd); } finally{ p.type='ghost'; } }
   if(x<r.rd+(1-r.rd)*r.nv){ p.gWhy='nv'; const mx=Math.max(...p.hand.map(c=>T[row][c])); const cs=p.hand.filter(c=>T[row][c]===mx); return cs[Math.floor(rnd()*cs.length)]; }
   p.gWhy='free'; return p.hand[Math.floor(rnd()*p.hand.length)];
@@ -11692,59 +11711,83 @@ let MIR_ON=0;
 const MIR_COIN=30;
 const GHOST_TALK={vs:['ぼくは、きみだよ。','きみのクセは、ぜんぶ知ってる。','鏡の向こうから、こんにちは。'], mono:['きみなら、ここを選ぶよね。','いつものきみの一手さ。','クセどおり、独占だ。'], hit:['……やっぱり考えることは同じか。','鏡あわせだね。','ぶつかるのは、自分自身。'], big:['きみの読み、借りたよ。','いい手だろう？ きみの手だ。'], neg:['きみも、ここで失敗するよね。','クセが裏目に出たか。'], lead:['自分に負けるのは、くやしいよ？']};
 const MIR_WHY={rd:{ic:'🧠',n:'読み'}, nv:{ic:'📊',n:'表どおり'}, free:{ic:'🎲',n:'気まぐれ'}};
-function mirSeats(){ return [{name:NET.name||'あなた', type:'human'}, {name:'あなたの分身', type:'ghost'}, {name:'CPU ミナト', type:'read'}, {name:'CPU ソラ', type:'naive'}]; }
-function startMirror(){ if(!styGhostOk()){ toast('あと少し遊ぶと、分身が生まれます'); return; } MIR_ON=1; try{ startGame(); } finally{ MIR_ON=0; } }
-function mirIdx(){ return G&&G.players ? G.players.findIndex(q=>q.type==='ghost') : -1; }
+/* 🪞 鏡の塔：5階。上の階ほど分身が増える・強くなる。その階の「分身ぜんぶ」より上の点で突破 */
+const MIR_FL=[
+  {n:'はじめての鏡', ic:'🪞', d:'分身とのんびり屋2人', coin:20, seats:[['あなたの分身','ghost',0],['CPU ソラ','naive'],['CPU アオイ','naive']]},
+  {n:'鏡と計算屋', ic:'🧮', d:'分身＋読み合いのミナト', coin:30, seats:[['あなたの分身','ghost',0],['CPU ミナト','read'],['CPU ソラ','naive']]},
+  {n:'ふたりの分身', ic:'👥', d:'分身が2人。2人とも上回れ', coin:40, seats:[['あなたの分身','ghost',0],['分身B','ghost',0],['CPU ミナト','read']]},
+  {n:'進化した分身', ic:'⚡', d:'読みが鋭くなった分身（読み+25%）', coin:50, seats:[['進化した分身','ghost',.25],['CPU ミナト','read'],['CPU アオイ','read']]},
+  {n:'鏡の間', ic:'💠', d:'3人ぜんぶが、あなたの分身', coin:100, seats:[['あなたの分身','ghost',0],['分身B','ghost',.15],['分身C','ghost',.3]]}
+];
+let MIR_FL_NOW=0;
+function mirProg(){ const M=(S.prof&&S.prof.mir)||{}; return Math.min(MIR_FL.length, M.fl||0); }   // 突破した階の数
+function mirSeats(){ const F=MIR_FL[MIR_FL_NOW]||MIR_FL[0]; return [{name:NET.name||'あなた', type:'human'}, ...F.seats.map(([n,t,b])=>({name:n, type:t, boost:b||0}))]; }
+function startMirror(fl){ if(!styGhostOk()){ toast('あと少し遊ぶと、分身が生まれます'); return; }
+  const top=Math.min(mirProg(), MIR_FL.length-1); MIR_FL_NOW = fl==null ? top : Math.max(0, Math.min(fl, top));
+  MIR_ON=1; try{ startGame(); } finally{ MIR_ON=0; } }
+function mirVsLabel(){ const F=MIR_FL[G.mirror.fl]||MIR_FL[0]; return `MIRROR TOWER ${G.mirror.fl+1}F · ${F.ic} ${F.n}`; }
+function mirGs(){ return G&&G.players ? G.players.map((q,i)=>q.type==='ghost'?i:-1).filter(i=>i>=0) : []; }
+function mirIdx(){ const g=mirGs(); return g.length?g[0]:-1; }
 function mirLive(){
-  if(!G || !G.mirror) return; const me=myIndex(), gi=mirIdx(); if(me<0||gi<0) return;
+  if(!G || !G.mirror) return; const me=myIndex(), gs=mirGs(); if(me<0||!gs.length) return;
   const key=(G.round||0)*100+G.turn; if(G.mirSeen===key) return; G.mirSeen=key;
-  const a=G.players[me].pick, b=G.players[gi].pick; if(a==null||b==null) return;
-  const w=MIR_WHY[G.players[gi].gWhy]||MIR_WHY.free, same=a===b;
+  const a=G.players[me].pick; if(a==null) return;
+  const hit=gs.filter(i=>G.players[i].pick===a), gi=hit.length?hit[0]:gs[0], b=G.players[gi].pick; if(b==null) return;
+  const w=MIR_WHY[G.players[gi].gWhy]||MIR_WHY.free, same=hit.length>0;
   setTimeout(()=>{ if(!G || !G.mirror) return;
     document.querySelectorAll('.mirpop').forEach(e=>e.remove());
     const el=document.createElement('div'); el.className='mirpop'+(same?' sync':''); el.setAttribute('role','status');
-    el.innerHTML=same ? `<span class="mp-ic">🪞</span><span class="mp-t"><small>SYNCHRO!</small><b>分身も同じ「${esc(IND[b])}」</b><em>考えることは、そっくり</em></span>`
-      : `<span class="mp-ic">${w.ic}</span><span class="mp-t"><small>🧬 分身の一手</small><b>${esc(IND[b])}</b><em>${w.n}のクセで選んだ</em></span>`;
+    el.innerHTML=same ? `<span class="mp-ic">🪞</span><span class="mp-t"><small>SYNCHRO!${hit.length>1?` ×${hit.length}`:''}</small><b>${hit.length>1?`分身${hit.length}人`:'分身'}も同じ「${esc(IND[b])}」</b><em>考えることは、そっくり</em></span>`
+      : `<span class="mp-ic">${w.ic}</span><span class="mp-t"><small>🧬 ${esc(G.players[gi].name)}の一手</small><b>${esc(IND[b])}</b><em>${w.n}のクセで選んだ</em></span>`;
     document.body.appendChild(el); if(same){ sfx('flip'); haptic([15,30,15]); }
     setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 400); }, same?2600:1900);
   }, 700);
 }
 function mirRecord(me){
-  if(!G.mirror) return null; const gi=mirIdx(); if(gi<0) return null;
-  const P=S.prof, M=P.mir=P.mir||{w:0,l:0,d:0,sync:0,day:0,streak:0,best:0};
-  const a=G.players[me].score, b=G.players[gi].score, res=a>b?'w':a<b?'l':'d'; M[res]=(M[res]||0)+1;
-  const pu=G.players[me].used, gu=G.players[gi].used; let sync=0; pu.forEach((u,t)=>{ if(gu[t] && gu[t].ind===u.ind) sync++; }); M.sync=(M.sync||0)+sync;
-  let coin=0; if(res==='w' && M.day!==todayKey()){ M.day=todayKey(); coin=MIR_COIN; P.coin=(P.coin||0)+coin; }
+  if(!G.mirror) return null; const gs=mirGs(); if(!gs.length) return null;
+  const P=S.prof, M=P.mir=P.mir||{w:0,l:0,d:0,sync:0,day:0,streak:0,best:0,fl:0};
+  const a=G.players[me].score, sc=gs.map(i=>G.players[i].score), mx=Math.max(...sc), gi=gs[sc.indexOf(mx)];
+  const res=a>mx?'w':a<mx?'l':'d'; M[res]=(M[res]||0)+1;
+  const pu=G.players[me].used; let sync=0; pu.forEach((u,t)=>{ if(gs.some(i=>{ const g=G.players[i].used[t]; return g && g.ind===u.ind; })) sync++; }); M.sync=(M.sync||0)+sync;
+  const fl=G.mirror.fl||0, F=MIR_FL[fl]; let coin=0, clear=false, first=false;
+  if(res==='w'){ clear=true; if((M.fl||0)<=fl){ M.fl=fl+1; first=true; coin=F.coin; } else if(M.day!==todayKey()){ M.day=todayKey(); coin=MIR_COIN; } P.coin=(P.coin||0)+coin; }
   M.streak = res==='w' ? (M.streak||0)+1 : 0; M.best=Math.max(M.best||0, M.streak);
-  saveProfile(); return {res, a, b, sync, coin, gi, streak:M.streak};
+  saveProfile(); return {res, a, b:mx, sync, coin, gi, gs, fl, clear, first, streak:M.streak, beat:gs.filter(i=>a>G.players[i].score).length};
+}
+function mirTower(cur, anim){
+  const done=mirProg();
+  return `<div class="mtw" role="list">${MIR_FL.map((F,i)=>{ const st=i<done?'ok':i===Math.min(done,MIR_FL.length-1)&&done<MIR_FL.length?'now':i<=done?'ok':'lock';
+    const just=anim && i===anim-1;
+    return `<div class="mtw-f ${st}${i===cur?' cur':''}${just?' just':''}" role="listitem" style="--h:${34+i*11}px;--j:${i}" title="${i+1}F ${F.n}"><span class="mtw-ic">${st==='lock'?'🔒':F.ic}</span><b>${i+1}F</b>${st==='ok'?'<i class="mtw-ck">✓</i>':''}</div>`; }).join('')}</div>`;
 }
 function mirPanel(){
   const R=G&&G.mirGot; if(!R) return ''; const me=myIndex(), pm=G.players[me], pg=G.players[R.gi]; if(!pm||!pg) return '';
-  const T=styType(G.mirror.st), M=S.prof.mir||{};
-  const head = R.res==='w' ? '分身に勝った！' : R.res==='l' ? '分身に負けた…' : '分身と引き分け';
-  const msg = R.res==='w' ? 'いつものクセを、自分で超えました。分身とちがう手を出したターンが勝因かも。'
+  const T=styType(G.mirror.st), M=S.prof.mir||{}, F=MIR_FL[R.fl]||MIR_FL[0], multi=R.gs.length>1, last=R.fl===MIR_FL.length-1;
+  const head = R.res==='w' ? (R.first ? (last?'鏡の塔、制覇！':`${R.fl+1}F 突破！`) : '分身に勝った！') : R.res==='l' ? (multi?`分身に届かず…（${R.beat}/${R.gs.length}人に勝ち）`:'分身に負けた…') : '分身と引き分け';
+  const msg = R.res==='w' ? (R.first && !last ? `いつものクセを、自分で超えました。次は ${R.fl+2}F「${MIR_FL[R.fl+1].n}」。` : last && R.first ? 'すべての鏡を超えました。あなたは、もう昨日のあなたじゃない。' : 'いつものクセを、自分で超えました。分身とちがう手を出したターンが勝因かも。')
     : R.res==='l' ? '分身は、あなたのいつものクセで打っています。いつもとちがう一手で、裏をかこう。'
     : '点数まで同じ。まさに鏡あわせ。';
   const tl = pm.used.map((u,t)=>{ const g=pg.used[t]; if(!g) return ''; const same=g.ind===u.ind, w=MIR_WHY[g.gw]||null;
     return `<div class="mir-t${same?' same':''}" style="--d:${t*80}ms"><span class="mir-tn">T${t+1}</span><span class="mir-c">${chip(u.ind)}<em class="num ${cls(u.total)}">${sgn(u.total)}</em></span><span class="mir-eq">${same?'🪞':'｜'}</span><span class="mir-c">${chip(g.ind)}<em class="num ${cls(g.total)}">${sgn(g.total)}</em></span><span class="mir-w">${w?w.ic:''}</span></div>`; }).join('');
-  return `<section class="panel mir-p ${R.res}" style="--c:${T.c||'#4dff9a'}"><span class="mir-glass" aria-hidden="true"></span>
-    <div class="mir-hd"><span class="label">MIRROR MATCH</span><b>${head}</b>${R.res==='w'?'<span class="mir-st">WIN</span>':''}</div>
+  return `<section class="panel mir-p ${R.res}${R.first?' first':''}" style="--c:${T.c||'#4dff9a'}"><span class="mir-glass" aria-hidden="true"></span>
+    <div class="mir-hd"><span class="label">MIRROR TOWER · ${R.fl+1}F ${F.n}</span><b>${head}</b>${R.res==='w'?`<span class="mir-st">${R.first?'CLEAR':'WIN'}</span>`:''}</div>
+    ${mirTower(R.fl, R.first?R.fl+1:0)}
     <div class="mir-vs"><div class="mir-side"><div class="ava" style="--s:var(--s${pm.seat%6})">${avHTML(pm)}</div><small>あなた</small><b>${R.a}</b></div>
       <span class="mir-x">VS</span>
-      <div class="mir-side gh"><div class="ava" style="--s:var(--s${pg.seat%6})">${avHTML(pg)}</div><small>分身 · ${T.ic}${T.n}</small><b>${R.b}</b></div></div>
-    <div class="mir-tl"><div class="mir-t hd"><span></span><span>あなた</span><span></span><span>分身</span><span>理由</span></div>${tl}</div>
-    <p class="mir-msg">${msg}${R.sync?` 同じカードを出したのは <b>${R.sync}回</b>。`:''}</p>
-    <div class="mir-rec"><span>通算 <b>${M.w||0}</b>勝 <b>${M.l||0}</b>敗${M.d?` <b>${M.d}</b>分`:''}</span>${R.streak>=2?`<span>🔥 ${R.streak}連勝</span>`:''}${R.coin?`<span class="mir-coin">+${R.coin} コイン</span>`:R.res==='w'?'<span class="note">コインは1日1回</span>':''}</div>
-    <div class="row" style="justify-content:center"><button class="btn gold" onclick="startMirror()">🪞 ${R.res==='w'?'もう一度':'リベンジ'}</button></div></section>`;
+      <div class="mir-side gh"><div class="ava" style="--s:var(--s${pg.seat%6})">${avHTML(pg)}</div><small>${multi?`${esc(pg.name)}（分身の最高点）`:`分身 · ${T.ic}${T.n}`}</small><b>${R.b}</b></div></div>
+    <div class="mir-tl"><div class="mir-t hd"><span></span><span>あなた</span><span></span><span>${multi?esc(pg.name):'分身'}</span><span>理由</span></div>${tl}</div>
+    <p class="mir-msg">${msg}${R.sync?` 分身と同じカードを出したのは <b>${R.sync}回</b>。`:''}</p>
+    <div class="mir-rec"><span>通算 <b>${M.w||0}</b>勝 <b>${M.l||0}</b>敗${M.d?` <b>${M.d}</b>分`:''}</span>${R.streak>=2?`<span>🔥 ${R.streak}連勝</span>`:''}${R.coin?`<span class="mir-coin">+${R.coin} コイン${R.first?'（初突破）':''}</span>`:R.res==='w'?'<span class="note">コインは1日1回</span>':''}</div>
+    <div class="row" style="justify-content:center">${R.res==='w'&&R.first&&!last?`<button class="btn gold" onclick="startMirror(${R.fl+1})">⬆ ${R.fl+2}Fへ</button><button class="btn" onclick="startMirror(${R.fl})">もう一度</button>`:`<button class="btn gold" onclick="startMirror(${R.fl})">🪞 ${R.res==='w'?'もう一度':'リベンジ'}</button>`}</div></section>`;
 }
 function mirCard(){
   const P=S.prof||{}, st=P.sty, t=(st&&st.t)||0, ok=styGhostOk(), T=styType(st), M=P.mir||{}, av=esc(myAvatar()||'🙂');
   if(!ok) return `<section class="mircard wait"><span class="mc-mir"><span class="mc-a">${av}</span><i class="mc-line"></i><span class="mc-a gh q">?</span></span>
-    <span class="mc-tx"><span class="label">MIRROR MATCH</span><b>あなたの分身</b><span class="note">あと <b>${Math.max(0,8-t)}</b> ターン遊ぶと、あなたのクセをまねた分身が生まれます。</span><span class="mc-bar"><i style="width:${Math.min(100,t/8*100)}%"></i></span></span></section>`;
-  const done=M.day===todayKey();
-  return `<section class="mircard" style="--c:${T.c||'#4dff9a'}"><span class="mc-mir"><span class="mc-a">${av}</span><i class="mc-line"></i><span class="mc-a gh">${av}</span></span>
-    <span class="mc-tx"><span class="label">MIRROR MATCH · ${T.ic} ${T.n}</span><b>自分のクセに勝てるか？</b><span class="note">あなたの打ち方をまねる分身と1試合。${done?'今日は勝利ずみ！':`今日はじめて勝つと <b style="color:var(--gold-t)">+${MIR_COIN}コイン</b>`}${(M.w||M.l)?` · 通算 ${M.w||0}勝${M.l||0}敗`:''}</span>
-    <button class="btn ${done?'':'gold '}" onclick="startMirror()">🪞 ${done?'また勝負':'勝負する'}</button></span></section>`;
+    <span class="mc-tx"><span class="label">MIRROR TOWER</span><b>あなたの分身</b><span class="note">あと <b>${Math.max(0,8-t)}</b> ターン遊ぶと、あなたのクセをまねた分身が生まれます。</span><span class="mc-bar"><i style="width:${Math.min(100,t/8*100)}%"></i></span></span></section>`;
+  const pr=mirProg(), all=pr>=MIR_FL.length, nx=Math.min(pr,MIR_FL.length-1), F=MIR_FL[nx];
+  return `<section class="mircard tw" style="--c:${T.c||'#4dff9a'}"><div class="mc-top"><span class="mc-mir"><span class="mc-a">${av}</span><i class="mc-line"></i><span class="mc-a gh">${av}</span></span>
+    <span class="mc-tx"><span class="label">MIRROR TOWER · ${T.ic} ${T.n}</span><b>${all?'🏆 鏡の塔 制覇！':`${nx+1}F ${F.ic} ${F.n}`}</b><span class="note">${all?`通算 ${M.w||0}勝。いつでも好きな階に挑めます。`:`${F.d}。突破で <b style="color:var(--gold-t)">+${F.coin}コイン</b>`}</span></span></div>
+    ${mirTower(nx,0)}<button class="btn ${all?'':'gold '}mc-go" onclick="startMirror()">🪞 ${all?'5Fに挑む':`${nx+1}Fに挑む`}</button></section>`;
 }
 function labDuelRule(k){ if(LDUEL.run) return; LDUEL.rules[k]=LDUEL.rules[k]?0:1; LDUEL.acc=null; LDUEL.done=0; sfx('click'); haptic(6); labSimPaint(); }
 function labDuelRun(){
