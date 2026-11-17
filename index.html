@@ -4234,6 +4234,35 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .ghl-r .btn{flex:none;padding:6px 14px;font-size:13px}
 .mir-p.gh .mir-hd .label{color:var(--c)}
 @media (prefers-reduced-motion:reduce){.ghin-env,.ghin-flap,.ghin-ava{animation:none}}
+/* 🃏 分身カード */
+.ghc{position:relative;overflow:hidden;align-self:center;width:min(100%,280px);display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 16px 16px;border-radius:22px;color:#eef;background:linear-gradient(180deg,#131a3d,#0c2b26);box-shadow:0 0 0 3px transparent,0 14px 34px rgb(0 0 0 / .45);isolation:isolate;animation:ghcIn .7s cubic-bezier(.3,1.4,.5,1) both}
+.ghc::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:4px;background:linear-gradient(135deg,#4fe3ff,#a77bff,#ff9ad9,#ffc83a,#4dff9a);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:2;pointer-events:none}
+.ghc-holo{position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 30%,rgb(79 227 255 / .18) 40%,rgb(255 154 217 / .18) 48%,rgb(255 200 58 / .16) 56%,transparent 66%);animation:ghcHolo 4s ease-in-out infinite;z-index:-1;pointer-events:none}
+@keyframes ghcHolo{0%,100%{transform:translateX(-25%)}50%{transform:translateX(25%)}}
+@keyframes ghcIn{from{opacity:0;transform:rotateY(80deg) scale(.85)}to{opacity:1;transform:none}}
+.ghc-top{width:100%;display:flex;justify-content:space-between;align-items:center;font-size:10.5px;font-weight:900;letter-spacing:.06em;opacity:.85}
+.ghc-rar{color:#ffc83a;font-size:12px;letter-spacing:0}.ghc-rar em{font-style:normal;opacity:.22;color:#fff}
+.ghc-art{position:relative;width:118px;height:118px;display:grid;place-items:center;margin:4px 0}
+.ghc-ring{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 55%,transparent),transparent 70%);box-shadow:inset 0 0 0 3px rgb(216 255 240 / .75)}
+.ghc-ic{position:relative;font-size:64px;transform:scaleX(-1);filter:drop-shadow(0 0 10px rgb(77 255 154 / .6));animation:ghFl 3.2s ease-in-out infinite}
+.ghc-nm{display:flex;align-items:baseline;gap:4px;max-width:100%}.ghc-nm b{font-family:var(--display);font-weight:400;font-size:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ghc-nm small{font-size:12px;font-weight:800;opacity:.75;flex:none}
+.ghc-ty{font-family:var(--display);font-size:16px;color:var(--c)}
+.ghc-bs{width:100%;display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.ghc-b{display:grid;grid-template-columns:76px 1fr 26px;align-items:center;gap:6px;font-size:11px;font-weight:800}
+.ghc-b i{height:8px;border-radius:99px;background:rgb(255 255 255 / .12);overflow:hidden}.ghc-b s{display:block;height:100%;width:var(--w);border-radius:inherit;background:var(--bc);text-decoration:none;animation:ghcBar .9s .5s cubic-bezier(.2,.9,.3,1) both}
+@keyframes ghcBar{from{width:0}}
+.ghc-b b{font-family:var(--display);font-weight:400;font-size:14px;text-align:right}
+.ghs{display:flex;flex-direction:column;gap:12px}
+.ghs .field label small{font-weight:700;color:var(--muted);font-size:11px;margin-left:4px}
+.ghs-m{display:flex;flex-direction:column;gap:6px}.ghs-m>span{font-size:12px;font-weight:800;color:var(--muted)}
+.ghs-m>div{display:flex;flex-wrap:wrap;gap:6px}
+.ghs-m button{border:0;border-radius:99px;padding:6px 12px;font:inherit;font-size:12px;font-weight:800;color:inherit;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line);cursor:pointer}
+.ghs-m button.on{background:rgb(77 255 154 / .18);box-shadow:inset 0 0 0 2px #4dff9a}
+.inp.shake{animation:ghShake .4s}
+@keyframes ghShake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.ghin-say{position:relative;align-self:center;margin:0;padding:8px 16px;border-radius:16px;background:#fff;color:#1a1530;font-size:14px;font-weight:900;animation:dkPop .5s .9s cubic-bezier(.3,1.5,.5,1) both}
+.ghin-say::after{content:'';position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);border:8px solid transparent;border-top-color:#fff;border-bottom:0}
+@media (prefers-reduced-motion:reduce){.ghc,.ghc-holo,.ghc-ic,.ghc-b s,.ghin-say,.inp.shake{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6264,6 +6293,7 @@ function renderSheet(){
   else if(k==='qr') body=qrBody();
   else if(k==='duelin') body=duelInBody();
   else if(k==='ghin') body=ghInBody();
+  else if(k==='ghsend') body=ghSendBody();
   else if(k==='updown') body=udBody();
   else if(k==='xfer') body=xferBody();
   else if(k==='duelnew') body=duelNewBody();
@@ -11884,16 +11914,76 @@ let GH_NOW=null; const GH_COIN=20;
 const GHOST_TALK_F={vs:['この打ち方、読めるかな？','持ち主のクセ、見せてあげる。','手紙に乗って、やってきたよ。'], mono:['持ち主なら、ここを選ぶ。','クセどおりの独占さ。'], hit:['おっと、同じところか。','読まれてた？'], big:['持ち主ゆずりの一手！','いい読みでしょ？'], neg:['持ち主も、ここでよく失敗するんだ。','あちゃー。'], lead:['このまま持ち主に報告するよ。']};
 function ghSty(g){ return {t:100, rd:g.rd, nv:g.nv, mono:g.mono}; }
 function ghMine(){ const st=S.prof&&S.prof.sty; if(!st||!styGhostOk()) return null; const r=styRates(st); return {rd:Math.round(r.rd*100), nv:Math.round(r.nv*100), mono:Math.round(r.mono*100), k:styType(st).k, from:String(NET.name||'友だち').slice(0,12)}; }
-const ghUrl = g => `${PUBLIC_URL}?gh=${g.rd}-${g.nv}-${g.mono}-${g.k}-${encodeURIComponent(g.from)}`;
-function ghSend(){
-  const g=ghMine(); if(!g){ toast('あと少し遊ぶと、分身が生まれます'); return; } const T=STY_T[g.k]||STY_T.bal;
-  const t=`✉️ わたしの分身（${T.ic}${T.n}）から挑戦状！ AZAKEI MARKET で勝負して → ${ghUrl(g)}`;
+const ghUrl = g => `${PUBLIC_URL}?gh=${g.rd}-${g.nv}-${g.mono}-${g.k}${g.msg!=null?'.'+g.msg:''}-${encodeURIComponent(g.from)}`;
+function ghSend(){ if(!ghMine()){ toast('あと少し遊ぶと、分身が生まれます'); return; } sfx('open'); openSheet('ghsend'); }
+function ghSendGo(){
+  const inp=document.getElementById('ghName'), nm=(inp?inp.value:NET.name||'').replace(/[<>&"']/g,'').trim().slice(0,12);
+  if(!nm){ toast('名前を入れてね（相手に「○○さんの分身」と出ます）'); if(inp){ inp.focus(); inp.classList.add('shake'); setTimeout(()=>inp.classList.remove('shake'),500); } return; }
+  if(nm!==NET.name) setMyName(nm);
+  const g=ghMine(); if(g){ g.from=nm; g.msg=S.ghMsg!=null?S.ghMsg:null; } if(!g){ toast('あと少し遊ぶと、分身が生まれます'); return; } const T=STY_T[g.k]||STY_T.bal;
+  const t=`✉️ わたしの分身（${T.ic}${T.n}）から挑戦状！${g.msg!=null?`「${GH_MSG[g.msg]}」`:''} AZAKEI MARKET で勝負して → ${ghUrl(g)}`;
   sfx('click'); haptic(10);
   if(!IN_CLAUDE && navigator.share){ navigator.share({text:t}).catch(e=>{ if(!e || e.name!=='AbortError') copyText(t); }); return; } copyText(t);
 }
+/* ---- 🃏 分身カード：送る前に名前とひとことを決めて、カードで見せる ---- */
+const GH_MSG=['読めるものなら、読んでみな！','やさしくしてね。','本気でおいで。','この分身、けっこう強いよ。','勝ったら教えてね！'];
+function ghNo(g){ let h=7; for(const ch of [g.rd,g.nv,g.mono,g.k].join('|')) h=(h*31+ch.charCodeAt(0))%9973; return String(h).padStart(4,'0'); }
+function ghStars(g){ return Math.max(1, Math.min(5, Math.round((g.rd*1.2+g.mono)/40))); }
+function ghCardHTML(g, live){
+  const T=STY_T[g.k]||STY_T.bal, st=ghStars(g);
+  const bar=(ic,n,v,c)=>`<div class="ghc-b"><span>${ic} ${n}</span><i><s style="--w:${v}%;--bc:${c}"></s></i><b>${v}</b></div>`;
+  return `<div class="ghc" style="--c:${T.c}"><span class="ghc-holo" aria-hidden="true"></span>
+    <div class="ghc-top"><span>GHOST No.${ghNo(g)}</span><span class="ghc-rar" aria-label="強さ${st}">${'★'.repeat(st)}<em>${'★'.repeat(5-st)}</em></span></div>
+    <div class="ghc-art"><span class="ghc-ring"></span><span class="ghc-ic">${T.ic}</span></div>
+    <div class="ghc-nm"><b${live?' id="ghcName"':''}>${esc(g.from||'？？？')}</b><small>の分身</small></div>
+    <div class="ghc-ty">${T.n}</div>
+    <div class="ghc-bs">${bar('🧠','読み',g.rd,'#4fe3ff')}${bar('📊','表どおり',g.nv,'#a77bff')}${bar('👑','独占',g.mono,'#ffc83a')}</div></div>`;
+}
+function ghSendBody(){
+  const g=ghMine(); if(!g) return '<p>まだ分身がいません。</p>'; const nm=String(NET.name||'').trim(); g.from=nm;
+  const T=STY_T[g.k]||STY_T.bal, mi=S.ghMsg;
+  return `<div class="ghs"><span class="label">GHOST LETTER · 分身を送る</span><h3 class="ttl">🧬 あなたの分身カード</h3>
+    ${ghCardHTML(g,true)}
+    <div class="field"><label for="ghName">あなたの名前 <small>相手には「○○さんの分身」と出ます</small></label><input id="ghName" class="inp" maxlength="12" value="${esc(nm)}" placeholder="例：リョウ" oninput="const b=document.getElementById('ghcName'); if(b) b.textContent=this.value.trim()||'？？？'"></div>
+    <div class="ghs-m"><span>ひとこと（えらばなくてもOK）</span><div>${GH_MSG.map((m,i)=>`<button class="${mi===i?'on':''}" onclick="S.ghMsg=S.ghMsg===${i}?null:${i};ghMsgPaint()">${m}</button>`).join('')}</div></div>
+    <button class="btn gold big" onclick="ghSendGo()">✉️ 挑戦状のリンクを送る</button>
+    <button class="btn cyan" onclick="ghCardImg()">🖼️ カード画像にして保存・共有</button>
+    <p class="note ghin-pv">🔒 送られるのは、名前・タイプ・3つの割合・ひとことだけです。</p></div>`;
+}
+function ghMsgPaint(){ sfx('click'); haptic(6); document.querySelectorAll('.ghs-m button').forEach((b,i)=>b.classList.toggle('on', S.ghMsg===i)); }
+async function ghCardImg(){
+  const g=ghMine(); if(!g) return; const inp=document.getElementById('ghName'); g.from=(inp?inp.value:NET.name||'').replace(/[<>&"']/g,'').trim().slice(0,12)||'あなた';
+  const T=STY_T[g.k]||STY_T.bal, st=ghStars(g); sfx('select'); toast('カードを作っています…');
+  try{ await document.fonts.ready; }catch(e){}
+  const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d');
+  const D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', Bf='"M PLUS Rounded 1c",sans-serif';
+  const RR=(X,Y,w,h,r)=>{ x.beginPath(); if(x.roundRect) x.roundRect(X,Y,w,h,r); else x.rect(X,Y,w,h); };
+  x.fillStyle='#070a1c'; x.fillRect(0,0,W,H);
+  const cx=90, cy=70, cw=W-180, ch=H-170;
+  const fr=x.createLinearGradient(cx,cy,cx+cw,cy+ch); ['#4fe3ff','#a77bff','#ff9ad9','#ffc83a','#4dff9a'].forEach((c,i,a)=>fr.addColorStop(i/(a.length-1),c));
+  RR(cx-12,cy-12,cw+24,ch+24,52); x.fillStyle=fr; x.fill();
+  const bg=x.createLinearGradient(0,cy,0,cy+ch); bg.addColorStop(0,'#131a3d'); bg.addColorStop(1,'#0c2b26'); RR(cx,cy,cw,ch,42); x.fillStyle=bg; x.fill();
+  x.save(); RR(cx,cy,cw,ch,42); x.clip(); x.globalAlpha=.12; for(let i=-6;i<16;i++){ x.fillStyle=['#4fe3ff','#ff9ad9','#ffc83a','#4dff9a'][(i+8)%4]; x.beginPath(); x.moveTo(cx+i*90,cy); x.lineTo(cx+i*90+60,cy); x.lineTo(cx+i*90-340,cy+ch); x.lineTo(cx+i*90-400,cy+ch); x.fill(); } x.restore();
+  x.textAlign='left'; x.fillStyle='rgba(255,255,255,.75)'; x.font=`700 34px ${Bf}`; x.fillText(`GHOST No.${ghNo(g)}`,cx+50,cy+80);
+  x.textAlign='right'; x.font=`44px ${Bf}`; x.fillStyle='#ffc83a'; x.fillText('★'.repeat(st),cx+cw-50,cy+82); const sw=x.measureText('★'.repeat(st)).width; x.fillStyle='rgba(255,255,255,.18)'; x.fillText('★'.repeat(5-st),cx+cw-50-sw,cy+82);
+  const ax=W/2, ay=cy+360; const rg=x.createRadialGradient(ax,ay,20,ax,ay,240); rg.addColorStop(0,T.c); rg.addColorStop(1,'rgba(0,0,0,0)'); x.fillStyle=rg; x.globalAlpha=.55; x.beginPath(); x.arc(ax,ay,240,0,Math.PI*2); x.fill(); x.globalAlpha=1;
+  x.lineWidth=8; x.strokeStyle='rgba(216,255,240,.8)'; x.beginPath(); x.arc(ax,ay,190,0,Math.PI*2); x.stroke();
+  x.save(); x.translate(ax,ay); x.scale(-1,1); x.textAlign='center'; x.textBaseline='middle'; x.font=`230px ${Bf}`; x.fillText(T.ic,0,10); x.restore();
+  x.textAlign='center'; x.textBaseline='alphabetic'; x.fillStyle='#fff'; x.font=`96px ${D}`; x.fillText(g.from,W/2,cy+680); x.font=`700 40px ${Bf}`; x.fillStyle='rgba(255,255,255,.75)'; x.fillText('の分身',W/2,cy+740);
+  x.font=`64px ${D}`; x.fillStyle=T.c; x.fillText(`${T.n}`,W/2,cy+830);
+  [['🧠 読み',g.rd,'#4fe3ff'],['📊 表どおり',g.nv,'#a77bff'],['👑 独占',g.mono,'#ffc83a']].forEach(([n,v,c],i)=>{ const y=cy+900+i*70;
+    x.textAlign='left'; x.fillStyle='#fff'; x.font=`700 36px ${Bf}`; x.fillText(n,cx+70,y+12);
+    RR(cx+320,y-14,cw-500,30,15); x.fillStyle='rgba(255,255,255,.12)'; x.fill(); RR(cx+320,y-14,Math.max(30,(cw-500)*v/100),30,15); x.fillStyle=c; x.fill();
+    x.textAlign='right'; x.font=`48px ${D}`; x.fillStyle='#fff'; x.fillText(String(v),cx+cw-60,y+16); });
+  if(S.ghMsg!=null){ x.textAlign='center'; x.font=`700 40px ${Bf}`; x.fillStyle='#d8fff0'; x.fillText(`「${GH_MSG[S.ghMsg]}」`,W/2,cy+ch-50); }
+  x.textAlign='center'; x.fillStyle='rgba(255,255,255,.6)'; x.font=`500 26px ${Bf}`; x.fillText(`AZAKEI MARKET ・ ${PUBLIC_URL.replace(/^https:\/\//,'')}`,W/2,H-30);
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'🃏 分身カード', alt:`${g.from}の分身（${T.n}）のカード`, name:`azakei-ghost-${todayKey()}.png`, note:'挑戦状のリンクといっしょに送ると、相手が分身と勝負できます。'};
+  openSheet('card');
+}
 function ghParse(q){
   const [rd,nv,mono,k,...nm]=String(q||'').split('-'); const n=v=>{ const x=parseInt(v,10); return Number.isFinite(x)&&x>=0&&x<=100?x:null; };
-  const g={rd:n(rd), nv:n(nv), mono:n(mono), k:STY_T[k]&&k!=='wait'?k:'bal', from:''}; if(g.rd==null||g.nv==null||g.mono==null) return null;
+  const [k0,m0]=String(k||'').split('.'), mi=parseInt(m0,10);
+  const g={rd:n(rd), nv:n(nv), mono:n(mono), k:STY_T[k0]&&k0!=='wait'?k0:'bal', msg:Number.isInteger(mi)&&GH_MSG[mi]?mi:null, from:''}; if(g.rd==null||g.nv==null||g.mono==null) return null;
   try{ g.from=decodeURIComponent(nm.join('-')||'友だち').replace(/[<>&"']/g,'').slice(0,12)||'友だち'; }catch(e){ g.from='友だち'; }
   g.id=[g.rd,g.nv,g.mono,g.k,g.from].join('|'); return g;
 }
@@ -11905,8 +11995,7 @@ function ghInBody(){
   const g=S.ghIn; if(!g) return ''; const T=STY_T[g.k]||STY_T.bal, rec=((S.prof.ghc||[]).find(x=>x.id===g.id));
   return `<div class="ghin" style="--c:${T.c}"><div class="ghin-env" aria-hidden="true"><i class="ghin-flap"></i><span class="ghin-seal">✉️</span></div>
     <span class="label">GHOST LETTER</span><h3 class="ttl">${esc(g.from)}さんの分身が、<br>勝負しにきた！</h3>
-    <div class="ghin-gh"><span class="ghin-ava">${T.ic}</span><span><small>${esc(g.from)}さんのタイプ</small><b>${T.n}</b><em>${T.d}</em></span></div>
-    ${styMeters({rd:g.rd/100, nv:g.nv/100, mono:g.mono/100})}
+    ${g.msg!=null?`<p class="ghin-say">「${esc(GH_MSG[g.msg])}」</p>`:''}${ghCardHTML(g)}<p class="note" style="margin:0">${T.d}</p>
     <p class="note">${esc(g.from)}さんの打ち方のクセ（上の3つの割合）をまねるCPUと、ミナト・ソラの4人で1試合。分身より高い点で勝ち！ はじめて勝つと <b style="color:var(--gold-t)">+${GH_COIN}コイン</b>。${rec?`<br>これまで ${rec.w}勝${rec.l}敗。`:''}</p>
     <p class="note ghin-pv">🔒 送られてくるのは「クセの割合」と名前だけです。</p>
     <button class="btn gold big pulse" onclick="startGhostDuel(S.ghIn)">受けて立つ！</button></div>`;
