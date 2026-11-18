@@ -4123,7 +4123,7 @@ html.light .cgn1{color:#9a5a2a}html.light .cgn2{color:#5d6b84}
 .mc-a.q{filter:none;font-family:var(--display);color:var(--muted);transform:none;animation:none}
 .mc-line{width:3px;height:52px;border-radius:2px;background:linear-gradient(180deg,transparent,#d8fff0,transparent);box-shadow:0 0 12px rgb(77 255 154 / .6)}
 .mircard.wait .mc-line{background:var(--line);box-shadow:none}
-.mc-tx{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}.mc-tx b{font-size:16px}.mc-tx .note{line-height:1.5}.mc-tx .btn{align-self:flex-start;margin-top:2px}
+.mircard .mc-tx{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}.mircard .mc-tx b{font-size:16px}.mircard .mc-tx .note{line-height:1.5}.mircard .mc-tx .btn{align-self:flex-start;margin-top:2px}
 .mircard:not(.wait) .mc-tx .note{color:#b9c3dd}
 .mc-bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}.mc-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),#4dff9a)}
 .sty-mir{align-self:stretch;margin-top:4px}
@@ -4328,7 +4328,7 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .wrb::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgb(255 255 255 / .18) 50%,transparent 65%);background-size:250% 100%;animation:mirSh 3.2s 1s ease-in-out infinite}
 .wrb-ic{font-size:26px}.wrb-tx{flex:1;display:flex;flex-direction:column;gap:1px}.wrb-tx b{font-size:15px}.wrb-tx small{font-size:11px;font-weight:700;opacity:.8}.wrb-go{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgb(255 255 255 / .2);font-size:12px}
 .wrb-more{display:flex;flex-wrap:wrap;gap:6px}.wrb-more button{border:0;border-radius:99px;padding:4px 12px;font:inherit;font-size:11.5px;font-weight:800;color:inherit;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line);cursor:pointer}
-.wrap{touch-action:none;position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 40px) 24px 40px;color:#fff;background:radial-gradient(120% 80% at 50% 20%,var(--g1),var(--g2));transition:background .5s;overflow:hidden;cursor:pointer;user-select:none;animation:wrIn .4s ease-out both}
+.wrp{box-sizing:border-box;touch-action:none;position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 40px) 24px 40px;color:#fff;background:radial-gradient(120% 80% at 50% 20%,var(--g1),var(--g2));transition:background .5s;overflow:hidden;cursor:pointer;user-select:none;animation:wrIn .4s ease-out both}
 @keyframes wrIn{from{opacity:0;transform:scale(1.04)}}
 .wr-bars{position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);left:12px;right:12px;display:flex;gap:4px}
 .wr-bars i{flex:1;height:3px;border-radius:2px;background:rgb(255 255 255 / .25);overflow:hidden;position:relative}
@@ -4359,7 +4359,7 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .wr-sum b{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.1}.wr-sum small{font-size:10.5px;font-weight:800;opacity:.8}
 .wr-act{display:flex;gap:8px;margin-top:14px;justify-content:center;flex-wrap:wrap}
 .wr-hint{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);margin:0;font-size:11px;font-weight:800;opacity:.55}
-@media (prefers-reduced-motion:reduce){.wrb::after,.wrap,.wr-shapes i,.wr-s>*,.wr-bar i,.wr-bars i.run::after{animation:none}}
+@media (prefers-reduced-motion:reduce){.wrb::after,.wrp,.wr-shapes i,.wr-s>*,.wr-bar i,.wr-bars i.run::after{animation:none}}
 /* v237 まとめの続き */
 .wr-yr{font-size:min(26vw,120px)}
 .wr-months{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;width:min(320px,90%);height:110px;align-items:end}
@@ -4482,6 +4482,16 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .mx-row{display:flex;flex-direction:column;gap:6px}.mx-row>b{font-size:13px}
 .mx-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:3px;border-radius:12px;background:var(--panel2)}
 .mx-seg button{border:0;border-radius:9px;padding:8px 2px;font:inherit;font-size:11.5px;font-weight:800;color:var(--muted);background:none;cursor:pointer}.mx-seg button.on{background:var(--panel);color:var(--ink);box-shadow:0 2px 8px rgb(0 0 0 / .25)}
+/* 📜 スクロールの演出 */
+.rv{opacity:0;transform:translateY(22px) scale(.985)}
+.rv.rv-in{opacity:1;transform:none;transition:opacity .55s ease-out,transform .65s cubic-bezier(.2,.9,.3,1)}
+.scrbar{position:fixed;left:0;right:0;top:0;height:3px;z-index:60;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,#4fe3ff,#a77bff,#ff8cc8,#ffc83a);opacity:0;transition:opacity .3s;pointer-events:none}
+.scrbar.on{opacity:.9}
+.totop{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 86px);z-index:55;width:46px;height:46px;border:0;border-radius:50%;display:grid;place-items:center;color:#14122a;font-size:20px;font-weight:900;cursor:pointer;background:linear-gradient(160deg,#ffe27a,#ffb23a);box-shadow:0 8px 20px rgb(0 0 0 / .35),0 0 0 3px rgb(255 255 255 / .15);opacity:0;transform:translateY(16px) scale(.8);pointer-events:none;transition:opacity .25s,transform .3s cubic-bezier(.3,1.5,.5,1)}
+.totop.on{opacity:1;transform:none;pointer-events:auto}
+.totop span{display:block;animation:ttBob 1.8s ease-in-out infinite}
+@keyframes ttBob{50%{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.totop span{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -10171,7 +10181,7 @@ function trInfo(i,el){ const it=TR_ITEMS[i]; const box=document.getElementById('
 function wrapOpen(k){
   const D=wrapData(k); if(!D) return; wrapClose(true); try{ if(k>=10000 && k===wrPrevKey()){ S.prof.wrSeen=k; saveProfile(); } }catch(e){}
   WR={D, sl:wrapSlides(D), i:0, t0:0, paused:false};
-  const el=document.createElement('div'); el.className='wrap'; el.id='wrap'; el.setAttribute('role','dialog'); el.setAttribute('aria-label',`${wrName(k)}のまとめ`);
+  const el=document.createElement('div'); el.className='wrp'; el.id='wrap'; el.setAttribute('role','dialog'); el.setAttribute('aria-label',`${wrName(k)}のまとめ`);
   el.onclick=e=>{ if(Date.now()-(el._sw||0)<350) return; const x=e.clientX/innerWidth; if(x<.3) wrapGo(-1); else wrapGo(1); };
   el.addEventListener('pointerdown',e=>{ el._p={x:e.clientX,y:e.clientY,t:Date.now()}; if(WR) WR.hold=1; });
   el.addEventListener('pointerup',e=>{ const p=el._p; el._p=null; if(WR) WR.hold=0; if(!p) return; const dx=e.clientX-p.x, dy=e.clientY-p.y;
@@ -12577,6 +12587,19 @@ async function ghCardImg(){
 }
 /* ---- 📮 分身の絵はがき：友だちが分身と戦った結果を、持ち主に届ける。持ち主側には「分身の旅」として残る ---- */
 const ghNm = v => String(v||'').replace(/[<>&"']/g,'').replace(/-/g,'－').trim().slice(0,12);
+/* ---- 📜 スクロールの演出：下の段は見えたときにふわっと出る・上へ戻るボタン・上の細い進みぐあいバー ---- */
+(function(){
+  const app=document.getElementById('app'); if(!app) return;
+  const rvCheck=()=>{ const H=innerHeight*.94; document.querySelectorAll('.rv:not(.rv-in)').forEach(el=>{ if(el.getBoundingClientRect().top<H) el.classList.add('rv-in'); }); };
+  const scan=()=>{ if(reduced() || (typeof G!=='undefined' && G)) return; const H=innerHeight;
+    app.querySelectorAll('.screen > section, .screen > .panel, .screen > .hm-more > section, .screen > .hm-more > .panel, .screen > .hm-more > .carousel, .screen > .carousel, .screen > .col > section.panel, .screen > .col > section').forEach((el,i)=>{ if(el.dataset.rv) return; el.dataset.rv=1; const r=el.getBoundingClientRect(); if(r.top>H*.92) el.classList.add('rv'); }); rvCheck(); };
+  let st=0; new MutationObserver(()=>{ if(st) return; st=setTimeout(()=>{ st=0; scan(); },60); }).observe(app,{childList:true,subtree:true});
+  setTimeout(scan,30);
+  const bar=document.createElement('div'); bar.className='scrbar'; bar.setAttribute('aria-hidden','true'); document.body.appendChild(bar);
+  const top=document.createElement('button'); top.className='totop'; top.setAttribute('aria-label','いちばん上へ'); top.innerHTML='<span>↑</span>'; top.onclick=()=>{ try{ sfx('whoosh'); }catch(e){} scrollTo({top:0, behavior:reduced()?'auto':'smooth'}); }; document.body.appendChild(top);
+  let tk=0; addEventListener('scroll',()=>{ if(tk) return; tk=setTimeout(()=>{ tk=0; rvCheck(); const se=document.scrollingElement, max=se.scrollHeight-innerHeight, p=max>0?scrollY/max:0;
+    bar.style.transform=`scaleX(${p.toFixed(3)})`; bar.classList.toggle('on', scrollY>40); top.classList.toggle('on', scrollY>innerHeight*.9 && !(typeof G!=='undefined' && G)); },50); },{passive:true});
+})();
 /* ログインスタンプなどの演出が出ている間は、リンクで届いたシートを開くのを待つ */
 function sheetWhenFree(k, n){ if(document.querySelector('.stampfx,.promofx') && (n||0)<60){ setTimeout(()=>sheetWhenFree(k,(n||0)+1),800); return; } openSheet(k); sfx('open'); setTimeout(()=>vo('message'),250); }
 function ghrUrl(R,g){
