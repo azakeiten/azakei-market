@@ -4287,6 +4287,42 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .ght-d{color:var(--muted);font-size:11px}.ght-v{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ght-s{font-family:var(--display);font-size:13px}
 .ght-res{text-align:center;font-size:11px;font-weight:900;border-radius:6px;padding:1px 0}.ght-r.w .ght-res{background:rgb(255 200 58 / .2);color:var(--gold-t)}.ght-r.l .ght-res{background:var(--panel2);color:var(--muted)}.ght-r.d .ght-res{color:var(--cyan)}
 @media (prefers-reduced-motion:reduce){.pcd,.pcd-mark,.pcd-win{animation:none}}
+/* 📊 プレイ記録ダッシュボード */
+.sdh{display:flex;flex-direction:column;gap:10px}
+.sdh-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:3px;border-radius:12px;background:var(--panel2)}
+.sdh-tabs button{border:0;border-radius:9px;padding:7px 2px;font:inherit;font-size:11.5px;font-weight:800;color:var(--muted);background:none;cursor:pointer;white-space:nowrap}
+.sdh-tabs button.on{background:var(--panel);color:var(--ink);box-shadow:0 2px 8px rgb(0 0 0 / .25)}
+.sdh-b{display:flex;flex-direction:column;gap:10px;animation:dkPop .35s both}
+.sdc-wrap{display:grid;grid-template-columns:1fr 18px;grid-template-rows:auto auto;gap:4px 6px}
+.sdc-m{grid-column:1;display:grid;grid-template-columns:repeat(12,1fr);font-size:10px;font-weight:800;color:var(--muted)}
+.sdc-g{grid-column:1;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(7,1fr);gap:3px;aspect-ratio:12/7}
+.sdc-wd{grid-column:2;grid-row:2;display:grid;grid-template-rows:repeat(7,1fr);gap:3px;font-size:9px;font-weight:800;color:var(--muted);align-items:center}
+.sdc{display:block;border-radius:4px;background:var(--line);animation:dkPop .3s calc(var(--j,0)*6ms) both}
+.sdc.l1{background:rgb(77 255 154 / .3)}.sdc.l2{background:rgb(77 255 154 / .55)}.sdc.l3{background:rgb(77 255 154 / .8)}.sdc.l4{background:#4dff9a}.sdc.lx{background:transparent;box-shadow:inset 0 0 0 1px var(--line);opacity:.4}
+.sdc.td{box-shadow:0 0 0 2px var(--gold-t)}
+.sdc-lg{display:flex;align-items:center;justify-content:flex-end;gap:3px;font-size:10px;font-weight:800;color:var(--muted)}.sdc-lg .sdc{width:11px;height:11px;animation:none}.sdc-lg span{margin:0 3px}
+.sdk{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:6px}
+.sdk>span{display:flex;flex-direction:column;align-items:center;padding:8px 4px;border-radius:12px;background:var(--panel2);font-size:11px;font-weight:800;text-align:center}
+.sdk b{font-family:var(--display);font-weight:400;font-size:20px;line-height:1.1}.sdk small{font-size:10px;color:var(--muted);line-height:1.3;margin-top:2px}
+.sdk .up b{color:var(--up)}.sdk .dn b{color:var(--down,#ff6b6b)}
+.sds svg{width:100%;height:auto;display:block}
+.sds-l{stroke-dasharray:900;stroke-dashoffset:900;animation:mevDraw 1.2s .2s ease-out forwards}
+.sds-lg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:10.5px;font-weight:800;color:var(--muted)}
+.sds-lg i{display:inline-block;vertical-align:middle;margin-right:4px}.sds-lg .ln{width:14px;height:3px;border-radius:2px;background:#4fe3ff}.sds-lg .dt{width:8px;height:8px;border-radius:50%;background:#4fe3ff}.sds-lg .dt.g{background:#ffc83a}.sds-lg .da{width:14px;border-top:1.5px dashed var(--muted)}
+.sdr-bar{display:flex;gap:2px;height:30px;border-radius:10px;overflow:hidden}
+.sdr-bar span{display:grid;place-items:center;min-width:30px;background:var(--c);color:#14122a;transform-origin:left;animation:sdrIn .7s cubic-bezier(.2,.9,.3,1) both}.sdr-bar b{font-size:11.5px;font-weight:900}
+@keyframes sdrIn{from{transform:scaleX(0)}}
+.sdr-lg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;font-weight:800}.sdr-lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.sdr-h{margin:2px 0 0;font-size:11px;font-weight:800;color:var(--muted)}
+.sdr-row{display:flex;gap:4px}
+.sdr-c{flex:1;max-width:30px;aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font-style:normal;font-family:var(--display);font-size:13px;background:var(--panel2);color:var(--muted)}
+.sdr-c.r1{background:#ffc83a;color:#2a1d00}.sdr-c.r2{background:#c9d3e6;color:#1a1d2a}.sdr-c.r3{background:#e0a070;color:#2a1608}
+.sdt{display:flex;flex-direction:column;gap:6px}
+.sdt-r{display:grid;grid-template-columns:62px 1fr 26px 64px;align-items:center;gap:8px;font-size:12px;font-weight:800}
+.sdt-b{height:14px;border-radius:0 6px 6px 0;box-shadow:inset 1px 0 0 var(--line)}.sdt-b i{display:block;height:100%;width:var(--w);border-radius:inherit;background:#a77bff;animation:sdrIn .7s cubic-bezier(.2,.9,.3,1) both;transform-origin:left}
+.sdt-r.top .sdt-b i{background:#4fe3ff}.sdt-r b{font-family:var(--display);font-weight:400;font-size:15px;text-align:right}.sdt-r small{font-size:10.5px;color:var(--muted)}
+.sdt-msg{margin:0;font-size:12.5px;font-weight:700;line-height:1.6}.sdt-msg b{color:var(--cyan)}
+@media (prefers-reduced-motion:reduce){.sdh-b,.sdc,.sds-l,.sdr-bar span,.sdt-b i{animation:none}.sds-l{stroke-dashoffset:0}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9689,6 +9725,67 @@ function albumEvents(){
   return ev.filter(e=>typeof e.t==="number" && e.t>1.5e12 && e.t<=Date.now()+864e5).sort((a,b)=>b.t-a.t);   /* 日付のない古いデータは入れない */
 }
 const albKey = t => { const d=new Date(t); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); };
+/* ---- 📊 プレイ記録ダッシュボード：遊んだ日のカレンダー・点数の流れ・順位・時間帯（P.log 最新100試合から） ---- */
+function sdDayKey(t){ const d=new Date(t); return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(); }
+function statsDash(){
+  const L=(S.prof&&S.prof.log)||[];
+  if(L.length<2) return `<section class="panel sdh"><div class="row spread"><h3>📊 プレイ記録</h3></div><p class="note">2試合以上あそぶと、遊んだ日のカレンダーや点数の流れがここに出ます。</p></section>`;
+  const tab=S.sdTab||'cal', tabs=[['cal','📅 カレンダー'],['sc','📈 点数'],['rk','🏅 順位'],['tm','🕒 時間帯']];
+  const body = tab==='sc'?sdScore(L):tab==='rk'?sdRank(L):tab==='tm'?sdTime(L):sdCal(L);
+  return `<section class="panel sdh" id="sdh"><div class="row spread"><h3>📊 プレイ記録</h3><span class="note">最新${L.length}試合</span></div>
+    <div class="sdh-tabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="sdTabGo('${k}')">${n}</button>`).join('')}</div>
+    <div class="sdh-b" key="${tab}">${body}</div></section>`;
+}
+function sdTabGo(k){ S.sdTab=k; sfx('click'); haptic(6); const el=document.getElementById('sdh'); if(el) el.outerHTML=statsDash(); }
+function sdCal(L){
+  const cnt={}; L.forEach(x=>{ const k=sdDayKey(x.t); cnt[k]=(cnt[k]||0)+1; });
+  const today=new Date(); today.setHours(0,0,0,0); const W=12, start=new Date(today); start.setDate(start.getDate()-today.getDay()-(W-1)*7);
+  let cells='', months='', lastM=-1, days=0;
+  for(let w=0;w<W;w++){ const d0=new Date(start); d0.setDate(start.getDate()+w*7); if(d0.getMonth()!==lastM){ const d1=new Date(d0); d1.setDate(d0.getDate()+7); if(w>0 || d1.getMonth()===d0.getMonth()) months+=`<span style="grid-column:${w+1}">${d0.getMonth()+1}月</span>`; lastM=d0.getMonth(); }
+    for(let i=0;i<7;i++){ const d=new Date(start); d.setDate(start.getDate()+w*7+i); const fut=d>today, k=sdDayKey(d), n=cnt[k]||0; if(n) days++;
+      const lv=n>=4?4:n; cells+=`<i class="sdc l${fut?'x':lv}${+d===+today?' td':''}" style="grid-column:${w+1};grid-row:${i+1};--j:${w*7+i}" title="${d.getMonth()+1}/${d.getDate()} ${fut?'':n?n+'試合':'あそんでいない'}"></i>`; } }
+  // 連続記録（ログの範囲で）
+  const ks=Object.keys(cnt).map(Number).sort((a,b)=>a-b); let best=0, run=0, prev=null;
+  const dk=k=>new Date(Math.floor(k/10000),Math.floor(k/100)%100-1,k%100);
+  ks.forEach(k=>{ run = prev && (dk(k)-dk(prev))/864e5===1 ? run+1 : 1; best=Math.max(best,run); prev=k; });
+  let cur=0; { const d=new Date(today); if(!cnt[sdDayKey(d)]) d.setDate(d.getDate()-1); while(cnt[sdDayKey(d)]){ cur++; d.setDate(d.getDate()-1); } }
+  return `<div class="sdc-wrap"><div class="sdc-m">${months}</div><div class="sdc-g">${cells}</div><div class="sdc-wd"><span>日</span><span></span><span>火</span><span></span><span>木</span><span></span><span>土</span></div></div>
+    <div class="sdc-lg"><span>少ない</span>${[0,1,2,3,4].map(i=>`<i class="sdc l${i}"></i>`).join('')}<span>多い</span></div>
+    <div class="sdk"><span><b>${days}</b>日<small>12週で遊んだ日</small></span><span><b>${cur}</b>日<small>いまの連続</small></span><span><b>${best}</b>日<small>最長の連続</small></span></div>`;
+}
+function sdScore(L){
+  const A=L.slice(-30), N=A.length, mx=Math.max(...A.map(x=>x.s),1), mn=Math.min(...A.map(x=>x.s),0), W=320, H=150, pl=26, pr=8, pt=12, pb=20;
+  const px=i=>pl+(N<2?0:i*(W-pl-pr)/(N-1)), py=v=>pt+(mx-v)/(mx-mn||1)*(H-pt-pb);
+  const avg=A.reduce((a,x)=>a+x.s,0)/N, ma=A.map((_,i)=>{ const w=A.slice(Math.max(0,i-4),i+1); return w.reduce((a,x)=>a+x.s,0)/w.length; });
+  const ticks=[mn, Math.round((mn+mx)/2), mx].filter((v,i,a)=>a.indexOf(v)===i);
+  const svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="最新${N}試合の点数の流れ">
+    ${ticks.map(v=>`<line x1="${pl}" x2="${W-pr}" y1="${py(v).toFixed(1)}" y2="${py(v).toFixed(1)}" stroke="var(--line)" stroke-width="1"/><text x="${pl-4}" y="${(py(v)+3).toFixed(1)}" text-anchor="end" font-size="9" fill="var(--muted)">${v}</text>`).join('')}
+    <line x1="${pl}" x2="${W-pr}" y1="${py(avg).toFixed(1)}" y2="${py(avg).toFixed(1)}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 4"/>
+    <polyline class="sds-l" points="${A.map((x,i)=>`${px(i).toFixed(1)},${py(x.s).toFixed(1)}`).join(' ')}" fill="none" stroke="#4fe3ff" stroke-width="1.5" stroke-opacity=".45" stroke-linejoin="round"/>
+    <polyline class="sds-l" points="${ma.map((v,i)=>`${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(' ')}" fill="none" stroke="#4fe3ff" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${A.map((x,i)=>`<circle cx="${px(i).toFixed(1)}" cy="${py(x.s).toFixed(1)}" r="${x.r===1?4.5:3}" fill="${x.r===1?'#ffc83a':'#4fe3ff'}" stroke="var(--panel)" stroke-width="1.5"><title>${new Date(x.t).getMonth()+1}/${new Date(x.t).getDate()} ${x.s}点・${x.r||'-'}位</title></circle>`).join('')}
+    <text x="${pl}" y="${H-4}" font-size="9" fill="var(--muted)">${N}試合前</text><text x="${W-pr}" y="${H-4}" font-size="9" fill="var(--muted)" text-anchor="end">最新</text></svg>`;
+  const r10=L.slice(-10), p10=L.slice(-20,-10), a10=r10.reduce((a,x)=>a+x.s,0)/r10.length, b10=p10.length?p10.reduce((a,x)=>a+x.s,0)/p10.length:null, dif=b10==null?null:a10-b10;
+  return `<div class="sds">${svg}<div class="sds-lg"><span><i class="ln"></i>5試合の平均</span><span><i class="dt"></i>点数</span><span><i class="dt g"></i>1位の試合</span><span><i class="da"></i>全体の平均 ${avg.toFixed(1)}</span></div></div>
+    <div class="sdk"><span><b>${a10.toFixed(1)}</b>点<small>最新10試合の平均</small></span>${dif!=null?`<span class="${dif>=0?'up':'dn'}"><b>${dif>=0?'+':''}${dif.toFixed(1)}</b>点<small>その前の10試合より</small></span>`:''}<span><b>${Math.max(...L.map(x=>x.s))}</b>点<small>最高（${L.length}試合中）</small></span></div>`;
+}
+function sdRank(L){
+  const R=L.filter(x=>x.r>0), N=R.length||1, c=[1,2,3,4].map(r=>R.filter(x=>r<4?x.r===r:x.r>=4).length);
+  const col=['#ffc83a','#c9d3e6','#e0a070','#5d6688'], nm=['1位','2位','3位','4位〜'];
+  const recent=L.slice(-10).map(x=>`<i class="sdr-c r${Math.min(x.r||4,4)}" title="${x.r||'-'}位">${x.r||'-'}</i>`).join('');
+  return `<div class="sdr-bar">${c.map((v,i)=>v?`<span style="flex:${v};--c:${col[i]}" title="${nm[i]} ${v}回"><b>${Math.round(v/N*100)}%</b></span>`:'').join('')}</div>
+    <div class="sdr-lg">${c.map((v,i)=>`<span><i style="background:${col[i]}"></i>${nm[i]} <b>${v}</b>回</span>`).join('')}</div>
+    <p class="sdr-h">最新10試合の順位</p><div class="sdr-row">${recent}</div>
+    <div class="sdk"><span><b>${Math.round(c[0]/N*100)}</b>%<small>1位の割合</small></span><span><b>${Math.round((c[0]+c[1])/N*100)}</b>%<small>2位以内</small></span><span><b>${(R.reduce((a,x)=>a+x.r,0)/N).toFixed(1)}</b>位<small>平均順位</small></span></div>`;
+}
+function sdTime(L){
+  const B=[['🌅','朝',5,11],['☀️','昼',11,17],['🌇','夕方',17,21],['🌙','夜',21,29]];
+  const c=B.map(([, ,a,b])=>L.filter(x=>{ let hh=new Date(x.t).getHours(); if(hh<5) hh+=24; return hh>=a&&hh<b; })), mx=Math.max(...c.map(v=>v.length),1);
+  const top=c.map(v=>v.length).indexOf(Math.max(...c.map(v=>v.length))), wr=v=>v.length?Math.round(v.filter(x=>x.r===1).length/v.length*100):null;
+  const bestW=c.map((v,i)=>({i,w:v.length>=3?wr(v):-1})).sort((a,b)=>b.w-a.w)[0];
+  return `<div class="sdt">${B.map(([ic,n],i)=>`<div class="sdt-r${i===top?' top':''}"><span class="sdt-n">${ic} ${n}</span><span class="sdt-b"><i style="--w:${c[i].length/mx*100}%"></i></span><b>${c[i].length}</b><small>${wr(c[i])==null?'':'勝率'+wr(c[i])+'%'}</small></div>`).join('')}</div>
+    <p class="sdt-msg">あなたは <b>${B[top][0]} ${B[top][1]}型</b>。${bestW.w>=0?`いちばん勝てているのは <b>${B[bestW.i][1]}</b>（勝率${bestW.w}%）。`:'3試合以上の時間帯がふえると、勝ちやすい時間帯もわかります。'}</p>`;
+}
 function albumCard(){
   const ev=albumEvents(); if(!ev.length) return '';
   const pics=ev.slice(0,3);
@@ -12364,7 +12461,7 @@ function meView(){
     <section class="statgrid">
       ${[['対戦',st.games],['勝利',st.wins],['勝率',st.games?Math.round(st.wins/st.games*100)+'%':'—'],['最高点',st.best],['独占',st.mono],['歴史モード',st.hist],['オンライン',st.online],['実績',got+'/'+ACH.length]].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('')}
     </section>
-    ${albumCard()}
+    ${statsDash()}${albumCard()}
     ${recHall()}
     ${indPanel()}
     ${rivalsPanel()}
