@@ -4421,6 +4421,37 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .gp-r b{text-align:right;font-family:var(--display);font-weight:400;font-size:13px}.gp-r.hit b{color:var(--gold-t);animation:lbwStamp .45s 1.4s cubic-bezier(.3,1.8,.5,1) both}
 .gp-all{margin:0;text-align:center;font-weight:900;color:var(--gold-t)}
 @media (prefers-reduced-motion:reduce){.gr-arc,.gp-bar i,.gp-coin,.gp-r.hit b{animation:none;transition:none}}
+/* 🏆 トロフィールーム */
+.trr{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:14px;padding:16px 14px 14px;border-radius:22px;background:linear-gradient(180deg,#1a1036 0%,#120c26 60%,#0c0a1a);box-shadow:inset 0 0 0 1.5px rgb(255 210 58 / .25),0 14px 34px rgb(0 0 0 / .35);color:#eef}
+.trr-lights{position:absolute;inset:0;pointer-events:none}
+.trr-lights i{position:absolute;top:-40px;width:160px;height:520px;background:conic-gradient(from 165deg at 50% 0,transparent 0deg,rgb(255 236 170 / .16) 15deg,transparent 30deg);transform-origin:50% 0;animation:trLight 7s ease-in-out infinite}
+.trr-lights i:nth-child(1){left:-30px;animation-delay:0s}.trr-lights i:nth-child(2){left:calc(50% - 80px);animation-delay:-2.3s}.trr-lights i:nth-child(3){right:-30px;animation-delay:-4.6s}
+@keyframes trLight{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+.trr-top{position:relative;display:grid;grid-template-columns:1fr auto;align-items:end;gap:2px 10px}
+.trr-top .label{grid-column:1/-1;color:#ffd23a}.trr-top h3{margin:0;font-size:19px}
+.trr-cnt{display:flex;align-items:baseline;gap:3px}.trr-cnt b{font-family:var(--display);font-weight:400;font-size:28px;color:#ffd23a;line-height:1}.trr-cnt span{font-size:12px;font-weight:800;opacity:.7}
+.trr-bar{grid-column:1/-1;height:6px;border-radius:99px;background:rgb(255 255 255 / .1);overflow:hidden;margin-top:4px}.trr-bar i{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,#ffb23a,#ffe27a);border-radius:inherit;animation:sdrIn 1s .2s cubic-bezier(.2,.9,.3,1) both;transform-origin:left}
+.trs{position:relative;display:flex;flex-direction:column;gap:6px;padding:10px 8px 0;border-radius:14px;background:linear-gradient(180deg,rgb(255 255 255 / .06),rgb(255 255 255 / .02));box-shadow:inset 0 0 0 1px rgb(255 255 255 / .08)}
+.trs-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:0 4px}.trs-h b{font-size:13px}.trs-h small{font-size:10.5px;font-weight:700;opacity:.6}
+.trr,.trs{min-width:0;max-width:100%;box-sizing:border-box}
+.trs-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:2px 2px;padding:6px 0 0;min-width:0}
+.trs-ledge{display:block;height:10px;margin:0 -8px;border-radius:0 0 14px 14px;background:linear-gradient(180deg,#8a5a2b,#5a3816);box-shadow:0 4px 10px rgb(0 0 0 / .4),inset 0 2px 0 rgb(255 220 160 / .35)}
+.trp{position:relative;min-width:0;width:100%;padding:0 0 6px;border:0;background:none;font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;animation:dkPop .4s calc(.1s + var(--j)*.04s) both}
+.trp-i{font-size:28px;line-height:1.15;filter:grayscale(1) brightness(.28);opacity:.75;transition:transform .2s}
+.trp.got .trp-i{filter:drop-shadow(0 0 10px color-mix(in srgb,var(--c) 70%,transparent));opacity:1;animation:trFloat 3.2s calc(var(--j)*.2s) ease-in-out infinite}
+.trp.part .trp-i{filter:grayscale(.6) brightness(.7);opacity:.85}
+@keyframes trFloat{50%{transform:translateY(-3px)}}
+.trp-base{display:block;width:30px;height:6px;border-radius:50%;background:radial-gradient(ellipse,rgb(0 0 0 / .55),transparent 70%)}
+.trp.got .trp-base{background:radial-gradient(ellipse,color-mix(in srgb,var(--c) 55%,transparent),transparent 70%)}
+.trp small{font-size:9.5px;font-weight:800;opacity:.6;white-space:nowrap}
+.trp.sel .trp-i{transform:scale(1.25) translateY(-4px)}
+.trp:focus-visible{outline:2px solid #ffd23a;outline-offset:2px;border-radius:8px}
+.trr-info{position:relative;display:flex;align-items:center;gap:12px;min-height:58px;padding:10px 12px;border-radius:14px;background:rgb(255 255 255 / .07);font-size:12px;font-weight:700}
+.trr-info>span:only-child{opacity:.6}
+.trr-info.pop{animation:dkPop .35s both}
+.trr-ii{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:28px;background:rgb(255 255 255 / .06);filter:grayscale(1) brightness(.5)}.trr-ii.got{filter:none;background:radial-gradient(circle,color-mix(in srgb,var(--c) 35%,transparent),transparent 70%)}
+.trr-it{display:flex;flex-direction:column;gap:1px;min-width:0}.trr-it b{font-size:14px}.trr-it small{font-size:10.5px;font-weight:800;color:#ffd23a}.trr-it em{font-style:normal;font-size:11.5px;line-height:1.5;opacity:.85}
+@media (prefers-reduced-motion:reduce){.trr-lights i,.trp,.trp.got .trp-i,.trr-bar i,.trr-info.pop{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9942,6 +9973,30 @@ function goalPanel(){
       return `<div class="gp-r${r.hit?' hit':''}" style="--c:${t.c};--p0:${(r.p0*100).toFixed(1)}%;--p1:${(r.p1*100).toFixed(1)}%"><span class="gp-n">${t.ic} ${t.n}</span><span class="gp-bar"><i></i></span><b>${r.hit?'達成！':`${Math.round(r.p1*100)}%`}</b></div>`; }).join('')}</div></div>
     ${R.all&&R.coin?'<p class="gp-all">🎉 今月の目標を、ぜんぶ達成しました！</p>':''}</section>`;
 }
+/* ---- 🏆 トロフィールーム：月のメダル・鏡の塔・目標コンプリート・金の実績を、ガラスの棚に飾る ---- */
+let TR_ITEMS=[];
+function trShelves(){
+  const P=S.prof||{}, L=P.log||[], now=new Date(), fd=t=>{ const d=new Date(t); return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`; };
+  const med=[]; for(let i=11;i>=0;i--){ const d=new Date(now.getFullYear(), now.getMonth()-i, 1), k=d.getFullYear()*100+d.getMonth()+1, n=L.filter(x=>wrKey(x.t)===k).length, m=wrMedal(n);
+    med.push({ic:m?m.ic:'🏅', n:`${k%100}月のメダル`, got:!!m, sub:`${d.getMonth()+1}月`, d:m?`${k%100}月に${n}試合あそんで、${m.n}メダル。`:`その月に5試合あそぶとブロンズ、15でシルバー、30でゴールド。${n?`（${n}試合）`:''}`, c:m?m.c:null}); }
+  const pr=typeof mirProg==='function'?mirProg():0;
+  const tw=MIR_FL.map((F,i)=>({ic:i===MIR_FL.length-1?'👑':F.ic, n:`鏡の塔 ${i+1}F`, got:pr>i, sub:`${i+1}F`, d:pr>i?`「${F.n}」を突破。`:`${i+1}F「${F.n}」を突破すると飾られます。`, c:i===MIR_FL.length-1?'#ffd23a':'#4dff9a'}));
+  const done=(P.goal&&P.goal.done)||{}, gm=[]; for(let i=5;i>=0;i--){ const d=new Date(now.getFullYear(), now.getMonth()-i, 1), k=d.getFullYear()*100+d.getMonth()+1, D=done[k]||{}, c=['g','w','m'].filter(x=>D[x]).length;
+    gm.push({ic:c===3?'🏆':c?'🥤':'🏆', n:`${k%100}月の目標`, got:c===3, part:c>0&&c<3, sub:`${d.getMonth()+1}月`, d:c===3?`${k%100}月の目標を3つとも達成！`:`3つの目標をぜんぶ達成すると、トロフィー。（${c}/3）`, c:'#ffc83a'}); }
+  const gold=ACH.filter(a=>ACH_TIER[a.id]===3).map(a=>({ic:a.ic, n:a.n, got:!!(P.ach||{})[a.id], sub:'', d:(P.ach||{})[a.id]?`${a.d}（${fd(P.ach[a.id])}）`:a.d, c:'#ffd23a'}));
+  return [['🏅','月のメダル','5試合でブロンズ・15でシルバー・30でゴールド',med],['🪞','鏡の塔','5つの階のトロフィー',tw],['🎯','目標コンプリート','その月の目標を3つとも達成',gm],['⭐','金の実績','いちばんむずかしい実績たち',gold]];
+}
+function trophyRoom(){
+  const SH=trShelves(); TR_ITEMS=[]; const all=SH.flatMap(x=>x[3]), got=all.filter(x=>x.got).length;
+  const shelf=([ic,n,d,items],si)=>`<div class="trs"><div class="trs-h"><b>${ic} ${n}</b><small>${items.filter(x=>x.got).length}/${items.length} · ${d}</small></div>
+    <div class="trs-row">${items.map((it,j)=>{ const id=TR_ITEMS.push(it)-1; return `<button class="trp${it.got?' got':it.part?' part':''}" style="--c:${it.c||'#ffd23a'};--j:${j}" onclick="trInfo(${id},this)" aria-label="${esc(it.n)}${it.got?'（獲得）':'（まだ）'}"><span class="trp-i">${it.ic}</span><i class="trp-base"></i>${it.sub?`<small>${it.sub}</small>`:''}</button>`; }).join('')}</div><i class="trs-ledge"></i></div>`;
+  return `<section class="trr"><div class="trr-lights" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="trr-top"><span class="label">TROPHY ROOM</span><h3>🏆 トロフィールーム</h3><div class="trr-cnt"><b>${got}</b><span>/ ${all.length}</span></div><span class="trr-bar"><i style="--w:${(got/all.length*100).toFixed(1)}%"></i></span></div>
+    ${SH.map(shelf).join('')}<div class="trr-info" id="trInfo" aria-live="polite"><span>トロフィーをタップすると、くわしく見られます。</span></div></section>`;
+}
+function trInfo(i,el){ const it=TR_ITEMS[i]; const box=document.getElementById('trInfo'); if(!it||!box) return; sfx(it.got?'select':'click'); haptic(6);
+  document.querySelectorAll('.trp.sel').forEach(e=>e.classList.remove('sel')); if(el) el.classList.add('sel');
+  box.innerHTML=`<span class="trr-ii${it.got?' got':''}" style="--c:${it.c||'#ffd23a'}">${it.ic}</span><span class="trr-it"><b>${esc(it.n)}</b><small>${it.got?'✨ 獲得ずみ':'🔒 まだ'}</small><em>${esc(it.d)}</em></span>`; box.classList.remove('pop'); void box.offsetWidth; box.classList.add('pop'); }
 function wrapOpen(k){
   const D=wrapData(k); if(!D) return; wrapClose(true); try{ if(k>=10000 && k===wrPrevKey()){ S.prof.wrSeen=k; saveProfile(); } }catch(e){}
   WR={D, sl:wrapSlides(D), i:0, t0:0, paused:false};
@@ -12712,7 +12767,7 @@ function meView(){
     ${fbCard()}
     ${historyPanel()}
     <button class="wide lab" onclick="go(\x27lab\x27)"><span class="label">LAB</span><b>バランス検証</b><span class="desc">CPU同士を大量に対戦させて、ルールの偏りを調べる開発者向けの機能。</span><span class="go">ラボを開く →</span></button>`:""}
-    ${tab==="col"?`${signPanel()}${rsPanel()}${cupsPanel()}
+    ${tab==="col"?`${trophyRoom()}${signPanel()}${rsPanel()}${cupsPanel()}
     ${pwDexPanel()}
     ${dexPanel()}
     ${skinsPanel()}
