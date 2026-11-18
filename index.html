@@ -4323,6 +4323,43 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .sdt-r.top .sdt-b i{background:#4fe3ff}.sdt-r b{font-family:var(--display);font-weight:400;font-size:15px;text-align:right}.sdt-r small{font-size:10.5px;color:var(--muted)}
 .sdt-msg{margin:0;font-size:12.5px;font-weight:700;line-height:1.6}.sdt-msg b{color:var(--cyan)}
 @media (prefers-reduced-motion:reduce){.sdh-b,.sdc,.sds-l,.sdr-bar span,.sdt-b i{animation:none}.sds-l{stroke-dashoffset:0}}
+/* 📆 今月のまとめ */
+.wrb{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border:0;border-radius:16px;font:inherit;color:#fff;text-align:left;cursor:pointer;background:linear-gradient(110deg,#5c2a9e,#2a4fae 55%,#1a8a8a);box-shadow:0 8px 22px rgb(92 42 158 / .35);position:relative;overflow:hidden}
+.wrb::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgb(255 255 255 / .18) 50%,transparent 65%);background-size:250% 100%;animation:mirSh 3.2s 1s ease-in-out infinite}
+.wrb-ic{font-size:26px}.wrb-tx{flex:1;display:flex;flex-direction:column;gap:1px}.wrb-tx b{font-size:15px}.wrb-tx small{font-size:11px;font-weight:700;opacity:.8}.wrb-go{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgb(255 255 255 / .2);font-size:12px}
+.wrb-more{display:flex;flex-wrap:wrap;gap:6px}.wrb-more button{border:0;border-radius:99px;padding:4px 12px;font:inherit;font-size:11.5px;font-weight:800;color:inherit;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line);cursor:pointer}
+.wrap{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 40px) 24px 40px;color:#fff;background:radial-gradient(120% 80% at 50% 20%,var(--g1),var(--g2));transition:background .5s;overflow:hidden;cursor:pointer;user-select:none;animation:wrIn .4s ease-out both}
+@keyframes wrIn{from{opacity:0;transform:scale(1.04)}}
+.wr-bars{position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);left:12px;right:12px;display:flex;gap:4px}
+.wr-bars i{flex:1;height:3px;border-radius:2px;background:rgb(255 255 255 / .25);overflow:hidden;position:relative}
+.wr-bars i.done::after,.wr-bars i.run::after{content:'';position:absolute;inset:0;background:#fff}
+.wr-bars i.run::after{transform-origin:left;animation:wrBar var(--d) linear both}
+@keyframes wrBar{from{transform:scaleX(0)}}
+.wr-x{position:absolute;top:calc(env(safe-area-inset-top,0px) + 24px);right:12px;width:36px;height:36px;border:0;border-radius:50%;background:rgb(255 255 255 / .14);color:#fff;font-size:16px;cursor:pointer;z-index:2}
+.wr-shapes i{position:absolute;border-radius:50%;filter:blur(2px);opacity:.35;animation:wrFl 7s ease-in-out infinite}
+.wr-shapes i:nth-child(1){width:220px;height:220px;left:-60px;top:18%;background:radial-gradient(circle,#ff9ad9,transparent 70%)}
+.wr-shapes i:nth-child(2){width:260px;height:260px;right:-80px;bottom:10%;background:radial-gradient(circle,#4fe3ff,transparent 70%);animation-delay:-2s}
+.wr-shapes i:nth-child(3){width:140px;height:140px;right:20%;top:8%;background:radial-gradient(circle,#ffc83a,transparent 70%);animation-delay:-4s}
+@keyframes wrFl{50%{transform:translate(20px,-24px) scale(1.15)}}
+.wr-s{position:relative;z-index:1;max-width:420px;width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.wr-s>*{animation:wrUp .6s cubic-bezier(.2,.9,.3,1) both}.wr-s>*:nth-child(2){animation-delay:.12s}.wr-s>*:nth-child(3){animation-delay:.24s}.wr-s>*:nth-child(4){animation-delay:.4s}.wr-s>*:nth-child(5){animation-delay:.55s}
+@keyframes wrUp{from{opacity:0;transform:translateY(24px)}}
+.wr-k{font-size:13px;font-weight:900;letter-spacing:.12em;opacity:.8}
+.wr-big{font-family:var(--display);font-weight:400;font-size:min(34vw,150px);line-height:1;text-shadow:0 6px 30px rgb(0 0 0 / .35);font-variant-numeric:tabular-nums}.wr-big.gold{color:#ffd23a}
+.wr-month small{font-size:.35em;margin-left:4px}
+.wr-u{font-size:20px;font-weight:900;margin-top:-6px}
+.wr-mid{font-family:var(--display);font-weight:400;font-size:44px;line-height:1.1}
+.wr-emo{font-size:96px;line-height:1}
+.wr-t{margin:6px 0 0;font-size:15px;font-weight:700;line-height:1.7}.wr-t b{color:#ffd23a}
+.wr-grid{margin:0;font-size:22px;letter-spacing:2px}
+.wr-bar{width:min(280px,80%);height:12px;border-radius:99px;background:rgb(255 255 255 / .18);overflow:hidden}.wr-bar i{display:block;height:100%;width:var(--w);border-radius:inherit;background:linear-gradient(90deg,#ff9ad9,#ffd23a);animation:sdrIn 1s .5s cubic-bezier(.2,.9,.3,1) both;transform-origin:left}
+.wr-ind svg{width:66px;height:66px}.wr-ind{width:120px;height:120px;border-radius:28px;display:grid;place-items:center;background:var(--c);box-shadow:0 12px 40px color-mix(in srgb,var(--c) 60%,transparent);color:#fff}
+.wr-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;margin-top:6px}
+.wr-sum span{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 4px;border-radius:14px;background:rgb(255 255 255 / .1)}.wr-sum span.w2{grid-column:span 2}
+.wr-sum b{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.1}.wr-sum small{font-size:10.5px;font-weight:800;opacity:.8}
+.wr-act{display:flex;gap:8px;margin-top:14px;justify-content:center;flex-wrap:wrap}
+.wr-hint{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);margin:0;font-size:11px;font-weight:800;opacity:.55}
+@media (prefers-reduced-motion:reduce){.wrb::after,.wrap,.wr-shapes i,.wr-s>*,.wr-bar i,.wr-bars i.run::after{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9727,13 +9764,75 @@ function albumEvents(){
 const albKey = t => { const d=new Date(t); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); };
 /* ---- 📊 プレイ記録ダッシュボード：遊んだ日のカレンダー・点数の流れ・順位・時間帯（P.log 最新100試合から） ---- */
 function sdDayKey(t){ const d=new Date(t); return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(); }
+/* ---- 📆 今月のまとめ：月ごとの記録を、ストーリーのようなスライドでふり返る ---- */
+let WR=null;
+const wrKey = t => { const d=new Date(t); return d.getFullYear()*100+d.getMonth()+1; };
+const wrName = k => `${Math.floor(k/100)}年${k%100}月`;
+function wrapBtn(L){
+  const ks=[...new Set(L.map(x=>wrKey(x.t)))].sort((a,b)=>b-a); if(!ks.length) return '';
+  const k=ks[0], n=L.filter(x=>wrKey(x.t)===k).length;
+  return `<button class="wrb" onclick="wrapOpen(${k})"><span class="wrb-ic">📆</span><span class="wrb-tx"><b>${k%100}月のまとめを見る</b><small>${n}試合をスライドでふり返る</small></span><span class="wrb-go">▶</span></button>${ks.length>1?`<div class="wrb-more">${ks.slice(1,6).map(x=>`<button onclick="wrapOpen(${x})">${x%100}月</button>`).join('')}</div>`:''}`;
+}
+function wrapData(k){
+  const all=(S.prof&&S.prof.log)||[], L=all.filter(x=>wrKey(x.t)===k); if(!L.length) return null;
+  const pk=k%100===1?(Math.floor(k/100)-1)*100+12:k-1, prev=all.filter(x=>wrKey(x.t)===pk).length;
+  const days=new Set(L.map(x=>sdDayKey(x.t))).size, best=L.reduce((a,x)=>x.s>a.s?x:a,L[0]);
+  const wins=L.filter(x=>x.r===1).length; let run=0, brun=0; L.forEach(x=>{ run=x.r===1?run+1:0; brun=Math.max(brun,run); });
+  const mono=L.reduce((a,x)=>a+((x.g||'').match(/🟨/g)||[]).length,0), turns=L.reduce((a,x)=>a+[...(x.g||'')].length/2,0);
+  const ic=[0,0,0,0,0,0]; let icN=0; L.forEach(x=>(x.i||[]).forEach(c=>{ if(c>=0&&c<6){ ic[c]++; icN++; } }));
+  const fav=icN?ic.indexOf(Math.max(...ic)):null;
+  const B=[['🌅','朝',5,11],['☀️','昼',11,17],['🌇','夕方',17,21],['🌙','夜',21,29]], tc=B.map(([, ,a,b])=>L.filter(x=>{ let hh=new Date(x.t).getHours(); if(hh<5) hh+=24; return hh>=a&&hh<b; }).length), tb=tc.indexOf(Math.max(...tc));
+  return {k, n:L.length, prev, days, best, wins, brun, wr:Math.round(wins/L.length*100), mono, monoR:turns?Math.round(mono/turns*100):0, fav, favR:fav!=null?Math.round(ic[fav]/icN*100):0, tb:B[tb], avg:(L.reduce((a,x)=>a+x.s,0)/L.length).toFixed(1)};
+}
+function wrapSlides(D){
+  const S2=[];
+  S2.push({c:['#3a1f6e','#0b0b24'], h:`<span class="wr-k">MONTHLY RECAP</span><b class="wr-big wr-month">${D.k%100}<small>月</small></b><p class="wr-t">${Math.floor(D.k/100)}年${D.k%100}月の<br>あなたのAZAKEI MARKET</p>`});
+  S2.push({c:['#0f3b5c','#0a1630'], h:`<span class="wr-k">今月あそんだ試合</span><b class="wr-big" data-n="${D.n}">0</b><span class="wr-u">試合</span><p class="wr-t">${D.days}日間 あそびました。${D.prev?`先月は ${D.prev}試合${D.n>D.prev?' → ふえた！':D.n<D.prev?'。':'。同じペース！'}`:''}</p>`});
+  S2.push({c:['#5c3a0f','#1d1408'], h:`<span class="wr-k">今月のベストスコア</span><b class="wr-big gold" data-n="${D.best.s}">0</b><span class="wr-u">点</span><p class="wr-grid">${esc(D.best.g||'')}</p><p class="wr-t">${new Date(D.best.t).getMonth()+1}月${new Date(D.best.t).getDate()}日の試合。${D.best.r===1?'もちろん1位！':D.best.r?D.best.r+'位でした。':''}<br>今月の平均は ${D.avg}点。</p>`});
+  S2.push({c:['#5c0f3b','#1d0814'], h:`<span class="wr-k">1位になった回数</span><b class="wr-big" data-n="${D.wins}">0</b><span class="wr-u">回</span><div class="wr-bar"><i style="--w:${D.wr}%"></i></div><p class="wr-t">勝率 <b>${D.wr}%</b>${D.brun>=2?`。最高 <b>${D.brun}連勝</b>！`:'。'}</p>`});
+  S2.push({c:['#0f5c3b','#08201a'], h:`<span class="wr-k">独占できたターン</span><b class="wr-big" data-n="${D.mono}">0</b><span class="wr-u">回</span><p class="wr-t">ターンのうち <b>${D.monoR}%</b> で、だれとも被らずに独占。${D.monoR>=45?'読み合いの達人！':D.monoR>=30?'いいバランス。':'次は人の少ない産業もねらってみよう。'}</p>`});
+  if(D.fav!=null) S2.push({c:['#1f2f6e','#0b1024'], h:`<span class="wr-k">いちばん出した産業</span><div class="wr-ind" style="--c:var(--i${D.fav})">${svg(D.fav,2)}</div><b class="wr-mid">${IND[D.fav]}</b><p class="wr-t">出したカードの <b>${D.favR}%</b> が${IND[D.fav]}でした。</p>`});
+  S2.push({c:['#2a1f5c','#0b0b24'], h:`<span class="wr-k">あそぶ時間帯</span><b class="wr-emo">${D.tb[0]}</b><b class="wr-mid">${D.tb[1]}型</b><p class="wr-t">今月は${D.tb[1]}に遊ぶことが多かったよ。</p>`});
+  S2.push({c:['#3a1f6e','#0b0b24'], fin:1, h:`<span class="wr-k">${wrName(D.k)} のまとめ</span><div class="wr-sum">
+      <span><b>${D.n}</b><small>試合</small></span><span><b>${D.best.s}</b><small>最高点</small></span><span><b>${D.wins}</b><small>1位</small></span><span><b>${D.mono}</b><small>独占</small></span>
+      ${D.fav!=null?`<span class="w2"><b>${IND[D.fav]}</b><small>いちばん出した産業</small></span>`:''}<span class="w2"><b>${D.tb[0]} ${D.tb[1]}型</b><small>時間帯</small></span></div>
+      <div class="wr-act"><button class="btn gold" onclick="event.stopPropagation();wrapShare()">📣 まとめをシェア</button><button class="btn" onclick="event.stopPropagation();wrapClose()">とじる</button></div>`});
+  return S2;
+}
+function wrapOpen(k){
+  const D=wrapData(k); if(!D) return; wrapClose(true);
+  WR={D, sl:wrapSlides(D), i:0, t0:0, paused:false};
+  const el=document.createElement('div'); el.className='wrap'; el.id='wrap'; el.setAttribute('role','dialog'); el.setAttribute('aria-label',`${wrName(k)}のまとめ`);
+  el.onclick=e=>{ const x=e.clientX/innerWidth; if(x<.3) wrapGo(-1); else wrapGo(1); };
+  document.body.appendChild(el); document.addEventListener('keydown',wrapKey); sfx('open'); haptic(15); wrapPaint();
+}
+function wrapKey(e){ if(!WR) return; if(e.key==='Escape') wrapClose(); else if(e.key==='ArrowRight') wrapGo(1); else if(e.key==='ArrowLeft') wrapGo(-1); }
+function wrapClose(silent){ const el=document.getElementById('wrap'); if(el) el.remove(); if(WR){ clearTimeout(WR.tm); } WR=null; document.removeEventListener('keydown',wrapKey); }
+function wrapGo(d){ if(!WR) return; const n=WR.i+d; if(n<0) return; if(n>=WR.sl.length){ if(!WR.sl[WR.i].fin) return; return; } WR.i=n; sfx(d>0?'flip':'click'); haptic(6); wrapPaint(); }
+function wrapPaint(){
+  const el=document.getElementById('wrap'); if(!el||!WR) return; clearTimeout(WR.tm);
+  const s=WR.sl[WR.i], N=WR.sl.length, dur=s.fin?0:4800;
+  el.style.setProperty('--g1',s.c[0]); el.style.setProperty('--g2',s.c[1]);
+  el.innerHTML=`<div class="wr-bars">${WR.sl.map((_,j)=>`<i class="${j<WR.i?'done':j===WR.i&&dur?'run':j===WR.i?'done':''}" style="--d:${dur}ms"></i>`).join('')}</div>
+    <button class="wr-x" onclick="event.stopPropagation();wrapClose()" aria-label="とじる">✕</button>
+    <div class="wr-shapes" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="wr-s" key="${WR.i}">${s.h}</div>${s.fin?'':'<p class="wr-hint">タップで次へ</p>'}`;
+  el.querySelectorAll('[data-n]').forEach(b=>{ const to=+b.dataset.n; if(reduced()){ b.textContent=to; return; } const t0=performance.now(); const step=t=>{ const p=Math.min(1,(t-t0)/900); b.textContent=Math.round(to*(1-Math.pow(1-p,3))); if(p<1 && b.isConnected) requestAnimationFrame(step); }; requestAnimationFrame(step); setTimeout(()=>{ if(b.isConnected) b.textContent=to; },1000); });
+  if(s.fin && !reduced()) setTimeout(()=>{ try{ confetti(); }catch(e){} },300);
+  if(dur) WR.tm=setTimeout(()=>wrapGo(1), dur);
+}
+function wrapShare(){
+  const D=WR&&WR.D; if(!D) return;
+  const t=`📆 ${wrName(D.k)}のAZAKEI MARKET\n🎮 ${D.n}試合（${D.days}日）\n🏆 最高 ${D.best.s}点 / 1位 ${D.wins}回（勝率${D.wr}%）\n🟨 独占 ${D.mono}回${D.fav!=null?`\n❤️ いちばん出した産業：${IND[D.fav]}`:''}\n${D.tb[0]} ${D.tb[1]}型\n${PUBLIC_URL}`;
+  sfx('click'); if(!IN_CLAUDE && navigator.share){ navigator.share({text:t}).catch(e=>{ if(!e || e.name!=='AbortError') copyText(t); }); return; } copyText(t);
+}
 function statsDash(){
   const L=(S.prof&&S.prof.log)||[];
   if(L.length<2) return `<section class="panel sdh"><div class="row spread"><h3>📊 プレイ記録</h3></div><p class="note">2試合以上あそぶと、遊んだ日のカレンダーや点数の流れがここに出ます。</p></section>`;
   const tab=S.sdTab||'cal', tabs=[['cal','📅 カレンダー'],['sc','📈 点数'],['rk','🏅 順位'],['tm','🕒 時間帯']];
   const body = tab==='sc'?sdScore(L):tab==='rk'?sdRank(L):tab==='tm'?sdTime(L):sdCal(L);
   return `<section class="panel sdh" id="sdh"><div class="row spread"><h3>📊 プレイ記録</h3><span class="note">最新${L.length}試合</span></div>
-    <div class="sdh-tabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="sdTabGo('${k}')">${n}</button>`).join('')}</div>
+    ${wrapBtn(L)}<div class="sdh-tabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" onclick="sdTabGo('${k}')">${n}</button>`).join('')}</div>
     <div class="sdh-b" key="${tab}">${body}</div></section>`;
 }
 function sdTabGo(k){ S.sdTab=k; sfx('click'); haptic(6); const el=document.getElementById('sdh'); if(el) el.outerHTML=statsDash(); }
@@ -11623,7 +11722,7 @@ function recordResult(){
   if(G.daily){ P.daily=P.daily||{}; if(!P.daily[G.daily]) P.daily[G.daily]={score:p.score, rank:mine?mine.rank:0, grid:resultGrid(p)};
     const ks=Object.keys(P.daily).sort(); while(ks.length>60) delete P.daily[ks.shift()];
     if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
-  P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p)}]).slice(-100);
+  P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p), i:p.used.map(u=>u.ind)}]).slice(-100);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
   const r0=rateOf(), r1=(G.tac||(G.cfg.my&&!G.cfg.month)) ? r0 : Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold'); rsPeak(r1);   // 作戦カードありはレートに入れない
   const dex=dexRecord(); if(dexCount()>=DEX_TOTAL()) unlock('dexall');
