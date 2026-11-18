@@ -4380,6 +4380,22 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .wrn-go{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgb(255 255 255 / .2);font-size:12px}
 .wrn-x{position:absolute;top:6px;right:6px;width:26px;height:26px;border:0;border-radius:50%;background:rgb(0 0 0 / .2);color:#fff;font-size:11px;cursor:pointer;z-index:1}
 @media (prefers-reduced-motion:reduce){.wr-months i,.wrn,.wrn::after,.wrn-env{animation:none}}
+/* 🏅 月のメダル */
+.wr-medal{position:relative;display:flex;flex-direction:column;align-items:center;margin:6px 0 4px;animation:wrMed 1s .3s cubic-bezier(.3,1.6,.5,1) both}
+.wr-medal b{position:relative;z-index:1;width:96px;height:96px;border-radius:50%;display:grid;place-items:center;font-size:56px;background:radial-gradient(circle at 35% 30%,#fff8,transparent 50%),var(--mc);box-shadow:0 0 0 5px rgb(255 255 255 / .55),0 10px 30px color-mix(in srgb,var(--mc) 60%,transparent)}
+.wr-medal small{margin-top:6px;font-size:13px;font-weight:900;color:var(--mc);letter-spacing:.06em}
+.wr-rib{position:absolute;top:-22px;width:60px;height:40px;background:linear-gradient(90deg,#ff5a6e 0 50%,#4f7bff 50%);clip-path:polygon(0 0,100% 0,80% 100%,50% 70%,20% 100%)}
+@keyframes wrMed{0%{opacity:0;transform:translateY(-60px) rotate(-30deg) scale(.5)}60%{transform:translateY(6px) rotate(8deg)}100%{opacity:1;transform:none}}
+.wmr{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:14px;background:var(--panel2)}
+.wmr-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}.wmr-h b{font-size:13px}.wmr-h small{font-size:11px;font-weight:800;color:var(--muted)}.wmr-h small b{color:var(--gold-t);font-size:12px}
+.wmr-r{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.wmr-m{display:flex;flex-direction:column;align-items:center;gap:3px}
+.wmr-m i{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:22px;box-shadow:inset 0 0 0 2px var(--line);background:var(--panel)}
+.wmr-m.got i{background:radial-gradient(circle at 35% 30%,#fff6,transparent 55%),color-mix(in srgb,var(--mc) 35%,var(--panel));box-shadow:0 0 0 2px var(--mc),0 4px 12px color-mix(in srgb,var(--mc) 40%,transparent)}
+.wmr-m.cur i{outline:2px dashed var(--cyan);outline-offset:2px}
+.wmr-m small{font-size:10px;font-weight:800;color:var(--muted)}
+.wr-act .btn{padding-left:14px;padding-right:14px}
+@media (prefers-reduced-motion:reduce){.wr-medal{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9792,7 +9808,7 @@ const wrIn = (x,k) => k<10000 ? new Date(x.t).getFullYear()===k : wrKey(x.t)===k
 function wrapBtn(L){
   const ks=[...new Set(L.map(x=>wrKey(x.t)))].sort((a,b)=>b-a); if(!ks.length) return '';
   const k=ks[0], n=L.filter(x=>wrKey(x.t)===k).length;
-  return `<button class="wrb" onclick="wrapOpen(${k})"><span class="wrb-ic">📆</span><span class="wrb-tx"><b>${k%100}月のまとめを見る</b><small>${n}試合をスライドでふり返る</small></span><span class="wrb-go">▶</span></button>${(()=>{ const ys=[...new Set(L.map(x=>new Date(x.t).getFullYear()))].filter(y=>L.filter(x=>new Date(x.t).getFullYear()===y).length>=5).sort((a,b)=>b-a); const ch=[...ys.map(y=>`<button class="yr" onclick="wrapOpen(${y})">🎆 ${y}年</button>`), ...ks.slice(1,6).map(x=>`<button onclick="wrapOpen(${x})">${x%100}月</button>`)]; return ch.length?`<div class="wrb-more">${ch.join('')}</div>`:''; })()}`;
+  return `${wrMedalRow(L)}<button class="wrb" onclick="wrapOpen(${k})"><span class="wrb-ic">📆</span><span class="wrb-tx"><b>${k%100}月のまとめを見る</b><small>${n}試合をスライドでふり返る</small></span><span class="wrb-go">▶</span></button>${(()=>{ const ys=[...new Set(L.map(x=>new Date(x.t).getFullYear()))].filter(y=>L.filter(x=>new Date(x.t).getFullYear()===y).length>=5).sort((a,b)=>b-a); const ch=[...ys.map(y=>`<button class="yr" onclick="wrapOpen(${y})">🎆 ${y}年</button>`), ...ks.slice(1,6).map(x=>`<button onclick="wrapOpen(${x})">${x%100}月</button>`)]; return ch.length?`<div class="wrb-more">${ch.join('')}</div>`:''; })()}`;
 }
 /* 月が変わって最初にホームを開いたら、先月のまとめを届ける（3試合以上あそんだ月だけ・見たら消える） */
 function wrPrevKey(){ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()-1); return d.getFullYear()*100+d.getMonth()+1; }
@@ -9808,7 +9824,7 @@ function wrapData(k){
   const bm={}; if(yr) L.forEach(x=>{ const m=new Date(x.t).getMonth()+1; bm[m]=(bm[m]||0)+1; }); const topM=yr?Object.entries(bm).sort((a,b)=>b[1]-a[1])[0]:null;
   const days=new Set(L.map(x=>sdDayKey(x.t))).size, best=L.reduce((a,x)=>x.s>a.s?x:a,L[0]);
   const wins=L.filter(x=>x.r===1).length; let run=0, brun=0; L.forEach(x=>{ run=x.r===1?run+1:0; brun=Math.max(brun,run); });
-  const mono=L.reduce((a,x)=>a+((x.g||'').match(/🟨/g)||[]).length,0), turns=L.reduce((a,x)=>a+[...(x.g||'')].length/2,0);
+  const mono=L.reduce((a,x)=>a+((x.g||'').match(/🟨/g)||[]).length,0), turns=L.reduce((a,x)=>a+[...(x.g||'')].length,0);
   const ic=[0,0,0,0,0,0]; let icN=0; L.forEach(x=>(x.i||[]).forEach(c=>{ if(c>=0&&c<6){ ic[c]++; icN++; } }));
   const fav=icN?ic.indexOf(Math.max(...ic)):null;
   const B=[['🌅','朝',5,11],['☀️','昼',11,17],['🌇','夕方',17,21],['🌙','夜',21,29]], tc=B.map(([, ,a,b])=>L.filter(x=>{ let hh=new Date(x.t).getHours(); if(hh<5) hh+=24; return hh>=a&&hh<b; }).length), tb=tc.indexOf(Math.max(...tc));
@@ -9825,11 +9841,46 @@ function wrapSlides(D){
     S2.push({c:['#0f4a5c','#081a24'], h:`<span class="wr-k">いちばん遊んだ月</span><b class="wr-big">${D.topM[0]}<small style="font-size:.35em">月</small></b><div class="wr-months">${Array.from({length:12},(_,i)=>{ const v=D.bm[i+1]||0; return `<span><i style="--h:${v/mx*100}%;--j:${i}" class="${+D.topM[0]===i+1?'top':''}"></i><small>${i+1}</small></span>`; }).join('')}</div><p class="wr-t">${D.topM[0]}月は <b>${D.topM[1]}試合</b>。</p>`}); }
   if(D.fav!=null) S2.push({c:['#1f2f6e','#0b1024'], h:`<span class="wr-k">いちばん出した産業</span><div class="wr-ind" style="--c:var(--i${D.fav})">${svg(D.fav,2)}</div><b class="wr-mid">${IND[D.fav]}</b><p class="wr-t">出したカードの <b>${D.favR}%</b> が${IND[D.fav]}でした。</p>`});
   S2.push({c:['#2a1f5c','#0b0b24'], h:`<span class="wr-k">あそぶ時間帯</span><b class="wr-emo">${D.tb[0]}</b><b class="wr-mid">${D.tb[1]}型</b><p class="wr-t">今月は${D.tb[1]}に遊ぶことが多かったよ。</p>`});
-  S2.push({c:['#3a1f6e','#0b0b24'], fin:1, h:`<span class="wr-k">${wrName(D.k)} のまとめ</span><div class="wr-sum">
+  S2.push({c:['#3a1f6e','#0b0b24'], fin:1, h:`<span class="wr-k">${wrName(D.k)} のまとめ</span>${(()=>{ const m=D.yr?null:wrMedal(D.n); return m?`<div class="wr-medal" style="--mc:${m.c}"><b>${m.ic}</b><small>${m.n}メダル</small></div>`:''; })()}<div class="wr-sum">
       <span><b>${D.n}</b><small>試合</small></span><span><b>${D.best.s}</b><small>最高点</small></span><span><b>${D.wins}</b><small>1位</small></span><span><b>${D.mono}</b><small>独占</small></span>
       ${D.fav!=null?`<span class="w2"><b>${IND[D.fav]}</b><small>いちばん出した産業</small></span>`:''}<span class="w2"><b>${D.tb[0]} ${D.tb[1]}型</b><small>時間帯</small></span></div>
-      <div class="wr-act"><button class="btn gold" onclick="event.stopPropagation();wrapShare()">📣 まとめをシェア</button><button class="btn" onclick="event.stopPropagation();wrapClose()">とじる</button></div>`});
+      <div class="wr-act"><button class="btn cyan" onclick="event.stopPropagation();wrapImg()">🖼️ 画像にする</button><button class="btn gold" onclick="event.stopPropagation();wrapShare()">📣 シェア</button><button class="btn" onclick="event.stopPropagation();wrapClose()">とじる</button></div>`});
   return S2.map(x=>({...x, h:x.h.replace(/今月/g,D.per).replace(/先月/g,D.prevN).replace('MONTHLY RECAP', D.yr?'YEARLY RECAP':'MONTHLY RECAP')}));
+}
+/* 🏅 月のメダル：その月に遊んだ試合数で ブロンズ5 / シルバー15 / ゴールド30 */
+const WR_MED=[{n:'ゴールド',ic:'🥇',min:30,c:'#ffd23a'},{n:'シルバー',ic:'🥈',min:15,c:'#d6deec'},{n:'ブロンズ',ic:'🥉',min:5,c:'#e0a070'}];
+function wrMedal(n){ return WR_MED.find(m=>n>=m.min)||null; }
+function wrMedalRow(L){
+  const now=new Date(), ms=[]; for(let i=5;i>=0;i--){ const d=new Date(now.getFullYear(), now.getMonth()-i, 1); ms.push(d.getFullYear()*100+d.getMonth()+1); }
+  const cur=ms[5], cn=L.filter(x=>wrKey(x.t)===cur).length, next=[...WR_MED].reverse().find(m=>cn<m.min);
+  return `<div class="wmr"><div class="wmr-h"><b>🏅 月のメダル</b><small>${next?`今月あと <b>${next.min-cn}</b>試合で${next.ic}${next.n}`:'今月はゴールド獲得！'}</small></div><div class="wmr-r">${ms.map(k=>{ const n=L.filter(x=>wrKey(x.t)===k).length, m=wrMedal(n);
+    return `<span class="wmr-m${m?' got':''}${k===cur?' cur':''}" style="--mc:${m?m.c:'transparent'}" title="${k%100}月 ${n}試合"><i>${m?m.ic:''}</i><small>${k%100}月</small></span>`; }).join('')}</div></div>`;
+}
+/* 🖼️ まとめを縦長の画像に（ストーリーに貼れる 1080×1920） */
+async function wrapImg(){
+  const D=WR&&WR.D; if(!D) return; wrapClose(); sfx('select'); toast('画像を作っています…');
+  try{ await document.fonts.ready; }catch(e){}
+  const W=1080, H=1920, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d');
+  const Df='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', Bf='"M PLUS Rounded 1c",sans-serif';
+  const RR=(X,Y,w,h,r)=>{ x.beginPath(); if(x.roundRect) x.roundRect(X,Y,w,h,r); else x.rect(X,Y,w,h); };
+  const bg=x.createLinearGradient(0,0,W,H); bg.addColorStop(0,'#3a1f6e'); bg.addColorStop(.55,'#1a2a6e'); bg.addColorStop(1,'#0b3b3b'); x.fillStyle=bg; x.fillRect(0,0,W,H);
+  [['#ff9ad9',140,420,320],['#4fe3ff',940,1500,380],['#ffc83a',820,260,220]].forEach(([c,cx,cy,r])=>{ const g=x.createRadialGradient(cx,cy,0,cx,cy,r); g.addColorStop(0,c+'66'); g.addColorStop(1,c+'00'); x.fillStyle=g; x.fillRect(0,0,W,H); });
+  x.textAlign='center'; x.fillStyle='rgba(255,255,255,.8)'; x.font=`800 40px ${Bf}`; x.fillText(D.yr?'YEARLY RECAP':'MONTHLY RECAP',W/2,190);
+  x.fillStyle='#fff'; x.font=`${D.yr?230:300}px ${Df}`; x.fillText(D.yr?String(D.k):String(D.k%100),W/2-(D.yr?40:60),480); x.font=`100px ${Df}`; x.fillText(D.yr?'年':'月',W/2+(D.yr?330:200),480);
+  x.font=`700 46px ${Bf}`; x.fillStyle='rgba(255,255,255,.85)'; x.fillText(`${wrName(D.k)}の AZAKEI MARKET`,W/2,570);
+  const m=D.yr?null:wrMedal(D.n); let y=640;
+  if(m){ x.save(); x.translate(W/2,y+110); x.fillStyle=m.c; x.beginPath(); x.arc(0,0,110,0,Math.PI*2); x.fill(); x.lineWidth=10; x.strokeStyle='rgba(255,255,255,.7)'; x.stroke(); x.font=`130px ${Bf}`; x.textBaseline='middle'; x.fillText(m.ic,0,10); x.restore(); x.font=`800 40px ${Bf}`; x.fillStyle=m.c; x.fillText(`${m.n}メダル`,W/2,y+272); y+=310; } else y+=40;
+  const cells=[['試合',D.n],['最高点',D.best.s],['1位',D.wins],['独占',D.mono]], cw=210, gx=(W-4*cw-3*24)/2;
+  cells.forEach(([n,v],i)=>{ const X=gx+i*(cw+24); RR(X,y,cw,210,32); x.fillStyle='rgba(255,255,255,.12)'; x.fill(); x.fillStyle='#fff'; x.font=`92px ${Df}`; x.fillText(String(v),X+cw/2,y+120); x.font=`800 34px ${Bf}`; x.fillStyle='rgba(255,255,255,.8)'; x.fillText(n,X+cw/2,y+175); });
+  y+=250;
+  const row=(lab,val,yy)=>{ RR(90,yy,W-180,110,30); x.fillStyle='rgba(255,255,255,.1)'; x.fill(); x.textAlign='left'; x.font=`800 36px ${Bf}`; x.fillStyle='rgba(255,255,255,.75)'; x.fillText(lab,140,yy+68); x.textAlign='right'; x.font=`58px ${Df}`; x.fillStyle='#fff'; x.fillText(val,W-140,yy+76); x.textAlign='center'; };
+  row('勝率',`${D.wr}%`,y); y+=130; row('独占できたターン',`${D.monoR}%`,y); y+=130;
+  if(D.fav!=null){ row('いちばん出した産業',IND[D.fav],y); y+=130; }
+  row('あそぶ時間帯',`${D.tb[0]} ${D.tb[1]}型`,y); y+=130;
+  if(D.yr && D.topM){ row('いちばん遊んだ月',`${D.topM[0]}月`,y); y+=130; }
+  x.fillStyle='rgba(255,255,255,.65)'; x.font=`600 30px ${Bf}`; x.fillText(`${(NET.name||'').trim()||'あなた'} ・ ${PUBLIC_URL.replace(/^https:\/\//,'')}`,W/2,H-56);
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:`📆 ${wrName(D.k)}のまとめ`, alt:`${wrName(D.k)}のまとめ画像：${D.n}試合・最高${D.best.s}点・1位${D.wins}回`, name:`azakei-recap-${D.k}.png`, note:'スマホのストーリーにちょうどいい縦長サイズです。'};
+  openSheet('card');
 }
 function wrapOpen(k){
   const D=wrapData(k); if(!D) return; wrapClose(true); try{ if(k>=10000 && k===wrPrevKey()){ S.prof.wrSeen=k; saveProfile(); } }catch(e){}
