@@ -4492,6 +4492,61 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .totop span{display:block;animation:ttBob 1.8s ease-in-out infinite}
 @keyframes ttBob{50%{transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.totop span{animation:none}}
+/* 🎲 すごろく */
+.sg-ttl{margin:2px 0 10px}
+.sg-board{position:relative;display:grid;grid-template:repeat(6,minmax(0,1fr))/repeat(6,minmax(0,1fr));gap:4px;aspect-ratio:1;padding:6px;border-radius:22px;overflow:hidden;background:radial-gradient(80% 60% at 50% 45%,rgb(255 255 255 / .14),transparent 70%),linear-gradient(160deg,var(--c1),var(--c2));box-shadow:inset 0 0 0 1px rgb(255 255 255 / .16),0 10px 26px rgb(0 0 0 / .35);color:#fff}
+.sgq{position:relative;min-width:0;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:rgb(255 255 255 / .1);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .16),0 3px 0 rgb(0 0 0 / .28);transition:transform .2s,box-shadow .2s}
+.sgq-ic{font-size:clamp(14px,4.4vw,22px);line-height:1}.sgq small{font-size:clamp(8px,2.3vw,11px);font-weight:800;opacity:.9;white-space:nowrap;overflow:hidden;max-width:100%}
+.sgq.t-ind small{font-size:clamp(7px,2vw,10.5px);letter-spacing:-.04em;overflow:visible}
+.sgq-svg{display:block;width:clamp(16px,4.6vw,24px);color:#fff}.sgq-svg svg{width:100%;display:block}
+.sgq.t-ind{background:linear-gradient(160deg,color-mix(in srgb,var(--ic) 75%,#fff 0%),color-mix(in srgb,var(--ic) 55%,#000))}
+.sgq.t-start{background:linear-gradient(160deg,#ffe27a,#ffb23a);color:#3a2300}
+.sgq.t-star{background:linear-gradient(160deg,#fff3a8,#ffc83a 60%,#ff9f1a);color:#3a2300;animation:sgStar 2.4s ease-in-out infinite}
+.sgq.t-quiz{background:linear-gradient(160deg,#9f8bff,#5a3fd0)}
+.sgq.t-chance{background:linear-gradient(160deg,#ff9ccc,#d1407e)}
+.sgq.t-coin{background:linear-gradient(160deg,rgb(255 255 255 / .2),rgb(255 255 255 / .06))}
+.sgq.pass{box-shadow:inset 0 0 0 2px rgb(255 255 255 / .55),0 3px 0 rgb(0 0 0 / .28)}
+.sgq.here{transform:translateY(-2px);box-shadow:0 0 0 2px #fff,0 0 18px 4px rgb(255 230 140 / .7),0 3px 0 rgb(0 0 0 / .28)}
+@keyframes sgStar{50%{box-shadow:0 0 16px 3px rgb(255 214 90 / .8),inset 0 0 0 1px #fff}}
+.sg-mid{grid-area:2/2/6/6;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-radius:16px;background:rgb(8 8 30 / .32);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .1);overflow:hidden;padding:6px}
+.sg-th{position:relative;font-weight:900;font-size:12px;letter-spacing:.04em;padding:3px 10px;border-radius:99px;background:rgb(255 255 255 / .14)}
+.sg-fxw{position:absolute;inset:0;pointer-events:none}
+.sg-fx{position:absolute;top:-14%;left:var(--x);font-style:normal;font-size:15px;opacity:.55;animation:sgFall var(--du) linear infinite;animation-delay:var(--dl)}
+@keyframes sgFall{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(260px) rotate(300deg);opacity:0}}
+.sg-dice{position:relative;width:58px;height:58px;perspective:420px;margin:2px 0}
+.sg-tilt{width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(-16deg) rotateY(20deg)}
+.sg-cube{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+.sg-cube.spin{transition:transform 1.1s cubic-bezier(.15,.75,.25,1.04)}
+.sgf{position:absolute;inset:0;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);place-items:center;padding:8px;border-radius:12px;background:linear-gradient(150deg,#fff,#e6e2f5);box-shadow:inset 0 0 0 1px rgb(0 0 0 / .08),inset 0 -4px 8px rgb(0 0 0 / .08);backface-visibility:hidden}
+.sgf i{width:9px;height:9px;border-radius:50%}.sgf i.on{background:radial-gradient(circle at 35% 30%,#555,#14122a)}.sgf.f1 i.on{background:radial-gradient(circle at 35% 30%,#ff7a8a,#d1203a);width:13px;height:13px}
+.sgf.f1{transform:translateZ(29px)}.sgf.f6{transform:rotateY(180deg) translateZ(29px)}.sgf.f2{transform:rotateY(90deg) translateZ(29px)}.sgf.f5{transform:rotateY(-90deg) translateZ(29px)}.sgf.f3{transform:rotateX(90deg) translateZ(29px)}.sgf.f4{transform:rotateX(-90deg) translateZ(29px)}
+.sg-cnt{font-size:13px;font-weight:800}.sg-cnt b{font-size:18px}
+.sg-roll{position:relative;padding:9px 14px;font-size:14px;white-space:nowrap}
+.sg-pc{--cs:calc((100% - 32px)/6);position:absolute;left:calc(6px + var(--c)*(var(--cs) + 4px));top:calc(6px + var(--r)*(var(--cs) + 4px));width:var(--cs);height:var(--cs);display:grid;place-items:center;pointer-events:none;transition:left .22s ease-out,top .22s ease-out;z-index:3}
+.sg-pc .ava{width:62%;height:62%;font-size:clamp(11px,3.4vw,16px);box-shadow:0 0 0 2px #fff,0 6px 10px rgb(0 0 0 / .45);transform:translateY(-18%)}
+.sg-pc.hop .ava{animation:sgHop .26s ease-out}
+@keyframes sgHop{0%{transform:translateY(-18%)}45%{transform:translateY(-70%) scale(1.08)}100%{transform:translateY(-18%)}}
+.sg-pop{position:absolute;left:50%;top:44%;z-index:5;transform:translate(-50%,-50%);font-weight:900;color:#fff;text-shadow:0 3px 0 rgb(0 0 0 / .35),0 0 18px rgb(255 214 90 / .9);pointer-events:none;animation:sgPop 1.2s ease-out both}
+.sg-pop.num{font-size:64px;font-family:var(--display)}.sg-pop.go{font-size:26px;top:18%;color:#ffe27a}
+@keyframes sgPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}70%{opacity:1;transform:translate(-50%,-60%) scale(1)}100%{opacity:0;transform:translate(-50%,-90%) scale(.9)}}
+.sg-ev{display:flex;flex-direction:column;gap:8px;margin-top:12px;min-height:8px}
+.sg-evc{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:16px;background:linear-gradient(150deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line);animation:sgIn .45s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:var(--d,0ms)}
+.sg-evc.big{box-shadow:inset 0 0 0 2px #ffc83a,0 0 22px rgb(255 200 58 / .35)}
+.sg-evi{flex:none;width:42px;height:42px;display:grid;place-items:center;font-size:24px;border-radius:13px;background:rgb(255 255 255 / .08)}
+.sg-evsvg{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:var(--ic);color:#fff;padding:8px;box-sizing:border-box}.sg-evsvg svg{width:100%}
+.sg-evt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.sg-evt b{font-size:15px}.sg-evt small{font-size:12.5px;line-height:1.6;color:var(--muted)}
+.sg-evc em{flex:none;font-style:normal;font-weight:900;color:#ffc83a;font-size:15px}
+.sg-lk{align-self:flex-start;margin-top:3px;border:0;background:none;padding:0;color:var(--cyan,#4fe3ff);font-weight:800;font-size:12px;cursor:pointer}
+@keyframes sgIn{0%{opacity:0;transform:translateY(14px) scale(.96)}100%{opacity:1;transform:none}}
+.sg-quiz{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:18px;background:linear-gradient(150deg,rgb(159 139 255 / .22),rgb(90 63 208 / .12));box-shadow:inset 0 0 0 1px rgb(159 139 255 / .5);animation:sgIn .45s both}
+.sg-quiz b{font-size:15px;line-height:1.6}.sg-qo{display:grid;grid-template-columns:1fr 1fr;gap:6px}.sg-qo .btn{padding:10px 6px;font-size:13px;white-space:normal;line-height:1.35}
+.sg-info{margin-top:12px}.sg-laps{display:flex;align-items:center;gap:6px}.sg-laps i{font-style:normal;font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;background:rgb(255 255 255 / .07);box-shadow:inset 0 0 0 1px var(--line);color:var(--muted)}
+.sg-laps i.on{background:linear-gradient(160deg,#ffe27a,#ffb23a);color:#3a2300;box-shadow:none}.sg-laps span{flex:0 0 10px;height:2px;background:var(--line)}.sg-laps b{margin-left:auto;font-size:12.5px}
+.sg-badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:6px;border-radius:99px;background:#ff4d6d;color:#fff;font-size:11.5px;font-weight:900;box-shadow:0 0 0 2px rgb(0 0 0 / .2);animation:sgBadge 1.8s ease-in-out infinite}
+.lob-sub .btn{flex:1 1 0;min-width:0;white-space:nowrap;padding-inline:6px;font-size:13px}.sg-lob{position:relative;overflow:visible}.sg-lob .sg-badge{position:absolute;top:-7px;right:-5px;margin:0;min-width:17px;height:17px;padding:0 4px;font-size:10.5px}
+.sgc{position:relative;flex:1}.sgc .mc-ic{background:radial-gradient(circle at 35% 30%,#fff3a8,#ffb23a)}.sgc .sg-badge{position:absolute;top:10px;right:12px;margin:0}
+@keyframes sgBadge{50%{transform:scale(1.15)}}
+@media (prefers-reduced-motion:reduce){.sg-cube.spin{transition:none}.sgq.t-star,.sg-badge,.sg-pc.hop .ava{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5454,6 +5509,143 @@ function voGreet(){
   const l=vo('welcome'); setTimeout(()=>vo(n), Math.round((l||.7)*1000)+200);
 }
 const __shopBuy=shopBuy; shopBuy=function(k,id){ const c0=(S.prof&&S.prof.coin)||0; const r=__shopBuy(k,id); if(((S.prof&&S.prof.coin)||0)<c0) setTimeout(()=>vo('m_maidoari'),150); return r; };
+/* ---- 🎲 AZAKEIすごろく：試合でサイコロがたまる。月ごとに町のテーマが変わる20マスのボード。
+   ふった時点で結果（コイン・周回）は保存してしまい、コマの動きはあとから見せるだけ（途中でとじても損しない） ---- */
+const SG_N=20, SG_MAX=9;
+const SG_TH=[{e:'🎍',n:'初売りストリート',c1:'#7a1f3d',c2:'#2a1450',fx:'🎍'},{e:'🍫',n:'バレンタイン通り',c1:'#6b2a4a',c2:'#2b1636',fx:'💝'},{e:'🌸',n:'さくら並木',c1:'#8a3d6b',c2:'#2d1e55',fx:'🌸'},{e:'🎒',n:'新生活モール',c1:'#1f6a5a',c2:'#18264f',fx:'✨'},
+  {e:'🎏',n:'若葉の港',c1:'#1d6b4a',c2:'#163552',fx:'🍃'},{e:'☔',n:'雨の商店街',c1:'#24507a',c2:'#1a1d4a',fx:'💧'},{e:'🎆',n:'夏まつり横丁',c1:'#7a2a1f',c2:'#1d1650',fx:'🎆'},{e:'🏖️',n:'海辺のバザール',c1:'#0f6b8a',c2:'#152a5a',fx:'🫧'},
+  {e:'🎑',n:'お月見マーケット',c1:'#4a3a7a',c2:'#141838',fx:'🌕'},{e:'🎃',n:'ハロウィン通り',c1:'#7a3d10',c2:'#26123d',fx:'🎃'},{e:'🍁',n:'紅葉の商店街',c1:'#8a3a14',c2:'#2c1640',fx:'🍁'},{e:'⛄',n:'雪の市場',c1:'#2a5a8a',c2:'#17183f',fx:'❄️'}];
+const SG_T=['start','coin','ind','quiz','ind','chance','coin','ind','quiz','chance','star','ind','coin','chance','ind','quiz','coin','ind','chance','ind'];
+const SG_FACT=[
+  ['日本はエネルギーの多くを海外から輸入しているよ。原油の値段が上がると、電気代やガソリン代も上がりやすい。','太陽光や風力の発電は、天気で発電量が変わるのが課題。電気をためる電池の技術が注目されているんだ。'],
+  ['金利が上がると、お金を借りにくくなる。そのかわり、銀行にあずけたお金につく利息は増えるよ。','株は会社の「持ち分」。会社がもうかると思う人が増えると、株の値段は上がりやすい。'],
+  ['円安になると、海外で売る製品が割安になって、輸出する工場には追い風になりやすい。','半導体は、スマホや自動車など、たくさんの製品に使われる大事な部品なんだ。'],
+  ['12月は、プレゼントや年末の買い物で、お店の売り上げが1年でも特に大きくなる月。','給料が上がって「使ってもいいかな」と思う人が増えると、お店の売り上げは伸びやすい。'],
+  ['燃料の値段が上がると、トラックや飛行機を動かすお金が増えて、運賃も上がりやすい。','ネット通販が広がって、荷物を家まで届ける宅配の仕事はぐんと増えたんだ。'],
+  ['テレビや動画サイトは、広告のお金で番組をつくっていることが多い。景気が悪いと広告が減りやすいよ。','大きなスポーツ大会があると見る人が増えて、広告やグッズが盛り上がるんだ。']];
+const SG_CH=[{ic:'💰',n:'臨時ボーナス！',d:'決算がよかった！',coin:30,v:'m_yatta'},{ic:'🎲',n:'サイコロもう1個！',d:'お客さんが大入り。サイコロ +1',dice:1,v:'m_yattane'},
+  {ic:'📈',n:'強気相場！',d:'3マス進む',mv:3,v:'m_wow'},{ic:'📉',n:'急な値下がり…',d:'2マス戻る',mv:-2,v:'m_sonnaa'}];
+let SGX=null;
+function sgMonth(){ const d=new Date(); return d.getFullYear()*100+d.getMonth()+1; }
+function sgTheme(m){ return SG_TH[((m||sgMonth())%100)-1]||SG_TH[0]; }
+function sgBoard(m){
+  let z=(m*9301+49297)%233280; const r=()=>(z=(z*9301+49297)%233280)/233280;
+  const cs=[0,1,2,3,4,5]; for(let i=5;i>0;i--){ const j=Math.floor(r()*(i+1)); [cs[i],cs[j]]=[cs[j],cs[i]]; }
+  let ci=0, co=0; return SG_T.map(t=>t==='ind'?{t,c:cs[(ci++)%6]}:t==='coin'?{t,v:[10,15,10,20][(co++)%4]}:{t});
+}
+function sgS(){
+  const P=S.prof, m=sgMonth(); let g=P.sg;
+  if(!g || g.m!==m){ const keep=g?Math.min(g.dice||0,3):0; g=P.sg={m,pos:0,dice:keep,lap:0,earn:0,day:0,q:null,ms3:0}; }
+  const k=todayKey(); if(g.day!==k){ g.day=k; g.dice=Math.min(SG_MAX,(g.dice||0)+1); saveProfile(); }
+  return g;
+}
+function sgGame(won){ const g=sgS(); g.dice=Math.min(SG_MAX,(g.dice||0)+(won?2:1)); saveProfile(); }
+const sgRC = i => i<=5?[0,i]:i<=9?[i-5,5]:i<=15?[5,15-i]:[20-i,0];
+const SG_ROT={1:[0,0],2:[0,-90],3:[-90,0],4:[90,0],5:[0,90],6:[0,180]};
+const sgRot = (n,sp) => `rotateX(${SG_ROT[n][0]+360*sp}deg) rotateY(${SG_ROT[n][1]+360*sp}deg)`;
+const SG_PIP={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+const sgFace = n => `<span class="sgf f${n}">${Array.from({length:9},(_,k)=>`<i${SG_PIP[n].includes(k)?' class="on"':''}></i>`).join('')}</span>`;
+function sgSq(q){
+  if(q.t==='start') return ['🏁','GO'];
+  if(q.t==='coin') return ['🪙','+'+q.v];
+  if(q.t==='ind') return [`<span class="sgq-svg">${svg(q.c,2.2)}</span>`, IND[q.c]];
+  if(q.t==='quiz') return ['❔','クイズ'];
+  if(q.t==='chance') return ['🎴','チャンス'];
+  return ['⭐','+50'];
+}
+function openSugoroku(){ const g=sgS(); SGX={ph:'idle',face:(SGX&&SGX.face)||1,spin:(SGX&&SGX.spin)||0,evs:[],qr:null}; openSheet('sugoroku'); sfx('open'); haptic(10); }
+function sgPlan(g,n){
+  const B=sgBoard(g.m), P=S.prof, plan={path:[],evs:[],chAt:-1,ch:null,laps:0,n};
+  const give=c=>{ P.coin=(P.coin||0)+c; g.earn=(g.earn||0)+c; };
+  const walk=k=>{ const st=k>0?1:-1; for(let j=0;j<Math.abs(k);j++){ g.pos=(g.pos+st+SG_N)%SG_N; const e={pos:g.pos}; if(st>0 && g.pos===0){ g.lap=(g.lap||0)+1; give(30); e.lap=1; plan.laps++; } plan.path.push(e); } };
+  const land=d=>{ const q=B[g.pos]; let ev;
+    if(q.t==='start') ev={ic:'🏁',n:'ぴったりGO！',d:'スタートにぴったり止まった',coin:20,v:'m_yattane'};
+    else if(q.t==='coin') ev={ic:'🪙',n:`コイン +${q.v}`,d:'おこづかいゲット',coin:q.v};
+    else if(q.t==='ind') ev={ic:`<span class="sg-evsvg" style="--ic:var(--i${q.c})">${svg(q.c,2.2)}</span>`,n:`${IND[q.c]}のまめ知識`,d:SG_FACT[q.c][Math.floor(Math.random()*2)],coin:12,c:q.c,v:'m_hirameita'};
+    else if(q.t==='star') ev={ic:'⭐',n:'スターマス！',d:'大当たり！',coin:50,v:'m_banzai',big:1};
+    else if(q.t==='quiz'){ try{ g.q=makeQuiz().qs[0]; }catch(e){ g.q=null; } ev=g.q?{ic:'❔',n:'経済クイズ！',d:'正解でコイン +25（はずれても +5）',quiz:1}:{ic:'🍀',n:'おまけ',d:'コイン +10',coin:10}; }
+    else if(d>0) ev={ic:'🍀',n:'おまけ',d:'もう一度チャンスマス。コイン +10',coin:10};
+    else { const ch=Object.assign({},SG_CH[Math.floor(Math.random()*SG_CH.length)]);
+      if(ch.coin) give(ch.coin); if(ch.dice) g.dice=Math.min(SG_MAX,(g.dice||0)+ch.dice);
+      plan.evs.push(Object.assign(ch,{applied:1}));
+      if(ch.mv){ plan.ch=ch; plan.chAt=plan.path.length; walk(ch.mv); if(ch.mv>0) land(1); }
+      return; }
+    if(ev.coin) give(ev.coin); plan.evs.push(ev); };
+  walk(n); land(0);
+  if(plan.laps) plan.evs.unshift({ic:'🏁',n:`${g.lap}周目に突入！`,d:'スタートを通過',coin:30*plan.laps,v:'m_panpaka'});
+  if(g.lap>=3 && !g.ms3){ g.ms3=1; give(100); plan.evs.unshift({ic:'🏆',n:'今月の3周ゴール！',d:'ゴールボーナス',coin:100,v:'m_panpaka',big:1,goal:1}); }
+  return plan;
+}
+function sgRoll(){
+  if(!SGX) SGX={ph:'idle',face:1,spin:0,evs:[]};
+  if(SGX.ph==='roll' || SGX.ph==='move') return;
+  const g=sgS(); if(g.q){ toast('先にクイズに答えよう'); return; }
+  if((g.dice||0)<=0){ toast('サイコロがありません。試合をすると +1（1位なら +2）'); sfx('buzz'); return; }
+  g.dice--; const n=1+Math.floor(Math.random()*6), plan=sgPlan(g,n); saveProfile();
+  SGX.ph='roll'; SGX.face=n; SGX.spin+=2; SGX.plan=plan; SGX.evs=[]; SGX.qr=null;
+  const fast=reduced(), cube=document.getElementById('sgCube'), btn=document.getElementById('sgRollBtn'), cnt=document.getElementById('sgCnt');
+  if(btn) btn.disabled=true; if(cnt) cnt.textContent=g.dice; const ev=document.getElementById('sgEv'); if(ev) ev.innerHTML='';
+  sfx('whoosh'); haptic(15);
+  if(cube){ cube.classList.add('spin'); cube.style.transform=sgRot(n,SGX.spin); }
+  if(!fast) [0,1,2,3,4].forEach(i=>setTimeout(()=>{ if(SGX&&SGX.plan===plan) sfx('hat'); },100+i*140));
+  setTimeout(()=>{ if(!SGX || SGX.plan!==plan) return; sfx('press'); haptic(25); sgPop(`${n}`,'num'); SGX.ph='move'; setTimeout(()=>sgMove(plan), fast?0:450); }, fast?60:1150);
+}
+function sgPiece(pos){
+  const pc=document.querySelector('.sg-pc'); if(!pc) return; const [r,c]=sgRC(pos);
+  pc.style.setProperty('--r',r); pc.style.setProperty('--c',c); pc.classList.remove('hop'); void pc.offsetWidth; pc.classList.add('hop');
+  document.querySelectorAll('.sgq.here').forEach(e=>e.classList.remove('here')); const q=document.querySelector(`.sgq[data-i="${pos}"]`); if(q) q.classList.add('here','pass');
+}
+function sgPop(t,cls){ const b=document.querySelector('.sg-board'); if(!b) return; const el=document.createElement('span'); el.className='sg-pop '+(cls||''); el.textContent=t; b.appendChild(el); setTimeout(()=>el.remove(),1300); }
+function sgMove(plan){
+  const fast=reduced(); let i=0;
+  const step=()=>{
+    if(S.sheet!=='sugoroku' || !SGX || SGX.plan!==plan) return;
+    if(i>=plan.path.length){ sgDone(plan); return; }
+    if(plan.chAt===i && !plan.chShown){ plan.chShown=1; sgShowEv([plan.ch]); vo(plan.ch.v); sfx(plan.ch.mv<0?'buzz':'shine'); haptic(plan.ch.mv<0?[30,40,30]:20); setTimeout(step, fast?80:1300); return; }
+    const p=plan.path[i++]; sgPiece(p.pos); sfx(p.lap?'coin':'tick'); haptic(6); if(p.lap) sgPop('GO! +30','go');
+    setTimeout(step, fast?20:(plan.chShown&&plan.ch&&plan.ch.mv<0?360:270));
+  };
+  step();
+}
+function sgShowEv(evs){ const el=document.getElementById('sgEv'); if(el) el.innerHTML=sgEvHTML(evs); }
+function sgEvHTML(evs){
+  return evs.map((e,j)=>`<div class="sg-evc${e.big?' big':''}" style="--d:${j*140}ms"><span class="sg-evi">${e.ic}</span><span class="sg-evt"><b>${e.n}</b><small>${esc(e.d)}</small>${e.c!=null?`<button class="sg-lk" onclick="openSheet('ind:${e.c}')">${IND[e.c]}のカードを見る →</button>`:''}</span>${e.coin?`<em>🪙+${e.coin}</em>`:e.dice?`<em>🎲+${e.dice}</em>`:''}</div>`).join('');
+}
+function sgDone(plan){
+  SGX.ph='land'; SGX.evs=plan.evs; renderSheet();
+  const big=plan.evs.find(e=>e.big), last=plan.evs.slice().reverse().find(e=>e.v && !(plan.ch===e)), v=(big&&big.v)||(last&&last.v);
+  sfx(big?'fanfare':plan.evs.some(e=>e.quiz)?'open':plan.evs.some(e=>e.coin)?'coin':'select'); haptic(big?[20,40,20,40,60]:15);
+  if(v) setTimeout(()=>vo(v), 250); if(big && !reduced()) setTimeout(()=>confetti(), 200);
+}
+function sgAns(i){
+  const g=sgS(), q=g.q; if(!q) return; const ok=i===q.a, c=ok?25:5;
+  S.prof.coin=(S.prof.coin||0)+c; g.earn=(g.earn||0)+c; g.q=null; saveProfile();
+  if(!SGX) SGX={ph:'land',face:1,spin:0,evs:[]}; SGX.qr={ok,a:q.a,pick:i,q,c}; SGX.evs=[];
+  sfx(ok?'coin':'buzz'); haptic(ok?15:[20,30,20]); vo(ok?'correct':'miss'); renderSheet();
+}
+function sgBody(){
+  const g=sgS(), B=sgBoard(g.m), th=sgTheme(g.m), P=S.prof, X=SGX||{face:1,spin:0,evs:[]};
+  const [pr,pc]=sgRC(g.pos), busy=X.ph==='roll'||X.ph==='move';
+  const sq=B.map((q,i)=>{ const [r,c]=sgRC(i), [ic,lb]=sgSq(q); return `<div class="sgq t-${q.t}${i===g.pos?' here':''}" data-i="${i}" style="grid-area:${r+1}/${c+1}${q.t==='ind'?`;--ic:var(--i${q.c})`:''}"><span class="sgq-ic">${ic}</span><small>${lb}</small></div>`; }).join('');
+  const fx=reduced()?'':Array.from({length:6},(_,k)=>`<i class="sg-fx" style="--x:${8+k*16}%;--dl:${(k*1.3).toFixed(1)}s;--du:${(6+k%3*1.5).toFixed(1)}s">${th.fx}</i>`).join('');
+  const quiz=g.q?`<div class="sg-quiz"><span class="label">ECONOMY QUIZ</span><b>${esc(g.q.q)}</b><div class="sg-qo">${g.q.opts.map((o,k)=>`<button class="btn" onclick="sgAns(${k})">${esc(String(o))}</button>`).join('')}</div></div>`:'';
+  const qr=X.qr?`<div class="sg-evc ${X.qr.ok?'big':''}"><span class="sg-evi">${X.qr.ok?'⭕':'❌'}</span><span class="sg-evt"><b>${X.qr.ok?'正解！':'ざんねん…'} 答えは「${esc(String(X.qr.q.opts[X.qr.a]))}」</b><small>${esc(String(X.qr.q.exp||''))}</small></span><em>🪙+${X.qr.c}</em></div>`:'';
+  const evs=busy?'':(X.evs&&X.evs.length?sgEvHTML(X.evs.filter(e=>!e.quiz||g.q)):'');
+  return `<div class="sg"><div class="row spread"><span class="label">SUGOROKU · ${Math.floor(g.m/100)}年${g.m%100}月</span><span class="coinbal" style="margin-right:46px">🪙 <b>${P.coin||0}</b></span></div>
+    <h3 class="ttl sg-ttl">🎲 AZAKEIすごろく</h3>
+    <div class="sg-board" style="--c1:${th.c1};--c2:${th.c2}">${sq}
+      <div class="sg-mid"><div class="sg-fxw" aria-hidden="true">${fx}</div><span class="sg-th">${th.e} ${th.n}</span>
+        <div class="sg-dice" aria-hidden="true"><div class="sg-tilt"><div class="sg-cube" id="sgCube" style="transform:${sgRot(X.face||1,X.spin||0)}">${[1,2,3,4,5,6].map(sgFace).join('')}</div></div></div>
+        <span class="sg-cnt">🎲 × <b id="sgCnt">${g.dice||0}</b></span>
+        <button class="btn gold sg-roll" id="sgRollBtn" onclick="sgRoll()" ${(g.dice||0)<=0||g.q||busy?'disabled':''}>${g.q?'クイズに答えてね':(g.dice||0)>0?'サイコロをふる':'サイコロなし'}</button></div>
+      <div class="sg-pc" style="--r:${pr};--c:${pc}" aria-label="あなたのコマ"><span class="ava" style="--s:${AVA_COLORS[(P.color||0)%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span></div>
+    </div>
+    <div class="sg-ev" id="sgEv" aria-live="polite">${qr}${evs}${quiz}</div>
+    <div class="sg-info"><div class="sg-laps">${[1,2,3].map(k=>`<i class="${(g.lap||0)>=k?'on':''}">${k}周</i>`).join('<span></span>')}<b>${g.ms3?'🏆 ゴール！':'3周で 🪙+100'}</b></div>
+      <p class="note">🎲 サイコロのふやし方：試合1回で +1・1位なら +2・毎日 +1（${SG_MAX}個まで）。今月かせいだコイン 🪙${g.earn||0}<br>月が変わると、町が新しくなって1マス目から（サイコロは3個まで持ちこし）。</p></div></div>`;
+}
+function sgCard(){ const g=sgS(), th=sgTheme(g.m);
+  return `<button class="minicard sgc" onclick="openSugoroku()"><span class="mc-ic">🎲</span><span class="mc-tx"><span class="label">SUGOROKU · ${th.e} ${th.n}</span><b>AZAKEIすごろく</b><span class="note">サイコロ ${g.dice||0}個 · ${g.lap||0}/3周 · 試合でたまる</span></span>${g.dice?`<span class="sg-badge">${g.dice}</span>`:''}</button>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -6680,6 +6872,7 @@ function renderSheet(){
   else if(k==='table') body=fullTableBody();
   else if(k==='quiz') body=quizBody();
   else if(k==='box') body=boxBody();
+  else if(k==='sugoroku') body=sgBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
@@ -10744,7 +10937,7 @@ function lobbyHero(show){
       <button class="btn gold huge pulse lob-play" onclick="go('play','cpu')"><span>あそぶ</span><small>${esc(lobSummary())}</small></button>
       <button class="btn lob-quick" onclick="lobbyQuick()" aria-label="前回の設定ですぐ始める"><i>▶</i><small>すぐ始める</small></button>
     </div>
-    <div class="row lob-sub"><button class="btn ghost" onclick="openSheet('modes')">なにで遊ぶ？</button><button class="btn ghost" onclick="openTutorial()">遊び方</button></div>
+    <div class="row lob-sub"><button class="btn ghost" onclick="openSheet('modes')">なにで遊ぶ？</button><button class="btn ghost" onclick="openTutorial()">遊び方</button><button class="btn ghost sg-lob" onclick="openSugoroku()">🎲 すごろく${(()=>{ const n=sgS().dice||0; return n?`<b class="sg-badge">${n}</b>`:''; })()}</button></div>
     <nav class="lob-jump" aria-label="ホームの中を移動">${[['📈','市場'],['🎯','おすすめ'],['🎮','あそぶ'],['📅','毎日'],['🏆','ミッション']].map(([i,n])=>`<button onclick="hsJump('${n}')"><i>${i}</i>${n}</button>`).join('')}</nav>
   </section>`;
 }
@@ -11906,8 +12099,8 @@ function homeView(){
   ${pnpPromo()}
   ${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
   ${todayBar()}
-  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
-  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
+  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),sgCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
+  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9,10].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${hsec('🏆','ミッション','きょう・今週・まちの依頼をひとつに')}
   ${misBoard('home')}
   </details>`}
@@ -12070,6 +12263,7 @@ function recordResult(){
   const P=S.prof, st=P.st, p=G.players[me];
   const rk=ranking(G.players,G.cfg), mine=rk.find(x=>x.i===me), won=G.teams ? teamWon(me) : !!(mine && mine.rank===1);
   try{ labRecord(won, p.score); }catch(e){}
+  if(!G.demo) try{ sgGame(won); }catch(e){}
   try{ G.mirGot=mirRecord(me); }catch(e){}
   try{ G.styGot=styRecord(p); }catch(e){}
   // 3ターン目終了時点の順位（逆転劇の判定）
