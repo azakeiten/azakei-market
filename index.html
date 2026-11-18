@@ -4623,6 +4623,52 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .rm.rm-mini{border-radius:12px;box-shadow:none}.rm.rm-mini .rm-wl span{font-size:12px}.rm.rm-mini .rm-wr span{font-size:14px}.rm.rm-mini .rm-desk span,.rm.rm-mini .rm-side span{font-size:20px}.rm.rm-mini .rm-view{font-size:12px}.rm.rm-mini .rm-lamp span{font-size:9px}.rm.rm-mini .rm-cord{height:4px}.rm.rm-mini .rm-mio{width:16px}.rm.rm-mini .rm-mf{box-shadow:0 0 0 1.5px #fff}.rm.rm-mini .rm-wl.fr{box-shadow:0 0 0 2px #7b5230}.rm.rm-mini .rm-win{padding:2px}
 .rmc .sg-badge{position:absolute;top:10px;right:12px;margin:0}
 @media (prefers-reduced-motion:reduce){.rm *{animation:none!important}}
+/* 🏷️ シール帳 */
+.stk-ttl{margin:2px 0 8px}
+.stk>*{flex:none}
+.stk-s{display:inline-block;line-height:1;font-size:34px;filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 3px 3px rgb(0 0 0 / .35))}
+.stk-s.stk-sh{animation:stkHolo 2.4s linear infinite}
+@keyframes stkHolo{0%{filter:drop-shadow(2px 0 0 #9ff) drop-shadow(-2px 0 0 #f9f) drop-shadow(0 2px 0 #ff9) drop-shadow(0 -2px 0 #9f9) drop-shadow(0 0 6px #fff)}50%{filter:drop-shadow(2px 0 0 #f9f) drop-shadow(-2px 0 0 #ff9) drop-shadow(0 2px 0 #9ff) drop-shadow(0 -2px 0 #f99) drop-shadow(0 0 10px #ffe9a8)}100%{filter:drop-shadow(2px 0 0 #9ff) drop-shadow(-2px 0 0 #f9f) drop-shadow(0 2px 0 #ff9) drop-shadow(0 -2px 0 #9f9) drop-shadow(0 0 6px #fff)}}
+.stk-s.sil{filter:brightness(0) opacity(.28)}
+.stk-tabs{display:flex;gap:6px;margin-bottom:8px}.stk-tabs button{flex:1;padding:7px 4px;border:0;border-radius:99px;font-weight:800;font-size:12.5px;color:var(--ink);background:rgb(255 255 255 / .07);box-shadow:inset 0 0 0 1px var(--line)}
+.stk-tabs button.on{background:linear-gradient(160deg,#ffe27a,#ffb23a);color:#3a2300;box-shadow:none}
+.stk-bd{position:relative;aspect-ratio:4/3.4;border-radius:18px;overflow:hidden;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .18),0 10px 22px rgb(0 0 0 / .35)}
+.stk-bd.pg-note{background:linear-gradient(90deg,transparent 30px,#ff9aa8 30px 32px,transparent 32px),repeating-linear-gradient(180deg,#fffdf4 0 25px,#bfd7f0 25px 26px)}
+.stk-bd.pg-cork{background:radial-gradient(circle,rgb(90 50 20 / .35) 1px,transparent 1.6px) 0 0/7px 7px,radial-gradient(circle,rgb(255 230 180 / .25) 1px,transparent 1.8px) 3px 4px/9px 9px,linear-gradient(150deg,#c8935a,#a8723f);box-shadow:inset 0 0 0 8px #7a4a24,inset 0 0 0 10px #5b3417,0 10px 22px rgb(0 0 0 / .35)}
+.stk-bd.pg-night{background:radial-gradient(1.4px 1.4px at 12% 20%,#fff,transparent),radial-gradient(1.2px 1.2px at 68% 12%,#fff,transparent),radial-gradient(1.6px 1.6px at 40% 48%,#fff,transparent),radial-gradient(1.2px 1.2px at 85% 66%,#fff,transparent),radial-gradient(1.2px 1.2px at 22% 80%,#fff,transparent),radial-gradient(120% 80% at 50% 120%,#3a2a7a,transparent),linear-gradient(180deg,#070a24,#1b1f5a)}
+.stk-empty{position:absolute;inset:0;display:grid;place-content:center;text-align:center;margin:0;padding:20px;font-weight:800;font-size:14px;color:#6b6380;line-height:1.7}.pg-night .stk-empty{color:#b9b6e6}.stk-empty small{font-weight:600;font-size:12px}
+.stk-p{position:absolute;transform:translate(-50%,-50%) rotate(var(--r)) scale(var(--s));touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;transition:transform .15s}
+.stk-p .stk-s{font-size:clamp(34px,11vw,48px)}
+.stk-p.stk-drag{z-index:9;cursor:grabbing;transform:translate(-50%,-56%) rotate(var(--r)) scale(calc(var(--s) * 1.18));transition:none}
+.stk-p.stk-drag .stk-s{filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 12px 10px rgb(0 0 0 / .4))}
+.stk-p.stk-bye{opacity:.45}
+.stk-pop{animation:stkPop .5s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes stkPop{0%{transform:translate(-50%,-50%) rotate(calc(var(--r) - 40deg)) scale(2.2);opacity:0}100%{transform:translate(-50%,-50%) rotate(var(--r)) scale(var(--s));opacity:1}}
+.stk-trash{position:absolute;left:12%;right:12%;bottom:8px;padding:9px;border-radius:14px;text-align:center;font-weight:900;font-size:13px;color:#fff;background:rgb(30 20 50 / .72);box-shadow:inset 0 0 0 2px rgb(255 255 255 / .3);opacity:0;transform:translateY(20px);transition:opacity .2s,transform .2s,background .2s;pointer-events:none;z-index:8}
+.stk-dragging .stk-trash{opacity:1;transform:none}.stk-trash.on{background:#e8364a;transform:scale(1.05)}
+.stk-prog{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0 8px}.stk-prog span{font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--line);color:var(--muted)}
+.stk-prog span b{margin-right:4px;color:var(--ink)}.stk-prog span.done{background:linear-gradient(160deg,#ffe27a,#ffb23a);color:#3a2300;box-shadow:none}.stk-prog span.done b{color:#3a2300}
+.stk-tray{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-bottom:8px}
+.stk-t{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px 6px;border:0;border-radius:12px;background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);min-width:0}
+.stk-t .stk-s{font-size:24px}.stk-t small{font-size:8.5px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.stk-t i{position:absolute;top:-4px;right:-3px;font-style:normal;min-width:16px;height:16px;padding:0 4px;border-radius:99px;background:#ff4d6d;color:#fff;font-size:10px;font-weight:900;display:grid;place-items:center}
+.stk-t.used{opacity:.45}.stk-t.none{background:rgb(255 255 255 / .03)}
+.stk-pk{position:relative;display:block;width:min(230px,70%);aspect-ratio:3/4;margin:10px auto 6px;border:0;padding:0;background:none;perspective:900px;cursor:pointer}
+.stk-pk>span{position:absolute;inset:0;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;backface-visibility:hidden;transition:transform .6s cubic-bezier(.3,1.3,.5,1)}
+.stk-pk-back{background:repeating-linear-gradient(45deg,rgb(255 255 255 / .08) 0 10px,transparent 10px 20px),linear-gradient(160deg,#ff8cc8,#a77bff 55%,#4fe3ff);color:#fff;box-shadow:0 14px 30px rgb(0 0 0 / .4),inset 0 0 0 3px rgb(255 255 255 / .5);animation:stkWig 1.6s ease-in-out infinite}
+.stk-pk-back b{font-family:var(--display);font-size:28px;letter-spacing:.06em}.stk-pk-back i{font-style:normal;font-weight:900;letter-spacing:.3em;font-size:12px}.stk-pk-back small{margin-top:14px;font-weight:800;font-size:12px;padding:4px 12px;border-radius:99px;background:rgb(0 0 0 / .25)}
+@keyframes stkWig{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg) scale(1.02)}}
+.stk-pk-front{transform:rotateY(180deg);background:radial-gradient(circle at 50% 38%,#fff,#f1ecff 60%,#ddd3ff);color:#1b1838;box-shadow:0 14px 30px rgb(0 0 0 / .4)}
+.stk-pk.r2 .stk-pk-front{background:radial-gradient(circle at 50% 38%,#fff,#e2f6ff 60%,#9fdcff);box-shadow:0 0 0 3px #4fe3ff,0 14px 30px rgb(0 0 0 / .4)}
+.stk-pk.r3 .stk-pk-front,.stk-pk.sh .stk-pk-front{background:radial-gradient(circle at 50% 38%,#fffbe6,#ffe9a8 55%,#ffc83a);box-shadow:0 0 0 3px #ffc83a,0 0 40px rgb(255 200 58 / .7),0 14px 30px rgb(0 0 0 / .4)}
+.stk-pk.open .stk-pk-back{transform:rotateY(-180deg);animation:none}.stk-pk.open .stk-pk-front{transform:rotateY(0)}
+.stk-pk-front .stk-s.big{font-size:84px;animation:stkIn .7s .25s cubic-bezier(.3,1.6,.5,1) both}.stk-pk:not(.open) .stk-s.big{animation:none}
+@keyframes stkIn{0%{transform:scale(.2) rotate(-30deg)}100%{transform:none}}
+.stk-pk-front b{font-size:18px}.stk-pk-front em{font-style:normal;font-weight:800;font-size:12px;color:#7a6aa8}
+.stk-new{position:absolute;top:10px;right:10px;font-weight:900;font-size:11px;padding:3px 8px;border-radius:99px;background:#ff4d6d;color:#fff;animation:sgBadge 1.4s ease-in-out infinite}
+.stk-bonus{text-align:center;font-weight:900;color:#ffc83a;font-size:15px;margin:4px 0;animation:sgIn .5s both}
+.stkc{position:relative;flex:1}.stkc .mc-ic{background:radial-gradient(circle at 35% 30%,#ffd6ee,#a77bff)}.stkc .sg-badge{position:absolute;top:10px;right:12px;margin:0}
+@media (prefers-reduced-motion:reduce){.stk-s.stk-sh,.stk-pk-back,.stk-pop,.stk-pk-front .stk-s.big{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5638,7 +5684,7 @@ function sgPlan(g,n){
     if(q.t==='start') ev={ic:'🏁',n:'ぴったりGO！',d:'スタートにぴったり止まった',coin:20,v:'m_yattane'};
     else if(q.t==='coin') ev={ic:'🪙',n:`コイン +${q.v}`,d:'おこづかいゲット',coin:q.v};
     else if(q.t==='ind') ev={ic:`<span class="sg-evsvg" style="--ic:var(--i${q.c})">${svg(q.c,2.2)}</span>`,n:`${IND[q.c]}のまめ知識`,d:SG_FACT[q.c][Math.floor(Math.random()*2)],coin:12,c:q.c,v:'m_hirameita'};
-    else if(q.t==='star') ev={ic:'⭐',n:'スターマス！',d:'大当たり！',coin:50,v:'m_banzai',big:1};
+    else if(q.t==='star'){ ev={ic:'⭐',n:'スターマス！',d:'大当たり！ シールパックも1枚',coin:50,v:'m_banzai',big:1}; try{ stkGain('star'); }catch(e){} }
     else if(q.t==='quiz'){ try{ g.q=makeQuiz().qs[0]; }catch(e){ g.q=null; } ev=g.q?{ic:'❔',n:'経済クイズ！',d:'正解でコイン +25（はずれても +5）',quiz:1}:{ic:'🍀',n:'おまけ',d:'コイン +10',coin:10}; }
     else if(d>0) ev={ic:'🍀',n:'おまけ',d:'もう一度チャンスマス。コイン +10',coin:10};
     else { const ch=Object.assign({},SG_CH[Math.floor(Math.random()*SG_CH.length)]);
@@ -5838,6 +5884,91 @@ function roomBody(){
 }
 function roomCard(){ const R=rmS(), pt=rmPt(R), got=R.day===todayKey();
   return `<button class="minicard rmc" onclick="openRoom()"><span class="rmc-pv">${rmScene(R,{mini:true})}</span><span class="mc-tx"><span class="label">MY ROOM · ✨${pt}</span><b>マイルーム</b><span class="note">${got?'家具をかざろう':'🎁 ミオのおみやげが届いてるよ'}</span></span>${got?'':'<span class="sg-badge">1</span>'}</button>`; }
+/* ---- 🏷️ シール帳：試合をするとシールが1枚。開けるときはパックの演出。ページの上で指で動かして自由に貼れる ---- */
+const STK=[
+  {id:'en',ic:'⚡',n:'エネルギー',r:1,g:0},{id:'fi',ic:'🏦',n:'金融',r:1,g:0},{id:'ma',ic:'🏭',n:'製造',r:1,g:0},{id:'re',ic:'🛒',n:'小売',r:1,g:0},{id:'tr',ic:'🚚',n:'運輸',r:1,g:0},{id:'me',ic:'📺',n:'メディア',r:1,g:0},
+  {id:'coin',ic:'🪙',n:'コイン',r:1,g:1},{id:'yen',ic:'💴',n:'お札',r:1,g:1},{id:'up',ic:'📈',n:'上がる！',r:1,g:1},{id:'dn',ic:'📉',n:'下がる…',r:1,g:1},{id:'bag',ic:'💰',n:'お金ぶくろ',r:2,g:1},{id:'dia',ic:'💎',n:'ダイヤ',r:3,g:1},
+  {id:'bull',ic:'🐂',n:'ブル（強気）',r:2,g:2},{id:'bear',ic:'🐻',n:'ベア（弱気）',r:2,g:2},{id:'whale',ic:'🐋',n:'クジラ',r:2,g:2},{id:'fox',ic:'🦊',n:'かしこいキツネ',r:1,g:2},{id:'neko',ic:'🐱',n:'まねきねこ',r:2,g:2},{id:'owl',ic:'🦉',n:'ものしりフクロウ',r:1,g:2},
+  {id:'cvs',ic:'🏪',n:'コンビニ',r:1,g:3},{id:'bld',ic:'🏢',n:'オフィスビル',r:1,g:3},{id:'ship',ic:'🚢',n:'貨物船',r:1,g:3},{id:'air',ic:'✈️',n:'飛行機',r:1,g:3},{id:'bullet',ic:'🚄',n:'新幹線',r:2,g:3},{id:'tower',ic:'🗼',n:'タワー',r:2,g:3},
+  {id:'sakura',ic:'🌸',n:'さくら',r:1,g:4},{id:'hanabi',ic:'🎆',n:'花火',r:2,g:4},{id:'momiji',ic:'🍁',n:'もみじ',r:1,g:4},{id:'snow',ic:'⛄',n:'雪だるま',r:1,g:4},{id:'kado',ic:'🎍',n:'門松',r:2,g:4},{id:'pump',ic:'🎃',n:'かぼちゃ',r:1,g:4},
+  {id:'troph',ic:'🏆',n:'トロフィー',r:3,g:5},{id:'crown',ic:'👑',n:'王冠',r:3,g:5},{id:'rocket',ic:'🚀',n:'ロケット',r:2,g:5},{id:'rainbow',ic:'🌈',n:'にじ',r:2,g:5},{id:'clover',ic:'🍀',n:'四つ葉',r:3,g:5},{id:'star',ic:'⭐',n:'スター',r:2,g:5}];
+const STK_G=['産業','お金','市場のなかま','まちの風景','季節','レア'];
+const STK_PG=[{n:'ノート',c:'note'},{n:'コルクボード',c:'cork'},{n:'夜空',c:'night'}];
+const STK_R=['','ふつう','レア','超レア'];
+let STKX={pg:0,pack:null};
+const stkDef = id => STK.find(x=>x.id===id.replace(/\*$/,''));
+function stkS(){ const P=S.prof; if(!P.stk) P.stk={own:{},pl:[],nw:[],gb:{},all:0}; return P.stk; }
+function stkGain(why){
+  const K=stkS(), w=why==='win'?[57,35,8]:why==='star'?[45,40,15]:[70,25,5];
+  let x=Math.random()*100, r=x<w[0]?1:x<w[0]+w[1]?2:3; const pool=STK.filter(s=>s.r===r);
+  const d=pool[Math.floor(Math.random()*pool.length)], sh=Math.random()<.08, id=d.id+(sh?'*':'');
+  K.nw.push(id); K.nw=K.nw.slice(-20); saveProfile(); return id;
+}
+const stkUsed = (K,id) => K.pl.filter(p=>p.id===id).length;
+function stkHave(K,id){ return K.own[id]||0; }
+function stkStk(id,cls){ const d=stkDef(id); return `<span class="stk-s${id.endsWith('*')?' stk-sh':''}${cls?' '+cls:''}">${d?d.ic:'？'}</span>`; }
+function openStk(){ const K=stkS(); STKX={pg:STKX.pg||0,pack:K.nw.length?{i:0,ids:K.nw.slice(),open:false}:null}; openSheet('stk'); sfx('open'); }
+function stkPackTap(){
+  const K=stkS(), pk=STKX.pack; if(!pk) return;
+  if(!pk.open){ pk.open=true; const id=pk.ids[pk.i], d=stkDef(id), sh=id.endsWith('*');
+    K.own[id]=(K.own[id]||0)+1; K.nw.shift(); const bonus=stkBonus(K); saveProfile(); pk.bonus=bonus;
+    sfx('flip'); setTimeout(()=>{ sfx(d.r===3||sh?'shine':'coin'); if(d.r===3) vo('m_wow'); else if(sh) vo('m_yatta'); else if(d.r===2) vo('m_oo'); },250); haptic(d.r>=2||sh?[15,30,15]:10);
+    if((d.r===3||sh) && !reduced()) setTimeout(()=>confetti(),300);
+    if(bonus) setTimeout(()=>{ vo('m_panpaka'); sfx('fanfare'); },1300);
+  } else { pk.i++; pk.open=false; pk.bonus=null; if(pk.i>=pk.ids.length){ STKX.pack=null; sfx('select'); } else sfx('deal'); }
+  renderSheet();
+}
+function stkBonus(K){   /* グループを全部そろえたら 50 コイン（1回だけ）。全36種で 300 コイン */
+  let msg=null; STK_G.forEach((g,gi)=>{ if(K.gb[gi]) return; if(STK.filter(s=>s.g===gi).every(s=>stkHave(K,s.id)||stkHave(K,s.id+'*'))){ K.gb[gi]=1; S.prof.coin=(S.prof.coin||0)+50; msg=`「${g}」コンプリート！ 🪙+50`; } });
+  if(!K.all && STK.every(s=>stkHave(K,s.id)||stkHave(K,s.id+'*'))){ K.all=1; S.prof.coin=(S.prof.coin||0)+300; msg='全36種コンプリート！ 🪙+300'; }
+  return msg;
+}
+function stkPlace(id){
+  const K=stkS(); if(stkHave(K,id)-stkUsed(K,id)<=0){ toast('このシールは全部貼ってあります'); return; }
+  if(K.pl.filter(p=>p.p===STKX.pg).length>=40){ toast('このページはいっぱいです'); return; }
+  K.pl.push({id,p:STKX.pg,x:Math.round(25+Math.random()*50),y:Math.round(25+Math.random()*45),r:Math.round(Math.random()*36-18),s:1}); STKX.last=K.pl.length-1;
+  saveProfile(); sfx('press'); haptic(12); renderSheet();
+}
+function stkPg(i){ STKX.pg=i; sfx('click'); renderSheet(); }
+function stkBody(){
+  const K=stkS(), pk=STKX.pack, nOwn=STK.filter(s=>stkHave(K,s.id)||stkHave(K,s.id+'*')).length;
+  if(pk){ const id=pk.ids[pk.i], d=stkDef(id), sh=id.endsWith('*');
+    return `<div class="stk"><span class="label">STICKER PACK · ${pk.i+1}/${pk.ids.length}</span><h3 class="ttl">🏷️ シールパック</h3>
+      <button class="stk-pk${pk.open?' open':''} r${d.r}${sh?' sh':''}" onclick="stkPackTap()" aria-label="${pk.open?'つぎへ':'パックを開ける'}">
+        <span class="stk-pk-back"><b>AZAKEI</b><i>STICKER</i><small>タップで開ける</small></span>
+        <span class="stk-pk-front">${stkStk(id,'big')}<b>${d.n}${sh?' ✨キラ':''}</b><em>${STK_R[d.r]}${sh?'・キラキラ':''}</em>${!pk.open||(stkHave(K,id)>1)?'':'<small class="stk-new">NEW!</small>'}</span></button>
+      ${pk.bonus?`<p class="stk-bonus">🎉 ${esc(pk.bonus)}</p>`:''}
+      <p class="note" style="text-align:center">${pk.open?(pk.i+1<pk.ids.length?'タップで次のパックへ':'タップでシール帳へ'):'パックをタップ！'}</p></div>`; }
+  const pg=STKX.pg||0, pl=K.pl.map((p,i)=>({p,i})).filter(x=>x.p.p===pg);
+  const tray=STK.flatMap(s=>[s.id,s.id+'*']).filter(id=>stkHave(K,id)>0||!id.endsWith('*'));
+  return `<div class="stk"><div class="row spread"><span class="label">STICKER BOOK · ${nOwn}/${STK.length}種</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div>
+    <h3 class="ttl stk-ttl">🏷️ シール帳</h3>
+    <div class="stk-tabs">${STK_PG.map((x,i)=>`<button class="${i===pg?'on':''}" onclick="stkPg(${i})">${x.n}</button>`).join('')}</div>
+    <div class="stk-bd pg-${STK_PG[pg].c}" id="stkBd">${pl.length?'':'<p class="stk-empty">下のシールをタップして貼ろう<br><small>貼ったシールは指で動かせるよ。ゴミ箱へ運ぶとはがせる</small></p>'}
+      ${pl.map(({p,i})=>`<div class="stk-p${STKX.last===i?' stk-pop':''}" data-k="${i}" style="left:${p.x}%;top:${p.y}%;--r:${p.r}deg;--s:${p.s||1}">${stkStk(p.id)}</div>`).join('')}
+      <div class="stk-trash" aria-hidden="true">🗑️ ここで はがす</div></div>
+    <div class="stk-prog">${STK_G.map((g,gi)=>{ const all=STK.filter(s=>s.g===gi), n=all.filter(s=>stkHave(K,s.id)||stkHave(K,s.id+'*')).length; return `<span class="${K.gb[gi]?'done':''}"><b>${g}</b>${n}/${all.length}</span>`; }).join('')}</div>
+    <div class="stk-tray">${tray.map(id=>{ const have=stkHave(K,id), left=have-stkUsed(K,id), d=stkDef(id);
+      return have?`<button class="stk-t${left<=0?' used':''}" onclick="stkPlace('${id}')" title="${esc(d.n)}">${stkStk(id)}<small>${esc(d.n)}</small>${left>0?`<i>${left}</i>`:''}</button>`:`<span class="stk-t none" title="まだ持っていない">${stkStk(id,'sil')}<small>？？？</small></span>`; }).join('')}</div>
+    <p class="note">🏷️ シールは試合1回で1枚（1位はレアが出やすい）。すごろくのスターマスでも1枚。グループをそろえると 🪙+50、全36種で 🪙+300。</p></div>`;
+}
+function stkCard(){ const K=stkS(), n=K.nw.length, nOwn=STK.filter(s=>stkHave(K,s.id)||stkHave(K,s.id+'*')).length;
+  return `<button class="minicard stkc" onclick="openStk()"><span class="mc-ic">🏷️</span><span class="mc-tx"><span class="label">STICKER BOOK · ${nOwn}/${STK.length}</span><b>シール帳</b><span class="note">${n?`🎁 未開封のパックが ${n}枚！`:'試合をするとシールがもらえる'}</span></span>${n?`<span class="sg-badge">${n}</span>`:''}</button>`; }
+/* 貼ったシールを指でドラッグ。ゴミ箱の上ではなすと、はがして手元にもどる。タップだけなら少し回す */
+let STK_DR=null;
+document.addEventListener('pointerdown',e=>{ const el=e.target.closest&&e.target.closest('.stk-p'); if(!el) return; const bd=el.closest('.stk-bd'); if(!bd) return;
+  e.preventDefault(); try{ el.setPointerCapture(e.pointerId); }catch(_){} STK_DR={el,bd,i:+el.dataset.k,sx:e.clientX,sy:e.clientY,moved:false,over:false}; el.classList.add('stk-drag'); el.classList.remove('stk-pop'); bd.classList.add('stk-dragging'); haptic(5); });
+document.addEventListener('pointermove',e=>{ const d=STK_DR; if(!d) return; const r=d.bd.getBoundingClientRect();
+  if(Math.abs(e.clientX-d.sx)+Math.abs(e.clientY-d.sy)>6) d.moved=true; if(!d.moved) return;
+  d.x=Math.max(3,Math.min(97,(e.clientX-r.left)/r.width*100)); d.y=Math.max(3,Math.min(97,(e.clientY-r.top)/r.height*100)); d.el.style.left=d.x+'%'; d.el.style.top=d.y+'%';
+  const t=d.bd.querySelector('.stk-trash'), tr=t&&t.getBoundingClientRect(); const ov=!!tr && e.clientY>tr.top-6 && e.clientX>tr.left && e.clientX<tr.right; if(ov!==d.over){ d.over=ov; t.classList.toggle('on',ov); d.el.classList.toggle('stk-bye',ov); if(ov) haptic(8); } });
+function stkUp(){ const d=STK_DR; if(!d) return; STK_DR=null; const K=stkS(), p=K.pl[d.i]; d.bd.classList.remove('stk-dragging'); d.el.classList.remove('stk-drag');
+  if(!p){ renderSheet(); return; }
+  if(d.over){ K.pl.splice(d.i,1); STKX.last=null; sfx('whoosh'); haptic(15); }
+  else if(d.moved){ p.x=Math.round(d.x*10)/10; p.y=Math.round(d.y*10)/10; K.pl.push(K.pl.splice(d.i,1)[0]); STKX.last=null; sfx('press'); haptic(8); }
+  else { p.r=((p.r+20+180)%360)-180; K.pl.push(K.pl.splice(d.i,1)[0]); STKX.last=K.pl.length-1; sfx('click'); const df=stkDef(p.id); if(df) toast(`${df.ic} ${df.n}${p.id.endsWith('*')?'（キラ）':''} · ${STK_R[df.r]}`); }
+  saveProfile(); renderSheet(); }
+document.addEventListener('pointerup',stkUp); document.addEventListener('pointercancel',stkUp);
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -7066,6 +7197,7 @@ function renderSheet(){
   else if(k==='box') body=boxBody();
   else if(k==='sugoroku') body=sgBody();
   else if(k==='room') body=roomBody();
+  else if(k==='stk') body=stkBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
@@ -12292,13 +12424,13 @@ function homeView(){
   ${pnpPromo()}
   ${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
   ${todayBar()}
-  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),sgCard(),roomCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
-  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9,10,11].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
+  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),stkCard(),sgCard(),roomCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
+  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9,10,11,12].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${hsec('🏆','ミッション','きょう・今週・まちの依頼をひとつに')}
   ${misBoard('home')}
   </details>`}
 
-  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
+  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
 function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
@@ -12457,6 +12589,7 @@ function recordResult(){
   const rk=ranking(G.players,G.cfg), mine=rk.find(x=>x.i===me), won=G.teams ? teamWon(me) : !!(mine && mine.rank===1);
   try{ labRecord(won, p.score); }catch(e){}
   if(!G.demo) try{ sgGame(won); }catch(e){}
+  if(!G.demo) try{ stkGain(won?'win':'game'); }catch(e){}
   try{ G.mirGot=mirRecord(me); }catch(e){}
   try{ G.styGot=styRecord(p); }catch(e){}
   // 3ターン目終了時点の順位（逆転劇の判定）
