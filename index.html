@@ -5333,6 +5333,37 @@ const SFX = {
   beat:()=>{ tone(68,.2,'sine',.18,0,40); tone(68,.2,'sine',.13,.26,40); tone(68,.2,'sine',.18,.9,40); tone(68,.2,'sine',.13,1.16,40); },
   drum:()=>{ for(let i=0;i<22;i++) tone(90+Math.random()*30,.05,'square',.018+i*.0012,i*.055); }
 };
+/* ---- 🗣️ ボイス：効果音ラボの声素材（アプリ・音声案内／落ち着いた女性）を Web Audio で鳴らす。前後の無音は自動で切る ---- */
+const VO_FILES=['welcome','ready','start','n3','n2','n1','sokomade','congrats','welldone','almost','keepgoing','toobad','levelup','correct','miss','message','timeup'];
+const VO={buf:{}, trim:{}, p:null, cur:null, hi:0};
+function voOn(){ return !!(S && S.sound && S.voice!==false); }
+function voTrim(b){ const d=b.getChannelData(0), th=0.015; let a=0, e=d.length-1; while(a<e && Math.abs(d[a])<th) a++; while(e>a && Math.abs(d[e])<th) e--; const r=b.sampleRate; const s=Math.max(0,a/r-0.02); return {s, d:Math.max(0.05, Math.min(b.duration, e/r+0.06)-s)}; }
+function voLoad(){
+  if(VO.p) return VO.p; const a=ac(); if(!a || !window.fetch) return Promise.resolve();
+  VO.p=Promise.all(VO_FILES.map(n=>fetch('voice/'+n+'.mp3').then(r=>r.ok?r.arrayBuffer():Promise.reject()).then(ab=>new Promise((res,rej)=>a.decodeAudioData(ab,res,rej))).then(b=>{ VO.buf[n]=b; VO.trim[n]=voTrim(b); }).catch(()=>{})));
+  return VO.p;
+}
+/* 声を鳴らして、その長さ（秒）を返す。まだ読み込めていない・オフのときは 0 */
+function vo(n, opt){
+  if(!voOn()) return 0; const a=ac(), b=VO.buf[n]; if(!a){ return 0; } if(!b){ voLoad(); return 0; }
+  try{ if(a.state==='suspended') a.resume();
+    if(VO.cur && !(opt&&opt.over)){ try{ VO.cur.stop(); }catch(e){} }
+    const t=VO.trim[n], src=a.createBufferSource(), g=a.createGain(); src.buffer=b; g.gain.value=(opt&&opt.vol)||0.95; src.connect(g); g.connect(a.destination);
+    src.start(0, t.s, t.d); VO.cur=src; src.onended=()=>{ if(VO.cur===src) VO.cur=null; }; return t.d;
+  }catch(e){ return 0; }
+}
+function voRank(){
+  if(!G) return; const me=myIndex(); let k='congrats';
+  if(me>=0){ const mg=G.mirGot;
+    if(mg) k = mg.res==='w' ? 'congrats' : mg.res==='d' ? 'almost' : 'toobad';
+    else if(G.teams && typeof teamWon==='function') k = teamWon(me) ? 'congrats' : 'keepgoing';
+    else { const r=((ranking(G.players,G.cfg)||[]).find(x=>x.i===me)||{}).rank||1; k = r===1?'congrats':r===2?'welldone':r===3?'almost':'keepgoing'; } }
+  const l=vo(k), R=G.reward; if(R && R.after && R.before && R.after.lv>R.before.lv) setTimeout(()=>vo('levelup'), Math.round((l||1.2)*1000)+450);
+}
+function toggleVoice(){ S.voice = S.voice===false; save('azakei-voice', S.voice); renderSheet(); if(S.voice){ if(!S.sound) toast('「音」がオフなので、声も鳴りません'); voLoad().then(()=>vo('start')); } }
+/* 最初にどこかをタップしたら声を読み込む（ブラウザは操作のあとでないと音を出せない）。ホームなら「ようこそ」 */
+(function(){ const first=()=>{ document.removeEventListener('pointerdown',first,true); if(!voOn()) return; voLoad().then(()=>{ setTimeout(()=>{ if(!G && !VO.hi && !S.sheet){ VO.hi=1; vo('welcome'); } },150); }); };
+  document.addEventListener('pointerdown',first,true); })();
 function sfx(n){ try{ SFX[n] && SFX[n](); }catch(e){} }
 /* ---- BGM：WebAudioで鳴らす軽いループ（設定でオン・オフ、初期はオフ） ---- */
 const BGM={on:false, timer:null, bar:0, next:0, master:null};
@@ -5446,6 +5477,7 @@ function start(data){
   if(S.cvd===undefined) S.cvd=!!load('azakei-cvd');
   if(S.autoDiff===undefined) S.autoDiff=!!load('azakei-autodiff');
   if(S.mioVoice===undefined) S.mioVoice=!!load('azakei-miovoice');
+  if(S.voice===undefined){ const v=load('azakei-voice'); S.voice = v==null ? true : !!v; }
   if(S.theme===undefined){ const v=load('azakei-theme'); S.theme = v||(load('azakei-light')?'light':'dark'); }
   try{ matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{ if(S.theme==='auto'){ applyLook(); render(); } }); }catch(e){}
   if(S.furi===undefined) S.furi=!!load('azakei-furi');
@@ -5565,7 +5597,7 @@ function beginTurn(){
   }
   if(G.turn===0 && G.draft && G.dr && !G.dr.done && (G.vsShown || reduced())){ G.ov='draft'; render(); draftNext(); return; }   // VSなしで始まるときもドラフトから
   if(G.turn===0 && !G.online && !G.vsShown && !reduced()){   // 対戦前のVS画面 → NEWSの順
-    G.vsShown=true; G.ov='vs'; render(); sfx('open'); haptic(20);
+    G.vsShown=true; G.ov='vs'; render(); sfx('open'); haptic(20); setTimeout(()=>{ if(G && G.ov==='vs') vo('ready'); },500);
     introTimer=setTimeout(endVs, G.pw?5200:2400); return;
   }
   G.ov='intro';
@@ -5822,7 +5854,7 @@ function startReveal(){
   let k=0;
   const tick=()=>{
     if(G!==game || G.phase!=='countdown') return;   // やめた・別のゲームを始めたときは止める
-    if(k<steps.length){ G.ov='count'; G.countText=steps[k]; renderOv(); sfx(k===3?'open':'tick'); if(k===3) haptic(30); k++; setTimeout(tick, fast?220:560); }
+    if(k<steps.length){ G.ov='count'; G.countText=steps[k]; renderOv(); sfx(k===3?'open':'tick'); if(k===3) haptic(30); const vl=vo(['n3','n2','n1','start'][k]); k++; setTimeout(tick, fast?220:Math.max(560, Math.round(vl*1000)+60)); }
     else { G.ov=null; resolveTurn(); }
   };
   render(); tick();
@@ -5913,11 +5945,11 @@ function flipOverlay(){
 let CER_T=[];
 function startCeremony(){
   CER_T.forEach(clearTimeout); CER_T=[];
-  if(reduced() || !G){ setTimeout(()=>{ confetti(); sfx('fanfare'); },250); return; }
-  G.ov='ceremony'; renderOv(); sfx('drum');
+  if(reduced() || !G){ setTimeout(()=>{ confetti(); sfx('fanfare'); },250); setTimeout(voRank,500); return; }
+  G.ov='ceremony'; renderOv(); sfx('drum'); vo('sokomade');
   const n=G.players.length, winAt=900+(n-1)*650;
   for(let k=0;k<n-1;k++) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('flip'); haptic(8); } }, 900+k*650));
-  CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('slam'); haptic(40); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); } }, winAt));
+  CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('slam'); haptic(40); setTimeout(()=>{ confetti(); sfx('fanfare'); },250); setTimeout(voRank,650); } }, winAt));
   if(cupChamp()) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('fanfare'); confetti(); haptic(60); } }, winAt+900));
   if(G.recBroke&&G.recBroke.length) CER_T.push(setTimeout(()=>{ if(G&&G.ov==='ceremony'){ sfx('coin'); setTimeout(()=>sfx('select'),160); haptic(30); } }, winAt+1200));
   const gk=!!crComeback(ranking(G.players,G.cfg),n);
@@ -6592,7 +6624,7 @@ function startQuiz(){ QZ=makeQuiz(); openSheet('quiz'); sfx('open'); }
 function quizPick(k){
   if(!QZ || QZ.picked!==null) return;
   const q=QZ.qs[QZ.i]; QZ.picked=k;
-  if(k===q.a){ QZ.score++; sfx('coin'); haptic(15); } else { sfx('buzz'); haptic([20,30,20]); }
+  if(k===q.a){ QZ.score++; sfx('coin'); haptic(15); vo('correct'); } else { sfx('buzz'); haptic([20,30,20]); vo('miss'); }
   renderSheet();
 }
 function quizNext(){
@@ -11247,7 +11279,7 @@ function speedTick(){
   if(el){ el.querySelector('i').style.width=Math.max(0,left/SPEED_SEC*100)+'%'; el.querySelector('b').textContent=Math.max(0,Math.ceil(left)); el.classList.toggle('hurry',left<=5); }
   if(left<=5 && left>4.8) sfx('tick');
   if(left<=0){
-    clearInterval(SPD.timer);
+    clearInterval(SPD.timer); vo('timeup');
     const p=G.players[G.active]; if(!p || p.pick!==null) return;
     if(G.sel===null){ const v=cardValues(G.cfg,p,G.players,G.deck,G.turn,rowFor(p,G.deck,G.turn),false,p.fut?futBase:null); const pi=G.teams?G.players.findIndex((q,k)=>q!==p&&G.teams[k]===G.teams[G.active]):-1, pp=pi>=0&&!isHuman(G.players[pi])?G.players[pi].pick:null; G.sel=p.hand.slice().sort((a,b)=>(v[b]-(b===pp?9:0))-(v[a]-(a===pp?9:0)))[0]; toast("時間切れ！おすすめのカードを出しました"); }
     confirmPick();
@@ -11807,7 +11839,7 @@ function settingsBody(){
       <div class="lk-fs"><b>文字の大きさ</b><div class="lk-seg" role="radiogroup" aria-label="文字の大きさ">${['ふつう','大きい','特大'].map((n,i)=>`<button role="radio" aria-checked="${S.fs===i}" class="${S.fs===i?'on':''}" onclick="setFs(${i})" style="font-size:${13+i*2}px">${n}</button>`).join('')}</div></div>
       ${sw(!!S.hc,'toggleHc()','くっきり表示','うすい文字や線を濃くして、見分けやすくする')}
       ${sw(!!S.furi,'toggleFuri()','ふりがな','むずかしい言葉（経済・産業・独占など）にふりがなをつける')}
-      ${'speechSynthesis' in window?sw(!!S.mioVoice,'toggleMioVoice()','ミオの声','遊び方やけいざい教室で、ミオのセリフを自動で読み上げる（🔊ボタンでいつでも読める）'):''}
+      ${sw(S.voice!==false,'toggleVoice()','🗣️ ボイス','カウントダウン・順位・正解・お知らせを、女性の声で読み上げる（効果音の「音」がオンのとき）')}${'speechSynthesis' in window?sw(!!S.mioVoice,'toggleMioVoice()','ミオの声','遊び方やけいざい教室で、ミオのセリフを自動で読み上げる（🔊ボタンでいつでも読める）'):''}
       ${sw(!!S.cvd,'toggleCvd()','色の見分けサポート','色の小さな印に、産業の頭文字（エ・金・製・小・運・メ）を入れる')}
       ${sw(stepsOn(),'toggleSteps()','操作ガイド','試合中に「いまやること」と、案内役ミオのひとことを表示する')}
       <button class="swrow" onclick="openSheet('terms')"><span><b>ことばの説明</b><span class="note">NEWS・独占・被り・大引けなどを、絵つきでやさしく説明</span></span><span class="xf-go">›</span></button></div>
@@ -12283,7 +12315,7 @@ function mirLive(){
     el.innerHTML=same ? `<span class="mp-ic">🪞</span><span class="mp-t"><small>SYNCHRO!${hit.length>1?` ×${hit.length}`:''}</small><b>${hit.length>1?`分身${hit.length}人`:'分身'}も同じ「${esc(IND[b])}」</b><em>考えることは、そっくり</em></span>`
       : `<span class="mp-ic">${w.ic}</span><span class="mp-t"><small>🧬 ${esc(G.players[gi].name)}の一手</small><b>${esc(IND[b])}</b><em>${w.n}のクセで選んだ</em></span>`;
     if(rh) el.insertAdjacentHTML('afterbegin', `<span class="mp-rd ${rok?'ok':'ng'}">${rok?'🔮 鏡読み 的中！<b>+1</b>':`🔮 鏡読み はずれ（予想：${esc(IND[G.mirror.guess])}）`}</span>`);
-    document.body.appendChild(el); if(rok){ sfx('coin'); haptic([10,20,10,20,40]); } else if(same){ sfx('flip'); haptic([15,30,15]); }
+    document.body.appendChild(el); if(rok){ sfx('coin'); haptic([10,20,10,20,40]); vo('correct'); } else if(same){ sfx('flip'); haptic([15,30,15]); }
     setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 400); }, same?2600:1900);
   }, 700);
 }
@@ -12403,7 +12435,7 @@ async function ghCardImg(){
 /* ---- 📮 分身の絵はがき：友だちが分身と戦った結果を、持ち主に届ける。持ち主側には「分身の旅」として残る ---- */
 const ghNm = v => String(v||'').replace(/[<>&"']/g,'').replace(/-/g,'－').trim().slice(0,12);
 /* ログインスタンプなどの演出が出ている間は、リンクで届いたシートを開くのを待つ */
-function sheetWhenFree(k, n){ if(document.querySelector('.stampfx,.promofx') && (n||0)<60){ setTimeout(()=>sheetWhenFree(k,(n||0)+1),800); return; } openSheet(k); sfx('open'); }
+function sheetWhenFree(k, n){ if(document.querySelector('.stampfx,.promofx') && (n||0)<60){ setTimeout(()=>sheetWhenFree(k,(n||0)+1),800); return; } openSheet(k); sfx('open'); setTimeout(()=>vo('message'),250); }
 function ghrUrl(R,g){
   const me=ghNm(NET.name)||'ともだち', gr=R.res==='w'?'l':R.res==='l'?'w':'d', d=todayKey()%10000;
   return `${PUBLIC_URL}?ghr=${R.b+100}-${R.a+100}-${gr}-${R.sync|0}-${R.rdN|0}-${g.k}-${d}-${encodeURIComponent(ghNm(g.from))}-${encodeURIComponent(me)}`;
