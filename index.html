@@ -4547,6 +4547,82 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .sgc{position:relative;flex:1}.sgc .mc-ic{background:radial-gradient(circle at 35% 30%,#fff3a8,#ffb23a)}.sgc .sg-badge{position:absolute;top:10px;right:12px;margin:0}
 @keyframes sgBadge{50%{transform:scale(1.15)}}
 @media (prefers-reduced-motion:reduce){.sg-cube.spin{transition:none}.sgq.t-star,.sg-badge,.sg-pc.hop .ava{animation:none}}
+/* 🏠 マイルーム */
+.rm-ttl{margin:2px 0 10px}
+.rm,.rm-tabs,.rm-grid,.rm-stat,.rm-gift{flex:none}.rm-gift{display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.3}.rm-gift small{font-size:12.5px;opacity:.85}
+.rm{position:relative;aspect-ratio:4/3;border-radius:20px;overflow:hidden;isolation:isolate;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .14),0 10px 24px rgb(0 0 0 / .35);user-select:none;-webkit-user-select:none}
+.rm-wall{position:absolute;inset:0 0 34% 0;background:linear-gradient(180deg,#3b3570,#2c2858)}
+.rm-wall::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgb(0 0 0 / .18),transparent 30%,rgb(0 0 0 / .12))}
+.rm-floor{position:absolute;inset:66% 0 0 0;background:repeating-linear-gradient(90deg,#8a5a34 0 34px,#6f4526 34px 36px,#97663d 36px 70px,#6f4526 70px 72px);box-shadow:inset 0 5px 0 #4a2c18,inset 0 14px 18px rgb(0 0 0 / .3)}
+.wp-stripe .rm-wall,.rm-sw.wp-stripe{background:repeating-linear-gradient(90deg,#f3e3c3 0 14px,#e6cf9f 14px 28px)}
+.wp-brick .rm-wall,.rm-sw.wp-brick{background:linear-gradient(rgb(0 0 0 / .22) 2px,transparent 2px) 0 0/100% 16px,repeating-linear-gradient(90deg,#b5573c 0 34px,#7d3523 34px 36px)}
+.wp-navy .rm-wall,.rm-sw.wp-navy{background:radial-gradient(circle,rgb(255 255 255 / .22) 1.6px,transparent 2.2px) 0 0/16px 16px,#1d2a55}
+.wp-sakura .rm-wall,.rm-sw.wp-sakura{background:radial-gradient(circle at 30% 30%,#ff9cc4 3px,transparent 4px) 0 0/26px 26px,radial-gradient(circle at 70% 75%,#ffc6dd 2.5px,transparent 3.5px) 0 0/26px 26px,#fde9f1}
+.rm-sw.wp-w0{background:linear-gradient(180deg,#3b3570,#2c2858)}
+.fl-tatami .rm-floor,.rm-sw.fl-tatami{background:linear-gradient(90deg,transparent 49%,#4d5a22 49% 51%,transparent 51%) 0 0/80px 100%,repeating-linear-gradient(0deg,#b9c27a 0 2px,#cdd38e 2px 5px)}
+.fl-tile .rm-floor,.rm-sw.fl-tile{background:conic-gradient(#ececf3 25%,#c7c8d6 0 50%,#ececf3 0 75%,#c7c8d6 0) 0 0/26px 26px}
+.fl-carpet .rm-floor,.rm-sw.fl-carpet{background:radial-gradient(circle,rgb(255 214 90 / .25) 1.5px,transparent 2px) 0 0/14px 14px,linear-gradient(180deg,#9b2335,#6e1626)}
+.rm-sw.fl-wood{background:repeating-linear-gradient(90deg,#8a5a34 0 14px,#6f4526 14px 15px,#97663d 15px 29px,#6f4526 29px 30px)}
+.rm-win{position:absolute;left:35%;top:17%;width:30%;height:34%;border-radius:8px;padding:5px;background:linear-gradient(160deg,#f1e2c0,#cdb586);box-shadow:0 6px 12px rgb(0 0 0 / .35);cursor:pointer;z-index:1}
+.rm-sky{position:relative;width:100%;height:100%;border-radius:4px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.rm-sky::before,.rm-sky::after{content:"";position:absolute;background:#cdb586;z-index:2}.rm-sky::before{left:50%;top:0;bottom:0;width:4px;margin-left:-2px}.rm-sky::after{top:45%;left:0;right:0;height:4px}
+.rm-sky.sky-morn{background:linear-gradient(180deg,#ff9f7a,#ffd39a 50%,#9fd3ff)}.rm-sky.sky-day{background:linear-gradient(180deg,#2f7dff,#9fd6ff)}.rm-sky.sky-eve{background:linear-gradient(180deg,#2b1a5a,#b23a6b 55%,#ff9a4d)}.rm-sky.sky-night{background:linear-gradient(180deg,#040714,#1b2560)}
+.rm-stars{position:absolute;inset:0;background:radial-gradient(1.4px 1.4px at 20% 25%,#fff,transparent),radial-gradient(1.2px 1.2px at 70% 20%,#fff,transparent),radial-gradient(1.6px 1.6px at 40% 60%,#fff,transparent),radial-gradient(1.2px 1.2px at 85% 55%,#fff,transparent);animation:rmTw 3s ease-in-out infinite}
+@keyframes rmTw{50%{opacity:.4}}
+.rm-view{position:relative;z-index:1;font-size:clamp(26px,8vw,40px);line-height:1;margin-bottom:-2px;filter:drop-shadow(0 2px 2px rgb(0 0 0 / .3))}
+.ph-night .rm-view{filter:brightness(.55) saturate(.8)}
+.rm-lamp{position:absolute;left:50%;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;z-index:4;cursor:pointer;transform-origin:50% 0;animation:rmSwing 5s ease-in-out infinite}
+.rm-cord{width:2px;height:clamp(10px,4vw,18px);background:#222}.rm-lamp span{font-size:clamp(18px,5.4vw,26px);line-height:1;filter:drop-shadow(0 0 6px rgb(255 230 140 / .8))}
+@keyframes rmSwing{0%,100%{transform:translateX(-50%) rotate(-3deg)}50%{transform:translateX(-50%) rotate(3deg)}}
+.rm-wl{position:absolute;left:7%;top:15%;width:21%;aspect-ratio:1;display:grid;place-items:center;cursor:pointer;z-index:1}
+.rm-wl.fr{background:linear-gradient(160deg,#fffdf6,#efe6d2);border-radius:6px;box-shadow:0 0 0 4px #7b5230,0 8px 12px rgb(0 0 0 / .35)}
+.rm-wl span{font-size:clamp(24px,7.6vw,38px);line-height:1}
+.rm-wr{position:absolute;right:8%;top:14%;width:19%;aspect-ratio:1;display:grid;place-items:center;cursor:pointer;z-index:1}
+.rm-wr span{font-size:clamp(30px,9vw,46px);line-height:1;filter:drop-shadow(0 6px 6px rgb(0 0 0 / .35))}
+.rm-wr.it-clock span{transform-origin:50% 10%;animation:rmTick 2s ease-in-out infinite}
+@keyframes rmTick{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.rm-wr.it-tv span{animation:rmTv 2.4s steps(2) infinite}@keyframes rmTv{50%{filter:drop-shadow(0 0 10px rgb(120 200 255 / .8)) drop-shadow(0 6px 6px rgb(0 0 0 / .35))}}
+.rm-rug{position:absolute;left:27%;right:27%;bottom:5%;height:17%;z-index:1;cursor:pointer}
+.rug-round{border-radius:50%;background:radial-gradient(circle,#ffd36a 0 22%,#ff8c5a 23% 45%,#ffd36a 46% 62%,#5a8bd6 63%);box-shadow:0 4px 8px rgb(0 0 0 / .3)}
+.rug-persia{border-radius:6px;background:radial-gradient(ellipse at center,#ffd36a 0 14%,transparent 15%),repeating-linear-gradient(45deg,#7b1d2e 0 6px,#9a2a3c 6px 12px);box-shadow:inset 0 0 0 4px #e8c06a,inset 0 0 0 7px #4a1020,0 4px 8px rgb(0 0 0 / .3)}
+.rm-desk{position:absolute;left:5%;bottom:11%;z-index:2;cursor:pointer}.rm-side{position:absolute;right:5%;bottom:10%;z-index:2;cursor:pointer}
+.rm-desk span,.rm-side span{display:block;font-size:clamp(40px,13vw,64px);line-height:1;filter:drop-shadow(0 8px 6px rgb(0 0 0 / .35))}
+.rm-side.it-cat span{transform:scaleX(-1);animation:rmCat 3.2s ease-in-out infinite}@keyframes rmCat{0%,100%{transform:scaleX(-1) translateY(0)}50%{transform:scaleX(-1) translateY(-3px) rotate(2deg)}}
+.rm-side.it-tree span{animation:rmTree 2.2s ease-in-out infinite}@keyframes rmTree{50%{filter:drop-shadow(0 0 10px rgb(255 214 90 / .9)) drop-shadow(0 8px 6px rgb(0 0 0 / .35))}}
+.rm-mio{position:absolute;bottom:9%;left:38%;width:clamp(44px,14vw,62px);z-index:3;cursor:pointer;animation:rmWalk 14s ease-in-out infinite}
+.rm-mf{display:block;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:0 0 0 3px #fff,0 6px 10px rgb(0 0 0 / .4);background:#ffe9f4;animation:rmBob .7s ease-in-out infinite alternate}
+.rm-mf svg{width:100%;height:100%;display:block}
+.rm-sh{display:block;width:70%;height:6px;margin:3px auto 0;border-radius:50%;background:rgb(0 0 0 / .35)}
+@keyframes rmWalk{0%,100%{left:30%}45%,55%{left:50%}}@keyframes rmBob{to{transform:translateY(-3px)}}
+.rm-say{position:absolute;left:50%;top:5%;transform:translate(-50%,-6px);max-width:84%;padding:8px 12px;border-radius:14px;background:#fff;color:#1b1838;font-size:12.5px;line-height:1.55;text-align:center;box-shadow:0 8px 18px rgb(0 0 0 / .35);opacity:0;pointer-events:none;transition:opacity .25s,transform .3s cubic-bezier(.3,1.5,.5,1);z-index:6}
+.rm-say.on{opacity:1;transform:translate(-50%,0)}.rm-say b{color:#c2185b}
+.rm-dark{position:absolute;inset:0;pointer-events:none;z-index:5}
+.ph-eve .rm-dark{background:linear-gradient(180deg,rgb(255 120 60 / .08),rgb(60 20 80 / .2))}
+.ph-night .rm-dark{background:radial-gradient(ellipse 46% 52% at 50% 6%,rgb(255 220 140 / .16),transparent 70%),radial-gradient(ellipse 65% 75% at 50% 10%,transparent 30%,rgb(6 8 30 / .55))}
+.ph-night.rm .lp-star span,.ph-night.rm .lp-lantern span{filter:drop-shadow(0 0 14px rgb(255 200 90 / 1))}
+.rm .pop{animation:rmPop .6s cubic-bezier(.3,1.6,.5,1) both}
+.rm .pop::after{content:"✨";position:absolute;right:-8px;top:-10px;font-size:18px;animation:rmSpk 1s ease-out both}
+@keyframes rmPop{0%{transform:scale(.3) translateY(-20px);opacity:0}100%{transform:none;opacity:1}}
+.rm .rm-lamp.pop{animation:rmSwing 5s ease-in-out infinite}
+@keyframes rmSpk{0%{opacity:0;transform:scale(.4)}40%{opacity:1;transform:scale(1.3)}100%{opacity:0;transform:scale(1) translateY(-10px)}}
+.rm-stat{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:4px 12px;margin:12px 0 10px}
+.rm-rank{grid-row:span 2;display:flex;flex-direction:column;align-items:flex-start}.rm-rank small{font-size:11px;color:var(--muted)}.rm-rank b{font-size:22px;line-height:1.1}.rm-rank em{font-style:normal;font-weight:800;font-size:12px;color:#ffc83a}
+.rm-bar{height:10px;border-radius:99px;background:rgb(255 255 255 / .08);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}.rm-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#ff8cc8,#ffc83a)}
+.rm-gift{width:100%;margin:2px 0 8px}
+.rm-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:6px -4px 10px;padding:2px 4px 4px}
+.rm-tabs button{flex:none;display:flex;align-items:center;gap:4px;padding:7px 11px;border:0;border-radius:99px;font-weight:800;font-size:12.5px;color:var(--ink);background:rgb(255 255 255 / .07);box-shadow:inset 0 0 0 1px var(--line)}
+.rm-tabs button i{font-style:normal}.rm-tabs button.on{background:linear-gradient(160deg,#ffe27a,#ffb23a);color:#3a2300;box-shadow:none}
+.rm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rm-it{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px 9px;border:0;border-radius:16px;color:var(--ink);background:linear-gradient(150deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line),0 4px 0 var(--rail);text-align:center;min-width:0;transition:transform .12s}
+.rm-it:active{transform:translateY(2px)}.rm-it.on{box-shadow:inset 0 0 0 2px #ffc83a,0 4px 0 var(--rail)}.rm-it.dim{opacity:.55}
+.rm-it b{font-size:11.5px;line-height:1.35;min-height:2.7em;display:flex;align-items:center}.rm-it small{font-size:11px;font-weight:800;color:var(--muted)}.rm-it.on small{color:#ffc83a}
+.rm-pi{font-size:30px;line-height:44px;height:44px}.rm-none{font-size:20px;line-height:44px;height:44px;color:var(--muted)}
+.rm-sw{display:block;width:54px;height:44px;border-radius:10px;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .2)}.rm-sw.rugp{width:58px;height:34px;margin:5px 0}
+.rm-lim{position:absolute;top:-6px;right:-2px;font-style:normal;font-size:9.5px;font-weight:900;padding:2px 6px;border-radius:99px;background:#e8364a;color:#fff}
+.rmc{position:relative;flex:1}.rmc-pv{display:block;flex:none;width:84px;border-radius:12px;overflow:hidden;pointer-events:none}
+.rm.rm-mini{border-radius:12px;box-shadow:none}.rm.rm-mini .rm-wl span{font-size:12px}.rm.rm-mini .rm-wr span{font-size:14px}.rm.rm-mini .rm-desk span,.rm.rm-mini .rm-side span{font-size:20px}.rm.rm-mini .rm-view{font-size:12px}.rm.rm-mini .rm-lamp span{font-size:9px}.rm.rm-mini .rm-cord{height:4px}.rm.rm-mini .rm-mio{width:16px}.rm.rm-mini .rm-mf{box-shadow:0 0 0 1.5px #fff}.rm.rm-mini .rm-wl.fr{box-shadow:0 0 0 2px #7b5230}.rm.rm-mini .rm-win{padding:2px}
+.rmc .sg-badge{position:absolute;top:10px;right:12px;margin:0}
+@media (prefers-reduced-motion:reduce){.rm *{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5646,6 +5722,122 @@ function sgBody(){
 }
 function sgCard(){ const g=sgS(), th=sgTheme(g.m);
   return `<button class="minicard sgc" onclick="openSugoroku()"><span class="mc-ic">🎲</span><span class="mc-tx"><span class="label">SUGOROKU · ${th.e} ${th.n}</span><b>AZAKEIすごろく</b><span class="note">サイコロ ${g.dice||0}個 · ${g.lap||0}/3周 · 試合でたまる</span></span>${g.dice?`<span class="sg-badge">${g.dice}</span>`:''}</button>`; }
+/* ---- 🏠 マイルーム：コインで家具を買って、自分の部屋をかざる。窓の外は本当の時間の空。
+   ミオが部屋を歩いていて、タップすると話す。家具をタップすると、その物にまつわる経済のまめ知識。毎日ミオのおみやげ ---- */
+const RM_SLOT=[{k:'wl',n:'左の壁',ic:'🖼️'},{k:'wr',n:'右の壁',ic:'🕰️'},{k:'win',n:'窓の外',ic:'🪟'},{k:'desk',n:'つくえ',ic:'💻'},{k:'side',n:'右すみ',ic:'🪴'},{k:'rug',n:'ラグ',ic:'🟫'},{k:'lamp',n:'照明',ic:'💡'},{k:'wp',n:'壁紙',ic:'🧱'},{k:'fl',n:'床',ic:'🟨'}];
+const RM_IT=[
+  {s:'wl',id:'wl0',n:'なにもなし',p:0,pt:0},
+  {s:'wl',id:'cal',ic:'🗓️',n:'カレンダー',p:40,pt:2,d:'決算発表、ボーナス、セール。カレンダーには経済のイベントがいっぱい。'},
+  {s:'wl',id:'map',ic:'🗾',n:'日本地図',p:90,pt:4,d:'工場が多い地域、観光が強い地域…。地図を見ると、産業のちがいが見えてくるよ。'},
+  {s:'wl',id:'chart',ic:'📈',n:'株価チャートのポスター',p:130,pt:6,d:'株価は毎日の売り買いで上がったり下がったり。長い目で見るのが大事。'},
+  {s:'wl',id:'art',ic:'🌅',n:'名画（レプリカ）',p:200,pt:9,d:'有名な絵は、オークションで何十億円になることも。めずらしい物ほど値段が上がるんだ。'},
+  {s:'wr',id:'wr0',n:'なにもなし',p:0,pt:0},
+  {s:'wr',id:'clock',ic:'🕰️',n:'ふりこ時計',p:100,pt:5,d:'東京の株式市場は、朝9時に始まって、午後3時半に終わるよ。'},
+  {s:'wr',id:'medal',ic:'🏅',n:'メダルかけ',p:140,pt:6,d:'オリンピックの年は、テレビや旅行、スポーツ用品がよく売れる。'},
+  {s:'wr',id:'tv',ic:'📺',n:'壁かけテレビ',p:240,pt:11,d:'ニュースひとつで、株価が大きく動くことがある。このゲームと同じだね。'},
+  {s:'win',id:'town',ic:'🏙️',n:'街の景色',p:0,pt:0},
+  {s:'win',id:'sea',ic:'🚢',n:'港が見える窓',p:120,pt:6,d:'日本の貿易は、ほとんどが船。港には世界中から荷物が届くよ。'},
+  {s:'win',id:'fuji',ic:'🗻',n:'富士山が見える窓',p:190,pt:9,d:'富士山を見に、世界中から観光客がやってくる。観光も大事な産業なんだ。'},
+  {s:'win',id:'rocket',ic:'🚀',n:'宇宙港が見える窓',p:300,pt:13,d:'ロケットや人工衛星の宇宙ビジネスは、これから伸びると期待されている産業。'},
+  {s:'desk',id:'desk0',n:'なにもなし',p:0,pt:0},
+  {s:'desk',id:'books',ic:'📚',n:'本だな',p:70,pt:4,d:'「知識への投資が、いちばん利息がつく」という言葉があるよ。'},
+  {s:'desk',id:'pc',ic:'💻',n:'ノートパソコンの机',p:160,pt:7,d:'いまはスマホやパソコンで、だれでも株の売り買いができる時代。'},
+  {s:'desk',id:'mon',ic:'🖥️',n:'トレーダーのモニター',p:340,pt:15,d:'プロのトレーダーは、いくつもの画面で世界中の市場を同時に見ている。'},
+  {s:'side',id:'side0',n:'なにもなし',p:0,pt:0},
+  {s:'side',id:'plant',ic:'🪴',n:'観葉植物',p:50,pt:3,d:'在宅で働く人が増えて、部屋をかざる植物や家具がよく売れた時期があったよ。'},
+  {s:'side',id:'sofa',ic:'🛋️',n:'ソファ',p:180,pt:8,d:'家が売れると、家具や家電も一緒に売れる。住宅は景気のバロメーター。'},
+  {s:'side',id:'tree',ic:'🎄',n:'クリスマスツリー',p:120,pt:7,d:'12月は1年でいちばんお店がにぎわう月のひとつ。',mo:[11,12]},
+  {s:'side',id:'cat',ic:'🐈',n:'ねこ',p:280,pt:13,d:'ペットのごはんやグッズの市場は、大きく育っている産業のひとつ。'},
+  {s:'rug',id:'rug0',n:'なし',p:0,pt:0},
+  {s:'rug',id:'round',n:'まるいラグ',p:50,pt:3,d:'綿や羊毛の値段が上がると、ラグや服の値段も上がりやすい。'},
+  {s:'rug',id:'persia',n:'ペルシャじゅうたん',p:170,pt:8,d:'手で織ったじゅうたんは、何年もかけてつくる高級品。'},
+  {s:'lamp',id:'bulb',ic:'💡',n:'はだか電球',p:0,pt:0},
+  {s:'lamp',id:'lantern',ic:'🏮',n:'ちょうちん',p:60,pt:3,d:'お祭りの夜は、屋台やお店の売り上げがぐんと伸びる。'},
+  {s:'lamp',id:'star',ic:'🌟',n:'星のランプ',p:220,pt:10,d:'LED電球は電気代が少なくてすむ。省エネも大事な技術だよ。'},
+  {s:'wp',id:'w0',n:'夜空色',p:0,pt:0},
+  {s:'wp',id:'stripe',n:'クリームのしま',p:60,pt:3,d:'壁紙の柄にも流行がある。流行を読むのも商売のコツ。'},
+  {s:'wp',id:'brick',n:'レンガ',p:100,pt:5,d:'古い倉庫をカフェにする「リノベーション」が人気。'},
+  {s:'wp',id:'navy',n:'ネイビードット',p:100,pt:5,d:'青は「信頼」の色。銀行のロゴに青が多いのはそのため、と言われる。'},
+  {s:'wp',id:'sakura',n:'さくら',p:150,pt:7,d:'お花見の季節は、お弁当や飲み物がよく売れる。'},
+  {s:'fl',id:'wood',n:'フローリング',p:0,pt:0},
+  {s:'fl',id:'tatami',n:'たたみ',p:90,pt:4,d:'たたみの原料「い草」は、ほとんどが輸入になっているよ。'},
+  {s:'fl',id:'tile',n:'チェックのタイル',p:90,pt:4,d:'タイルは、焼き物の技術でつくる工業製品。'},
+  {s:'fl',id:'carpet',n:'赤いじゅうたん',p:150,pt:7,d:'ホテルや劇場の赤じゅうたんは、特別な場所のしるし。'}];
+const RM_DEF={wl:'wl0',wr:'wr0',win:'town',desk:'desk0',side:'side0',rug:'rug0',lamp:'bulb',wp:'w0',fl:'wood'};
+const RM_RANK=[[0,'ふつうの部屋'],[12,'こぎれいな部屋'],[30,'おしゃれな部屋'],[55,'あこがれの部屋'],[85,'伝説のトレーダー部屋']];
+let RMX={tab:'wl',pop:null};
+const rmIt = id => RM_IT.find(x=>x.id===id);
+function rmS(){ const P=S.prof; if(!P.room) P.room={own:{},set:Object.assign({},RM_DEF),day:0}; const R=P.room; Object.keys(RM_DEF).forEach(k=>{ if(!R.set[k]) R.set[k]=RM_DEF[k]; }); return R; }
+const rmOwn = (R,it) => !it.p || !!R.own[it.id];
+function rmPt(R){ return Object.values(R.set).reduce((a,id)=>a+((rmIt(id)||{}).pt||0),0); }
+function rmRank(pt){ let r=RM_RANK[0], nx=null; RM_RANK.forEach((x,i)=>{ if(pt>=x[0]){ r=x; nx=RM_RANK[i+1]||null; } }); return {n:r[1], nx}; }
+function rmGiftAmt(pt){ return {c:5+Math.floor(pt/3), d:pt>=55?1:0}; }
+function rmScene(R, opts){
+  const o=opts||{}, ph=skyPhase(new Date().getHours()), g=k=>rmIt(R.set[k])||{}, pop=k=>RMX.pop===k?' pop':'';
+  const tap=k=>o.mini?'':` onclick="rmTap('${k}')"`, wl=g('wl'), wr=g('wr'), dk=g('desk'), sd=g('side'), lp=g('lamp'), win=g('win');
+  return `<div class="rm ph-${ph} wp-${R.set.wp} fl-${R.set.fl}${o.mini?' rm-mini':''}" ${o.mini?'aria-hidden="true"':'role="img" aria-label="あなたの部屋"'}>
+    <div class="rm-wall"></div><div class="rm-floor"></div>
+    <div class="rm-win${pop('win')}"${tap('win')}><div class="rm-sky sky-${ph}">${ph==='night'?'<i class="rm-stars"></i>':''}<span class="rm-view">${win.ic||'🏙️'}</span></div></div>
+    <div class="rm-lamp lp-${lp.id}${pop('lamp')}"${tap('lamp')}><i class="rm-cord"></i><span>${lp.ic||'💡'}</span></div>
+    ${wl.ic?`<div class="rm-wl fr${pop('wl')}"${tap('wl')}><span>${wl.ic}</span></div>`:''}
+    ${wr.ic?`<div class="rm-wr it-${wr.id}${pop('wr')}"${tap('wr')}><span>${wr.ic}</span></div>`:''}
+    ${R.set.rug!=='rug0'?`<div class="rm-rug rug-${R.set.rug}${pop('rug')}"${tap('rug')}></div>`:''}
+    ${dk.ic?`<div class="rm-desk it-${dk.id}${pop('desk')}"${tap('desk')}><span>${dk.ic}</span></div>`:''}
+    ${sd.ic?`<div class="rm-side it-${sd.id}${pop('side')}"${tap('side')}><span>${sd.ic}</span></div>`:''}
+    <div class="rm-mio"${o.mini?'':' onclick="rmMio()"'}><span class="rm-mf">${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span><i class="rm-sh"></i></div>
+    ${o.mini?'':'<div class="rm-say" id="rmSay" aria-live="polite"></div>'}<i class="rm-dark"></i></div>`;
+}
+function rmSay(t){ const el=document.getElementById('rmSay'); if(!el) return; el.innerHTML=t; el.classList.remove('on'); void el.offsetWidth; el.classList.add('on'); clearTimeout(rmSay.t); rmSay.t=setTimeout(()=>el.classList.remove('on'),4200); }
+function rmTap(k){ const R=rmS(), it=rmIt(R.set[k]); if(!it) return; sfx('click'); haptic(6); rmSay(`<b>${esc(it.n)}</b>${it.d?'<br>'+esc(it.d):''}`); }
+const RM_TALK=['いい部屋になってきたね！','窓の外、いまの時間の空なんだよ。','家具をタップすると、まめ知識が読めるよ。','つぎはなにを置こうかな？','試合でコインをためて、もっとかざろう！','ここ、落ちつくなあ…'];
+function rmMio(){ const h=new Date().getHours(), R=rmS(), pt=rmPt(R); haptic(10);
+  const line = pt<12 && Math.random()<.5 ? 'まだ少しさみしい部屋だね。家具を置いてみよう！' : RM_TALK[Math.floor(Math.random()*RM_TALK.length)];
+  rmSay(`<b>${GUIDE.n}</b><br>${line}`); vo(voPick?voPick([h>=5&&h<11?'m_ohayo':h<17?'m_konnichiwa':'m_konbanwa','m_yaho']):'m_yaho'); }
+function openRoom(){ rmS(); RMX={tab:RMX.tab||'wl',pop:null}; openSheet('room'); sfx('open'); setTimeout(()=>{ if(S.sheet==='room') rmSay(`<b>${GUIDE.n}</b><br>ようこそ、あなたの部屋へ！`); },500); }
+function rmTab(k){ RMX.tab=k; RMX.pop=null; sfx('click'); renderSheet(); }
+function rmBuy(id){
+  const R=rmS(), it=rmIt(id), P=S.prof; if(!it) return; const pt0=rmPt(R);
+  if(R.set[it.s]===id) return;
+  if(!rmOwn(R,it)){
+    if(it.mo && !it.mo.includes(new Date().getMonth()+1)){ toast('いまは買えない季節の家具です'); return; }
+    if((P.coin||0)<it.p){ toast(`コインが足りません（あと ${it.p-(P.coin||0)}）`); sfx('buzz'); return; }
+    P.coin-=it.p; R.own[id]=1; setTimeout(()=>vo('m_maidoari'),200); sfx('coin');
+  } else sfx('select');
+  R.set[it.s]=id; RMX.pop=it.s; saveProfile(); haptic(15); renderSheet();
+  const pt1=rmPt(R), r0=rmRank(pt0).n, r1=rmRank(pt1).n;
+  if(pt1>pt0 && r1!==r0){ setTimeout(()=>{ rmSay(`<b>ランクアップ！</b><br>「${r1}」になった！`); vo('m_panpaka'); sfx('fanfare'); if(!reduced()) confetti(); },650); }
+  else if(it.d) setTimeout(()=>rmSay(`<b>${esc(it.n)}</b>${R.own[id]&&it.p?'を置いた！':''}<br>${esc(it.d)}`),350);
+}
+function rmGift(){
+  const R=rmS(), k=todayKey(); if(R.day===k) return; const a=rmGiftAmt(rmPt(R));
+  R.day=k; S.prof.coin=(S.prof.coin||0)+a.c; if(a.d){ try{ const g=sgS(); g.dice=Math.min(SG_MAX,(g.dice||0)+1); }catch(e){} }
+  saveProfile(); sfx('coin'); haptic([10,30,10]); renderSheet(); vo('m_yatta');
+  setTimeout(()=>rmSay(`<b>🎁 ミオのおみやげ</b><br>🪙 ${a.c} コイン${a.d?' と 🎲 すごろくのサイコロ 1個':''}！ また明日もね。`),300);
+}
+function rmPrev(it){
+  if(it.s==='wp') return `<span class="rm-sw wp-${it.id}"></span>`;
+  if(it.s==='fl') return `<span class="rm-sw fl-${it.id}"></span>`;
+  if(it.s==='rug') return it.id==='rug0'?'<span class="rm-none">✕</span>':`<span class="rm-sw rugp rug-${it.id}"></span>`;
+  return it.ic?`<span class="rm-pi">${it.ic}</span>`:'<span class="rm-none">✕</span>';
+}
+function roomBody(){
+  const R=rmS(), P=S.prof, pt=rmPt(R), rk=rmRank(pt), a=rmGiftAmt(pt), got=R.day===todayKey(), tab=RMX.tab||'wl';
+  const its=RM_IT.filter(x=>x.s===tab), mo=new Date().getMonth()+1, nOwn=RM_IT.filter(x=>x.p&&R.own[x.id]).length, nAll=RM_IT.filter(x=>x.p).length;
+  const html=`<div class="row spread"><span class="label">MY ROOM</span><span class="coinbal" style="margin-right:46px">🪙 <b>${P.coin||0}</b></span></div>
+    <h3 class="ttl rm-ttl">🏠 マイルーム</h3>
+    ${rmScene(R)}
+    <div class="rm-stat"><span class="rm-rank"><small>おしゃれ度</small><b>✨ ${pt}</b><em>${rk.n}</em></span>
+      <span class="rm-bar"><i style="width:${rk.nx?Math.min(100,Math.round(pt/rk.nx[0]*100)):100}%"></i></span><small class="note">${rk.nx?`あと ${rk.nx[0]-pt} で「${rk.nx[1]}」`:'最高ランク！'} · 家具 ${nOwn}/${nAll}</small></div>
+    <button class="btn ${got?'ghost':'gold'} big rm-gift" onclick="rmGift()" ${got?'disabled':''}>${got?'<span>🎁 きょうは受け取りずみ</span>':`<span>🎁 ミオのおみやげ</span><small>🪙 ${a.c}${a.d?' ＋ 🎲 1':''}</small>`}</button>
+    <p class="note" style="text-align:center;margin-top:-4px">おしゃれ度が高いほど、毎日のおみやげが増えます${pt<55?'（55 からはすごろくのサイコロも）':''}</p>
+    <div class="rm-tabs" role="tablist">${RM_SLOT.map(x=>`<button role="tab" aria-selected="${x.k===tab}" class="${x.k===tab?'on':''}" onclick="rmTab('${x.k}')"><i>${x.ic}</i>${x.n}</button>`).join('')}</div>
+    <div class="rm-grid">${its.map(it=>{ const own=rmOwn(R,it), on=R.set[it.s]===it.id, off=it.mo&&!it.mo.includes(mo)&&!own, poor=!own&&(P.coin||0)<it.p;
+      return `<button class="rm-it${on?' on':''}${off||poor?' dim':''}" onclick="rmBuy('${it.id}')" ${on?'aria-pressed="true"':''}>${rmPrev(it)}<b>${esc(it.n)}</b>
+        <small>${on?'✔ 置いてある':own?'置く':off?'季節限定':`🪙${it.p}`}${it.pt?` · ✨${it.pt}`:''}</small>${it.mo?'<em class="rm-lim">期間限定</em>':''}</button>`; }).join('')}</div>`;
+  RMX.pop=null; return html;
+}
+function roomCard(){ const R=rmS(), pt=rmPt(R), got=R.day===todayKey();
+  return `<button class="minicard rmc" onclick="openRoom()"><span class="rmc-pv">${rmScene(R,{mini:true})}</span><span class="mc-tx"><span class="label">MY ROOM · ✨${pt}</span><b>マイルーム</b><span class="note">${got?'家具をかざろう':'🎁 ミオのおみやげが届いてるよ'}</span></span>${got?'':'<span class="sg-badge">1</span>'}</button>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -6873,6 +7065,7 @@ function renderSheet(){
   else if(k==='quiz') body=quizBody();
   else if(k==='box') body=boxBody();
   else if(k==='sugoroku') body=sgBody();
+  else if(k==='room') body=roomBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
@@ -12099,13 +12292,13 @@ function homeView(){
   ${pnpPromo()}
   ${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
   ${todayBar()}
-  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),sgCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
-  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9,10].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
+  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),sgCard(),roomCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
+  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9,10,11].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${hsec('🏆','ミッション','きょう・今週・まちの依頼をひとつに')}
   ${misBoard('home')}
   </details>`}
 
-  <nav class="homelinks"><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
+  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
 function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
