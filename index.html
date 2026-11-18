@@ -4396,6 +4396,31 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .wmr-m small{font-size:10px;font-weight:800;color:var(--muted)}
 .wr-act .btn{padding-left:14px;padding-right:14px}
 @media (prefers-reduced-motion:reduce){.wr-medal{animation:none}}
+/* 🎯 今月の目標 */
+.gr{display:flex;align-items:center;gap:14px;padding:12px;border-radius:16px;background:var(--panel2)}
+.gr-ring{position:relative;flex:none;width:120px;height:120px}
+.gr-arc{transition:stroke-dasharray .8s cubic-bezier(.2,.9,.3,1);animation:grIn 1.1s calc(.2s + var(--j)*.15s) cubic-bezier(.2,.9,.3,1) both}
+@keyframes grIn{from{stroke-dasharray:0 var(--L)}}
+.gr-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}.gr-c b{font-family:var(--display);font-weight:400;font-size:20px}.gr-c small{font-size:9px;font-weight:800;color:var(--muted);margin-top:2px}
+.gr-l{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.gr-h{font-size:13.5px}
+.gr-r{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:6px;font-size:12px;font-weight:800}
+.gr-n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--c)}.gr-v{white-space:nowrap;color:var(--muted)}.gr-v b{font-family:var(--display);font-weight:400;font-size:15px;color:var(--ink)}
+.gr-lv{border:0;border-radius:99px;padding:3px 8px;font:inherit;font-size:10.5px;font-weight:800;color:inherit;background:var(--panel);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 55%,transparent);cursor:pointer;white-space:nowrap}
+.gr-r.ok .gr-lv{background:color-mix(in srgb,var(--c) 28%,var(--panel));color:var(--ink)}
+.gr-note{font-size:10px;font-weight:700;color:var(--muted)}
+.gp{display:flex;flex-direction:column;gap:10px}.gp.hit{box-shadow:inset 0 0 0 2px var(--gold-t),0 0 24px color-mix(in srgb,var(--gold-t) 25%,transparent)}
+.gp-coin{padding:2px 10px;border-radius:99px;background:color-mix(in srgb,var(--gold-t) 18%,transparent);color:var(--gold-t);font-weight:900;font-size:13px;animation:lbwStamp .45s .9s cubic-bezier(.3,1.8,.5,1) both}
+.gp-b{display:flex;align-items:center;gap:14px}.gp-ring{flex:none}
+.gp-rows{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.gp-r{display:grid;grid-template-columns:66px 1fr 44px;align-items:center;gap:8px;font-size:12px;font-weight:800}
+.gp-n{color:var(--c);white-space:nowrap}
+.gp-bar{position:relative;height:9px;border-radius:99px;background:color-mix(in srgb,var(--c) 18%,transparent);overflow:hidden}
+.gp-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:inherit;background:var(--c);width:var(--p1);animation:gpGrow 1.1s .4s cubic-bezier(.2,.9,.3,1) both}
+@keyframes gpGrow{from{width:var(--p0)}}
+.gp-r b{text-align:right;font-family:var(--display);font-weight:400;font-size:13px}.gp-r.hit b{color:var(--gold-t);animation:lbwStamp .45s 1.4s cubic-bezier(.3,1.8,.5,1) both}
+.gp-all{margin:0;text-align:center;font-weight:900;color:var(--gold-t)}
+@media (prefers-reduced-motion:reduce){.gr-arc,.gp-bar i,.gp-coin,.gp-r.hit b{animation:none;transition:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9808,7 +9833,7 @@ const wrIn = (x,k) => k<10000 ? new Date(x.t).getFullYear()===k : wrKey(x.t)===k
 function wrapBtn(L){
   const ks=[...new Set(L.map(x=>wrKey(x.t)))].sort((a,b)=>b-a); if(!ks.length) return '';
   const k=ks[0], n=L.filter(x=>wrKey(x.t)===k).length;
-  return `${wrMedalRow(L)}<button class="wrb" onclick="wrapOpen(${k})"><span class="wrb-ic">📆</span><span class="wrb-tx"><b>${k%100}月のまとめを見る</b><small>${n}試合をスライドでふり返る</small></span><span class="wrb-go">▶</span></button>${(()=>{ const ys=[...new Set(L.map(x=>new Date(x.t).getFullYear()))].filter(y=>L.filter(x=>new Date(x.t).getFullYear()===y).length>=5).sort((a,b)=>b-a); const ch=[...ys.map(y=>`<button class="yr" onclick="wrapOpen(${y})">🎆 ${y}年</button>`), ...ks.slice(1,6).map(x=>`<button onclick="wrapOpen(${x})">${x%100}月</button>`)]; return ch.length?`<div class="wrb-more">${ch.join('')}</div>`:''; })()}`;
+  return `${goalRings()}${wrMedalRow(L)}<button class="wrb" onclick="wrapOpen(${k})"><span class="wrb-ic">📆</span><span class="wrb-tx"><b>${k%100}月のまとめを見る</b><small>${n}試合をスライドでふり返る</small></span><span class="wrb-go">▶</span></button>${(()=>{ const ys=[...new Set(L.map(x=>new Date(x.t).getFullYear()))].filter(y=>L.filter(x=>new Date(x.t).getFullYear()===y).length>=5).sort((a,b)=>b-a); const ch=[...ys.map(y=>`<button class="yr" onclick="wrapOpen(${y})">🎆 ${y}年</button>`), ...ks.slice(1,6).map(x=>`<button onclick="wrapOpen(${x})">${x%100}月</button>`)]; return ch.length?`<div class="wrb-more">${ch.join('')}</div>`:''; })()}`;
 }
 /* 月が変わって最初にホームを開いたら、先月のまとめを届ける（3試合以上あそんだ月だけ・見たら消える） */
 function wrPrevKey(){ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()-1); return d.getFullYear()*100+d.getMonth()+1; }
@@ -9882,6 +9907,41 @@ async function wrapImg(){
   CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:`📆 ${wrName(D.k)}のまとめ`, alt:`${wrName(D.k)}のまとめ画像：${D.n}試合・最高${D.best.s}点・1位${D.wins}回`, name:`azakei-recap-${D.k}.png`, note:'スマホのストーリーにちょうどいい縦長サイズです。'};
   openSheet('card');
 }
+/* ---- 🎯 今月の目標：試合数・1位・独占率の3つのリング。むずかしさは3段階、1周でその月1回だけ +30コイン ---- */
+const GOAL_T=[{k:'g',n:'試合',ic:'🎮',c:'#4fe3ff',lv:[8,15,30],u:'試合'},{k:'w',n:'1位',ic:'🏆',c:'#ffc83a',lv:[2,5,10],u:'回'},{k:'m',n:'独占率',ic:'🟨',c:'#4dff9a',lv:[30,40,50],u:'%',min:5}];
+const GOAL_LVN=['やさしい','ふつう','がんばる'], GOAL_COIN=30;
+function goalP(){ const P=S.prof; P.goal=P.goal||{lv:{g:1,w:1,m:1}, done:{}}; return P.goal; }
+function goalVals(L){ const mono=L.reduce((a,x)=>a+((x.g||'').match(/🟨/g)||[]).length,0), turns=L.reduce((a,x)=>a+[...(x.g||'')].length,0);
+  return {g:L.length, w:L.filter(x=>x.r===1).length, m:turns?Math.round(mono/turns*100):0, mN:L.length}; }
+function goalProg(t,v,lv){ const tg=t.lv[lv]; if(t.k==='m'){ if(v.mN<t.min) return Math.min(.99, v.mN/t.min*Math.min(1,v.m/tg)); return Math.min(1, v.m/tg); } return Math.min(1, v[t.k]/tg); }
+function goalCheck(){
+  const k=wrKey(Date.now()), all=(S.prof.log)||[], L=all.filter(x=>wrKey(x.t)===k), Q=goalP(), D=Q.done[k]=Q.done[k]||{};
+  const a=goalVals(L), b=goalVals(L.slice(0,-1)); const res=[]; let coin=0;
+  GOAL_T.forEach(t=>{ const lv=Q.lv[t.k]??1, p0=goalProg(t,b,lv), p1=goalProg(t,a,lv); let hit=false; if(p1>=1 && !D[t.k]){ D[t.k]=lv+1; hit=true; coin+=GOAL_COIN; } res.push({k:t.k, p0, p1, v:a[t.k], tg:t.lv[lv], hit}); });
+  Object.keys(Q.done).forEach(x=>{ if(+x<k-100) delete Q.done[x]; });
+  if(coin){ S.prof.coin=(S.prof.coin||0)+coin; } return {res, coin, all:GOAL_T.every(t=>D[t.k])};
+}
+function goalRingSvg(ps, sz){
+  const R=[50,38,26], C=sz||120;
+  return `<svg class="gr-svg" viewBox="0 0 120 120" width="${C}" height="${C}" aria-hidden="true">${GOAL_T.map((t,i)=>{ const r=R[i], L=2*Math.PI*r, p=Math.max(0,Math.min(1,ps[i]));
+    return `<circle cx="60" cy="60" r="${r}" fill="none" stroke="${t.c}" stroke-opacity=".18" stroke-width="10"/><circle class="gr-arc" cx="60" cy="60" r="${r}" fill="none" stroke="${t.c}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(L*p).toFixed(1)} ${L.toFixed(1)}" transform="rotate(-90 60 60)" style="--L:${L.toFixed(1)};--j:${i}"/>`; }).join('')}</svg>`;
+}
+function goalRings(){
+  const k=wrKey(Date.now()), L=((S.prof&&S.prof.log)||[]).filter(x=>wrKey(x.t)===k), Q=goalP(), D=Q.done[k]||{}, v=goalVals(L);
+  const ps=GOAL_T.map(t=>goalProg(t,v,Q.lv[t.k]??1)), d=new Date(), left=new Date(d.getFullYear(),d.getMonth()+1,0).getDate()-d.getDate();
+  return `<div class="gr" id="goalR"><div class="gr-ring">${goalRingSvg(ps)}<span class="gr-c"><b>${left}</b><small>日のこり</small></span></div>
+    <div class="gr-l"><b class="gr-h">🎯 ${k%100}月の目標</b>${GOAL_T.map((t,i)=>{ const lv=Q.lv[t.k]??1, tg=t.lv[lv], ok=!!D[t.k];
+      return `<div class="gr-r${ok?' ok':''}" style="--c:${t.c}"><span class="gr-n">${t.ic} ${t.n}</span><span class="gr-v"><b>${v[t.k]}</b>/${tg}${t.u}</span><button class="gr-lv" onclick="goalLv('${t.k}')" aria-label="${t.n}のむずかしさ：${GOAL_LVN[lv]}（タップで変更）">${ok?'✓ 達成':GOAL_LVN[lv]}</button></div>`; }).join('')}
+      <small class="gr-note">1周するごとに +${GOAL_COIN}コイン（月に1回）${v.mN<5?' · 独占率は5試合から':''}</small></div></div>`;
+}
+function goalLv(k){ const Q=goalP(), kk=wrKey(Date.now()); if((Q.done[kk]||{})[k]){ toast('今月はもう達成ずみ！ 来月また選べます'); return; } Q.lv[k]=((Q.lv[k]??1)+1)%3; saveProfile(); sfx('click'); haptic(6); const el=document.getElementById('goalR'); if(el) el.outerHTML=goalRings(); }
+function goalPanel(){
+  const R=G&&G.goalGot; if(!R) return ''; const any=R.res.some(r=>r.p1>r.p0||r.hit); if(!any) return '';
+  return `<section class="panel gp${R.coin?' hit':''}"><div class="row spread"><h3>🎯 今月の目標</h3>${R.coin?`<span class="gp-coin">+${R.coin} コイン</span>`:''}</div>
+    <div class="gp-b"><div class="gp-ring">${goalRingSvg(R.res.map(r=>r.p1),96)}</div><div class="gp-rows">${R.res.map((r,i)=>{ const t=GOAL_T[i];
+      return `<div class="gp-r${r.hit?' hit':''}" style="--c:${t.c};--p0:${(r.p0*100).toFixed(1)}%;--p1:${(r.p1*100).toFixed(1)}%"><span class="gp-n">${t.ic} ${t.n}</span><span class="gp-bar"><i></i></span><b>${r.hit?'達成！':`${Math.round(r.p1*100)}%`}</b></div>`; }).join('')}</div></div>
+    ${R.all&&R.coin?'<p class="gp-all">🎉 今月の目標を、ぜんぶ達成しました！</p>':''}</section>`;
+}
 function wrapOpen(k){
   const D=wrapData(k); if(!D) return; wrapClose(true); try{ if(k>=10000 && k===wrPrevKey()){ S.prof.wrSeen=k; saveProfile(); } }catch(e){}
   WR={D, sl:wrapSlides(D), i:0, t0:0, paused:false};
@@ -9911,7 +9971,7 @@ function wrapShare(){
 }
 function statsDash(){
   const L=(S.prof&&S.prof.log)||[];
-  if(L.length<2) return `<section class="panel sdh"><div class="row spread"><h3>📊 プレイ記録</h3></div><p class="note">2試合以上あそぶと、遊んだ日のカレンダーや点数の流れがここに出ます。</p></section>`;
+  if(L.length<2) return `<section class="panel sdh"><div class="row spread"><h3>📊 プレイ記録</h3></div>${goalRings()}<p class="note">2試合以上あそぶと、遊んだ日のカレンダーや点数の流れがここに出ます。</p></section>`;
   const tab=S.sdTab||'cal', tabs=[['cal','📅 カレンダー'],['sc','📈 点数'],['rk','🏅 順位'],['tm','🕒 時間帯']];
   const body = tab==='sc'?sdScore(L):tab==='rk'?sdRank(L):tab==='tm'?sdTime(L):sdCal(L);
   return `<section class="panel sdh" id="sdh"><div class="row spread"><h3>📊 プレイ記録</h3><span class="note">最新${L.length}試合</span></div>
@@ -11526,7 +11586,7 @@ function finalView(){
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       <div class="row" style="justify-content:center"><button class="btn big pb-btn" onclick="photoShoot()">📸 記念撮影</button>${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
-    ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${cgUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${labWinPanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+    ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${cgUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${goalPanel()}${labWinPanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${chalPanel()}${ordPanel()}
     ${rewardPanel()}
     ${fbPanel()}
@@ -11806,6 +11866,7 @@ function recordResult(){
     const ks=Object.keys(P.daily).sort(); while(ks.length>60) delete P.daily[ks.shift()];
     if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
   P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p), i:p.used.map(u=>u.ind)}]).slice(-400);
+  try{ G.goalGot=goalCheck(); }catch(e){}
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
   const r0=rateOf(), r1=(G.tac||(G.cfg.my&&!G.cfg.month)) ? r0 : Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold'); rsPeak(r1);   // 作戦カードありはレートに入れない
   const dex=dexRecord(); if(dexCount()>=DEX_TOTAL()) unlock('dexall');
