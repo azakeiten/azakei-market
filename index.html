@@ -4360,6 +4360,26 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .wr-act{display:flex;gap:8px;margin-top:14px;justify-content:center;flex-wrap:wrap}
 .wr-hint{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);margin:0;font-size:11px;font-weight:800;opacity:.55}
 @media (prefers-reduced-motion:reduce){.wrb::after,.wrap,.wr-shapes i,.wr-s>*,.wr-bar i,.wr-bars i.run::after{animation:none}}
+/* v237 まとめの続き */
+.wr-yr{font-size:min(26vw,120px)}
+.wr-months{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;width:min(320px,90%);height:110px;align-items:end}
+.wr-months span{display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
+.wr-months i{display:block;width:100%;height:var(--h);min-height:3px;border-radius:4px 4px 1px 1px;background:rgb(255 255 255 / .35);transform-origin:bottom;animation:wrMo .7s calc(.4s + var(--j)*.05s) cubic-bezier(.2,.9,.3,1) both}
+.wr-months i.top{background:#ffd23a;box-shadow:0 0 14px rgb(255 210 58 / .6)}
+.wr-months small{font-size:9px;font-weight:800;opacity:.75}
+@keyframes wrMo{from{transform:scaleY(0)}}
+.wrb-more button.yr{background:linear-gradient(110deg,#5c2a9e,#2a4fae);color:#fff;box-shadow:none}
+.wrn{position:relative;display:flex;align-items:center;gap:12px;margin:0 0 12px;padding:12px 40px 12px 14px;border-radius:18px;color:#fff;cursor:pointer;background:linear-gradient(110deg,#5c2a9e,#2a4fae 55%,#1a8a8a);box-shadow:0 10px 26px rgb(92 42 158 / .35);overflow:hidden;animation:wrnIn .7s cubic-bezier(.3,1.4,.5,1) both}
+.wrn::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgb(255 255 255 / .2) 50%,transparent 65%);background-size:250% 100%;animation:mirSh 3s 1s ease-in-out infinite;pointer-events:none}
+@keyframes wrnIn{from{opacity:0;transform:translateY(-16px) scale(.96)}}
+.wrn-env{position:relative;flex:none;width:52px;height:40px;border-radius:6px;background:#f3ead2;box-shadow:0 4px 12px rgb(0 0 0 / .3);animation:wrnBob 2.4s ease-in-out infinite}
+.wrn-env i{position:absolute;left:0;right:0;top:0;height:22px;background:#ddd0ad;clip-path:polygon(0 0,100% 0,50% 100%)}
+.wrn-env b{position:absolute;right:-8px;bottom:-8px;min-width:24px;height:24px;padding:0 4px;border-radius:12px;background:#ff5a6e;color:#fff;font-family:var(--display);font-weight:400;font-size:13px;display:grid;place-items:center;box-shadow:0 0 0 2px #fff}
+@keyframes wrnBob{50%{transform:translateY(-3px) rotate(-4deg)}}
+.wrn-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}.wrn-tx .label{color:rgb(255 255 255 / .75)}.wrn-tx b{font-size:15.5px}.wrn-tx small{font-size:11px;font-weight:700;opacity:.85}
+.wrn-go{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgb(255 255 255 / .2);font-size:12px}
+.wrn-x{position:absolute;top:6px;right:6px;width:26px;height:26px;border:0;border-radius:50%;background:rgb(0 0 0 / .2);color:#fff;font-size:11px;cursor:pointer;z-index:1}
+@media (prefers-reduced-motion:reduce){.wr-months i,.wrn,.wrn::after,.wrn-env{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9762,45 +9782,57 @@ function albumEvents(){
   return ev.filter(e=>typeof e.t==="number" && e.t>1.5e12 && e.t<=Date.now()+864e5).sort((a,b)=>b.t-a.t);   /* 日付のない古いデータは入れない */
 }
 const albKey = t => { const d=new Date(t); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); };
-/* ---- 📊 プレイ記録ダッシュボード：遊んだ日のカレンダー・点数の流れ・順位・時間帯（P.log 最新100試合から） ---- */
+/* ---- 📊 プレイ記録ダッシュボード：遊んだ日のカレンダー・点数の流れ・順位・時間帯（P.log 最新400試合から） ---- */
 function sdDayKey(t){ const d=new Date(t); return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(); }
 /* ---- 📆 今月のまとめ：月ごとの記録を、ストーリーのようなスライドでふり返る ---- */
 let WR=null;
 const wrKey = t => { const d=new Date(t); return d.getFullYear()*100+d.getMonth()+1; };
-const wrName = k => `${Math.floor(k/100)}年${k%100}月`;
+const wrName = k => k<10000 ? `${k}年` : `${Math.floor(k/100)}年${k%100}月`;
+const wrIn = (x,k) => k<10000 ? new Date(x.t).getFullYear()===k : wrKey(x.t)===k;
 function wrapBtn(L){
   const ks=[...new Set(L.map(x=>wrKey(x.t)))].sort((a,b)=>b-a); if(!ks.length) return '';
   const k=ks[0], n=L.filter(x=>wrKey(x.t)===k).length;
-  return `<button class="wrb" onclick="wrapOpen(${k})"><span class="wrb-ic">📆</span><span class="wrb-tx"><b>${k%100}月のまとめを見る</b><small>${n}試合をスライドでふり返る</small></span><span class="wrb-go">▶</span></button>${ks.length>1?`<div class="wrb-more">${ks.slice(1,6).map(x=>`<button onclick="wrapOpen(${x})">${x%100}月</button>`).join('')}</div>`:''}`;
+  return `<button class="wrb" onclick="wrapOpen(${k})"><span class="wrb-ic">📆</span><span class="wrb-tx"><b>${k%100}月のまとめを見る</b><small>${n}試合をスライドでふり返る</small></span><span class="wrb-go">▶</span></button>${(()=>{ const ys=[...new Set(L.map(x=>new Date(x.t).getFullYear()))].filter(y=>L.filter(x=>new Date(x.t).getFullYear()===y).length>=5).sort((a,b)=>b-a); const ch=[...ys.map(y=>`<button class="yr" onclick="wrapOpen(${y})">🎆 ${y}年</button>`), ...ks.slice(1,6).map(x=>`<button onclick="wrapOpen(${x})">${x%100}月</button>`)]; return ch.length?`<div class="wrb-more">${ch.join('')}</div>`:''; })()}`;
+}
+/* 月が変わって最初にホームを開いたら、先月のまとめを届ける（3試合以上あそんだ月だけ・見たら消える） */
+function wrPrevKey(){ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()-1); return d.getFullYear()*100+d.getMonth()+1; }
+function wrNotice(){
+  const P=S.prof||{}, k=wrPrevKey(); if(P.wrSeen===k) return ''; const n=((P.log)||[]).filter(x=>wrKey(x.t)===k).length; if(n<3) return '';
+  return `<section class="wrn" onclick="wrapOpen(${k})" role="button" aria-label="${k%100}月のまとめを見る"><span class="wrn-env" aria-hidden="true"><i></i><b>${k%100}</b></span>
+    <span class="wrn-tx"><span class="label">MONTHLY RECAP</span><b>${k%100}月のまとめが届いたよ！</b><small>${n}試合のハイライトを、スライドでふり返ろう</small></span><span class="wrn-go">▶</span>
+    <button class="wrn-x" onclick="event.stopPropagation();S.prof.wrSeen=${k};saveProfile();render()" aria-label="あとで">✕</button></section>`;
 }
 function wrapData(k){
-  const all=(S.prof&&S.prof.log)||[], L=all.filter(x=>wrKey(x.t)===k); if(!L.length) return null;
-  const pk=k%100===1?(Math.floor(k/100)-1)*100+12:k-1, prev=all.filter(x=>wrKey(x.t)===pk).length;
+  const all=(S.prof&&S.prof.log)||[], L=all.filter(x=>wrIn(x,k)); if(!L.length) return null;
+  const yr=k<10000, pk=yr?k-1:k%100===1?(Math.floor(k/100)-1)*100+12:k-1, prev=all.filter(x=>wrIn(x,pk)).length;
+  const bm={}; if(yr) L.forEach(x=>{ const m=new Date(x.t).getMonth()+1; bm[m]=(bm[m]||0)+1; }); const topM=yr?Object.entries(bm).sort((a,b)=>b[1]-a[1])[0]:null;
   const days=new Set(L.map(x=>sdDayKey(x.t))).size, best=L.reduce((a,x)=>x.s>a.s?x:a,L[0]);
   const wins=L.filter(x=>x.r===1).length; let run=0, brun=0; L.forEach(x=>{ run=x.r===1?run+1:0; brun=Math.max(brun,run); });
   const mono=L.reduce((a,x)=>a+((x.g||'').match(/🟨/g)||[]).length,0), turns=L.reduce((a,x)=>a+[...(x.g||'')].length/2,0);
   const ic=[0,0,0,0,0,0]; let icN=0; L.forEach(x=>(x.i||[]).forEach(c=>{ if(c>=0&&c<6){ ic[c]++; icN++; } }));
   const fav=icN?ic.indexOf(Math.max(...ic)):null;
   const B=[['🌅','朝',5,11],['☀️','昼',11,17],['🌇','夕方',17,21],['🌙','夜',21,29]], tc=B.map(([, ,a,b])=>L.filter(x=>{ let hh=new Date(x.t).getHours(); if(hh<5) hh+=24; return hh>=a&&hh<b; }).length), tb=tc.indexOf(Math.max(...tc));
-  return {k, n:L.length, prev, days, best, wins, brun, wr:Math.round(wins/L.length*100), mono, monoR:turns?Math.round(mono/turns*100):0, fav, favR:fav!=null?Math.round(ic[fav]/icN*100):0, tb:B[tb], avg:(L.reduce((a,x)=>a+x.s,0)/L.length).toFixed(1)};
+  return {k, yr, per:yr?'今年':'今月', prevN:yr?'去年':'先月', topM, bm, n:L.length, prev, days, best, wins, brun, wr:Math.round(wins/L.length*100), mono, monoR:turns?Math.round(mono/turns*100):0, fav, favR:fav!=null?Math.round(ic[fav]/icN*100):0, tb:B[tb], avg:(L.reduce((a,x)=>a+x.s,0)/L.length).toFixed(1)};
 }
 function wrapSlides(D){
   const S2=[];
-  S2.push({c:['#3a1f6e','#0b0b24'], h:`<span class="wr-k">MONTHLY RECAP</span><b class="wr-big wr-month">${D.k%100}<small>月</small></b><p class="wr-t">${Math.floor(D.k/100)}年${D.k%100}月の<br>あなたのAZAKEI MARKET</p>`});
+  S2.push({c:['#3a1f6e','#0b0b24'], h:`<span class="wr-k">MONTHLY RECAP</span>${D.yr?`<b class="wr-big wr-month wr-yr">${D.k}<small>年</small></b><p class="wr-t">${D.k}年の<br>あなたのAZAKEI MARKET</p>`:`<b class="wr-big wr-month">${D.k%100}<small>月</small></b><p class="wr-t">${Math.floor(D.k/100)}年${D.k%100}月の<br>あなたのAZAKEI MARKET</p>`}`});
   S2.push({c:['#0f3b5c','#0a1630'], h:`<span class="wr-k">今月あそんだ試合</span><b class="wr-big" data-n="${D.n}">0</b><span class="wr-u">試合</span><p class="wr-t">${D.days}日間 あそびました。${D.prev?`先月は ${D.prev}試合${D.n>D.prev?' → ふえた！':D.n<D.prev?'。':'。同じペース！'}`:''}</p>`});
   S2.push({c:['#5c3a0f','#1d1408'], h:`<span class="wr-k">今月のベストスコア</span><b class="wr-big gold" data-n="${D.best.s}">0</b><span class="wr-u">点</span><p class="wr-grid">${esc(D.best.g||'')}</p><p class="wr-t">${new Date(D.best.t).getMonth()+1}月${new Date(D.best.t).getDate()}日の試合。${D.best.r===1?'もちろん1位！':D.best.r?D.best.r+'位でした。':''}<br>今月の平均は ${D.avg}点。</p>`});
   S2.push({c:['#5c0f3b','#1d0814'], h:`<span class="wr-k">1位になった回数</span><b class="wr-big" data-n="${D.wins}">0</b><span class="wr-u">回</span><div class="wr-bar"><i style="--w:${D.wr}%"></i></div><p class="wr-t">勝率 <b>${D.wr}%</b>${D.brun>=2?`。最高 <b>${D.brun}連勝</b>！`:'。'}</p>`});
   S2.push({c:['#0f5c3b','#08201a'], h:`<span class="wr-k">独占できたターン</span><b class="wr-big" data-n="${D.mono}">0</b><span class="wr-u">回</span><p class="wr-t">ターンのうち <b>${D.monoR}%</b> で、だれとも被らずに独占。${D.monoR>=45?'読み合いの達人！':D.monoR>=30?'いいバランス。':'次は人の少ない産業もねらってみよう。'}</p>`});
+  if(D.yr && D.topM){ const mx=Math.max(...Object.values(D.bm));
+    S2.push({c:['#0f4a5c','#081a24'], h:`<span class="wr-k">いちばん遊んだ月</span><b class="wr-big">${D.topM[0]}<small style="font-size:.35em">月</small></b><div class="wr-months">${Array.from({length:12},(_,i)=>{ const v=D.bm[i+1]||0; return `<span><i style="--h:${v/mx*100}%;--j:${i}" class="${+D.topM[0]===i+1?'top':''}"></i><small>${i+1}</small></span>`; }).join('')}</div><p class="wr-t">${D.topM[0]}月は <b>${D.topM[1]}試合</b>。</p>`}); }
   if(D.fav!=null) S2.push({c:['#1f2f6e','#0b1024'], h:`<span class="wr-k">いちばん出した産業</span><div class="wr-ind" style="--c:var(--i${D.fav})">${svg(D.fav,2)}</div><b class="wr-mid">${IND[D.fav]}</b><p class="wr-t">出したカードの <b>${D.favR}%</b> が${IND[D.fav]}でした。</p>`});
   S2.push({c:['#2a1f5c','#0b0b24'], h:`<span class="wr-k">あそぶ時間帯</span><b class="wr-emo">${D.tb[0]}</b><b class="wr-mid">${D.tb[1]}型</b><p class="wr-t">今月は${D.tb[1]}に遊ぶことが多かったよ。</p>`});
   S2.push({c:['#3a1f6e','#0b0b24'], fin:1, h:`<span class="wr-k">${wrName(D.k)} のまとめ</span><div class="wr-sum">
       <span><b>${D.n}</b><small>試合</small></span><span><b>${D.best.s}</b><small>最高点</small></span><span><b>${D.wins}</b><small>1位</small></span><span><b>${D.mono}</b><small>独占</small></span>
       ${D.fav!=null?`<span class="w2"><b>${IND[D.fav]}</b><small>いちばん出した産業</small></span>`:''}<span class="w2"><b>${D.tb[0]} ${D.tb[1]}型</b><small>時間帯</small></span></div>
       <div class="wr-act"><button class="btn gold" onclick="event.stopPropagation();wrapShare()">📣 まとめをシェア</button><button class="btn" onclick="event.stopPropagation();wrapClose()">とじる</button></div>`});
-  return S2;
+  return S2.map(x=>({...x, h:x.h.replace(/今月/g,D.per).replace(/先月/g,D.prevN).replace('MONTHLY RECAP', D.yr?'YEARLY RECAP':'MONTHLY RECAP')}));
 }
 function wrapOpen(k){
-  const D=wrapData(k); if(!D) return; wrapClose(true);
+  const D=wrapData(k); if(!D) return; wrapClose(true); try{ if(k>=10000 && k===wrPrevKey()){ S.prof.wrSeen=k; saveProfile(); } }catch(e){}
   WR={D, sl:wrapSlides(D), i:0, t0:0, paused:false};
   const el=document.createElement('div'); el.className='wrap'; el.id='wrap'; el.setAttribute('role','dialog'); el.setAttribute('aria-label',`${wrName(k)}のまとめ`);
   el.onclick=e=>{ const x=e.clientX/innerWidth; if(x<.3) wrapGo(-1); else wrapGo(1); };
@@ -11508,7 +11540,7 @@ function homeView(){
         ${heroStory()}
       </div>
       <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>`}
-  ${townLive()}
+  ${wrNotice()}${townLive()}
   ${nbPath()}${nbUnlocked()}
   ${nameCard()}
   ${nbNew()?`${skyScene()}${quickMenu()}${nbLocked()}`:`${hsec('🎯','きょうのおすすめ','ミオが選んだ、次にやること')}
@@ -11722,7 +11754,7 @@ function recordResult(){
   if(G.daily){ P.daily=P.daily||{}; if(!P.daily[G.daily]) P.daily[G.daily]={score:p.score, rank:mine?mine.rank:0, grid:resultGrid(p)};
     const ks=Object.keys(P.daily).sort(); while(ks.length>60) delete P.daily[ks.shift()];
     if(dailyStreak()>=3) unlock('daily3'); if(dailyStreak()>=7) unlock('daily7'); }
-  P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p), i:p.used.map(u=>u.ind)}]).slice(-100);
+  P.log=(P.log||[]).concat([{t:Date.now(), m:G.cfg.fut?'f':G.cfg.hist?'h':'c', l:isLong()?1:0, o:G.online?1:0, d:G.daily?1:0, r:mine?mine.rank:0, n:G.players.length, s:p.score, g:resultGrid(p), i:p.used.map(u=>u.ind)}]).slice(-400);
   S.rec={games:st.games,wins:st.wins,best:st.best}; save('azakei-rec',S.rec);
   const r0=rateOf(), r1=(G.tac||(G.cfg.my&&!G.cfg.month)) ? r0 : Math.max(0, r0+rateDelta(mine?mine.rank:G.players.length, G.players.length, won)); P.rate=r1; if(r1>=1250) unlock('gold'); rsPeak(r1);   // 作戦カードありはレートに入れない
   const dex=dexRecord(); if(dexCount()>=DEX_TOTAL()) unlock('dexall');
