@@ -4856,6 +4856,10 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 @keyframes fcFl{0%{opacity:0;transform:translateY(8px)}20%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
 .fc-big{display:flex;flex-direction:column;align-items:center;margin:4px 0 6px}.fc-big small{font-size:12px;color:var(--muted);font-weight:800}.fc-big b{font-size:52px;line-height:1;font-family:var(--display);color:#ffc83a;animation:sgIn .5s both}.fc-big em{font-style:normal;font-weight:900;color:#ffc83a}
 @media (prefers-reduced-motion:reduce){.fc-belt{animation:none!important}}
+/* ⚡ かるいモード・整理 */
+html.lite *,html.lite *::before,html.lite *::after{animation-iteration-count:1!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state:paused!important}
+.hm-more>section,.hm-more>.panel{content-visibility:auto;contain-intrinsic-size:auto 420px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6480,6 +6484,12 @@ function factoryBody(){
     <div class="row" style="gap:8px"><button class="btn gold big" style="flex:1" onclick="fcStart()">もう一回</button><button class="btn ghost" onclick="closeSheet()">とじる</button></div></div>`;
 }
 AST.splice(3,0,{n:'AZAKEI工場',ic:'🏭',c:'#5f6f86',a:'#ffc83a',h:142,f:()=>openFactory(),b:()=>fcS().day===todayKey()?0:'!'});
+/* ---- ⚡ かるいモード：くり返しの飾りアニメとぼかし（backdrop-filter）を止める。メモリやCPUが少ない端末では最初からオン ---- */
+function liteApply(){ document.documentElement.classList.toggle('lite',!!S.lite); }
+function toggleLite(){ S.lite=!S.lite; save('azakei-lite',S.lite?1:0); liteApply(); renderSheet(); toast(S.lite?'⚡ かるいモード：オン':'かるいモード：オフ'); }
+function liteInit(){ try{ const v=load('azakei-lite'); if(v==null){ const dm=navigator.deviceMemory, hc=navigator.hardwareConcurrency; S.lite=!!((dm&&dm<=2)||(hc&&hc<=2)); } else S.lite=!!+v; }catch(e){ S.lite=false; } liteApply(); }
+/* 見えていない画面（別のアプリに切りかえた時など）は、アニメーションを止めておく */
+document.addEventListener('visibilitychange',()=>document.documentElement.classList.toggle('bg-hide',document.hidden));
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -6657,6 +6667,7 @@ function start(data){
   applyLook();
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.league===undefined) S.league=!!load('azakei-league-on');
+  liteInit();
   if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.chain===undefined) S.chain=!!load('azakei-chain'); if(S.draft===undefined) S.draft=!!load('azakei-draft'); if(S.sd===undefined) S.sd=!!load('azakei-sd'); if(S.bn===undefined) S.bn=!!load('azakei-bn'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.futOn===undefined) S.futOn=!!load('azakei-fut'); if(S.hmMore===undefined) S.hmMore=!!load('azakei-hmmore'); if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
   if(S.dockMin===undefined){ const d=load('azakei-dockmin'); S.dockMin = d===null ? ((S.rec&&S.rec.games)||0)>=5 : !!d; S.dockTipShown=!!load('azakei-docktip'); }
@@ -11782,9 +11793,11 @@ function lobbyHero(show){
   </section>`;
 }
 function lobSummary(){ const m={classic:"クラシック",history:"歴史モード",future:"未来編",ex:"クラシックEX",my:"マイNEWS",month:"今月のNEWS"}[S.mode]||"クラシック", hc=S.seats.filter(s=>s.type==="human").length, cpu=S.seats.length-hc; return m+(S.len==="long"?"・ロング":"")+(hc>1?`・${hc}人`:`・CPU${cpu}人`)+(S.b4&&S.len!=="long"&&S.mode!=="history"&&S.mode!=="future"?"・β4":"")+(S.pwOn&&S.b4?"🃏":"")+(S.yomi?"🔮":""); }
-function hmMoreToggle(d){ S.hmMore=d.open; try{ save('azakei-hmmore', d.open?1:0); }catch(e){} }
+function hmMoreToggle(d){ const was=S.hmMore; S.hmMore=d.open; try{ save('azakei-hmmore', d.open?1:0); }catch(e){} if(d.open && !was && !d.querySelector('#todayCar')){ const y=scrollY; render(); scrollTo(0,y); } }
+/* 閉じている「もっと見る」の中へジャンプするときは、先に中身を作る */
+function hmEnsure(){ if(S.hmMore) return false; S.hmMore=true; try{ save('azakei-hmmore',1); }catch(e){} const y=scrollY; render(); scrollTo(0,y); return true; }
 function hmOpenFor(el){ const d=el&&el.closest('details.hm-more'); if(d && !d.open){ d.open=true; S.hmMore=true; } }
-function hsJump(n){ const el=document.getElementById('hs-'+n); if(!el) return; hmOpenFor(el); sfx('click'); el.scrollIntoView({block:'start',behavior:reduced()?'auto':'smooth'}); }
+function hsJump(n){ let el=document.getElementById('hs-'+n); if(!el && hmEnsure()) el=document.getElementById('hs-'+n); if(!el) return; hmOpenFor(el); sfx('click'); el.scrollIntoView({block:'start',behavior:reduced()?'auto':'smooth'}); }
 function lobbyQuick(){ sfx('select'); if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); go('play'); startGame(); }
 const HSEC_N={'きょうの市場':'市場','きょうのおすすめ':'おすすめ','あそびかたを選ぶ':'あそぶ','毎日のおたのしみ':'毎日','ミッション':'ミッション'};
 const hsec = (ic,t,sub) => `<div class="hsec" id="hs-${HSEC_N[t]||''}"><span class="hsec-ic">${ic}</span><span class="hsec-tx"><b>${t}</b><small>${sub}</small></span><i class="hsec-line"></i></div>`;
@@ -12930,7 +12943,7 @@ function homeView(){
   ${nameCard()}
   ${nbNew()?`${skyScene()}${quickMenu()}${nbLocked()}`:`${hsec('🎯','きょうのおすすめ','ミオが選んだ、次にやること')}
   ${homeRec()}
-  <details class="hm-more" id="hmMore"${S.hmMore?' open':''} ontoggle="hmMoreToggle(this)"><summary><span class="hm-mi">📂</span><span class="hm-mt"><b>もっと見る</b><small>市場・あそびかた・毎日のおたのしみ・ミッション</small></span><span class="hm-mc" aria-hidden="true">⌄</span></summary>
+  <details class="hm-more" id="hmMore"${S.hmMore?' open':''} ontoggle="hmMoreToggle(this)"><summary><span class="hm-mi">📂</span><span class="hm-mt"><b>もっと見る</b><small>市場・あそびかた・毎日のおたのしみ・ミッション</small></span><span class="hm-mc" aria-hidden="true">⌄</span></summary>${S.hmMore?`
   ${hsec('📈','きょうの市場','ニュースで動く6つの産業')}
   ${skyScene()}
   ${homeTalk()}
@@ -12940,10 +12953,10 @@ function homeView(){
   ${pnpPromo()}
   ${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
   ${todayBar()}
-  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),kbCard(),kmCard(),stkCard(),sgCard(),roomCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
-  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
+  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
+  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${hsec('🏆','ミッション','きょう・今週・まちの依頼をひとつに')}
-  ${misBoard('home')}
+  ${misBoard('home')}`:''}
   </details>`}
 
   <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><button onclick="kmOpen()">📖 4コマまんが</button><button onclick="openKabu()">📈 AZAKEI証券</button><button onclick="openYatai()">🍢 AZAKEI屋台</button><button onclick="openFactory()">🏭 AZAKEI工場</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
@@ -13026,7 +13039,7 @@ function settingsBody(){
       <div class="lk-fs"><b>文字の大きさ</b><div class="lk-seg" role="radiogroup" aria-label="文字の大きさ">${['ふつう','大きい','特大'].map((n,i)=>`<button role="radio" aria-checked="${S.fs===i}" class="${S.fs===i?'on':''}" onclick="setFs(${i})" style="font-size:${13+i*2}px">${n}</button>`).join('')}</div></div>
       ${sw(!!S.hc,'toggleHc()','くっきり表示','うすい文字や線を濃くして、見分けやすくする')}
       ${sw(!!S.furi,'toggleFuri()','ふりがな','むずかしい言葉（経済・産業・独占など）にふりがなをつける')}
-      ${sw(S.voice!==false,'toggleVoice()','🗣️ アナウンス','カウントダウン・順位・お知らせを、落ち着いた女性の声で（効果音の「音」がオンのとき）')}${sw(S.voiceMio!==false,'toggleVoiceMio()','💬 ミオのリアクション','独占・被り・結果発表・あいさつなどに、ミオが声でリアクション')}${sw(S.vcap!==false,'toggleVcap()','💭 声の字幕','声といっしょに、セリフを画面に小さく表示')}${'speechSynthesis' in window?sw(!!S.mioVoice,'toggleMioVoice()','ミオの声','遊び方やけいざい教室で、ミオのセリフを自動で読み上げる（🔊ボタンでいつでも読める）'):''}
+      ${sw(!!S.lite,'toggleLite()','⚡ かるいモード','ずっと動き続ける飾りのアニメーションとぼかしを止めて、動作を軽くする（古いスマホにおすすめ）')}${sw(S.voice!==false,'toggleVoice()','🗣️ アナウンス','カウントダウン・順位・お知らせを、落ち着いた女性の声で（効果音の「音」がオンのとき）')}${sw(S.voiceMio!==false,'toggleVoiceMio()','💬 ミオのリアクション','独占・被り・結果発表・あいさつなどに、ミオが声でリアクション')}${sw(S.vcap!==false,'toggleVcap()','💭 声の字幕','声といっしょに、セリフを画面に小さく表示')}${'speechSynthesis' in window?sw(!!S.mioVoice,'toggleMioVoice()','ミオの声','遊び方やけいざい教室で、ミオのセリフを自動で読み上げる（🔊ボタンでいつでも読める）'):''}
       ${sw(!!S.cvd,'toggleCvd()','色の見分けサポート','色の小さな印に、産業の頭文字（エ・金・製・小・運・メ）を入れる')}
       ${sw(stepsOn(),'toggleSteps()','操作ガイド','試合中に「いまやること」と、案内役ミオのひとことを表示する')}
       <button class="swrow" onclick="openSheet('terms')"><span><b>ことばの説明</b><span class="note">NEWS・独占・被り・大引けなどを、絵つきでやさしく説明</span></span><span class="xf-go">›</span></button></div>
@@ -13630,7 +13643,7 @@ const ghNm = v => String(v||'').replace(/[<>&"']/g,'').replace(/-/g,'－').trim(
   const rvCheck=()=>{ const H=innerHeight*.94; document.querySelectorAll('.rv:not(.rv-in)').forEach(el=>{ if(el.getBoundingClientRect().top<H) el.classList.add('rv-in'); }); };
   const scan=()=>{ if(reduced() || (typeof G!=='undefined' && G)) return; const H=innerHeight;
     app.querySelectorAll('.screen > section, .screen > .panel, .screen > .hm-more > section, .screen > .hm-more > .panel, .screen > .hm-more > .carousel, .screen > .carousel, .screen > .col > section.panel, .screen > .col > section').forEach((el,i)=>{ if(el.dataset.rv) return; el.dataset.rv=1; const r=el.getBoundingClientRect(); if(r.top>H*.92) el.classList.add('rv'); }); rvCheck(); };
-  let st=0; new MutationObserver(()=>{ if(st) return; st=setTimeout(()=>{ st=0; scan(); },60); }).observe(app,{childList:true,subtree:true});
+  let st=0; new MutationObserver(()=>{ if(st) return; st=setTimeout(()=>{ st=0; scan(); },60); }).observe(app,{childList:true});
   setTimeout(scan,30);
   const bar=document.createElement('div'); bar.className='scrbar'; bar.setAttribute('aria-hidden','true'); document.body.appendChild(bar);
   const top=document.createElement('button'); top.className='totop'; top.setAttribute('aria-label','いちばん上へ'); top.innerHTML='<span>↑</span>'; top.onclick=()=>{ try{ sfx('whoosh'); }catch(e){} scrollTo({top:0, behavior:reduced()?'auto':'smooth'}); }; document.body.appendChild(top);
@@ -15057,7 +15070,7 @@ function todayBar(){
       <div class="tb-chips">${it.map(x=>`<button class="tbc${x.ok?' ok':''}" onclick="jumpTo('${x.sel}')"><i>${x.ok?'✓':x.ic}</i>${x.n}</button>`).join('')}</div></div>
     ${all&&!got?`<button class="btn gold pulse tb-claim" onclick="claimToday()">コンプリート！ +${TODAY_BONUS}</button>`:all?'<span class="tb-done">COMPLETE ✓</span>':''}</section>`;
 }
-function jumpTo(sel){ const el=document.querySelector(sel); if(!el) return; hmOpenFor(el); sfx('click');
+function jumpTo(sel){ let el=document.querySelector(sel); if(!el && hmEnsure()) el=document.querySelector(sel); if(!el) return; hmOpenFor(el); sfx('click');
   const it=el.closest('.car-item'), car=it&&it.parentElement; if(car){ car.scrollTo({left:it.offsetLeft-car.offsetLeft-(car.clientWidth-it.clientWidth)/2, behavior:reduced()?'auto':'smooth'}); car.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); return; } el.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
 function claimToday(){
   const P=S.prof; if(P.tcDay===todayKey() || !todayItems().every(x=>x.ok)) return;
