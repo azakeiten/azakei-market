@@ -4709,6 +4709,40 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .km-open{margin-top:8px;background:linear-gradient(150deg,#fffdf7,#ffe9c4)!important;color:#1a1a1a!important}
 .kmc .mc-ic{background:radial-gradient(circle at 35% 30%,#fffdf7,#ffd36a)}
 @media (prefers-reduced-motion:reduce){.km-p,.km-fx,.km-me{animation:none!important}}
+/* 📈 AZAKEI証券 */
+.kb>*{flex:none}.kb-ttl{margin:2px 0 8px}
+.kb .up{color:#2fd47a}.kb .dn{color:#ff5a76}
+.kb-led{overflow:hidden;border-radius:10px;background:#05060f;box-shadow:inset 0 0 0 2px #1d2140,inset 0 0 14px rgb(0 0 0 / .8);padding:7px 0;margin-bottom:10px}
+.kb-led-in{display:flex;gap:22px;width:max-content;animation:kbLed 22s linear infinite;font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:700;color:#ffcf5a;text-shadow:0 0 6px rgb(255 190 60 / .7)}
+.kb-led-in span{white-space:nowrap}.kb-led-in b{color:#fff;text-shadow:0 0 6px rgb(255 255 255 / .5)}.kb-led-in em{font-style:normal}
+@keyframes kbLed{to{transform:translateX(-50%)}}
+.kb-sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.kb-sum>div{display:flex;flex-direction:column;align-items:center;padding:8px 2px;border-radius:12px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px var(--line);min-width:0}
+.kb-sum small{font-size:10px;color:var(--muted);font-weight:700;white-space:nowrap}.kb-sum b{font-size:15px;white-space:nowrap}
+.kb-date{margin:8px 0}
+.kb-list{display:flex;flex-direction:column;gap:7px}
+.kb-row{position:relative;border-radius:14px;background:linear-gradient(150deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.kb-row.sel{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--ic) 70%,#fff)}
+.kb-main{display:flex;align-items:center;gap:8px;width:100%;padding:9px 10px;border:0;background:none;color:var(--ink);text-align:left}
+.kb-ic{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--ic);color:#fff;padding:6px;box-sizing:border-box}.kb-ic svg{width:100%}
+.kb-nm{flex:1;min-width:0;display:flex;flex-direction:column}.kb-nm b{font-size:14px;white-space:nowrap}.kb-nm small{font-size:11px;color:var(--muted)}.kb-nm em{font-style:normal;font-weight:800}
+.kb-hot{font-style:normal;font-size:9.5px;padding:1px 6px;border-radius:99px;background:#ffc83a;color:#3a2300;vertical-align:2px}
+.kb-sp{flex:none;width:72px;height:26px}.kb-sp.big{width:100%;height:90px;display:block}
+.kb-px{flex:none;display:flex;flex-direction:column;align-items:flex-end;min-width:58px}.kb-px b{font-size:14px}.kb-px em{font-style:normal;font-size:11px;font-weight:800}
+.kb-more{padding:0 10px 10px;animation:sgIn .35s both}
+.kb-chart{position:relative;padding:6px 6px 16px;border-radius:10px;background:rgb(0 0 0 / .2);background-image:linear-gradient(rgb(255 255 255 / .05) 1px,transparent 1px);background-size:100% 22px}
+.kb-ax{position:absolute;left:8px;bottom:2px;font-size:10px;color:var(--muted)}.kb-ax.r{left:auto;right:8px}
+.kb-why{font-size:12.5px;line-height:1.6;margin:8px 0}
+.kb-stat{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}.kb-stat span{display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--muted)}.kb-stat b{font-size:14px;color:var(--ink)}
+.kb-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px}.kb-btns .btn{padding:9px 4px;font-size:13px}
+.kb-row.fx-buy{animation:kbBuy .7s ease-out}.kb-row.fx-sell{animation:kbSell .7s ease-out}
+@keyframes kbBuy{0%{box-shadow:inset 0 0 0 2px #2fd47a,0 0 24px rgb(47 212 122 / .6)}100%{}}@keyframes kbSell{0%{box-shadow:inset 0 0 0 2px #ffc83a,0 0 24px rgb(255 200 58 / .6)}100%{}}
+.kb-pop{position:absolute;right:14px;top:6px;font-weight:900;font-size:16px;pointer-events:none;animation:kbPop 1.2s ease-out both;text-shadow:0 2px 0 rgb(0 0 0 / .3)}
+.kb-pop.buy{color:#2fd47a}.kb-pop.sell{color:#ffc83a}
+@keyframes kbPop{0%{opacity:0;transform:translateY(8px) scale(.6)}20%{opacity:1;transform:scale(1.15)}100%{opacity:0;transform:translateY(-22px)}}
+.kb-tips{margin-top:10px;border-radius:12px;background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 1px var(--line);padding:9px 12px}.kb-tips summary{font-weight:800;font-size:13px;cursor:pointer}.kb-tips p{font-size:12.5px;line-height:1.7;margin:8px 0 2px}
+.kbc .mc-ic{background:radial-gradient(circle at 35% 30%,#b6ffd6,#2fd47a)}
+@media (prefers-reduced-motion:reduce){.kb-led-in,.kb-row,.kb-pop{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6074,6 +6108,66 @@ function mangaBody(){
 }
 function kmCard(){ const L=S.prof.km||[], K=L[L.length-1];
   return `<button class="minicard kmc" onclick="kmOpen()"><span class="mc-ic">📖</span><span class="mc-tx"><span class="label">MANGA · ${L.length}話</span><b>ミオの4コマまんが</b><span class="note">${K?`最新：「${esc(kmTitle(K))}」`:'試合がまんがになる！'}</span></span></button>`; }
+/* ---- 📈 AZAKEI証券：コインで6つの産業の「株」を売り買いする、ごっこの証券口座。
+   値段は1日1回だけ動く（ホームの「きょうの市場」と同じ動き）。今日買って、明日以降に売る。手数料なし・1産業50株まで ---- */
+const KB_MAX=50;
+let KBX={sel:null,fx:null};
+function kbDayMk(key){ const r=mulberry(key*31+3), li=mulberry(key*13+7)()*6|0; const ch=IND.map(()=>Math.round((r()*5-2.5)*10)/10); ch[li]=Math.round((Math.max(...ch.filter((v,i)=>i!==li),0)+0.4+r()*1.2)*10)/10; return {ch,li}; }
+let KB_H=null;
+function kbHist(){
+  const tk=todayKey(); if(KB_H && KB_H.k===tk) return KB_H.rows;
+  const d=new Date(2026,9,1), end=new Date(); end.setHours(12,0,0,0); d.setHours(12,0,0,0);
+  const rows=[]; let p=[100,100,100,100,100,100], guard=0;
+  while(d<=end && guard++<4000){ const k=todayKey(d), m=kbDayMk(k); p=p.map((v,i)=>Math.max(5,v*(1+m.ch[i]/100))); rows.push({k,p:p.slice(),ch:m.ch,li:m.li}); d.setDate(d.getDate()+1); }
+  KB_H={k:tk,rows}; return rows;
+}
+const kbPx = c => { const R=kbHist(); return Math.round(R[R.length-1].p[c]); };
+const kbPrev = c => { const R=kbHist(); return Math.round((R[R.length-2]||R[R.length-1]).p[c]); };
+function kbS(){ const P=S.prof; if(!P.kb) P.kb={h:{},log:[],real:0,first:0}; return P.kb; }
+function kbVal(K){ return Object.keys(K.h).reduce((a,c)=>a+(K.h[c].n||0)*kbPx(+c),0); }
+function kbCost(K){ return Object.keys(K.h).reduce((a,c)=>a+(K.h[c].cost||0),0); }
+function kbSpark(c,days,w,h,big){
+  const R=kbHist().slice(-days), v=R.map(r=>r.p[c]), mn=Math.min(...v), mx=Math.max(...v), sp=(mx-mn)||1;
+  const pts=v.map((y,i)=>`${(i/(Math.max(1,v.length-1))*w).toFixed(1)},${(h-3-(y-mn)/sp*(h-6)).toFixed(1)}`).join(' '), up=v[v.length-1]>=v[0];
+  const col=up?'#2fd47a':'#ff5a76';
+  return `<svg class="kb-sp${big?' big':''}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">${big?`<polygon points="0,${h} ${pts} ${w},${h}" fill="${col}" opacity=".14"/>`:''}<polyline points="${pts}" fill="none" stroke="${col}" stroke-width="${big?2:1.6}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function kbWhy(c){ const R=kbHist(), t=R[R.length-1], v=t.ch[c], I=IND[c];
+  if(t.li===c) return `きょうの注目株！ ${I}にいいニュースが続いて、買いたい人が集まった。`;
+  return v>=1.5?`${I}の会社の売り上げが伸びそう、と考える人が増えて買われた。`:v>0?`${I}は少しだけ買いが多かった。`:v<=-1.5?`${I}に心配なニュース。売りたい人が増えて下がった。`:v<0?`${I}は少しだけ売りが多かった。`:`${I}は買いと売りがつりあって、動かなかった。`; }
+function openKabu(){ kbS(); KBX={sel:KBX.sel,fx:null}; openSheet('kabu'); sfx('open'); }
+function kbSel(c){ KBX.sel=KBX.sel===c?null:c; KBX.fx=null; sfx('click'); renderSheet(); }
+function kbTrade(c,n){
+  const K=kbS(), P=S.prof, px=kbPx(c), H=K.h[c]=K.h[c]||{n:0,cost:0};
+  if(n>0){ n=Math.min(n,KB_MAX-H.n,Math.floor((P.coin||0)/px)); if(n<=0){ toast((P.coin||0)<px?`コインが足りません（1株 🪙${px}）`:`${IND[c]}はもう ${KB_MAX}株 持っています`); sfx('buzz'); return; }
+    P.coin-=n*px; H.n+=n; H.cost+=n*px; K.log.push({t:Date.now(),c,n,p:px}); KBX.fx={c,t:'buy',n}; sfx('coin'); haptic(12); if(!K.first){ K.first=1; setTimeout(()=>vo('m_yattane'),200); }
+  } else { n=n===-999?H.n:Math.min(-n,H.n); if(n<=0) return; const avg=H.cost/H.n, gain=Math.round(n*px-n*avg);
+    P.coin=(P.coin||0)+n*px; H.cost=Math.round(H.cost-avg*n); H.n-=n; if(!H.n) H.cost=0; K.real=(K.real||0)+gain; K.log.push({t:Date.now(),c,n:-n,p:px,g:gain}); KBX.fx={c,t:'sell',n,g:gain};
+    sfx(gain>0?'shine':gain<0?'buzz':'select'); haptic(gain>0?[10,30,10]:15); setTimeout(()=>vo(gain>=50?'m_wow':gain>0?'m_yatta':gain<0?'m_sonnaa':'m_oo'),200); }
+  K.log=K.log.slice(-40); saveProfile(); renderSheet();
+}
+function kabuBody(){
+  const K=kbS(), P=S.prof, R=kbHist(), val=kbVal(K), cost=kbCost(K), pl=val-cost, tot=(P.coin||0)+val, t=R[R.length-1];
+  const tick=IND.map((n,c)=>`<span><b>${n}</b> ${kbPx(c)} <em class="${t.ch[c]>0?'up':t.ch[c]<0?'dn':''}">${skyPct(t.ch[c])}</em></span>`).join('');
+  const rows=IND.map((n,c)=>{ const H=K.h[c]||{n:0,cost:0}, px=kbPx(c), v=t.ch[c], mine=H.n*px-H.cost, sel=KBX.sel===c, fx=KBX.fx&&KBX.fx.c===c?KBX.fx:null;
+    return `<div class="kb-row${sel?' sel':''}${fx?' fx-'+fx.t:''}" style="--ic:var(--i${c})">
+      <button class="kb-main" onclick="kbSel(${c})" aria-expanded="${sel}"><span class="kb-ic">${svg(c,2.2)}</span><span class="kb-nm"><b>${n}${t.li===c?' <i class="kb-hot">注目</i>':''}</b><small>${H.n?`${H.n}株 · <em class="${mine>0?'up':mine<0?'dn':''}">${mine>0?'+':''}${mine}</em>`:'持っていない'}</small></span>
+        ${kbSpark(c,30,72,26)}<span class="kb-px"><b>🪙${px}</b><em class="${v>0?'up':v<0?'dn':''}">${skyPct(v)}</em></span></button>
+      ${fx?`<span class="kb-pop ${fx.t}">${fx.t==='buy'?`+${fx.n}株`:`${fx.g>0?'+':''}${fx.g} 🪙`}</span>`:''}
+      ${sel?`<div class="kb-more"><div class="kb-chart">${kbSpark(c,60,300,90,true)}<span class="kb-ax">${R.length>=60?'60日前':`${R.length}日前`}</span><span class="kb-ax r">きょう</span></div>
+        <p class="kb-why">📰 ${kbWhy(c)}</p>
+        <div class="kb-stat"><span>持っている<b>${H.n}株</b></span><span>買った平均<b>${H.n?Math.round(H.cost/H.n):'-'}</b></span><span>いまの価値<b>🪙${H.n*px}</b></span></div>
+        <div class="kb-btns"><button class="btn gold" onclick="kbTrade(${c},1)">1株 買う</button><button class="btn gold" onclick="kbTrade(${c},5)">5株 買う</button><button class="btn" onclick="kbTrade(${c},-1)" ${H.n?'':'disabled'}>1株 売る</button><button class="btn" onclick="kbTrade(${c},-999)" ${H.n?'':'disabled'}>ぜんぶ売る</button></div></div>`:''}</div>`; }).join('');
+  KBX.fx=null;
+  return `<div class="kb"><span class="label">AZAKEI SECURITIES</span><h3 class="ttl kb-ttl">📈 AZAKEI証券</h3>
+    <div class="kb-led" aria-hidden="true"><div class="kb-led-in">${tick}${tick}</div></div>
+    <div class="kb-sum"><div><small>あなたの資産</small><b>🪙 ${tot}</b></div><div><small>株の価値</small><b>${val}</b></div><div><small>ふくみ損益</small><b class="${pl>0?'up':pl<0?'dn':''}">${pl>0?'+':''}${pl}</b></div><div><small>売って確定</small><b class="${K.real>0?'up':K.real<0?'dn':''}">${K.real>0?'+':''}${K.real||0}</b></div></div>
+    <p class="note kb-date">値段は1日1回、朝に動きます（${Math.floor(t.k/100)%100}月${t.k%100}日の値段）。産業をタップすると、グラフと売り買い。</p>
+    <div class="kb-list">${rows}</div>
+    <details class="kb-tips"><summary>💡 株のきほん</summary><p>株は、会社の「持ち主のしるし」。会社がもうかりそうだと思う人が増えると、買いたい人が増えて値段が上がります。<br>安いときに買って、高いときに売ると、その差がもうけ。でも、下がることもあります。いくつかの産業に分けて持つ「分散」で、大きく損しにくくなります。<br>ここで使うのはゲームのコインだけ。本物のお金ではありません。</p></details></div>`;
+}
+function kbCard(){ const K=kbS(), R=kbHist(), t=R[R.length-1], pl=kbVal(K)-kbCost(K);
+  return `<button class="minicard kbc" onclick="openKabu()"><span class="mc-ic">📈</span><span class="mc-tx"><span class="label">AZAKEI証券 · 注目 ${IND[t.li]}</span><b>マイ株</b><span class="note">${Object.values(K.h).some(h=>h.n)?`ふくみ損益 ${pl>0?'+':''}${pl} コイン`:'コインで株を買ってみよう'}</span></span></button>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -7304,6 +7398,7 @@ function renderSheet(){
   else if(k==='room') body=roomBody();
   else if(k==='stk') body=stkBody();
   else if(k==='manga') body=mangaBody();
+  else if(k==='kabu') body=kabuBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
@@ -12531,13 +12626,13 @@ function homeView(){
   ${pnpPromo()}
   ${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
   ${todayBar()}
-  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),kmCard(),stkCard(),sgCard(),roomCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
-  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
+  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),kbCard(),kmCard(),stkCard(),sgCard(),roomCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
+  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${hsec('🏆','ミッション','きょう・今週・まちの依頼をひとつに')}
   ${misBoard('home')}
   </details>`}
 
-  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><button onclick="kmOpen()">📖 4コマまんが</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
+  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><button onclick="kmOpen()">📖 4コマまんが</button><button onclick="openKabu()">📈 AZAKEI証券</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
 function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
