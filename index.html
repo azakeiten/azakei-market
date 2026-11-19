@@ -4669,6 +4669,46 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .stk-bonus{text-align:center;font-weight:900;color:#ffc83a;font-size:15px;margin:4px 0;animation:sgIn .5s both}
 .stkc{position:relative;flex:1}.stkc .mc-ic{background:radial-gradient(circle at 35% 30%,#ffd6ee,#a77bff)}.stkc .sg-badge{position:absolute;top:10px;right:12px;margin:0}
 @media (prefers-reduced-motion:reduce){.stk-s.stk-sh,.stk-pk-back,.stk-pop,.stk-pk-front .stk-s.big{animation:none}}
+/* 📖 4コマまんが */
+.km{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:14px;background:#fffdf7;color:#1a1a1a;box-shadow:0 10px 24px rgb(0 0 0 / .35)}
+.km-head{display:flex;align-items:baseline;gap:8px;padding:2px 2px 4px;border-bottom:3px double #1a1a1a}.km-head small{font-weight:900;font-size:12px}.km-head b{font-size:18px;font-weight:900;letter-spacing:.02em}
+.km-p{position:relative;aspect-ratio:16/8.6;border:3px solid #1a1a1a;background:#fff;overflow:hidden;animation:kmIn .55s cubic-bezier(.2,.9,.3,1.1) both;animation-delay:var(--d)}
+@keyframes kmIn{0%{opacity:0;transform:translateY(16px) rotate(-1deg)}100%{opacity:1;transform:none}}
+.km-tone{background:radial-gradient(circle,rgb(0 0 0 / .13) 1.1px,transparent 1.6px) 0 0/6px 6px,#fff}
+.km-speed{background:repeating-conic-gradient(from 0deg at 30% 55%,#fff 0 4deg,rgb(0 0 0 / .1) 4deg 6deg),#fff}
+.km-gloom{background:repeating-linear-gradient(180deg,rgb(0 0 0 / .14) 0 2px,transparent 2px 7px),#fff}
+.km-cap{position:absolute;left:0;top:0;padding:3px 9px;background:#1a1a1a;color:#fff;font-size:11px;font-weight:900;z-index:3}
+.km-paper{position:absolute;left:10%;bottom:8%;font-size:clamp(34px,11vw,52px);transform:rotate(-12deg)}
+.km-c{position:absolute;bottom:4%;width:30%;aspect-ratio:1;display:block;z-index:1}.km-c svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 0 #1a1a1a) drop-shadow(2px 2px 0 rgb(0 0 0 / .15))}
+.km-c.km-l{left:4%}.km-c.km-r{right:4%}.km-c.km-big{width:38%}.km-c.km-sm{width:22%;bottom:auto;top:10%}
+.km-av{display:grid;place-items:center;border-radius:50%;background:#ffe9a8;border:3px solid #1a1a1a;font-size:clamp(28px,9vw,44px);font-weight:900;color:#1a1a1a;box-sizing:border-box}
+.km-me.m-shock{background:#cfe9ff;animation:kmShake .35s 2.1s 3}.km-me.m-sad{background:#d9d9e6}.km-me.m-happy{background:#ffd36a}
+@keyframes kmShake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.km-crowd{position:absolute;left:6%;right:40%;bottom:6%;display:flex;justify-content:center}.km-crowd .km-c{position:relative;width:33%;bottom:auto;margin:0 -4%}
+.km-crowd .km-c:nth-child(2){transform:rotate(-8deg) translateY(-6%)}.km-crowd .km-c:nth-child(3){transform:rotate(7deg)}
+.km-b{position:absolute;z-index:2;max-width:56%;padding:7px 11px;border:2.5px solid #1a1a1a;border-radius:50% / 45%;background:#fff;font-size:clamp(11px,3.4vw,14px);font-weight:800;line-height:1.35;text-align:center;box-sizing:border-box}
+.km-b b{font-size:1.25em;color:#d1203a}
+.km-b::after{content:"";position:absolute;bottom:-10px;width:14px;height:14px;background:#fff;border-right:2.5px solid #1a1a1a;border-bottom:2.5px solid #1a1a1a;transform:skewX(25deg) rotate(45deg)}
+.km-bl{left:6%;top:9%}.km-bl::after{right:24%}.km-br{right:6%;top:8%}.km-br::after{left:22%}.km-bt{left:auto;right:5%;top:12%}.km-bt::after{left:16%}
+.km-p1 .km-bl{left:4%;max-width:62%}.km-p4 .km-bl{max-width:46%}
+.km-br.km-sm2,.km-bl.km-sm2{font-size:clamp(10.5px,3.2vw,13px)}
+.km-br.km-low{top:auto;bottom:46%;right:30%;max-width:34%}.km-br.km-low::after{left:auto;right:8%}
+.km-p2 .km-br.km-sm2{right:26%;top:10%;max-width:30%}
+.km-th{position:absolute;right:8%;top:20%;max-width:50%;padding:9px 13px;border:2.5px dashed #1a1a1a;border-radius:46%;background:#fff;font-size:clamp(12px,3.6vw,15px);font-weight:900;line-height:1.35;text-align:center;z-index:2}
+.km-p2 .km-th{right:auto;left:38%;top:auto;bottom:16%}
+.km-fx{position:absolute;left:44%;top:42%;z-index:3;font-size:clamp(26px,9vw,42px);font-weight:900;color:#ffd23a;-webkit-text-stroke:2px #1a1a1a;paint-order:stroke fill;transform:rotate(-10deg);letter-spacing:-.04em;animation:kmFx .5s cubic-bezier(.3,1.8,.5,1) both;animation-delay:calc(var(--d) + .35s)}
+.km-p3 .km-fx{left:40%;top:auto;bottom:10%}.km-fx2{color:#8fd3ff;left:auto!important;right:6%;bottom:8%!important}.km-fx3{color:#9a9ab0}.km-fx4{color:#fff;font-size:24px}
+.km-fx5{left:auto!important;right:4%;top:7%!important;bottom:auto!important;font-size:clamp(15px,4.6vw,21px);white-space:nowrap;color:#ff8cc8}
+@keyframes kmFx{0%{opacity:0;transform:scale(2.4) rotate(-10deg)}100%{opacity:1;transform:rotate(-10deg)}}
+.km-p4 .km-c{width:28%}
+.km-foot{text-align:right;font-size:11px;font-weight:800;color:#6b6380}
+.km-nav{display:flex;gap:6px;margin-top:10px}.km-nav .btn{flex:1;padding:10px 4px;font-size:13px;white-space:nowrap}
+.km-list{display:flex;flex-direction:column;gap:8px}
+.km-li{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 50px 12px 14px;border:0;border-radius:14px;text-align:left;color:#1a1a1a;background:#fffdf7;box-shadow:inset 0 0 0 2px #1a1a1a,0 4px 0 rgb(0 0 0 / .3)}
+.km-li b{font-size:15px}.km-li small{font-size:11.5px;color:#6b6380;font-weight:700}.km-li-n{font-size:11px;font-weight:900}.km-li i{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-style:normal;font-size:26px}
+.km-open{margin-top:8px;background:linear-gradient(150deg,#fffdf7,#ffe9c4)!important;color:#1a1a1a!important}
+.kmc .mc-ic{background:radial-gradient(circle at 35% 30%,#fffdf7,#ffd36a)}
+@media (prefers-reduced-motion:reduce){.km-p,.km-fx,.km-me{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5969,6 +6009,71 @@ function stkUp(){ const d=STK_DR; if(!d) return; STK_DR=null; const K=stkS(), p=
   else { p.r=((p.r+20+180)%360)-180; K.pl.push(K.pl.splice(d.i,1)[0]); STKX.last=K.pl.length-1; sfx('click'); const df=stkDef(p.id); if(df) toast(`${df.ic} ${df.n}${p.id.endsWith('*')?'（キラ）':''} · ${STK_R[df.r]}`); }
   saveProfile(); renderSheet(); }
 document.addEventListener('pointerup',stkUp); document.addEventListener('pointercancel',stkUp);
+/* ---- 📖 ミオの4コマまんが：試合が終わると、その試合のいちばんの場面が4コマになる。まんが本に30話までたまる ---- */
+const KM_MAX=30;
+let KMX={v:null,tk:0};
+function kmMake(){
+  const me=myIndex(); if(me<0 || !G) return; const p=G.players[me]; if(!p.used || !p.used.length) return;
+  let best=0, bs=-1e9; p.used.forEach((u,t)=>{ const sc=(u.k===1?10+u.total:0)+(u.k>=3?12+u.k:0)+(u.total<0?8-u.total:0)+u.total*.5; if(sc>bs){ bs=sc; best=t; } });
+  const u=p.used[best], LG=logDeck(), rk=ranking(G.players,G.cfg), mine=rk.find(x=>x.i===me)||{rank:1}, wi=(rk.find(x=>x.rank===1)||{i:me}).i;
+  const av=q=>(a=>a&&a.charCodeAt(0)===0xE001?initial(q.name):a)(avOf(q)), nm2=q=>String(q.name).replace(/^CPU\s*/,'');
+  const hasF=q=>!isHuman(q) && FACE[charKey(q)];
+  const crowd=G.players.map((q,i)=>({q,i})).filter(x=>x.i!==me && x.q.used[best] && x.q.used[best].ind===u.ind);
+  const rvp=(crowd.find(x=>hasF(x.q))||{}).q || (wi!==me && hasF(G.players[wi]) ? G.players[wi] : null) || G.players.find((q,i)=>i!==me && hasF(q)) || G.players.find((q,i)=>i!==me);
+  const K={t:Date.now(), news:String(nm(LG[best])||''), ind:u.ind, k:u.k, tot:u.total, turn:best+1, N:p.used.length, rank:mine.rank, np:G.players.length, sc:p.score,
+    ws:G.players[wi].score, wn:wi===me?'':nm2(G.players[wi]), me:av(p),
+    rv:rvp?{n:nm2(rvp), f:hasF(rvp)?charKey(rvp):null, a:av(rvp)}:null, cr:crowd.slice(0,3).map(x=>hasF(x.q)?{f:charKey(x.q)}:{a:av(x.q)})};
+  const P=S.prof; P.km=(P.km||[]); K.no=(P.kmN=(P.kmN||0)+1); P.km.push(K); P.km=P.km.slice(-KM_MAX); G.kmT=K.t; saveProfile();
+}
+function kmCase(K){ return K.k===1 && K.tot>=5 ? 'mono' : K.k>=3 ? 'crowd' : K.tot<0 ? 'minus' : K.k===1 ? 'mono' : K.k>=2 ? 'hit' : 'calm'; }
+function kmTitle(K){ const I=IND[K.ind], c=kmCase(K), r=K.rank===1;
+  return {mono:r?`${I}ひとりじめ伝説`:`ひとりじめの${I}`, crowd:`${I}に大集合`, minus:'まさかのマイナス', hit:`${I}でバッタリ`, calm:'しずかな市場'}[c]; }
+const kmFace = (x,mood,cls) => x&&x.f&&FACE[x.f] ? `<span class="km-c ${cls||''}">${face(x.f,null,mood)}</span>` : `<span class="km-c km-av ${cls||''}">${esc((x&&x.a)||'？')}</span>`;
+const kmMio = (mood,cls) => `<span class="km-c ${cls||''}">${FACE[GUIDE.n]?face(GUIDE.n,null,mood):GUIDE.ic}</span>`;
+const kmMe = (mood,cls) => `<span class="km-c km-av km-me ${mood?'m-'+mood:''} ${cls||''}">${esc(K_ME.a||'あ')}</span>`;
+let K_ME={a:''};
+function kmStrip(K){
+  K_ME={a:K.me}; const I=IND[K.ind], c=kmCase(K), r=K.rank, last=r===K.np;
+  const p1=`<div class="km-p km-p1" style="--d:.1s"><span class="km-cap">第${K.turn}ターン</span><span class="km-paper">📰</span>
+      ${kmMio('shock','km-r')}<span class="km-b km-bl">速報！<br>「${esc(K.news)}」<br>だって！</span></div>`;
+  const p2=`<div class="km-p km-p2 km-tone" style="--d:.9s">${kmMe('','km-l')}<span class="km-th">${I}で<br>いくしかない…！</span>
+      ${K.rv?`${kmFace(K.rv,'think','km-r km-sm')}<span class="km-b km-br km-sm2">ふふふ…</span>`:''}</div>`;
+  const p3m={
+    mono:`${kmMe('happy','km-l km-big')}<span class="km-fx">ドーン！</span><span class="km-b km-br">だれとも<br>被らない！<br><b>${sgn(K.tot)}点</b>！</span>`,
+    crowd:`<span class="km-crowd">${kmMe('shock','')}${K.cr.map(x=>kmFace(x,'shock','')).join('')}</span><span class="km-fx km-fx2">ガーン！</span><span class="km-b km-bt">${K.k}人も<br>被った…！</span>`,
+    minus:`${kmMe('sad','km-l km-big')}<span class="km-fx km-fx3">ズーン…</span><span class="km-b km-br">${sgn(K.tot)}点…<br>ニュースが<br>きびしい…</span>`,
+    hit:`<span class="km-crowd">${kmMe('shock','')}${K.cr.map(x=>kmFace(x,'shock','')).join('')}</span><span class="km-fx km-fx2">バッタリ！</span><span class="km-b km-bt">あっ、<br>被った！</span>`,
+    calm:`${kmMe('','km-l')}<span class="km-fx km-fx4">ポン</span><span class="km-b km-br">${sgn(K.tot)}点。<br>まあまあ…</span>`}[c];
+  const p3=`<div class="km-p km-p3 km-speed${c==='minus'?' km-gloom':''}" style="--d:1.7s">${p3m}</div>`;
+  const p4 = r===1
+    ? `${kmMio('happy','km-l')}<span class="km-b km-bl km-sm2">${K.sc}点で<br>優勝！<br>さすが〜！</span>${kmMe('happy','km-r')}<span class="km-b km-br km-low">えへへ</span><span class="km-fx km-fx5">パンパカパーン</span>`
+    : last
+    ? `${kmMio('happy','km-l')}<span class="km-b km-bl km-sm2">ドンマイ！<br>${I}のこと<br>また読もうね</span>${K.rv?kmFace(K.rv,'happy','km-r'):''}<span class="km-b km-br km-low">${K.rv?'ホッホッホ':'…'}</span>`
+    : `${kmMio('think','km-l')}<span class="km-b km-bl km-sm2">おしい！<br>${esc(K.wn)}に<br>${K.ws-K.sc}点差！</span>${kmMe('','km-r')}<span class="km-b km-br km-low">つぎこそ…！</span>`;
+  return `<div class="km" data-c="${c}"><div class="km-head"><small>第${K.no||1}話</small><b>「${esc(kmTitle(K))}」</b></div>${p1}${p2}${p3}<div class="km-p km-p4" style="--d:2.5s">${p4}</div>
+    <div class="km-foot">${r===1?'🏆':''} ${r}位 · ${K.sc}点 · ${new Date(K.t).getMonth()+1}/${new Date(K.t).getDate()}</div></div>`;
+}
+function kmVoices(K){
+  const tk=++KMX.tk, c=kmCase(K), at=(ms,n)=>setTimeout(()=>{ if(KMX.tk===tk && S.sheet==='manga') vo(n); },reduced()?ms/4:ms);
+  at(300,'m_happyo'); at(1900, c==='mono'?'m_yatta':c==='minus'?'m_shock':c==='calm'?'m_oo':'m_ee'); at(2800, K.rank===1?'m_banzai':K.rank===K.np?'m_ganbatte':'m_atochotto');
+  if(!reduced()){ setTimeout(()=>{ if(KMX.tk===tk) sfx('flip'); },150); setTimeout(()=>{ if(KMX.tk===tk) sfx('flip'); },950); setTimeout(()=>{ if(KMX.tk===tk){ sfx(c==='mono'?'slam':'buzz'); haptic(25); } },1750); setTimeout(()=>{ if(KMX.tk===tk) sfx(K.rank===1?'fanfare':'flip'); },2550); }
+}
+function kmOpen(i){ const L=S.prof.km||[]; if(!L.length){ toast('試合をすると、4コマまんがができるよ'); return; } KMX.v=i==null?L.length-1:i; openSheet('manga'); kmVoices(L[KMX.v]); }
+function kmOpenLast(){ const L=S.prof.km||[], i=L.findIndex(x=>x.t===(G&&G.kmT)); kmOpen(i>=0?i:null); }
+function kmGo(d){ const L=S.prof.km||[]; const n=Math.max(0,Math.min(L.length-1,KMX.v+d)); if(n===KMX.v) return; KMX.v=n; renderSheet(); const sh=document.querySelector('#sheet .sheet'); if(sh) sh.scrollTop=0; kmVoices(L[n]); }
+function kmList(){ KMX.v=-1; KMX.tk++; sfx('click'); renderSheet(); }
+function mangaBody(){
+  const L=S.prof.km||[];
+  if(!L.length) return `<span class="label">MANGA</span><h3 class="ttl">📖 ミオの4コマまんが</h3><p class="note">試合をすると、その試合のいちばんの場面が4コマまんがになります。</p>`;
+  if(KMX.v==null || KMX.v<0 || KMX.v>=L.length){
+    return `<span class="label">MANGA · ${L.length}話</span><h3 class="ttl">📖 まんが本</h3><div class="km-list">${L.map((K,i)=>({K,i})).reverse().map(({K,i})=>`<button class="km-li" onclick="KMX.v=${i};renderSheet();kmVoices(S.prof.km[${i}])"><span class="km-li-n">第${K.no||i+1}話</span><b>「${esc(kmTitle(K))}」</b><small>${K.rank}位 · ${K.sc}点 · ${new Date(K.t).getMonth()+1}/${new Date(K.t).getDate()}</small><i>${{mono:'💥',crowd:'😱',minus:'🌧️',hit:'😮',calm:'🍵'}[kmCase(K)]}</i></button>`).join('')}</div>`;
+  }
+  const K=L[KMX.v];
+  return `<div class="row spread"><span class="label">MANGA · ${KMX.v+1}/${L.length}</span></div>${kmStrip(K)}
+    <div class="km-nav"><button class="btn" onclick="kmGo(-1)" ${KMX.v<=0?'disabled':''}>◀ 前の話</button><button class="btn ghost" onclick="kmList()">📚 一覧</button><button class="btn" onclick="kmGo(1)" ${KMX.v>=L.length-1?'disabled':''}>次の話 ▶</button></div>`;
+}
+function kmCard(){ const L=S.prof.km||[], K=L[L.length-1];
+  return `<button class="minicard kmc" onclick="kmOpen()"><span class="mc-ic">📖</span><span class="mc-tx"><span class="label">MANGA · ${L.length}話</span><b>ミオの4コマまんが</b><span class="note">${K?`最新：「${esc(kmTitle(K))}」`:'試合がまんがになる！'}</span></span></button>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -7198,6 +7303,7 @@ function renderSheet(){
   else if(k==='sugoroku') body=sgBody();
   else if(k==='room') body=roomBody();
   else if(k==='stk') body=stkBody();
+  else if(k==='manga') body=mangaBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
@@ -12343,6 +12449,7 @@ function finalView(){
     <section class="panel">${resultBanner()}<span class="label" style="text-align:center">Final Result${C.hist?' · '+modeName(C):''}${G.daily?' · デイリー '+dailyLabel(G.daily):''}</span><div class="winner"><span>${winners}</span> の勝ち！</div><div class="podium">${pod}</div>${rest}
       ${C.tiebreak?'<p class="note" style="text-align:center">同点は独占回数が多い人を上位にしています。</p>':''}
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
+      ${G.kmT?`<button class="dgx-open km-open" onclick="kmOpenLast()"><i>📖</i><span><b>この試合が4コマまんがに！</b><small>ミオの4コマ 第${(S.prof.km||[]).slice(-1)[0]?.no||''}話を読む</small></span></button>`:''}
       <div class="row" style="justify-content:center"><button class="btn big pb-btn" onclick="photoShoot()">📸 記念撮影</button>${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
     ${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${cgUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${goalPanel()}${labWinPanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${chalPanel()}${ordPanel()}
@@ -12424,13 +12531,13 @@ function homeView(){
   ${pnpPromo()}
   ${hsec('📅','毎日のおたのしみ','イベント・今日やること・ミニゲーム')}${seasonCard()}
   ${todayBar()}
-  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),stkCard(),sgCard(),roomCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
-  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9,10,11,12].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
+  <div class="carousel" id="todayCar" onscroll="carDots(this)">${[dailyCard(),kmCard(),stkCard(),sgCard(),roomCard(),mirCard(),bossCard(),rivalCard(),eventCard(),`<div class="car-two">${quizCard()}${boxCard()}</div>`,puzCard(),ydCard(),lessonCard(),udCard()].map(c=>`<div class="car-item">${c}</div>`).join('')}</div>
+  <div class="car-dots" id="todayDots">${[0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(i=>`<i class="${i?'':'on'}" onclick="carGo(${i})"></i>`).join('')}</div>
   ${hsec('🏆','ミッション','きょう・今週・まちの依頼をひとつに')}
   ${misBoard('home')}
   </details>`}
 
-  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
+  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><button onclick="kmOpen()">📖 4コマまんが</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
 function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
@@ -12590,6 +12697,7 @@ function recordResult(){
   try{ labRecord(won, p.score); }catch(e){}
   if(!G.demo) try{ sgGame(won); }catch(e){}
   if(!G.demo) try{ stkGain(won?'win':'game'); }catch(e){}
+  if(!G.demo) try{ kmMake(); }catch(e){}
   try{ G.mirGot=mirRecord(me); }catch(e){}
   try{ G.styGot=styRecord(p); }catch(e){}
   // 3ターン目終了時点の順位（逆転劇の判定）
