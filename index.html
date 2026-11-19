@@ -4783,6 +4783,48 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 @keyframes astWalk{from{transform:translateY(0) rotate(-5deg)}to{transform:translateY(-5px) rotate(5deg)}}
 .ast-mio.left.walk>span{animation-name:astWalkL}@keyframes astWalkL{from{transform:scaleX(-1) translateY(0) rotate(-5deg)}to{transform:scaleX(-1) translateY(-5px) rotate(5deg)}}
 @media (prefers-reduced-motion:reduce){.ast-cloud,.ast-bd,.ast-stars,.ast-mio>span{animation:none!important}}
+/* 🍢 AZAKEI屋台 */
+.yt>*{flex:none}.yt-ttl{margin:2px 0 8px}
+.yt .up{color:#2fd47a}.yt .dn{color:#ff5a76}
+.yt-fc{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;color:#14122a;background:linear-gradient(150deg,#bfe4ff,#eaf6ff);box-shadow:0 6px 14px rgb(0 0 0 / .25)}
+.yt-fc.yt-hot{background:linear-gradient(150deg,#ffc27a,#fff0c8)}.yt-fc.yt-rain{background:linear-gradient(150deg,#9fb4d6,#dfe8f5)}.yt-fc.yt-cold{background:linear-gradient(150deg,#cfe0ff,#f4f8ff)}.yt-fc.yt-cloud{background:linear-gradient(150deg,#c9cfdc,#eef0f5)}
+.yt-fci{font-size:40px;line-height:1;animation:rmTw 3s ease-in-out infinite}.yt-fc small{display:block;font-size:11px;font-weight:800;opacity:.7}.yt-fc b{display:block;font-size:18px}.yt-fc em{display:block;font-style:normal;font-size:12.5px;font-weight:700}
+.yt-st{display:block;margin:12px 0 6px;font-weight:900;font-size:13px}
+.yt-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.yt-it{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px;border:0;border-radius:14px;color:var(--ink);background:linear-gradient(150deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line),0 4px 0 var(--rail)}
+.yt-it span{font-size:28px;line-height:1.1}.yt-it b{font-size:12.5px}.yt-it small{font-size:10px;color:var(--muted);line-height:1.35}
+.yt-it.on{box-shadow:inset 0 0 0 2px #ffc83a,0 4px 0 var(--rail);transform:translateY(-2px)}
+.yt-seg{display:flex;gap:6px}.yt-seg button{flex:1;display:flex;flex-direction:column;align-items:center;padding:9px 2px;border:0;border-radius:12px;font-weight:900;font-size:13px;color:var(--ink);background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--line)}
+.yt-seg button small{font-size:10.5px;font-weight:700;color:var(--muted)}.yt-seg button.on{background:linear-gradient(160deg,#ffe27a,#ffb23a);color:#3a2300;box-shadow:none}.yt-seg button.on small{color:#5a3a00}
+.yt-cost{margin:10px 0 8px;text-align:center}.yt-go{width:100%}
+.yt-stage{position:relative;height:214px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#7cc4ff,#c9ecff 70%);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .2)}
+.yt-stage.yt-hot{background:linear-gradient(180deg,#ff9f5a,#ffe0a0 70%)}.yt-stage.yt-rain{background:linear-gradient(180deg,#5b6b8a,#a9b6cc 70%)}.yt-stage.yt-cold{background:linear-gradient(180deg,#9fb8e0,#e6eefc 70%)}.yt-stage.yt-cloud{background:linear-gradient(180deg,#9aa6bd,#dfe4ee 70%)}
+.yt-sun{position:absolute;left:6%;top:10px;font-style:normal;font-size:30px;animation:ytSun 7s linear both}
+@keyframes ytSun{0%{transform:translate(0,30px)}50%{transform:translate(130px,0)}100%{transform:translate(260px,30px);opacity:.6}}
+.yt-rain{position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 9px,rgb(255 255 255 / .35) 9px 10px);animation:ytRain .5s linear infinite;pointer-events:none}
+@keyframes ytRain{to{background-position:-20px 40px}}
+.yt-ground{position:absolute;left:0;right:0;bottom:0;height:34px;background:linear-gradient(180deg,#cfc4b0 0 8px,#9b8f7b 8px)}
+.yt-stand{position:absolute;left:50%;bottom:30px;width:150px;height:136px;transform:translateX(-50%);z-index:1}
+.yt-aw{position:absolute;left:-10px;right:-10px;top:0;height:26px;border-radius:6px 6px 14px 14px;background:repeating-linear-gradient(90deg,#e8364a 0 15px,#fff 15px 30px);box-shadow:0 4px 0 rgb(0 0 0 / .2)}
+.yt-sign{position:absolute;left:8px;right:8px;top:30px;padding:3px;border-radius:6px;background:#fffdf4;color:#2a1a33;text-align:center;font-weight:900;font-size:12px;white-space:nowrap;overflow:hidden}
+.yt-shop{position:absolute;left:0;right:0;bottom:0;height:56px;border-radius:6px;background:linear-gradient(180deg,#b5743e,#8a5426);box-shadow:inset 0 4px 0 #d79a5c;display:flex;justify-content:center}
+.yt-mio{width:46px;height:46px;margin-top:-24px;border-radius:50%;overflow:hidden;background:#ffe9f4;box-shadow:0 0 0 2px #fff}.yt-mio svg{width:100%;height:100%;display:block}
+.yt-left{position:absolute;right:-18px;top:-12px;padding:3px 8px;border-radius:99px;background:#14122a;color:#fff;font-size:11px;font-weight:800;box-shadow:0 3px 6px rgb(0 0 0 / .3)}.yt-left b{font-size:14px;color:#ffc83a}
+.yt-cu{position:absolute;bottom:22px;font-size:30px;z-index:2;animation:ytWalkL 1.7s ease-in-out both}
+.yt-cu.r{animation-name:ytWalkR}
+@keyframes ytWalkL{0%{left:-12%}40%,60%{left:30%}100%{left:-12%}}@keyframes ytWalkR{0%{left:104%}40%,60%{left:62%}100%{left:104%}}
+.yt-cu.no{animation-duration:1.7s;opacity:.85}
+.yt-say{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);white-space:nowrap;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:9px;background:#fff;color:#2a1a33;box-shadow:0 2px 4px rgb(0 0 0 / .2)}
+.yt-coin{position:absolute;left:50%;bottom:120px;font-size:20px;z-index:3;animation:ytCoin .9s ease-out both}
+@keyframes ytCoin{0%{opacity:0;transform:translate(-50%,10px) scale(.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-50px)}}
+.yt-res{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}
+.yt-res>div{display:flex;flex-direction:column;align-items:center;padding:8px 2px;border-radius:12px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px var(--line);min-width:0;animation:sgIn .45s both}
+.yt-res>div:nth-child(2){animation-delay:.15s}.yt-res>div:nth-child(3){animation-delay:.3s}.yt-res>div:nth-child(4){animation-delay:.5s}
+.yt-res small{font-size:10px;color:var(--muted);font-weight:700}.yt-res b{font-size:13.5px;white-space:nowrap}.yt-res b i{font-style:normal;font-size:10px;color:var(--muted)}.yt-res .pf{box-shadow:inset 0 0 0 2px #ffc83a}.yt-res .pf b{font-size:14.5px}
+.yt-best,.yt-rw{text-align:center;font-weight:900;margin:8px 0 0;color:#ffc83a;animation:sgIn .5s .6s both}
+.yt-ls{display:flex;gap:10px;align-items:flex-start;margin:10px 0;padding:12px;border-radius:16px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px var(--line)}.yt-ls p{margin:0 0 6px;font-size:13px;line-height:1.65}.yt-ls p:last-child{margin:0}.yt-ls b{color:#ff8cc8}
+.yt-hint{margin-bottom:10px;border-radius:12px;background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 1px var(--line);padding:9px 12px}.yt-hint summary{font-weight:800;font-size:13px;cursor:pointer}.yt-hint p{font-size:12.5px;line-height:1.7;margin:8px 0 2px}
+@media (prefers-reduced-motion:reduce){.yt-sun,.yt-rain,.yt-cu,.yt-coin,.yt-fci{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6245,6 +6287,99 @@ function astGo(i){
   shop.classList.add('ast-knock');
   AST_T=setTimeout(()=>{ mio.classList.remove('walk'); shop.classList.remove('ast-knock'); try{ s.f(); }catch(e){} }, ms+120);
 }
+/* ---- 🍢 AZAKEI屋台：天気予報とまちのニュースを見て、売るもの・作る数・値段を決める1日店長ゲーム。
+   お客さんが歩いてきて買っていく。終わったら、もうけと「需要・売れ残り・値段」のまなび。1日1回目だけコインのごほうび ---- */
+const YT_W=[{k:'sun',ic:'☀️',n:'晴れ',t:22},{k:'hot',ic:'🥵',n:'猛暑',t:34},{k:'cloud',ic:'☁️',n:'くもり',t:17},{k:'rain',ic:'☔',n:'雨',t:14},{k:'cold',ic:'🥶',n:'寒い',t:4}];
+const YT_IT=[
+  {k:'lemon',ic:'🍋',n:'レモネード',p:150,c:60,m:[1.3,1.9,0.8,0.5,0.3]},
+  {k:'ice',ic:'🍧',n:'かき氷',p:200,c:70,m:[1.1,2.2,0.6,0.3,0.15]},
+  {k:'imo',ic:'🍠',n:'やきいも',p:250,c:110,m:[0.8,0.3,1.1,1.0,1.9]},
+  {k:'oden',ic:'🍢',n:'おでん',p:200,c:90,m:[0.7,0.3,1.1,1.4,1.8]},
+  {k:'kasa',ic:'☂️',n:'かさ',p:500,c:300,m:[0.15,0.1,0.5,2.6,0.4]},
+  {k:'onigiri',ic:'🍙',n:'おにぎり',p:150,c:70,m:[1.1,0.9,1.0,0.8,1.0]}];
+const YT_EV=[{n:'とくに何もない、ふつうの日',all:1},{n:'近くの神社でお祭り！',all:1.5},{n:'となりの学校で運動会',all:1,m:{onigiri:1.8,lemon:1.3}},{n:'駅前で大セールの日',all:1.25}];
+const YT_PR=[{n:'安め',x:.8,d:1.35},{n:'ふつう',x:1,d:1},{n:'高め',x:1.3,d:.62}];
+const YT_Q=[10,20,30,40], YT_BASE=24;
+let YTX=null;
+function ytS(){ const P=S.prof; if(!P.yt) P.yt={day:0,best:0,plays:0}; return P.yt; }
+function ytDay(){ const r=mulberry(todayKey()*7+99), mo=new Date().getMonth()+1;
+  const pool = mo>=6&&mo<=9 ? ['hot','hot','sun','sun','rain','cloud'] : mo>=11||mo<=2 ? ['cold','cold','sun','cloud','rain','cloud'] : ['sun','sun','cloud','rain','hot','cold'];
+  const pk=pool[Math.floor(r()*pool.length)], w=Math.max(0,YT_W.findIndex(x=>x.k===pk)); let e=Math.floor(r()*YT_EV.length); if(YT_W[w].k==='rain' && e===2) e=0;
+  return {w, e}; }
+function ytDemand(d,it,pr){ const I=YT_IT[it], E=YT_EV[d.e]; return YT_BASE*I.m[d.w]*(E.all||1)*((E.m&&E.m[I.k])||1)*YT_PR[pr].d; }
+function ytProfit(d,it,q,pr,dem){ const I=YT_IT[it], price=Math.round(I.p*YT_PR[pr].x/10)*10, sold=Math.min(q,Math.round(dem)); return {price, sold, rev:sold*price, cost:q*I.c, pf:sold*price-q*I.c}; }
+function ytBest(d){ let b=null; YT_IT.forEach((I,it)=>YT_Q.forEach(q=>YT_PR.forEach((_,pr)=>{ const r=ytProfit(d,it,q,pr,ytDemand(d,it,pr)); if(!b||r.pf>b.pf) b={...r,it,q,pr}; }))); return b; }
+function openYatai(){ ytS(); YTX={st:'plan',it:null,q:20,pr:1}; openSheet('yatai'); sfx('open'); setTimeout(()=>{ if(S.sheet==='yatai') vo('m_irasshai'); },300); }
+function ytSet(k,v){ if(!YTX || YTX.st!=='plan') return; YTX[k]=v; sfx('click'); haptic(5); renderSheet(); }
+function ytOpen(){
+  if(!YTX || YTX.it==null){ toast('売るものを選んでね'); sfx('buzz'); return; }
+  const d=ytDay(), dem=ytDemand(d,YTX.it,YTX.pr)*(0.88+Math.random()*0.24), R=ytProfit(d,YTX.it,YTX.q,YTX.pr,dem);
+  const K=ytS(), first=K.day!==todayKey(); K.plays=(K.plays||0)+1;
+  R.dem=Math.round(dem); R.coin=first?Math.max(0,Math.min(50,Math.round(R.pf/80)))+5:0; if(first){ K.day=todayKey(); S.prof.coin=(S.prof.coin||0)+R.coin; }
+  R.newBest=R.pf>(K.best||0); if(R.newBest) K.best=R.pf; saveProfile();
+  YTX.st='run'; YTX.R=R; YTX.d=d; YTX.tk=(YTX.tk||0)+1; renderSheet(); ytRun();
+}
+function ytRun(){
+  const R=YTX.R, tk=YTX.tk, st=document.getElementById('ytStage'), I=YT_IT[YTX.it]; if(!st) return;
+  const fast=reduced(), dur=fast?600:7200, walk=Math.min(R.dem,26), per=R.dem/Math.max(1,walk), ppl=['👦','👧','👨','👩','👴','👵','🧑','👱','🧒'];
+  let soldShown=0, lastCoin=0;
+  const cnt=document.getElementById('ytLeft'), sun=document.getElementById('ytSun');
+  if(sun) sun.style.animationDuration=dur+'ms';
+  for(let j=0;j<walk;j++){
+    const at=Math.round((j+0.5)/walk*dur*0.82);
+    setTimeout(()=>{ if(!YTX||YTX.tk!==tk||S.sheet!=='yatai') return; const fromL=j%2===0;
+      const willBuy=Math.round((j+1)*per)<=R.sold || (soldShown<R.sold && j===walk-1);
+      const el=document.createElement('span'); el.className='yt-cu '+(fromL?'l':'r')+(willBuy?'':' no'); el.textContent=ppl[j%ppl.length]; st.appendChild(el);
+      setTimeout(()=>{ if(!YTX||YTX.tk!==tk) return;
+        if(willBuy){ const n=Math.min(R.sold, Math.round((j+1)*per)); soldShown=Math.max(soldShown,n); if(cnt) cnt.textContent=Math.max(0,YTX.q-soldShown);
+          const c=document.createElement('span'); c.className='yt-coin'; c.textContent='🪙'; st.appendChild(c); setTimeout(()=>c.remove(),900);
+          if(Date.now()-lastCoin>160){ sfx('coin'); lastCoin=Date.now(); } }
+        else { const b=document.createElement('span'); b.className='yt-say'; b.textContent=YTX.q-soldShown<=0?'売り切れ…':'うーん、いいや'; el.appendChild(b); }
+      }, fast?100:700);
+      setTimeout(()=>el.remove(), fast?300:1700); }, at);
+  }
+  setTimeout(()=>{ if(!YTX||YTX.tk!==tk||S.sheet!=='yatai') return; YTX.st='done'; renderSheet(); const R2=YTX.R;
+    sfx(R2.pf>0?'fanfare':'buzz'); haptic(R2.pf>0?[20,40,20]:30); setTimeout(()=>vo(R2.pf>=2000?'m_banzai':R2.pf>0?'m_yatta':'m_sonnaa'),300); if(R2.pf>=2000&&!reduced()) confetti(); }, dur+500);
+}
+function ytLesson(){
+  const R=YTX.R, d=YTX.d, I=YT_IT[YTX.it], W=YT_W[d.w], L=[];
+  if(R.pf>=2000) L.push('大成功！ 天気と作る数と値段が、ぴったり合ったね。');
+  if(I.m[d.w]<0.6) L.push(`${W.n}の日に${I.n}は、あまり売れない。「ほしい人がどれくらいいるか」を<b>需要</b>っていうよ。`);
+  if(R.sold>=YTX.q && R.dem>YTX.q*1.25) L.push(`まだ買いたい人がいたのに<b>売り切れ</b>！ もっと作れば、もっともうかったかも（チャンスロス）。`);
+  if(YTX.q-R.sold>YTX.q*0.3) L.push(`${YTX.q-R.sold}個 <b>売れ残り</b>。作りすぎると、材料代がむだになるよ。`);
+  if(YTX.pr===2) L.push('<b>高め</b>の値段だと、買う人は減る。でも1つあたりのもうけは大きいね。');
+  if(YTX.pr===0) L.push('<b>安め</b>だと、たくさんの人が買ってくれる。でも1つあたりのもうけは小さいよ。');
+  if(!L.length) L.push('まずまずの1日！ 天気予報とニュースから、売れそうな物を考えるのがコツ。');
+  return L.slice(0,3);
+}
+function yataiBody(){
+  const K=ytS(), d=ytDay(), W=YT_W[d.w], E=YT_EV[d.e], X=YTX||{st:'plan',q:20,pr:1,it:null}, first=K.day!==todayKey();
+  const fc=`<div class="yt-fc yt-${W.k}"><span class="yt-fci">${W.ic}</span><span><small>きょうの天気予報</small><b>${W.n} · ${W.t}℃</b><em>📰 ${E.n}</em></span></div>`;
+  if(X.st==='plan'){
+    const items=YT_IT.map((I,i)=>`<button class="yt-it${X.it===i?' on':''}" onclick="ytSet('it',${i})"><span>${I.ic}</span><b>${I.n}</b><small>売値 ${I.p}円<br>材料 ${I.c}円</small></button>`).join('');
+    const cost=X.it!=null?YT_IT[X.it].c*X.q:0, price=X.it!=null?Math.round(YT_IT[X.it].p*YT_PR[X.pr].x/10)*10:0;
+    return `<div class="yt"><div class="row spread"><span class="label">FOOD STALL · ${first?'きょうの1回目はごほうびあり':'れんしゅう（ごほうびなし）'}</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div>
+      <h3 class="ttl yt-ttl">🍢 AZAKEI屋台</h3>${fc}
+      <span class="yt-st">① 売るもの</span><div class="yt-items">${items}</div>
+      <span class="yt-st">② 作る数</span><div class="yt-seg">${YT_Q.map(q=>`<button class="${X.q===q?'on':''}" onclick="ytSet('q',${q})">${q}個</button>`).join('')}</div>
+      <span class="yt-st">③ 値段</span><div class="yt-seg">${YT_PR.map((p,i)=>`<button class="${X.pr===i?'on':''}" onclick="ytSet('pr',${i})">${p.n}${X.it!=null?`<small>${Math.round(YT_IT[X.it].p*p.x/10)*10}円</small>`:''}</button>`).join('')}</div>
+      <p class="note yt-cost">${X.it!=null?`材料代 ${cost.toLocaleString()}円 · 1つ ${price}円で売る`:'天気とニュースから、売れそうな物を考えよう'}</p>
+      <button class="btn gold big yt-go" onclick="ytOpen()" ${X.it==null?'disabled':''}>🏮 お店をひらく！</button>
+      ${K.plays?`<p class="note" style="text-align:center">これまでの最高のもうけ：${(K.best||0).toLocaleString()}円</p>`:''}</div>`;
+  }
+  const I=YT_IT[X.it], R=X.R;
+  const stage=`<div class="yt-stage yt-${W.k}" id="ytStage"><i class="yt-sun" id="ytSun">${W.k==='rain'?'🌧️':W.k==='cloud'?'☁️':W.k==='cold'?'🌥️':'☀️'}</i>${W.k==='rain'?'<i class="yt-rain"></i>':''}
+    <div class="yt-stand"><span class="yt-aw"></span><span class="yt-sign">${I.ic} ${I.n} ${R.price}円</span><span class="yt-shop"><span class="yt-mio">${FACE[GUIDE.n]?face(GUIDE.n,null,X.st==='done'&&R.pf>0?'happy':''):GUIDE.ic}</span></span><span class="yt-left">のこり <b id="ytLeft">${X.st==='done'?X.q-R.sold:X.q}</b>個</span></div><i class="yt-ground"></i></div>`;
+  if(X.st==='run') return `<div class="yt"><span class="label">OPEN!</span><h3 class="ttl yt-ttl">🍢 営業中…</h3>${stage}<p class="note" style="text-align:center">${W.ic} ${W.n} · ${esc(E.n)}</p></div>`;
+  const B=ytBest(d);
+  return `<div class="yt"><span class="label">RESULT</span><h3 class="ttl yt-ttl">🍢 きょうの売り上げ</h3>${stage}
+    <div class="yt-res"><div><small>売れた数</small><b>${R.sold}<i>/${X.q}</i></b></div><div><small>売り上げ</small><b>${R.rev.toLocaleString()}円</b></div><div><small>材料代</small><b>−${R.cost.toLocaleString()}円</b></div><div class="pf"><small>もうけ</small><b class="${R.pf>=0?'up':'dn'}">${R.pf>=0?'+':''}${R.pf.toLocaleString()}円</b></div></div>
+    ${R.newBest?'<p class="yt-best">🏆 最高記録！</p>':''}${R.coin?`<p class="yt-rw">ごほうび 🪙 +${R.coin}</p>`:''}
+    <div class="yt-ls">${guideAva()}<div>${ytLesson().map(t=>`<p>${t}</p>`).join('')}</div></div>
+    <details class="yt-hint"><summary>💡 きょうのいちばんの作戦は？</summary><p>${YT_IT[B.it].ic} ${YT_IT[B.it].n}を ${B.q}個、${YT_PR[B.pr].n}（${B.price}円）で売ると、だいたい <b>${B.pf.toLocaleString()}円</b> のもうけ（お客さんの数には少しばらつきがあります）。</p></details>
+    <div class="row" style="gap:8px"><button class="btn big" style="flex:1" onclick="YTX={st:'plan',it:${X.it},q:${X.q},pr:${X.pr}};renderSheet()">もう一度（れんしゅう）</button><button class="btn ghost" onclick="closeSheet()">とじる</button></div></div>`;
+}
+AST.splice(1,0,{n:'AZAKEI屋台',ic:'🍢',c:'#c8443a',a:'#fff3a8',h:92,f:()=>openYatai(),b:()=>ytS().day===todayKey()?0:'!'});
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -7476,6 +7611,7 @@ function renderSheet(){
   else if(k==='stk') body=stkBody();
   else if(k==='manga') body=mangaBody();
   else if(k==='kabu') body=kabuBody();
+  else if(k==='yatai') body=yataiBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
@@ -12709,7 +12845,7 @@ function homeView(){
   ${misBoard('home')}
   </details>`}
 
-  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><button onclick="kmOpen()">📖 4コマまんが</button><button onclick="openKabu()">📈 AZAKEI証券</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
+  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><button onclick="kmOpen()">📖 4コマまんが</button><button onclick="openKabu()">📈 AZAKEI証券</button><button onclick="openYatai()">🍢 AZAKEI屋台</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
 function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
