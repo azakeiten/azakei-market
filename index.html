@@ -4743,6 +4743,46 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .kb-tips{margin-top:10px;border-radius:12px;background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 1px var(--line);padding:9px 12px}.kb-tips summary{font-weight:800;font-size:13px;cursor:pointer}.kb-tips p{font-size:12.5px;line-height:1.7;margin:8px 0 2px}
 .kbc .mc-ic{background:radial-gradient(circle at 35% 30%,#b6ffd6,#2fd47a)}
 @media (prefers-reduced-motion:reduce){.kb-led-in,.kb-row,.kb-pop{animation:none!important}}
+/* 🏙️ AZAKEIストリート */
+.ast{margin-top:14px}
+.ast-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 2px 6px}.ast-head small{font-size:11px;color:var(--muted)}
+.ast-view{--px:0px;position:relative;height:214px;border-radius:22px;overflow:hidden;isolation:isolate;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .14),0 10px 24px rgb(0 0 0 / .3)}
+.ast-morn .ast-view{background:linear-gradient(180deg,#ff9f7a,#ffd39a 55%,#a9d8ff)}.ast-day .ast-view{background:linear-gradient(180deg,#2f7dff,#8fcfff 70%,#c9ecff)}
+.ast-eve .ast-view{background:linear-gradient(180deg,#2b1a5a,#b23a6b 55%,#ff9a4d)}.ast-night .ast-view{background:linear-gradient(180deg,#040714,#111a48 65%,#27306e)}
+.ast-far{position:absolute;left:0;bottom:34px;width:1600px;height:150px;transform:translateX(calc(var(--px) * -1));z-index:0;pointer-events:none}
+.ast-far svg{width:100%;height:100%;display:block;fill:rgb(40 46 110 / .42)}.ast-eve .ast-far svg{fill:rgb(60 20 70 / .45)}.ast-night .ast-far svg{fill:rgb(8 10 30 / .8)}
+.ast-cloud{position:absolute;left:0;top:12px;width:200%;height:40px;z-index:0;pointer-events:none;opacity:.8;background:radial-gradient(28px 12px at 8% 50%,#fff,transparent),radial-gradient(40px 14px at 12% 40%,#fff,transparent),radial-gradient(30px 11px at 38% 60%,#fff,transparent),radial-gradient(44px 13px at 43% 45%,#fff,transparent),radial-gradient(34px 12px at 72% 50%,#fff,transparent),radial-gradient(26px 10px at 76% 35%,#fff,transparent);animation:astCloud 70s linear infinite}
+.ast-night .ast-cloud{opacity:.12}.ast-eve .ast-cloud{opacity:.45}
+@keyframes astCloud{to{transform:translateX(-50%)}}
+.ast-stars{position:absolute;inset:0 0 50% 0;z-index:0;background:radial-gradient(1.4px 1.4px at 10% 20%,#fff,transparent),radial-gradient(1.2px 1.2px at 30% 40%,#fff,transparent),radial-gradient(1.6px 1.6px at 55% 15%,#fff,transparent),radial-gradient(1.2px 1.2px at 75% 35%,#fff,transparent),radial-gradient(1.4px 1.4px at 92% 18%,#fff,transparent);animation:rmTw 3s ease-in-out infinite}
+.ast-sc{position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;z-index:1;-webkit-overflow-scrolling:touch}.ast-sc::-webkit-scrollbar{display:none}
+.ast-in{position:relative;display:flex;align-items:flex-end;height:100%;width:max-content;padding:0 22px 34px;box-sizing:border-box}
+.ast-in::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;z-index:-1;background:linear-gradient(180deg,#cfc4b0 0 10px,#8d8270 10px 12px,#3a3d52 12px),#3a3d52}
+.ast-in::before{content:"";position:absolute;left:0;right:0;bottom:12px;height:3px;z-index:0;background:repeating-linear-gradient(90deg,#f3e3a0 0 18px,transparent 18px 34px);opacity:.75;transform:translateY(-4px)}
+.ast-shop{position:relative;flex:none;width:104px;height:var(--h);margin:0 3px;padding:0;border:0;border-radius:8px 8px 0 0;cursor:pointer;color:#fff;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 85%,#fff),var(--c) 30%,color-mix(in srgb,var(--c) 78%,#000));box-shadow:inset 0 4px 0 color-mix(in srgb,var(--c) 60%,#000),inset -6px 0 0 rgb(0 0 0 / .1);transition:transform .2s}
+.ast-shop::before{content:"";position:absolute;left:12px;right:12px;top:30px;bottom:74px;background:rgb(255 255 255 / .26);-webkit-mask:repeating-linear-gradient(90deg,#000 0 12px,transparent 12px 19px),repeating-linear-gradient(0deg,#000 0 9px,transparent 9px 16px);-webkit-mask-composite:source-in;mask:repeating-linear-gradient(90deg,#000 0 12px,transparent 12px 19px),repeating-linear-gradient(0deg,#000 0 9px,transparent 9px 16px);mask-composite:intersect}
+.ast-night .ast-shop::before,.ast-eve .ast-shop::before{background:#ffe58a;filter:drop-shadow(0 0 4px rgb(255 214 90 / .8))}
+.ast-sign{position:absolute;left:6px;right:6px;top:8px;padding:3px 2px;border-radius:5px;background:#fffdf4;color:#2a1a33;font-size:10.5px;font-weight:900;white-space:nowrap;overflow:hidden;box-shadow:0 2px 0 rgb(0 0 0 / .25)}
+.ast-aw{position:absolute;left:-4px;right:-4px;bottom:58px;height:15px;border-radius:0 0 8px 8px;background:repeating-linear-gradient(90deg,var(--a) 0 11px,color-mix(in srgb,var(--c) 70%,#fff) 11px 22px);box-shadow:0 3px 0 rgb(0 0 0 / .2)}
+.ast-win{position:absolute;left:10px;width:52px;bottom:6px;height:48px;border-radius:6px 6px 0 0;display:grid;place-items:center;background:linear-gradient(160deg,#e8f6ff,#b7d8f0);box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--c) 55%,#000)}
+.ast-night .ast-win,.ast-eve .ast-win{background:linear-gradient(160deg,#fff4c8,#ffd36a);box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--c) 55%,#000),0 0 18px rgb(255 210 90 / .6)}
+.ast-win i{font-style:normal;font-size:26px;line-height:1}
+.ast-door{position:absolute;right:10px;bottom:0;width:24px;height:40px;border-radius:12px 12px 0 0;background:color-mix(in srgb,var(--c) 45%,#000);box-shadow:inset 0 0 0 2px rgb(0 0 0 / .2)}
+.ast-door::after{content:"";position:absolute;right:5px;top:20px;width:4px;height:4px;border-radius:50%;background:#ffd36a}
+.ast-bd{position:absolute;top:-9px;right:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:99px;display:grid;place-items:center;background:#ff4d6d;color:#fff;font-size:12px;font-weight:900;box-shadow:0 0 0 2px #fff,0 4px 8px rgb(0 0 0 / .3);animation:sgBadge 1.8s ease-in-out infinite;z-index:2}
+.ast-shop:active,.ast-shop.ast-knock{transform:translateY(-3px)}
+.ast-shop.ast-knock .ast-door{background:#ffe58a}
+.ast-lamp{position:relative;flex:none;width:12px;height:92px;margin:0 2px;align-self:flex-end}
+.ast-lamp::before{content:"";position:absolute;left:5px;bottom:0;width:3px;height:100%;background:#2a2d44;border-radius:2px}
+.ast-lamp::after{content:"";position:absolute;left:0;top:-4px;width:13px;height:10px;border-radius:6px 6px 3px 3px;background:#5a5d78}
+.ast-night .ast-lamp::after,.ast-eve .ast-lamp::after{background:#ffe58a;box-shadow:0 0 16px 6px rgb(255 220 120 / .55),0 30px 40px 10px rgb(255 220 120 / .12)}
+.ast-mio{position:absolute;left:24px;bottom:16px;width:34px;z-index:3;transition:left .6s ease-in-out;pointer-events:none}
+.ast-mio>span{display:block;width:34px;height:34px;border-radius:50%;overflow:hidden;background:#ffe9f4;box-shadow:0 0 0 2px #fff,0 5px 8px rgb(0 0 0 / .4)}.ast-mio svg{width:100%;height:100%;display:block}
+.ast-mio::after{content:"";position:absolute;left:4px;right:4px;bottom:-5px;height:5px;border-radius:50%;background:rgb(0 0 0 / .35)}
+.ast-mio.walk>span{animation:astWalk .3s ease-in-out infinite alternate}.ast-mio.left>span{transform:scaleX(-1)}
+@keyframes astWalk{from{transform:translateY(0) rotate(-5deg)}to{transform:translateY(-5px) rotate(5deg)}}
+.ast-mio.left.walk>span{animation-name:astWalkL}@keyframes astWalkL{from{transform:scaleX(-1) translateY(0) rotate(-5deg)}to{transform:scaleX(-1) translateY(-5px) rotate(5deg)}}
+@media (prefers-reduced-motion:reduce){.ast-cloud,.ast-bd,.ast-stars,.ast-mio>span{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6092,7 +6132,7 @@ function kmVoices(K){
   at(300,'m_happyo'); at(1900, c==='mono'?'m_yatta':c==='minus'?'m_shock':c==='calm'?'m_oo':'m_ee'); at(2800, K.rank===1?'m_banzai':K.rank===K.np?'m_ganbatte':'m_atochotto');
   if(!reduced()){ setTimeout(()=>{ if(KMX.tk===tk) sfx('flip'); },150); setTimeout(()=>{ if(KMX.tk===tk) sfx('flip'); },950); setTimeout(()=>{ if(KMX.tk===tk){ sfx(c==='mono'?'slam':'buzz'); haptic(25); } },1750); setTimeout(()=>{ if(KMX.tk===tk) sfx(K.rank===1?'fanfare':'flip'); },2550); }
 }
-function kmOpen(i){ const L=S.prof.km||[]; if(!L.length){ toast('試合をすると、4コマまんがができるよ'); return; } KMX.v=i==null?L.length-1:i; openSheet('manga'); kmVoices(L[KMX.v]); }
+function kmOpen(i){ const L=S.prof.km||[]; if(!L.length){ KMX.v=-1; openSheet('manga'); sfx('open'); return; } KMX.v=i==null?L.length-1:i; openSheet('manga'); kmVoices(L[KMX.v]); }
 function kmOpenLast(){ const L=S.prof.km||[], i=L.findIndex(x=>x.t===(G&&G.kmT)); kmOpen(i>=0?i:null); }
 function kmGo(d){ const L=S.prof.km||[]; const n=Math.max(0,Math.min(L.length-1,KMX.v+d)); if(n===KMX.v) return; KMX.v=n; renderSheet(); const sh=document.querySelector('#sheet .sheet'); if(sh) sh.scrollTop=0; kmVoices(L[n]); }
 function kmList(){ KMX.v=-1; KMX.tk++; sfx('click'); renderSheet(); }
@@ -6168,6 +6208,43 @@ function kabuBody(){
 }
 function kbCard(){ const K=kbS(), R=kbHist(), t=R[R.length-1], pl=kbVal(K)-kbCost(K);
   return `<button class="minicard kbc" onclick="openKabu()"><span class="mc-ic">📈</span><span class="mc-tx"><span class="label">AZAKEI証券 · 注目 ${IND[t.li]}</span><b>マイ株</b><span class="note">${Object.values(K.h).some(h=>h.n)?`ふくみ損益 ${pl>0?'+':''}${pl} コイン`:'コインで株を買ってみよう'}</span></span></button>`; }
+/* ---- 🏙️ AZAKEIストリート：ホームの上に、横にスクロールできる商店街。お店ひとつずつが遊びの入り口。
+   お知らせはお店の上のバッジ。タップするとミオがお店まで歩いて案内する。空は本当の時間、遠くのビルはゆっくり動く（パララックス） ---- */
+const AST=[
+  {n:'すごろく広場',ic:'🎲',c:'#ff8c5a',a:'#fff3a8',h:116,f:()=>openSugoroku(),b:()=>sgS().dice||0},
+  {n:'マイルーム',ic:'🏠',c:'#5fa8f0',a:'#ffffff',h:100,f:()=>openRoom(),b:()=>rmS().day===todayKey()?0:'🎁'},
+  {n:'シール屋',ic:'🏷️',c:'#f27ab6',a:'#ffe9f4',h:110,f:()=>openStk(),b:()=>stkS().nw.length},
+  {n:'AZAKEI証券',ic:'📈',c:'#3a4a96',a:'#2fd47a',h:156,f:()=>openKabu(),b:()=>0},
+  {n:'まんが書店',ic:'📖',c:'#e9b949',a:'#e8364a',h:108,f:()=>kmOpen(),b:()=>0},
+  {n:'クイズ教室',ic:'❓',c:'#8f7bf0',a:'#ffffff',h:124,f:()=>startQuiz(),b:()=>quizLeft()},
+  {n:'ラッキーBOX',ic:'🎁',c:'#e8506c',a:'#ffd36a',h:98,f:()=>openBox(),b:()=>0},
+  {n:'まちの銀行',ic:'🏦',c:'#b49a5e',a:'#6b4a1e',h:136,f:()=>mbkOpen(),b:()=>0},
+  {n:'ゆうびん局',ic:'📮',c:'#d83a4a',a:'#ffffff',h:96,f:()=>openMail(),b:()=>mailUnread()}];
+let AST_SKY=null;
+function astSky(){ if(AST_SKY) return AST_SKY; const r=mulberry(4242); let x=0, out='';
+  while(x<1600){ const w=22+Math.round(r()*34), hh=26+Math.round(r()*62); out+=`<rect x="${x}" y="${90-hh}" width="${w}" height="${hh}" rx="2"/>`; if(r()<.35) out+=`<rect x="${x+w/2-1}" y="${90-hh-10}" width="2" height="10"/>`; x+=w+2+Math.round(r()*6); }
+  return AST_SKY=`<svg viewBox="0 0 1600 90" preserveAspectRatio="none" aria-hidden="true">${out}</svg>`; }
+function astView(){
+  const ph=skyPhase(new Date().getHours());
+  const shops=AST.map((s,i)=>{ let b=0; try{ b=s.b(); }catch(e){}
+    return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}"><span class="ast-sign">${s.n}</span><span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>`; }).join('<i class="ast-lamp" aria-hidden="true"></i>');
+  return `<section class="ast ast-${ph}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span><small>お店をタップ → ミオが案内するよ</small></div>
+    <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}
+      <div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div></section>`;
+}
+function astPar(sc){ const v=sc.parentNode; if(v) v.style.setProperty('--px', (sc.scrollLeft*0.3).toFixed(1)+'px'); }
+let AST_T=0;
+function astGo(i){
+  const s=AST[i], sc=document.querySelector('.ast-sc'), shop=sc&&sc.querySelectorAll('.ast-shop')[i], mio=document.getElementById('astMio');
+  if(!s) return; clearTimeout(AST_T);
+  if(!shop || !mio || reduced()){ sfx('click'); try{ s.f(); }catch(e){} return; }
+  const x=shop.offsetLeft+shop.offsetWidth/2-17, cur=parseFloat(mio.style.left)||24, dist=Math.abs(x-cur), ms=Math.min(900,Math.max(280,dist*1.6));
+  mio.classList.toggle('left', x<cur); mio.classList.add('walk'); mio.style.transitionDuration=ms+'ms'; mio.style.left=x+'px';
+  sc.scrollTo({left:shop.offsetLeft-(sc.clientWidth-shop.offsetWidth)/2, behavior:'smooth'});
+  sfx('click'); haptic(8); const steps=Math.round(ms/180); for(let k=1;k<=steps;k++) setTimeout(()=>sfx('hat'),k*180);
+  shop.classList.add('ast-knock');
+  AST_T=setTimeout(()=>{ mio.classList.remove('walk'); shop.classList.remove('ast-knock'); try{ s.f(); }catch(e){} }, ms+120);
+}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -12611,7 +12688,7 @@ function homeView(){
         ${heroStory()}
       </div>
       <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>`}
-  ${wrNotice()}${townLive()}
+  ${!nbNew()?astView():''}${wrNotice()}${townLive()}
   ${nbPath()}${nbUnlocked()}
   ${nameCard()}
   ${nbNew()?`${skyScene()}${quickMenu()}${nbLocked()}`:`${hsec('🎯','きょうのおすすめ','ミオが選んだ、次にやること')}
