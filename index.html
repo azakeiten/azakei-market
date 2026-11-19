@@ -4825,6 +4825,37 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .yt-ls{display:flex;gap:10px;align-items:flex-start;margin:10px 0;padding:12px;border-radius:16px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px var(--line)}.yt-ls p{margin:0 0 6px;font-size:13px;line-height:1.65}.yt-ls p:last-child{margin:0}.yt-ls b{color:#ff8cc8}
 .yt-hint{margin-bottom:10px;border-radius:12px;background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 1px var(--line);padding:9px 12px}.yt-hint summary{font-weight:800;font-size:13px;cursor:pointer}.yt-hint p{font-size:12.5px;line-height:1.7;margin:8px 0 2px}
 @media (prefers-reduced-motion:reduce){.yt-sun,.yt-rain,.yt-cu,.yt-coin,.yt-fci{animation:none!important}}
+/* 🏭 AZAKEI工場 */
+.fc>*{flex:none}.fc-ttl{margin:2px 0 8px}
+.fc-stage{position:relative;height:210px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#3b4458,#262c3d 60%,#1b1f2c);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .12);user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.fc-stage::before{content:"";position:absolute;left:0;right:0;top:0;height:40px;background:repeating-linear-gradient(90deg,#4a5470 0 30px,#3e475f 30px 32px);opacity:.6}
+.fc-belt{position:absolute;left:0;right:56px;top:96px;height:58px;background:repeating-linear-gradient(90deg,#2a2d38 0 18px,#353948 18px 20px);background-size:20px 100%;box-shadow:inset 0 4px 0 #555b70,inset 0 -4px 0 #15171f,0 6px 0 #0d0f15;animation:fcBelt .6s linear infinite}
+.fc-stage.ready .fc-belt{animation-duration:2s}
+@keyframes fcBelt{to{background-position:20px 0}}
+.fc-stage.fever .fc-belt{box-shadow:inset 0 4px 0 #ffc83a,inset 0 -4px 0 #ff8c5a,0 0 26px rgb(255 200 58 / .7);animation-duration:.3s}
+.fc-stage.fever{background:linear-gradient(180deg,#5a3f7a,#2c2350 60%,#1b1f2c)}
+.fc-it{position:absolute;left:0;top:-16px;width:52px;height:52px;padding:0;border:0;border-radius:12px;display:grid;place-items:center;background:linear-gradient(160deg,#fff,#dfe6f5);box-shadow:0 5px 0 rgb(0 0 0 / .35);cursor:pointer;touch-action:manipulation}
+.fc-it span{font-size:30px;line-height:1}
+.fc-it.bad{background:linear-gradient(160deg,#ffd0d6,#ff8a9a)}.fc-it.bad span{filter:grayscale(.4) brightness(.85)}
+.fc-it i{position:absolute;right:-4px;top:-6px;font-style:normal;font-size:18px}
+.fc-it.fc-pack{animation:fcPack .38s ease-in forwards}.fc-it.fc-x{animation:fcX .38s ease-out forwards}
+@keyframes fcPack{to{transform:translate(260px,-70px) scale(.3) rotate(40deg);opacity:0}}
+@keyframes fcX{0%{filter:brightness(1.5)}100%{transform:translateY(60px) rotate(-30deg);opacity:0}}
+.fc-boxw{position:absolute;right:4px;top:70px;width:56px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.fc-box{font-size:44px;line-height:1;filter:drop-shadow(0 6px 4px rgb(0 0 0 / .4))}.fc-box.hit{animation:fcBox .25s ease-out}
+@keyframes fcBox{50%{transform:scale(1.25) rotate(-6deg)}}
+.fc-boxw b{font-size:14px;color:#ffc83a}
+.fc-how{position:absolute;left:10px;right:66px;top:10px;padding:8px 10px;border-radius:12px;background:rgb(10 12 24 / .82);color:#fff;font-size:12.5px;line-height:1.5}.fc-how p{margin:0 0 3px}.fc-how b{color:#ffc83a}
+.fc-demo{position:relative;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;background:#fff;font-size:15px;vertical-align:middle}.fc-demo.bad{background:#ff8a9a}.fc-demo i{position:absolute;right:-6px;top:-8px;font-style:normal;font-size:11px}
+.fc-go{width:100%;margin-top:10px}
+.fc-hud{display:flex;align-items:center;gap:14px;font-weight:800;font-size:14px;margin-bottom:6px}.fc-hud b{font-size:20px}.fc-sc{color:#ffc83a}
+.fc-cb{margin-left:auto;font-weight:900;color:#ff8cc8}.fc-cb.bump{animation:fcBump .25s ease-out}@keyframes fcBump{50%{transform:scale(1.3)}}
+.fc-tb{height:8px;border-radius:99px;background:rgb(255 255 255 / .08);overflow:hidden;margin-bottom:8px}.fc-tb i{display:block;height:100%;transform-origin:left;background:linear-gradient(90deg,#ff5a76,#ffc83a,#2fd47a)}
+.fc-fl{position:absolute;top:58px;font-weight:900;font-size:16px;pointer-events:none;z-index:5;text-shadow:0 2px 0 rgb(0 0 0 / .5);animation:fcFl .9s ease-out forwards}
+.fc-fl.good{color:#2fd47a}.fc-fl.fever{color:#ffc83a;font-size:20px}.fc-fl.bad{color:#ff5a76}.fc-fl.miss{color:#a9b0c6;font-size:13px;top:170px}.fc-fl.ok{color:#8fd3ff;font-size:13px;top:170px}
+@keyframes fcFl{0%{opacity:0;transform:translateY(8px)}20%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
+.fc-big{display:flex;flex-direction:column;align-items:center;margin:4px 0 6px}.fc-big small{font-size:12px;color:var(--muted);font-weight:800}.fc-big b{font-size:52px;line-height:1;font-family:var(--display);color:#ffc83a;animation:sgIn .5s both}.fc-big em{font-style:normal;font-weight:900;color:#ffc83a}
+@media (prefers-reduced-motion:reduce){.fc-belt{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6380,6 +6411,75 @@ function yataiBody(){
     <div class="row" style="gap:8px"><button class="btn big" style="flex:1" onclick="YTX={st:'plan',it:${X.it},q:${X.q},pr:${X.pr}};renderSheet()">もう一度（れんしゅう）</button><button class="btn ghost" onclick="closeSheet()">とじる</button></div></div>`;
 }
 AST.splice(1,0,{n:'AZAKEI屋台',ic:'🍢',c:'#c8443a',a:'#fff3a8',h:92,f:()=>openYatai(),b:()=>ytS().day===todayKey()?0:'!'});
+/* ---- 🏭 AZAKEI工場：ベルトコンベアを流れてくる製品をタップして箱づめ。ひびの入った不良品はタップしない。30秒。
+   10連続でフィーバー（得点2倍・ベルトが光る）。結果で「生産性」と「品質」をまなぶ。1日1回目だけコイン ---- */
+const FC_SEC=30, FC_IT=['🧸','🚗','📱','⌚','🎧','🍫','👟','📷'];
+let FCX=null;
+function fcS(){ const P=S.prof; if(!P.fc) P.fc={day:0,best:0,plays:0}; return P.fc; }
+function openFactory(){ fcS(); fcStop(); FCX={st:'ready'}; openSheet('factory'); sfx('open'); }
+function fcStop(){ if(FCX&&FCX.iv){ clearInterval(FCX.iv); FCX.iv=0; } }
+function fcStart(){
+  fcStop(); FCX={st:'play',t0:Date.now(),last:Date.now(),spawn:0,items:[],id:0,score:0,packed:0,bad:0,miss:0,ok:0,combo:0,maxc:0,fever:false}; renderSheet();
+  sfx('press'); vo('start');
+  FCX.iv=setInterval(fcTick,33);
+}
+function fcTick(){
+  const X=FCX; if(!X || X.st!=='play') return; if(S.sheet!=='factory'){ fcStop(); X.st='ready'; return; }
+  const st=document.getElementById('fcBelt'); if(!st){ return; }
+  const now=Date.now(), dt=Math.min(.1,(now-X.last)/1000), el=(now-X.t0)/1000; X.last=now;
+  const W=st.clientWidth||320, sp=70+el*3.4, gap=Math.max(.42,1-el*.019);
+  X.spawn-=dt; if(X.spawn<=0 && el<FC_SEC-.6){ X.spawn=gap*(0.8+Math.random()*0.5);
+    const bad=Math.random()<.22, it={id:++X.id,x:-40,bad,ic:FC_IT[Math.floor(Math.random()*FC_IT.length)]};
+    const d=document.createElement('button'); d.className='fc-it'+(bad?' bad':''); d.dataset.id=it.id; d.innerHTML=`<span>${it.ic}</span>${bad?'<i>💥</i>':''}`; d.setAttribute('aria-label',bad?'不良品':'製品');
+    d.addEventListener('pointerdown',e=>{ e.preventDefault(); fcTap(it.id); }); st.appendChild(d); it.el=d; X.items.push(it); }
+  X.items.forEach(it=>{ if(it.done) return; it.x+=sp*dt; it.el.style.transform=`translateX(${it.x.toFixed(1)}px)`;
+    if(it.x>W){ it.done=true; it.el.remove(); if(it.bad){ X.ok++; fcFloat('よく見た！','ok'); } else { X.miss++; X.combo=0; fcFever(); fcFloat('見のがし…','miss'); sfx('tick'); } } });
+  X.items=X.items.filter(it=>!it.done);
+  const tb=document.getElementById('fcTime'); if(tb) tb.style.transform=`scaleX(${Math.max(0,1-el/FC_SEC).toFixed(3)})`;
+  const tt=document.getElementById('fcSec'); if(tt) tt.textContent=Math.max(0,Math.ceil(FC_SEC-el));
+  if(el>=FC_SEC) fcEnd();
+}
+function fcTap(id){
+  const X=FCX; if(!X || X.st!=='play') return; const it=X.items.find(x=>x.id===id); if(!it || it.done) return; it.done=true;
+  if(it.bad){ X.bad++; X.combo=0; X.score=Math.max(0,X.score-2); sfx('buzz'); haptic([20,30,20]); fcFloat('不良品！ −2','bad'); it.el.classList.add('fc-x'); fcFever(); }
+  else { X.packed++; X.combo++; X.maxc=Math.max(X.maxc,X.combo); const pt=X.fever?2:1; X.score+=pt; sfx(X.fever?'shine':'coin'); haptic(6); fcFloat(`+${pt}`,X.fever?'fever':'good'); it.el.classList.add('fc-pack'); fcBox(); fcFever();
+    if(X.combo===10){ vo('m_wow'); } }
+  setTimeout(()=>it.el.remove(),380);
+  const sc=document.getElementById('fcScore'); if(sc) sc.textContent=X.score; const cb=document.getElementById('fcCombo'); if(cb){ cb.textContent=X.combo>=2?`${X.combo} コンボ`:''; cb.classList.remove('bump'); void cb.offsetWidth; cb.classList.add('bump'); }
+}
+function fcFever(){ const X=FCX, on=X.combo>=10; if(on!==X.fever){ X.fever=on; const b=document.querySelector('.fc-stage'); if(b) b.classList.toggle('fever',on); if(on){ sfx('fanfare'); fcFloat('FEVER! ×2','fever'); } } }
+function fcBox(){ const b=document.getElementById('fcBox'); if(!b) return; b.classList.remove('hit'); void b.offsetWidth; b.classList.add('hit'); const n=document.getElementById('fcBoxN'); if(n) n.textContent=FCX.packed; }
+function fcFloat(t,cls){ const st=document.querySelector('.fc-stage'); if(!st) return; const e=document.createElement('span'); e.className='fc-fl '+cls; e.textContent=t; e.style.left=(20+Math.random()*55)+'%'; st.appendChild(e); setTimeout(()=>e.remove(),900); }
+function fcEnd(){
+  const X=FCX; fcStop(); X.st='done'; const K=fcS(), first=K.day!==todayKey(); K.plays=(K.plays||0)+1;
+  X.coin=first?Math.min(50,Math.round(X.score*0.8))+5:0; if(first){ K.day=todayKey(); S.prof.coin=(S.prof.coin||0)+X.coin; }
+  X.newBest=X.score>(K.best||0); if(X.newBest) K.best=X.score; saveProfile(); renderSheet();
+  sfx('fanfare'); setTimeout(()=>vo(X.score>=40?'m_banzai':X.score>=20?'m_yatta':'m_ganbatte'),300); if(X.score>=40 && !reduced()) confetti();
+}
+function fcLesson(X){ const L=[], q=X.packed+X.bad?Math.round(X.packed/(X.packed+X.bad)*100):100, pm=X.packed*2;
+  L.push(`<b>生産性</b>：1分あたり約 ${pm}個 を箱づめ。同じ時間でたくさん作れるほど、工場はもうかるよ。`);
+  L.push(X.bad?`<b>品質</b>：不良品を ${X.bad}個 箱に入れちゃった（品質 ${q}%）。不良品が届くと、お客さんの信用が下がって返品されることも。`:`<b>品質</b>：不良品は1つも入れなかった！ 品質 100%。お客さんの信用は、会社の大事な財産だよ。`);
+  if(X.miss>4) L.push(`${X.miss}個を見のがした。ベルトが速くなるほど、人の手だけではむずかしい。だから工場は機械やロボットを入れるんだ。`);
+  return L; }
+function factoryBody(){
+  const K=fcS(), X=FCX||{st:'ready'}, first=K.day!==todayKey();
+  if(X.st==='ready') return `<div class="fc"><div class="row spread"><span class="label">FACTORY · ${first?'きょうの1回目はごほうびあり':'れんしゅう'}</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div>
+    <h3 class="ttl fc-ttl">🏭 AZAKEI工場</h3>
+    <div class="fc-stage ready"><div class="fc-belt"></div><div class="fc-boxw"><span class="fc-box">📦</span></div><div class="fc-how"><p>流れてくる製品を<b>タップ</b>して箱づめ！</p><p><span class="fc-demo">🧸</span> → タップ　<span class="fc-demo bad">🧸<i>💥</i></span> → さわらない</p><p>10コンボで <b>FEVER</b>（得点2倍）。30秒勝負！</p></div></div>
+    <button class="btn gold big fc-go" onclick="fcStart()">▶ ラインを動かす！</button>
+    ${K.plays?`<p class="note" style="text-align:center">最高記録：${K.best||0}点</p>`:''}</div>`;
+  if(X.st==='play') return `<div class="fc"><div class="fc-hud"><span>⏱ <b id="fcSec">${FC_SEC}</b></span><span class="fc-sc">🏆 <b id="fcScore">0</b></span><span id="fcCombo" class="fc-cb"></span></div>
+    <div class="fc-tb"><i id="fcTime"></i></div>
+    <div class="fc-stage"><div class="fc-belt" id="fcBelt"></div><div class="fc-boxw"><span class="fc-box" id="fcBox">📦</span><b id="fcBoxN">0</b></div></div>
+    <p class="note" style="text-align:center">💥 のついた不良品はさわらないで！</p></div>`;
+  return `<div class="fc"><span class="label">RESULT</span><h3 class="ttl fc-ttl">🏭 きょうの生産結果</h3>
+    <div class="fc-big"><small>スコア</small><b>${X.score}</b>${X.newBest?'<em>🏆 最高記録！</em>':''}</div>
+    <div class="yt-res"><div><small>箱づめ</small><b>${X.packed}</b></div><div><small>不良品ミス</small><b>${X.bad}</b></div><div><small>見のがし</small><b>${X.miss}</b></div><div class="pf"><small>最大コンボ</small><b>${X.maxc}</b></div></div>
+    ${X.coin?`<p class="yt-rw">ごほうび 🪙 +${X.coin}</p>`:''}
+    <div class="yt-ls">${guideAva()}<div>${fcLesson(X).map(t=>`<p>${t}</p>`).join('')}</div></div>
+    <div class="row" style="gap:8px"><button class="btn gold big" style="flex:1" onclick="fcStart()">もう一回</button><button class="btn ghost" onclick="closeSheet()">とじる</button></div></div>`;
+}
+AST.splice(3,0,{n:'AZAKEI工場',ic:'🏭',c:'#5f6f86',a:'#ffc83a',h:142,f:()=>openFactory(),b:()=>fcS().day===todayKey()?0:'!'});
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -7612,6 +7712,7 @@ function renderSheet(){
   else if(k==='manga') body=mangaBody();
   else if(k==='kabu') body=kabuBody();
   else if(k==='yatai') body=yataiBody();
+  else if(k==='factory') body=factoryBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
@@ -12845,7 +12946,7 @@ function homeView(){
   ${misBoard('home')}
   </details>`}
 
-  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><button onclick="kmOpen()">📖 4コマまんが</button><button onclick="openKabu()">📈 AZAKEI証券</button><button onclick="openYatai()">🍢 AZAKEI屋台</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
+  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><button onclick="kmOpen()">📖 4コマまんが</button><button onclick="openKabu()">📈 AZAKEI証券</button><button onclick="openYatai()">🍢 AZAKEI屋台</button><button onclick="openFactory()">🏭 AZAKEI工場</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
 function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
