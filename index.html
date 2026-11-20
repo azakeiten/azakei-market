@@ -5034,6 +5034,35 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 .ast-lant{position:absolute;left:0;right:0;top:20px;z-index:2;pointer-events:none;font-size:14px;letter-spacing:22px;white-space:nowrap;overflow:hidden;transform-origin:50% 0;animation:rmSwing 4s ease-in-out infinite;filter:drop-shadow(0 0 4px rgb(255 120 60 / .7))}
 .ast-fest .ast-lant{animation-name:srlySway}@keyframes srlySway{50%{transform:translateY(2px)}}
 @media (prefers-reduced-motion:reduce){.srly-st,.ast-lant{animation:none!important}}
+/* 🐱 商店街ねこ */
+.pnk>*{flex:none}
+.pnk-room{position:relative;height:190px;border-radius:20px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center;padding-bottom:26px;background:linear-gradient(180deg,#ffe9c4 0 62%,#c98a54 62%,#a96e3e);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .2)}
+.pnk-room::before{content:"🪟";position:absolute;left:14px;top:12px;font-size:40px;opacity:.85}
+.pnk-room::after{content:"";position:absolute;left:50%;bottom:16px;width:120px;height:16px;transform:translateX(-50%);border-radius:50%;background:rgb(255 140 200 / .5)}
+.pnk-room.pnk-night{background:linear-gradient(180deg,#2a2f5e 0 62%,#5a3e2a 62%,#4a3020)}
+.pnk-room.pnk-gold{box-shadow:inset 0 0 0 3px #ffc83a,0 0 24px rgb(255 200 58 / .5)}
+.pnk-cat{position:relative;z-index:1;border:0;background:none;padding:0;line-height:1;cursor:pointer;animation:pnkBreath 2.4s ease-in-out infinite;filter:drop-shadow(0 6px 4px rgb(0 0 0 / .3))}
+.pnk-gold .pnk-cat{text-shadow:0 0 18px #ffd36a}
+@keyframes pnkBreath{50%{transform:scale(1.04,.97) translateY(1px)}}
+.pnk-cat.pnk-zz{animation-duration:4s;opacity:.92}
+.pnk-cat.pnk-purr{animation:pnkPurr .5s ease-in-out}@keyframes pnkPurr{25%{transform:rotate(-8deg) scale(1.08)}75%{transform:rotate(8deg) scale(1.08)}}
+.pnk-cat.pnk-eat{animation:pnkEat .3s ease-in-out 4}@keyframes pnkEat{50%{transform:translateY(6px) rotate(6deg)}}
+.pnk-heart{position:absolute;bottom:90px;z-index:2;font-size:22px;pointer-events:none;animation:pnkHeart 1.1s ease-out forwards}
+@keyframes pnkHeart{0%{opacity:0;transform:translateY(10px) scale(.5)}20%{opacity:1}100%{opacity:0;transform:translateY(-60px) scale(1.2)}}
+.pnk-dish{position:absolute;bottom:22px;left:calc(50% + 34px);font-style:normal;font-size:24px;z-index:2}
+.pnk-z{position:absolute;left:calc(50% + 20px);bottom:90px;font-style:normal;font-size:20px;animation:pnkZ 2s ease-in-out infinite}@keyframes pnkZ{50%{transform:translate(6px,-8px);opacity:.5}}
+.pnk-say{position:absolute;top:14px;right:12px;max-width:60%;padding:6px 11px;border-radius:14px;background:#fff;color:#2a1a33;font-size:12px;font-weight:800;box-shadow:0 3px 8px rgb(0 0 0 / .2)}
+.pnk-tag{position:absolute;left:12px;bottom:6px;padding:2px 9px;border-radius:99px;background:rgb(0 0 0 / .35);color:#fff;font-size:11px;font-weight:900}
+.pnk-stat{display:flex;flex-direction:column;gap:8px;margin:12px 0}.pnk-stat small{font-size:11.5px;color:var(--muted);font-weight:700}.pnk-stat b{color:var(--ink)}
+.pnk-bar{display:block;height:10px;margin-top:3px;border-radius:99px;background:rgb(255 255 255 / .08);overflow:hidden}.pnk-bar i{display:block;height:100%;border-radius:inherit;transition:width .5s}
+.pnk-gb{width:100%;animation:wToday 1.4s ease-in-out infinite}
+.pnk-food{margin-top:10px;padding:12px;border-radius:16px;background:linear-gradient(150deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line)}.pnk-food>div{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pnk-food .btn{padding:7px 10px;font-size:12.5px}
+.pnk-intro{text-align:center;font-weight:800;margin:10px 0}
+.pnk-lb{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px}.pnk-lb input{flex:1;padding:9px 12px;border-radius:12px;border:0;font-size:15px;background:rgb(255 255 255 / .9);color:#14122a}
+.pnk-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.pnk-cols button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border:0;border-radius:12px;font-weight:800;font-size:12px;color:var(--ink);background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--line)}
+.pnk-cols span{font-size:28px}.pnk-cols button.on{box-shadow:inset 0 0 0 2px #ffc83a}
+.pnk-walk{bottom:18px;animation-duration:44s;animation-delay:-10s}.pnk-walk i{font-size:18px;transform:scaleX(-1)}
+@media (prefers-reduced-motion:reduce){.pnk-cat,.pnk-z,.pnk-gb{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6482,7 +6511,8 @@ function astView(){
     return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}">${(()=>{ const R=srlyS(); return R.ids.includes(s.n)?`<i class="srly-tag${R.got[s.n]?' got':''}">${R.got[s.n]?'✔':'🎫'}</i>`:''; })()}<span class="ast-sign">${s.n}</span><span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
   const deco=(lv>=3?`<svg class="ast-flags" width="100%" height="18" aria-hidden="true"><defs><pattern id="astfl" width="42" height="18" patternUnits="userSpaceOnUse"><path d="M0 3H42" stroke="#fff" stroke-width="1.2"/><path d="M1 3L13 3L7 15Z" fill="#ff5a76"/><path d="M15 3L27 3L21 15Z" fill="#ffc83a"/><path d="M29 3L41 3L35 15Z" fill="#4fe3ff"/></pattern></defs><rect width="100%" height="18" fill="url(#astfl)"/></svg>`:'')
     +(lv>=4?'<span class="ast-pedw" aria-hidden="true"><i>🚶</i></span><span class="ast-pedw ast-ped2" aria-hidden="true"><i>🚶‍♀️</i></span>':'')
-    +(lv>=7?'<span class="ast-pedw ast-busw" aria-hidden="true"><i>🚌</i></span>':'');
+    +(lv>=7?'<span class="ast-pedw ast-busw" aria-hidden="true"><i>🚌</i></span>':'')
+    +(S.prof&&S.prof.pet?`<span class="ast-pedw pnk-walk" aria-hidden="true"><i style="filter:${PNK_COL[S.prof.pet.col].f}">${pnkSleep()?'💤':'🐈'}</i></span>`:'');
   const plaza=lv>=5?'<span class="ast-plaza" aria-hidden="true"><i>⛲</i></span>':'';
   return `<section class="ast ast-${ph}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
@@ -6907,6 +6937,61 @@ function srlyBody(){
       <p class="srly-rw">${R.done?'🎉 きょうのラリーは達成ずみ！':`5つ集めると 🪙${fest?100:50} とシールパック${fest?2:1}枚${fest?'（まつりで2倍！）':''}`}</p></div>
     <p class="note">ホームの商店街から、カードにのっているお店をタップして入るとスタンプがもらえるよ。カードは毎日かわります。土曜・日曜は「商店街まつり」でごほうび2倍！</p></div>`;
 }
+/* ---- 🐱 商店街ねこ：名前と色を決めて家族に。おなかは本当の時間でへる（24時間でからっぽ）。
+   なでる・ごはん（おさかな🪙10 か、農園の野菜）でなかよし度アップ。子ねこ→ねこ→まねきねこ。毎日おみやげを持ってくる。夜はねむる ---- */
+const PNK_COL=[{n:'しろ',f:''},{n:'みけ',f:'sepia(.35) saturate(1.6)'},{n:'くろ',f:'brightness(.45) contrast(1.2)'},{n:'ちゃとら',f:'sepia(.8) saturate(2.4) hue-rotate(-10deg)'}];
+const PNK_ST=[{n:'子ねこ',ic:'🐱',min:0,sz:46},{n:'ねこ',ic:'🐈',min:30,sz:58},{n:'まねきねこ',ic:'🐱',min:100,sz:64,gold:1}];
+let PNKX={name:'コイン',col:0,fx:null};
+function pnkS(){ return S.prof.pet||null; }
+function pnkFood(p){ return Math.max(0,Math.round(100-(Date.now()-p.fed)/864000)); }
+function pnkStage(p){ let k=0; PNK_ST.forEach((s,i)=>{ if(p.aff>=s.min) k=i; }); return k; }
+const pnkSleep = () => skyPhase(new Date().getHours())==='night';
+function pnkGiftReady(p){ return p && p.gday!==todayKey() && pnkFood(p)>=30; }
+function openPet(){ PNKX={name:PNKX.name||'コイン',col:PNKX.col||0,fx:null}; openSheet('pet'); sfx('open'); }
+function pnkAdopt(){ const inp=document.getElementById('pnkName'), nm=((inp&&inp.value)||'').replace(/[<>&"'`]/g,'').trim().slice(0,8)||'コイン';
+  S.prof.pet={name:nm,col:PNKX.col,born:Date.now(),fed:Date.now(),aff:0,pt:0,gday:0}; saveProfile(); sfx('fanfare'); haptic([20,40,20]); setTimeout(()=>vo('m_yatta'),300); if(!reduced()) confetti(); renderSheet(); }
+function pnkPet(){ const p=pnkS(); if(!p) return; const now=Date.now(); let up=false; if(now-(p.pt||0)>20000){ p.aff+=1; p.pt=now; up=true; saveProfile(); }
+  const st=pnkStage(p); sfx('shine'); haptic(10); const el=document.querySelector('.pnk-cat'); if(el){ el.classList.remove('pnk-purr'); void el.offsetWidth; el.classList.add('pnk-purr');
+    const h=document.createElement('span'); h.className='pnk-heart'; h.textContent=up?'💗':'💕'; h.style.left=(35+Math.random()*30)+'%'; el.parentNode.appendChild(h); setTimeout(()=>h.remove(),1100); }
+  if(up && pnkStage(p)!==st) renderSheet(); else { const a=document.getElementById('pnkAff'); if(a) a.textContent=p.aff; } if(up && pnkStage(p)>st) pnkGrow(); }
+function pnkGrow(){ const p=pnkS(), st=PNK_ST[pnkStage(p)]; setTimeout(()=>{ toast(`🎉 ${p.name}が「${st.n}」になった！`); sfx('fanfare'); vo('m_panpaka'); if(!reduced()) confetti(); },300); }
+function pnkFeed(kind,j){
+  const p=pnkS(); if(!p) return; const st=pnkStage(p);
+  if(pnkFood(p)>=95){ toast(`${p.name}はおなかいっぱい`); sfx('click'); return; }
+  p.fed=Math.max(p.fed, Date.now()-100*864000);
+  if(kind==='fish'){ if((S.prof.coin||0)<10){ toast('おさかなは 🪙10'); sfx('buzz'); return; } S.prof.coin-=10; p.fed=Math.min(Date.now(),p.fed+60*864000); p.aff+=3; }
+  else { const F=fmS(), it=F.inv[j]; if(!it) return; it.n--; if(it.n<=0) F.inv.splice(j,1); p.fed=Math.min(Date.now(),p.fed+40*864000); p.aff+=5; }
+  saveProfile(); PNKX.fx='eat'; sfx('coin'); haptic(12); renderSheet(); if(pnkStage(p)>st) pnkGrow();
+}
+function pnkGift(){ const p=pnkS(); if(!pnkGiftReady(p)) return; const st=pnkStage(p), r=Math.random(); let g;
+  if(st===0) g={ic:'🪙',n:'コイン 10',coin:10};
+  else if(st===1) g=r<.5?{ic:'🪙',n:'コイン 20',coin:20}:{ic:'🎲',n:'すごろくのサイコロ',die:1};
+  else g=r<.4?{ic:'💰',n:'コイン 40',coin:40}:r<.7?{ic:'🏷️',n:'シールパック',pack:1}:{ic:'🎲',n:'すごろくのサイコロ 2個',die:2};
+  if(g.coin) S.prof.coin=(S.prof.coin||0)+g.coin; if(g.die){ try{ const s=sgS(); s.dice=Math.min(SG_MAX,(s.dice||0)+g.die); }catch(e){} } if(g.pack){ try{ stkGain('star'); }catch(e){} }
+  p.gday=todayKey(); saveProfile(); PNKX.fx={gift:g}; sfx('shine'); haptic([10,30,10]); renderSheet(); setTimeout(()=>vo('m_yattane'),250); }
+function petBody(){
+  const p=pnkS();
+  if(!p) return `<div class="pnk"><span class="label">STREET CAT</span><h3 class="ttl">🐱 商店街ねこ</h3>
+    <div class="pnk-room pnk-new"><span class="pnk-cat" style="filter:${PNK_COL[PNKX.col].f}">🐱</span><span class="pnk-say">にゃあ…（おなかがすいているみたい）</span></div>
+    <p class="pnk-intro">商店街に、子ねこがやってきた！ 名前をつけて、家族にしよう。</p>
+    <label class="pnk-lb">なまえ<input id="pnkName" maxlength="8" value="${esc(PNKX.name)}" oninput="PNKX.name=this.value"></label>
+    <div class="pnk-cols">${PNK_COL.map((c,i)=>`<button class="${i===PNKX.col?'on':''}" onclick="PNKX.col=${i};renderSheet()"><span style="filter:${c.f}">🐱</span>${c.n}</button>`).join('')}</div>
+    <button class="btn gold big" style="width:100%;margin-top:10px" onclick="pnkAdopt()">🏠 家族になる</button></div>`;
+  const st=pnkStage(p), S2=PNK_ST[st], fd=pnkFood(p), sl=pnkSleep(), nx=PNK_ST[st+1], fx=PNKX.fx; PNKX.fx=null; const F=fmS();
+  const mood = sl?'すやすや…💤':fd<30?'おなかがぺこぺこ…':fd<70?'ごきげん':'まんぷく！ ごろごろ…';
+  return `<div class="pnk"><div class="row spread"><span class="label">STREET CAT · ${esc(p.name)}</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div>
+    <h3 class="ttl">🐱 ${esc(p.name)}の家</h3>
+    <div class="pnk-room${sl?' pnk-night':''}${S2.gold?' pnk-gold':''}">${sl?'<i class="pnk-z">💤</i>':''}
+      <button class="pnk-cat${sl?' pnk-zz':''}${fx==='eat'?' pnk-eat':''}" style="font-size:${S2.sz}px;filter:${PNK_COL[p.col].f}" onclick="pnkPet()" aria-label="${esc(p.name)}をなでる">${S2.ic}</button>
+      ${fx==='eat'?'<i class="pnk-dish">🍽️</i>':''}<span class="pnk-say">${mood}</span><span class="pnk-tag">${S2.n}</span></div>
+    <div class="pnk-stat"><div><small>おなか</small><span class="pnk-bar"><i style="width:${fd}%;background:${fd<30?'#ff5a76':'#2fd47a'}"></i></span></div>
+      <div><small>なかよし度 <b id="pnkAff">${p.aff}</b>${nx?` / 「${nx.n}」まで ${nx.min}`:' · 最高！'}</small><span class="pnk-bar"><i style="width:${nx?Math.min(100,Math.round(p.aff/nx.min*100)):100}%;background:#ff8cc8"></i></span></div></div>
+    ${fx&&fx.gift?`<p class="yt-rw">🎁 ${esc(p.name)}がおみやげを持ってきた：${fx.gift.ic} ${fx.gift.n}</p>`:pnkGiftReady(p)?`<button class="btn gold big pnk-gb" onclick="pnkGift()">🎁 ${esc(p.name)}がなにか持ってきた！</button>`:`<p class="note" style="text-align:center">${p.gday===todayKey()?'きょうのおみやげはもらったよ':'おなかが30以上あると、おみやげを持ってくるよ'}</p>`}
+    <div class="pnk-food"><b>🍽️ ごはん</b><div><button class="btn" onclick="pnkFeed('fish')">🐟 おさかな <small>🪙10</small></button>${F.inv.map((it,j)=>`<button class="btn" onclick="pnkFeed('crop',${j})">${FM_CROP[it.c].ic} ${FM_CROP[it.c].n} <small>×${it.n}</small></button>`).join('')}</div>
+      ${F.inv.length?'':'<p class="note">農園でとれた野菜もあげられるよ（なかよし度が多めに上がる）</p>'}</div>
+    <p class="note">ねこをタップすると、なでられるよ。おなかは1日でからっぽになるから、毎日ごはんをあげてね。</p></div>`;
+}
+AST.splice(7,0,{n:'ねこの家',ic:'🐱',c:'#d98a5a',a:'#fff3a8',h:90,f:()=>openPet(),b:()=>{ const p=pnkS(); return !p?'!':pnkGiftReady(p)?'🎁':pnkFood(p)<30?'🍽️':0; }});
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -8147,6 +8232,7 @@ function renderSheet(){
   else if(k==='adv') body=advBody();
   else if(k==='stlv') body=stlvBody();
   else if(k==='srly') body=srlyBody();
+  else if(k==='pet') body=petBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
