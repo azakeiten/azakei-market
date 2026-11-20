@@ -4921,6 +4921,39 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 .tsc-mio{position:absolute;right:12px;bottom:14px;width:64px;height:64px;border-radius:50%;overflow:hidden;background:#ffe9f4;box-shadow:0 0 0 3px #fff,0 8px 16px rgb(0 0 0 / .35);animation:tscMio .7s 2.3s cubic-bezier(.3,1.6,.5,1) both}.tsc-mio svg{width:100%;height:100%;display:block}
 @keyframes tscMio{0%{transform:translateY(120px)}100%{transform:none}}
 @media (prefers-reduced-motion:reduce){.tsc *{animation:none!important;opacity:1!important}}
+/* 🌾 AZAKEI農園 */
+.agr>*{flex:none}.agr-ttl{margin:2px 0 8px}
+.agr .up{color:#2fd47a}.agr .dn{color:#ff5a76}
+.agr-field{position:relative;padding:44px 10px 12px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#8fd0ff 0 40px,#6fae4a 40px,#5a9a3a)}
+.agr-field.agr-eve{background:linear-gradient(180deg,#ff9a5a 0 40px,#5f9a40 40px,#4a8030)}.agr-field.agr-night{background:linear-gradient(180deg,#141a48 0 40px,#3a5a2e 40px,#2c4a22)}.agr-field.agr-morn{background:linear-gradient(180deg,#ffc98f 0 40px,#6fae4a 40px,#5a9a3a)}
+.agr-sun,.agr-moon{position:absolute;right:16px;top:6px;font-style:normal;font-size:24px;animation:ttlOrb 5s ease-in-out infinite}
+.agr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.agr-pl{position:relative;aspect-ratio:1/1.05;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;padding:6px 4px 7px;border:0;border-radius:14px;color:#fff;cursor:pointer;background:repeating-linear-gradient(0deg,#7a4a24 0 7px,#6a3f1e 7px 9px);box-shadow:inset 0 0 0 2px rgb(0 0 0 / .15),0 4px 0 rgb(0 0 0 / .25)}
+.agr-pl.agr-wet{background:repeating-linear-gradient(0deg,#5a3418 0 7px,#4a2a12 7px 9px)}
+.agr-pl.agr-lock{background:rgb(0 0 0 / .25);justify-content:center}.agr-lk{font-size:22px}.agr-pl small{font-size:10px;font-weight:800;text-shadow:0 1px 2px rgb(0 0 0 / .5)}
+.agr-pl.agr-empty{justify-content:center}.agr-plus{font-size:26px;font-weight:900;opacity:.7}.agr-pl.agr-sel{box-shadow:inset 0 0 0 3px #ffc83a,0 4px 0 rgb(0 0 0 / .25)}
+.agr-pt{font-size:34px;line-height:1;transform:scale(var(--g));transform-origin:50% 100%;filter:drop-shadow(0 3px 2px rgb(0 0 0 / .3));animation:fmSway 3s ease-in-out infinite}
+@keyframes fmSway{50%{transform:scale(var(--g)) rotate(4deg)}}
+.agr-pl.agr-ready .agr-pt{animation:fmReady 1s ease-in-out infinite}
+@keyframes fmReady{50%{transform:scale(1.12) translateY(-3px);filter:drop-shadow(0 0 8px #ffe58a)}}
+.agr-pl.agr-ready{box-shadow:inset 0 0 0 3px #ffe58a,0 0 16px rgb(255 229 138 / .6),0 4px 0 rgb(0 0 0 / .25)}
+.agr-nm{font-size:10.5px;font-weight:900;text-shadow:0 1px 2px rgb(0 0 0 / .6)}
+.agr-bar{width:80%;height:5px;border-radius:99px;background:rgb(0 0 0 / .35);overflow:hidden}.agr-bar i{display:block;height:100%;background:linear-gradient(90deg,#9cff6a,#ffe58a)}
+.agr-tm{font-size:9.5px!important}
+.agr-drops{position:absolute;top:4px;left:0;right:0;font-size:12px;animation:fmDrop .8s ease-in both}
+@keyframes fmDrop{0%{transform:translateY(-14px);opacity:0}40%{opacity:1}100%{transform:translateY(26px);opacity:0}}
+.agr-pl.agr-fx-plant .agr-pt{animation:fmPlant .6s cubic-bezier(.3,1.6,.5,1) both}@keyframes fmPlant{0%{transform:scale(0)}100%{transform:scale(var(--g))}}
+.agr-pl.agr-fx-open{animation:sgIn .5s both}
+.agr-pop{position:absolute;top:10px;font-size:20px;font-weight:900;animation:fcFl 1.2s ease-out forwards}
+.agr-pick,.agr-inv,.agr-board{margin-top:10px;padding:12px;border-radius:16px;background:linear-gradient(150deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line);animation:sgIn .35s both}
+.agr-seeds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:8px 0}
+.agr-sd{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:8px 10px;border:0;border-radius:12px;color:var(--ink);background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--line);text-align:left}
+.agr-sd span{font-size:24px}.agr-sd b{font-size:13px}.agr-sd small{font-size:10.5px;color:var(--muted)}.agr-sd.agr-shun{box-shadow:inset 0 0 0 2px #9cff6a}
+.agr-sd em{position:absolute;top:6px;right:8px;font-style:normal;font-size:10px;font-weight:900;padding:1px 7px;border-radius:99px;background:#2fd47a;color:#06331b}
+.agr-it{display:flex;align-items:center;gap:8px;margin-top:6px}.agr-it span{font-size:24px}.agr-it b{font-size:13px}.agr-it small{flex:1;font-size:11px;color:var(--muted)}.agr-it em{font-style:normal}.agr-it .btn{padding:6px 10px;font-size:12px}
+.agr-board small{font-size:11px;font-weight:800;color:var(--muted)}.agr-board>div{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.agr-board span{display:flex;align-items:center;gap:3px;padding:3px 8px;border-radius:99px;background:rgb(255 255 255 / .06);font-size:12px}.agr-board i{font-style:normal}.agr-board em{font-style:normal;font-size:10px}
+@media (prefers-reduced-motion:reduce){.agr-pt,.agr-sun,.agr-moon{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6640,6 +6673,72 @@ function titleShow(){
   document.body.appendChild(el);
 }
 function toggleTitle(){ S.titleOn = S.titleOn===false; save('azakei-titleon', S.titleOn?1:0); renderSheet(); }
+/* ---- 🌾 AZAKEI農園：コインで種を買って畑に植えると、本当の時間で育つ（芽→葉→実）。水やりで収穫が増える。
+   旬の作物は早く育つけれど、たくさん出回るので安い（需要と供給）。収穫は倉庫に入れて、毎日変わる相場で売る。3日たつとしなびて安くなる ---- */
+const FM_CROP=[
+  {k:'kom',ic:'🥬',n:'こまつな',seed:10,h:2,p:24,mo:[3,4,5,9,10,11]},
+  {k:'tom',ic:'🍅',n:'トマト',seed:20,h:6,p:55,mo:[6,7,8,9]},
+  {k:'imo',ic:'🍠',n:'さつまいも',seed:15,h:8,p:48,mo:[9,10,11]},
+  {k:'cor',ic:'🌽',n:'とうもろこし',seed:20,h:7,p:52,mo:[6,7,8]},
+  {k:'ich',ic:'🍓',n:'いちご',seed:30,h:10,p:105,mo:[12,1,2,3,4]},
+  {k:'kom2',ic:'🍚',n:'おこめ',seed:40,h:24,p:150,mo:[9,10]}];
+const FM_OPEN=[0,0,100,200,300,400], FM_YIELD=3;
+let FMX={sel:null,pick:false,fx:null,iv:0};
+function fmS(){ const P=S.prof; if(!P.farm) P.farm={plots:[null,null,null,null,null,null],open:2,inv:[],earn:0,sold:0}; return P.farm; }
+const fmSeason = c => FM_CROP[c].mo.includes(new Date().getMonth()+1);
+const fmHours = c => FM_CROP[c].h*(fmSeason(c)?0.7:1.5);
+function fmPrice(c,key){ key=key||todayKey(); const r=mulberry(key*17+c*101)(), C=FM_CROP[c]; return Math.max(5,Math.round(C.p*(fmSeason(c)?0.8:1.4)*(0.78+r*0.44))); }
+function fmPrevPrice(c){ const d=new Date(); d.setDate(d.getDate()-1); return fmPrice(c,todayKey(d)); }
+function fmProg(pl){ if(!pl) return 0; return Math.min(1,(Date.now()-pl.t0)/(pl.h*3600000)); }
+function fmLeft(pl){ const ms=Math.max(0,pl.t0+pl.h*3600000-Date.now()), m=Math.ceil(ms/60000); return m>=60?`あと${Math.floor(m/60)}時間${m%60?m%60+'分':''}`:`あと${m}分`; }
+function fmReady(F){ return F.plots.filter(p=>p&&fmProg(p)>=1).length; }
+function openFarm(){ fmS(); FMX={sel:null,pick:false,fx:null,iv:FMX.iv}; openSheet('farm'); sfx('open');
+  clearInterval(FMX.iv); FMX.iv=setInterval(()=>{ if(S.sheet!=='farm'){ clearInterval(FMX.iv); FMX.iv=0; return; } if(!FMX.pick) fmTickUI(); },15000); }
+function fmTickUI(){ const F=fmS(); F.plots.forEach((p,i)=>{ const el=document.querySelector(`.agr-pl[data-i="${i}"]`); if(!el||!p) return; const g=fmProg(p), b=el.querySelector('.agr-bar i'), t=el.querySelector('.agr-tm');
+  if(b) b.style.width=Math.round(g*100)+'%'; if(t) t.textContent=g>=1?'しゅうかく！':fmLeft(p); if(g>=1 && !el.classList.contains('agr-ready')) renderSheet(); }); }
+function fmTap(i){
+  const F=fmS(), p=F.plots[i];
+  if(i>=F.open){ const cost=FM_OPEN[i]; if((S.prof.coin||0)<cost){ toast(`畑を広げるには 🪙${cost}`); sfx('buzz'); return; } S.prof.coin-=cost; F.open=i+1; saveProfile(); sfx('coin'); haptic(15); FMX.fx={i,t:'open'}; renderSheet(); setTimeout(()=>vo('m_yatta'),200); return; }
+  if(!p){ FMX.sel=i; FMX.pick=true; sfx('click'); renderSheet(); return; }
+  if(fmProg(p)>=1){ const C=FM_CROP[p.c], n=FM_YIELD+(p.w?2:0); F.inv.push({c:p.c,n,d:todayKey()}); F.plots[i]=null; saveProfile(); FMX.fx={i,t:'harv',ic:C.ic,n}; sfx('shine'); haptic([10,30,10]); renderSheet(); setTimeout(()=>vo(p.w?'m_wow':'m_yatta'),200); return; }
+  if(!p.w){ p.w=1; saveProfile(); FMX.fx={i,t:'water'}; sfx('whoosh'); haptic(8); renderSheet(); return; }
+  toast(`${FM_CROP[p.c].ic} ${FM_CROP[p.c].n}：${fmLeft(p)}（水やりずみ💧）`); sfx('click');
+}
+function fmPlant(c){
+  const F=fmS(), i=FMX.sel, C=FM_CROP[c]; if(i==null || F.plots[i]) return;
+  if((S.prof.coin||0)<C.seed){ toast(`種を買うには 🪙${C.seed}`); sfx('buzz'); return; }
+  S.prof.coin-=C.seed; F.plots[i]={c,t0:Date.now(),h:fmHours(c),w:0}; saveProfile(); FMX.pick=false; FMX.fx={i,t:'plant'}; sfx('press'); haptic(12); renderSheet();
+}
+function fmInvVal(it){ const age=Math.round((Date.parse(fmDate(todayKey()))-Date.parse(fmDate(it.d)))/864e5); return {age, p:Math.round(fmPrice(it.c)*(age>=3?0.6:1))}; }
+const fmDate = k => `${Math.floor(k/10000)}-${String(Math.floor(k/100)%100).padStart(2,'0')}-${String(k%100).padStart(2,'0')}`;
+function fmSell(j){
+  const F=fmS(), list=j==null?F.inv.map((_,x)=>x):[j]; if(!list.length) return; let sum=0, n=0;
+  list.slice().sort((a,b)=>b-a).forEach(x=>{ const it=F.inv[x]; if(!it) return; const v=fmInvVal(it); sum+=v.p*it.n; n+=it.n; F.inv.splice(x,1); });
+  S.prof.coin=(S.prof.coin||0)+sum; F.earn=(F.earn||0)+sum; F.sold=(F.sold||0)+n; saveProfile(); FMX.fx={t:'sell',sum}; sfx('coin'); haptic([10,20,10]); renderSheet(); setTimeout(()=>vo(sum>=200?'m_banzai':'m_maidoari'),200);
+}
+function farmBody(){
+  const F=fmS(), ph=skyPhase(new Date().getHours()), fx=FMX.fx; FMX.fx=null;
+  const plots=F.plots.map((p,i)=>{ const lock=i>=F.open;
+    if(lock) return `<button class="agr-pl agr-lock" data-i="${i}" onclick="fmTap(${i})"><span class="agr-lk">🔒</span><small>🪙${FM_OPEN[i]}で広げる</small></button>`;
+    if(!p) return `<button class="agr-pl agr-empty${fx&&fx.i===i&&fx.t==='open'?' agr-fx-open':''}${FMX.pick&&FMX.sel===i?' agr-sel':''}" data-i="${i}" onclick="fmTap(${i})"><span class="agr-plus">＋</span><small>種をまく</small>${fx&&fx.i===i&&fx.t==='harv'?`<span class="agr-pop">${fx.ic}×${fx.n}</span>`:''}</button>`;
+    const C=FM_CROP[p.c], g=fmProg(p), st=g>=1?C.ic:g>=0.5?'🌿':'🌱', ready=g>=1;
+    return `<button class="agr-pl agr-grow${ready?' agr-ready':''}${p.w?' agr-wet':''}${fx&&fx.i===i?' agr-fx-'+fx.t:''}" data-i="${i}" onclick="fmTap(${i})"><span class="agr-pt" style="--g:${(0.55+g*0.45).toFixed(2)}">${st}</span>${fx&&fx.i===i&&fx.t==='water'?'<span class="agr-drops">💧💧💧</span>':''}
+      <span class="agr-nm">${C.n}${p.w?' 💧':''}</span><span class="agr-bar"><i style="width:${Math.round(g*100)}%"></i></span><small class="agr-tm">${ready?'しゅうかく！':fmLeft(p)}</small></button>`; }).join('');
+  const pick=FMX.pick?`<div class="agr-pick"><div class="row spread"><b>🌱 どの種をまく？</b><button class="btn ghost" style="padding:4px 10px" onclick="FMX.pick=false;renderSheet()">やめる</button></div><div class="agr-seeds">${FM_CROP.map((C,c)=>{ const se=fmSeason(c);
+      return `<button class="agr-sd${se?' agr-shun':''}" onclick="fmPlant(${c})"><span>${C.ic}</span><b>${C.n}</b><small>種 🪙${C.seed} · ${Math.round(fmHours(c)*10)/10}時間</small><small>いまの値段 🪙${fmPrice(c)}×${FM_YIELD}〜</small>${se?'<em>旬！</em>':''}</button>`; }).join('')}</div>
+      <p class="note">「旬」の作物は早く育つけれど、みんなが作るので値段は安め。旬でない作物は、ハウスで手間をかけるので時間がかかり、値段は高め。</p></div>`:'';
+  const inv=F.inv.length?`<div class="agr-inv"><div class="row spread"><b>🧺 倉庫</b><button class="btn gold" style="padding:6px 12px" onclick="fmSell()">ぜんぶ売る</button></div>${F.inv.map((it,j)=>{ const C=FM_CROP[it.c], v=fmInvVal(it);
+      return `<div class="agr-it"><span>${C.ic}</span><b>${C.n} ×${it.n}</b><small>${v.age>=3?'<em class="dn">しなびてる（4割引き）</em>':v.age?`${v.age}日目`:'とれたて'}</small><button class="btn" onclick="fmSell(${j})">🪙${v.p*it.n}で売る</button></div>`; }).join('')}</div>`:'';
+  const board=FM_CROP.map((C,c)=>{ const p=fmPrice(c), q=fmPrevPrice(c), d=p-q; return `<span><i>${C.ic}</i><b>${p}</b><em class="${d>0?'up':d<0?'dn':''}">${d>0?'▲':d<0?'▼':'－'}</em></span>`; }).join('');
+  return `<div class="agr"><div class="row spread"><span class="label">FARM · 売り上げ合計 🪙${F.earn||0}</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div>
+    <h3 class="ttl agr-ttl">🌾 AZAKEI農園</h3>
+    <div class="agr-field agr-${ph}">${ph==='night'?'<i class="agr-moon">🌙</i>':'<i class="agr-sun">☀️</i>'}<div class="agr-grid">${plots}</div></div>
+    ${fx&&fx.t==='sell'?`<p class="yt-rw">🧺 売れた！ 🪙 +${fx.sum}</p>`:''}
+    ${pick}${inv}
+    <div class="agr-board"><small>📈 きょうの相場（1個あたり）</small><div>${board}</div></div>
+    <p class="note">本当の時間で育ちます。水やりをすると、とれる数が +2。収穫して3日たつと、しなびて安くなるよ。</p></div>`;
+}
+AST.splice(6,0,{n:'AZAKEI農園',ic:'🌾',c:'#6a9a3a',a:'#fff3a8',h:96,f:()=>openFarm(),b:()=>fmReady(fmS())});
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -7876,6 +7975,7 @@ function renderSheet(){
   else if(k==='yatai') body=yataiBody();
   else if(k==='factory') body=factoryBody();
   else if(k==='trip') body=tripBody();
+  else if(k==='farm') body=farmBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
@@ -13111,7 +13211,7 @@ function homeView(){
   ${misBoard('home')}`:''}
   </details>`}
 
-  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><button onclick="kmOpen()">📖 4コマまんが</button><button onclick="openKabu()">📈 AZAKEI証券</button><button onclick="openYatai()">🍢 AZAKEI屋台</button><button onclick="openFactory()">🏭 AZAKEI工場</button><button onclick="openTrip()">🚃 日本一周の旅</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
+  <nav class="homelinks"><button onclick="openRoom()">🏠 マイルーム</button><button onclick="openStk()">🏷️ シール帳</button><button onclick="kmOpen()">📖 4コマまんが</button><button onclick="openKabu()">📈 AZAKEI証券</button><button onclick="openYatai()">🍢 AZAKEI屋台</button><button onclick="openFactory()">🏭 AZAKEI工場</button><button onclick="openTrip()">🚃 日本一周の旅</button><button onclick="openFarm()">🌾 AZAKEI農園</button><a class="hl-about" href="${PUBLIC_URL}about.html" target="_blank" rel="noopener">📄 このゲームについて（紹介ページ）</a><a class="hl-about" href="${PUBLIC_URL}about.html#cards" target="_blank" rel="noopener">🎨 カードの絵ギャラリー</a><button onclick="openSheet('chars')">👥 キャラクター</button><button onclick="openSheet('board')">🏅 この端末のランキング</button><button onclick="openSheet('weekly')">📰 週刊アザケイ新聞</button><button onclick="go('rules','book')">📘 ルールブック（PDF）</button><button onclick="go('rules')">📖 ルールと得点表</button><button onclick="openSheet('share')">📣 友だちに共有</button></nav>`;
 }
 const DIFFS=[['easy','かんたん','🌱',['naive','naive','naive','naive','naive']],['normal','ふつう','🙂',['read','naive','read','naive','read']],['hard','むずかしい','🔥',['read','read','read','read','read']],['oni','鬼','👹',['pro','pro','pro','pro','pro']]];
 function diffNow(){ const t=S.seats.filter(s=>s.type!=='human').map(s=>s.type); for(const [k,,,ts] of DIFFS){ if(t.length && t.every((x,i)=>x===ts[i])) return k; } return ''; }
