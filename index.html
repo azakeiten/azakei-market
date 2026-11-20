@@ -5013,6 +5013,27 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 .stlv-h{margin:10px 0 6px;font-size:14px}.stlv-deco{display:flex;flex-direction:column;gap:4px}.stlv-deco span{display:flex;gap:8px;align-items:center;padding:6px 10px;border-radius:10px;font-size:13px;color:var(--muted);background:rgb(255 255 255 / .03)}
 .stlv-deco span.on{color:var(--ink);background:rgb(255 200 58 / .12)}.stlv-deco em{font-style:normal;font-weight:900;font-size:11px;min-width:38px;color:#ffc83a}
 @media (prefers-reduced-motion:reduce){.ast-pedw,.ast-bal,.ast-fw,.ast-plaza i{animation:none!important}.ast-bal,.ast-fw{display:none}}
+/* 🎫 スタンプラリー・商店街まつり */
+.srly-chip{margin-left:6px;padding:2px 9px;border:0;border-radius:99px;font-weight:900;font-size:11px;color:#fff;background:rgb(232 54 74 / .35);box-shadow:inset 0 0 0 1px #ff8a9a}.srly-chip.done{background:#e8364a}
+.srly-tag{position:absolute;left:-5px;top:-8px;z-index:2;font-style:normal;font-size:13px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#fff;box-shadow:0 2px 4px rgb(0 0 0 / .3)}.srly-tag.got{background:#e8364a;color:#fff;font-weight:900;font-size:12px}
+.srly-pop{position:fixed;left:50%;top:38%;z-index:57;display:flex;flex-direction:column;align-items:center;gap:8px;transform:translate(-50%,-50%);pointer-events:none;transition:opacity .3s}.srly-pop.out{opacity:0}
+.srly-st{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:5px double #e8364a;color:#e8364a;background:rgb(255 250 240 / .96);box-shadow:0 10px 30px rgb(0 0 0 / .4);animation:tpStamp .45s cubic-bezier(.3,1.6,.5,1) both}
+.srly-st i{font-style:normal;font-size:40px;line-height:1}.srly-st b{font-size:15px;font-weight:900;letter-spacing:.06em}
+.srly-done .srly-st{border-color:#ffb23a;color:#d18a00;box-shadow:0 0 0 6px rgb(255 200 58 / .4),0 10px 30px rgb(0 0 0 / .4)}
+.srly-pop small{padding:5px 12px;border-radius:99px;background:#14122a;color:#fff;font-weight:800;font-size:12.5px;animation:sgIn .4s .2s both}
+.srly>*{flex:none}.srly-fest{font-style:normal;font-size:12px;padding:2px 8px;border-radius:99px;background:#e8364a;color:#fff;vertical-align:4px}
+.srly-card{padding:14px;border-radius:18px;color:#2a1a33;background:repeating-linear-gradient(0deg,#fffaf0 0 22px,#f4ead6 22px 23px);box-shadow:inset 0 0 0 3px #e8c06a,0 8px 18px rgb(0 0 0 / .3)}
+.srly-card.fest{box-shadow:inset 0 0 0 3px #e8364a,0 8px 18px rgb(0 0 0 / .3)}
+.srly-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px dashed #d8b878;padding-bottom:6px;margin-bottom:10px}.srly-head b{font-family:var(--display);font-weight:400;font-size:18px;color:#7a4a24}.srly-head small{font-size:11px;font-weight:800;color:#8a6a4a}
+.srly-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.srly-sl{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;border-radius:12px;border:2px dashed #d8b878;min-width:0}
+.srly-sl i{font-style:normal;font-size:24px;opacity:.45}.srly-sl small{font-size:8.5px;font-weight:800;white-space:nowrap;overflow:hidden;max-width:100%}
+.srly-sl.got i{opacity:1}
+.srly-mk{position:absolute;inset:4px;display:grid;place-items:center;border-radius:50%;border:3px solid #e8364a;color:#e8364a;font-size:18px;font-weight:900;transform:rotate(var(--r));background:rgb(232 54 74 / .08);animation:tpStamp .4s both}
+.srly-rw{margin:10px 0 0;text-align:center;font-weight:800;font-size:12.5px}
+.ast-lant{position:absolute;left:0;right:0;top:20px;z-index:2;pointer-events:none;font-size:14px;letter-spacing:22px;white-space:nowrap;overflow:hidden;transform-origin:50% 0;animation:rmSwing 4s ease-in-out infinite;filter:drop-shadow(0 0 4px rgb(255 120 60 / .7))}
+.ast-fest .ast-lant{animation-name:srlySway}@keyframes srlySway{50%{transform:translateY(2px)}}
+@media (prefers-reduced-motion:reduce){.srly-st,.ast-lant{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6458,27 +6479,27 @@ function astView(){
   const ph=skyPhase(new Date().getHours());
   const lv=stLv().lv; stLvCheck(lv);
   const shops=AST.map((s,i)=>{ let b=0; try{ b=s.b(); }catch(e){}
-    return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}"><span class="ast-sign">${s.n}</span><span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
+    return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}">${(()=>{ const R=srlyS(); return R.ids.includes(s.n)?`<i class="srly-tag${R.got[s.n]?' got':''}">${R.got[s.n]?'✔':'🎫'}</i>`:''; })()}<span class="ast-sign">${s.n}</span><span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
   const deco=(lv>=3?`<svg class="ast-flags" width="100%" height="18" aria-hidden="true"><defs><pattern id="astfl" width="42" height="18" patternUnits="userSpaceOnUse"><path d="M0 3H42" stroke="#fff" stroke-width="1.2"/><path d="M1 3L13 3L7 15Z" fill="#ff5a76"/><path d="M15 3L27 3L21 15Z" fill="#ffc83a"/><path d="M29 3L41 3L35 15Z" fill="#4fe3ff"/></pattern></defs><rect width="100%" height="18" fill="url(#astfl)"/></svg>`:'')
     +(lv>=4?'<span class="ast-pedw" aria-hidden="true"><i>🚶</i></span><span class="ast-pedw ast-ped2" aria-hidden="true"><i>🚶‍♀️</i></span>':'')
     +(lv>=7?'<span class="ast-pedw ast-busw" aria-hidden="true"><i>🚌</i></span>':'');
   const plaza=lv>=5?'<span class="ast-plaza" aria-hidden="true"><i>⛲</i></span>':'';
-  return `<section class="ast ast-${ph}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span><button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small></div>
+  return `<section class="ast ast-${ph}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
-      <div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div></section>`;
+      <div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div></section>`;
 }
 function astPar(sc){ const v=sc.parentNode; if(v) v.style.setProperty('--px', (sc.scrollLeft*0.3).toFixed(1)+'px'); }
 let AST_T=0;
 function astGo(i){
   const s=AST[i], sc=document.querySelector('.ast-sc'), shop=sc&&sc.querySelectorAll('.ast-shop')[i], mio=document.getElementById('astMio');
   if(!s) return; clearTimeout(AST_T);
-  if(!shop || !mio || reduced()){ sfx('click'); try{ s.f(); }catch(e){} return; }
+  if(!shop || !mio || reduced()){ sfx('click'); try{ s.f(); }catch(e){} try{ srlyVisit(i); }catch(e){} return; }
   const x=shop.offsetLeft+shop.offsetWidth/2-17, cur=parseFloat(mio.style.left)||24, dist=Math.abs(x-cur), ms=Math.min(900,Math.max(280,dist*1.6));
   mio.classList.toggle('left', x<cur); mio.classList.add('walk'); mio.style.transitionDuration=ms+'ms'; mio.style.left=x+'px';
   sc.scrollTo({left:shop.offsetLeft-(sc.clientWidth-shop.offsetWidth)/2, behavior:'smooth'});
   sfx('click'); haptic(8); const steps=Math.round(ms/180); for(let k=1;k<=steps;k++) setTimeout(()=>sfx('hat'),k*180);
   shop.classList.add('ast-knock');
-  AST_T=setTimeout(()=>{ mio.classList.remove('walk'); shop.classList.remove('ast-knock'); try{ s.f(); }catch(e){} }, ms+120);
+  AST_T=setTimeout(()=>{ mio.classList.remove('walk'); shop.classList.remove('ast-knock'); try{ s.f(); }catch(e){} try{ srlyVisit(i); }catch(e){} }, ms+120);
 }
 /* ---- 🍢 AZAKEI屋台：天気予報とまちのニュースを見て、売るもの・作る数・値段を決める1日店長ゲーム。
    お客さんが歩いてきて買っていく。終わったら、もうけと「需要・売れ残り・値段」のまなび。1日1回目だけコインのごほうび ---- */
@@ -6732,7 +6753,7 @@ function titleShow(){
       <p class="tsc-tip">💡 ${tip}</p>
       <p class="tsc-tap">▶ タップしてスタート</p></div>
     <span class="tsc-mio" aria-hidden="true">${FACE[GUIDE.n]?face(GUIDE.n,null,'happy'):GUIDE.ic}</span>`;
-  const close=(go)=>{ if(el.classList.contains('out')) return; el.classList.add('out'); try{ sfx('whoosh'); haptic(12); }catch(e){} setTimeout(()=>{ el.remove(); if(go!=null && AST[go]){ try{ AST[go].f(); }catch(e){} } },reduced()?0:520); };
+  const close=(go)=>{ if(el.classList.contains('out')) return; el.classList.add('out'); try{ sfx('whoosh'); haptic(12); }catch(e){} setTimeout(()=>{ el.remove(); if(go!=null && AST[go]){ try{ AST[go].f(); }catch(e){} try{ srlyVisit(go); }catch(e){} } },reduced()?0:520); };
   el.addEventListener('click',e=>{ const b=e.target.closest('.tsc-chip'); close(b?+b.dataset.go:null); });
   document.body.appendChild(el);
 }
@@ -6861,6 +6882,31 @@ function stlvBody(){ const L=stLv();
     <div class="stlv-list">${L.r.map(x=>`<div><i>${x.ic}</i><span>${x.n}</span><small>${x.v}</small><b>+${x.pt}</b></div>`).join('')}</div>
     <h4 class="stlv-h">レベルでふえる飾り</h4><div class="stlv-deco">${ST_DECO.map((d,i)=>`<span class="${i<L.lv?'on':''}"><em>Lv.${i+1}</em>${d}</span>`).join('')}</div>
     <p class="note">いろいろな遊びをするほど、商店街がにぎやかになるよ。</p></div>`; }
+/* ---- 🎫 商店街スタンプラリー：毎日5つのお店がカードにのる。商店街からそのお店に入るとスタンプ。5つでごほうび。
+   土日は「商店街まつり」：ごほうび2倍・ちょうちんの飾り・たいこの音 ---- */
+const srlyFest = () => { const d=new Date().getDay(); return d===0||d===6; };
+function srlyS(){ const P=S.prof, k=todayKey(); if(!P.srly || P.srly.day!==k){ const r=mulberry(k*13+5), pool=AST.map(a=>a.n); for(let i=pool.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; } P.srly={day:k, ids:pool.slice(0,5), got:{}, done:0}; } return P.srly; }
+function srlyVisit(i){
+  const s=AST[i]; if(!s || !S.prof) return; const R=srlyS(); if(!R.ids.includes(s.n) || R.got[s.n]) return;
+  R.got[s.n]=1; const n=R.ids.filter(x=>R.got[x]).length, fest=srlyFest(); let done=false, coin=0;
+  if(n>=R.ids.length && !R.done){ R.done=1; done=true; coin=fest?100:50; S.prof.coin=(S.prof.coin||0)+coin; try{ stkGain('star'); if(fest) stkGain('star'); }catch(e){} }
+  saveProfile();
+  const el=document.createElement('div'); el.className='srly-pop'+(done?' srly-done':''); el.setAttribute('aria-live','polite');
+  el.innerHTML=`<span class="srly-st"><i>${s.ic}</i><b>${done?'COMPLETE!':'STAMP!'}</b></span><small>${done?`スタンプラリー達成！ 🪙+${coin}・シールパック${fest?'2':'1'}枚`:`スタンプラリー ${n}/${R.ids.length}`}</small>`;
+  document.body.appendChild(el); sfx(fest?'drum':'slam'); setTimeout(()=>sfx(done?'fanfare':'coin'),180); haptic(done?[20,40,20,40,60]:25);
+  if(done){ setTimeout(()=>vo('m_panpaka'),400); if(!reduced()) setTimeout(()=>confetti(),250); }
+  setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(),350); }, done?2400:1300);
+  const chip=document.querySelector('.srly-chip'); if(chip) chip.outerHTML=srlyChip();
+}
+function srlyChip(){ const R=srlyS(), n=R.ids.filter(x=>R.got[x]).length; return `<button class="srly-chip${R.done?' done':''}" onclick="openSheet('srly');sfx('open')" aria-label="スタンプラリー ${n}/${R.ids.length}">🎫 ${R.done?'達成！':`${n}/${R.ids.length}`}</button>`; }
+function srlyBody(){
+  const R=srlyS(), fest=srlyFest(), n=R.ids.filter(x=>R.got[x]).length;
+  return `<div class="srly"><span class="label">STAMP RALLY · ${n}/${R.ids.length}</span><h3 class="ttl">🎫 商店街スタンプラリー${fest?' <em class="srly-fest">🏮 まつり開催中</em>':''}</h3>
+    <div class="srly-card${fest?' fest':''}"><div class="srly-head"><b>AZAKEI STREET</b><small>${Math.floor(R.day/100)%100}月${R.day%100}日のカード</small></div>
+      <div class="srly-row">${R.ids.map((id,k)=>{ const a=AST.find(x=>x.n===id)||{ic:'？'}, got=R.got[id]; return `<span class="srly-sl${got?' got':''}" style="--r:${(k*23)%40-20}deg"><i>${a.ic}</i><small>${esc(id)}</small>${got?'<b class="srly-mk">済</b>':''}</span>`; }).join('')}</div>
+      <p class="srly-rw">${R.done?'🎉 きょうのラリーは達成ずみ！':`5つ集めると 🪙${fest?100:50} とシールパック${fest?2:1}枚${fest?'（まつりで2倍！）':''}`}</p></div>
+    <p class="note">ホームの商店街から、カードにのっているお店をタップして入るとスタンプがもらえるよ。カードは毎日かわります。土曜・日曜は「商店街まつり」でごほうび2倍！</p></div>`;
+}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -8100,6 +8146,7 @@ function renderSheet(){
   else if(k==='farm') body=farmBody();
   else if(k==='adv') body=advBody();
   else if(k==='stlv') body=stlvBody();
+  else if(k==='srly') body=srlyBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
