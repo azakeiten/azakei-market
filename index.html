@@ -5063,6 +5063,26 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 .pnk-cols span{font-size:28px}.pnk-cols button.on{box-shadow:inset 0 0 0 2px #ffc83a}
 .pnk-walk{bottom:18px;animation-duration:44s;animation-delay:-10s}.pnk-walk i{font-size:18px;transform:scaleX(-1)}
 @media (prefers-reduced-motion:reduce){.pnk-cat,.pnk-z,.pnk-gb{animation:none!important}}
+/* 🐟 金魚すくい */
+.kgy>*{flex:none}
+.kgy-pool{position:relative;height:260px;border-radius:50% / 28%;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#5fc8f0,#1e78b8 70%,#155a90);box-shadow:inset 0 0 0 8px #e8f4ff,inset 0 0 0 11px #9ab8d8,inset 0 12px 30px rgb(0 0 0 / .3);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.kgy-ripple{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 30% 40%,rgb(255 255 255 / .18) 0 6%,transparent 7%),radial-gradient(circle at 70% 60%,rgb(255 255 255 / .12) 0 5%,transparent 6%);animation:kgyRip 4s ease-in-out infinite}
+@keyframes kgyRip{50%{transform:scale(1.08) translate(4px,-3px)}}
+.kgy-f{--fl:1;position:absolute;width:48px;height:48px;margin:-24px 0 0 -24px;padding:0;border:0;background:none;cursor:pointer;z-index:2}
+.kgy-f span{display:block;font-size:30px;line-height:48px;transform:scaleX(var(--fl));transition:transform .2s}
+.kgy-g span{text-shadow:0 0 10px #ffe58a}
+.kgy-f.kgy-got{animation:kgyGot .6s ease-in forwards;pointer-events:none}@keyframes kgyGot{0%{transform:scale(1)}40%{transform:translateY(-30px) scale(1.3)}100%{transform:translate(120px,-140px) scale(.3);opacity:0}}
+.kgy-poi{position:absolute;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;border:4px solid #e8364a;background:rgb(255 255 255 / .35);pointer-events:none;z-index:3;animation:kgyPoi .7s ease-out forwards}
+.kgy-poi.torn{background:transparent;border-style:dashed}@keyframes kgyPoi{0%{transform:scale(.6);opacity:0}25%{transform:scale(1);opacity:1}100%{transform:scale(1.15) translateY(-10px);opacity:0}}
+.kgy-fl{position:absolute;z-index:4;transform:translate(-50%,-160%);font-weight:900;font-size:14px;color:#fff;text-shadow:0 2px 0 rgb(0 0 0 / .4);pointer-events:none;animation:fcFl .9s ease-out forwards;white-space:nowrap}
+.kgy-hud{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-weight:800;font-size:13px}.kgy-dw{flex:1;height:10px;border-radius:99px;background:rgb(255 255 255 / .1);overflow:hidden}.kgy-dw i{display:block;height:100%;background:linear-gradient(90deg,#ff5a76,#fff3a8);transition:width .3s}
+.kgy-closed{display:grid;place-items:center;text-align:center;padding:20px;color:#fff;font-weight:900}
+.kgy-sw{position:absolute;top:var(--y);left:-12%;font-size:28px;animation:kgySwim 9s linear infinite;animation-delay:var(--d)}@keyframes kgySwim{to{left:108%}}
+.kgy-sw{transform:scaleX(-1)}
+.kgy-rules{display:flex;gap:6px;margin-top:10px}.kgy-rules span{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 4px;border-radius:12px;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px var(--line);font-size:11.5px;font-weight:800}.kgy-rules i{font-style:normal;font-size:24px}.kgy-rules small{font-size:10px;color:var(--muted)}
+.kgy-bowl{display:grid;place-items:center;padding:10px}.kgy-bw{width:200px;height:150px;border-radius:40% 40% 46% 46% / 30% 30% 60% 60%;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:2px;padding:20px;box-sizing:border-box;background:radial-gradient(ellipse at 50% 30%,rgb(180 230 255 / .55),rgb(80 160 220 / .5));box-shadow:inset 0 0 0 3px rgb(255 255 255 / .5),inset 0 -10px 20px rgb(0 60 120 / .25)}
+.kgy-bw span{font-size:22px;animation:sgIn .4s both;animation-delay:var(--d)}.kgy-bw small{color:#fff;font-weight:800}
+@media (prefers-reduced-motion:reduce){.kgy-ripple,.kgy-sw{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6900,6 +6920,8 @@ function stPts(){ const P=S.prof||{}, r=[]; const add=(ic,n,v,mul)=>{ v=Math.max
   try{ add('📖','4コマまんが',(P.km||[]).length,1); }catch(e){}
   try{ add('📈','株の売り買い',Math.min(40,((P.kb||{}).log||[]).length),1); }catch(e){}
   try{ add('🎄','開けたとびら',Object.keys((P.adv||{}).got||{}).length,2); }catch(e){}
+  try{ add('🐱','ねことのなかよし度',Math.min(150,(P.pet||{}).aff||0),1); }catch(e){}
+  try{ add('🐟','すくった金魚',Math.min(100,(P.kgy||{}).tot||0),1); }catch(e){}
   return r; }
 function stLv(){ const r=stPts(), t=r.reduce((a,x)=>a+x.pt,0); let lv=1; ST_LV.forEach((v,i)=>{ if(t>=v) lv=i+1; }); const lo=ST_LV[lv-1], hi=ST_LV[lv]; return {lv, t, r, lo, hi, p:hi?(t-lo)/(hi-lo):1}; }
 function stLvCheck(lv){ const P=S.prof; if(!P) return; if(P.stLv==null){ P.stLv=lv; saveProfile(); return; } if(lv<=P.stLv) return; const from=P.stLv; P.stLv=lv; saveProfile();
@@ -6992,6 +7014,62 @@ function petBody(){
     <p class="note">ねこをタップすると、なでられるよ。おなかは1日でからっぽになるから、毎日ごはんをあげてね。</p></div>`;
 }
 AST.splice(7,0,{n:'ねこの家',ic:'🐱',c:'#d98a5a',a:'#fff3a8',h:90,f:()=>openPet(),b:()=>{ const p=pnkS(); return !p?'!':pnkGiftReady(p)?'🎁':pnkFood(p)<30?'🍽️':0; }});
+/* ---- 🐟 金魚すくい（土日の商店街まつりの夜店）：泳ぐ金魚をタップしてすくう。ポイ（紙）はすくうたびに弱って、やぶれる。ポイは3枚。
+   赤はかんたん・黒はふつう・金はむずかしい。1日1回目は無料、2回目からは🪙20 ---- */
+const KGY_T=[{k:'r',n:'赤い金魚',p:.82,cost:26,coin:5,sp:46,f:'hue-rotate(-30deg) saturate(2.2)'},{k:'b',n:'黒い出目金',p:.6,cost:34,coin:10,sp:62,f:'brightness(.35) contrast(1.3)'},{k:'g',n:'金色の金魚',p:.3,cost:48,coin:30,sp:88,f:'sepia(1) saturate(4) brightness(1.15)'}];
+let KGX={st:'ready'};
+function kgyS(){ const P=S.prof; if(!P.kgy) P.kgy={day:0,tot:0,gold:0}; return P.kgy; }
+function openKgy(){ kgyStop(); KGX={st:'ready'}; openSheet('kgy'); sfx('open'); }
+function kgyStop(){ if(KGX.iv){ clearInterval(KGX.iv); KGX.iv=0; } }
+function kgyStart(){
+  const K=kgyS(), free=K.day!==todayKey(); if(!free){ if((S.prof.coin||0)<20){ toast('もう一回は 🪙20'); sfx('buzz'); return; } S.prof.coin-=20; } else K.day=todayKey(); saveProfile();
+  const fish=[]; for(let i=0;i<11;i++){ const t=i<7?0:i<10?1:2, a=Math.random()*Math.PI*2; fish.push({id:i,t,x:10+Math.random()*80,y:12+Math.random()*76,a,ok:true}); }
+  KGX={st:'play',fish,poi:3,dur:100,caught:[],iv:0,last:Date.now()}; renderSheet(); sfx('whoosh'); KGX.iv=setInterval(kgyTick,50);
+}
+function kgyTick(){
+  const X=KGX; if(X.st!=='play'){ kgyStop(); return; } if(S.sheet!=='kgy'){ kgyStop(); X.st='ready'; return; }
+  const now=Date.now(), dt=Math.min(.12,(now-X.last)/1000); X.last=now;
+  X.fish.forEach(f=>{ if(!f.ok) return; const T=KGY_T[f.t]; f.a+=(Math.random()-.5)*1.6*dt*3; const sp=T.sp*dt/3.2; f.x+=Math.cos(f.a)*sp; f.y+=Math.sin(f.a)*sp;
+    if(f.x<6||f.x>94){ f.a=Math.PI-f.a; f.x=Math.max(6,Math.min(94,f.x)); } if(f.y<8||f.y>92){ f.a=-f.a; f.y=Math.max(8,Math.min(92,f.y)); }
+    const el=document.querySelector(`.kgy-f[data-i="${f.id}"]`); if(el){ el.style.left=f.x+'%'; el.style.top=f.y+'%'; el.style.setProperty('--fl',Math.cos(f.a)<0?1:-1); } });
+}
+function kgyTap(id){
+  const X=KGX; if(X.st!=='play' || X.poi<=0) return; const f=X.fish.find(x=>x.id===id); if(!f||!f.ok) return; const T=KGY_T[f.t];
+  X.dur-=T.cost; const torn=X.dur<=0, ok=!torn && Math.random()<T.p;
+  const el=document.querySelector(`.kgy-f[data-i="${id}"]`), pool=document.querySelector('.kgy-pool');
+  const ring=document.createElement('span'); ring.className='kgy-poi'+(torn?' torn':''); ring.style.left=f.x+'%'; ring.style.top=f.y+'%'; pool&&pool.appendChild(ring); setTimeout(()=>ring.remove(),700);
+  if(ok){ f.ok=false; X.caught.push(f.t); if(el){ el.classList.add('kgy-got'); setTimeout(()=>el.remove(),600); } sfx(f.t===2?'shine':'coin'); haptic(f.t===2?[10,30,10]:10); kgyFloat(f.t===2?'✨金色！':'すくった！',f); if(f.t===2) vo('m_wow'); }
+  else if(torn){ sfx('buzz'); haptic([20,30,20]); kgyFloat('やぶれた！',f); X.poi--; X.dur=100; if(X.poi<=0 || !X.fish.some(x=>x.ok)){ setTimeout(kgyEnd,700); } }
+  else { sfx('tick'); kgyFloat('にげた…',f); f.a+=Math.PI; }
+  if(!X.fish.some(x=>x.ok)) setTimeout(kgyEnd,700);
+  kgyHud();
+}
+function kgyHud(){ const X=KGX, d=document.getElementById('kgyDur'), p=document.getElementById('kgyPoi'), c=document.getElementById('kgyN');
+  if(d) d.style.width=Math.max(0,X.dur)+'%'; if(p) p.textContent='⭕'.repeat(Math.max(0,X.poi))+'✖'.repeat(3-Math.max(0,X.poi)); if(c) c.textContent=X.caught.length; }
+function kgyFloat(t,f){ const pool=document.querySelector('.kgy-pool'); if(!pool) return; const e=document.createElement('span'); e.className='kgy-fl'; e.textContent=t; e.style.left=f.x+'%'; e.style.top=f.y+'%'; pool.appendChild(e); setTimeout(()=>e.remove(),900); }
+function kgyEnd(){
+  const X=KGX; if(X.st!=='play') return; kgyStop(); X.st='done'; const K=kgyS();
+  let coin=0, gold=0; X.caught.forEach(t=>{ coin+=KGY_T[t].coin; if(t===2) gold++; }); if(gold){ try{ for(let i=0;i<gold;i++) stkGain('star'); }catch(e){} }
+  S.prof.coin=(S.prof.coin||0)+coin; K.tot=(K.tot||0)+X.caught.length; K.gold=(K.gold||0)+gold; X.coin=coin; X.gold=gold; saveProfile(); renderSheet();
+  sfx(X.caught.length?'fanfare':'buzz'); setTimeout(()=>vo(gold?'m_banzai':X.caught.length>=5?'m_yatta':X.caught.length?'m_yattane':'m_sonnaa'),300); if(gold && !reduced()) confetti();
+}
+function kgyBody(){
+  const K=kgyS(), X=KGX, free=K.day!==todayKey(), fest=srlyFest();
+  const head=`<div class="row spread"><span class="label">🏮 NIGHT STALL · これまで ${K.tot||0}匹</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div><h3 class="ttl">🐟 金魚すくい</h3>`;
+  if(!fest && X.st!=='play' && X.st!=='done') return `<div class="kgy">${head}<div class="kgy-pool kgy-closed"><span>🏮 夜店は 土曜・日曜の「商店街まつり」だけ！</span></div></div>`;
+  if(X.st==='play') return `<div class="kgy">${head}<div class="kgy-hud"><span>ポイ <b id="kgyPoi">⭕⭕⭕</b></span><span class="kgy-dw"><i id="kgyDur" style="width:100%"></i></span><span>🐟 <b id="kgyN">0</b></span></div>
+    <div class="kgy-pool">${X.fish.map(f=>`<button class="kgy-f kgy-${KGY_T[f.t].k}" data-i="${f.id}" style="left:${f.x}%;top:${f.y}%" onpointerdown="event.preventDefault();kgyTap(${f.id})" aria-label="${KGY_T[f.t].n}"><span style="filter:${KGY_T[f.t].f}">🐟</span></button>`).join('')}<i class="kgy-ripple"></i></div>
+    <p class="note" style="text-align:center">金魚をタップしてすくおう。すくうたびに紙が弱って、やぶれるよ</p></div>`;
+  if(X.st==='done'){ const cnt=[0,1,2].map(t=>X.caught.filter(x=>x===t).length);
+    return `<div class="kgy">${head}<div class="kgy-bowl"><div class="kgy-bw">${X.caught.map((t,i)=>`<span style="--d:${i*0.12}s;filter:${KGY_T[t].f}">🐟</span>`).join('')||'<small>からっぽ…</small>'}</div></div>
+      <div class="yt-res">${KGY_T.map((T,t)=>`<div><small>${T.n}</small><b>${cnt[t]}</b></div>`).join('')}<div class="pf"><small>ごほうび</small><b>🪙${X.coin}</b></div></div>
+      ${X.gold?`<p class="yt-rw">✨ 金色の金魚でシールパック ${X.gold}枚！</p>`:''}
+      <div class="row" style="gap:8px;margin-top:10px"><button class="btn gold big" style="flex:1" onclick="kgyStart()">もう一回（🪙20）</button><button class="btn ghost" onclick="closeSheet()">とじる</button></div></div>`; }
+  return `<div class="kgy">${head}<div class="kgy-pool kgy-idle">${[0,1,2,3,4,5].map(i=>`<span class="kgy-sw" style="--d:${i*-1.3}s;--y:${15+i*13}%;filter:${KGY_T[i<4?0:i<5?1:2].f}">🐟</span>`).join('')}</div>
+    <div class="kgy-rules">${KGY_T.map(T=>`<span><i style="filter:${T.f}">🐟</i>${T.n}<small>🪙${T.coin}${T.k==='g'?'＋シールパック':''}</small></span>`).join('')}</div>
+    <button class="btn gold big" style="width:100%;margin-top:10px" onclick="kgyStart()">${free?'🎏 ポイをもらう（きょうは無料！）':'🎏 もう一回（🪙20）'}</button></div>`;
+}
+if(srlyFest()) AST.splice(1,0,{n:'金魚すくい',ic:'🐟',c:'#d8364a',a:'#ffe9a8',h:94,f:()=>openKgy(),b:()=>kgyS().day===todayKey()?0:'!'});
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -8233,6 +8311,7 @@ function renderSheet(){
   else if(k==='stlv') body=stlvBody();
   else if(k==='srly') body=srlyBody();
   else if(k==='pet') body=petBody();
+  else if(k==='kgy') body=kgyBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
