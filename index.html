@@ -4980,6 +4980,39 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 .wcal-fx .wcal-door{transition-delay:.05s}.wcal-fx .wcal-in i{animation:stkIn .6s .35s cubic-bezier(.3,1.6,.5,1) both}
 .wcal-got.wcal-fx .wcal-door{animation:advOpen .7s cubic-bezier(.3,1.2,.5,1) both}@keyframes advOpen{0%{transform:none}100%{transform:rotateY(-105deg)}}
 @media (prefers-reduced-motion:reduce){.wsnow,.wcal-today .wcal-door,.ast-winter .ast-aw::after{animation:none!important}}
+/* 🏙️ 商店街レベル */
+.ast-lv{position:relative;overflow:hidden;margin-left:6px;padding:2px 9px;border:0;border-radius:99px;font-weight:900;font-size:11px;color:#fff;isolation:isolate;background:rgb(255 200 58 / .18);box-shadow:inset 0 0 0 1px #ffc83a}
+.ast-lv i{position:absolute;left:0;top:0;bottom:0;z-index:-1;background:rgb(255 200 58 / .55)}
+.ast-head{align-items:center}.ast-head small{margin-left:auto}
+.ast-tree{flex:none;align-self:flex-end;font-style:normal;font-size:40px;line-height:1;margin:0 -2px -2px;filter:drop-shadow(0 4px 3px rgb(0 0 0 / .3))}
+.ast-flags{position:absolute;left:0;top:4px;pointer-events:none;z-index:2}
+.ast-pedw{position:absolute;left:0;width:100%;bottom:20px;height:0;pointer-events:none;z-index:2;animation:astPed 38s linear infinite}
+.ast-pedw i{position:absolute;left:0;bottom:0;font-style:normal;font-size:20px}
+.ast-ped2{animation-duration:52s;animation-delay:-20s}.ast-ped2 i{transform:scaleX(-1)}
+.ast-busw{bottom:2px;animation-duration:16s;animation-delay:-4s}.ast-busw i{font-size:26px;transform:scaleX(-1)}
+@keyframes astPed{from{transform:translateX(-4%)}to{transform:translateX(100%)}}
+.ast-plaza{position:relative;flex:none;width:86px;height:70px;margin-right:6px;align-self:flex-end;border-radius:50% 50% 0 0/30% 30% 0 0;background:radial-gradient(ellipse at 50% 100%,#bfe6ff 0 40%,#8fc8ef 41% 55%,#d8d2c4 56%);display:grid;place-items:end center}
+.ast-plaza i{font-style:normal;font-size:36px;margin-bottom:6px;animation:rmTw 2s ease-in-out infinite}
+.ast-bal{position:absolute;left:18%;bottom:30px;font-style:normal;font-size:22px;z-index:3;pointer-events:none;animation:astBal 12s ease-in infinite}.ast-bal.b2{left:68%;animation-delay:-6s;filter:hue-rotate(160deg)}
+@keyframes astBal{0%{transform:translateY(0);opacity:0}10%{opacity:1}100%{transform:translateY(-220px) translateX(20px);opacity:0}}
+.ast-fw{position:absolute;left:30%;top:22%;width:60px;height:60px;border-radius:50%;z-index:0;pointer-events:none;background:radial-gradient(circle,transparent 30%,#ffd36a 32%,transparent 36%),conic-gradient(from 0deg,#ff5a76,#ffc83a,#4fe3ff,#a77bff,#ff5a76);-webkit-mask:radial-gradient(circle,transparent 25%,#000 27% 60%,transparent 62%);mask:radial-gradient(circle,transparent 25%,#000 27% 60%,transparent 62%);animation:astFw 3.2s ease-out infinite}
+.ast-fw.f2{left:66%;top:14%;animation-delay:-1.6s;width:46px;height:46px}
+@keyframes astFw{0%{transform:scale(.1);opacity:0}15%{opacity:1}60%{transform:scale(1.4);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+.ast-tower{position:absolute;right:16%;bottom:34px;z-index:0;font-style:normal;font-size:70px;opacity:.55;transform:translateX(calc(var(--px) * -.6));filter:saturate(.6)}
+.ast-gold .ast-sign{background:linear-gradient(160deg,#fff3a8,#ffc83a);box-shadow:0 0 10px rgb(255 200 58 / .7)}
+.stlv-up{position:fixed;inset:0;z-index:58;display:grid;place-items:center;background:rgb(5 6 18 / .6);animation:fadein .25s both;transition:opacity .3s}.stlv-up.out{opacity:0}
+.stlv-box{width:min(340px,86vw);padding:20px;border-radius:22px;text-align:center;background:linear-gradient(160deg,#2a2470,#17163f);box-shadow:0 0 0 2px #ffc83a,0 20px 40px rgb(0 0 0 / .5);animation:stkIn .6s cubic-bezier(.3,1.6,.5,1) both}
+.stlv-n{display:block;font-size:24px;margin:6px 0}.stlv-n em{font-style:normal;color:#ffc83a;font-size:32px}
+.stlv-new{display:flex;flex-direction:column;gap:6px;margin:10px 0 14px}.stlv-new span{padding:8px;border-radius:12px;background:rgb(255 255 255 / .08);font-weight:800;animation:sgIn .5s .5s both}
+.stlv>*{flex:none}
+.stlv-hero{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px;border-radius:18px;background:linear-gradient(160deg,#3a4a96,#1f2a5c);color:#fff}
+.stlv-hero b{font-family:var(--display);font-weight:400;font-size:44px;line-height:1;color:#ffc83a}.stlv-hero small{font-size:12px}
+.stlv-bar{width:100%;height:10px;border-radius:99px;background:rgb(255 255 255 / .15);overflow:hidden}.stlv-bar i{display:block;height:100%;background:linear-gradient(90deg,#ffe27a,#ffb23a)}
+.stlv-list{display:flex;flex-direction:column;gap:4px;margin:12px 0}.stlv-list div{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:rgb(255 255 255 / .04)}
+.stlv-list i{font-style:normal}.stlv-list span{flex:1;font-size:13px}.stlv-list small{font-size:11px;color:var(--muted)}.stlv-list b{min-width:44px;text-align:right;color:#ffc83a}
+.stlv-h{margin:10px 0 6px;font-size:14px}.stlv-deco{display:flex;flex-direction:column;gap:4px}.stlv-deco span{display:flex;gap:8px;align-items:center;padding:6px 10px;border-radius:10px;font-size:13px;color:var(--muted);background:rgb(255 255 255 / .03)}
+.stlv-deco span.on{color:var(--ink);background:rgb(255 200 58 / .12)}.stlv-deco em{font-style:normal;font-weight:900;font-size:11px;min-width:38px;color:#ffc83a}
+@media (prefers-reduced-motion:reduce){.ast-pedw,.ast-bal,.ast-fw,.ast-plaza i{animation:none!important}.ast-bal,.ast-fw{display:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6423,11 +6456,16 @@ function astSky(){ if(AST_SKY) return AST_SKY; const r=mulberry(4242); let x=0, 
   return AST_SKY=`<svg viewBox="0 0 1600 90" preserveAspectRatio="none" aria-hidden="true">${out}</svg>`; }
 function astView(){
   const ph=skyPhase(new Date().getHours());
+  const lv=stLv().lv; stLvCheck(lv);
   const shops=AST.map((s,i)=>{ let b=0; try{ b=s.b(); }catch(e){}
-    return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}"><span class="ast-sign">${s.n}</span><span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>`; }).join('<i class="ast-lamp" aria-hidden="true"></i>');
-  return `<section class="ast ast-${ph}${advOn()?' ast-winter':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span><small>お店をタップ → ミオが案内するよ</small></div>
-    <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}
-      <div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div></section>`;
+    return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}"><span class="ast-sign">${s.n}</span><span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
+  const deco=(lv>=3?`<svg class="ast-flags" width="100%" height="18" aria-hidden="true"><defs><pattern id="astfl" width="42" height="18" patternUnits="userSpaceOnUse"><path d="M0 3H42" stroke="#fff" stroke-width="1.2"/><path d="M1 3L13 3L7 15Z" fill="#ff5a76"/><path d="M15 3L27 3L21 15Z" fill="#ffc83a"/><path d="M29 3L41 3L35 15Z" fill="#4fe3ff"/></pattern></defs><rect width="100%" height="18" fill="url(#astfl)"/></svg>`:'')
+    +(lv>=4?'<span class="ast-pedw" aria-hidden="true"><i>🚶</i></span><span class="ast-pedw ast-ped2" aria-hidden="true"><i>🚶‍♀️</i></span>':'')
+    +(lv>=7?'<span class="ast-pedw ast-busw" aria-hidden="true"><i>🚌</i></span>':'');
+  const plaza=lv>=5?'<span class="ast-plaza" aria-hidden="true"><i>⛲</i></span>':'';
+  return `<section class="ast ast-${ph}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span><button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small></div>
+    <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
+      <div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div></section>`;
 }
 function astPar(sc){ const v=sc.parentNode; if(v) v.style.setProperty('--px', (sc.scrollLeft*0.3).toFixed(1)+'px'); }
 let AST_T=0;
@@ -6797,6 +6835,32 @@ function advBody(){
     <p class="note">毎日1つ、とびらを開けよう。12月24日・25日は大きなプレゼント（25日は限定キラシール「雪だるま」）。開けわすれた日は、あとからは開けられないよ。</p></div>`;
 }
 if(advOn()) AST.splice(0,0,{n:'冬のカレンダー',ic:'🎄',c:'#1f7a4a',a:'#e8364a',h:112,f:()=>openAdv(),b:()=>advS().got[todayKey()]?0:'🎁'});
+/* ---- 🏙️ 商店街レベル：いろいろな遊びの記録から「発展ポイント」を計算（あとから記録を足す必要なし）。レベルで商店街に飾りが増える ---- */
+const ST_LV=[0,20,50,90,140,200,280,380,500,650];
+const ST_DECO=['はじまりの商店街','🌳 街路樹が植わる','🎏 旗のガーランド','🚶 人が歩くようになる','⛲ 噴水広場ができる','🎈 風船があがる','🚌 バスが走る','🎆 夜に花火があがる','🗼 遠くにタワーが建つ','✨ 看板が金色に'];
+function stPts(){ const P=S.prof||{}, r=[]; const add=(ic,n,v,mul)=>{ v=Math.max(0,Math.floor(v||0)); r.push({ic,n,v,pt:v*mul}); };
+  try{ add('🎮','試合',(P.st||{}).games,2); }catch(e){}
+  try{ add('🚃','旅の★',Object.values((P.trip||{}).st||{}).reduce((a,b)=>a+b,0),5); }catch(e){}
+  try{ add('🍢','屋台の営業',(P.yt||{}).plays,2); }catch(e){}
+  try{ add('🏭','工場の生産',(P.fc||{}).plays,2); }catch(e){}
+  try{ add('🌾','農園で売った作物',Math.min(200,(P.farm||{}).sold||0),1); }catch(e){}
+  try{ add('🏷️','シールの種類',STK.filter(s=>((P.stk||{}).own||{})[s.id]||((P.stk||{}).own||{})[s.id+'*']).length,2); }catch(e){}
+  try{ add('🏠','部屋のおしゃれ度',P.room?rmPt(P.room):0,1); }catch(e){}
+  try{ add('📖','4コマまんが',(P.km||[]).length,1); }catch(e){}
+  try{ add('📈','株の売り買い',Math.min(40,((P.kb||{}).log||[]).length),1); }catch(e){}
+  try{ add('🎄','開けたとびら',Object.keys((P.adv||{}).got||{}).length,2); }catch(e){}
+  return r; }
+function stLv(){ const r=stPts(), t=r.reduce((a,x)=>a+x.pt,0); let lv=1; ST_LV.forEach((v,i)=>{ if(t>=v) lv=i+1; }); const lo=ST_LV[lv-1], hi=ST_LV[lv]; return {lv, t, r, lo, hi, p:hi?(t-lo)/(hi-lo):1}; }
+function stLvCheck(lv){ const P=S.prof; if(!P) return; if(P.stLv==null){ P.stLv=lv; saveProfile(); return; } if(lv<=P.stLv) return; const from=P.stLv; P.stLv=lv; saveProfile();
+  setTimeout(()=>{ if(G || document.querySelector('.stlv-up')) return; const el=document.createElement('div'); el.className='stlv-up'; el.setAttribute('role','dialog');
+    el.innerHTML=`<div class="stlv-box"><span class="label">STREET LEVEL UP</span><b class="stlv-n">Lv.${from} → <em>Lv.${lv}</em></b><p>商店街が発展した！</p><div class="stlv-new">${ST_DECO.slice(from,lv).map(d=>`<span>${d}</span>`).join('')}</div><button class="btn gold big">やったね！</button></div>`;
+    el.onclick=()=>{ el.classList.add('out'); setTimeout(()=>el.remove(),300); }; document.body.appendChild(el); sfx('fanfare'); haptic([20,40,20,40,60]); setTimeout(()=>vo('m_panpaka'),300); if(!reduced()) confetti(); },900); }
+function stlvBody(){ const L=stLv();
+  return `<div class="stlv"><span class="label">STREET LEVEL</span><h3 class="ttl">🏙️ 商店街の発展</h3>
+    <div class="stlv-hero"><b>Lv.${L.lv}</b><span class="stlv-bar"><i style="width:${Math.round(L.p*100)}%"></i></span><small>${L.hi?`発展ポイント ${L.t} / 次のレベルまで あと ${L.hi-L.t}`:`発展ポイント ${L.t} · 最高レベル！`}</small></div>
+    <div class="stlv-list">${L.r.map(x=>`<div><i>${x.ic}</i><span>${x.n}</span><small>${x.v}</small><b>+${x.pt}</b></div>`).join('')}</div>
+    <h4 class="stlv-h">レベルでふえる飾り</h4><div class="stlv-deco">${ST_DECO.map((d,i)=>`<span class="${i<L.lv?'on':''}"><em>Lv.${i+1}</em>${d}</span>`).join('')}</div>
+    <p class="note">いろいろな遊びをするほど、商店街がにぎやかになるよ。</p></div>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -8035,6 +8099,7 @@ function renderSheet(){
   else if(k==='trip') body=tripBody();
   else if(k==='farm') body=farmBody();
   else if(k==='adv') body=advBody();
+  else if(k==='stlv') body=stlvBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
