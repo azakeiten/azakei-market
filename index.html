@@ -4489,6 +4489,7 @@ button.mtw-f:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .scrbar.on{opacity:.9}
 .totop{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 86px);z-index:55;width:46px;height:46px;border:0;border-radius:50%;display:grid;place-items:center;color:#14122a;font-size:20px;font-weight:900;cursor:pointer;background:linear-gradient(160deg,#ffe27a,#ffb23a);box-shadow:0 8px 20px rgb(0 0 0 / .35),0 0 0 3px rgb(255 255 255 / .15);opacity:0;transform:translateY(16px) scale(.8);pointer-events:none;transition:opacity .25s,transform .3s cubic-bezier(.3,1.5,.5,1)}
 .totop.on{opacity:1;transform:none;pointer-events:auto}
+body:has(#sheet .sheet) .totop,body:has(#sheet .sheet) .scrbar{opacity:0!important;pointer-events:none!important}
 .totop span{display:block;animation:ttBob 1.8s ease-in-out infinite}
 @keyframes ttBob{50%{transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.totop span{animation:none}}
@@ -5095,6 +5096,18 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 .mcs-c .mc-art{position:absolute;inset:0;width:100%;height:100%;display:block}
 .mcs-c b{position:absolute;left:4px;top:4px;min-width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:900;background:#ffc83a;color:#3a2300;box-shadow:0 2px 4px rgb(0 0 0 / .35)}
 .mcs-c small{position:absolute;left:0;right:0;bottom:0;padding:1px 0;font-size:9px;font-weight:800;text-align:center;color:#fff;background:rgb(0 0 0 / .45);white-space:nowrap;overflow:hidden}
+/* 🃏 NEWSカードアルバム */
+.pca-tabs{display:flex;gap:6px;margin:8px 0 10px}.pca-tabs button{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 2px;border:0;border-radius:12px;font-weight:800;font-size:12.5px;color:var(--ink);background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--line)}
+.pca-tabs button small{font-size:10px;color:var(--muted);font-weight:700}.pca-tabs button.on{background:linear-gradient(160deg,#ffe27a,#ffb23a);color:#3a2300;box-shadow:none}.pca-tabs button.on small{color:#5a3a00}
+.pca-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;content-visibility:auto;contain-intrinsic-size:auto 600px}
+.pca-c{position:relative;padding:0;border:0;background:none;border-radius:8px;cursor:pointer;transition:transform .15s}.pca-c svg{width:100%;height:auto;display:block;filter:drop-shadow(0 4px 6px rgb(0 0 0 / .3))}
+.pca-c:active{transform:scale(.96)}.pca-c.lock{cursor:default;filter:saturate(.3) brightness(.6)}
+.pca-c.lock i{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-size:30px;font-weight:900;color:#fff;text-shadow:0 2px 6px rgb(0 0 0 / .6)}
+.pcs>*{flex:none}.pcs-card{perspective:1000px;display:grid;place-items:center;margin:8px 0}
+.pcs-in{width:min(300px,78vw);animation:pcsFlip .55s cubic-bezier(.3,1.2,.5,1) both;transform-style:preserve-3d}.pcs-in svg{width:100%;height:auto;display:block;filter:drop-shadow(0 14px 24px rgb(0 0 0 / .45))}
+@keyframes pcsFlip{0%{transform:rotateY(-100deg) scale(.85);opacity:0}100%{transform:none;opacity:1}}
+.pcs-nav{display:flex;gap:6px}.pcs-nav .btn{flex:1;padding:10px 4px;font-size:13px}
+@media (prefers-reduced-motion:reduce){.pcs-in{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7198,6 +7211,297 @@ function mcStripPanel(){
   return `<section class="panel mcs"><span class="label">🏙️ あなたの街</span><div class="mcs-row">${[0,1,2,3,4,5].map(i=>`<div class="mcs-c${turn[i]!=null?' on':''}" style="--d:${i*.12}s">${mcArt(i)}${turn[i]!=null?`<b>${turn[i]}</b>`:''}<small>${IND[i]}</small></div>`).join('')}</div>
     <p class="note">出したカードの街に明かりがつきました。6つ全部の産業を出すと、朝から夜まで1本の街がつながります。</p></section>`;
 }
+/* ---- 🃏 NEWSカードアルバム：印刷版と同じNEWSカードの絵（クラシック/EX=テレビ・歴史=号外・未来編=ホログラム）。
+   印刷用ページの描画コードをそのまま閉じこめて使う（アプリ側の同じ名前の関数とはぶつからない） ---- */
+const PCARD=(()=>{
+const IND=[
+  {n:'エネルギー',en:'ENERGY',sub:'電力・ガス・石油',c:'#ff7a3d',d:'#c24a12'},
+  {n:'金融',en:'FINANCE',sub:'銀行・証券・保険',c:'#eab520',d:'#9a7406'},
+  {n:'製造',en:'MANUFACTURING',sub:'工場・自動車・機械',c:'#5f86ff',d:'#2f4fc4'},
+  {n:'小売',en:'RETAIL',sub:'お店・スーパー・通販',c:'#ff5c9a',d:'#c42a66'},
+  {n:'運輸',en:'TRANSPORT',sub:'鉄道・トラック・船',c:'#20c6d1',d:'#0f8a92'},
+  {n:'メディア',en:'MEDIA',sub:'テレビ・新聞・ネット',c:'#a77bff',d:'#6a3fd0'}];
+const ICON=[
+  '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  '<path d="M3 9.5 12 4l9 5.5M4 20h16M6 10v7M10 10v7M14 10v7M18 10v7"/>',
+  '<path d="M3 21V11l5 3v-3l5 3V5h5v16zM3 21h18"/>',
+  '<path d="M3 4h2.2l2.3 11h10.2L20 7.5H6.3"/><circle cx="9" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/>',
+  '<path d="M2 6h11v10H2zM13 9.5h4.5l3 3.3V16H13"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+  '<circle cx="12" cy="10" r="1.8"/><path d="M8.2 6.2a5.4 5.4 0 0 0 0 7.6M15.8 6.2a5.4 5.4 0 0 1 0 7.6M5.4 3.4a9.4 9.4 0 0 0 0 13.2M18.6 3.4a9.4 9.4 0 0 1 0 13.2M12 12v9"/>'];
+const W=630, AH=620, CH=880;   /* 1mm = 10 */
+let seed=7; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
+const R=(x,y,w,h,f,rx)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}"${rx?` rx="${rx}"`:''}/>`;
+const winGrid=(x,y,c,r,w,h,gx,gy,f)=>{ let s=''; for(let i=0;i<c;i++) for(let j=0;j<r;j++) s+=R(x+i*(w+gx),y+j*(h+gy),w,h,f,2); return s; };
+const person=(x,y,c,hair)=>`<g transform="translate(${x} ${y})"><rect x="-6" y="-26" width="12" height="20" rx="5" fill="${c}"/><rect x="-5" y="-8" width="4" height="8" fill="#3a3550"/><rect x="1" y="-8" width="4" height="8" fill="#3a3550"/><circle cy="-33" r="7" fill="#ffd9c0"/><path d="M-7 -34a7 7 0 0 1 14 0z" fill="${hair||'#3a2a2a'}"/></g>`;
+const car=(x,y,c,flip)=>`<g transform="translate(${x} ${y})${flip?' scale(-1 1)':''}"><rect x="-44" y="-26" width="88" height="22" rx="8" fill="${c}"/><path d="M-26 -26l10-16h30l14 16z" fill="${c}"/><path d="M-20 -28l7-11h11v11zM4 -28v-11h9l9 11z" fill="#cfeaff"/><circle cx="-24" cy="-4" r="8" fill="#2a2838"/><circle cx="24" cy="-4" r="8" fill="#2a2838"/><circle cx="-24" cy="-4" r="3" fill="#bbb"/><circle cx="24" cy="-4" r="3" fill="#bbb"/><rect x="38" y="-20" width="6" height="5" rx="2" fill="#ffe27a"/></g>`;
+const tree=(x,y,s)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-4" y="-30" width="8" height="30" fill="#7a5032"/><circle cy="-46" r="24" fill="#4f9e4a"/><circle cx="-14" cy="-36" r="15" fill="#5fb05a"/><circle cx="15" cy="-38" r="16" fill="#58a854"/></g>`;
+const cloud=(x,y,s,o)=>`<g transform="translate(${x} ${y}) scale(${s})" fill="#fff" opacity="${o}"><circle r="22"/><circle cx="24" cy="4" r="18"/><circle cx="-24" cy="6" r="16"/><rect x="-40" y="4" width="82" height="18" rx="9"/></g>`;
+const mio=(x,y,s,id)=>`<g transform="translate(${x} ${y}) scale(${s})" class="mio"><circle r="12" fill="#ff7ab8"/><circle cy="2.5" r="9" fill="#ffe1cf"/><path d="M-9 -1q9 -9 18 0q-9 -4 -18 0z" fill="#ff7ab8"/><circle cx="-3.5" cy="3" r="1.4" fill="#2a1a33"/><circle cx="3.5" cy="3" r="1.4" fill="#2a1a33"/><circle cx="-6" cy="6" r="1.6" fill="#ff9ab8" opacity=".8"/><circle cx="6" cy="6" r="1.6" fill="#ff9ab8" opacity=".8"/></g>`;
+const MIO_AT=[[350,490,.9],[860,400,.85],[1560,355,.8],[2345,425,.85],[2850,392,.8],[3405,240,.85]];   /* 全体の座標 */
+
+/* ===== NEWSカード（テレビの速報画面ふう） ===== */
+/* 0〜5 クラシック、6〜17 クラシックEX（アプリの EXT_NEWS / EXT_T と同じ） */
+const NEWS=['エネルギー価格急騰','資産バブル','インフラ投資ブーム','消費ブーム','旅行ブーム','デジタル化加速',
+  '資源株ブーム','円安ラッシュ','推し活ブーム','脱炭素投資','フィンテック革命','ネット大セール','AIブーム','記録的な猛暑','円高','インバウンド','EVブーム','投資ブーム'];
+const T2=[[3,3,-2,-1,-3,0],[0,3,1,1,0,3],[3,0,2,0,3,-1],[0,1,3,3,2,1],[1,0,-1,3,3,1],[-1,0,3,1,0,3],
+  [3,3,-1,-1,-2,0],[-2,1,3,0,3,0],[0,0,1,3,1,3],[3,1,3,-1,0,-1],[-1,3,0,1,-1,3],[0,-1,1,3,3,0],
+  [2,1,3,-1,-1,3],[3,0,-1,3,-2,1],[1,1,-2,3,3,0],[0,3,1,2,3,1],[3,1,3,0,1,0],[0,3,1,-1,0,3]];
+const WHY=['石油や電気の値段が一気に上がった！','株や土地の値段がぐんぐん上がっている！','国が道路・鉄道・発電所にお金を注ぎこんだ！','みんながどんどん買い物している！','旅行に出かける人が急にふえた！','仕事も暮らしもデジタルに切りかわっている！',
+  '石油や鉱山の会社の株が大人気！','円の価値が下がって、外国から見て日本が「安く」なった！','好きなアイドルやキャラを応援する「推し活」が大流行！','CO2をへらすための投資が世界中で始まった！','スマホ決済やネット銀行が一気に広がった！','ネット通販で大セールが始まった！',
+  'AI（人工知能）がいろんな仕事で使われはじめた！','記録的な暑さで、毎日が真夏日！','円の価値が上がって、外国のものが「安く」なった！','外国からの観光客が、どっと日本にやってきた！','電気自動車（EV）が一気に広がりはじめた！','みんなが「投資」を始める投資ブームが来た！'];
+const isEX = k => k>=6;
+const T=(x,y,t,sz,fill,o)=>`<text x="${x}" y="${y}" font-family="${o&&o.f||'M PLUS Rounded 1c, sans-serif'}" font-weight="${o&&o.w||800}" font-size="${sz}" fill="${fill}"${o&&o.a?` text-anchor="${o.a}"`:''}${o&&o.ls?` letter-spacing="${o.ls}"`:''}>${t}</text>`;
+const arrowUp=(x,y,s,c)=>`<path transform="translate(${x} ${y}) scale(${s})" d="M0 -40 L28 -6 H12 V40 H-12 V-6 H-28Z" fill="${c}" stroke="#fff" stroke-width="4"/>`;
+function scene(k){ /* 画面の中の絵（0..562 × 0..338） */
+  let s=R(0,0,562,338,['#ffb36a','#8fd0ff','#9fd8ff','#ffd6e6','#7fc8ff','#1d2160','#ffd08a','#bfe4ff','#2a1a50','#bff0c8','#d8e4ff','#ffe0ec','#141c48','#ffb070','#c8f0ff','#ffe9c4','#c8ffe6','#e8f0ff'][k]);
+  const big=(x,y,t,sz,c)=>T(x,y,t,sz,c,{a:'middle',f:'Dela Gothic One, sans-serif',w:400});
+  const arrowDn=(x,y,sc,c)=>arrowUp(x,y,sc,c).replace('scale(','rotate(180) scale(');
+  const phone=(x,y,c)=>`<g transform="translate(${x} ${y})">${R(-55,-100,110,200,'#141428',20)}${R(-45,-84,90,160,c,8)}<circle cy="88" r="6" fill="#555"/></g>`;
+  const ship=(x,y)=>`<g transform="translate(${x} ${y})"><path d="M-130 0 H130 L105 40 H-105Z" fill="#2f4fc4"/>${['#ff7a3d','#20c6d1','#eab520','#ff5c9a','#a77bff','#79c062'].map((c,i)=>R(-110+i*36,-34,32,34,c,2)).join('')}${R(70,-60,36,26,'#fff',3)}</g>`;
+  if(k===6){ s+=R(0,250,562,88,'#c9a070')+`<path d="M60 250 L110 80 L160 250Z" fill="none" stroke="#5a4a3a" stroke-width="8"/><path d="M80 170 H140 M70 210 H150" stroke="#5a4a3a" stroke-width="6"/>`+R(90,60,40,24,'#ff7a3d',4);
+    for(let i=0;i<4;i++) s+=R(200+i*46,200,40,50,'#3a3a4a',6); s+=R(330,66,200,110,'#141428',10)+T(430,110,'資源株',26,'#4dff9a',{a:'middle'})+T(430,152,'▲ +12%',30,'#4dff9a',{a:'middle'})+arrowUp(480,240,1.1,'#2fd47a'); }
+  if(k===7){ s+=`<path d="M0 260 Q140 230 280 260 T562 250 V338 H0Z" fill="#3a7ad0"/>`+ship(280,268)+`<g transform="translate(120 110)"><circle r="62" fill="#ffd23a" stroke="#c48a00" stroke-width="6"/>${big(0,22,'¥',64,'#c48a00')}</g>`+arrowDn(240,110,1,'#e8364a')+`<g transform="translate(450 100)"><circle r="44" fill="#fff" stroke="#5f86ff" stroke-width="5"/>${big(0,16,'$',46,'#2f4fc4')}</g>`; }
+  if(k===8){ s+=R(0,250,562,88,'#3a2a6a')+R(170,70,220,150,'#ff8cc8',12)+`<circle cx="280" cy="120" r="28" fill="#ffe1cf"/><path d="M250 112 q30 -40 60 0 q-30 -14 -60 0z" fill="#a77bff"/>`+R(255,150,50,70,'#fff',14);
+    for(let i=0;i<9;i++){ const x=30+i*62, c=['#ff5c9a','#ffe27a','#4fe3ff','#a77bff'][i%4]; s+=`<path d="M${x} 300 L${x+(i%2?14:-14)} 230" stroke="${c}" stroke-width="10" stroke-linecap="round"/><circle cx="${x}" cy="310" r="16" fill="#2a1a40"/>`; }
+    s+=`<path d="M410 60 l10 22 24 3 -18 16 5 24 -21 -12 -21 12 5 -24 -18 -16 24 -3z" fill="#ffe27a"/>`; }
+  if(k===9){ s+=R(0,270,562,68,'#79c062');
+    [90,190].forEach((x,i)=>{ s+=`<path d="M${x-4} 270 L${x-2} ${110+i*20} L${x+2} ${110+i*20} L${x+4} 270Z" fill="#fff"/>`+[0,120,240].map(a=>`<path transform="translate(${x} ${110+i*20}) rotate(${a+i*30})" d="M0 0 L-5 -6 L-2 -70 L3 -6Z" fill="#fff"/>`).join(''); });
+    for(let i=0;i<3;i++) s+=`<g transform="translate(${270+i*70} 250) skewX(-15)">${R(0,-34,60,34,'#2a4a9a',3)}</g>`;
+    s+=`<g transform="translate(460 110)"><path d="M0 70 C-60 20 -40 -50 40 -60 C50 0 40 50 0 70Z" fill="#2fd47a"/><path d="M0 70 C5 20 20 -20 40 -60" stroke="#1d8a4a" stroke-width="5" fill="none"/></g>`+big(330,90,'CO₂ ↓',34,'#1d8a4a'); }
+  if(k===10){ s+=phone(170,170,'#5f86ff')+`<g transform="translate(170 150)">${R(-30,-30,60,60,'#fff',4)}${[[0,0],[1,2],[2,1],[0,2],[2,0],[1,1]].map(([a,b])=>R(-26+a*18,-26+b*18,14,14,'#141428')).join('')}</g>`+T(170,230,'PAY',22,'#fff',{a:'middle'});
+    s+=`<g transform="translate(400 140)">${R(-110,-80,220,150,'#fff',14)}${R(-110,-80,220,40,'#eab520',14)}${T(0,-52,'ネット銀行',22,'#fff',{a:'middle'})}${T(0,10,'残高',20,'#6a6280',{a:'middle'})}${big(0,52,'¥12,800',32,'#2a2640')}</g>`+`<g transform="translate(300 270)"><circle r="26" fill="#ffd23a" stroke="#c48a00" stroke-width="4"/>${big(0,10,'¥',26,'#c48a00')}</g>`; }
+  if(k===11){ s+=`<g transform="translate(200 200)">${R(-150,-130,300,190,'#2a2838',12)}${R(-136,-116,272,162,'#fff',6)}${R(-160,60,320,18,'#3a3850',8)}${R(-136,-116,272,36,'#ff5c9a',6)}${T(0,-90,'SALE 50%OFF',22,'#fff',{a:'middle'})}<path d="M-70 -50 h12 l12 50 h56 l10 -36 h-72" fill="none" stroke="#2a2838" stroke-width="6" stroke-linejoin="round"/><circle cx="-38" cy="10" r="7" fill="#2a2838"/><circle cx="12" cy="10" r="7" fill="#2a2838"/></g>`;
+    [[420,250,90,70],[480,190,70,56],[400,180,60,60]].forEach(([x,y,w,h])=>s+=R(x,y,w,h,'#c9955a',4)+R(x,y+h/2-4,w,8,'#a8743e')+R(x+w/2-4,y,8,h,'#a8743e')); }
+  if(k===12){ for(let i=0;i<14;i++) s+=`<path d="M${(i*41)%562} ${(i*67)%338} h40 v20" stroke="#4fe3ff" stroke-width="3" fill="none" opacity=".35"/>`;
+    s+=`<g transform="translate(280 180)">${R(-90,-100,180,160,'#dfe6f5',30)}${R(-70,-70,140,70,'#141428',16)}<circle cx="-32" cy="-36" r="14" fill="#4fe3ff"/><circle cx="32" cy="-36" r="14" fill="#4fe3ff"/>${R(-30,20,60,10,'#5f86ff',5)}<path d="M0 -100 V-130" stroke="#dfe6f5" stroke-width="8"/><circle cy="-136" r="12" fill="#ff5a5a"/>${R(-110,-50,20,60,'#a8b4d8',8)}${R(90,-50,20,60,'#a8b4d8',8)}</g>`+big(470,300,'AI',48,'#4fe3ff'); }
+  if(k===13){ s+=`<circle cx="150" cy="110" r="70" fill="#ffe27a"/><circle cx="150" cy="110" r="100" fill="#ffe27a" opacity=".35"/>`+R(0,270,562,68,'#e8c088');
+    s+=`<g transform="translate(330 150)">${R(-16,-100,32,170,'#fff',16)}${R(-8,-40,16,100,'#e8364a',8)}<circle cy="80" r="28" fill="#e8364a"/></g>`+big(330,320,'38℃',30,'#c42a2a');
+    s+=`<g transform="translate(470 200)">${R(-60,-50,120,80,'#f4f6fa',10)}${[0,1,2,3].map(i=>R(-48,-36+i*14,96,6,'#c8d0dc',3)).join('')}<path d="M-30 40 q10 20 0 40 M0 40 q10 20 0 40 M30 40 q10 20 0 40" stroke="#4fe3ff" stroke-width="5" fill="none"/></g>`; }
+  if(k===14){ s+=`<g transform="translate(140 130)"><circle r="70" fill="#ffd23a" stroke="#c48a00" stroke-width="6"/>${big(0,24,'¥',72,'#c48a00')}</g>`+arrowUp(260,110,1,'#2fd47a');
+    s+=`<g transform="translate(420 130) rotate(-12)"><path d="M-90 0 H80 Q100 0 100 10 Q100 20 80 20 H-90Z" fill="#fff"/><path d="M-10 4 L-50 -50 H-30 L20 4Z M-10 16 L-40 60 H-22 L20 16Z" fill="#5f86ff"/></g>`+R(0,270,562,68,'#a8d8a0')+ship(400,300).replace('translate(400 300)','translate(400 300) scale(.7)'); }
+  if(k===15){ s+=R(0,270,562,68,'#d8c8a8')+`<g transform="translate(150 270)" fill="#e8364a">${R(-90,-170,180,20,'#e8364a',4)}${R(-100,-190,200,18,'#e8364a',6)}${R(-70,-170,20,170,'#e8364a')}${R(50,-170,20,170,'#e8364a')}${R(-80,-130,160,14,'#e8364a')}</g>`;
+    [[330,'#ff7a3d','#e8c040'],[400,'#20c6d1','#3a2a2a'],[470,'#a77bff','#c86a2a']].forEach(([x,c,h])=>s+=`<g transform="translate(${x} 300) scale(2.2)">${person(0,0,c,h).replace(/<g transform="translate\(0 0\)">|<\/g>$/g,'')}</g>`);
+    s+=`<g transform="translate(420 100)">${R(-30,-20,60,40,'#2a2838',8)}<circle r="13" fill="#9fd8ff" stroke="#fff" stroke-width="4"/>${R(14,-28,14,8,'#2a2838',2)}</g>`+big(300,90,'WELCOME',24,'#e8364a'); }
+  if(k===16){ s+=R(0,270,562,68,'#6a6a7a');
+    s+=`<g transform="translate(220 270)">${R(-130,-70,260,50,'#20c6d1',22)}<path d="M-80 -70 l30 -40 h100 l34 40z" fill="#20c6d1"/><path d="M-70 -74 l24 -30 h40 v30zM4 -74 v-30 h44 l26 30z" fill="#e6fbff"/><circle cx="-80" cy="-16" r="22" fill="#2a2838"/><circle cx="80" cy="-16" r="22" fill="#2a2838"/>${big(0,-38,'EV',26,'#fff')}</g>`;
+    s+=`<g transform="translate(470 270)">${R(-34,-170,68,170,'#f4f6fa',10)}${R(-24,-156,48,40,'#2fd47a',6)}${big(0,-124,'⚡',26,'#fff')}<path d="M-34 -80 C-90 -80 -100 -40 -130 -50" stroke="#2a2838" stroke-width="8" fill="none"/></g>`; }
+  if(k===17){ s+=phone(140,180,'#ffffff')+`<path d="M95 220 L120 190 L140 205 L165 150 L180 160" fill="none" stroke="#2fd47a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`+T(140,130,'つみたて',18,'#2a2640',{a:'middle'});
+    s+=`<g transform="translate(380 200)"><ellipse rx="110" ry="80" fill="#ff9ab8"/><circle cx="80" cy="-20" r="10" fill="#2a1a33"/><ellipse cx="110" cy="10" rx="26" ry="20" fill="#ff7aa0"/>${R(-70,60,30,40,'#ff9ab8',8)}${R(40,60,30,40,'#ff9ab8',8)}${R(-20,-84,60,12,'#c42a66',6)}</g>`+`<g transform="translate(390 70)"><circle r="30" fill="#ffd23a" stroke="#c48a00" stroke-width="4"/>${big(0,12,'¥',30,'#c48a00')}</g>`+arrowUp(520,120,.8,'#2fd47a'); }
+  if(k===0){ s+=R(0,250,562,88,'#6a6a7a')+R(70,120,120,130,'#ffffff',6)+R(70,120,120,30,'#e8364a',6)+T(130,143,'GAS',22,'#fff',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})+R(84,160,92,70,'#141428',6)+T(130,206,'¥198',30,'#ffe27a',{a:'middle',f:'Dela Gothic One, sans-serif',w:400});
+    for(let i=0;i<3;i++) s+=R(260+i*62,190,52,64,'#ff7a3d',8)+R(260+i*62,206,52,6,'#c24a12')+R(260+i*62,236,52,6,'#c24a12');
+    s+=arrowUp(470,150,1.6,'#e8364a')+`<path d="M420 80 q20 -40 40 0 q10 20 -20 30 q-30 -10 -20 -30z" fill="#ffd23a" opacity=".9"/>`; }
+  if(k===1){ for(let i=0;i<7;i++){ const h=80+((i*53)%120); s+=R(20+i*78,338-h,62,h,'#5f6ea8')+winGrid(30+i*78,348-h,2,Math.floor(h/36),16,14,10,18,'#cfe0ff'); }
+    [[120,90,46,'¥'],[300,60,60,'%'],[450,110,40,'¥'],[220,170,30,'↑']].forEach(([x,y,r,t])=>s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="#ffffff" opacity=".35" stroke="#fff" stroke-width="3"/>`+T(x,y+r*.35,t,r,'#eab520',{a:'middle',f:'Dela Gothic One, sans-serif',w:400}));
+    s+=`<path d="M20 300 L140 250 L230 270 L340 170 L430 190 L540 70" fill="none" stroke="#2fd47a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>`; }
+  if(k===2){ s+=R(0,270,562,68,'#79c062')+`<path d="M0 270 Q140 230 280 270 T562 270 V338 H0Z" fill="#5a9ad8"/>`;
+    s+=R(60,40,18,240,'#ffb23a')+R(60,40,260,16,'#ffb23a')+`<path d="M78 56 L120 40 M78 56 L320 48" stroke="#ffb23a" stroke-width="4"/>`+`<path d="M280 56 V140" stroke="#444" stroke-width="3"/>`+R(262,140,36,26,'#ff7a3d',4);
+    s+=R(200,210,340,22,'#9aa6c4')+[0,1,2,3].map(i=>R(220+i*95,232,16,60,'#7a86a6')).join('')+`<path d="M200 210 Q370 120 540 210" fill="none" stroke="#e8364a" stroke-width="8"/>`;
+    s+=`<g transform="translate(460 90)"><path d="M-40 0 a40 30 0 0 1 80 0z" fill="#ffd23a"/>${R(-48,-2,96,12,'#ffb23a',6)}</g>`; }
+  if(k===3){ s+=R(0,260,562,78,'#f0e6d2')+R(40,40,480,40,'#e8364a',8)+T(280,70,'大セール！',28,'#fff',{a:'middle',f:'Dela Gothic One, sans-serif',w:400});
+    const bag=(x,y,c)=>`<g transform="translate(${x} ${y})">${R(-34,-60,68,70,c,8)}<path d="M-16 -60 q16 -30 32 0" fill="none" stroke="${c}" stroke-width="6"/></g>`;
+    s+=bag(110,250,'#ff5c9a')+bag(200,240,'#5f86ff')+bag(290,255,'#eab520')+`<g transform="translate(410 270)"><path d="M-70 -80 h20 l20 70 h80 l16 -54 h-104" fill="none" stroke="#2a2838" stroke-width="8" stroke-linejoin="round"/><circle cx="-20" cy="6" r="10" fill="#2a2838"/><circle cx="50" cy="6" r="10" fill="#2a2838"/>${R(-40,-74,30,24,'#79c062',4)}${R(-4,-80,30,30,'#ff7a3d',4)}</g>`;
+    [70,150,230,330,500].forEach((x,i)=>s+=person(x,330,['#ff7a3d','#20c6d1','#a77bff','#ff5c9a','#5f86ff'][i])); }
+  if(k===4){ s+=`<path d="M0 338 L150 180 L230 230 L330 140 L562 338Z" fill="#7a8ac0"/><path d="M290 175 L330 140 L370 175 Q330 190 290 175Z" fill="#fff"/>`+R(0,300,562,38,'#79c062');
+    s+=`<g transform="translate(150 80) rotate(-10)"><path d="M-90 0 H80 Q100 0 100 10 Q100 20 80 20 H-90Z" fill="#fff"/><path d="M-10 4 L-50 -50 H-30 L20 4Z M-10 16 L-40 60 H-22 L20 16Z" fill="#20c6d1"/><path d="M-80 4 L-95 -24 H-82 L-60 4Z" fill="#20c6d1"/>${winGrid(-60,6,7,1,8,6,10,0,'#2a4a9a')}</g>`;
+    s+=`<g transform="translate(450 240)">${R(-50,-60,100,80,'#ff5c9a',12)}${R(-20,-74,40,16,'#2a2838',6)}<circle cx="-20" cy="-26" r="10" fill="#fff3a8"/><circle cx="18" cy="-10" r="9" fill="#9fd8ff"/>${R(-44,20,10,10,'#2a2838',3)}${R(34,20,10,10,'#2a2838',3)}</g>`; }
+  if(k===5){ for(let i=0;i<60;i++) s+=T(10+(i*97)%540,24+((i*61)%300),i%2?'1':'0',18,'#4dff9a',{f:'monospace'}).replace('fill=','opacity="'+(.15+(i%5)*.06).toFixed(2)+'" fill=');
+    s+=`<g transform="translate(200 210)">${R(-130,-110,260,160,'#2a2838',10)}${R(-118,-98,236,136,'#a77bff',6)}${R(-160,50,320,18,'#3a3850',8)}${T(0,-20,'AI',56,'#fff',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}</g>`;
+    s+=`<g transform="translate(450 210)">${R(-50,-100,100,190,'#141428',18)}${R(-40,-82,80,150,'#5f86ff',8)}<circle cy="80" r="6" fill="#555"/></g>`;
+    s+=`<g transform="translate(450 60)" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"><path d="M-36 0a50 50 0 0 1 72 0"/><path d="M-20 18a28 28 0 0 1 40 0"/></g><circle cx="450" cy="92" r="6" fill="#fff"/>`; }
+  return s;
+}
+const wrapTx=(t,n)=>{ const out=[]; let s=t; while(s.length>n){ let k=n; const p=s.slice(0,n+1).search(/[、。！]/); if(p>8) k=p+1;
+    while(k<s.length && /^[、。！」）ーっゃゅょ]/.test(s.slice(k)) && k<n+2) k++;   /* 句読点やとじかっこで行が始まらないように */
+    if(s.length-k<=2) k=s.length;   /* 2文字だけ残るなら前の行にくっつける */
+    out.push(s.slice(0,k)); s=s.slice(k); } if(s) out.push(s); return out; };
+function newsCard(k,b,round){
+  const B=b*10, id='n'+k+'b'+b+(round?'r':'')+Math.round(rnd()*1e6), vals=T2[k];
+  const chip=(c,j)=>{ const v=vals[c], x=40+(j%2)*285, y=600+Math.floor(j/2)*80, hot=v>=3;
+    return `<g transform="translate(${x} ${y})">${R(0,0,265,68,hot?'#fff3c4':'#ffffff',16)}${hot?R(0,0,265,68,'none',16).replace('fill="none"','fill="none" stroke="#eab520" stroke-width="4"'):R(0,0,265,68,'none',16).replace('fill="none"','fill="none" stroke="#e8e0cc" stroke-width="2"')}
+      <circle cx="36" cy="34" r="24" fill="${IND[c].c}"/><g transform="translate(19 17) scale(1.42)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${ICON[c]}</g>
+      ${T(72,44,IND[c].n,IND[c].n.length>3?21:24,'#2a2640')}${T(250,50,v>0?'+'+v:v===0?'±0':'−'+(-v),38,v>=3?'#c48a00':v>0?'#1d8a4a':v<0?'#d61f45':'#8a8498',{a:'end',f:'Dela Gothic One, sans-serif',w:400})}</g>`; };
+  const lines=wrapTx(WHY[k],22);
+  return `<svg viewBox="${-B} ${-B} ${W+2*B} ${CH+2*B}" width="${63+2*b}mm" height="${88+2*b}mm" role="img" aria-label="NEWS ${NEWS[k]}">
+    <defs><clipPath id="${id}s"><rect x="34" y="34" width="562" height="338" rx="18"/></clipPath>${round?`<clipPath id="${id}r"><rect width="${W}" height="${CH}" rx="34"/></clipPath>`:''}</defs>
+    <g ${round?`clip-path="url(#${id}r)"`:''}>
+      <rect x="${-B}" y="${-B}" width="${W+2*B}" height="${CH+2*B}" fill="#fffaf0"/>
+      <rect x="${-B}" y="${-B}" width="${W+2*B}" height="${470+B}" fill="#2a2840"/>
+      <g clip-path="url(#${id}s)"><g transform="translate(34 34)">${scene(k)}</g></g>
+      <rect x="34" y="34" width="562" height="338" rx="18" fill="none" stroke="#141428" stroke-width="6"/>
+      <g transform="translate(52 52)">${R(0,0,92,34,'#e8364a',17)}<circle cx="20" cy="17" r="6" fill="#fff"/>${T(56,26,'LIVE',18,'#fff',{a:'middle',ls:2})}</g>
+      ${T(578,76,'AZAKEI NEWS',16,'#ffffff',{a:'end',ls:2}).replace('fill="#ffffff"','fill="#ffffff" opacity=".85"')}
+      <rect x="${-B}" y="388" width="${W+2*B}" height="82" fill="#e8364a"/>
+      ${R(34,400,96,58,'#ffffff',8)}${T(82,441,'速報',28,'#e8364a',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}
+      ${T(148,447,NEWS[k],isEX(k)?(NEWS[k].length>6?36:42):(NEWS[k].length>7?40:48),'#ffffff',{f:'Dela Gothic One, sans-serif',w:400})}
+      ${lines.map((l,j)=>T(40,520+j*32,l,24,'#3a3550',{w:700})).join('')}
+      ${[0,1,2,3,4,5].map((c,j)=>chip(c,j)).join('')}
+      ${T(40,858,'だれとも被らなければ　独占 +2',19,'#7a7290')}${T(W-36,858,isEX(k)?`EX ${k-5}/12`:`CLASSIC ${k+1}/6`,15,'#b0a890',{a:'end',ls:2})}
+      ${isEX(k)?`<g transform="translate(486 400)">${R(0,0,110,58,'#ffc83a',10)}${T(55,41,'EX',32,'#5a3a00',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}</g>`:''}
+    </g>${round?`<rect width="${W}" height="${CH}" rx="34" fill="none" stroke="#00000022" stroke-width="2"/>`:''}</svg>`;
+}
+function rulesCard(b,round){
+  const B=b*10, id='r'+b+(round?'r':'')+Math.round(rnd()*1e6);
+  const st=['全員が同じ6枚の|産業カードを持つ','NEWSを1枚めくって、|せーので1枚出す','NEWSの表どおりに点。|被らなければ独占 +2','一度出した産業は、|もう使えない','4ターン目は出したあとに|NEWSを発表。点は2倍','合計点がいちばん|多い人の勝ち'];
+  return `<svg viewBox="${-B} ${-B} ${W+2*B} ${CH+2*B}" width="${63+2*b}mm" height="${88+2*b}mm" role="img" aria-label="あそびかた">
+    <defs>${round?`<clipPath id="${id}r"><rect width="${W}" height="${CH}" rx="34"/></clipPath>`:''}</defs>
+    <g ${round?`clip-path="url(#${id}r)"`:''}><rect x="${-B}" y="${-B}" width="${W+2*B}" height="${CH+2*B}" fill="#fffaf0"/>
+      <rect x="${-B}" y="${-B}" width="${W+2*B}" height="${150+B}" fill="#1d1b3a"/>${T(W/2,96,'あそびかた',52,'#ffc83a',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}
+      ${st.map((t,i)=>{ const ls=t.split('|'), y=205+i*106; return `<circle cx="70" cy="${y}" r="27" fill="${IND[i%6].c}"/>${T(70,y+10,i+1,28,'#fff',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}${ls.map((l,j)=>T(114,y+10+j*36,l,29,'#2a2640')).join('')}`; }).join('')}
+      ${T(W/2,858,'AZAKEI MARKET · 経済を読むカードゲーム',16,'#b0a890',{a:'middle',ls:1})}
+    </g>${round?`<rect width="${W}" height="${CH}" rx="34" fill="none" stroke="#00000022" stroke-width="2"/>`:''}</svg>`;
+}
+function backCard(kind,b,round){
+  const B=b*10, id='bk'+kind+b+(round?'r':'')+Math.round(rnd()*1e6), news=kind==='news';
+  let st=''; for(let i=0;i<34;i++){ st+=`<circle cx="${(i*137)%630}" cy="${(i*89)%430+20}" r="${1+(i%3)}" fill="#fff" opacity="${.3+(i%4)*.15}"/>`; }
+  let city=''; for(let x=-B,i=0;x<W+B;i++){ const w=40+(i*37)%50, h=60+(i*53)%120; city+=R(x,880-h-60,w,h+60+B,'#0c0e30')+winGrid(x+8,880-h-48,Math.floor((w-10)/16),Math.floor(h/26),8,10,8,16,'#ffe58a').replace(/fill="#ffe58a"/g,'fill="#ffe58a" opacity=".55"'); x+=w+4; }
+  const ring=[0,1,2,3,4,5].map(c=>{ const a=(c/6)*Math.PI*2-Math.PI/2, x=W/2+Math.cos(a)*192, y=400+Math.sin(a)*192; return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="40" fill="${IND[c].c}" stroke="#fff" stroke-width="5"/><g transform="translate(${(x-24).toFixed(1)} ${(y-24).toFixed(1)}) scale(2)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${ICON[c]}</g>`; }).join('');
+  const scan=Array.from({length:44},(_,i)=>R(-B,i*20-B,W+2*B,8,'#000000').replace('/>',' opacity=".08"/>')).join('');
+  return `<svg viewBox="${-B} ${-B} ${W+2*B} ${CH+2*B}" width="${63+2*b}mm" height="${88+2*b}mm" role="img" aria-label="${news?'NEWSカードの裏':'産業カードの裏'}">
+    <defs><linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1">${news?'<stop offset="0" stop-color="#ff4d5e"/><stop offset="1" stop-color="#9a1022"/>':'<stop offset="0" stop-color="#1b2160"/><stop offset="1" stop-color="#2c1a5a"/>'}</linearGradient>${round?`<clipPath id="${id}r"><rect width="${W}" height="${CH}" rx="34"/></clipPath>`:''}</defs>
+    <g ${round?`clip-path="url(#${id}r)"`:''}><rect x="${-B}" y="${-B}" width="${W+2*B}" height="${CH+2*B}" fill="url(#${id}g)"/>
+    ${news?`${scan}<g transform="translate(${W/2} 400)">${R(-200,-150,400,280,'#2a2840',28)}${R(-176,-128,352,236,'#ffffff',14)}${T(0,10,'NEWS',82,'#e8364a',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}${T(0,72,'AZAKEI NEWS',22,'#2a2840',{a:'middle',ls:6})}${R(-60,130,120,14,'#2a2840',4)}${R(-110,144,220,14,'#2a2840',7)}</g>${R(W/2-80,640,160,56,'#ffffff',28)}${T(W/2,679,'速報',30,'#e8364a',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}`
+      :`${st}${city}${ring}<circle cx="${W/2}" cy="400" r="132" fill="#fffaf0"/><circle cx="${W/2}" cy="400" r="120" fill="none" stroke="#eab520" stroke-width="3"/>${T(W/2,392,'AZAKEI',36,'#1d1b3a',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}${T(W/2,438,'MARKET',32,'#c48a00',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}`}
+    <rect x="22" y="22" width="${W-44}" height="${CH-44}" rx="24" fill="none" stroke="${news?'#ffffff':'#ffc83a'}" stroke-width="4" opacity=".75"/>
+    </g>${round?`<rect width="${W}" height="${CH}" rx="34" fill="none" stroke="#00000022" stroke-width="2"/>`:''}</svg>`;
+}
+const FUT=[
+{f:true, y:2027, n:'生成AIが仕事の相棒に', d:'文章も絵も動画もAIが手伝う時代に。コンテンツが爆発的に増え、データセンターの電力需要も伸びる。', r:[1,1,1,0,0,3]},
+{f:true, y:2029, n:'自動運転タクシー解禁', d:'ハンドルのない車が街を走りはじめる。運ぶ仕事の形が変わり、車づくりも新しい競争へ。', r:[1,0,2,1,3,0]},
+{f:true, y:2031, n:'再エネが電気の主役に', d:'太陽光と風力が最大の電源に。発電設備をつくる工場もフル稼働。', r:[3,1,2,0,0,0]},
+{f:true, y:2033, n:'デジタル通貨で買い物', d:'国のデジタル通貨がスマホで使えるように。お金の流れがすべて見える化され、店は便利に、工場は値下げ競争に。', r:[0,3,-1,2,0,1]},
+{f:true, y:2035, n:'世界的な水不足', d:'気候変動で水が足りなくなる地域が増加。海水を真水にする電力が欠かせなくなる。', r:[3,0,-2,-1,-1,0]},
+{f:true, y:2038, n:'宇宙旅行ブーム', d:'週末に宇宙へ行ける時代。旅行会社とライブ配信が大にぎわい。', r:[0,1,1,0,3,3]},
+{f:true, y:2041, n:'ロボットが家事と介護', d:'家庭用ロボットが一家に一台。部品も販売も大きな市場に。', r:[0,1,2,2,0,1]},
+{f:true, y:2044, n:'量子コンピュータ実用化', d:'これまで何年もかかった計算が一瞬に。金融やシミュレーションが一変する。', r:[0,3,1,0,0,2]},
+{f:true, y:2047, n:'巨大サイバー攻撃', d:'世界中の銀行とネットが一時停止。現金とお店の買いだめが復活した。', r:[-1,-3,0,2,-1,-2]},
+{f:true, y:2050, n:'カーボンニュートラル達成', d:'温室効果ガスの排出が実質ゼロに。新しいエネルギーと工場の技術が世界を支える。', r:[3,1,2,0,1,0]},
+{f:true, y:2055, n:'月面都市の建設', d:'月に人が住む街ができはじめる。ロケットで運び、月で作り、地球へ中継する。', r:[1,1,2,0,3,1]},
+{f:true, y:2060, n:'分身ロボで暮らす社会', d:'遠くの分身ロボを動かして、家にいながら買い物も旅行も。届ける仕事と配信が主役。', r:[0,0,1,3,1,2]},
+];
+
+/* ===== 未来編のNEWS（ホログラムの未来ニュース）。FUT はアプリの未来編12件（架空のシナリオ） ===== */
+function sceneF(k){ /* 未来編だけの絵：18=ロケット 19=月面都市 */
+  if(k===18){ let s=R(0,0,562,338,'#0b1030'); for(let i=0;i<40;i++) s+=`<circle cx="${(i*131)%562}" cy="${(i*71)%338}" r="${1+(i%3)*.6}" fill="#fff" opacity="${.3+(i%4)*.15}"/>`;
+    s+=`<circle cx="440" cy="80" r="46" fill="#a77bff"/><ellipse cx="440" cy="80" rx="78" ry="14" fill="none" stroke="#ffc83a" stroke-width="5"/>`;
+    s+=`<g transform="translate(220 190) rotate(30)"><path d="M0 -110 C34 -70 34 0 26 40 H-26 C-34 0 -34 -70 0 -110Z" fill="#f4f6fa"/><circle cy="-40" r="16" fill="#4fe3ff" stroke="#2f4fc4" stroke-width="5"/><path d="M-26 10 L-52 54 L-26 40Z M26 10 L52 54 L26 40Z" fill="#e8364a"/><path d="M-18 40 Q0 110 18 40Z" fill="#ffb23a"/><path d="M-10 40 Q0 80 10 40Z" fill="#fff3a8"/></g>`;
+    return s; }
+  if(k===19){ let s=R(0,0,562,338,'#070a24'); for(let i=0;i<30;i++) s+=`<circle cx="${(i*97)%562}" cy="${(i*53)%200}" r="1.4" fill="#fff" opacity=".6"/>`;
+    s+=`<circle cx="450" cy="80" r="40" fill="#3a7ad0"/><path d="M425 70 q15 -20 30 -4 q-6 20 -30 4z M455 95 q20 -6 22 10 q-14 8 -22 -10z" fill="#79c062"/>`;
+    s+=`<path d="M0 250 Q140 220 280 245 T562 235 V338 H0Z" fill="#b8b8c8"/><circle cx="90" cy="290" r="18" fill="#9a9aae"/><circle cx="470" cy="300" r="24" fill="#9a9aae"/>`;
+    [[160,250,70],[280,255,52],[380,248,60]].forEach(([x,y,r])=>s+=`<path d="M${x-r} ${y} A${r} ${r} 0 0 1 ${x+r} ${y}Z" fill="#cfeaff" opacity=".85" stroke="#fff" stroke-width="3"/>${R(x-8,y-r*.4,16,r*.4,'#ffe58a',3)}`);
+    s+=R(250,150,8,100,'#dfe6f5')+`<path d="M254 150 l30 10 -30 10z" fill="#e8364a"/>`; return s; }
+  return scene(k);
+}
+const FSCN={2027:12,2029:16,2031:9,2033:10,2035:13,2038:18,2041:12,2044:5,2047:7,2050:9,2055:19,2060:12};
+function futCard(h,idx,b,round){
+  const B=b*10, id='f'+idx+'b'+b+(round?'r':'')+Math.round(rnd()*1e6), vals=h.r;
+  const chip=(c,j)=>{ const v=vals[c], x=40+(j%2)*285, y=618+Math.floor(j/2)*68, hot=v>=3;
+    return `<g transform="translate(${x} ${y})">${R(0,0,265,58,hot?'#2a2a10':'#141a40',12)}<rect width="265" height="58" rx="12" fill="none" stroke="${hot?'#ffd23a':'#3a4a8a'}" stroke-width="${hot?3.5:2}"/>
+      <circle cx="30" cy="29" r="20" fill="${IND[c].c}"/><g transform="translate(16 15) scale(1.17)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${ICON[c]}</g>
+      ${T(60,38,IND[c].n,IND[c].n.length>3?19:22,'#dfe8ff')}${T(250,43,v>0?'+'+v:v===0?'±0':'−'+(-v),32,v>=3?'#ffd23a':v>0?'#4dff9a':v<0?'#ff6b7c':'#8a94b8',{a:'end',f:'Dela Gothic One, sans-serif',w:400})}</g>`; };
+  const tl=wrapTx(h.n,12), dl=wrapTx(h.d,24).slice(0,4), last=352+(tl.length-1)*46;
+  let grid=''; for(let i=0;i<=12;i++){ grid+=`<line x1="${i*52.5}" y1="0" x2="${i*52.5}" y2="${CH}" stroke="#1c2660" stroke-width="1.2"/>`; } for(let j=0;j<=17;j++){ grid+=`<line x1="0" y1="${j*52}" x2="${W}" y2="${j*52}" stroke="#1c2660" stroke-width="1.2"/>`; }
+  return `<svg viewBox="${-B} ${-B} ${W+2*B} ${CH+2*B}" width="${63+2*b}mm" height="${88+2*b}mm" role="img" aria-label="${h.y}年 ${h.n}（未来編）">
+    <defs><clipPath id="${id}p"><rect x="196" y="104" width="400" height="200" rx="14"/></clipPath><filter id="${id}h"><feColorMatrix type="hueRotate" values="25"/></filter>
+      <linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1240"/><stop offset="1" stop-color="#1a0d40"/></linearGradient>
+      <pattern id="${id}s" width="4" height="6" patternUnits="userSpaceOnUse"><rect width="4" height="2" fill="#4fe3ff" opacity=".12"/></pattern>${round?`<clipPath id="${id}r"><rect width="${W}" height="${CH}" rx="34"/></clipPath>`:''}</defs>
+    <g ${round?`clip-path="url(#${id}r)"`:''}>
+      <rect x="${-B}" y="${-B}" width="${W+2*B}" height="${CH+2*B}" fill="url(#${id}g)"/>${grid}
+      ${T(40,64,'FUTURE NEWS',30,'#4fe3ff',{f:'Dela Gothic One, sans-serif',w:400,ls:2})}${T(W-34,62,'未来編',20,'#ff8cc8',{a:'end'})}
+      <line x1="34" y1="84" x2="${W-34}" y2="84" stroke="#4fe3ff" stroke-width="2" opacity=".7"/>
+      <g transform="translate(40 112)"><path d="M70 0 L140 40 V120 L70 160 L0 120 V40Z" fill="#141a40" stroke="#4fe3ff" stroke-width="4"/>${T(70,92,h.y,34,'#ffffff',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}${T(70,124,'年',18,'#4fe3ff',{a:'middle'})}${T(70,52,'YEAR',14,'#ff8cc8',{a:'middle',ls:3})}</g>
+      <g clip-path="url(#${id}p)"><g transform="translate(196 104) scale(.712 .592)" filter="url(#${id}h)" opacity=".92">${sceneF(FSCN[h.y]!=null?FSCN[h.y]:12)}</g><rect x="196" y="104" width="400" height="200" fill="url(#${id}s)"/></g>
+      <rect x="196" y="104" width="400" height="200" rx="14" fill="none" stroke="#4fe3ff" stroke-width="3"/>
+      ${tl.map((l,j)=>T(40,352+j*46,l,38,'#ffffff')).join('')}
+      <line x1="34" y1="${last+18}" x2="${W-34}" y2="${last+18}" stroke="#4fe3ff" stroke-width="1.5" opacity=".6"/>
+      ${dl.map((l,j)=>T(40,last+56+j*32,l,22,'#b8c4f0',{w:700})).join('')}
+      ${T(40,590,'この年の点数',22,'#4fe3ff')}${T(W-40,590,'独占 +2',20,'#8a94b8',{a:'end'})}
+      <rect x="34" y="602" width="${W-68}" height="3" fill="#4fe3ff" opacity=".7"/>
+      ${[0,1,2,3,4,5].map((c,j)=>chip(c,j)).join('')}
+      ${T(W-36,862,`FUTURE ${idx+1}/12`,15,'#6a74a8',{a:'end',ls:2})}
+      <rect x="22" y="22" width="${W-44}" height="${CH-44}" rx="24" fill="none" stroke="#4fe3ff" stroke-width="2" opacity=".35"/>
+    </g>${round?`<rect width="${W}" height="${CH}" rx="34" fill="none" stroke="#00000022" stroke-width="2"/>`:''}</svg>`;
+}
+const HIST=[
+{y:1964, n:'東京オリンピック', d:'東海道新幹線や首都高速が開通し、建設と輸送が活気づく。中継を見るためテレビも売れた。', r:[2,1,3,1,3,1]},
+{y:1970, n:'大阪万博', d:'アジア初の万国博覧会に約6400万人が来場。会場づくりと人の移動で建設・輸送がにぎわい、カラーテレビも広まった。', r:[1,1,2,1,3,2]},
+{y:1973, n:'第一次オイルショック', d:'産油国が原油の供給を絞り、原油価格は約4倍に。モノを作る・運ぶコストが急上昇し、買いだめ騒ぎも起きた。', r:[3,0,-2,2,-3,0]},
+{y:1979, n:'第二次オイルショック', d:'イラン革命をきっかけに原油価格が再び高騰。省エネが進み、燃費のよい日本車が世界で売れた。', r:[3,-1,1,1,-2,0]},
+{y:1985, n:'プラザ合意で急激な円高', d:'先進国がドル高の是正で合意し、円が急上昇。輸出は打撃を受け、輸入品や海外旅行は割安になった。', r:[1,2,-2,2,3,0]},
+{y:1988, n:'バブル景気', d:'株価と地価が急上昇。企業も個人もお金を使い、広告やレジャーが活気づいた。', r:[0,3,1,1,2,3]},
+{y:1991, n:'バブル崩壊', d:'株価と地価が下落し、銀行は多額の不良債権を抱えた。安さを売りにする店が伸びた。', r:[1,-3,-1,2,0,-1]},
+{y:1995, n:'インターネット元年', d:'Windows 95の発売で、パソコンとインターネットが一気に身近になった。', r:[0,0,3,0,1,3]},
+{y:1997, n:'金融危機', d:'大手の証券会社や銀行が相次いで破綻し、金融不安が広がった。消費は冷え、安い店が選ばれた。', r:[1,-3,-2,2,-1,0]},
+{y:1999, n:'ITバブル', d:'IT関連企業の株価が世界的に急騰。ネット企業への投資が過熱した。', r:[-1,3,1,0,0,3]},
+{y:2008, n:'リーマン・ショック', d:'米国の大手投資銀行が破綻し、世界的な金融危機に。輸出も生産も広告費も急減した。', r:[-1,-3,-2,1,-1,-2]},
+{y:2010, n:'スマートフォン普及', d:'スマートフォンが急速に広まり、ネット通販やアプリ、動画が日常になった。', r:[0,1,2,1,1,3]},
+{y:2013, n:'アベノミクスと訪日客急増', d:'大胆な金融緩和で円安・株高に。訪日外国人観光客も急増した。', r:[0,3,1,1,3,0]},
+{y:2020, n:'巣ごもり需要', d:'感染症の流行で外出自粛が広がり、旅行は激減。動画配信やネット通販、スーパーが伸びた。', r:[-1,1,0,3,-3,3]},
+{y:2022, n:'資源高と円安', d:'資源価格の高騰と急速な円安が重なり、値上げが相次いだ。輸出企業は円安で利益を伸ばした。', r:[3,2,3,-2,-1,0]},
+{y:2023, n:'生成AIブーム', d:'対話型AIが世界中で使われはじめ、AI向け半導体とデータセンターへの投資が急増。電力の需要も伸びた。', r:[2,2,1,0,0,3]},
+{y:2024, n:'新NISAスタート', d:'投資の非課税枠が大きく広がった新しいNISAが始まり、個人のお金が株式や投資信託へ流れこんだ。', r:[0,3,1,1,0,1]},
+{y:2025, n:'大阪・関西万博', d:'大阪で2度目の万博が開催。会場への鉄道や道路が整備され、訪日客の観光や公式グッズもにぎわった。', r:[1,0,2,2,3,2]},
+];
+/* ===== 歴史モードのNEWS（号外の新聞ふう）。HIST はアプリの歴史モードの実際の出来事18件（未来編は入れない） ===== */
+const HSCN={1964:2,1970:4,1973:0,1979:6,1985:14,1988:1,1991:7,1995:11,1997:7,1999:1,2008:7,2010:10,2013:15,2020:11,2022:7,2023:12,2024:17,2025:4};
+function histCard(h,idx,b,round){
+  const B=b*10, id='h'+idx+'b'+b+(round?'r':'')+Math.round(rnd()*1e6), old=h.y<2000, vals=h.r;
+  const M='Shippori Mincho B1, serif';
+  const chip=(c,j)=>{ const v=vals[c], x=40+(j%2)*285, y=618+Math.floor(j/2)*68, hot=v>=3;
+    return `<g transform="translate(${x} ${y})">${R(0,0,265,58,hot?'#fff3c4':'#fffdf6',12)}<rect width="265" height="58" rx="12" fill="none" stroke="${hot?'#eab520':'#d8ccb0'}" stroke-width="${hot?4:2}"/>
+      <circle cx="30" cy="29" r="20" fill="${IND[c].c}"/><g transform="translate(16 15) scale(1.17)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${ICON[c]}</g>
+      ${T(60,38,IND[c].n,IND[c].n.length>3?19:22,'#2a2640')}${T(250,43,v>0?'+'+v:v===0?'±0':'−'+(-v),32,v>=3?'#c48a00':v>0?'#1d8a4a':v<0?'#d61f45':'#8a8498',{a:'end',f:'Dela Gothic One, sans-serif',w:400})}</g>`; };
+  const tl=wrapTx(h.n,12), dl=wrapTx(h.d,24).slice(0,4), last=352+(tl.length-1)*46, era=h.y<1989?'昭和':h.y<2019?'平成':'令和', ey=h.y<1989?h.y-1925:h.y<2019?h.y-1988:h.y-2018;
+  return `<svg viewBox="${-B} ${-B} ${W+2*B} ${CH+2*B}" width="${63+2*b}mm" height="${88+2*b}mm" role="img" aria-label="${h.y}年 ${h.n}">
+    <defs><clipPath id="${id}p"><rect x="300" y="104" width="296" height="200" rx="6"/></clipPath><filter id="${id}s"><feColorMatrix type="matrix" values=".39 .77 .19 0 0  .35 .69 .17 0 0  .27 .53 .13 0 0  0 0 0 1 0"/></filter>
+      <pattern id="${id}d" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="4.5" cy="4.5" r="1.1" fill="#8a7a5a" opacity=".18"/></pattern>${round?`<clipPath id="${id}r"><rect width="${W}" height="${CH}" rx="34"/></clipPath>`:''}</defs>
+    <g ${round?`clip-path="url(#${id}r)"`:''}>
+      <rect x="${-B}" y="${-B}" width="${W+2*B}" height="${CH+2*B}" fill="#f3ead2"/><rect x="${-B}" y="${-B}" width="${W+2*B}" height="${CH+2*B}" fill="url(#${id}d)"/>
+      <rect x="${-B}" y="${-B}" width="${W+2*B}" height="${84+B}" fill="#1d1b2e"/>
+      ${T(40,62,'号外',40,'#ffffff',{f:M,w:800})}${T(140,58,'AZAKEI 新聞',22,'#f3ead2',{f:M,w:800,ls:3})}${T(W-34,58,'歴史モード',18,'#ffc83a',{a:'end',ls:2})}
+      <line x1="34" y1="96" x2="${W-34}" y2="96" stroke="#1d1b2e" stroke-width="3"/>
+      <g clip-path="url(#${id}p)"><g transform="translate(300 104) scale(.527 .592)" ${old?`filter="url(#${id}s)"`:''}>${scene(HSCN[h.y]!=null?HSCN[h.y]:1)}</g></g>
+      <rect x="300" y="104" width="296" height="200" rx="6" fill="none" stroke="#1d1b2e" stroke-width="3"/>
+      <g transform="translate(40 118)"><circle cx="58" cy="58" r="58" fill="none" stroke="#c42a2a" stroke-width="5"/><circle cx="58" cy="58" r="49" fill="none" stroke="#c42a2a" stroke-width="2"/>${T(58,70,h.y,28,'#c42a2a',{a:'middle',f:'Dela Gothic One, sans-serif',w:400})}${T(58,98,'年',16,'#c42a2a',{a:'middle'})}</g>
+      ${T(98,272,`${era}${ey===1?'元':ey}年`,24,'#1d1b2e',{a:'middle',f:M,w:800})}
+      ${tl.map((l,j)=>T(40,352+j*46,l,40,'#1d1b2e',{f:M,w:800})).join('')}
+      <line x1="34" y1="${last+18}" x2="${W-34}" y2="${last+18}" stroke="#1d1b2e" stroke-width="1.5"/>
+      ${dl.map((l,j)=>T(40,last+56+j*32,l,22,'#3a3550',{f:M,w:800})).join('')}
+      ${T(40,590,'この年の点数',22,'#1d1b2e')}${T(W-40,590,'独占 +2',20,'#7a7290',{a:'end'})}
+      <rect x="34" y="602" width="${W-68}" height="3" fill="#1d1b2e"/>
+      ${[0,1,2,3,4,5].map((c,j)=>chip(c,j)).join('')}
+      ${T(W-36,862,`HISTORY ${idx+1}/18`,15,'#a8987a',{a:'end',ls:2})}
+    </g>${round?`<rect width="${W}" height="${CH}" rx="34" fill="none" stroke="#00000022" stroke-width="2"/>`:''}</svg>`;
+}
+  return {news:newsCard, hist:histCard, fut:futCard, back:backCard, HIST, FUT};
+})();
+let PCX={tab:'n'};
+/* アプリの HIST（歴史と未来編がまざっている）の番号 → 印刷版の並び */
+const pcHistIdx = i => { const a=HIST[i]; if(!a) return null; const L=a.f?PCARD.FUT:PCARD.HIST, j=L.findIndex(x=>x.y===a.y&&x.n===a.n); return j<0?null:{f:!!a.f, j}; };
+function pcList(t){ const D=S.prof.dex||{n:[],h:[]};
+  if(t==='n'||t==='x') return ALL_NEWS.map((n,i)=>({id:'n'+i, ok:D.n.includes(i), name:n, i})).filter(x=>t==='n'?x.i<6:x.i>=6);
+  const want=t==='f'; return HIST.map((h,i)=>({h,i})).filter(x=>!!x.h.f===want).sort((a,b)=>a.h.y-b.h.y).map(x=>({id:'h'+x.i, ok:D.h.includes(x.i), name:x.h.n, y:x.h.y, i:x.i})); }
+function pcSVG(id,round){ const t=id[0], i=+id.slice(1);
+  if(t==='n') return PCARD.news(i,0,round);
+  const m=pcHistIdx(i); if(!m) return ''; return m.f?PCARD.fut(PCARD.FUT[m.j],m.j,0,round):PCARD.hist(PCARD.HIST[m.j],m.j,0,round); }
+function pcAlbum(){
+  const tabs=[['n','クラシック'],['x','EX'],['h','歴史'],['f','未来編']], L=pcList(PCX.tab), got=L.filter(x=>x.ok).length;
+  const all=tabs.reduce((a,[t])=>{ const l=pcList(t); return [a[0]+l.filter(x=>x.ok).length, a[1]+l.length]; },[0,0]);
+  return `<section class="panel pca"><div class="row spread"><h3>🃏 NEWSカードアルバム</h3><span class="note">${all[0]} / ${all[1]} 枚</span></div>
+    <div class="pca-tabs" role="tablist">${tabs.map(([t,n])=>{ const l=pcList(t); return `<button role="tab" aria-selected="${PCX.tab===t}" class="${PCX.tab===t?'on':''}" onclick="PCX.tab='${t}';sfx('click');render()">${n}<small>${l.filter(x=>x.ok).length}/${l.length}</small></button>`; }).join('')}</div>
+    <div class="pca-grid">${L.map(x=>`<button class="pca-c${x.ok?'':' lock'}" ${x.ok?`onclick="pcOpen('${x.id}')"`:'disabled'} aria-label="${x.ok?esc(x.name):'まだ出会っていないNEWS'}">${x.ok?pcSVG(x.id,true):PCARD.back('news',0,true)}${x.ok?'':'<i>？</i>'}</button>`).join('')}</div>
+    <p class="note">試合でめくったNEWSが、印刷版と同じカードになってたまっていきます。カードをタップすると大きく見られます。いまのページ：${got} / ${L.length} 枚</p></section>`;
+}
+function pcOpen(id){ PCX.cur=id; openSheet('pcard'); sfx('flip'); haptic(10); }
+function pcGo(d){ const L=pcList(PCX.tab).filter(x=>x.ok), k=L.findIndex(x=>x.id===PCX.cur); if(k<0||!L.length) return; PCX.cur=L[(k+d+L.length)%L.length].id; sfx('flip'); renderSheet(); }
+function pcardBody(){
+  const id=PCX.cur||'n0', L=pcList(PCX.tab).filter(x=>x.ok), k=L.findIndex(x=>x.id===id), it=L[k]||{name:''};
+  const detail=id[0]==='n'?`dex:n${id.slice(1)}`:`dex:h${id.slice(1)}`;
+  return `<div class="pcs"><span class="label">NEWS CARD · ${k+1} / ${L.length}</span>
+    <div class="pcs-card" key="${id}"><div class="pcs-in">${pcSVG(id,true)}</div></div>
+    <div class="pcs-nav"><button class="btn" onclick="pcGo(-1)" ${L.length<2?'disabled':''}>◀ 前</button><button class="btn ghost" onclick="openSheet('${detail}')">📖 くわしく</button><button class="btn" onclick="pcGo(1)" ${L.length<2?'disabled':''}>次 ▶</button></div>
+    <p class="note" style="text-align:center">印刷用のカードと同じデザインです</p></div>`;
+}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -8437,6 +8741,7 @@ function renderSheet(){
   else if(k==='farm') body=farmBody();
   else if(k==='adv') body=advBody();
   else if(k==='stlv') body=stlvBody();
+  else if(k==='pcard') body=pcardBody();
   else if(k==='srly') body=srlyBody();
   else if(k==='pet') body=petBody();
   else if(k==='kgy') body=kgyBody();
@@ -14734,6 +15039,7 @@ function meView(){
     <button class="wide lab" onclick="go(\x27lab\x27)"><span class="label">LAB</span><b>バランス検証</b><span class="desc">CPU同士を大量に対戦させて、ルールの偏りを調べる開発者向けの機能。</span><span class="go">ラボを開く →</span></button>`:""}
     ${tab==="col"?`${trophyRoom()}${signPanel()}${rsPanel()}${cupsPanel()}
     ${pwDexPanel()}
+    ${pcAlbum()}
     ${dexPanel()}
     ${skinsPanel()}
     ${achPanel()}
