@@ -5108,6 +5108,19 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 @keyframes pcsFlip{0%{transform:rotateY(-100deg) scale(.85);opacity:0}100%{transform:none;opacity:1}}
 .pcs-nav{display:flex;gap:6px}.pcs-nav .btn{flex:1;padding:10px 4px;font-size:13px}
 @media (prefers-reduced-motion:reduce){.pcs-in{animation:none}}
+/* ✨ キラカード・カードゲット */
+.pca-c.kira,.pcs-in.kira,.pcn-c.kira{position:relative;isolation:isolate}
+.pca-c.kira::after,.pcs-in.kira::after,.pcn-c.kira::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;mix-blend-mode:color-dodge;opacity:.55;background:linear-gradient(115deg,transparent 20%,#ff8cc8 35%,#ffe27a 45%,#4fe3ff 55%,#a77bff 65%,transparent 80%);background-size:250% 250%;animation:pcHolo 3.2s linear infinite}
+.pcs-in.kira::after{border-radius:16px}
+@keyframes pcHolo{0%{background-position:100% 0}100%{background-position:-150% 0}}
+.pca-k{position:absolute;right:4px;top:4px;font-style:normal;font-size:16px;filter:drop-shadow(0 0 4px #fff)}
+.pcs-cnt{text-align:center;font-size:12.5px;color:var(--muted);margin:2px 0 8px}.pcs-cnt b{color:var(--ink);font-size:15px}
+.pcn-row{display:grid;grid-template-columns:repeat(2,minmax(0,140px));justify-content:center;gap:10px;margin:8px 0}
+.pcn-c{position:relative;padding:0;border:0;background:none;cursor:pointer;animation:pcnIn .7s cubic-bezier(.3,1.3,.5,1) both;animation-delay:var(--d)}
+.pcn-c svg{width:100%;height:auto;display:block;filter:drop-shadow(0 8px 14px rgb(0 0 0 / .4))}
+@keyframes pcnIn{0%{transform:rotateY(-110deg) translateY(30px) scale(.7);opacity:0}100%{transform:none;opacity:1}}
+.pcn-tag{position:absolute;top:-8px;left:50%;transform:translateX(-50%);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:900;color:#fff;background:#e8364a;box-shadow:0 3px 6px rgb(0 0 0 / .3);white-space:nowrap}.pcn-tag.k{background:linear-gradient(90deg,#ff8cc8,#ffc83a,#4fe3ff)}
+@media (prefers-reduced-motion:reduce){.pca-c.kira::after,.pcs-in.kira::after,.pcn-c.kira::after,.pcn-c{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7489,7 +7502,7 @@ function pcAlbum(){
   const all=tabs.reduce((a,[t])=>{ const l=pcList(t); return [a[0]+l.filter(x=>x.ok).length, a[1]+l.length]; },[0,0]);
   return `<section class="panel pca"><div class="row spread"><h3>🃏 NEWSカードアルバム</h3><span class="note">${all[0]} / ${all[1]} 枚</span></div>
     <div class="pca-tabs" role="tablist">${tabs.map(([t,n])=>{ const l=pcList(t); return `<button role="tab" aria-selected="${PCX.tab===t}" class="${PCX.tab===t?'on':''}" onclick="PCX.tab='${t}';sfx('click');render()">${n}<small>${l.filter(x=>x.ok).length}/${l.length}</small></button>`; }).join('')}</div>
-    <div class="pca-grid">${L.map(x=>`<button class="pca-c${x.ok?'':' lock'}" ${x.ok?`onclick="pcOpen('${x.id}')"`:'disabled'} aria-label="${x.ok?esc(x.name):'まだ出会っていないNEWS'}">${x.ok?pcSVG(x.id,true):PCARD.back('news',0,true)}${x.ok?'':'<i>？</i>'}</button>`).join('')}</div>
+    <div class="pca-grid">${L.map(x=>`<button class="pca-c${x.ok?'':' lock'}${x.ok&&pcCnt(x.id)>=PC_KIRA?' kira':''}" ${x.ok?`onclick="pcOpen('${x.id}')"`:'disabled'} aria-label="${x.ok?esc(x.name):'まだ出会っていないNEWS'}">${x.ok?pcSVG(x.id,true):PCARD.back('news',0,true)}${x.ok?(pcCnt(x.id)>=PC_KIRA?'<em class="pca-k">✨</em>':''):'<i>？</i>'}</button>`).join('')}</div>
     <p class="note">試合でめくったNEWSが、印刷版と同じカードになってたまっていきます。カードをタップすると大きく見られます。いまのページ：${got} / ${L.length} 枚</p></section>`;
 }
 function pcOpen(id){ PCX.cur=id; openSheet('pcard'); sfx('flip'); haptic(10); }
@@ -7498,10 +7511,33 @@ function pcardBody(){
   const id=PCX.cur||'n0', L=pcList(PCX.tab).filter(x=>x.ok), k=L.findIndex(x=>x.id===id), it=L[k]||{name:''};
   const detail=id[0]==='n'?`dex:n${id.slice(1)}`:`dex:h${id.slice(1)}`;
   return `<div class="pcs"><span class="label">NEWS CARD · ${k+1} / ${L.length}</span>
-    <div class="pcs-card" key="${id}"><div class="pcs-in">${pcSVG(id,true)}</div></div>
+    <div class="pcs-card" key="${id}"><div class="pcs-in${pcCnt(id)>=PC_KIRA?' kira':''}">${pcSVG(id,true)}</div></div>
+    <p class="pcs-cnt">${pcCnt(id)>=PC_KIRA?'✨ キラカード · ':''}出会った回数 <b>${pcCnt(id)}</b> 回${pcCnt(id)<PC_KIRA?`（あと ${PC_KIRA-pcCnt(id)} 回でキラ）`:''}</p>
     <div class="pcs-nav"><button class="btn" onclick="pcGo(-1)" ${L.length<2?'disabled':''}>◀ 前</button><button class="btn ghost" onclick="openSheet('${detail}')">📖 くわしく</button><button class="btn" onclick="pcGo(1)" ${L.length<2?'disabled':''}>次 ▶</button></div>
     <p class="note" style="text-align:center">印刷用のカードと同じデザインです</p></div>`;
 }
+/* ---- ✨ カードゲット演出とキラカード：同じNEWSに5回出会うとキラ（虹色）に。アルバムの1タブを全部そろえると🪙100（1回だけ） ---- */
+const PC_KIRA=5;
+const pcCnt = id => ((S.prof.dexc||{})[id])||0;
+function pcCount(found){
+  if(!G || G.cfg.my) return; const P=S.prof; P.dexc=P.dexc||{}; P.pcDone=P.pcDone||{};
+  const nw=(found||[]).filter(x=>x.k==='n'||x.k==='h').map(x=>x), ids=[], kira=[];
+  const seen=[...new Set(logDeck())]; seen.forEach(id=>{ const k=(G.cfg.hist?'h':'n')+id; const c=(P.dexc[k]||0)+1; P.dexc[k]=c; if(c===PC_KIRA) kira.push(k); });
+  (found||[]).forEach(x=>{ if(x.k!=='n'&&x.k!=='h') return; const id=seen.find(i=>(x.k==='h'?`${HIST[i].y} ${HIST[i].n}`:ALL_NEWS[i])===x.n); if(id!=null) ids.push(x.k+id); });
+  const done=[]; [['n','クラシック'],['x','EX'],['h','歴史'],['f','未来編']].forEach(([t,n])=>{ if(P.pcDone[t]) return; const L=pcList(t); if(L.length && L.every(x=>x.ok)){ P.pcDone[t]=1; P.coin=(P.coin||0)+100; done.push(n); } });
+  G.pcNew={nw:ids, kira, done}; saveProfile();
+}
+const __dexRecord=dexRecord; dexRecord=function(){ const found=__dexRecord.apply(this,arguments); try{ pcCount(found); }catch(e){} return found; };
+function pcNewPanel(){
+  const R=G&&G.pcNew; if(!R || (!R.nw.length && !R.kira.length && !R.done.length)) return '';
+  const items=[...R.nw.map(id=>({id,t:'NEW'})), ...R.kira.filter(id=>!R.nw.includes(id)).map(id=>({id,t:'キラ'}))], show=items.slice(0,4);
+  return `<section class="panel pcn"><span class="label">🃏 NEW CARD GET!</span>
+    ${show.length?`<div class="pcn-row">${show.map((x,j)=>`<button class="pcn-c${x.t==='キラ'?' kira':''}" style="--d:${.3+j*.25}s" onclick="PCX.tab='${pcTabOf(x.id)}';pcOpen('${x.id}')">${pcSVG(x.id,true)}<b class="pcn-tag ${x.t==='キラ'?'k':''}">${x.t==='キラ'?'✨キラ':'NEW'}</b></button>`).join('')}</div>`:''}
+    ${items.length>4?`<p class="note">ほかに ${items.length-4} 枚</p>`:''}
+    ${R.done.map(n=>`<p class="yt-rw">🏆 アルバム「${n}」コンプリート！ 🪙+100</p>`).join('')}
+    <p class="note">マイページ → コレクションの「NEWSカードアルバム」にたまっています。同じNEWSに${PC_KIRA}回出会うと、キラカードになるよ。</p></section>`;
+}
+const pcTabOf = id => id[0]==='n' ? (+id.slice(1)<6?'n':'x') : ((HIST[+id.slice(1)]||{}).f?'f':'h');
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -13894,7 +13930,7 @@ function finalView(){
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       ${G.kmT?`<button class="dgx-open km-open" onclick="kmOpenLast()"><i>📖</i><span><b>この試合が4コマまんがに！</b><small>ミオの4コマ 第${(S.prof.km||[]).slice(-1)[0]?.no||''}話を読む</small></span></button>`:''}
       <div class="row" style="justify-content:center"><button class="btn big pb-btn" onclick="photoShoot()">📸 記念撮影</button>${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
-    ${mcStripPanel()}${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${cgUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${goalPanel()}${labWinPanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+    ${pcNewPanel()}${mcStripPanel()}${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${cgUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${goalPanel()}${labWinPanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${chalPanel()}${ordPanel()}
     ${rewardPanel()}
     ${fbPanel()}
