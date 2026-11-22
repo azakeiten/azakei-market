@@ -5308,6 +5308,33 @@ html.lite #dayBg .db-in{transition:none}
 .prt-sum{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px;border-radius:18px;background:var(--panel2)}.prt-sum>b{font:400 40px var(--display,sans-serif)}.prt-sum small{font-size:12px;opacity:.8}.prt-sum em{font-style:normal;font-weight:900;color:var(--gold);margin-top:4px}
 .prt-list{display:flex;flex-direction:column;gap:4px}.prt-li{display:grid;grid-template-columns:auto 1fr auto auto;gap:8px;align-items:center;padding:7px 10px;border-radius:10px;background:var(--panel2);font-size:13px}.prt-li em{font-style:normal;font-size:16px}
 @media (prefers-reduced-motion:reduce){.prt-ship,.prt-sea.go .prt-ship{animation:none}}
+/* 🗺️ まちマップ */
+.smap-btn{margin-left:auto;flex:none;padding:3px 10px;border:0;border-radius:99px;cursor:pointer;font-weight:900;font-size:11.5px;color:#1a2a12;background:linear-gradient(180deg,#e6f7c8,#b8e08a);box-shadow:0 2px 0 #6a9a3a}
+.ast-head small~.smap-btn{margin-left:8px}
+@media (max-width:440px){.smap-btn{margin-left:auto}}
+.smap-rail{position:relative;display:flex;gap:3px;align-items:center;height:16px;margin:8px 6px 0;padding:0 4px;border-radius:99px;background:rgb(255 255 255 / .06)}
+.smap-dot{flex:1;height:6px;min-width:0;padding:0;border:0;border-radius:99px;cursor:pointer;background:var(--c);opacity:.55;position:relative}
+.smap-dot::before{content:"";position:absolute;inset:-8px 0}
+.smap-dot.on{opacity:1;box-shadow:0 0 6px var(--c)}
+.smap-dot.on::after{content:"";position:absolute;left:50%;top:-6px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#ff5a76}
+.smap-win{position:absolute;top:1px;bottom:1px;left:0;width:30%;border-radius:99px;box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .8);pointer-events:none;transition:left .12s linear}
+.smap{display:flex;flex-direction:column;gap:12px}.smap>*{flex:none}
+.smap-news{padding:10px 12px;border-radius:16px;background:linear-gradient(110deg,rgb(255 90 118 / .18),rgb(255 200 58 / .12));box-shadow:inset 0 0 0 1.5px rgb(255 120 140 / .5)}
+.smap-news>b{font-size:13px}
+.smap-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.smap-chip{display:inline-flex;gap:4px;align-items:center;padding:5px 10px;border:0;border-radius:99px;cursor:pointer;font-weight:800;font-size:12px;color:#fff;background:color-mix(in srgb,var(--c) 55%,#1a1d3a);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .25)}
+.smap-chip em{font-style:normal;min-width:16px;padding:0 4px;border-radius:99px;background:#ff5a76;font-size:10.5px}
+.smap-blk{position:relative;padding:10px;border-radius:18px;background:repeating-linear-gradient(90deg,transparent 0 22px,rgb(255 255 255 / .03) 22px 24px),color-mix(in srgb,var(--g) 14%,var(--panel2,#1d2148));box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--g) 45%,transparent)}
+.smap-blk::after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:3px;border-radius:2px;background:repeating-linear-gradient(90deg,rgb(255 255 255 / .35) 0 10px,transparent 10px 18px)}
+.smap-bh{display:flex;gap:6px;align-items:center;margin:0 2px 8px}.smap-bh span{font-size:18px}.smap-bh b{font-size:15px}.smap-bh small{margin-left:auto;font-size:11px;font-weight:800;opacity:.7}
+.smap-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding-bottom:8px}
+.smap-t{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 4px 8px;border:0;border-radius:10px 10px 6px 6px;cursor:pointer;color:#fff;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 80%,#fff),var(--c) 40%,color-mix(in srgb,var(--c) 70%,#000));box-shadow:0 3px 0 rgb(0 0 0 / .3);overflow:visible;transition:transform .15s}
+.smap-t:active{transform:translateY(2px) scale(.97)}
+.smap-aw{position:absolute;left:0;right:0;top:0;height:10px;border-radius:10px 10px 0 0;background:repeating-linear-gradient(90deg,var(--a) 0 9px,#fff 9px 18px);opacity:.9}
+.smap-ic{width:38px;height:38px;display:grid;place-items:center;font-size:24px;border-radius:8px;background:linear-gradient(160deg,#fff4c8,#ffd36a);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--c) 55%,#000)}
+.smap-t>b{font-size:10.5px;font-weight:900;line-height:1.2;text-align:center;text-shadow:0 1px 0 rgb(0 0 0 / .35);word-break:keep-all;overflow-wrap:anywhere}
+.smap-bd{position:absolute;right:-5px;top:-7px;min-width:18px;height:18px;padding:0 4px;border-radius:99px;display:grid;place-items:center;font-style:normal;font-size:10.5px;font-weight:900;color:#fff;background:#ff5a76;box-shadow:0 2px 4px rgb(0 0 0 / .35)}
+.smap-st{position:absolute;left:-5px;top:-7px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:10.5px;background:#fff;box-shadow:0 2px 4px rgb(0 0 0 / .3)}.smap-st.got{background:#e8364a;color:#fff;font-weight:900}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6761,11 +6788,12 @@ function astView(){
     +(S.prof&&S.prof.pet?`<span class="ast-pedw pnk-walk" aria-hidden="true"><i style="filter:${PNK_COL[S.prof.pet.col].f}">${pnkSleep()?'💤':'🐈'}</i></span>`:'');
   const plaza=lv>=5?'<span class="ast-plaza" aria-hidden="true"><i>⛲</i></span>':'';
   const prdOn=PRD_RUN && Date.now()-PRD_RUN<PRD_MS && !reduced();
-  return `<section class="ast ast-${ph}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small></div>
+  return `<section class="ast ast-${ph}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small><button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
-      ${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div></section>`;
+      ${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
 }
-function astPar(sc){ const v=sc.parentNode; if(v) v.style.setProperty('--px', (sc.scrollLeft*0.3).toFixed(1)+'px'); }
+function astPar(sc){ const v=sc.parentNode; if(v) v.style.setProperty('--px', (sc.scrollLeft*0.3).toFixed(1)+'px'); smapWin(sc); }
+const __renderSM=render; render=function(){ const r=__renderSM.apply(this,arguments); try{ const sc=document.querySelector('.ast-sc'); if(sc) smapWin(sc); }catch(e){} return r; };
 let AST_T=0;
 function astGo(i){
   const s=AST[i], sc=document.querySelector('.ast-sc'), shop=sc&&sc.querySelectorAll('.ast-shop')[i], mio=document.getElementById('astMio');
@@ -8024,6 +8052,31 @@ function prtBody(){
   return `<div class="prt">${head}${top}${prtBoard(V.R)}${prtSea(X.st==='sail', X.k)}<div class="prt-opts">${opt('im')}${opt('ex')}</div>${res}
     ${X.st==='pick'?'<p class="note">ヒント：ドル→円にするとき、1ドルが何円かで、手に入る円が変わるよ</p>':''}</div>`; }
 AST.push({n:'AZAKEI港',ic:'🚢',c:'#1f6fb2',a:'#ffffff',h:118,f:()=>prtOpen(),b:()=>prtS().day===todayKey()?0:'!'});
+/* ---- 🗺️ まちマップ：お店がふえて通りが長くなったので、地図から1タップでお店へ。
+   通りの下には「ミニマップ」。色の点をタップするとミオが歩いていく。いま見えている範囲は枠で表示 ---- */
+const SMAP_G=[
+  {k:'play',ic:'🎮',n:'あそぶ',c:'#ff8c5a',shops:['すごろく広場','ラッキーBOX','福引所','金魚すくい','冬のカレンダー']},
+  {k:'learn',ic:'💹',n:'お金をまなぶ',c:'#2fd47a',shops:['AZAKEI証券','まちの銀行','朝市のせり','AZAKEI港','AZAKEI屋台','AZAKEI工場','AZAKEI農園','クイズ教室']},
+  {k:'life',ic:'🏠',n:'くらす・あつめる',c:'#5fa8f0',shops:['マイルーム','シール屋','ゆうびん局','ねこの家','まんが書店','AZAKEI駅']}];
+const smapBadge = s => { try{ return s.b(); }catch(e){ return 0; } };
+function smapOpen(){ openSheet('smap'); sfx('open'); }
+function smapGo(i){ closeSheet(); if(S.screen!=='home'){ go('home'); }
+  setTimeout(()=>{ const a=document.querySelector('.ast'); if(a) a.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); setTimeout(()=>astGo(i), reduced()?0:420); }, 60); }
+function smapTile(s,i){ const b=smapBadge(s), R=srlyS(), st=R.ids.includes(s.n)?(R.got[s.n]?'✔':'🎫'):'';
+  return `<button class="smap-t" style="--c:${s.c};--a:${s.a}" onclick="smapGo(${i})"><i class="smap-aw"></i><span class="smap-ic">${s.ic}</span><b>${s.n}</b>${b?`<em class="smap-bd">${b}</em>`:''}${st?`<i class="smap-st${st==='✔'?' got':''}">${st}</i>`:''}</button>`; }
+function smapBody(){
+  const all=AST.map((s,i)=>({s,i})), used=new Set(), news=all.filter(x=>smapBadge(x.s));
+  const grp=SMAP_G.map(g=>{ const items=all.filter(x=>g.shops.includes(x.s.n)); items.forEach(x=>used.add(x.i)); return {g,items}; });
+  const other=all.filter(x=>!used.has(x.i));
+  if(other.length) grp[0].items=grp[0].items.concat(other);
+  const lv=stLv().lv;
+  return `<div class="smap"><span class="label">🗺️ TOWN MAP · ${AST.length}けん</span><h3 class="ttl">AZAKEI STREET マップ</h3>
+    ${news.length?`<div class="smap-news"><b>🔔 いま行くといいお店</b><div class="smap-chips">${news.map(x=>`<button class="smap-chip" style="--c:${x.s.c}" onclick="smapGo(${x.i})">${x.s.ic} ${x.s.n}<em>${smapBadge(x.s)}</em></button>`).join('')}</div></div>`:''}
+    ${grp.filter(x=>x.items.length).map(({g,items})=>`<section class="smap-blk" style="--g:${g.c}"><div class="smap-bh"><span>${g.ic}</span><b>${g.n}</b><small>${items.length}けん</small></div><div class="smap-grid">${items.map(x=>smapTile(x.s,x.i)).join('')}</div></section>`).join('')}
+    <p class="note">お店をタップすると、ミオがそのお店まで歩いて案内するよ。商店街レベル Lv.${lv}</p></div>`; }
+function smapRail(){ return `<div class="smap-rail" role="group" aria-label="ミニマップ">${AST.map((s,i)=>{ const b=smapBadge(s); return `<button class="smap-dot${b?' on':''}" style="--c:${s.c}" onclick="astGo(${i})" aria-label="${s.n}へ"></button>`; }).join('')}<i class="smap-win" aria-hidden="true"></i></div>`; }
+function smapWin(sc){ const w=sc.closest('.ast'); const el=w&&w.querySelector('.smap-win'); if(!el||!sc.scrollWidth) return;
+  el.style.left=(sc.scrollLeft/sc.scrollWidth*100).toFixed(2)+'%'; el.style.width=Math.min(100,sc.clientWidth/sc.scrollWidth*100).toFixed(2)+'%'; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -9273,6 +9326,7 @@ function renderSheet(){
   else if(k==='fuku') body=fukuBody();
   else if(k==='auc') body=aucBody();
   else if(k==='prt') body=prtBody();
+  else if(k==='smap') body=smapBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
