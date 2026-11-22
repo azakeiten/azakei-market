@@ -5231,6 +5231,46 @@ html.lite #dayBg .db-in{transition:none}
 .prd-note{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:16px;background:linear-gradient(110deg,rgb(255 200 58 / .22),rgb(255 90 118 / .16));box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .6)}
 .prd-note>span{font-size:28px}.prd-note p{margin:0;font-size:13px;line-height:1.5}
 @media (prefers-reduced-motion:reduce){.prd{display:none}.prd-on .ast-win i,.prd-on .prd-ban{animation:none}}
+/* 🔔 朝市のせり */
+.auc{display:flex;flex-direction:column;gap:12px}.auc>*{flex:none}
+.auc-hall{position:relative;display:flex;flex-direction:column;gap:10px;padding:14px 12px 12px;border-radius:18px;color:#fff;background:linear-gradient(180deg,#1c4a5e,#0f2a3a 70%),#0f2a3a;box-shadow:inset 0 0 0 2px #3f8fb0,inset 0 -40px 40px -30px rgb(0 0 0 / .5);overflow:hidden}
+.auc-hall::before{content:"";position:absolute;inset:0 0 auto;height:10px;background:repeating-linear-gradient(90deg,#2f7f9e 0 16px,#e9f6fb 16px 32px);opacity:.85}
+.auc-intro{align-items:center;text-align:center;padding-top:22px}.auc-intro>b{font-size:16px}
+.auc-bell{font-size:40px;animation:aucRing .5s ease-in-out 4 alternate;transform-origin:50% 10%}
+@keyframes aucRing{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+.auc-how{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:16px;background:var(--panel2);font-size:13px;line-height:1.55}.auc-how p{margin:0}.auc-how b{color:var(--gold)}
+.auc-top{display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;opacity:.9}.auc-top b{color:var(--gold)}
+.auc-lot{display:flex;gap:12px;align-items:center;margin-top:6px}
+.auc-it{flex:none;width:64px;height:64px;display:grid;place-items:center;font-style:normal;font-size:40px;border-radius:12px;background:linear-gradient(180deg,#d6a86a,#a8763a);box-shadow:inset 0 0 0 3px #7a4a24,0 4px 0 rgb(0 0 0 / .3)}
+.auc-lot b{display:block;font-size:19px;font-weight:900}.auc-lot small{font-size:12px;opacity:.8}
+.auc-news{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border-radius:10px;font-size:12.5px;font-weight:800;line-height:1.45;background:rgb(255 255 255 / .1)}
+.auc-news.auc-up{background:rgb(255 90 118 / .22);box-shadow:inset 3px 0 0 #ff5a76}.auc-news.auc-dn{background:rgb(79 160 255 / .22);box-shadow:inset 3px 0 0 #4fa0ff}
+.auc-pr{display:flex;flex-direction:column;align-items:center;padding:8px;border-radius:12px;background:#08131c;box-shadow:inset 0 0 0 2px #22485c}
+.auc-pr small{font-size:11px;font-weight:800;opacity:.75;letter-spacing:.1em}
+.auc-pr b{font:400 38px var(--display,sans-serif);color:#ff5a5a;letter-spacing:.04em;text-shadow:0 0 10px rgb(255 70 70 / .7);font-variant-numeric:tabular-nums}
+.auc-pr b.bump{animation:aucBump .3s ease-out}
+@keyframes aucBump{from{transform:scale(1.14);color:#ffd36a}to{transform:none}}
+.auc-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.auc-by{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:20px 2px 6px;border-radius:12px;background:rgb(255 255 255 / .08);transition:opacity .3s,filter .3s}
+.auc-by.me{background:rgb(255 200 58 / .18);box-shadow:inset 0 0 0 1.5px var(--gold)}
+.auc-av{font-style:normal;font-size:28px;line-height:1}.auc-by small{font-size:11px;font-weight:800}
+.auc-hd{position:absolute;top:-2px;font-style:normal;font-size:20px;animation:aucHand .6s ease-in-out infinite alternate}
+@keyframes aucHand{from{transform:translateY(2px)}to{transform:translateY(-3px)}}
+.auc-by.out{opacity:.45;filter:grayscale(.8)}.auc-by.out .auc-hd{animation:none}
+.auc-by.win{background:rgb(255 200 58 / .35);box-shadow:inset 0 0 0 2px var(--gold),0 0 16px rgb(255 200 58 / .5)}
+.auc-sold{display:flex;gap:10px;align-items:center;justify-content:center;padding:10px;border-radius:12px;background:#fff3c8;color:#5a2a00;font-size:15.5px;animation:sgIn .4s both}
+.auc-gavel{font-size:28px;transform-origin:80% 80%;animation:aucGavel .5s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes aucGavel{from{transform:rotate(-60deg)}to{transform:none}}
+.auc-msg{margin:0;padding:10px 12px;border-radius:12px;background:var(--panel2);font-size:13.5px;line-height:1.6}
+.auc .up{color:#2fd47a;font-weight:900}.auc .dn{color:#ff6a7e;font-weight:900}
+.auc-drop{width:100%;background:linear-gradient(180deg,#ff6a7e,#d83a4a);color:#fff}
+.auc-sum{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px;border-radius:18px;background:var(--panel2)}
+.auc-sum>b{font:400 40px var(--display,sans-serif)}.auc-sum small{font-size:12px;opacity:.8}.auc-sum em{font-style:normal;font-weight:900;color:var(--gold);margin-top:4px}
+.auc-list{display:flex;flex-direction:column;gap:4px}
+.auc-li{display:grid;grid-template-columns:28px 1fr auto;grid-template-areas:"i n p" "i s p";align-items:center;column-gap:8px;padding:6px 10px;border-radius:10px;background:var(--panel2)}
+.auc-li>i{grid-area:i;font-style:normal;font-size:22px}.auc-li>span{grid-area:n;font-weight:900;font-size:13px}.auc-li small{grid-area:s;font-size:11px;opacity:.75}.auc-li>b{grid-area:p;font-size:14px}
+.auc-em{font-weight:900;color:#e8364a}
+@media (prefers-reduced-motion:reduce){.auc-bell,.auc-hd,.auc-gavel,.auc-pr b.bump{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7812,6 +7852,91 @@ function prdHtml(){ const p=prdLive(); if(!p) return '';
   return ban+`<div class="prd" aria-hidden="true">${cf}<div class="prd-tr" style="${d}"><i class="prd-m">🎌</i><i class="prd-m">🥁</i><i class="prd-m">🎺</i><div class="prd-car"><i class="prd-cup">🏆</i><span class="prd-ava" style="--s:${AVA_COLORS[(P.color||0)%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span><b>優勝</b><i class="prd-wh"></i><i class="prd-wh r"></i></div><i class="prd-m">🎉</i><i class="prd-m">🙌</i></div></div>`; }
 function prdNote(){ const p=prdLive(); if(!p || !G || Date.now()-p.t>600e3) return '';
   return `<div class="prd-note"><span>🎊</span><p><b>優勝おめでとう！</b> ホームの AZAKEI STREET で、あなたの優勝パレードが始まるよ</p></div>`; }
+/* ---- 🔔 朝市のせり：ねだんがどんどん上がって、「おりる」人が出ていく。最後まで残った人が落札。
+   ニュースを読んで「本当の売値」を見積もるのがコツ。高く買いすぎると勝っても損（勝者の呪い）。1日1回目はコインのごほうび ---- */
+const AUC_IT=[
+  {ic:'🐟',n:'本マグロ',b:900,k:'sea'},{ic:'🦀',n:'ズワイガニ',b:600,k:'sea'},{ic:'🦐',n:'伊勢えび',b:650,k:'sea'},
+  {ic:'🍈',n:'高級メロン',b:500,k:'fru'},{ic:'🍓',n:'あまおう苺',b:300,k:'fru'},{ic:'🍄',n:'まつたけ',b:700,k:'fru'}];
+const AUC_BY=[
+  {ic:'🍣',n:'すし屋',sea:1.12,fru:.85},{ic:'🏨',n:'ホテル',sea:.95,fru:1.12},{ic:'🛒',n:'スーパー',sea:.9,fru:.92}];
+const AUC_NEWS={
+  up:[n=>`テレビの人気番組で「${n}」が紹介された！`, n=>`年末のごちそうに「${n}」がほしい人が急増`, n=>`不漁・不作で「${n}」が品薄に`],
+  dn:[n=>`「${n}」が大漁・豊作。お店にあふれている`, n=>`「${n}」の安い輸入品がたくさん入ってきた`],
+  no:[()=>'きょうは とくに大きなニュースなし']};
+let AUX={st:'intro'};
+function aucS(){ const P=S.prof; if(!P.auc) P.auc={day:0,best:null,tot:0,plays:0}; return P.auc; }
+function aucOpen(){ aucStop(); AUX={st:'intro'}; openSheet('auc'); sfx('open'); }
+function aucStop(){ if(AUX.iv){ clearInterval(AUX.iv); AUX.iv=0; } }
+function aucStart(){ const r=Math.random, items=AUC_IT.slice().sort(()=>r()-.5).slice(0,5);
+  const lots=items.map(it=>{ const x=r(), kind=x<.4?'up':x<.7?'dn':'no', m=kind==='up'?1.3+r()*.25:kind==='dn'?.6+r()*.2:1, L=AUC_NEWS[kind];
+    const V=Math.round(it.b*m*(.92+r()*.16)/10)*10, blind=Math.floor(r()*3);
+    const lim=AUC_BY.map((B,i)=>Math.round((i===blind?it.b:V)*B[it.k]*(i===2?.62+r()*.22:.68+r()*.32)/10)*10);
+    return {it, kind, news:L[Math.floor(r()*L.length)](it.n), V, lim, blind}; });
+  AUX={st:'bid', lots, i:0, cash:3000, res:[]}; aucLot(); }
+function aucLot(){ const L=AUX.lots[AUX.i]; AUX.price=Math.max(50,Math.round(L.it.b*.3/10)*10); AUX.step=Math.max(10,Math.round(L.it.b*.05/10)*10);
+  AUX.in=[true,true,true]; AUX.me=AUX.cash>=AUX.price; AUX.st='bid'; AUX.win=null; AUX.go=false; renderSheet(); sfx('open'); }
+function aucBegin(){ if(AUX.st!=='bid' || AUX.go) return; AUX.go=true; aucStop(); sfx('tick'); renderSheet();
+  AUX.iv=setInterval(aucTick, reduced()?260:620); }
+function aucTick(){
+  if(S.sheet!=='auc'){ aucStop(); return; }
+  const L=AUX.lots[AUX.i], np=AUX.price+AUX.step, was=AUX.in.slice();
+  AUX.in=AUX.in.map((v,i)=>v && L.lim[i]>=np);
+  if(AUX.me && AUX.cash<np){ AUX.me=false; toast('お金が足りないので、おりました'); }
+  const left=AUX.in.filter(Boolean).length+(AUX.me?1:0);
+  if(left===0){ const just=was.map((v,i)=>v?i:-1).filter(i=>i>=0); const w=just.length?just.sort((a,b)=>L.lim[b]-L.lim[a])[0]:-1; return aucSold(w, AUX.price); }
+  AUX.price=np; sfx('tick');
+  if(left===1){ return aucSold(AUX.me?'me':AUX.in.indexOf(true), np); }
+  aucPaint(was);
+}
+function aucDrop(){ if(AUX.st!=='bid' || !AUX.me) return; AUX.me=false; sfx('click'); haptic(8);
+  if(!AUX.go){ AUX.go=true; }
+  const left=AUX.in.filter(Boolean).length;
+  if(left<=1){ const L=AUX.lots[AUX.i]; const w=left===1?AUX.in.indexOf(true):L.lim.indexOf(Math.max(...L.lim)); return aucSold(w, AUX.price); }
+  if(!AUX.iv) AUX.iv=setInterval(aucTick, reduced()?200:420); else { aucStop(); AUX.iv=setInterval(aucTick, reduced()?200:420); }
+  renderSheet(); }
+function aucPaint(was){ const p=document.getElementById('aucP'); if(!p){ renderSheet(); return; }
+  p.textContent='¥'+AUX.price.toLocaleString(); p.classList.remove('bump'); void p.offsetWidth; p.classList.add('bump');
+  AUX.in.forEach((v,i)=>{ const e=document.querySelector(`.auc-by[data-i="${i}"]`); if(e && !v && was[i]){ e.classList.add('out'); e.querySelector('.auc-hd').textContent='🙅'; sfx('click'); } }); }
+function aucSold(w, price){ aucStop(); const L=AUX.lots[AUX.i];
+  const me=w==='me', pr=me?L.V-price:null; if(me){ AUX.cash-=price; AUX.cash+=L.V; }
+  AUX.res.push({w, price, V:L.V, pr, it:L.it}); AUX.st='sold'; AUX.win=w; AUX.price=price;
+  renderSheet(); sfx('slam'); haptic(30);
+  setTimeout(()=>{ if(S.sheet!=='auc') return; if(me){ if(pr>=0){ sfx('coin'); burstAt(document.querySelector('.auc-sold'),['#ffc83a','#fff','#7cf29a'],24); } else sfx('buzz'); } }, 500); }
+function aucNext(){ if(AUX.i<AUX.lots.length-1){ AUX.i++; aucLot(); return; }
+  const K=aucS(), prof=AUX.cash-3000, first=K.day!==todayKey(); let coin=0;
+  if(first){ K.day=todayKey(); coin=Math.max(5,Math.min(120,Math.round(prof/15))); S.prof.coin=(S.prof.coin||0)+coin; }
+  K.plays=(K.plays||0)+1; K.tot=(K.tot||0)+prof; if(K.best==null || prof>K.best) K.best=prof; saveProfile();
+  AUX.st='done'; AUX.coin=coin; AUX.prof=prof; renderSheet(); sfx(prof>0?'fanfare':'open'); if(prof>=300) confetti(); }
+function aucBody(){
+  const K=aucS(), X=AUX;
+  const head=`<div class="row spread"><span class="label">🔔 MORNING AUCTION</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div><h3 class="ttl">🐟 朝市のせり</h3>`;
+  if(X.st==='intro') return `<div class="auc">${head}
+    <div class="auc-hall auc-intro"><span class="auc-bell">🔔</span><b>まもなく、せりが始まります！</b><div class="auc-row">${AUC_BY.map(B=>`<span class="auc-by"><i class="auc-av">${B.ic}</i><small>${B.n}</small></span>`).join('')}<span class="auc-by me"><i class="auc-av">🙋</i><small>あなた</small></span></div></div>
+    <div class="auc-how"><p><b>①</b> 品物と「きょうのニュース」を見て、<b>本当はいくらで売れそうか</b>を考える</p><p><b>②</b> ねだんがどんどん上がる。高すぎると思ったら <b>「おりる」</b></p><p><b>③</b> 最後まで残った人が落札。<b>売値 − 落札ねだん</b> があなたのもうけ</p></div>
+    <button class="btn gold big" onclick="aucStart()" style="width:100%">🔔 せりに参加する（軍資金 ¥3,000）</button>
+    <p class="note">${K.day===todayKey()?'きょうのごほうびはもらったよ。練習としてなんどでも遊べる':'きょうの1回目は、もうけに応じてコインがもらえる（最大120）'}${K.plays?` ・ これまで${K.plays}回、ベスト ${K.best>=0?'+':'−'}¥${Math.abs(K.best||0).toLocaleString()}`:''}</p></div>`;
+  if(X.st==='done'){ const won=X.res.filter(r=>r.w==='me');
+    const curse=won.filter(r=>r.pr<0).length, cpuCurse=X.res.filter(r=>r.w!=='me' && r.w>=0 && r.V<r.price).length;
+    return `<div class="auc">${head}<div class="auc-sum"><span class="label">けっか</span><b class="${X.prof>=0?'up':'dn'}">${X.prof>=0?'+':'−'}¥${Math.abs(X.prof).toLocaleString()}</b><small>軍資金 ¥3,000 → ¥${X.cash.toLocaleString()}</small>${X.coin?`<em>🪙 +${X.coin} コイン</em>`:''}</div>
+      <div class="auc-list">${X.res.map(r=>`<div class="auc-li"><i>${r.it.ic}</i><span>${r.it.n}</span><small>${r.w==='me'?'あなた':r.w>=0?AUC_BY[r.w].ic+AUC_BY[r.w].n:'—'} ¥${r.price.toLocaleString()} → 売値 ¥${r.V.toLocaleString()}</small><b class="${r.w==='me'?(r.pr>=0?'up':'dn'):''}">${r.w==='me'?(r.pr>=0?'+':'')+r.pr.toLocaleString():''}</b></div>`).join('')}</div>
+      <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> ${curse?`${curse}回「勝ったのに損」があったね。これが<span class="auc-em">勝者の呪い</span>。みんなより高く見積もった人が勝つから、勝つとだいたい高く払いすぎてるんだ`:won.length===0?'1つも買わなかったね。おりるのも大事。でも安く買えるチャンスも見のがしたかも？':cpuCurse?`お店の人も${cpuCurse}回、売値より高く買って損してたよ。ニュースを見ていない人は見積もりがずれるんだ`:'ぜんぶもうかった！ ニュースから本当の値段を見積もるのがうまいね'}</p></div>
+      <div class="row" style="gap:8px"><button class="btn gold big" style="flex:1" onclick="aucStart()">もう一回</button><button class="btn ghost" onclick="AUX={st:'intro'};renderSheet()">もどる</button></div></div>`; }
+  const L=X.lots[X.i], it=L.it, sold=X.st==='sold';
+  const bys=AUC_BY.map((B,i)=>{ const out=!X.in[i], win=sold&&X.win===i; return `<span class="auc-by${out&&!win?' out':''}${win?' win':''}" data-i="${i}"><i class="auc-hd">${win?'🙌':out?'🙅':'✋'}</i><i class="auc-av">${B.ic}</i><small>${B.n}</small></span>`; }).join('');
+  const meWin=sold&&X.win==='me';
+  const mine=`<span class="auc-by me${!X.me&&!meWin?' out':''}${meWin?' win':''}"><i class="auc-hd">${meWin?'🙌':X.me?'✋':'🙅'}</i><i class="auc-av">🙋</i><small>あなた</small></span>`;
+  const top=`<div class="auc-top"><span>${X.i+1}/${X.lots.length}</span><span>軍資金 <b>¥${X.cash.toLocaleString()}</b></span></div>`;
+  const lot=`<div class="auc-lot"><i class="auc-it">${it.ic}</i><div><b>${it.n}</b><small>ふだんの売値 ¥${it.b.toLocaleString()}</small></div></div><div class="auc-news auc-${L.kind}"><span>📰</span>${esc(L.news)}</div>`;
+  if(sold){ const w=X.win, r=X.res[X.res.length-1];
+    const who=w==='me'?'あなた':w>=0?AUC_BY[w].ic+' '+AUC_BY[w].n:'だれも';
+    const msg=w==='me'?(r.pr>=0?`本当の売値は <b>¥${r.V.toLocaleString()}</b>。<span class="up">+¥${r.pr.toLocaleString()} のもうけ！</span>`:`本当の売値は <b>¥${r.V.toLocaleString()}</b>。<span class="dn">¥${(-r.pr).toLocaleString()} の損…高く買いすぎた</span>`)
+      : `本当の売値は <b>¥${r.V.toLocaleString()}</b>。${w>=0?(r.V>=r.price?`${AUC_BY[w].n}は +¥${(r.V-r.price).toLocaleString()} もうけた`:`${AUC_BY[w].n}は ¥${(r.price-r.V).toLocaleString()} 損した`):''}${L.blind===w?'（ニュースを見ていなかった）':''}`;
+    return `<div class="auc">${head}${top}<div class="auc-hall">${lot}<div class="auc-sold"><span class="auc-gavel">🔨</span><b>${who}が ¥${r.price.toLocaleString()} で落札！</b></div><div class="auc-row">${bys}${mine}</div></div>
+      <p class="auc-msg">${msg}</p><button class="btn gold big" style="width:100%" onclick="aucNext()">${X.i<X.lots.length-1?'次の品物へ':'けっかを見る'}</button></div>`; }
+  return `<div class="auc">${head}${top}<div class="auc-hall">${lot}<div class="auc-pr"><small>いまのねだん</small><b id="aucP">¥${X.price.toLocaleString()}</b></div><div class="auc-row">${bys}${mine}</div></div>
+    ${X.go?`<button class="btn big auc-drop" onclick="aucDrop()" ${X.me?'':'disabled'}>${X.me?'🙅 おりる':'見まもり中…'}</button>`:`<button class="btn gold big" style="width:100%" onclick="aucBegin()">🔔 せり開始！</button><button class="btn ghost" style="width:100%" onclick="aucDrop()">この品物はパス</button>`}
+    <p class="note">ヒント：ニュースで値段が上がりそうなら高くても買う価値あり。下がりそうなら早めにおりよう</p></div>`; }
+AST.push({n:'朝市のせり',ic:'🔔',c:'#2f7f9e',a:'#ffffff',h:120,f:()=>aucOpen(),b:()=>aucS().day===todayKey()?0:'!'});
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -9059,6 +9184,7 @@ function renderSheet(){
   else if(k==='pet') body=petBody();
   else if(k==='kgy') body=kgyBody();
   else if(k==='fuku') body=fukuBody();
+  else if(k==='auc') body=aucBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
