@@ -5204,6 +5204,33 @@ html.lite #dayBg .db-in{transition:none}
 .fk-row.hit{background:#fff0b8;border-radius:8px;animation:sgIn .5s both}
 .fk-log{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.fk-log small{font-size:11px;font-weight:800;opacity:.75;margin-right:4px}
 @media (prefers-reduced-motion:reduce){.fk-drum.on,.fk-hd.on,.fk-ball{animation:none}}
+/* 🏆 優勝パレード */
+.prd-ban{position:absolute;left:50%;top:8px;z-index:4;transform:translateX(-50%);display:flex;align-items:center;gap:6px;max-width:calc(100% - 24px);padding:4px 14px 5px;border:0;border-radius:4px;cursor:pointer;white-space:nowrap;overflow:hidden;font:900 13px var(--body,sans-serif);color:#7a1a00;background:linear-gradient(180deg,#fff3a8,#ffc83a);box-shadow:0 3px 0 #b07a10,0 0 16px rgb(255 200 58 / .55)}
+.prd-ban::before,.prd-ban::after{content:"";position:absolute;top:-30px;width:1.5px;height:30px;background:rgb(255 255 255 / .55)}.prd-ban::before{left:10px}.prd-ban::after{right:10px}
+.prd-ban small{font-size:10.5px;font-weight:800;opacity:.8}
+.prd-on .prd-ban{animation:prdBan .7s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes prdBan{from{transform:translate(-50%,-60px)}to{transform:translate(-50%,0)}}
+.prd{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.prd-tr{position:absolute;bottom:12px;left:0;display:flex;align-items:flex-end;gap:4px;animation:prdGo 9s linear both}
+@keyframes prdGo{from{transform:translateX(-330px)}to{transform:translateX(calc(100vw + 20px))}}
+.prd-m{font-style:normal;font-size:24px;line-height:1;animation:prdBob .32s ease-in-out infinite alternate;filter:drop-shadow(0 3px 2px rgb(0 0 0 / .35))}
+.prd-m:nth-child(2n){animation-delay:.16s}
+@keyframes prdBob{from{transform:translateY(0)}to{transform:translateY(-6px) rotate(6deg)}}
+.prd-car{position:relative;width:112px;height:52px;margin:0 6px 6px;border-radius:14px 14px 8px 8px;background:linear-gradient(180deg,#ff6a7e,#c8323e);box-shadow:inset 0 -6px 0 rgb(0 0 0 / .2),inset 0 4px 0 #ffcf6a,0 4px 8px rgb(0 0 0 / .35);display:flex;align-items:center;justify-content:flex-end;padding-right:10px;box-sizing:border-box}
+.prd-car::before{content:"";position:absolute;left:4px;right:4px;top:-4px;height:8px;border-radius:4px;background:repeating-linear-gradient(90deg,#ffc83a 0 8px,#fff 8px 16px)}
+.prd-car b{font-size:15px;font-weight:900;color:#fff3a8;letter-spacing:.1em;text-shadow:0 2px 0 rgb(0 0 0 / .3)}
+.prd-ava{position:absolute;left:10px;bottom:24px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:18px;color:#2a1a00;background:var(--s,#ffc83a);box-shadow:0 0 0 3px #fff,0 4px 8px rgb(0 0 0 / .35);animation:prdWave .5s ease-in-out infinite alternate}
+@keyframes prdWave{from{transform:rotate(-8deg)}to{transform:rotate(8deg) translateY(-3px)}}
+.prd-cup{position:absolute;left:18px;bottom:62px;font-style:normal;font-size:20px;animation:prdBob .4s ease-in-out infinite alternate}
+.prd-wh{position:absolute;left:14px;bottom:-8px;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,#ddd 0 30%,#222 34%);animation:prdSpin .5s linear infinite}.prd-wh.r{left:auto;right:14px}
+@keyframes prdSpin{to{transform:rotate(360deg)}}
+.prd-cf{position:absolute;top:-12px;width:7px;height:11px;border-radius:2px;background:var(--c);animation:prdCf 3s linear 3 both}
+@keyframes prdCf{from{transform:translateY(0) rotate(0)}to{transform:translateY(240px) rotate(540deg)}}
+.prd-on .ast-win i{animation:prdCheer .4s ease-in-out 22 alternate}
+@keyframes prdCheer{from{transform:translateY(0) scale(1)}to{transform:translateY(-5px) scale(1.15)}}
+.prd-note{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:16px;background:linear-gradient(110deg,rgb(255 200 58 / .22),rgb(255 90 118 / .16));box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .6)}
+.prd-note>span{font-size:28px}.prd-note p{margin:0;font-size:13px;line-height:1.5}
+@media (prefers-reduced-motion:reduce){.prd{display:none}.prd-on .ast-win i,.prd-on .prd-ban{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6656,9 +6683,10 @@ function astView(){
     +(lv>=7?'<span class="ast-pedw ast-busw" aria-hidden="true"><i>🚌</i></span>':'')
     +(S.prof&&S.prof.pet?`<span class="ast-pedw pnk-walk" aria-hidden="true"><i style="filter:${PNK_COL[S.prof.pet.col].f}">${pnkSleep()?'💤':'🐈'}</i></span>`:'');
   const plaza=lv>=5?'<span class="ast-plaza" aria-hidden="true"><i>⛲</i></span>':'';
-  return `<section class="ast ast-${ph}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small></div>
+  const prdOn=PRD_RUN && Date.now()-PRD_RUN<PRD_MS && !reduced();
+  return `<section class="ast ast-${ph}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
-      <div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div></section>`;
+      ${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div></section>`;
 }
 function astPar(sc){ const v=sc.parentNode; if(v) v.style.setProperty('--px', (sc.scrollLeft*0.3).toFixed(1)+'px'); }
 let AST_T=0;
@@ -7767,6 +7795,23 @@ function fukuBody(){
     ${F.log&&F.log.length?`<div class="fk-log"><small>さいきん出た玉</small>${F.log.map(b=>`<i class="fk-dot" style="--c:${FK_B[b].c}" title="${FK_B[b].ball}"></i>`).join('')}</div>`:''}
     <p class="note">福引券は、毎日1枚と、試合1回につき1枚（1日3枚まで）。箱の100玉は毎週月曜日に入れかわるよ。これまで ${F.tot||0}回まわした</p></div>`; }
 AST.push({n:'福引所',ic:'🎍',c:'#c8323e',a:'#ffcf6a',h:112,f:()=>openFuku(),b:()=>{ const F=fkS(); return F.tk>0?F.tk:0; }});
+/* ---- 🏆 優勝パレード：1位になると、次にホームを開いたとき商店街を優勝パレードが通る（1回だけ・約9秒）。
+   その日のうちは通りに「優勝！」の横断幕。横断幕をタップするとパレードをもう一度 ---- */
+const PRD_MS=9000; let PRD_RUN=0;
+function prdWin(won, sc){ const P=S.prof; if(!won || (G&&G.demo)) return;
+  P.prd={t:Date.now(), sc:sc|0, n:((P.prd&&P.prd.n)||0)+1, seen:0, md:(()=>{ try{ return modeName(G.cfg)||''; }catch(e){ return ''; } })()}; saveProfile(); }
+function prdLive(){ const p=S.prof&&S.prof.prd; return p && Date.now()-p.t<20*3600e3 ? p : null; }
+function prdReplay(){ PRD_RUN=Date.now(); sfx('fanfare'); haptic(20); render(); }
+function prdHtml(){ const p=prdLive(); if(!p) return '';
+  if(!p.seen && !reduced()){ p.seen=1; PRD_RUN=Date.now(); saveProfile(); setTimeout(()=>{ if(S.screen==='home') sfx('fanfare'); },400); }
+  const el=Date.now()-PRD_RUN, run=PRD_RUN && el<PRD_MS && !reduced(), P=S.prof, nm=esc(NET.name||'あなた');
+  const ban=`<button class="prd-ban" onclick="event.stopPropagation();prdReplay()" aria-label="優勝パレードをもう一度見る">🏆 ${nm} 優勝！<small>${p.sc}点${p.n>1?' · '+p.n+'回目':''}</small></button>`;
+  if(!run) return ban;
+  const d=`animation-delay:-${(el/1000).toFixed(2)}s`, cols=['#ffc83a','#ff5a76','#4fe3ff','#7cf29a','#c58cff','#fff'];
+  const cf=Array.from({length:16},(_,i)=>`<i class="prd-cf" style="left:${(i*6.3+3)%100}%;--c:${cols[i%6]};animation-delay:${(i%8)*.45-(el/1000)}s"></i>`).join('');
+  return ban+`<div class="prd" aria-hidden="true">${cf}<div class="prd-tr" style="${d}"><i class="prd-m">🎌</i><i class="prd-m">🥁</i><i class="prd-m">🎺</i><div class="prd-car"><i class="prd-cup">🏆</i><span class="prd-ava" style="--s:${AVA_COLORS[(P.color||0)%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span><b>優勝</b><i class="prd-wh"></i><i class="prd-wh r"></i></div><i class="prd-m">🎉</i><i class="prd-m">🙌</i></div></div>`; }
+function prdNote(){ const p=prdLive(); if(!p || !G || Date.now()-p.t>600e3) return '';
+  return `<div class="prd-note"><span>🎊</span><p><b>優勝おめでとう！</b> ホームの AZAKEI STREET で、あなたの優勝パレードが始まるよ</p></div>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -14163,7 +14208,7 @@ function finalView(){
       <button class="dgx-open" onclick="digestOpen()"><i>▶</i><span><b>試合ダイジェスト</b><small>${totalTurns()}ターンを名場面つきでふり返る</small></span></button>
       ${G.kmT?`<button class="dgx-open km-open" onclick="kmOpenLast()"><i>📖</i><span><b>この試合が4コマまんがに！</b><small>ミオの4コマ 第${(S.prof.km||[]).slice(-1)[0]?.no||''}話を読む</small></span></button>`:''}
       <div class="row" style="justify-content:center"><button class="btn big pb-btn" onclick="photoShoot()">📸 記念撮影</button>${myIndex()>=0?'<button class="btn cyan big" onclick="openResultCard()">画像カード</button><button class="btn big" onclick="shareResult()">テキストでシェア</button>':''}${G.online&&!G.host?'<span class="note">ホストの操作を待っています</span><button class="btn big" onclick="leaveRoom()">退出</button>':`<button class="btn gold big pulse" onclick="restartGame()">もう一戦！</button><button class="btn big" onclick="quit()">${G.online?'ロビーへ':'タイトルへ'}</button>`}</div></section>
-    ${pcNewPanel()}${mcStripPanel()}${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${cgUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${goalPanel()}${labWinPanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
+    ${prdNote()}${pcNewPanel()}${mcStripPanel()}${endTalk()}${mioFinal()}${autoDiffNote()}${bondUpPanel()}${cgUpPanel()}${mailFinPanel()}${townFinPanel()}${recBrokePanel()}${goalPanel()}${labWinPanel()}${G.partyGot?`<section class="trwin" style="--rc:#ff9ad9"><span class="rva">🎉</span><span><span class="label">PARTY</span><b>みんなで遊んだボーナス</b><span class="note">この端末に +${G.partyGot.coin}コイン・+${G.partyGot.xp}XP（みんなで${G.partyGot.n}回目）</span></span></section>`:''}${boardPanel()}${G.reward&&G.reward.wm&&G.reward.wm.cleared.length?`<section class="trwin" style="--rc:#a77bff"><span class="rva">📅</span><span><span class="label">WEEKLY MISSION</span><b>${G.reward.wm.cleared.map(esc).join('・')} 達成！</b><span class="note">週間ミッション +${G.reward.wm.coin}コイン</span></span></section>`:''}${G.reward&&G.reward.luck?`<section class="trwin" style="--rc:var(--i${G.reward.luck.ind})"><span class="rva">🍀</span><span><span class="label">LUCKY</span><b>ラッキー産業で独占！</b><span class="note">今日のラッキー産業「${IND[G.reward.luck.ind]}」で独占して +${G.reward.luck.coin}コイン</span></span></section>`:''}${seasonWin()}${G.reward&&G.reward.trb?`<section class="trwin" style="--rc:${CHARS[G.reward.trk].c}"><span class="rva">${chIc(CHARS[G.reward.trk])}</span><span><span class="label">TODAY'S RIVAL</span><b>${G.reward.trk}を撃破！</b><span class="note">今日のライバルボーナス +${G.reward.trb}コイン</span></span></section>`:''}
     ${chalPanel()}${ordPanel()}
     ${rewardPanel()}
     ${fbPanel()}
@@ -14407,6 +14452,7 @@ function recordResult(){
   const P=S.prof, st=P.st, p=G.players[me];
   const rk=ranking(G.players,G.cfg), mine=rk.find(x=>x.i===me), won=G.teams ? teamWon(me) : !!(mine && mine.rank===1);
   try{ labRecord(won, p.score); }catch(e){}
+  try{ prdWin(won, p.score); }catch(e){}
   if(!G.demo) try{ sgGame(won); }catch(e){}
   if(!G.demo) try{ stkGain(won?'win':'game'); }catch(e){}
   if(!G.demo) try{ kmMake(); }catch(e){}
