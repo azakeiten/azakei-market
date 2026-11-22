@@ -5172,6 +5172,38 @@ html.lite #dayBg .db-in{transition:none}
 .ssp-node.got .ssp-rw{opacity:.55}
 .ssp-rw em{position:absolute;top:-8px;right:-4px;font-style:normal;font-size:10px;font-weight:900;padding:2px 6px;border-radius:99px;background:#2fd47a;color:#06331b}.ssp-rw em.go{background:#e8364a;color:#fff}
 @media (prefers-reduced-motion:reduce){.ssp-ban::after,.ssp-node.now .ssp-lv,.ssp-node.ok:not(.got) .ssp-rw{animation:none!important}}
+/* 🎍 福引所 */
+.srly-tag~.ast-sign{padding-left:15px}
+.fk{display:flex;flex-direction:column;gap:12px}.fk>*{flex:none}
+.fk-stage{position:relative;border-radius:18px;padding:8px 8px 0;background:radial-gradient(120% 90% at 50% 0,#ffe7b0 0,#f6c870 60%,#d89a48 100%);box-shadow:inset 0 0 0 3px #b0303a,inset 0 0 0 6px #ffcf6a;overflow:hidden}
+.fk-stage::before{content:"";position:absolute;inset:0 0 auto;height:14px;background:repeating-linear-gradient(90deg,#c8323e 0 18px,#fff 18px 36px);opacity:.9}
+.fk-svg{display:block;width:min(100%,300px);margin:10px auto 0;height:auto}
+.fk-drum{transform-box:view-box;transform-origin:100px 74px}
+.fk-drum.on{animation:fkSpin .5s linear 3}
+.fk-hd{transform-box:view-box;transform-origin:100px 74px}.fk-hd.on{animation:fkSpin .5s linear 3}
+@keyframes fkSpin{to{transform:rotate(360deg)}}
+.fk-ball{animation:fkDrop .55s cubic-bezier(.3,1.6,.6,1) both}
+@keyframes fkDrop{0%{transform:translate(-40px,-40px);opacity:0}40%{opacity:1}100%{transform:none}}
+.fk-tk{position:absolute;left:12px;top:22px;display:flex;flex-direction:column;align-items:flex-start;padding:6px 10px;border-radius:10px;background:#fffaf0;color:#7a1a22;box-shadow:0 3px 0 rgb(0 0 0 / .2);transform:rotate(-4deg)}
+.fk-tk span{font-size:11px;font-weight:900;letter-spacing:.1em}.fk-tk b{font-size:22px;line-height:1}.fk-tk small{font-size:9.5px;font-weight:800;color:#8a6a4a}
+.fk-res{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 2px var(--line);animation:sgIn .4s both}
+.fk-res b{display:block;font-size:17px;font-weight:900}.fk-res span{font-size:12.5px;opacity:.85}
+.fk-r0{background:linear-gradient(120deg,#5a3a00,#a87400);box-shadow:inset 0 0 0 2px #ffc83a,0 0 24px rgb(255 200 58 / .5)}
+.fk-r1{box-shadow:inset 0 0 0 2px #cfd6e4,0 0 16px rgb(207 214 228 / .35)}
+.fk-dot{flex:none;display:inline-block;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 18%,var(--c) 45%,color-mix(in srgb,var(--c) 65%,#000));box-shadow:0 1px 2px rgb(0 0 0 / .4)}
+.fk-dot.big{width:44px;height:44px}
+.fk-go{width:100%}
+.fk-talk{margin:0}.fk-em{font-weight:900;color:#e8364a;font-size:1.1em}
+.fk-board{border-radius:16px;padding:10px 12px;color:#2a1a33;background:#fffaf0;box-shadow:inset 0 0 0 3px #c8323e,inset 0 0 0 6px #fffaf0,inset 0 0 0 7px #ffcf6a}
+.fk-bh{display:flex;justify-content:space-between;align-items:baseline;padding:2px 4px 6px;border-bottom:2px solid #c8323e;margin-bottom:4px}.fk-bh>b{font-size:15px;color:#c8323e;letter-spacing:.2em}.fk-bh small{font-size:11.5px;font-weight:800;color:#8a6a4a}
+.fk-row{display:grid;grid-template-columns:16px 46px minmax(0,1fr) auto;grid-template-areas:"d n pz left" "d n p p";gap:2px 8px;align-items:center;padding:6px 4px;border-bottom:1px dashed #e2cfa6}
+.fk-row:last-child{border-bottom:0}.fk-row .fk-dot{grid-area:d}.fk-n{grid-area:n;font-size:13.5px;color:#7a1a22}.fk-pz{grid-area:pz;font-size:12px;font-weight:800;min-width:0}.fk-left{grid-area:left;font-size:11px;font-weight:800;color:#8a6a4a}
+.fk-p{grid-area:p;position:relative;height:12px;border-radius:99px;background:#efe3c8;overflow:hidden}.fk-p i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--c);box-shadow:inset 0 0 0 1px rgb(0 0 0 / .15);transition:width .6s}
+.fk-p em{position:absolute;right:6px;top:-1px;font-style:normal;font-size:10px;font-weight:900;color:#2a1a33}
+.fk-row.gone{opacity:.4}.fk-row.gone .fk-pz{text-decoration:line-through}
+.fk-row.hit{background:#fff0b8;border-radius:8px;animation:sgIn .5s both}
+.fk-log{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.fk-log small{font-size:11px;font-weight:800;opacity:.75;margin-right:4px}
+@media (prefers-reduced-motion:reduce){.fk-drum.on,.fk-hd.on,.fk-ball{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7668,6 +7700,73 @@ function sspBody(){
     ${rd?`<button class="btn gold big" style="width:100%" onclick="sspClaimAll()">🎁 ${rd}段ぶんをまとめて受け取る</button>`:''}
     <p class="note">シーズンポイントは、試合・屋台・工場・農園・旅・シール集め など、いろいろな遊びで増えます（商店街の発展ポイント1 = 5pt）。試合1回でだいたい10pt、3試合で1段。${se.n}シーズンは ${se.end.getMonth()+1}月${se.end.getDate()}日まで。</p></div>`;
 }
+/* ---- 🎍 AZAKEI福引所：ガラガラを回して玉が出たら当たり。箱の中は1週間で100玉だけ。
+   玉が減るたびに「いま何が出る確率か」が変わるのを、景品ボードでそのまま見られる。券は試合1回で1枚（1日3枚まで）＋毎日1枚 ---- */
+const FK_B=[
+  {k:'gold',n:'特等',c:'#ffc83a',ball:'金',pz:'500コイン',coin:500,stk:0,all:1},
+  {k:'silv',n:'1等',c:'#cfd6e4',ball:'銀',pz:'150コイン＋シール',coin:150,stk:1,all:4},
+  {k:'red',n:'2等',c:'#e8364a',ball:'赤',pz:'50コイン',coin:50,stk:0,all:15},
+  {k:'blue',n:'3等',c:'#3d7bff',ball:'青',pz:'シール1枚',coin:0,stk:1,all:30},
+  {k:'wht',n:'参加賞',c:'#f6f3ea',ball:'白',pz:'10コイン',coin:10,stk:0,all:50}];
+function fkWeek(){ const d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()-((d.getDay()+6)%7)); return todayKey(d); }
+function fkS(){ const P=S.prof, g=(P.st&&P.st.games)||0, t=todayKey(), w=fkWeek();
+  if(!P.fk) P.fk={wk:0,pool:[],tk:0,gm:g,day:0,dn:0,free:0,log:[],tot:0,best:9};
+  const F=P.fk;
+  if(F.wk!==w || !F.pool.length || F.pool.every(n=>n<=0)){ F.wk=w; F.pool=FK_B.map(b=>b.all); }
+  if(F.day!==t){ F.day=t; F.dn=0; }
+  if(F.free!==t){ F.free=t; F.tk++; }
+  if(g>F.gm){ const add=Math.min(g-F.gm, Math.max(0,3-F.dn)); F.tk+=add; F.dn+=add; }
+  F.gm=g; F.tk=Math.min(F.tk,20); return F; }
+let FKX={st:'idle',b:-1};
+function openFuku(){ fkS(); saveProfile(); FKX={st:'idle',b:-1}; openSheet('fuku'); sfx('open'); }
+function fkDraw(){
+  const F=fkS(); if(FKX.st==='spin') return;
+  if(F.tk<=0){ toast('福引券がありません。試合をすると1枚もらえるよ'); sfx('buzz'); return; }
+  const T=F.pool.reduce((a,b)=>a+b,0); let x=Math.random()*T, b=0; while(b<F.pool.length-1 && (x-=F.pool[b])>=0) b++;
+  F.tk--; F.pool[b]--; F.tot=(F.tot||0)+1; F.best=Math.min(F.best==null?9:F.best,b); F.log=[b].concat(F.log||[]).slice(0,12);
+  const B=FK_B[b]; S.prof.coin=(S.prof.coin||0)+B.coin; let stk=null; if(B.stk){ try{ stk=stkGain(b===1?'star':'play'); }catch(e){} }
+  saveProfile(); FKX={st:'spin',b,stk};
+  renderSheet(); const fast=reduced(), ms=fast?150:1500;
+  if(!fast){ for(let k=0;k<10;k++) setTimeout(()=>{ if(S.sheet==='fuku') sfx('tick'); }, k*140); haptic(10); }
+  setTimeout(()=>{ if(S.sheet!=='fuku') return; FKX.st='out'; renderSheet();
+    setTimeout(()=>{ if(S.sheet!=='fuku') return; const el=document.querySelector('.fk-res');
+      if(b===0){ sfx('fanfare'); haptic(40); confetti(); } else if(b<=2){ sfx('coin'); haptic(20); burstAt(el,[B.c,'#fff','#ffe08a'],b===1?36:20); } else sfx(b===3?'coin':'click');
+    }, fast?0:420); }, ms);
+}
+function fkDrum(){ const spin=FKX.st==='spin', out=FKX.st==='out'&&FKX.b>=0;
+  const oct=[0,1,2,3,4,5,6,7].map(i=>{ const a=Math.PI/8+i*Math.PI/4; return (100+58*Math.cos(a)).toFixed(1)+','+(74+58*Math.sin(a)).toFixed(1); }).join(' ');
+  const oct2=[0,1,2,3,4,5,6,7].map(i=>{ const a=Math.PI/8+i*Math.PI/4; return (100+44*Math.cos(a)).toFixed(1)+','+(74+44*Math.sin(a)).toFixed(1); }).join(' ');
+  return `<svg class="fk-svg" viewBox="0 0 220 170" aria-hidden="true">
+    <path d="M58 160 L80 104 M142 160 L120 104" stroke="#7a4a24" stroke-width="8" stroke-linecap="round"/><rect x="40" y="154" width="140" height="10" rx="5" fill="#5a3418"/>
+    <path d="M150 128 L196 140 L196 154 L150 154 Z" fill="#d8b878"/><path d="M150 128 L196 140" stroke="#a8844a" stroke-width="3"/>
+    <g class="fk-drum${spin?' on':''}"><polygon points="${oct}" fill="#c8323e" stroke="#7a1a22" stroke-width="5" stroke-linejoin="round"/><polygon points="${oct2}" fill="#e8564e" stroke="#ffcf6a" stroke-width="3" stroke-linejoin="round"/>
+      <text x="100" y="84" text-anchor="middle" font-size="30" font-weight="900" fill="#ffe9a8">福</text><path d="M100 74 L100 30" stroke="#ffcf6a" stroke-width="2.5" stroke-dasharray="4 4"/></g>
+    <circle cx="100" cy="74" r="7" fill="#5a3418"/><path class="fk-hd${spin?' on':''}" d="M100 74 L60 40" stroke="#5a3418" stroke-width="6" stroke-linecap="round"/>
+    ${out?`<circle class="fk-ball" cx="186" cy="146" r="9" fill="${FK_B[FKX.b].c}" stroke="rgb(0 0 0 / .35)" stroke-width="1.5"/><circle class="fk-ball" cx="183" cy="143" r="3" fill="#fff" opacity=".8"/>`:''}
+  </svg>`; }
+function fukuBody(){
+  const F=fkS(), T=F.pool.reduce((a,b)=>a+b,0), X=FKX, dec=[11,12,1].includes(new Date().getMonth()+1);
+  const head=`<div class="row spread"><span class="label">🏮 ${dec?'歳末大売り出し':'今週の福引'}</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div><h3 class="ttl">🎍 ガラガラ福引き</h3>`;
+  const board=`<div class="fk-board"><div class="fk-bh"><b>景品</b><small>箱の中 のこり <b>${T}</b>/100玉</small></div>${FK_B.map((B,i)=>{ const n=F.pool[i], p=T?n/T*100:0;
+    return `<div class="fk-row${n<=0?' gone':''}${X.st==='out'&&X.b===i?' hit':''}"><i class="fk-dot" style="--c:${B.c}"></i><b class="fk-n">${B.n}</b><span class="fk-pz">${B.pz}</span><span class="fk-left">のこり${n}</span><span class="fk-p"><i style="width:${Math.min(100,p).toFixed(1)}%;--c:${B.c}"></i><em>${n<=0?'—':p<1?p.toFixed(1)+'%':Math.round(p)+'%'}</em></span></div>`; }).join('')}</div>`;
+  let res='';
+  if(X.st==='out' && X.b>=0){ const B=FK_B[X.b];
+    res=`<div class="fk-res fk-r${X.b}"><i class="fk-dot big" style="--c:${B.c}"></i><div><b>${B.ball}の玉！ ${B.n}</b><span>${B.pz}${X.b===4?'（ポケットティッシュのかわり）':''}${X.stk?' ・ シールはシール屋で開けてね':''}</span></div></div>`; }
+  const gold=F.pool[0]>0, tip = T<=0 ? '箱がからっぽ。新しい箱は月曜日に届くよ'
+    : gold && T<=40 ? `金の玉がまだ残っていて、玉が減ったから当たる確率が <span class="fk-em">1/${T}</span> まで上がってるよ！`
+    : !gold ? '今週の金の玉はもう出ちゃった。でも銀の玉はまだあるかも？ 月曜日に箱がリセット'
+    : `金の玉は100玉の中に1つ。いま出る確率は <span class="fk-em">1/${T}</span>。だれかが引くたびに玉が減って、確率が変わっていくよ`;
+  const btn = X.st==='spin' ? `<button class="btn big fk-go" disabled>ガラガラ…</button>`
+    : F.tk>0 ? `<button class="btn big gold fk-go" onclick="fkDraw()">🎍 ガラガラ回す（券1枚）</button>`
+    : `<button class="btn big fk-go" onclick="closeSheet();go('play')">試合をして福引券をもらう</button>`;
+  return `<div class="fk">${head}
+    <div class="fk-stage">${fkDrum()}<div class="fk-tk"><span>福引券</span><b>×${F.tk}</b><small>きょう試合でもらった券 ${F.dn}/3</small></div></div>
+    ${res}${btn}
+    <div class="gd-talk fk-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> ${tip}</p></div>
+    ${board}
+    ${F.log&&F.log.length?`<div class="fk-log"><small>さいきん出た玉</small>${F.log.map(b=>`<i class="fk-dot" style="--c:${FK_B[b].c}" title="${FK_B[b].ball}"></i>`).join('')}</div>`:''}
+    <p class="note">福引券は、毎日1枚と、試合1回につき1枚（1日3枚まで）。箱の100玉は毎週月曜日に入れかわるよ。これまで ${F.tot||0}回まわした</p></div>`; }
+AST.push({n:'福引所',ic:'🎍',c:'#c8323e',a:'#ffcf6a',h:112,f:()=>openFuku(),b:()=>{ const F=fkS(); return F.tk>0?F.tk:0; }});
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -8914,6 +9013,7 @@ function renderSheet(){
   else if(k==='srly') body=srlyBody();
   else if(k==='pet') body=petBody();
   else if(k==='kgy') body=kgyBody();
+  else if(k==='fuku') body=fukuBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
