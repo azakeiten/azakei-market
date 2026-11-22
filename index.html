@@ -5335,6 +5335,35 @@ html.lite #dayBg .db-in{transition:none}
 .smap-t>b{font-size:10.5px;font-weight:900;line-height:1.2;text-align:center;text-shadow:0 1px 0 rgb(0 0 0 / .35);word-break:keep-all;overflow-wrap:anywhere}
 .smap-bd{position:absolute;right:-5px;top:-7px;min-width:18px;height:18px;padding:0 4px;border-radius:99px;display:grid;place-items:center;font-style:normal;font-size:10.5px;font-weight:900;color:#fff;background:#ff5a76;box-shadow:0 2px 4px rgb(0 0 0 / .35)}
 .smap-st{position:absolute;left:-5px;top:-7px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:10.5px;background:#fff;box-shadow:0 2px 4px rgb(0 0 0 / .3)}.smap-st.got{background:#e8364a;color:#fff;font-weight:900}
+/* 🌦️ 通りの天気 */
+.smap-more{align-self:center;font-size:11.5px;font-weight:800;opacity:.75;padding:0 4px}
+.swx-chip{position:absolute;left:8px;top:8px;z-index:5;display:flex;align-items:center;gap:3px;padding:3px 9px 3px 6px;border:0;border-radius:99px;cursor:pointer;font-size:15px;line-height:1;color:#fff;background:rgb(10 14 40 / .5);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .3);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.swx-chip b{font-size:11.5px;font-weight:900}
+.ast .prd-ban{top:40px}
+.swx-rain{position:absolute;inset:-40px 0 0;z-index:4;pointer-events:none;background:repeating-linear-gradient(105deg,transparent 0 14px,rgb(215 232 255 / .8) 14px 15.5px,transparent 15.5px 29px);background-size:60px 60px;animation:swxRain .5s linear infinite;opacity:.9}
+.swx-r2{background-size:90px 90px;animation-duration:.8s;opacity:.45}
+@keyframes swxRain{to{background-position:-16px 60px}}
+.swxw-rain .ast-view{background:linear-gradient(180deg,#4a5a78,#7f90aa 70%,#a9b6c8)}
+.swxw-rain.ast-night .ast-view,.swxw-rain.ast-eve .ast-view{background:linear-gradient(180deg,#0b1020,#1e2a48 65%,#2e3a5e)}
+.swx-pud{position:absolute;left:0;right:0;bottom:4px;height:22px;z-index:2;pointer-events:none;background:radial-gradient(40px 5px at 12% 60%,rgb(190 215 255 / .5),transparent 70%),radial-gradient(56px 6px at 46% 40%,rgb(190 215 255 / .45),transparent 70%),radial-gradient(36px 5px at 80% 70%,rgb(190 215 255 / .5),transparent 70%)}
+.swx-pud::after{content:"";position:absolute;inset:0;background:radial-gradient(10px 3px at 20% 55%,transparent 60%,rgb(255 255 255 / .6) 65%,transparent 75%),radial-gradient(12px 3px at 62% 45%,transparent 60%,rgb(255 255 255 / .6) 65%,transparent 75%);animation:swxRip 1.2s ease-out infinite}
+@keyframes swxRip{from{transform:scale(.4);opacity:1}to{transform:scale(1.6);opacity:0}}
+.swxw-rain .ast-pedw i::before{content:"☂️";position:absolute;left:-2px;top:-16px;font-size:18px}
+.swx-sun{position:absolute;right:16%;top:10px;z-index:0;width:34px;height:34px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,#fff8c8 0 40%,#ffd84a 60%,transparent 72%);box-shadow:0 0 30px 10px rgb(255 220 90 / .45)}
+.ast-night .swx-sun,.ast-eve .swx-sun{display:none}
+.swx-sun.hot{width:44px;height:44px;box-shadow:0 0 50px 22px rgb(255 160 60 / .55)}
+.swxw-hot:not(.ast-night) .ast-view{background:linear-gradient(180deg,#ff8a3a,#ffc070 55%,#ffe6a8)}
+.swx-haze{position:absolute;left:0;right:0;bottom:30px;height:90px;z-index:3;pointer-events:none;background:linear-gradient(0deg,rgb(255 170 90 / .45),transparent);animation:swxHaze 2.4s ease-in-out infinite alternate}
+@keyframes swxHaze{from{transform:skewX(-2deg);opacity:.6}to{transform:skewX(2deg);opacity:1}}
+.swx-frost{position:absolute;inset:0;z-index:4;pointer-events:none;box-shadow:inset 0 0 26px 6px rgb(220 240 255 / .45);border-radius:inherit}
+.swx-lite{opacity:.45}
+.swxw-cold .ast-pedw i::after{content:"";position:absolute;right:-8px;top:2px;width:8px;height:6px;border-radius:50%;background:rgb(255 255 255 / .8);animation:swxBreath 1.6s ease-out infinite}
+@keyframes swxBreath{from{transform:scale(.3);opacity:.9}to{transform:translate(8px,-4px) scale(1.4);opacity:0}}
+.swx-grey{position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgb(120 130 150 / .45),transparent 70%)}
+.swxw-cloud .ast-cloud{opacity:1;filter:grayscale(.6) brightness(.92)}
+html.lite .swx-rain,html.lite .swx-haze,html.lite .swx-pud::after,html.lite .swxw-cold .ast-pedw i::after{animation:none}
+html.bg-hide .swx-rain,html.bg-hide .swx-haze{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.swx-rain,.swx-haze,.swx-pud::after{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6787,10 +6816,10 @@ function astView(){
     +(lv>=7?'<span class="ast-pedw ast-busw" aria-hidden="true"><i>🚌</i></span>':'')
     +(S.prof&&S.prof.pet?`<span class="ast-pedw pnk-walk" aria-hidden="true"><i style="filter:${PNK_COL[S.prof.pet.col].f}">${pnkSleep()?'💤':'🐈'}</i></span>`:'');
   const plaza=lv>=5?'<span class="ast-plaza" aria-hidden="true"><i>⛲</i></span>':'';
-  const prdOn=PRD_RUN && Date.now()-PRD_RUN<PRD_MS && !reduced();
-  return `<section class="ast ast-${ph}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small><button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
+  const prdOn=PRD_RUN && Date.now()-PRD_RUN<PRD_MS && !reduced(), swx=swxNow();
+  return `<section class="ast ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small><button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
-      ${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
+      ${swxLayer(swx)}${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
 }
 function astPar(sc){ const v=sc.parentNode; if(v) v.style.setProperty('--px', (sc.scrollLeft*0.3).toFixed(1)+'px'); smapWin(sc); }
 const __renderSM=render; render=function(){ const r=__renderSM.apply(this,arguments); try{ const sc=document.querySelector('.ast-sc'); if(sc) smapWin(sc); }catch(e){} return r; };
@@ -8071,12 +8100,24 @@ function smapBody(){
   if(other.length) grp[0].items=grp[0].items.concat(other);
   const lv=stLv().lv;
   return `<div class="smap"><span class="label">🗺️ TOWN MAP · ${AST.length}けん</span><h3 class="ttl">AZAKEI STREET マップ</h3>
-    ${news.length?`<div class="smap-news"><b>🔔 いま行くといいお店</b><div class="smap-chips">${news.map(x=>`<button class="smap-chip" style="--c:${x.s.c}" onclick="smapGo(${x.i})">${x.s.ic} ${x.s.n}<em>${smapBadge(x.s)}</em></button>`).join('')}</div></div>`:''}
+    ${news.length?`<div class="smap-news"><b>🔔 いま行くといいお店</b><div class="smap-chips">${news.slice(0,6).map(x=>`<button class="smap-chip" style="--c:${x.s.c}" onclick="smapGo(${x.i})">${x.s.ic} ${x.s.n}<em>${smapBadge(x.s)}</em></button>`).join('')}${news.length>6?`<span class="smap-more">ほか ${news.length-6}けん</span>`:''}</div></div>`:''}
     ${grp.filter(x=>x.items.length).map(({g,items})=>`<section class="smap-blk" style="--g:${g.c}"><div class="smap-bh"><span>${g.ic}</span><b>${g.n}</b><small>${items.length}けん</small></div><div class="smap-grid">${items.map(x=>smapTile(x.s,x.i)).join('')}</div></section>`).join('')}
     <p class="note">お店をタップすると、ミオがそのお店まで歩いて案内するよ。商店街レベル Lv.${lv}</p></div>`; }
 function smapRail(){ return `<div class="smap-rail" role="group" aria-label="ミニマップ">${AST.map((s,i)=>{ const b=smapBadge(s); return `<button class="smap-dot${b?' on':''}" style="--c:${s.c}" onclick="astGo(${i})" aria-label="${s.n}へ"></button>`; }).join('')}<i class="smap-win" aria-hidden="true"></i></div>`; }
 function smapWin(sc){ const w=sc.closest('.ast'); const el=w&&w.querySelector('.smap-win'); if(!el||!sc.scrollWidth) return;
   el.style.left=(sc.scrollLeft/sc.scrollWidth*100).toFixed(2)+'%'; el.style.width=Math.min(100,sc.clientWidth/sc.scrollWidth*100).toFixed(2)+'%'; }
+/* ---- 🌦️ 通りの天気：屋台の「きょうの天気」と同じ天気が、商店街にも降る。雨なら雨つぶと水たまりと傘、猛暑なら陽炎、寒い日は霜と息。
+   左上の天気チップをタップすると、ミオがその天気で売れそうなものを教えてくれる（屋台へ） ---- */
+const SWX_TIP={sun:'晴れの日は人出が多い。屋台はなんでもそこそこ売れるよ',hot:'猛暑！ かき氷とレモネードが飛ぶように売れそう',cloud:'くもりの日はおにぎりみたいな「ふだんの物」が強いよ',rain:'雨の日は かさ が売れる！ 人は少なめ',cold:'寒い日は やきいも と おでん の日'};
+function swxNow(){ try{ const d=ytDay(), W=YT_W[d.w]; return {k:W.k, ic:W.ic, n:W.n, t:W.t}; }catch(e){ return null; } }
+function swxTap(){ const w=swxNow(); if(!w) return; sfx('click'); toast(`${w.ic} きょうは${w.n}（${w.t}℃）｜${GUIDE.n}「${SWX_TIP[w.k]}」`); }
+function swxLayer(w){ if(!w) return ''; const k=w.k;
+  return `<button class="swx-chip" onclick="event.stopPropagation();swxTap()" aria-label="きょうの天気 ${w.n} ${w.t}度">${w.ic}<b>${w.t}℃</b></button>`
+    + (k==='rain'?'<i class="swx-rain" aria-hidden="true"></i><i class="swx-rain swx-r2" aria-hidden="true"></i><i class="swx-pud" aria-hidden="true"></i>'
+      : k==='hot'?'<i class="swx-sun hot" aria-hidden="true"></i><i class="swx-haze" aria-hidden="true"></i>'
+      : k==='sun'?'<i class="swx-sun" aria-hidden="true"></i>'
+      : k==='cold'?`<i class="swx-frost" aria-hidden="true"></i>${advOn()?'':'<i class="wsnow swx-lite" aria-hidden="true"></i>'}`
+      : '<i class="swx-grey" aria-hidden="true"></i>'); }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
