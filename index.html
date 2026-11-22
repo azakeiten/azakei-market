@@ -5407,6 +5407,33 @@ html.bg-hide .swx-rain,html.bg-hide .swx-haze{animation-play-state:paused}
 .phb-flash{position:fixed;inset:0;z-index:9999;background:#fff;pointer-events:none;animation:phbFlash .6s ease-out both}
 @keyframes phbFlash{from{opacity:1}to{opacity:0}}
 @media (prefers-reduced-motion:reduce){.phb-flash{animation-duration:.01s}.phb-spin{animation:none}}
+/* 🙋 まちのお願い */
+.qt-npc{position:relative;flex:none;align-self:flex-end;margin:0 -2px -3px;padding:0;border:0;background:none;cursor:pointer;z-index:2}
+.qt-npc>span{display:block;font-size:30px;line-height:1;filter:drop-shadow(0 3px 2px rgb(0 0 0 / .35));animation:qtIdle 2.4s ease-in-out infinite}
+@keyframes qtIdle{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.qt-bub{position:absolute;left:50%;top:-22px;margin-left:-11px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:900;color:#fff;background:#ff5a76;box-shadow:0 2px 4px rgb(0 0 0 / .35);animation:qtBub 1.2s ease-in-out infinite alternate}
+.qt-npc.ok .qt-bub{background:#ffc83a;color:#2a1a00;font-size:12px}.qt-npc.got .qt-bub{background:#2fd47a;animation:none;font-size:11px}
+.qt-npc.got>span{animation:none;opacity:.85}
+@keyframes qtBub{from{transform:translateY(0)}to{transform:translateY(-4px)}}
+.qt-chip{flex:none;padding:3px 9px;border:0;border-radius:99px;cursor:pointer;font-weight:900;font-size:11.5px;color:#fff;background:rgb(255 255 255 / .12);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .3)}
+.qt-chip.rd{background:#ffc83a;color:#2a1a00;box-shadow:0 0 10px rgb(255 200 58 / .6)}
+.qtw{display:flex;flex-direction:column;gap:10px}.qtw>*{flex:none}
+@media (max-width:440px){.ast-head{flex-wrap:wrap;row-gap:4px}.ast-head .label{flex-basis:100%}}
+.qt-card{display:flex;gap:10px;padding:12px;border-radius:18px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.qt-card.focus{box-shadow:inset 0 0 0 2.5px #4fe3ff}.qt-card.ok{box-shadow:inset 0 0 0 2.5px var(--gold);background:linear-gradient(120deg,rgb(255 200 58 / .14),var(--panel2))}.qt-card.got{opacity:.75}
+.qt-who{flex:none;width:64px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.qt-ava{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:32px;background:radial-gradient(circle at 40% 35%,#fff,#ffe6b8);box-shadow:0 0 0 3px #fff,0 3px 8px rgb(0 0 0 / .3)}
+.qt-who small{font-size:9.5px;font-weight:800;line-height:1.25;opacity:.85}
+.qt-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.qt-say{margin:0;padding:8px 10px;border-radius:4px 14px 14px 14px;background:#fff;color:#2a1a33;font-size:12.5px;line-height:1.5}
+.qt-t{font-size:14px}
+.qt-bar{position:relative;height:14px;border-radius:99px;background:rgb(255 255 255 / .1);overflow:hidden}.qt-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#4fe3ff,#2fd47a);transition:width .5s}.qt-bar em{position:absolute;right:8px;top:0;font-style:normal;font-size:10.5px;font-weight:900;line-height:14px}
+.qt-main .btn{align-self:flex-start}.qt-done{font-size:12.5px;font-weight:900;color:#2fd47a}
+.qt-bonus{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.qt-bonus>span{font-size:28px}.qt-bonus>div{flex:1}.qt-bonus b{display:block;font-size:14px}.qt-bonus small{font-size:12px;opacity:.8}.qt-bonus em{font-style:normal;font-weight:900;opacity:.85}
+.qt-bonus.ready{background:linear-gradient(110deg,rgb(255 200 58 / .25),rgb(255 90 118 / .15));box-shadow:inset 0 0 0 2px var(--gold)}
+html.lite .qt-npc>span,html.lite .qt-bub{animation:none}
+@media (prefers-reduced-motion:reduce){.qt-npc>span,.qt-bub{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6853,14 +6880,14 @@ function astView(){
   const ph=skyPhase(new Date().getHours());
   const lv=stLv().lv; stLvCheck(lv);
   const shops=AST.map((s,i)=>{ let b=0; try{ b=s.b(); }catch(e){}
-    return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}">${(()=>{ const R=srlyS(); return R.ids.includes(s.n)?`<i class="srly-tag${R.got[s.n]?' got':''}">${R.got[s.n]?'✔':'🎫'}</i>`:''; })()}<span class="ast-sign">${s.n}</span><span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
+    return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}">${(()=>{ const R=srlyS(); return R.ids.includes(s.n)?`<i class="srly-tag${R.got[s.n]?' got':''}">${R.got[s.n]?'✔':'🎫'}</i>`:''; })()}<span class="ast-sign">${s.n}</span><span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>${(()=>{ try{ return qtNpc(i); }catch(e){ return ''; } })()}`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
   const deco=(lv>=3?`<svg class="ast-flags" width="100%" height="18" aria-hidden="true"><defs><pattern id="astfl" width="42" height="18" patternUnits="userSpaceOnUse"><path d="M0 3H42" stroke="#fff" stroke-width="1.2"/><path d="M1 3L13 3L7 15Z" fill="#ff5a76"/><path d="M15 3L27 3L21 15Z" fill="#ffc83a"/><path d="M29 3L41 3L35 15Z" fill="#4fe3ff"/></pattern></defs><rect width="100%" height="18" fill="url(#astfl)"/></svg>`:'')
     +(lv>=4?'<span class="ast-pedw" aria-hidden="true"><i>🚶</i></span><span class="ast-pedw ast-ped2" aria-hidden="true"><i>🚶‍♀️</i></span>':'')
     +(lv>=7?'<span class="ast-pedw ast-busw" aria-hidden="true"><i>🚌</i></span>':'')
     +(S.prof&&S.prof.pet?`<span class="ast-pedw pnk-walk" aria-hidden="true"><i style="filter:${PNK_COL[S.prof.pet.col].f}">${pnkSleep()?'💤':'🐈'}</i></span>`:'');
   const plaza=lv>=5?'<span class="ast-plaza" aria-hidden="true"><i>⛲</i></span>':'';
   const prdOn=PRD_RUN && Date.now()-PRD_RUN<PRD_MS && !reduced(), swx=swxNow();
-  return `<section class="ast ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small><button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
+  return `<section class="ast ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small>${(()=>{ try{ if(nbNew()) return ''; const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; return `<button class="qt-chip${rd?' rd':''}" onclick="qtOpen()" aria-label="まちのお願い ${c}/3">🙋 ${c}/3</button>`; }catch(e){ return ''; } })()}<button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
       ${swxLayer(swx)}${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
 }
@@ -8042,7 +8069,7 @@ function aucSold(w, price){ aucStop(); const L=AUX.lots[AUX.i];
 function aucNext(){ if(AUX.i<AUX.lots.length-1){ AUX.i++; aucLot(); return; }
   const K=aucS(), prof=AUX.cash-3000, first=K.day!==todayKey(); let coin=0;
   if(first){ K.day=todayKey(); coin=Math.max(5,Math.min(120,Math.round(prof/15))); S.prof.coin=(S.prof.coin||0)+coin; }
-  K.plays=(K.plays||0)+1; K.tot=(K.tot||0)+prof; if(K.best==null || prof>K.best) K.best=prof; saveProfile();
+  K.plays=(K.plays||0)+1; K.tot=(K.tot||0)+prof; qtEv('auc',prof); if(K.best==null || prof>K.best) K.best=prof; saveProfile();
   AUX.st='done'; AUX.coin=coin; AUX.prof=prof; renderSheet(); sfx(prof>0?'fanfare':'open'); if(prof>=300) confetti(); }
 function aucBody(){
   const K=aucS(), X=AUX;
@@ -8094,7 +8121,7 @@ function prtGo(k){ if(PRX.st!=='pick') return; const V=PRX.v[PRX.i], p=k==='im'?
 function prtNext(){ if(PRX.i<PRX.v.length-1){ PRX.i++; PRX.st='pick'; renderSheet(); sfx('click'); return; }
   const K=prtS(), first=K.day!==todayKey(); let coin=0;
   if(first){ K.day=todayKey(); coin=Math.max(5,Math.min(100,Math.round(PRX.tot/40))); S.prof.coin=(S.prof.coin||0)+coin; }
-  K.plays++; K.ok+=PRX.ok; K.all+=PRX.v.length; if(K.best==null||PRX.tot>K.best) K.best=PRX.tot; saveProfile();
+  K.plays++; K.ok+=PRX.ok; qtEv('prt',PRX.ok); K.all+=PRX.v.length; if(K.best==null||PRX.tot>K.best) K.best=PRX.tot; saveProfile();
   PRX.st='done'; PRX.coin=coin; renderSheet(); sfx(PRX.ok===3?'fanfare':'open'); if(PRX.ok===3) confetti(); }
 const prtYen = v => (v<0?'−':'+')+'¥'+Math.abs(v).toLocaleString();
 const prtTag = R => R>=150?['円安','yasu','1ドルを買うのに円がたくさん必要']:R<=130?['円高','taka','少しの円で1ドルが買える']:['ふつう','mid','円安でも円高でもない'];
@@ -8233,7 +8260,7 @@ async function phbShoot(){ if(PHX.busy) return; PHX.busy=true; sfx('flip'); hapt
   const fl=document.createElement('div'); fl.className='phb-flash'; document.body.appendChild(fl); setTimeout(()=>fl.remove(),700);
   const cv=await phbDraw(1); PHX.busy=false;
   CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'📷 写真館の記念写真', alt:`${PHB_BG[PHX.bg].n}の街で撮った記念写真：${PHB_CAP[PHX.cap]}`, name:`azakei-photo-${todayKey()}.png`, note:'保存して、友だちやおうちの人に見せてね。帽子はぼうし屋でかえられるよ。'};
-  openSheet('card'); }
+  openSheet('card'); qtEv('phb',1); }
 function phbBody(){ const X=PHX, hat=shopEq('hat');
   const chip=(k,v,lab,on)=>`<button class="phb-ch${on?' on':''}" onclick="phbSet('${k}',${v})">${lab}</button>`;
   return `<div class="phb"><span class="label">📷 PHOTO STUDIO</span><h3 class="ttl">写真館</h3>
@@ -8246,6 +8273,43 @@ function phbBody(){ const X=PHX, hat=shopEq('hat');
     <button class="btn gold big" style="width:100%" onclick="phbShoot()">📸 撮影する</button></div>`; }
 AST.push({n:'写真館',ic:'📷',c:'#4a5a7a',a:'#ffe08a',h:108,f:()=>phbOpen(),b:()=>0});
 try{ SMAP_G[2].shops.push('写真館'); }catch(e){}
+/* ---- 🙋 まちのお願い：商店街の住人3人が、毎日ひとつずつお願いをしてくる。試合・せり・港・福引・写真館・屋台をつなぐ毎日の目標。
+   達成したら住人をタップしてお礼（コイン）。3つ全部でボーナス（コイン＋シール） ---- */
+const QT_WHO=[{ic:'🧓',n:'八百屋のおじいちゃん'},{ic:'👨‍🍳',n:'すし屋の大将'},{ic:'👮',n:'おまわりさん'},{ic:'👩‍🏫',n:'学校の先生'},{ic:'🧑‍🔧',n:'工場のおにいさん'},{ic:'👵',n:'駄菓子屋のおばあちゃん'}];
+const QT_T={
+  game:{t:'試合を2回あそぶ',need:2,rw:40,say:'最近 市場がにぎやかでねえ。2回くらい試合して、ようすを見てきておくれ',go:()=>{ closeSheet(); go('play'); }},
+  win:{t:'試合で1位になる',need:1,rw:60,say:'1位をとったら、商店街のみんなでお祝いしたいんだ！',go:()=>{ closeSheet(); go('play'); }},
+  mono:{t:'試合で「独占」を3回する',need:3,rw:50,say:'だれも出さない産業をねらう…それが商売のコツさ。3回見せてくれ',go:()=>{ closeSheet(); go('play'); }},
+  fuku:{t:'福引きを1回まわす',need:1,rw:30,say:'福引所のガラガラ、今週は何が残ってるかな？ 1回まわしてきて！',go:()=>openFuku()},
+  auc:{t:'せりで ¥200 以上もうける',need:1,rw:50,say:'いい魚を安く仕入れるのは、ニュースを読む力だよ。せりで腕を見せてくれ',go:()=>aucOpen()},
+  prt:{t:'港の3航海で、2回以上「いちばんもうかる船」を出す',need:1,rw:50,say:'円安と円高、どっちが輸出に有利か…港でためしてきてごらん',go:()=>prtOpen()},
+  phb:{t:'写真館で記念写真をとる',need:1,rw:30,say:'商店街のアルバムを作ってるの。あなたの写真も1枚ちょうだい！',go:()=>phbOpen()},
+  yt:{t:'屋台を1回ひらく',need:1,rw:40,say:'きょうの天気で何が売れるかな？ 屋台をひらいて ためしてごらん',go:()=>openYatai()}};
+const QT_AT=[1,4,7];
+function qtS(){ const P=S.prof, t=todayKey(), st=P.st||{};
+  if(!P.qt || P.qt.d!==t){ const r=mulberry(t*13+7), keys=Object.keys(QT_T).sort(()=>r()-.5).slice(0,3), who=QT_WHO.slice().sort(()=>r()-.5).slice(0,3);
+    P.qt={d:t, bonus:false, list:keys.map((k,i)=>({k, w:QT_WHO.indexOf(who[i]), base:qtBase(k), ev:0, got:false}))}; }
+  return P.qt; }
+function qtBase(k){ const P=S.prof, st=P.st||{}; return k==='game'?st.games||0 : k==='win'?st.wins||0 : k==='mono'?st.mono||0 : k==='fuku'?((P.fk&&P.fk.tot)||0) : k==='yt'?((P.yt&&P.yt.plays)||0) : 0; }
+function qtProg(q){ const T=QT_T[q.k]; const v=['game','win','mono','fuku','yt'].includes(q.k) ? qtBase(q.k)-q.base : q.ev; return Math.max(0,Math.min(T.need,v)); }
+const qtDone = q => qtProg(q)>=QT_T[q.k].need;
+function qtEv(k,v){ try{ const Q=qtS(); Q.list.forEach(q=>{ if(q.k!==k) return; if((k==='auc'&&v>=200)||(k==='prt'&&v>=2)||k==='phb') q.ev=1; }); saveProfile(); }catch(e){} }
+function qtNpc(i){ if(!S.prof || nbNew()) return ''; const n=QT_AT.indexOf(i); if(n<0) return ''; const Q=qtS(), q=Q.list[n]; if(!q) return ''; const W=QT_WHO[q.w], d=qtDone(q);
+  return `<button class="qt-npc${q.got?' got':d?' ok':''}" onclick="event.stopPropagation();qtOpen(${n})" aria-label="${W.n}のお願い${q.got?'（おわり）':d?'（達成！）':''}"><i class="qt-bub">${q.got?'✔':d?'🎁':'！'}</i><span>${W.ic}</span></button>`; }
+let QTX={f:-1};
+function qtOpen(n){ QTX={f:n==null?-1:n}; openSheet('qt'); sfx('open'); }
+function qtClaim(n){ const Q=qtS(), q=Q.list[n]; if(!q || q.got || !qtDone(q)) return; q.got=true; const rw=QT_T[q.k].rw; S.prof.coin=(S.prof.coin||0)+rw; saveProfile();
+  sfx('coin'); haptic(20); toast(`${QT_WHO[q.w].n}「ありがとう！」 🪙+${rw}`); renderSheet(); setTimeout(()=>{ const el=document.querySelector(`.qt-card[data-n="${n}"]`); if(el) burstAt(el,['#ffc83a','#fff','#7cf29a'],24); },40); }
+function qtBonus(){ const Q=qtS(); if(Q.bonus || !Q.list.every(q=>q.got)) return; Q.bonus=true; S.prof.coin=(S.prof.coin||0)+100; let st=null; try{ st=stkGain('star'); }catch(e){} saveProfile();
+  sfx('fanfare'); haptic(40); confetti(); toast('まちのみんなから お礼！ 🪙+100'+(st?' ＋シール1枚':'')); renderSheet(); }
+function qtBody(){ const Q=qtS(), all=Q.list.every(q=>q.got), cnt=Q.list.filter(q=>q.got).length;
+  return `<div class="qtw"><span class="label">🙋 TOWN REQUESTS · ${cnt}/3</span><h3 class="ttl">まちのお願い</h3>
+    ${Q.list.map((q,n)=>{ const T=QT_T[q.k], W=QT_WHO[q.w], p=qtProg(q), d=p>=T.need;
+      return `<div class="qt-card${QTX.f===n?' focus':''}${q.got?' got':d?' ok':''}" data-n="${n}"><div class="qt-who"><span class="qt-ava">${W.ic}</span><small>${W.n}</small></div>
+        <div class="qt-main"><p class="qt-say">「${T.say}」</p><b class="qt-t">${T.t}</b><div class="qt-bar"><i style="width:${Math.round(p/T.need*100)}%"></i><em>${p}/${T.need}</em></div>
+        ${q.got?'<span class="qt-done">✔ お礼をもらったよ</span>':d?`<button class="btn gold" onclick="qtClaim(${n})">🎁 お礼をもらう（🪙${T.rw}）</button>`:`<button class="btn ghost" onclick="QT_T['${q.k}'].go()">やりに行く ›</button>`}</div></div>`; }).join('')}
+    <div class="qt-bonus${all?' ready':''}${Q.bonus?' done':''}"><span>🎊</span><div><b>3つ全部でボーナス</b><small>🪙100 ＋ シール1枚</small></div>${Q.bonus?'<em>もらった！</em>':all?'<button class="btn gold" onclick="qtBonus()">もらう</button>':`<em>${cnt}/3</em>`}</div>
+    <p class="note">お願いは毎日かわるよ。商店街を歩いている住人の「！」をタップしても見られる。</p></div>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -9498,6 +9562,7 @@ function renderSheet(){
   else if(k==='smap') body=smapBody();
   else if(k==='hat') body=hatBody();
   else if(k==='phb') body=phbBody();
+  else if(k==='qt') body=qtBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
