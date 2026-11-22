@@ -5364,6 +5364,29 @@ html.lite #dayBg .db-in{transition:none}
 html.lite .swx-rain,html.lite .swx-haze,html.lite .swx-pud::after,html.lite .swxw-cold .ast-pedw i::after{animation:none}
 html.bg-hide .swx-rain,html.bg-hide .swx-haze{animation-play-state:paused}
 @media (prefers-reduced-motion:reduce){.swx-rain,.swx-haze,.swx-pud::after{animation:none}}
+/* 🎩 ぼうし */
+:is(.ava,.pc-ava).hat-on{position:relative;overflow:visible}
+:is(.ava,.pc-ava,.prd-ava).hat-on::after{position:absolute;left:50%;top:-.72em;z-index:2;font-family:system-ui,"Segoe UI Emoji","Apple Color Emoji",sans-serif;font-size:1.15em;line-height:1;transform:translateX(-50%) rotate(-10deg);filter:drop-shadow(0 2px 2px rgb(0 0 0 / .35));pointer-events:none}
+.prd-ava.hat-on::after{font-size:22px;top:-18px}
+.hat-cap::after{content:"🧢"}.hat-ribbon::after{content:"🎀";left:78%!important;top:-.45em!important;transform:translateX(-50%) rotate(18deg)!important}
+.hat-flower::after{content:"🌸";left:24%!important;top:-.3em!important;font-size:.85em!important}
+.hat-helmet::after{content:"⛑️"}.hat-tophat::after{content:"🎩";top:-.85em!important}.hat-grad::after{content:"🎓"}.hat-crown::after{content:"👑";transform:translateX(-50%)!important}
+.hat-shades::after{content:"🕶️";top:.42em!important;font-size:.95em!important;transform:translateX(-50%)!important}
+.sg-pc .ava.hat-on::after{font-size:.95em}
+.hatx{display:flex;flex-direction:column;gap:12px}.hatx>*{flex:none}
+.hat-mir{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:46px 12px 14px;border-radius:120px 120px 22px 22px;background:radial-gradient(90% 70% at 50% 35%,#fff8e6,#e8d6ff 60%,#b9a4e8);box-shadow:inset 0 0 0 6px #d9b86a,inset 0 0 0 9px #8a6a24,0 10px 24px rgb(0 0 0 / .35);overflow:hidden}
+.hat-light{position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgb(255 255 255 / .55) 42%,transparent 50%);animation:hatShine 3.2s ease-in-out 1}
+@keyframes hatShine{from{transform:translateX(-80%)}to{transform:translateX(80%)}}
+.hat-mir .ava.big{width:110px;height:110px;font-size:44px;align-self:center;margin:0 auto;position:relative;z-index:1}
+.hat-mir .ava.hat-pop::after{animation:hatPop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes hatPop{from{opacity:0;margin-top:-26px}to{opacity:1;margin-top:0}}
+.hat-tag{text-align:center;color:#3a2060}.hat-tag b{display:block;font-size:17px}.hat-tag small{font-size:12px;font-weight:700;opacity:.8}
+.hat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.hat-it{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 8px;border:0;border-radius:14px;cursor:pointer;color:inherit;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.hat-it.on{box-shadow:inset 0 0 0 2.5px var(--gold);background:linear-gradient(180deg,rgb(255 200 58 / .16),var(--panel2))}
+.hat-it.eq small{color:#2fd47a}
+.hat-ic{font-size:30px;line-height:1.1}.hat-it b{font-size:12px}.hat-it small{font-size:11px;font-weight:800;opacity:.85}
+@media (prefers-reduced-motion:reduce){.hat-light,.hat-mir .ava.hat-pop::after{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6456,7 +6479,7 @@ function sgBody(){
         <div class="sg-dice" aria-hidden="true"><div class="sg-tilt"><div class="sg-cube" id="sgCube" style="transform:${sgRot(X.face||1,X.spin||0)}">${[1,2,3,4,5,6].map(sgFace).join('')}</div></div></div>
         <span class="sg-cnt">🎲 × <b id="sgCnt">${g.dice||0}</b></span>
         <button class="btn gold sg-roll" id="sgRollBtn" onclick="sgRoll()" ${(g.dice||0)<=0||g.q||busy?'disabled':''}>${g.q?'クイズに答えてね':(g.dice||0)>0?'サイコロをふる':'サイコロなし'}</button></div>
-      <div class="sg-pc" style="--r:${pr};--c:${pc}" aria-label="あなたのコマ"><span class="ava" style="--s:${AVA_COLORS[(P.color||0)%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span></div>
+      <div class="sg-pc" style="--r:${pr};--c:${pc}" aria-label="あなたのコマ"><span class="ava${hatc()}" style="--s:${AVA_COLORS[(P.color||0)%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span></div>
     </div>
     <div class="sg-ev" id="sgEv" aria-live="polite">${qr}${evs}${quiz}</div>
     <div class="sg-info"><div class="sg-laps">${[1,2,3].map(k=>`<i class="${(g.lap||0)>=k?'on':''}">${k}周</i>`).join('<span></span>')}<b>${g.ms3?'🏆 ゴール！':'3周で 🪙+100'}</b></div>
@@ -7943,7 +7966,7 @@ function prdHtml(){ const p=prdLive(); if(!p) return '';
   if(!run) return ban;
   const d=`animation-delay:-${(el/1000).toFixed(2)}s`, cols=['#ffc83a','#ff5a76','#4fe3ff','#7cf29a','#c58cff','#fff'];
   const cf=Array.from({length:16},(_,i)=>`<i class="prd-cf" style="left:${(i*6.3+3)%100}%;--c:${cols[i%6]};animation-delay:${(i%8)*.45-(el/1000)}s"></i>`).join('');
-  return ban+`<div class="prd" aria-hidden="true">${cf}<div class="prd-tr" style="${d}"><i class="prd-m">🎌</i><i class="prd-m">🥁</i><i class="prd-m">🎺</i><div class="prd-car"><i class="prd-cup">🏆</i><span class="prd-ava" style="--s:${AVA_COLORS[(P.color||0)%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span><b>優勝</b><i class="prd-wh"></i><i class="prd-wh r"></i></div><i class="prd-m">🎉</i><i class="prd-m">🙌</i></div></div>`; }
+  return ban+`<div class="prd" aria-hidden="true">${cf}<div class="prd-tr" style="${d}"><i class="prd-m">🎌</i><i class="prd-m">🥁</i><i class="prd-m">🎺</i><div class="prd-car"><i class="prd-cup">🏆</i><span class="prd-ava${hatc()}" style="--s:${AVA_COLORS[(P.color||0)%6]}">${esc(myAvatar()||initial(NET.name||'あなた'))}</span><b>優勝</b><i class="prd-wh"></i><i class="prd-wh r"></i></div><i class="prd-m">🎉</i><i class="prd-m">🙌</i></div></div>`; }
 function prdNote(){ const p=prdLive(); if(!p || !G || Date.now()-p.t>600e3) return '';
   return `<div class="prd-note"><span>🎊</span><p><b>優勝おめでとう！</b> ホームの AZAKEI STREET で、あなたの優勝パレードが始まるよ</p></div>`; }
 /* ---- 🔔 朝市のせり：ねだんがどんどん上がって、「おりる」人が出ていく。最後まで残った人が落札。
@@ -8118,6 +8141,27 @@ function swxLayer(w){ if(!w) return ''; const k=w.k;
       : k==='sun'?'<i class="swx-sun" aria-hidden="true"></i>'
       : k==='cold'?`<i class="swx-frost" aria-hidden="true"></i>${advOn()?'':'<i class="wsnow swx-lite" aria-hidden="true"></i>'}`
       : '<i class="swx-grey" aria-hidden="true"></i>'); }
+/* ---- 🎩 ぼうし屋：アバターに帽子やアクセをつける。鏡の前で「試着」してから買える。
+   つけた帽子は、ホーム・マイページ・試合の席・プロフィールカード・優勝パレード・すごろくのコマに出る ---- */
+let HTX={try:null};
+function hatOpen(){ HTX={try:shopEq('hat')}; openSheet('hat'); sfx('open'); }
+function hatTry(id){ HTX.try=id; sfx('select'); haptic(6); renderSheet(); const m=document.querySelector('.hat-mir .ava'); if(m){ m.classList.remove('hat-pop'); void m.offsetWidth; m.classList.add('hat-pop'); } }
+function hatBuy(){ const id=HTX.try, it=SHOP.hat.find(x=>x.id===id); if(!it) return; const had=shopOwn('hat',id);
+  const before=S.prof.coin||0; shopBuy('hat',id); if(S.sheet!=='hat') return;
+  if(!had && shopOwn('hat',id)){ setTimeout(()=>{ const el=document.querySelector('.hat-mir'); burstAt(el,['#ffc83a','#fff','#ff8ad1'],30); },60); }
+  renderSheet(); }
+function hatBody(){ const P=S.prof, cur=shopEq('hat'), t=HTX.try||cur, it=SHOP.hat.find(x=>x.id===t)||SHOP.hat[0], own=shopOwn('hat',t), on=cur===t, coin=P.coin||0;
+  const ava=(id,cls)=>`<span class="ava${id==='std'?'':' hat-on hat-'+id}${cls||''}" style="--s:${AVA_COLORS[(P.color||0)%6]};grid-row:auto">${esc(myAvatar()||initial(NET.name||'あなた'))}</span>`;
+  const btn = on ? `<button class="btn big" disabled style="width:100%">つけています</button>`
+    : own ? `<button class="btn gold big" style="width:100%" onclick="hatBuy()">これをつける</button>`
+    : `<button class="btn gold big" style="width:100%" onclick="hatBuy()" ${coin<it.p?'disabled':''}>🪙 ${it.p} で買ってつける</button>`;
+  return `<div class="hatx"><div class="row spread"><span class="label">🎩 HAT SHOP</span><span class="coinbal" style="margin-right:46px">🪙 <b>${coin}</b></span></div><h3 class="ttl">ぼうし屋</h3>
+    <div class="hat-mir"><i class="hat-light" aria-hidden="true"></i>${ava(t,' big')}<div class="hat-tag"><b>${it.n}</b><small>${it.d}</small></div></div>
+    ${btn}${!own&&coin<it.p?`<p class="note" style="text-align:center">コインがあと ${it.p-coin} 足りないよ。試着は何回でもできる！</p>`:''}
+    <div class="hat-grid">${SHOP.hat.map(x=>{ const o=shopOwn('hat',x.id); return `<button class="hat-it${t===x.id?' on':''}${cur===x.id?' eq':''}" onclick="hatTry('${x.id}')"><span class="hat-ic">${x.ic||'🚫'}</span><b>${x.n}</b><small>${cur===x.id?'つけてる':o?'もってる':'🪙'+x.p}</small></button>`; }).join('')}</div>
+    <p class="note">つけた帽子は、ホーム・マイページ・試合の席・プロフィールカード・優勝パレードにも出るよ。</p></div>`; }
+AST.push({n:'ぼうし屋',ic:'🎩',c:'#7a4ac8',a:'#ffd36a',h:104,f:()=>hatOpen(),b:()=>0});
+try{ SMAP_G[2].shops.push('ぼうし屋'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -9368,6 +9412,7 @@ function renderSheet(){
   else if(k==='auc') body=aucBody();
   else if(k==='prt') body=prtBody();
   else if(k==='smap') body=smapBody();
+  else if(k==='hat') body=hatBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
@@ -9522,12 +9567,14 @@ const SHOP={
   frame:[ {id:'std',n:'なし',p:0,d:'いつものアイコン'}, {id:'gold',n:'ゴールド',p:150,d:'金の二重リング'}, {id:'fire',n:'フレイム',p:200,d:'燃えるオーラ'}, {id:'neon',n:'ネオン',p:250,d:'光る2色のライン'}, {id:'sakura',n:'さくら',p:250,d:'花びらが舞う'}, {id:'rainbow',n:'レインボー',p:400,d:'虹色に回る'} ],
   table:[ {id:'std',n:'ナイトマーケット',p:0,d:'いつもの夜の市場'}, {id:'green',n:'カジノグリーン',p:120,d:'緑のフェルトのテーブル'}, {id:'wood',n:'木目のテーブル',p:150,d:'あたたかい木の机'}, {id:'red',n:'レッドカーペット',p:200,d:'赤じゅうたんの特等席'}, {id:'space',n:'スペースステーション',p:300,d:'星空に浮かぶ取引所'}, {id:'sakura',n:'夜桜',p:null,d:'ラッキーボックス限定'},
     {id:'halloween',n:'ハロウィンナイト',p:100,d:'かぼちゃ色の満月',season:'halloween'}, {id:'xmas',n:'ホワイトクリスマス',p:100,d:'雪のふる市場',season:'xmas'}, {id:'shogatsu',n:'初売り',p:100,d:'紅白とこがねの新春',season:'newyear'} ],
+  hat:[ {id:'std',n:'なし',p:0,d:'なにもつけない',ic:''}, {id:'cap',n:'キャップ',p:60,d:'元気なトレーダー',ic:'🧢'}, {id:'ribbon',n:'リボン',p:60,d:'かわいく決める',ic:'🎀'}, {id:'flower',n:'花かざり',p:80,d:'春の市場の香り',ic:'🌸'}, {id:'helmet',n:'安全ヘルメット',p:100,d:'工場長スタイル',ic:'⛑️'}, {id:'shades',n:'サングラス',p:120,d:'相場をクールに読む',ic:'🕶️'}, {id:'tophat',n:'シルクハット',p:150,d:'大富豪の気分',ic:'🎩'}, {id:'grad',n:'角帽',p:200,d:'経済博士',ic:'🎓'}, {id:'crown',n:'王冠',p:500,d:'市場の王さま',ic:'👑'} ],
   back:[ {id:'std',n:'スタンダード',p:0,d:'いつもの裏面'}, {id:'gold',n:'ゴールド',p:80,d:'金の箔押し'}, {id:'koban',n:'小判',p:120,d:'江戸の小判柄'}, {id:'stars',n:'星空',p:150,d:'きらめく夜空'}, {id:'carbon',n:'カーボン',p:200,d:'黒くて速そう'}, {id:'rainbow',n:'レインボー',p:null,d:'ラッキーボックス限定'},
     {id:'pumpkin',n:'パンプキン',p:80,d:'ハロウィン限定',season:'halloween'}, {id:'snow',n:'スノー',p:80,d:'クリスマス限定',season:'xmas'}, {id:'kagami',n:'鏡もち',p:80,d:'お正月限定',season:'newyear'} ]
 };
 const shopEq = k => (S.prof.eq&&S.prof.eq[k])||'std';
 const shopOwn = (k,id) => id==='std' || ((S.prof.own||{})[k]||[]).includes(id);
-const frc = () => { const f=S&&S.prof?shopEq('frame'):'std'; return f==='std'?'':' fr-'+f; };
+const hatc = () => { const h=S&&S.prof?shopEq('hat'):'std'; return h==='std'?'':' hat-on hat-'+h; };
+const frc = () => { const f=S&&S.prof?shopEq('frame'):'std'; return (f==='std'?'':' fr-'+f)+hatc(); };
 const bkc = () => { const b=S&&S.prof?shopEq('back'):'std'; if(b==='mine') myBackCss(); return b==='std'?'':' bk-'+b; };
 function shopBuy(k,id){
   const it=SHOP[k].find(x=>x.id===id), P=S.prof; if(!it) return;
@@ -9549,6 +9596,7 @@ function shopPanel(){
     <p class="note">ゲームを遊ぶとコインがたまります（1位・独占・ミッション・デイリーでボーナス）。</p>
     <span class="label" style="margin-top:8px">テーブル（ゲーム中の背景）</span><div class="sp-grid">${SHOP.table.filter(x=>shopShow('table',x)).map(x=>item('table',x)).join('')}</div>
     <span class="label" style="margin-top:12px">アイコンのフレーム</span><div class="sp-grid">${SHOP.frame.map(x=>item('frame',x)).join('')}</div>
+    <span class="label" style="margin-top:12px">ぼうし・アクセ</span><button class="btn ghost" style="width:100%" onclick="hatOpen()">🎩 ぼうし屋で試着する（${SHOP.hat.length-1}種類）</button>
     <span class="label" style="margin-top:12px">カードの裏面</span>${myBackBox()}<div class="sp-grid">${SHOP.back.filter(x=>shopShow('back',x)).map(x=>item('back',x)).join('')}</div></section>`;
 }
 /* ---- リーグ戦：同じメンバーで3試合。順位でリーグポイント（5・3・2・1）を集め、合計で優勝を決める ---- */
