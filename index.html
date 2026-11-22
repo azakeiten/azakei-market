@@ -5387,6 +5387,26 @@ html.bg-hide .swx-rain,html.bg-hide .swx-haze{animation-play-state:paused}
 .hat-it.eq small{color:#2fd47a}
 .hat-ic{font-size:30px;line-height:1.1}.hat-it b{font-size:12px}.hat-it small{font-size:11px;font-weight:800;opacity:.85}
 @media (prefers-reduced-motion:reduce){.hat-light,.hat-mir .ava.hat-pop::after{animation:none}}
+/* 📷 写真館 */
+.phb{display:flex;flex-direction:column;gap:12px}.phb>*{flex:none}
+.phb-frame{position:relative;align-self:center;width:min(100%,300px);aspect-ratio:1080/1350;border-radius:6px;background:#fbf8f1;box-shadow:0 12px 26px rgb(0 0 0 / .45);transform:rotate(-1.5deg)}
+.phb-frame img{display:block;width:100%;height:100%;border-radius:6px;transition:opacity .2s}.phb-frame img.ld{opacity:.55}
+.phb-spin{position:absolute;left:50%;top:40%;width:28px;height:28px;margin:-14px;border-radius:50%;border:3px solid rgb(0 0 0 / .15);border-top-color:#4a5a7a;opacity:0;animation:phbSpin .8s linear infinite;pointer-events:none}
+.phb-frame img.ld+.phb-spin{opacity:1}
+@keyframes phbSpin{to{transform:rotate(360deg)}}
+.phb-row{display:flex;flex-direction:column;gap:6px}.phb-row>b{font-size:12.5px;opacity:.85}
+.phb-bgs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.phb-bgs::-webkit-scrollbar{display:none}
+.phb-bg{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;width:68px;padding:3px 3px 5px;border:0;border-radius:10px;cursor:pointer;color:inherit;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.phb-bg .mc-art,.phb-stage{display:grid;place-items:center;width:62px;height:52px;border-radius:7px;overflow:hidden}
+.phb-stage{font-size:26px;background:radial-gradient(circle at 50% 70%,#fff3a8,#ffb23a 45%,#7a2a00)}
+.phb-bg small{font-size:10px;font-weight:800}
+.phb-bg.on{box-shadow:inset 0 0 0 2.5px var(--gold);background:linear-gradient(180deg,rgb(255 200 58 / .18),var(--panel2))}
+.phb-chs{display:flex;flex-wrap:wrap;gap:6px}
+.phb-ch{padding:6px 12px;border:0;border-radius:99px;cursor:pointer;font-weight:800;font-size:12.5px;color:inherit;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.phb-ch.on{background:var(--gold);color:#2a1a00;box-shadow:none}
+.phb-flash{position:fixed;inset:0;z-index:9999;background:#fff;pointer-events:none;animation:phbFlash .6s ease-out both}
+@keyframes phbFlash{from{opacity:1}to{opacity:0}}
+@media (prefers-reduced-motion:reduce){.phb-flash{animation-duration:.01s}.phb-spin{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -8162,6 +8182,70 @@ function hatBody(){ const P=S.prof, cur=shopEq('hat'), t=HTX.try||cur, it=SHOP.h
     <p class="note">つけた帽子は、ホーム・マイページ・試合の席・プロフィールカード・優勝パレードにも出るよ。</p></div>`; }
 AST.push({n:'ぼうし屋',ic:'🎩',c:'#7a4ac8',a:'#ffd36a',h:104,f:()=>hatOpen(),b:()=>0});
 try{ SMAP_G[2].shops.push('ぼうし屋'); }catch(e){}
+/* ---- 📷 写真館：つながる街の絵を背景に、帽子をかぶったアバターで記念写真。ポラロイド風のフチと、フィルムカメラ風の日付。
+   背景・ポーズ・ミオといっしょ・ひとことを選んで「撮影」→ 画像を保存・共有 ---- */
+const PHB_BG=[{n:'エネルギー',i:0},{n:'金融',i:1},{n:'製造',i:2},{n:'小売',i:3},{n:'運輸',i:4},{n:'メディア',i:5},{n:'優勝ステージ',i:-1}];
+const PHB_POSE=['','✌️','👍','🙌','💪','🫶'];
+const PHB_CAP=['AZAKEI商店街にて','きょうも市場を読む！','優勝しました！','おきにいりの帽子','友だちと対戦中'];
+let PHX={bg:3,pose:1,mio:true,cap:0,busy:false}, PHB_CACHE={};
+function phbOpen(){ PHX.busy=false; openSheet('phb'); sfx('open'); setTimeout(phbPreview,30); }
+function phbSet(k,v){ PHX[k]=v; sfx('select'); haptic(5); renderSheet(); setTimeout(phbPreview,10); }
+async function phbBgImg(i){ if(PHB_CACHE[i]) return PHB_CACHE[i]; mcEnsure();
+  const host=document.getElementById('mcPano'); const svg=host&&host.closest('svg'); if(!svg) return null;
+  const im=await svgImg(`<svg viewBox="${i*630} 0 630 620" preserveAspectRatio="xMidYMid slice">${svg.innerHTML}<use href="#mcPano"/></svg>`,null,900,886);
+  return PHB_CACHE[i]=im; }
+async function phbDraw(sc){
+  try{ await document.fonts.ready; }catch(e){}
+  const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W*sc; cv.height=H*sc; const x=cv.getContext('2d'); x.scale(sc,sc);
+  const D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', B='"M PLUS Rounded 1c",sans-serif', E='"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif', P=S.prof;
+  x.fillStyle='#fbf8f1'; x.fillRect(0,0,W,H);
+  const px=60, py=60, pw=W-120, ph=W-120;
+  x.save(); x.beginPath(); x.rect(px,py,pw,ph); x.clip();
+  const bg=PHB_BG[PHX.bg];
+  if(bg.i>=0){ const im=await phbBgImg(bg.i); if(im) x.drawImage(im,px-20,py,pw+40,ph); else { x.fillStyle='#2a3a6a'; x.fillRect(px,py,pw,ph); } }
+  else { const g=x.createRadialGradient(W/2,py+ph*.62,40,W/2,py+ph*.5,ph*.8); g.addColorStop(0,'#fff3a8'); g.addColorStop(.35,'#ffb23a'); g.addColorStop(1,'#7a2a00'); x.fillStyle=g; x.fillRect(px,py,pw,ph);
+    x.translate(W/2,py+ph*.6); for(let k=0;k<24;k++){ x.rotate(Math.PI/12); x.fillStyle=k%2?'rgba(255,255,255,.16)':'rgba(255,220,120,.10)'; x.beginPath(); x.moveTo(0,0); x.lineTo(-60,-900); x.lineTo(60,-900); x.fill(); } x.setTransform(sc,0,0,sc,0,0);
+    x.fillStyle='#3a1a00'; x.fillRect(px,py+ph-150,pw,150); x.fillStyle='#ffc83a'; x.fillRect(px,py+ph-150,pw,10);
+    x.font=`90px ${E}`; x.textAlign='center'; x.fillText('🏆',px+90,py+ph-40); x.fillText('🎉',px+110,py+150); x.fillText('✨',px+pw-110,py+130); }
+  const vg=x.createRadialGradient(W/2,py+ph/2,ph*.35,W/2,py+ph/2,ph*.75); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,.35)'); x.fillStyle=vg; x.fillRect(px,py,pw,ph);
+  const cx=PHX.mio?W/2+110:W/2, cy=py+ph-300, r=165;
+  if(PHX.mio){ try{ const mi=await svgImg(face(GUIDE.n),null,400,400); if(mi){ x.save(); x.beginPath(); x.arc(W/2-210,cy+40,130,0,Math.PI*2); x.fillStyle='#ffe0ef'; x.fill(); x.lineWidth=10; x.strokeStyle='#fff'; x.stroke(); x.clip(); x.drawImage(mi,W/2-210-130,cy+40-130,260,260); x.restore(); } }catch(e){} }
+  x.save(); x.shadowColor='rgba(0,0,0,.45)'; x.shadowBlur=30; x.shadowOffsetY=12; x.beginPath(); x.arc(cx,cy,r+12,0,Math.PI*2); x.fillStyle='#fff'; x.fill(); x.restore();
+  const ag=x.createRadialGradient(cx-50,cy-60,20,cx,cy,r); ag.addColorStop(0,'#fff7d6'); ag.addColorStop(1,AVA_COLORS[(P.color||0)%6]); x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.fillStyle=ag; x.fill();
+  const av=myAvatar();
+  if(av===MY_ICON){ const im=await new Promise(rs=>{ const i=new Image(); i.onload=()=>rs(i); i.onerror=()=>rs(null); i.src=P.myIcon; }); if(im){ x.save(); x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.clip(); x.drawImage(im,cx-r,cy-r,r*2,r*2); x.restore(); } }
+  else if(av===MY_FACE){ const im=await svgImg(myFaceSvg('happy'),null,400,400); if(im){ x.save(); x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.clip(); x.drawImage(im,cx-r,cy-r,r*2,r*2); x.restore(); } }
+  else { x.textAlign='center'; x.textBaseline='middle'; x.fillStyle='#2a1a00'; x.font=`150px ${av?E:D}`; x.fillText(av||initial(NET.name||'あなた'),cx,cy+6); }
+  const hat=SHOP.hat.find(h=>h.id===shopEq('hat'));
+  if(hat&&hat.ic){ x.save(); x.textAlign='center'; x.textBaseline='middle'; const pos={ribbon:[cx+r*.72,cy-r*.78,.35,150],flower:[cx-r*.62,cy-r*.75,-.2,130],shades:[cx,cy-r*.08,0,170],crown:[cx,cy-r*1.08,0,190],tophat:[cx,cy-r*1.2,-.12,200]}[hat.id]||[cx,cy-r*1.05,-.15,190];
+    x.translate(pos[0],pos[1]); x.rotate(pos[2]); x.font=`${pos[3]}px ${E}`; x.shadowColor='rgba(0,0,0,.35)'; x.shadowBlur=10; x.fillText(hat.ic,0,0); x.restore(); }
+  if(PHX.pose){ x.save(); x.font=`130px ${E}`; x.textAlign='center'; x.textBaseline='middle'; x.translate(cx+r+70,cy+40); x.rotate(.18); x.fillText(PHB_POSE[PHX.pose],0,0); x.restore(); }
+  const d=new Date(), ds=`'${String(d.getFullYear()).slice(2)}  ${d.getMonth()+1}  ${d.getDate()}`;
+  x.save(); x.font=`600 46px "Courier New",monospace`; x.textAlign='right'; x.fillStyle='#ff8a2a'; x.shadowColor='rgba(255,120,30,.8)'; x.shadowBlur=12; x.fillText(ds,px+pw-30,py+ph-30); x.restore();
+  x.restore();
+  x.textAlign='center'; x.textBaseline='alphabetic'; x.fillStyle='#2a2a3a'; x.font=`800 60px ${B}`; x.fillText(PHB_CAP[PHX.cap],W/2,py+ph+110);
+  x.fillStyle='#8a8aa0'; x.font=`700 34px ${B}`; x.fillText(`${(NET.name||'').trim()||'あなた'} · ${myTitle()} · ${bg.n}`,W/2,py+ph+170);
+  x.fillStyle='#c8c4b8'; x.font=`28px ${D}`; x.fillText('AZAKEI MARKET · 写真館',W/2,H-36);
+  return cv; }
+async function phbPreview(){ if(S.sheet!=='phb') return; const im=document.getElementById('phbImg'); if(!im) return; im.classList.add('ld');
+  const cv=await phbDraw(.4); if(S.sheet!=='phb') return; const el=document.getElementById('phbImg'); if(el){ el.src=cv.toDataURL('image/jpeg',.85); el.classList.remove('ld'); } }
+async function phbShoot(){ if(PHX.busy) return; PHX.busy=true; sfx('flip'); haptic(30);
+  const fl=document.createElement('div'); fl.className='phb-flash'; document.body.appendChild(fl); setTimeout(()=>fl.remove(),700);
+  const cv=await phbDraw(1); PHX.busy=false;
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:'📷 写真館の記念写真', alt:`${PHB_BG[PHX.bg].n}の街で撮った記念写真：${PHB_CAP[PHX.cap]}`, name:`azakei-photo-${todayKey()}.png`, note:'保存して、友だちやおうちの人に見せてね。帽子はぼうし屋でかえられるよ。'};
+  openSheet('card'); }
+function phbBody(){ const X=PHX, hat=shopEq('hat');
+  const chip=(k,v,lab,on)=>`<button class="phb-ch${on?' on':''}" onclick="phbSet('${k}',${v})">${lab}</button>`;
+  return `<div class="phb"><span class="label">📷 PHOTO STUDIO</span><h3 class="ttl">写真館</h3>
+    <div class="phb-frame"><img id="phbImg" class="ld" alt="記念写真のプレビュー" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="><i class="phb-spin" aria-hidden="true"></i></div>
+    <div class="phb-row"><b>背景</b><div class="phb-bgs">${PHB_BG.map((b,i)=>`<button class="phb-bg${X.bg===i?' on':''}" onclick="phbSet('bg',${i})" aria-label="${b.n}">${b.i>=0?mcArt(b.i):'<span class="phb-stage">🏆</span>'}<small>${b.n}</small></button>`).join('')}</div></div>
+    <div class="phb-row"><b>ポーズ</b><div class="phb-chs">${PHB_POSE.map((p,i)=>chip('pose',i,p||'なし',X.pose===i)).join('')}</div></div>
+    <div class="phb-row"><b>ひとこと</b><div class="phb-chs">${PHB_CAP.map((c,i)=>chip('cap',i,c,X.cap===i)).join('')}</div></div>
+    <div class="phb-row"><b>ミオ</b><div class="phb-chs">${chip('mio','true','🎀 いっしょに撮る',X.mio)}${chip('mio','false','ひとりで',!X.mio)}</div></div>
+    ${hat==='std'?`<button class="btn ghost" style="width:100%" onclick="hatOpen()">🎩 帽子をかぶって撮る（ぼうし屋へ）</button>`:''}
+    <button class="btn gold big" style="width:100%" onclick="phbShoot()">📸 撮影する</button></div>`; }
+AST.push({n:'写真館',ic:'📷',c:'#4a5a7a',a:'#ffe08a',h:108,f:()=>phbOpen(),b:()=>0});
+try{ SMAP_G[2].shops.push('写真館'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -9413,6 +9497,7 @@ function renderSheet(){
   else if(k==='prt') body=prtBody();
   else if(k==='smap') body=smapBody();
   else if(k==='hat') body=hatBody();
+  else if(k==='phb') body=phbBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
