@@ -4902,7 +4902,7 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 @keyframes tscCity{from{transform:translateY(40%)}}
 .tsc-in{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 16px;max-width:520px;width:100%;text-align:center}
 .tsc-logo{position:relative;display:flex;flex-direction:column;align-items:center;line-height:.95;overflow:hidden;padding:4px 10px}
-.tsc-logo b{display:block;font-family:var(--display);font-weight:400;letter-spacing:.04em;font-size:clamp(44px,15vw,84px);text-shadow:0 6px 0 rgb(0 0 0 / .25)}
+.tsc-logo b{display:block;white-space:nowrap;font-family:var(--display);font-weight:400;letter-spacing:.02em;font-size:clamp(34px,12.5vw,84px);text-shadow:0 6px 0 rgb(0 0 0 / .25)}
 .tsc-w2{color:#ffc83a}.tsc-logo i{display:inline-block;font-style:normal;animation:tscDrop .6s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(.15s + var(--i) * .07s)}
 @keyframes tscDrop{0%{transform:translateY(-120%) rotate(-12deg);opacity:0}100%{transform:none;opacity:1}}
 .tsc-shine{position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgb(255 255 255 / .55) 50%,transparent 65%);transform:translateX(-120%);animation:tscShine 2.6s 1.3s ease-in-out infinite;mix-blend-mode:overlay;pointer-events:none}
@@ -5150,6 +5150,28 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 #dayBg .db-clock.pop{animation:sgIn .5s both}
 html.lite #dayBg .db-in{transition:none}
 @media (prefers-reduced-motion:reduce){#dayBg .db-in{transition:none}}
+/* 🎫 シーズンパス */
+.ssp-ban{position:relative;display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;padding:12px 16px;border:0;border-radius:18px;color:#fff;text-align:left;cursor:pointer;background:linear-gradient(120deg,var(--c1),var(--c2));box-shadow:0 8px 18px rgb(0 0 0 / .28),inset 0 0 0 1px rgb(255 255 255 / .25)}
+.ssp-ban::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(105deg,transparent 40%,rgb(255 255 255 / .25) 50%,transparent 60%);background-size:250% 100%;animation:pcHolo 4s linear infinite;pointer-events:none}
+.ssp-bi{font-size:30px;filter:drop-shadow(0 3px 4px rgb(0 0 0 / .3))}.ssp-bt{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}.ssp-bt small{font-size:11px;font-weight:800;opacity:.9}.ssp-bt b{font-family:var(--display);font-weight:400;font-size:18px}
+.ssp-bar{display:block;height:8px;border-radius:99px;background:rgb(0 0 0 / .25);overflow:hidden}.ssp-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#fff3a8,#ffc83a)}.ssp-bar.big{height:12px;background:rgb(255 255 255 / .08)}
+.ssp-go{font-size:26px;font-weight:900;opacity:.8}.ssp-ban .sg-badge{position:static}
+.ssp>*{flex:none}
+.ssp-head{display:flex;align-items:center;gap:14px;padding:16px;border-radius:20px;color:#fff;background:linear-gradient(120deg,var(--c1),var(--c2));box-shadow:inset 0 0 0 1px rgb(255 255 255 / .25)}
+.ssp-hi{font-size:46px;filter:drop-shadow(0 4px 6px rgb(0 0 0 / .3))}.ssp-head small{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;opacity:.9}.ssp-head b{display:block;font-family:var(--display);font-weight:400;font-size:24px}.ssp-head span{font-size:12px;font-weight:700}
+.ssp-pts{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;margin:12px 0}.ssp-pts b{grid-row:span 2;font-family:var(--display);font-weight:400;font-size:26px;color:#ffc83a}.ssp-pts small{font-size:11.5px;color:var(--muted)}
+.ssp-track{display:flex;gap:8px;overflow-x:auto;padding:14px 4px 10px;margin:0 -4px 10px;scrollbar-width:thin}
+.ssp-node{position:relative;flex:none;width:82px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.ssp-node::before{content:"";position:absolute;left:-8px;right:50%;top:12px;height:4px;background:var(--line)}.ssp-node:first-child::before{display:none}.ssp-node.ok::before{background:#ffc83a}
+.ssp-lv{position:relative;z-index:1;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:900;background:var(--panel2);box-shadow:inset 0 0 0 2px var(--line);color:var(--muted)}
+.ssp-node.ok .ssp-lv{background:#ffc83a;color:#3a2300;box-shadow:none}.ssp-node.now .ssp-lv{box-shadow:0 0 0 3px #fff,0 0 14px #ffc83a;animation:wToday 1.4s ease-in-out infinite}
+.ssp-rw{position:relative;width:100%;height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px 4px;border:0;border-radius:14px;color:var(--ink);background:linear-gradient(150deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line)}
+.ssp-rw i{font-style:normal;font-size:28px}.ssp-rw small{font-size:10px;font-weight:800;line-height:1.3;text-align:center;color:var(--muted)}
+.ssp-node.big .ssp-rw{box-shadow:inset 0 0 0 2px #ffc83a,0 0 12px rgb(255 200 58 / .35)}
+.ssp-node.ok:not(.got) .ssp-rw{cursor:pointer;background:linear-gradient(150deg,#fff3c4,#ffd36a);color:#3a2300;animation:sgBadge 1.6s ease-in-out infinite}.ssp-node.ok:not(.got) .ssp-rw small{color:#5a3a00}
+.ssp-node.got .ssp-rw{opacity:.55}
+.ssp-rw em{position:absolute;top:-8px;right:-4px;font-style:normal;font-size:10px;font-weight:900;padding:2px 6px;border-radius:99px;background:#2fd47a;color:#06331b}.ssp-rw em.go{background:#e8364a;color:#fff}
+@media (prefers-reduced-motion:reduce){.ssp-ban::after,.ssp-node.now .ssp-lv,.ssp-node.ok:not(.got) .ssp-rw{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7617,6 +7639,35 @@ function dayBgSync(){
 }
 function toggleDayBg(){ S.dayBg = S.dayBg===false; save('azakei-daybg', S.dayBg?1:0); renderSheet(); }
 const __renderDB=render; render=function(){ const r=__renderDB.apply(this,arguments); try{ dayBgSync(); }catch(e){} return r; };
+/* ---- 🎫 シーズンパス（無料）：3か月ごとのシーズン。いろいろな遊びの「発展ポイント」の増えた分×5 がシーズンポイント。
+   30段のごほうび（コイン・サイコロ・シールパック）。10・20・30段目は大きなごほうび。シーズンが変わるとリセット ---- */
+const SSP_TIER=30, SSP_N=30;
+function sspSeason(d){ d=d||new Date(); const m=d.getMonth()+1, y=d.getFullYear();
+  const q = m>=11||m<=1 ? {k:'w',n:'ウィンター',ic:'❄️',c1:'#2a5aa8',c2:'#7ac8ff',fm:11,tm:1} : m<=4 ? {k:'sp',n:'スプリング',ic:'🌸',c1:'#c2448a',c2:'#ffb3d6',fm:2,tm:4} : m<=7 ? {k:'su',n:'サマー',ic:'🌻',c1:'#e07a1a',c2:'#ffd36a',fm:5,tm:7} : {k:'au',n:'オータム',ic:'🍁',c1:'#a8441a',c2:'#ff9a5a',fm:8,tm:10};
+  const sy = q.k==='w' && m<=1 ? y-1 : y, ey = q.k==='w' ? sy+1 : y, end=new Date(ey, q.tm, 0, 23, 59);
+  return {...q, id:q.k+sy, y:sy, end}; }
+function sspS(){ const P=S.prof, se=sspSeason(), t=stLv().t; if(!P.ssp || P.ssp.id!==se.id) P.ssp={id:se.id, base:t, got:{}}; return P.ssp; }
+function sspPts(){ const R=sspS(); return Math.max(0,(stLv().t-R.base)*5); }
+function sspTier(){ return Math.min(SSP_N, Math.floor(sspPts()/SSP_TIER)); }
+function sspReward(i){ if(i===9) return {ic:'💰',n:'コイン 100',coin:100,big:1}; if(i===19) return {ic:'💎',n:'コイン 200＋パック',coin:200,pack:1,big:1}; if(i===29) return {ic:'🏆',n:'完走！ コイン 300＋パック2',coin:300,pack:2,big:1};
+  if(i%5===4) return {ic:'🏷️',n:'シールパック',pack:1}; if(i%3===2) return {ic:'🎲',n:'サイコロ 2',die:2}; return {ic:'🪙',n:`コイン ${20+i*2}`,coin:20+i*2}; }
+function sspGive(i){ const z=sspReward(i), P=S.prof; if(z.coin) P.coin=(P.coin||0)+z.coin; if(z.die){ try{ const g=sgS(); g.dice=Math.min(SG_MAX,(g.dice||0)+z.die); }catch(e){} } if(z.pack){ for(let k=0;k<z.pack;k++){ try{ stkGain('star'); }catch(e){} } } return z; }
+function sspClaim(i){ const R=sspS(); if(i>=sspTier() || R.got[i]) return; const z=sspGive(i); R.got[i]=1; saveProfile(); sfx(z.big?'fanfare':'coin'); haptic(z.big?[20,40,20]:12); if(z.big){ vo('m_panpaka'); if(!reduced()) confetti(); } else vo('m_yatta'); toast(`🎫 ${i+1}段目：${z.ic} ${z.n}`); renderSheet(); }
+function sspClaimAll(){ const R=sspS(), n=sspTier(); let c=0, big=false; for(let i=0;i<n;i++){ if(!R.got[i]){ const z=sspGive(i); R.got[i]=1; c++; if(z.big) big=true; } } if(!c) return; saveProfile(); sfx('fanfare'); haptic([20,40,20]); vo('m_banzai'); if(!reduced()) confetti(); toast(`🎫 ${c}段ぶんのごほうびを受け取った！`); renderSheet(); }
+function sspReady(){ const R=sspS(), n=sspTier(); let c=0; for(let i=0;i<n;i++) if(!R.got[i]) c++; return c; }
+function openSsp(){ sspS(); openSheet('sspass'); sfx('open'); setTimeout(()=>{ const el=document.querySelector('.ssp-node.now'); if(el) el.scrollIntoView({inline:'center',block:'nearest'}); },60); }
+function sspBanner(){ const se=sspSeason(), pts=sspPts(), t=sspTier(), rd=sspReady(), p=t>=SSP_N?100:Math.round((pts%SSP_TIER)/SSP_TIER*100), days=Math.max(0,Math.ceil((se.end-new Date())/864e5));
+  return `<button class="ssp-ban" style="--c1:${se.c1};--c2:${se.c2}" onclick="openSsp()"><span class="ssp-bi">${se.ic}</span><span class="ssp-bt"><small>${se.n}パス · のこり${days}日</small><b>Lv.${t} / ${SSP_N}</b><span class="ssp-bar"><i style="width:${p}%"></i></span></span>${rd?`<span class="sg-badge">${rd}</span>`:'<span class="ssp-go">›</span>'}</button>`; }
+function sspBody(){
+  const se=sspSeason(), R=sspS(), pts=sspPts(), t=sspTier(), rd=sspReady(), days=Math.max(0,Math.ceil((se.end-new Date())/864e5));
+  const nodes=Array.from({length:SSP_N},(_,i)=>{ const z=sspReward(i), reached=i<t, got=R.got[i];
+    return `<div class="ssp-node${reached?' ok':''}${got?' got':''}${i===t?' now':''}${z.big?' big':''}"><span class="ssp-lv">${i+1}</span><button class="ssp-rw" ${reached&&!got?`onclick="sspClaim(${i})"`:'disabled'} aria-label="${i+1}段目 ${z.n}"><i>${z.ic}</i><small>${z.n}</small>${got?'<em>✓</em>':reached?'<em class="go">GET</em>':''}</button></div>`; }).join('');
+  return `<div class="ssp"><div class="ssp-head" style="--c1:${se.c1};--c2:${se.c2}"><span class="ssp-hi">${se.ic}</span><div><small>SEASON PASS · ${se.y}</small><b>${se.n}シーズン</b><span>のこり ${days} 日</span></div></div>
+    <div class="ssp-pts"><b>Lv.${t}</b><span class="ssp-bar big"><i style="width:${t>=SSP_N?100:Math.round((pts%SSP_TIER)/SSP_TIER*100)}%"></i></span><small>${t>=SSP_N?'完走！':`次の段まで ${SSP_TIER-pts%SSP_TIER} pt`} · シーズンポイント ${pts}</small></div>
+    <div class="ssp-track" role="list">${nodes}</div>
+    ${rd?`<button class="btn gold big" style="width:100%" onclick="sspClaimAll()">🎁 ${rd}段ぶんをまとめて受け取る</button>`:''}
+    <p class="note">シーズンポイントは、試合・屋台・工場・農園・旅・シール集め など、いろいろな遊びで増えます（商店街の発展ポイント1 = 5pt）。試合1回でだいたい10pt、3試合で1段。${se.n}シーズンは ${se.end.getMonth()+1}月${se.end.getDate()}日まで。</p></div>`;
+}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -8859,6 +8910,7 @@ function renderSheet(){
   else if(k==='stlv') body=stlvBody();
   else if(k==='pcard') body=pcardBody();
   else if(k==='deck') body=deckBody();
+  else if(k==='sspass') body=sspBody();
   else if(k==='srly') body=srlyBody();
   else if(k==='pet') body=petBody();
   else if(k==='kgy') body=kgyBody();
@@ -14076,7 +14128,7 @@ function homeView(){
         ${heroStory()}
       </div>
       <div class="showcase" aria-hidden="true"><div class="glow"></div>${show}</div></section>`}
-  ${!nbNew()?astView():''}${wrNotice()}${townLive()}
+  ${!nbNew()?sspBanner()+astView():''}${wrNotice()}${townLive()}
   ${nbPath()}${nbUnlocked()}
   ${nameCard()}
   ${nbNew()?`${skyScene()}${quickMenu()}${nbLocked()}`:`${hsec('🎯','きょうのおすすめ','ミオが選んだ、次にやること')}
