@@ -5139,6 +5139,17 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 .dk-c{position:relative;padding:0;border:0;background:none;cursor:pointer;border-radius:6px;transition:transform .15s}.dk-c svg{width:100%;height:auto;display:block}
 .dk-c.on{transform:translateY(-3px)}.dk-c.on svg{filter:drop-shadow(0 0 0 3px #ffc83a);outline:3px solid #ffc83a;outline-offset:1px;border-radius:6px}
 .dk-c i{position:absolute;right:-4px;top:-6px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:900;font-size:13px;color:#3a2300;background:#ffc83a;box-shadow:0 2px 4px rgb(0 0 0 / .3)}
+/* 🌅 試合の一日 */
+#dayBg{position:fixed;left:0;right:0;top:0;height:min(52vw,360px);z-index:0;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .8s;-webkit-mask-image:linear-gradient(180deg,#000 35%,transparent);mask-image:linear-gradient(180deg,#000 35%,transparent)}
+#dayBg.on{opacity:.5}
+#dayBg .db-in{position:absolute;left:0;top:0;width:300%;height:100%;transform:translateX(calc(var(--p,0) * -66.667%));transition:transform 2.4s cubic-bezier(.45,0,.2,1)}
+#dayBg svg{width:100%;height:100%;display:block}
+#dayBg.night{opacity:.62}
+#dayBg .db-clock{display:none;position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:calc(env(safe-area-inset-top,0px) + 64px);padding:3px 10px;border-radius:99px;font:800 12px var(--body,sans-serif);color:#fff;background:rgb(10 12 34 / .55);letter-spacing:.04em}
+#dayBg .db-clock::before{content:"⏰ "}
+#dayBg .db-clock.pop{animation:sgIn .5s both}
+html.lite #dayBg .db-in{transition:none}
+@media (prefers-reduced-motion:reduce){#dayBg .db-in{transition:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7592,6 +7603,20 @@ function deckBody(){
     ${own.length<DK_N?`<p class="note">デッキを作るには、クラシック・EXのNEWSを ${DK_N} 枚集めよう（いま ${own.length} 枚）。CPU戦やクラシックEXで遊ぶと集まるよ。</p>`:''}
     <div class="dk-own">${own.map(i=>`<button class="dk-c${D.includes(i)?' on':''}" onclick="dkToggle(${i})" aria-pressed="${D.includes(i)}">${PCARD.news(i,0,true)}${D.includes(i)?'<i>✓</i>':''}</button>`).join('')}</div></div>`;
 }
+/* ---- 🌅 試合の一日：試合中、うしろにつながる街の絵がうっすら。ターンが進むと朝 → 昼 → 夕方 → 夜へ流れる（1つの絵を横にずらすだけ） ---- */
+function dayBgSync(){
+  let el=document.getElementById('dayBg');
+  const on = !!(G && G.players && S.dayBg!==false);
+  if(!on){ if(el) el.classList.remove('on'); return; }
+  if(!el){ mcEnsure(); el=document.createElement('div'); el.id='dayBg'; el.setAttribute('aria-hidden','true');
+    el.innerHTML='<div class="db-in"><svg viewBox="0 0 3780 620" preserveAspectRatio="xMinYMin slice"><use href="#mcPano"/></svg></div><span class="db-clock"></span>'; document.body.prepend(el); }
+  const N=Math.max(1,totalTurns()), t=((G.round||0)*TURNS+(G.turn||0)), p=G.phase==='final'?1:Math.min(1,t/Math.max(1,N-1));
+  el.style.setProperty('--p',p.toFixed(3)); el.classList.add('on'); el.classList.toggle('night',p>.8);
+  const hh=['9:00','11:00','13:30','15:30'], lab=G.phase==='final'?'15:30 大引け':N===4?`${hh[Math.min(3,t)]}`:`${Math.round(p*100)}%`;
+  const ck=el.querySelector('.db-clock'); if(ck && ck.textContent!==lab){ ck.textContent=lab; ck.classList.remove('pop'); void ck.offsetWidth; ck.classList.add('pop'); }
+}
+function toggleDayBg(){ S.dayBg = S.dayBg===false; save('azakei-daybg', S.dayBg?1:0); renderSheet(); }
+const __renderDB=render; render=function(){ const r=__renderDB.apply(this,arguments); try{ dayBgSync(); }catch(e){} return r; };
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -7769,7 +7794,7 @@ function start(data){
   applyLook();
   if(S.team===undefined) S.team=!!load('azakei-team'); if(S.tts===undefined) S.tts=!!load('azakei-tts'); if(S.speed===undefined) S.speed=!!load('azakei-speed');
   if(S.league===undefined) S.league=!!load('azakei-league-on');
-  liteInit(); if(S.titleOn===undefined){ const v=load('azakei-titleon'); S.titleOn = v==null ? true : !!v; }
+  liteInit(); if(S.dayBg===undefined){ const v=load('azakei-daybg'); S.dayBg = v==null ? true : !!v; } if(S.titleOn===undefined){ const v=load('azakei-titleon'); S.titleOn = v==null ? true : !!v; }
   if(S.tacOn===undefined) S.tacOn=!!load('azakei-tac'); if(S.closeX===undefined) S.closeX=!!load('azakei-closex'); if(S.chain===undefined) S.chain=!!load('azakei-chain'); if(S.draft===undefined) S.draft=!!load('azakei-draft'); if(S.sd===undefined) S.sd=!!load('azakei-sd'); if(S.bn===undefined) S.bn=!!load('azakei-bn'); if(S.b4===undefined){ const b=load('azakei-b4'); S.b4 = b===null ? true : !!b; } if(S.futOn===undefined) S.futOn=!!load('azakei-fut'); if(S.hmMore===undefined) S.hmMore=!!load('azakei-hmmore'); if(S.pwOn===undefined) S.pwOn=!!load('azakei-pw'); if(S.yomi===undefined) S.yomi=!!load('azakei-yomi'); if(S.lg===undefined) S.lg=load('azakei-league')||null;
   if(S.booth===undefined) S.booth=!!load('azakei-booth');
   if(S.dockMin===undefined){ const d=load('azakei-dockmin'); S.dockMin = d===null ? ((S.rec&&S.rec.games)||0)>=5 : !!d; S.dockTipShown=!!load('azakei-docktip'); }
@@ -14152,7 +14177,7 @@ function settingsBody(){
       <div class="lk-fs"><b>文字の大きさ</b><div class="lk-seg" role="radiogroup" aria-label="文字の大きさ">${['ふつう','大きい','特大'].map((n,i)=>`<button role="radio" aria-checked="${S.fs===i}" class="${S.fs===i?'on':''}" onclick="setFs(${i})" style="font-size:${13+i*2}px">${n}</button>`).join('')}</div></div>
       ${sw(!!S.hc,'toggleHc()','くっきり表示','うすい文字や線を濃くして、見分けやすくする')}
       ${sw(!!S.furi,'toggleFuri()','ふりがな','むずかしい言葉（経済・産業・独占など）にふりがなをつける')}
-      ${sw(S.titleOn!==false,'toggleTitle()','🎬 タイトル画面','アプリを開いたとき、タイトル画面と「きょうのおしらせ」を出す')}${sw(!!S.lite,'toggleLite()','⚡ かるいモード','ずっと動き続ける飾りのアニメーションとぼかしを止めて、動作を軽くする（古いスマホにおすすめ）')}${sw(S.voice!==false,'toggleVoice()','🗣️ アナウンス','カウントダウン・順位・お知らせを、落ち着いた女性の声で（効果音の「音」がオンのとき）')}${sw(S.voiceMio!==false,'toggleVoiceMio()','💬 ミオのリアクション','独占・被り・結果発表・あいさつなどに、ミオが声でリアクション')}${sw(S.vcap!==false,'toggleVcap()','💭 声の字幕','声といっしょに、セリフを画面に小さく表示')}${'speechSynthesis' in window?sw(!!S.mioVoice,'toggleMioVoice()','ミオの声','遊び方やけいざい教室で、ミオのセリフを自動で読み上げる（🔊ボタンでいつでも読める）'):''}
+      ${sw(S.dayBg!==false,'toggleDayBg()','🌅 試合の一日','試合中、うしろに街の絵を出す。ターンが進むと朝から夜へ')}${sw(S.titleOn!==false,'toggleTitle()','🎬 タイトル画面','アプリを開いたとき、タイトル画面と「きょうのおしらせ」を出す')}${sw(!!S.lite,'toggleLite()','⚡ かるいモード','ずっと動き続ける飾りのアニメーションとぼかしを止めて、動作を軽くする（古いスマホにおすすめ）')}${sw(S.voice!==false,'toggleVoice()','🗣️ アナウンス','カウントダウン・順位・お知らせを、落ち着いた女性の声で（効果音の「音」がオンのとき）')}${sw(S.voiceMio!==false,'toggleVoiceMio()','💬 ミオのリアクション','独占・被り・結果発表・あいさつなどに、ミオが声でリアクション')}${sw(S.vcap!==false,'toggleVcap()','💭 声の字幕','声といっしょに、セリフを画面に小さく表示')}${'speechSynthesis' in window?sw(!!S.mioVoice,'toggleMioVoice()','ミオの声','遊び方やけいざい教室で、ミオのセリフを自動で読み上げる（🔊ボタンでいつでも読める）'):''}
       ${sw(!!S.cvd,'toggleCvd()','色の見分けサポート','色の小さな印に、産業の頭文字（エ・金・製・小・運・メ）を入れる')}
       ${sw(stepsOn(),'toggleSteps()','操作ガイド','試合中に「いまやること」と、案内役ミオのひとことを表示する')}
       <button class="swrow" onclick="openSheet('terms')"><span><b>ことばの説明</b><span class="note">NEWS・独占・被り・大引けなどを、絵つきでやさしく説明</span></span><span class="xf-go">›</span></button></div>
