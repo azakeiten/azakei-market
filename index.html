@@ -4985,6 +4985,7 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 .ast-lv{position:relative;overflow:hidden;margin-left:6px;padding:2px 9px;border:0;border-radius:99px;font-weight:900;font-size:11px;color:#fff;isolation:isolate;background:rgb(255 200 58 / .18);box-shadow:inset 0 0 0 1px #ffc83a}
 .ast-lv i{position:absolute;left:0;top:0;bottom:0;z-index:-1;background:rgb(255 200 58 / .55)}
 .ast-head{align-items:center}.ast-head small{margin-left:auto}
+.ast-head .label{white-space:nowrap}@media (max-width:440px){.ast-head small{display:none}.ast-head{justify-content:flex-start;gap:6px}}
 .ast-tree{flex:none;align-self:flex-end;font-style:normal;font-size:40px;line-height:1;margin:0 -2px -2px;filter:drop-shadow(0 4px 3px rgb(0 0 0 / .3))}
 .ast-flags{position:absolute;left:0;top:4px;pointer-events:none;z-index:2}
 .ast-pedw{position:absolute;left:0;width:100%;bottom:20px;height:0;pointer-events:none;z-index:2;animation:astPed 38s linear infinite}
@@ -5121,6 +5122,23 @@ html.bg-hide *,html.bg-hide *::before,html.bg-hide *::after{animation-play-state
 @keyframes pcnIn{0%{transform:rotateY(-110deg) translateY(30px) scale(.7);opacity:0}100%{transform:none;opacity:1}}
 .pcn-tag{position:absolute;top:-8px;left:50%;transform:translateX(-50%);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:900;color:#fff;background:#e8364a;box-shadow:0 3px 6px rgb(0 0 0 / .3);white-space:nowrap}.pcn-tag.k{background:linear-gradient(90deg,#ff8cc8,#ffc83a,#4fe3ff)}
 @media (prefers-reduced-motion:reduce){.pca-c.kira::after,.pcs-in.kira::after,.pcn-c.kira::after,.pcn-c{animation:none!important}}
+/* 🎴 マイデッキ */
+.dk>*{flex:none}
+.dk-slots{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin:6px 0 10px}
+.dk-sl{position:relative;padding:0;border:0;background:none;cursor:pointer;animation:stkIn .35s both}.dk-sl svg{width:100%;height:auto;display:block;filter:drop-shadow(0 3px 5px rgb(0 0 0 / .35))}
+.dk-sl.empty{aspect-ratio:63/88;display:grid;place-items:center;border-radius:6px;border:2px dashed var(--line);color:var(--muted);font-weight:900;font-size:16px;animation:none}
+.dk-an{display:flex;flex-direction:column;gap:5px;padding:12px;border-radius:16px;background:linear-gradient(150deg,var(--panel2),var(--panel));box-shadow:inset 0 0 0 1px var(--line)}
+.dk-an>small{font-size:11px;color:var(--muted);margin-bottom:2px}
+.dk-bar{display:grid;grid-template-columns:22px 62px 1fr 34px 36px;align-items:center;gap:6px;font-size:12px;font-weight:800}
+.dk-bar i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;color:#fff;padding:4px;box-sizing:border-box}.dk-bar i svg{width:100%}
+.dk-bar em{height:10px;border-radius:99px;background:rgb(255 255 255 / .07);overflow:hidden;font-style:normal}.dk-bar em u{display:block;height:100%;border-radius:99px;background:#9aa3b8}.dk-bar em.p u{background:linear-gradient(90deg,#2fd47a,#ffc83a)}.dk-bar em.n u{background:#ff5a76}
+.dk-bar b{text-align:right}.dk-bar small{font-size:10.5px;color:#c48a00}
+.dk-tip{margin:6px 0 0;font-size:12.5px;line-height:1.6}
+.dk-go{width:100%;margin-top:10px}
+.dk-own{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:7px;margin-top:8px}
+.dk-c{position:relative;padding:0;border:0;background:none;cursor:pointer;border-radius:6px;transition:transform .15s}.dk-c svg{width:100%;height:auto;display:block}
+.dk-c.on{transform:translateY(-3px)}.dk-c.on svg{filter:drop-shadow(0 0 0 3px #ffc83a);outline:3px solid #ffc83a;outline-offset:1px;border-radius:6px}
+.dk-c i{position:absolute;right:-4px;top:-6px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:900;font-size:13px;color:#3a2300;background:#ffc83a;box-shadow:0 2px 4px rgb(0 0 0 / .3)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -5852,7 +5870,7 @@ function cfgFor(mode,era){
   return {...CFG, names:NEWS, hist:false};
 }
 const yearOf = i => HIST[i] ? HIST[i].y : '？？';   /* 大引けで隠しているNEWS（仮の行）は年もふせる */
-const modeName = c => c&&c.fut ? '未来編' : c&&c.hist ? '歴史モード' : c&&c.ex ? 'クラシックEX' : c&&c.month ? `今月のNEWS（${c.month}）` : c&&c.my ? 'マイNEWS' : 'クラシック';
+const modeName = c => c&&c.deckPick ? 'マイデッキ' : c&&c.fut ? '未来編' : c&&c.hist ? '歴史モード' : c&&c.ex ? 'クラシックEX' : c&&c.month ? `今月のNEWS（${c.month}）` : c&&c.my ? 'マイNEWS' : 'クラシック';
 
 /* ================= engine（対戦と検証で共通） ================= */
 function gain(cfg,b,k){
@@ -5877,6 +5895,7 @@ function unseen(cfg,deck,t){
   return deck.slice(t+1);
 }
 function buildDeck(cfg,rnd){
+  if(cfg.deckPick) return shuffle(cfg.deckPick.slice(),rnd).slice(0,TURNS);
   if(cfg.ex) return shuffle([...Array(cfg.table.length).keys()],rnd).slice(0,6);   // EX：18種から毎回ちがう6種
   if(cfg.my) return shuffle([...Array(cfg.table.length).keys()],rnd);   // マイNEWS：自分で作った4〜6枚
   if(cfg.hist) return shuffle(cfg.pool.slice(),rnd).slice(0,TURNS).sort((a,b)=>yearOf(a)-yearOf(b));
@@ -7500,7 +7519,7 @@ function pcSVG(id,round){ const t=id[0], i=+id.slice(1);
 function pcAlbum(){
   const tabs=[['n','クラシック'],['x','EX'],['h','歴史'],['f','未来編']], L=pcList(PCX.tab), got=L.filter(x=>x.ok).length;
   const all=tabs.reduce((a,[t])=>{ const l=pcList(t); return [a[0]+l.filter(x=>x.ok).length, a[1]+l.length]; },[0,0]);
-  return `<section class="panel pca"><div class="row spread"><h3>🃏 NEWSカードアルバム</h3><span class="note">${all[0]} / ${all[1]} 枚</span></div>
+  return `<section class="panel pca"><div class="row spread"><h3>🃏 NEWSカードアルバム</h3><button class="btn gold" style="padding:6px 12px;font-size:12.5px" onclick="openDeck()">🎴 デッキを組む</button></div><p class="note" style="margin:2px 0 0">${all[0]} / ${all[1]} 枚</p>
     <div class="pca-tabs" role="tablist">${tabs.map(([t,n])=>{ const l=pcList(t); return `<button role="tab" aria-selected="${PCX.tab===t}" class="${PCX.tab===t?'on':''}" onclick="PCX.tab='${t}';sfx('click');render()">${n}<small>${l.filter(x=>x.ok).length}/${l.length}</small></button>`; }).join('')}</div>
     <div class="pca-grid">${L.map(x=>`<button class="pca-c${x.ok?'':' lock'}${x.ok&&pcCnt(x.id)>=PC_KIRA?' kira':''}" ${x.ok?`onclick="pcOpen('${x.id}')"`:'disabled'} aria-label="${x.ok?esc(x.name):'まだ出会っていないNEWS'}">${x.ok?pcSVG(x.id,true):PCARD.back('news',0,true)}${x.ok?(pcCnt(x.id)>=PC_KIRA?'<em class="pca-k">✨</em>':''):'<i>？</i>'}</button>`).join('')}</div>
     <p class="note">試合でめくったNEWSが、印刷版と同じカードになってたまっていきます。カードをタップすると大きく見られます。いまのページ：${got} / ${L.length} 枚</p></section>`;
@@ -7538,6 +7557,41 @@ function pcNewPanel(){
     <p class="note">マイページ → コレクションの「NEWSカードアルバム」にたまっています。同じNEWSに${PC_KIRA}回出会うと、キラカードになるよ。</p></section>`;
 }
 const pcTabOf = id => id[0]==='n' ? (+id.slice(1)<6?'n':'x') : ((HIST[+id.slice(1)]||{}).f?'f':'h');
+/* ---- 🎴 マイデッキ戦：アルバムで集めたクラシック/EXのNEWSから6枚えらんでデッキに。試合のNEWSはそのデッキから4枚出る。
+   デッキ診断で「どの産業が強いデッキか」がわかる。ふだんの設定（試作ルール・リーグなど）はデッキ戦のあいだだけ止める ---- */
+let DECK_NOW=null, DKX={};
+const DK_N=6;
+function dkS(){ const P=S.prof; if(!Array.isArray(P.deck)) P.deck=[]; P.deck=P.deck.filter(i=>(P.dex||{n:[]}).n.includes(i)); return P.deck; }
+function dkOwned(){ return ((S.prof.dex||{n:[]}).n||[]).filter(i=>i<ALL_NEWS.length).sort((a,b)=>a-b); }
+const dkTable = () => CFG.table.concat(EXT_T);
+function openDeck(){ dkS(); openSheet('deck'); sfx('open'); }
+function dkToggle(i){ const D=dkS(), k=D.indexOf(i); if(k>=0){ D.splice(k,1); sfx('click'); } else { if(D.length>=DK_N){ toast(`デッキは${DK_N}枚まで`); sfx('buzz'); return; } D.push(i); sfx('select'); haptic(8); } saveProfile(); renderSheet(); }
+function dkAuto(){ const own=dkOwned(); if(own.length<DK_N) return; const T=dkTable(), P=S.prof; /* いちばん得意な産業に寄せたデッキ */
+  const fav=[0,1,2,3,4,5].map(c=>({c,v:own.reduce((a,i)=>a+T[i][c],0)})).sort((a,b)=>b.v-a.v)[0].c;
+  P.deck=own.slice().sort((a,b)=>T[b][fav]-T[a][fav]).slice(0,DK_N); saveProfile(); sfx('shine'); renderSheet(); toast(`「${IND[fav]}」が強いデッキにしたよ`); }
+function dkStats(D){ const T=dkTable(); return [0,1,2,3,4,5].map(c=>({c, sum:D.reduce((a,i)=>a+T[i][c],0), top:D.filter(i=>T[i][c]>=3).length, neg:D.filter(i=>T[i][c]<0).length})); }
+function startDeck(){
+  const D=dkS(); if(D.length<DK_N){ toast(`デッキはあと ${DK_N-D.length} 枚`); return; }
+  const keys=['yomi','chain','tacOn','draft','sd','bn','evt','league','autoDiff','pwOn','futOn','closeX'], keep={};
+  keys.forEach(k=>{ keep[k]=S[k]; S[k]=false; }); keep.len=S.len; keep.mode=S.mode; keep.b4=S.b4; S.len='short'; S.mode='ex'; S.b4=true;
+  DECK_NOW=D.slice(); closeSheet();
+  try{ go('play'); if(!S.seats.some(s=>s.type!=='human')) S.seats=defaultSeats('cpu'); startGame(); } finally { DECK_NOW=null; Object.keys(keep).forEach(k=>{ S[k]=keep[k]; }); }
+  if(G){ G.deckMode=1; G.league=null; setTimeout(()=>toast('🎴 マイデッキ戦：あなたのデッキから NEWS が出ます'),300); }
+}
+function deckBody(){
+  const D=dkS(), own=dkOwned(), T=dkTable(), st=dkStats(D), mx=Math.max(6,...st.map(x=>Math.abs(x.sum)));
+  const slot=k=>{ const i=D[k]; return i==null?`<span class="dk-sl empty">${k+1}</span>`:`<button class="dk-sl" onclick="dkToggle(${i})" aria-label="${ALL_NEWS[i]}をデッキから外す">${PCARD.news(i,0,true)}</button>`; };
+  const best=st.slice().sort((a,b)=>b.sum-a.sum)[0];
+  return `<div class="dk"><span class="label">MY DECK · ${D.length}/${DK_N}</span><h3 class="ttl">🎴 マイデッキ</h3>
+    <div class="dk-slots">${[0,1,2,3,4,5].map(slot).join('')}</div>
+    ${D.length?`<div class="dk-an"><b>📊 デッキ診断</b><small>デッキ全体での、産業ごとの点の合計（+3 の枚数）</small>
+      ${st.map(x=>`<div class="dk-bar"><i style="background:${['#ff7a3d','#eab520','#5f86ff','#ff5c9a','#20c6d1','#a77bff'][x.c]}">${svg(x.c,2.4)}</i><span>${IND[x.c]}</span><em class="${x.sum>0?'p':x.sum<0?'n':''}"><u style="width:${Math.round(Math.abs(x.sum)/mx*100)}%"></u></em><b>${x.sum>0?'+':''}${x.sum}</b><small>${x.top?`+3×${x.top}`:''}</small></div>`).join('')}
+      ${D.length===DK_N?`<p class="dk-tip">このデッキは「<b>${IND[best.c]}</b>」が強め。でも、みんなが${IND[best.c]}に集まると被るかも…！</p>`:''}</div>`:''}
+    <button class="btn gold big dk-go" onclick="startDeck()" ${D.length<DK_N?'disabled':''}>${D.length<DK_N?`あと ${DK_N-D.length} 枚えらんでね`:'🎴 このデッキで対戦！'}</button>
+    <div class="row spread" style="margin-top:12px"><b style="font-size:14px">持っているカード（${own.length}/18）</b>${own.length>=DK_N?'<button class="btn ghost" style="padding:6px 12px" onclick="dkAuto()">🪄 おまかせ</button>':''}</div>
+    ${own.length<DK_N?`<p class="note">デッキを作るには、クラシック・EXのNEWSを ${DK_N} 枚集めよう（いま ${own.length} 枚）。CPU戦やクラシックEXで遊ぶと集まるよ。</p>`:''}
+    <div class="dk-own">${own.map(i=>`<button class="dk-c${D.includes(i)?' on':''}" onclick="dkToggle(${i})" aria-pressed="${D.includes(i)}">${PCARD.news(i,0,true)}${D.includes(i)?'<i>✓</i>':''}</button>`).join('')}</div></div>`;
+}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -7762,7 +7816,8 @@ function startGame(online, daily, chalId, cupRun, storyK, survLv, bossK, duel){
   const long = ch ? !!ch.long : (cu||sto||sv||bs||du) ? false : (!daily && !MIR_ON && S.len==='long');   // オンラインはホストの設定（S.len）に従う
   TURNS=daily||cu||sto||sv||bs||du||ch&&!long ? 4 : long ? LONG_PER : (CFG.turns||4);
   let cfg=daily ? dailyCfg(daily) : ch ? chalCfg(ch, long) : cu ? chalCfg({mode:'classic'}, false) : sto ? storyCfg(sto) : sv ? survCfg(sv) : bs ? chalCfg({mode:'classic'}, false) : du ? duelCfg(du) : cfgFor(S.mode, long?'all':S.era);
-  if(TRIP_NOW) cfg=tripCfg(cfg);   /* 🚃 旅：ご当地産業 +1 */
+  if(TRIP_NOW) cfg=tripCfg(cfg);
+  if(DECK_NOW) cfg={...cfg, deckPick:DECK_NOW.slice()};   /* 🎴 マイデッキ戦 */   /* 🚃 旅：ご当地産業 +1 */
   const seats = ch ? ch.seats.map((t,i)=>({name:i===0?(NET.name||'あなた'):'CPU '+CHAL_NAMES[i-1], type:t}))
     : du ? [{name:NET.name||'あなた', type:'human'}, {name:'CPU ミナト', type:'read'}, {name:'CPU アオイ', type:'read'}, {name:'CPU ソラ', type:'naive'}]
     : bs ? [{name:NET.name||'あなた', type:'human'}, {name:'BOSS '+bs.n, type:'pro'}, {name:'CPU '+bs.mates[0], type:'read'}, {name:'CPU '+bs.mates[1], type:'read'}]
@@ -8778,6 +8833,7 @@ function renderSheet(){
   else if(k==='adv') body=advBody();
   else if(k==='stlv') body=stlvBody();
   else if(k==='pcard') body=pcardBody();
+  else if(k==='deck') body=deckBody();
   else if(k==='srly') body=srlyBody();
   else if(k==='pet') body=petBody();
   else if(k==='kgy') body=kgyBody();
