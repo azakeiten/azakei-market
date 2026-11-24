@@ -5461,6 +5461,27 @@ html.lite .qt-npc>span,html.lite .qt-bub{animation:none}
 .frw-coin{margin:8px 0 0;text-align:center;font-weight:900;color:var(--gold)}
 html.lite .frw-win.up{animation:none}
 @media (prefers-reduced-motion:reduce){.frw-win.up,.frw-win.up .frw-pan{animation:none}}
+/* 🏙️ ホームの生きてる街 */
+.lhv-town{position:absolute;left:0;right:0;bottom:0;height:150px;pointer-events:none;overflow:hidden;opacity:.6;-webkit-mask-image:linear-gradient(180deg,transparent,#000 45%);mask-image:linear-gradient(180deg,transparent,#000 45%)}
+.lhv-pan{position:absolute;left:0;bottom:0;height:100%;display:flex;width:max-content;animation:lhvPan 140s linear infinite}
+.lhv-pan svg{display:block;height:150px;width:915px;flex:none}
+@keyframes lhvPan{to{transform:translateX(-915px)}}
+.lhv-night .lhv-pan,.lhv-eve .lhv-pan{filter:brightness(.85) saturate(1.2)}
+.lhv-night{opacity:.7}
+.lob:has(.lhv-town){padding-bottom:40px}
+.lhv-w-rain .lhv-pan{filter:grayscale(.5) brightness(.8)}
+.lhv-rain{position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 12px,rgb(200 225 255 / .7) 12px 13px,transparent 13px 26px);background-size:50px 50px;animation:swxRain .6s linear infinite}
+.lob{isolation:isolate}.lhv-town{z-index:-1}
+.lhv-tk{position:relative;display:flex;align-items:center;gap:8px;width:100%;height:30px;padding:0 10px 0 6px;border:0;border-radius:10px;cursor:pointer;background:#05060f;box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .35),inset 0 0 14px rgb(0 0 0 / .8);overflow:hidden}
+.lhv-on{flex:none;padding:1px 6px;border-radius:4px;font:900 9.5px var(--body,sans-serif);letter-spacing:.08em;color:#fff;background:#e8364a;animation:lhvBlink 1.4s steps(2) infinite}
+@keyframes lhvBlink{50%{opacity:.45}}
+.lhv-vp{flex:1;min-width:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.lhv-in{display:inline-flex;gap:14px;align-items:center;white-space:nowrap;font:800 12.5px var(--body,sans-serif);color:#ffd36a;text-shadow:0 0 6px rgb(255 190 60 / .8);animation:lhvRun var(--d,24s) linear infinite}
+.lhv-in i{font-style:normal;font-size:8px;color:#ff8a5a}
+@keyframes lhvRun{to{transform:translateX(-50%)}}
+html.lite .lhv-pan,html.lite .lhv-in,html.lite .lhv-on,html.lite .lhv-rain{animation:none}
+html.bg-hide .lhv-pan,html.bg-hide .lhv-in{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.lhv-pan,.lhv-in,.lhv-on,.lhv-rain{animation:none}.lhv-vp{overflow-x:auto}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -8362,6 +8383,22 @@ function frwBody(){ mcEnsure(); const ph=skyPhase(new Date().getHours()), K=frwS
     <p class="note">${K.day===todayKey()?'きょうのコインはもらったよ。何周でものれる':'きょうの1周目は 🪙15'} ・ これまで ${K.rides}周</p></div>`; }
 AST.push({n:'AZAKEI観覧車',ic:'🎡',c:'#e0567a',a:'#ffffff',h:150,f:()=>frwOpen(),b:()=>frwS().day===todayKey()?0:'!'});
 try{ SMAP_G[0].shops.push('AZAKEI観覧車'); }catch(e){}
+/* ---- 🏙️ ホームの「生きてる街」：ロビーの下に、つながる街がゆっくり流れる。時間帯で空の色、天気で雨や陽ざし。
+   その下に LED の「まちの電光ニュース」。天気・お願い・福引券・観覧車…いまの街のようすが流れて、タップでまちマップ ---- */
+function lhvTown(){ try{ mcEnsure(); }catch(e){ return ''; } const ph=skyPhase(new Date().getHours()), w=(typeof swxNow==='function')?swxNow():null;
+  return `<div class="lhv-town lhv-${ph}${w?' lhv-w-'+w.k:''}" aria-hidden="true"><div class="lhv-pan"><svg viewBox="0 0 3780 620" preserveAspectRatio="xMinYMax meet"><use href="#mcPano"/></svg><svg viewBox="0 0 3780 620" preserveAspectRatio="xMinYMax meet"><use href="#mcPano"/></svg></div>${w&&w.k==='rain'?'<i class="lhv-rain"></i>':''}</div>`; }
+function lhvItems(){ const out=[], P=S.prof, t=todayKey();
+  try{ const w=swxNow(); if(w) out.push(`${w.ic} きょうの商店街は${w.n} ${w.t}℃`); }catch(e){}
+  try{ const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; out.push(rd?`🎁 まちのお願い：お礼が ${rd}つ 待ってるよ`:`🙋 まちのお願い ${c}/3`); }catch(e){}
+  try{ const F=fkS(); if(F.tk>0) out.push(`🎍 福引券が ${F.tk}枚 あるよ（金の玉 のこり${F.pool[0]}）`); }catch(e){}
+  try{ if(prdLive()) out.push(`🏆 きょうの優勝パレード、通りでもう一度見られるよ`); }catch(e){}
+  try{ if(frwS().day!==t) out.push('🎡 観覧車：きょうの1周目は 🪙15'); }catch(e){}
+  try{ if(aucS().day!==t) out.push('🔔 朝市のせり、まもなく開始'); }catch(e){}
+  try{ if(prtS().day!==t) out.push('🚢 AZAKEI港に船が入ったよ'); }catch(e){}
+  try{ const lv=stLv(); out.push(`🏙️ 商店街 Lv.${lv.lv}・お店 ${AST.length}けん`); }catch(e){}
+  return out; }
+function lhvTicker(){ const it=lhvItems(); if(!it.length) return ''; const line=it.map(x=>`<span>${esc(x)}</span>`).join('<i>◆</i>');
+  return `<button class="lhv-tk" onclick="smapOpen()" aria-label="まちの電光ニュース：${esc(it.join('、'))}（タップでまちマップ）"><b class="lhv-on">ON AIR</b><span class="lhv-vp"><span class="lhv-in" style="--d:${Math.max(18,it.length*6)}s">${line}<i>◆</i>${line}<i>◆</i></span></span></button>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -13669,7 +13706,7 @@ function lobbyHero(show){
   const hr=new Date().getHours(), greet = hr<5?'夜ふかし中だね':hr<11?'おはよう':hr<17?'こんにちは':'こんばんは';
   const nm=esc(NET.name||'あなた'), r=rateOf(), t=tierOf(r), day=(P.login&&P.login.day)||1, coin=P.coin||0;
   return `<section class="lob">
-    <div class="lob-bg" aria-hidden="true"><div class="lob-fan">${show}</div></div>
+    ${S.prof&&!nbNew()?lhvTown():''}<div class="lob-bg" aria-hidden="true"><div class="lob-fan">${show}</div></div>
     <div class="lob-me">
       <button class="ava lob-ava${frc()}" style="--s:${AVA_COLORS[(P.color||0)%6]}" onclick="go('me')" aria-label="マイページ">${esc(myAvatar()||initial(NET.name||'あなた'))}</button>
       <div class="lob-who"><span class="lob-greet">${greet}、${nm}さん</span><b class="lob-title">${esc(myTitle())}</b>
@@ -13678,7 +13715,7 @@ function lobbyHero(show){
     </div>
     <div class="lob-stats">
       <span><b>🔥 ${day}</b>日目</span><span><b>🪙 ${coin}</b>コイン</span><span><b>${st.games||0}</b>試合</span><button onclick="jumpTo('.todaybar')"><b>${done}/${it.length}</b>今日やること</button>
-    </div>
+    </div>${S.prof&&!nbNew()?lhvTicker():''}
     <div class="lob-cta">
       <button class="btn gold huge pulse lob-play" onclick="go('play','cpu')"><span>あそぶ</span><small>${esc(lobSummary())}</small></button>
       <button class="btn lob-quick" onclick="lobbyQuick()" aria-label="前回の設定ですぐ始める"><i>▶</i><small>すぐ始める</small></button>
