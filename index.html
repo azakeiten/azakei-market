@@ -5503,6 +5503,10 @@ html.bg-hide .lhv-pan,html.bg-hide .lhv-in{animation-play-state:paused}
 @keyframes treJump{0%{transform:translateY(0)}40%{transform:translateY(-12px) scale(1.05)}100%{transform:none}}
 html.lite .tre-on .ast-shop::after,html.lite .tre-chip.on{animation:none}
 @media (prefers-reduced-motion:reduce){.tre-on .ast-shop::after,.tre-chip.on,.ast-shop.tre-open{animation:none}}
+/* 🎍 年賀状工房 */
+.nng-frame{aspect-ratio:1000/1480;width:min(100%,250px);transform:rotate(1.5deg)}
+.nng-lot{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px;border-radius:14px;text-align:center;color:#7a1a00;background:repeating-linear-gradient(135deg,#fff8ee 0 12px,#fff0e0 12px 24px);box-shadow:inset 0 0 0 2px #d8364a}
+.nng-lot b{font-size:14px}.nng-lot span{font:600 20px "Courier New",monospace;letter-spacing:.06em}.nng-lot small{font-size:11.5px;font-weight:700;color:#8a4a2a}.nng-lot em{font-style:normal;font-weight:900;font-size:18px;color:#d8364a}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -8447,6 +8451,76 @@ function treDig(i){ const T=treS(), s=AST[i]; if(!s) return; if(T.log[s.n]){ toa
   T.log[s.n]=k; if(T.tries<=0) TRE_ON=false; saveProfile(); sfx(d<=1?'coin':'click'); render();
   toast(`${s.n}：${k} ${w}${T.tries>0?`（のこり${T.tries}回）`:`… きょうの宝は「${T.at}」だったよ`}`); }
 function treChip(){ if(nbNew()) return ''; const T=treS(); return `<button class="tre-chip${TRE_ON?' on':''}${T.found?' got':''}" onclick="treToggle()" aria-pressed="${TRE_ON}" aria-label="宝さがし">${T.found?'💰 発見！':TRE_ON?`🔍 ${T.tries}`:'🗝️ 宝'}</button>`; }
+/* ---- 🎍 年賀状工房：帽子をかぶったアバターと、その年の干支の年賀状を作って保存。
+   1枚目には「お年玉くじ番号」がつく。1月15日にアプリの中で抽選して、当たったらコイン（下2桁・下3桁・下4桁） ---- */
+const NNG_ETO=[['🐒','申'],['🐓','酉'],['🐕','戌'],['🐗','亥'],['🐭','子'],['🐮','丑'],['🐯','寅'],['🐰','卯'],['🐲','辰'],['🐍','巳'],['🐴','午'],['🐑','未']];
+const NNG_TPL=[{n:'紅白',bg:['#fff8ee','#ffe9e0'],ink:'#b8142a',sub:'#7a3a2a'},{n:'金の富士',bg:['#1a2350','#3a2a6a'],ink:'#ffd36a',sub:'#ffe9b8'},{n:'ポップ',bg:['#fff3a8','#ffc6e0'],ink:'#e8364a',sub:'#5a2a6a'}];
+const NNG_MSG=['あけましておめでとうございます','今年もいっしょに市場を読もう！','今年の目標は独占王！','ことしもよろしくね'];
+let NGX={tpl:0,msg:0};
+function nngYear(){ const d=new Date(); return d.getMonth()>=9 ? d.getFullYear()+1 : d.getFullYear(); }
+function nngOn(){ const d=new Date(), m=d.getMonth()+1, dd=d.getDate(); return (m===11&&dd>=20)||m===12||(m===1&&dd<=31); }
+function nngS(){ const P=S.prof, y=nngYear(); if(!P.nng || P.nng.y!==y) P.nng={y, no:null, cnt:0, got:false}; return P.nng; }
+function nngOpen(){ nngS(); openSheet('nng'); sfx('open'); setTimeout(nngPreview,30); }
+function nngSet(k,v){ NGX[k]=v; sfx('select'); haptic(5); renderSheet(); setTimeout(nngPreview,10); }
+function nngWin(y){ const r=mulberry(y*977+15); return {d4:String(Math.floor(r()*10000)).padStart(4,'0'), d3:String(Math.floor(r()*1000)).padStart(3,'0'), d2:String(Math.floor(r()*100)).padStart(2,'0')}; }
+function nngDrawn(N){ const d=new Date(); return d.getFullYear()>N.y || (d.getFullYear()===N.y && (d.getMonth()>0 || d.getDate()>=15)); }
+function nngResult(N){ if(!N.no) return null; const W=nngWin(N.y), no=N.no; return no.endsWith(W.d4)?{r:1,c:500,n:'1等'}:no.endsWith(W.d3)?{r:2,c:150,n:'2等'}:no.endsWith(W.d2)?{r:3,c:50,n:'3等'}:{r:0,c:0,n:'はずれ'}; }
+function nngClaim(){ const N=nngS(), R=nngResult(N); if(!R||N.got||!nngDrawn(N)) return; N.got=true; if(R.c){ S.prof.coin=(S.prof.coin||0)+R.c; sfx('fanfare'); confetti(); toast(`🎍 お年玉くじ ${R.n}！ 🪙+${R.c}`); } else { sfx('click'); toast('ざんねん、はずれ… また来年！'); } saveProfile(); renderSheet(); }
+async function nngDraw(sc){
+  try{ await document.fonts.ready; }catch(e){}
+  const W=1000, H=1480, cv=document.createElement('canvas'); cv.width=W*sc; cv.height=H*sc; const x=cv.getContext('2d'); x.scale(sc,sc);
+  const T=NNG_TPL[NGX.tpl], y=nngYear(), E=NNG_ETO[y%12], P=S.prof, N=nngS();
+  const SR='"Shippori Mincho B1","Yu Mincho",serif', D='"Dela Gothic One","M PLUS Rounded 1c",sans-serif', B='"M PLUS Rounded 1c",sans-serif', EM='"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif';
+  const g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,T.bg[0]); g.addColorStop(1,T.bg[1]); x.fillStyle=g; x.fillRect(0,0,W,H);
+  if(NGX.tpl===0){ x.fillStyle='rgba(184,20,42,.08)'; for(let i=0;i<9;i++){ x.beginPath(); x.arc(120+i*110,i%2?160:120,70,0,Math.PI*2); x.fill(); }
+    x.fillStyle='#d8364a'; x.beginPath(); x.arc(W-190,300,120,0,Math.PI*2); x.fill(); }
+  else if(NGX.tpl===1){ x.fillStyle='rgba(255,255,255,.8)'; for(let i=0;i<60;i++){ const rx=(i*137)%W, ry=(i*89)%620; x.fillRect(rx,ry,2,2); }
+    x.fillStyle='#ffb23a'; x.beginPath(); x.arc(W/2,780,170,Math.PI,0); x.fill();
+    x.fillStyle='#4a5aa8'; x.beginPath(); x.moveTo(60,1000); x.lineTo(W/2,560); x.lineTo(W-60,1000); x.fill();
+    x.fillStyle='#fff'; x.beginPath(); x.moveTo(W/2-120,670); x.lineTo(W/2,560); x.lineTo(W/2+120,670); x.lineTo(W/2+60,650); x.lineTo(W/2,690); x.lineTo(W/2-60,650); x.fill(); }
+  else { const cols=['#ff5a76','#4fe3ff','#ffc83a','#7cf29a','#c58cff']; for(let i=0;i<40;i++){ x.fillStyle=cols[i%5]; x.globalAlpha=.55; x.beginPath(); x.arc((i*173)%W,(i*311)%H,10+(i%4)*6,0,Math.PI*2); x.fill(); } x.globalAlpha=1; }
+  x.fillStyle=T.ink; x.textAlign='center'; x.textBaseline='alphabetic';
+  x.font=`900 128px ${SR}`; ['謹','賀','新','年'].forEach((c,i)=>x.fillText(c,W-150,200+i*136));
+  x.textAlign='left'; x.font=`400 120px ${D}`; x.fillText(String(y),70,190); x.fillStyle=T.sub; x.font=`700 40px ${SR}`; x.fillText(`令和${y-2018}年　元旦`,74,250);
+  x.font=`280px ${EM}`; x.textAlign='center'; x.fillText(E[0],290,520);
+  x.fillStyle=T.ink; x.font=`900 64px ${SR}`; x.fillText(`${E[1]}年`,290,700);
+  const cx=W/2+40, cy=900, r=170;
+  x.save(); x.shadowColor='rgba(0,0,0,.35)'; x.shadowBlur=24; x.shadowOffsetY=10; x.beginPath(); x.arc(cx,cy,r+12,0,Math.PI*2); x.fillStyle='#fff'; x.fill(); x.restore();
+  const ag=x.createRadialGradient(cx-50,cy-60,20,cx,cy,r); ag.addColorStop(0,'#fff7d6'); ag.addColorStop(1,AVA_COLORS[(P.color||0)%6]); x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.fillStyle=ag; x.fill();
+  const av=myAvatar();
+  if(av===MY_ICON){ const im=await new Promise(rs=>{ const i=new Image(); i.onload=()=>rs(i); i.onerror=()=>rs(null); i.src=P.myIcon; }); if(im){ x.save(); x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.clip(); x.drawImage(im,cx-r,cy-r,r*2,r*2); x.restore(); } }
+  else if(av===MY_FACE){ const im=await svgImg(myFaceSvg('happy'),null,400,400); if(im){ x.save(); x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.clip(); x.drawImage(im,cx-r,cy-r,r*2,r*2); x.restore(); } }
+  else { x.textBaseline='middle'; x.fillStyle='#2a1a00'; x.font=`150px ${av?EM:D}`; x.fillText(av||initial(NET.name||'あなた'),cx,cy+6); x.textBaseline='alphabetic'; }
+  const hat=SHOP.hat.find(h=>h.id===shopEq('hat'));
+  if(hat&&hat.ic){ x.save(); x.textBaseline='middle'; const pos={ribbon:[cx+r*.72,cy-r*.78,.35,150],flower:[cx-r*.62,cy-r*.75,-.2,130],shades:[cx,cy-r*.08,0,170],crown:[cx,cy-r*1.08,0,190],tophat:[cx,cy-r*1.2,-.12,200]}[hat.id]||[cx,cy-r*1.05,-.15,190];
+    x.translate(pos[0],pos[1]); x.rotate(pos[2]); x.font=`${pos[3]}px ${EM}`; x.fillText(hat.ic,0,0); x.restore(); }
+  x.font=`110px ${EM}`; x.fillText('🎍',130,1110); x.fillText('🎍',W-130,1110);
+  x.fillStyle=T.ink; x.font=`800 54px ${B}`; x.fillText(NNG_MSG[NGX.msg],W/2,1190);
+  x.fillStyle=T.sub; x.font=`700 34px ${B}`; x.fillText(`${(NET.name||'').trim()||'あなた'}　（${myTitle()}）`,W/2,1250);
+  const no=N.no||'------';
+  x.save(); x.strokeStyle=T.ink; x.lineWidth=3; x.setLineDash([10,8]); x.strokeRect(150,1310,W-300,110); x.restore();
+  x.fillStyle=T.ink; x.font=`700 28px ${B}`; x.fillText('お年玉くじ番号（1月15日にアプリで抽選）',W/2,1352);
+  x.font=`600 48px "Courier New",monospace`; x.fillText(`${no.slice(0,2)}組  ${no.slice(2)}`,W/2,1404);
+  x.fillStyle=T.sub; x.font=`22px ${D}`; x.fillText('AZAKEI MARKET',W/2,H-24);
+  return cv; }
+async function nngPreview(){ if(S.sheet!=='nng') return; const im=document.getElementById('nngImg'); if(!im) return; im.classList.add('ld'); const cv=await nngDraw(.36); if(S.sheet!=='nng') return; const el=document.getElementById('nngImg'); if(el){ el.src=cv.toDataURL('image/jpeg',.85); el.classList.remove('ld'); } }
+async function nngSave(){ const N=nngS(); if(!N.no){ N.no=String(Math.floor(Math.random()*100)).padStart(2,'0')+String(Math.floor(Math.random()*1000000)).padStart(6,'0'); }
+  N.cnt++; saveProfile(); sfx('flip'); haptic(20); const cv=await nngDraw(1);
+  CARD_IMG={url:cv.toDataURL('image/png'), blob:await new Promise(r=>cv.toBlob(r,'image/png')), title:`🎍 ${nngYear()}年の年賀状`, alt:`${nngYear()}年の年賀状：${NNG_MSG[NGX.msg]}`, name:`azakei-nengajo-${nngYear()}.png`, note:`お年玉くじ番号は ${N.no.slice(0,2)}組 ${N.no.slice(2)}。1月15日に年賀状工房で抽選結果を見てね！`};
+  openSheet('card'); }
+function nngBody(){ const N=nngS(), y=nngYear(), E=NNG_ETO[y%12], drawn=nngDrawn(N), R=nngResult(N), W=nngWin(N.y);
+  const chip=(k,v,lab,on)=>`<button class="phb-ch${on?' on':''}" onclick="nngSet('${k}',${v})">${lab}</button>`;
+  const lot = !N.no ? `<p class="note">年賀状を保存すると「お年玉くじ番号」がつくよ。抽選は1月15日！</p>`
+    : drawn ? `<div class="nng-lot"><b>🎍 お年玉くじ 当選番号</b><small>1等（下4桁）${W.d4}　2等（下3桁）${W.d3}　3等（下2桁）${W.d2}</small><span>あなたの番号：${N.no.slice(0,2)}組 ${N.no.slice(2)}</span>${N.got?`<em>${R.n}${R.c?` 🪙${R.c}`:''}</em>`:`<button class="btn gold" onclick="nngClaim()">結果を見る</button>`}</div>`
+    : `<div class="nng-lot"><b>🎫 あなたのお年玉くじ番号</b><span>${N.no.slice(0,2)}組 ${N.no.slice(2)}</span><small>${y}年1月15日に、ここで抽選するよ</small></div>`;
+  return `<div class="phb nng"><span class="label">🎍 NEW YEAR CARD · ${y}年は${E[1]}年 ${E[0]}</span><h3 class="ttl">年賀状工房</h3>
+    <div class="phb-frame nng-frame"><img id="nngImg" class="ld" alt="年賀状のプレビュー" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="><i class="phb-spin" aria-hidden="true"></i></div>
+    ${lot}
+    <div class="phb-row"><b>デザイン</b><div class="phb-chs">${NNG_TPL.map((t,i)=>chip('tpl',i,t.n,NGX.tpl===i)).join('')}</div></div>
+    <div class="phb-row"><b>ひとこと</b><div class="phb-chs">${NNG_MSG.map((m,i)=>chip('msg',i,m,NGX.msg===i)).join('')}</div></div>
+    ${shopEq('hat')==='std'?`<button class="btn ghost" style="width:100%" onclick="hatOpen()">🎩 帽子をかぶって作る（ぼうし屋へ）</button>`:''}
+    <button class="btn gold big" style="width:100%" onclick="nngSave()">🖨️ 年賀状を保存する</button></div>`; }
+if(nngOn()){ AST.push({n:'年賀状工房',ic:'🎍',c:'#b8142a',a:'#ffd36a',h:110,f:()=>nngOpen(),b:()=>{ const N=nngS(); return !N.no?'!':(nngDrawn(N)&&!N.got)?'🎁':0; }}); try{ SMAP_G[2].shops.push('年賀状工房'); }catch(e){} }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -9701,6 +9775,7 @@ function renderSheet(){
   else if(k==='phb') body=phbBody();
   else if(k==='qt') body=qtBody();
   else if(k==='frw') body=frwBody();
+  else if(k==='nng') body=nngBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
