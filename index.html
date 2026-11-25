@@ -38,8 +38,8 @@
   --paper:#fbf3dc; --paper2:#f1e2b6; --paper-ink:#24180a; --paper-red:#b8261b;
   --i0:#ff7a3d; --i1:#eab520; --i2:#5f86ff; --i3:#ff5c9a; --i4:#20c6d1; --i5:#a77bff;
   --s0:#ffc83a; --s1:#6fb6ff; --s2:#ff8ab4; --s3:#8be36a; --s4:#c49bff; --s5:#ffa65c;
-  --display:"Dela Gothic One","M PLUS Rounded 1c",system-ui,sans-serif;
-  --body:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Yu Gothic UI",system-ui,sans-serif;
+  --display:"Dela Gothic One","M PLUS Rounded 1c","Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",system-ui,sans-serif;
+  --body:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Yu Gothic UI","Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
   --serif:"Shippori Mincho B1","Yu Mincho","Hiragino Mincho ProN",serif;
 }
@@ -5482,6 +5482,15 @@ html.lite .frw-win.up{animation:none}
 html.lite .lhv-pan,html.lite .lhv-in,html.lite .lhv-on,html.lite .lhv-rain{animation:none}
 html.bg-hide .lhv-pan,html.bg-hide .lhv-in{animation-play-state:paused}
 @media (prefers-reduced-motion:reduce){.lhv-pan,.lhv-in,.lhv-on,.lhv-rain{animation:none}.lhv-vp{overflow-x:auto}}
+/* ⚡ つながる街の絵は画像で */
+.mc-sl{background-size:auto 100%}
+.card .art .mc-sl,.mc-art.mc-sl{display:block}
+.card .art .mc-art.mc-sl{position:absolute;inset:0;width:100%;height:100%;border-radius:0}
+.mc-pano{width:100%;height:100%;background-size:100% 100%}
+.db-img{background-size:auto 100%;background-position:left top}
+.lhv-pan.mc-im{width:1830px;background-size:915px 150px;background-repeat:repeat-x;background-position:left bottom}
+.frw-night .frw-img,.frw-eve .frw-img{filter:brightness(.78) saturate(1.1)}
+.lhv-night .lhv-pan,.lhv-eve .lhv-pan{filter:brightness(.85) saturate(1.2)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7580,7 +7589,14 @@ const MIO_AT=[[350,490,.9],[860,400,.85],[1560,355,.8],[2345,425,.85],[2850,392,
   <linearGradient id="mcNightH" x1="0" x2="3780" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset=".64" stop-color="#1a1a50" stop-opacity="0"/><stop offset=".78" stop-color="#2a1a50" stop-opacity=".18"/><stop offset=".86" stop-color="#14184a" stop-opacity=".42"/><stop offset="1" stop-color="#0c1040" stop-opacity=".55"/></linearGradient>
   <symbol id="mcPano" viewBox="0 0 3780 ${AH}" width="3780" height="${AH}" overflow="visible">${pano()}</symbol>`;
   const el=document.createElementNS('http://www.w3.org/2000/svg','svg'); el.setAttribute('width','0'); el.setAttribute('height','0'); el.setAttribute('aria-hidden','true'); el.style.position='absolute'; el.id='mcPanoDefs'; el.innerHTML='<defs>'+defs+'</defs>'; document.body.appendChild(el); }; })();
-const mcArt = i => { mcEnsure(); return `<svg class="mc-art" viewBox="${i*630} 0 630 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#mcPano"/></svg>`; };
+/* ⚡ v279 軽量化：つながる街の絵（65KB の SVG）を、<use> で何十回も描くと1回の描画で 70ms 以上かかっていた。
+   最初に1回だけ画像（data URL）にして <style> に入れ、カードの絵や背景は「その画像を切りぬいて表示」するだけにする */
+let MC_IMG=0;
+function mcImg(){ if(MC_IMG) return; mcEnsure(); try{ const host=document.getElementById('mcPano'), svg=host&&host.closest('svg'); if(!svg) return; MC_IMG=1;
+  const src=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="3780" height="620" viewBox="0 0 3780 620">${svg.innerHTML}<use href="#mcPano" xlink:href="#mcPano"/></svg>`;
+  const st=document.createElement('style'); st.id='mcImgCss'; st.textContent=`.mc-im{background-image:url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(src).replace(/"/g,'%22')}");background-repeat:no-repeat}`; document.head.appendChild(st); }catch(e){ MC_IMG=0; } }
+const mcArt = i => { mcImg(); return `<span class="mc-art mc-im mc-sl" style="background-position:${i*20}% 50%" aria-hidden="true"></span>`; };
+const mcPanoDiv = (cls) => { mcImg(); return `<div class="mc-im mc-pano ${cls||''}" aria-hidden="true"></div>`; };
 /* 結果画面：あなたが出したカードでできた街。出した産業は明るく、ターン番号つき */
 function mcStripPanel(){
   if(!G || curSkin()!=='machi') return ''; const me=myIndex(); if(me<0) return ''; const p=G.players[me]; if(!p||!p.used||!p.used.length) return '';
@@ -7943,7 +7959,7 @@ function dayBgSync(){
   const on = !!(G && G.players && S.dayBg!==false);
   if(!on){ if(el) el.classList.remove('on'); return; }
   if(!el){ mcEnsure(); el=document.createElement('div'); el.id='dayBg'; el.setAttribute('aria-hidden','true');
-    el.innerHTML='<div class="db-in"><svg viewBox="0 0 3780 620" preserveAspectRatio="xMinYMin slice"><use href="#mcPano"/></svg></div><span class="db-clock"></span>'; document.body.prepend(el); }
+    el.innerHTML='<div class="db-in">'+mcPanoDiv('db-img')+'</div><span class="db-clock"></span>'; document.body.prepend(el); }
   const N=Math.max(1,totalTurns()), t=((G.round||0)*TURNS+(G.turn||0)), p=G.phase==='final'?1:Math.min(1,t/Math.max(1,N-1));
   el.style.setProperty('--p',p.toFixed(3)); el.classList.add('on'); el.classList.toggle('night',p>.8);
   const hh=['9:00','11:00','13:30','15:30'], lab=G.phase==='final'?'15:30 大引け':N===4?`${hh[Math.min(3,t)]}`:`${Math.round(p*100)}%`;
@@ -8373,7 +8389,7 @@ function frwStats(){ const P=S.prof, st=P.st||{}, w=(typeof swxNow==='function')
 function frwBody(){ mcEnsure(); const ph=skyPhase(new Date().getHours()), K=frwS(), X=FRX, up=X.st==='up', top=X.st==='top';
   const say = ph==='night'?'わあ…夜の商店街、キラキラしてるね':ph==='eve'?'夕やけで、街がオレンジ色だよ':ph==='morn'?'朝の街って、すがすがしいね':'いいながめ！ ぜんぶのお店が見えるよ';
   const view=`<div class="frw-win frw-${ph}${up?' up':''}${top?' top':''}"><i class="frw-stars" aria-hidden="true"></i><i class="frw-gnd" aria-hidden="true"></i>
-    <div class="frw-pan"><svg viewBox="0 0 3780 620" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><use href="#mcPano"/></svg></div>
+    <div class="frw-pan">${mcPanoDiv('frw-img')}</div>
     <i class="frw-bars" aria-hidden="true"></i><span class="frw-alt"><b>${top?'80':up?'…':'0'}</b>m</span>${top?'<span class="frw-top">てっぺん！</span>':''}</div>`;
   const stats=top?`<div class="frw-card"><span class="label">🔭 まちの展望台</span><div class="frw-grid">${frwStats().map(s=>`<div><i>${s[0]}</i><small>${s[1]}</small><b>${s[2]}</b></div>`).join('')}</div>${X.coin?`<p class="frw-coin">きょう はじめての観覧車 🪙+${X.coin}</p>`:''}</div>
     <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> ${say}</p></div>`:'';
@@ -8385,8 +8401,8 @@ AST.push({n:'AZAKEI観覧車',ic:'🎡',c:'#e0567a',a:'#ffffff',h:150,f:()=>frwO
 try{ SMAP_G[0].shops.push('AZAKEI観覧車'); }catch(e){}
 /* ---- 🏙️ ホームの「生きてる街」：ロビーの下に、つながる街がゆっくり流れる。時間帯で空の色、天気で雨や陽ざし。
    その下に LED の「まちの電光ニュース」。天気・お願い・福引券・観覧車…いまの街のようすが流れて、タップでまちマップ ---- */
-function lhvTown(){ try{ mcEnsure(); }catch(e){ return ''; } const ph=skyPhase(new Date().getHours()), w=(typeof swxNow==='function')?swxNow():null;
-  return `<div class="lhv-town lhv-${ph}${w?' lhv-w-'+w.k:''}" aria-hidden="true"><div class="lhv-pan"><svg viewBox="0 0 3780 620" preserveAspectRatio="xMinYMax meet"><use href="#mcPano"/></svg><svg viewBox="0 0 3780 620" preserveAspectRatio="xMinYMax meet"><use href="#mcPano"/></svg></div>${w&&w.k==='rain'?'<i class="lhv-rain"></i>':''}</div>`; }
+function lhvTown(){ try{ mcImg(); }catch(e){ return ''; } const ph=skyPhase(new Date().getHours()), w=(typeof swxNow==='function')?swxNow():null;
+  return `<div class="lhv-town lhv-${ph}${w?' lhv-w-'+w.k:''}" aria-hidden="true"><div class="lhv-pan mc-im"></div>${w&&w.k==='rain'?'<i class="lhv-rain"></i>':''}</div>`; }
 function lhvItems(){ const out=[], P=S.prof, t=todayKey();
   try{ const w=swxNow(); if(w) out.push(`${w.ic} きょうの商店街は${w.n} ${w.t}℃`); }catch(e){}
   try{ const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; out.push(rd?`🎁 まちのお願い：お礼が ${rd}つ 待ってるよ`:`🙋 まちのお願い ${c}/3`); }catch(e){}
