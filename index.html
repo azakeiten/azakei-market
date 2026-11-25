@@ -5370,7 +5370,7 @@ html.bg-hide .swx-rain,html.bg-hide .swx-haze{animation-play-state:paused}
 .prd-ava.hat-on::after{font-size:22px;top:-18px}
 .hat-cap::after{content:"🧢"}.hat-ribbon::after{content:"🎀";left:78%!important;top:-.45em!important;transform:translateX(-50%) rotate(18deg)!important}
 .hat-flower::after{content:"🌸";left:24%!important;top:-.3em!important;font-size:.85em!important}
-.hat-helmet::after{content:"⛑️"}.hat-tophat::after{content:"🎩";top:-.85em!important}.hat-grad::after{content:"🎓"}.hat-crown::after{content:"👑";transform:translateX(-50%)!important}
+.hat-helmet::after{content:"⛑️"}.hat-tophat::after{content:"🎩";top:-.85em!important}.hat-grad::after{content:"🎓"}.hat-crown::after{content:"👑";transform:translateX(-50%)!important}.hat-straw::after{content:"👒"}
 .hat-shades::after{content:"🕶️";top:.42em!important;font-size:.95em!important;transform:translateX(-50%)!important}
 .sg-pc .ava.hat-on::after{font-size:.95em}
 .hatx{display:flex;flex-direction:column;gap:12px}.hatx>*{flex:none}
@@ -5491,6 +5491,18 @@ html.bg-hide .lhv-pan,html.bg-hide .lhv-in{animation-play-state:paused}
 .lhv-pan.mc-im{width:1830px;background-size:915px 150px;background-repeat:repeat-x;background-position:left bottom}
 .frw-night .frw-img,.frw-eve .frw-img{filter:brightness(.78) saturate(1.1)}
 .lhv-night .lhv-pan,.lhv-eve .lhv-pan{filter:brightness(.85) saturate(1.2)}
+/* 💰 宝さがし */
+.tre-chip{flex:none;padding:3px 9px;border:0;border-radius:99px;cursor:pointer;font-weight:900;font-size:11.5px;color:#2a1a00;background:linear-gradient(180deg,#ffe9a8,#e8b54a);box-shadow:0 2px 0 #9a6a10}
+.tre-chip.on{color:#fff;background:linear-gradient(180deg,#ff8a5a,#d8364a);box-shadow:0 0 12px rgb(255 120 80 / .7);animation:qtBub .6s ease-in-out infinite alternate}
+.tre-chip.got{background:#2fd47a;color:#06200f;box-shadow:none}
+.tre-on .ast-view{box-shadow:inset 0 0 0 3px #ffb23a,0 0 22px rgb(255 178 58 / .45)}
+.tre-on .ast-shop::after{content:"🔍";position:absolute;left:50%;top:44%;z-index:3;margin-left:-14px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:15px;background:rgb(255 255 255 / .9);box-shadow:0 2px 6px rgb(0 0 0 / .35);animation:treLook 1.2s ease-in-out infinite alternate}
+@keyframes treLook{from{transform:scale(.9) rotate(-10deg)}to{transform:scale(1.08) rotate(10deg)}}
+.tre-mk{position:absolute;right:-4px;top:30px;z-index:3;font-style:normal;font-size:18px;filter:drop-shadow(0 2px 2px rgb(0 0 0 / .4))}
+.ast-shop.tre-open{animation:treJump .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes treJump{0%{transform:translateY(0)}40%{transform:translateY(-12px) scale(1.05)}100%{transform:none}}
+html.lite .tre-on .ast-shop::after,html.lite .tre-chip.on{animation:none}
+@media (prefers-reduced-motion:reduce){.tre-on .ast-shop::after,.tre-chip.on,.ast-shop.tre-open{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6937,14 +6949,14 @@ function astView(){
   const ph=skyPhase(new Date().getHours());
   const lv=stLv().lv; stLvCheck(lv);
   const shops=AST.map((s,i)=>{ let b=0; try{ b=s.b(); }catch(e){}
-    return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}">${(()=>{ const R=srlyS(); return R.ids.includes(s.n)?`<i class="srly-tag${R.got[s.n]?' got':''}">${R.got[s.n]?'✔':'🎫'}</i>`:''; })()}<span class="ast-sign">${s.n}</span><span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>${(()=>{ try{ return qtNpc(i); }catch(e){ return ''; } })()}`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
+    return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}">${(()=>{ const R=srlyS(); return R.ids.includes(s.n)?`<i class="srly-tag${R.got[s.n]?' got':''}">${R.got[s.n]?'✔':'🎫'}</i>`:''; })()}<span class="ast-sign">${s.n}</span>${(()=>{ try{ const T=treS(), m=T.log[s.n]; return m?`<i class="tre-mk">${m}</i>`:''; }catch(e){ return ''; } })()}<span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>${(()=>{ try{ return qtNpc(i); }catch(e){ return ''; } })()}`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
   const deco=(lv>=3?`<svg class="ast-flags" width="100%" height="18" aria-hidden="true"><defs><pattern id="astfl" width="42" height="18" patternUnits="userSpaceOnUse"><path d="M0 3H42" stroke="#fff" stroke-width="1.2"/><path d="M1 3L13 3L7 15Z" fill="#ff5a76"/><path d="M15 3L27 3L21 15Z" fill="#ffc83a"/><path d="M29 3L41 3L35 15Z" fill="#4fe3ff"/></pattern></defs><rect width="100%" height="18" fill="url(#astfl)"/></svg>`:'')
     +(lv>=4?'<span class="ast-pedw" aria-hidden="true"><i>🚶</i></span><span class="ast-pedw ast-ped2" aria-hidden="true"><i>🚶‍♀️</i></span>':'')
     +(lv>=7?'<span class="ast-pedw ast-busw" aria-hidden="true"><i>🚌</i></span>':'')
     +(S.prof&&S.prof.pet?`<span class="ast-pedw pnk-walk" aria-hidden="true"><i style="filter:${PNK_COL[S.prof.pet.col].f}">${pnkSleep()?'💤':'🐈'}</i></span>`:'');
   const plaza=lv>=5?'<span class="ast-plaza" aria-hidden="true"><i>⛲</i></span>':'';
   const prdOn=PRD_RUN && Date.now()-PRD_RUN<PRD_MS && !reduced(), swx=swxNow();
-  return `<section class="ast ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small>${(()=>{ try{ if(nbNew()) return ''; const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; return `<button class="qt-chip${rd?' rd':''}" onclick="qtOpen()" aria-label="まちのお願い ${c}/3">🙋 ${c}/3</button>`; }catch(e){ return ''; } })()}<button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
+  return `<section class="ast${TRE_ON?' tre-on':''} ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small>${(()=>{ try{ if(nbNew()) return ''; const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; return `<button class="qt-chip${rd?' rd':''}" onclick="qtOpen()" aria-label="まちのお願い ${c}/3">🙋 ${c}/3</button>`; }catch(e){ return ''; } })()}${(()=>{ try{ return treChip(); }catch(e){ return ''; } })()}<button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
       ${swxLayer(swx)}${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
 }
@@ -6953,7 +6965,7 @@ const __renderSM=render; render=function(){ const r=__renderSM.apply(this,argume
 let AST_T=0;
 function astGo(i){
   const s=AST[i], sc=document.querySelector('.ast-sc'), shop=sc&&sc.querySelectorAll('.ast-shop')[i], mio=document.getElementById('astMio');
-  if(!s) return; clearTimeout(AST_T);
+  if(!s) return; if(TRE_ON){ treDig(i); return; } clearTimeout(AST_T);
   if(!shop || !mio || reduced()){ sfx('click'); try{ s.f(); }catch(e){} try{ srlyVisit(i); }catch(e){} return; }
   const x=shop.offsetLeft+shop.offsetWidth/2-17, cur=parseFloat(mio.style.left)||24, dist=Math.abs(x-cur), ms=Math.min(900,Math.max(280,dist*1.6));
   mio.classList.toggle('left', x<cur); mio.classList.add('walk'); mio.style.transitionDuration=ms+'ms'; mio.style.left=x+'px';
@@ -8265,11 +8277,12 @@ function hatBody(){ const P=S.prof, cur=shopEq('hat'), t=HTX.try||cur, it=SHOP.h
   const ava=(id,cls)=>`<span class="ava${id==='std'?'':' hat-on hat-'+id}${cls||''}" style="--s:${AVA_COLORS[(P.color||0)%6]};grid-row:auto">${esc(myAvatar()||initial(NET.name||'あなた'))}</span>`;
   const btn = on ? `<button class="btn big" disabled style="width:100%">つけています</button>`
     : own ? `<button class="btn gold big" style="width:100%" onclick="hatBuy()">これをつける</button>`
+    : it.p===null ? `<button class="btn big" style="width:100%" disabled>🗝️ 商店街の宝さがしで手に入る</button>`
     : `<button class="btn gold big" style="width:100%" onclick="hatBuy()" ${coin<it.p?'disabled':''}>🪙 ${it.p} で買ってつける</button>`;
   return `<div class="hatx"><div class="row spread"><span class="label">🎩 HAT SHOP</span><span class="coinbal" style="margin-right:46px">🪙 <b>${coin}</b></span></div><h3 class="ttl">ぼうし屋</h3>
     <div class="hat-mir"><i class="hat-light" aria-hidden="true"></i>${ava(t,' big')}<div class="hat-tag"><b>${it.n}</b><small>${it.d}</small></div></div>
-    ${btn}${!own&&coin<it.p?`<p class="note" style="text-align:center">コインがあと ${it.p-coin} 足りないよ。試着は何回でもできる！</p>`:''}
-    <div class="hat-grid">${SHOP.hat.map(x=>{ const o=shopOwn('hat',x.id); return `<button class="hat-it${t===x.id?' on':''}${cur===x.id?' eq':''}" onclick="hatTry('${x.id}')"><span class="hat-ic">${x.ic||'🚫'}</span><b>${x.n}</b><small>${cur===x.id?'つけてる':o?'もってる':'🪙'+x.p}</small></button>`; }).join('')}</div>
+    ${btn}${!own&&it.p!==null&&coin<it.p?`<p class="note" style="text-align:center">コインがあと ${it.p-coin} 足りないよ。試着は何回でもできる！</p>`:''}
+    <div class="hat-grid">${SHOP.hat.map(x=>{ const o=shopOwn('hat',x.id); return `<button class="hat-it${t===x.id?' on':''}${cur===x.id?' eq':''}" onclick="hatTry('${x.id}')"><span class="hat-ic">${x.ic||'🚫'}</span><b>${x.n}</b><small>${cur===x.id?'つけてる':o?'もってる':x.p===null?'🗝️ 宝さがし':'🪙'+x.p}</small></button>`; }).join('')}</div>
     <p class="note">つけた帽子は、ホーム・マイページ・試合の席・プロフィールカード・優勝パレードにも出るよ。</p></div>`; }
 AST.push({n:'ぼうし屋',ic:'🎩',c:'#7a4ac8',a:'#ffd36a',h:104,f:()=>hatOpen(),b:()=>0});
 try{ SMAP_G[2].shops.push('ぼうし屋'); }catch(e){}
@@ -8415,6 +8428,25 @@ function lhvItems(){ const out=[], P=S.prof, t=todayKey();
   return out; }
 function lhvTicker(){ const it=lhvItems(); if(!it.length) return ''; const line=it.map(x=>`<span>${esc(x)}</span>`).join('<i>◆</i>');
   return `<button class="lhv-tk" onclick="smapOpen()" aria-label="まちの電光ニュース：${esc(it.join('、'))}（タップでまちマップ）"><b class="lhv-on">ON AIR</b><span class="lhv-vp"><span class="lhv-in" style="--d:${Math.max(18,it.length*6)}s">${line}<i>◆</i>${line}<i>◆</i></span></span></button>`; }
+/* ---- 💰 商店街の宝さがし：毎日1つ、どこかのお店に宝箱。ヒントはお店のジャンル。
+   「宝さがし」をオンにしてお店をタップすると、近さで 🔥あつい／♨️あたたかい／🍃すずしい／🥶さむい。4回までに見つけよう。
+   はじめて見つけたら、宝さがし限定の「麦わら帽子」 ---- */
+let TRE_ON=false;
+function treS(){ const P=S.prof, t=todayKey(); if(!P.tre || P.tre.d!==t){ const r=mulberry(t*31+5); P.tre={d:t, at:AST[Math.floor(r()*AST.length)].n, tries:4, found:false, log:{}, ever:(P.tre&&P.tre.ever)||0}; } return P.tre; }
+function treGroup(n){ try{ const g=SMAP_G.find(g=>g.shops.includes(n)); return g?g.ic+' '+g.n:'🎮 あそぶ'; }catch(e){ return 'どこか'; } }
+function treToggle(){ const T=treS(); if(T.found){ toast('きょうの宝はもう見つけたよ！ また明日'); return; } if(T.tries<=0){ toast('きょうはもう探せないよ。また明日！'); return; }
+  TRE_ON=!TRE_ON; sfx(TRE_ON?'open':'click'); if(TRE_ON) toast(`💰 宝は「${treGroup(T.at)}」のお店のどこか。お店をタップして調べよう（のこり${T.tries}回）`); render(); }
+function treDig(i){ const T=treS(), s=AST[i]; if(!s) return; if(T.log[s.n]){ toast('そこはもう調べたよ'); return; }
+  const at=AST.findIndex(x=>x.n===T.at), d=Math.abs(i-at); T.tries--; haptic(12);
+  if(d===0){ T.found=true; T.log[s.n]='💰'; TRE_ON=false; const first=!T.ever; T.ever=(T.ever||0)+1; const P=S.prof; P.coin=(P.coin||0)+40;
+    if(first){ P.own=P.own||{}; P.own.hat=P.own.hat||[]; if(!P.own.hat.includes('straw')) P.own.hat.push('straw'); }
+    saveProfile(); render(); sfx('fanfare'); haptic(40); confetti();
+    setTimeout(()=>{ const el=document.querySelectorAll('.ast-shop')[i]; if(el){ el.classList.add('tre-open'); burstAt(el,['#ffc83a','#fff3a8','#fff'],40); } },60);
+    toast(first?'💰 宝箱を見つけた！ 🪙+40 ＆ 限定「麦わら帽子」をゲット（ぼうし屋でつけられる）':'💰 宝箱を見つけた！ 🪙+40'); return; }
+  const k = d===1?'🔥':d<=3?'♨️':d<=6?'🍃':'🥶', w={'🔥':'あつい！ すぐとなり','♨️':'あたたかい…近いかも','🍃':'すずしい。ちょっと遠い','🥶':'さむい！ ぜんぜんちがう方向'}[k];
+  T.log[s.n]=k; if(T.tries<=0) TRE_ON=false; saveProfile(); sfx(d<=1?'coin':'click'); render();
+  toast(`${s.n}：${k} ${w}${T.tries>0?`（のこり${T.tries}回）`:`… きょうの宝は「${T.at}」だったよ`}`); }
+function treChip(){ if(nbNew()) return ''; const T=treS(); return `<button class="tre-chip${TRE_ON?' on':''}${T.found?' got':''}" onclick="treToggle()" aria-pressed="${TRE_ON}" aria-label="宝さがし">${T.found?'💰 発見！':TRE_ON?`🔍 ${T.tries}`:'🗝️ 宝'}</button>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -9823,7 +9855,7 @@ const SHOP={
   frame:[ {id:'std',n:'なし',p:0,d:'いつものアイコン'}, {id:'gold',n:'ゴールド',p:150,d:'金の二重リング'}, {id:'fire',n:'フレイム',p:200,d:'燃えるオーラ'}, {id:'neon',n:'ネオン',p:250,d:'光る2色のライン'}, {id:'sakura',n:'さくら',p:250,d:'花びらが舞う'}, {id:'rainbow',n:'レインボー',p:400,d:'虹色に回る'} ],
   table:[ {id:'std',n:'ナイトマーケット',p:0,d:'いつもの夜の市場'}, {id:'green',n:'カジノグリーン',p:120,d:'緑のフェルトのテーブル'}, {id:'wood',n:'木目のテーブル',p:150,d:'あたたかい木の机'}, {id:'red',n:'レッドカーペット',p:200,d:'赤じゅうたんの特等席'}, {id:'space',n:'スペースステーション',p:300,d:'星空に浮かぶ取引所'}, {id:'sakura',n:'夜桜',p:null,d:'ラッキーボックス限定'},
     {id:'halloween',n:'ハロウィンナイト',p:100,d:'かぼちゃ色の満月',season:'halloween'}, {id:'xmas',n:'ホワイトクリスマス',p:100,d:'雪のふる市場',season:'xmas'}, {id:'shogatsu',n:'初売り',p:100,d:'紅白とこがねの新春',season:'newyear'} ],
-  hat:[ {id:'std',n:'なし',p:0,d:'なにもつけない',ic:''}, {id:'cap',n:'キャップ',p:60,d:'元気なトレーダー',ic:'🧢'}, {id:'ribbon',n:'リボン',p:60,d:'かわいく決める',ic:'🎀'}, {id:'flower',n:'花かざり',p:80,d:'春の市場の香り',ic:'🌸'}, {id:'helmet',n:'安全ヘルメット',p:100,d:'工場長スタイル',ic:'⛑️'}, {id:'shades',n:'サングラス',p:120,d:'相場をクールに読む',ic:'🕶️'}, {id:'tophat',n:'シルクハット',p:150,d:'大富豪の気分',ic:'🎩'}, {id:'grad',n:'角帽',p:200,d:'経済博士',ic:'🎓'}, {id:'crown',n:'王冠',p:500,d:'市場の王さま',ic:'👑'} ],
+  hat:[ {id:'std',n:'なし',p:0,d:'なにもつけない',ic:''}, {id:'cap',n:'キャップ',p:60,d:'元気なトレーダー',ic:'🧢'}, {id:'ribbon',n:'リボン',p:60,d:'かわいく決める',ic:'🎀'}, {id:'flower',n:'花かざり',p:80,d:'春の市場の香り',ic:'🌸'}, {id:'helmet',n:'安全ヘルメット',p:100,d:'工場長スタイル',ic:'⛑️'}, {id:'shades',n:'サングラス',p:120,d:'相場をクールに読む',ic:'🕶️'}, {id:'tophat',n:'シルクハット',p:150,d:'大富豪の気分',ic:'🎩'}, {id:'grad',n:'角帽',p:200,d:'経済博士',ic:'🎓'}, {id:'crown',n:'王冠',p:500,d:'市場の王さま',ic:'👑'}, {id:'straw',n:'麦わら帽子',p:null,d:'宝さがしで見つけた',ic:'👒'} ],
   back:[ {id:'std',n:'スタンダード',p:0,d:'いつもの裏面'}, {id:'gold',n:'ゴールド',p:80,d:'金の箔押し'}, {id:'koban',n:'小判',p:120,d:'江戸の小判柄'}, {id:'stars',n:'星空',p:150,d:'きらめく夜空'}, {id:'carbon',n:'カーボン',p:200,d:'黒くて速そう'}, {id:'rainbow',n:'レインボー',p:null,d:'ラッキーボックス限定'},
     {id:'pumpkin',n:'パンプキン',p:80,d:'ハロウィン限定',season:'halloween'}, {id:'snow',n:'スノー',p:80,d:'クリスマス限定',season:'xmas'}, {id:'kagami',n:'鏡もち',p:80,d:'お正月限定',season:'newyear'} ]
 };
@@ -9835,6 +9867,7 @@ const bkc = () => { const b=S&&S.prof?shopEq('back'):'std'; if(b==='mine') myBac
 function shopBuy(k,id){
   const it=SHOP[k].find(x=>x.id===id), P=S.prof; if(!it) return;
   P.own=P.own||{}; P.own[k]=P.own[k]||[]; P.eq=P.eq||{};
+  if(k==='hat' && !shopOwn(k,id) && it.p===null){ toast('商店街の「宝さがし」で見つけると手に入るよ'); sfx('click'); return; }
   if(!shopOwn(k,id) && it.p===null){ toast('ラッキーボックスで手に入るレアデザインです'); sfx('click'); return; }
   if(!shopOwn(k,id)){
     if(it.season && !(curSeason()&&curSeason().id===it.season)){ toast('このデザインは期間限定です'); sfx('buzz'); return; }
