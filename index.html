@@ -5370,7 +5370,7 @@ html.bg-hide .swx-rain,html.bg-hide .swx-haze{animation-play-state:paused}
 .prd-ava.hat-on::after{font-size:22px;top:-18px}
 .hat-cap::after{content:"🧢"}.hat-ribbon::after{content:"🎀";left:78%!important;top:-.45em!important;transform:translateX(-50%) rotate(18deg)!important}
 .hat-flower::after{content:"🌸";left:24%!important;top:-.3em!important;font-size:.85em!important}
-.hat-helmet::after{content:"⛑️"}.hat-tophat::after{content:"🎩";top:-.85em!important}.hat-grad::after{content:"🎓"}.hat-crown::after{content:"👑";transform:translateX(-50%)!important}.hat-straw::after{content:"👒"}
+.hat-helmet::after{content:"⛑️"}.hat-tophat::after{content:"🎩";top:-.85em!important}.hat-grad::after{content:"🎓"}.hat-crown::after{content:"👑";transform:translateX(-50%)!important}.hat-straw::after{content:"👒"}.hat-xtree::after{content:"🎄"}
 .hat-shades::after{content:"🕶️";top:.42em!important;font-size:.95em!important;transform:translateX(-50%)!important}
 .sg-pc .ava.hat-on::after{font-size:.95em}
 .hatx{display:flex;flex-direction:column;gap:12px}.hatx>*{flex:none}
@@ -5507,6 +5507,31 @@ html.lite .tre-on .ast-shop::after,html.lite .tre-chip.on{animation:none}
 .nng-frame{aspect-ratio:1000/1480;width:min(100%,250px);transform:rotate(1.5deg)}
 .nng-lot{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px;border-radius:14px;text-align:center;color:#7a1a00;background:repeating-linear-gradient(135deg,#fff8ee 0 12px,#fff0e0 12px 24px);box-shadow:inset 0 0 0 2px #d8364a}
 .nng-lot b{font-size:14px}.nng-lot span{font:600 20px "Courier New",monospace;letter-spacing:.06em}.nng-lot small{font-size:11.5px;font-weight:700;color:#8a4a2a}.nng-lot em{font-style:normal;font-weight:900;font-size:18px;color:#d8364a}
+/* 🎄 みんなのクリスマスツリー */
+.xmt-st{position:relative;flex:none;align-self:flex-end;margin:0 10px -2px 34px;padding:0;border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center}
+.xmt-st-t{font-size:62px;line-height:1;filter:drop-shadow(0 4px 4px rgb(0 0 0 / .35))}
+.xmt-st.lit .xmt-st-t{filter:drop-shadow(0 0 10px #ffe58a) drop-shadow(0 4px 4px rgb(0 0 0 / .35));animation:xmtGlow 1.6s ease-in-out infinite alternate}
+@keyframes xmtGlow{from{filter:drop-shadow(0 0 4px #ffe58a)}to{filter:drop-shadow(0 0 14px #fff3a8)}}
+.xmt-st-n{font-style:normal;font-size:10px;font-weight:900;color:#fff;padding:0 6px;border-radius:99px;background:#1f7a4a;margin-top:-4px}
+.xmt-st .ast-bd{right:-6px;top:-4px}
+.xmt{display:flex;flex-direction:column;gap:12px}.xmt>*{flex:none}
+.xmt-stage{position:relative;padding:14px 10px 8px;border-radius:20px;overflow:hidden;background:radial-gradient(90% 60% at 50% 30%,#2a3a7a,#0b1030);box-shadow:inset 0 0 0 2px rgb(255 255 255 / .12)}
+.xmt-snow{position:absolute;inset:0;background:radial-gradient(2px 2px at 10% 20%,#fff,transparent),radial-gradient(2px 2px at 30% 60%,#fff,transparent),radial-gradient(1.5px 1.5px at 55% 15%,#fff,transparent),radial-gradient(2px 2px at 75% 45%,#fff,transparent),radial-gradient(1.5px 1.5px at 90% 80%,#fff,transparent),radial-gradient(2px 2px at 45% 85%,#fff,transparent);opacity:.7}
+.xmt-tree{position:relative;width:min(100%,280px);aspect-ratio:300/360;margin:0 auto}
+.xmt-tree svg{display:block;width:100%;height:100%}
+.xmt-star{position:absolute;left:50%;top:8.3%;transform:translate(-50%,-50%);font-style:normal;font-size:34px;filter:grayscale(1) brightness(.6);transition:filter .6s}
+.xmt-star.on{filter:drop-shadow(0 0 12px #ffe58a);animation:xmtGlow 1.2s ease-in-out infinite alternate}
+.xmt-o,.xmt-e{position:absolute;transform:translate(-50%,-50%);font-style:normal;font-size:22px;line-height:1}
+.xmt-o{filter:drop-shadow(0 2px 2px rgb(0 0 0 / .4))}.xmt-o.pop{animation:sgIn .4s cubic-bezier(.3,1.6,.5,1) both}
+.xmt-e{width:22px;height:22px;padding:0;border:0;border-radius:50%;background:rgb(255 255 255 / .1);box-shadow:inset 0 0 0 1.5px rgb(255 255 255 / .25);cursor:default}
+.xmt-e.can{cursor:pointer;background:rgb(255 229 138 / .25);box-shadow:inset 0 0 0 1.5px #ffe58a,0 0 8px rgb(255 229 138 / .6);animation:qtBub .9s ease-in-out infinite alternate}
+.xmt-stage.lit .xmt-o{animation:xmtTw 1.4s ease-in-out infinite alternate}.xmt-stage.lit .xmt-o:nth-child(2n){animation-delay:.7s}
+@keyframes xmtTw{from{filter:drop-shadow(0 0 2px #fff)}to{filter:drop-shadow(0 0 9px #ffe58a) brightness(1.2)}}
+.xmt-done{display:block;margin-top:6px;text-align:center;font:400 16px var(--display,sans-serif);color:#ffe58a;text-shadow:0 0 10px rgb(255 229 138 / .7)}
+.xmt-pick{display:flex;flex-direction:column;gap:6px}.xmt-pick>b{font-size:12.5px;opacity:.85}
+.xmt-pick .phb-ch{font-size:18px;padding:4px 12px}
+html.lite .xmt-st.lit .xmt-st-t,html.lite .xmt-e.can,html.lite .xmt-stage.lit .xmt-o,html.lite .xmt-star.on{animation:none}
+@media (prefers-reduced-motion:reduce){.xmt-st.lit .xmt-st-t,.xmt-e.can,.xmt-stage.lit .xmt-o,.xmt-star.on{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -6962,7 +6987,7 @@ function astView(){
   const prdOn=PRD_RUN && Date.now()-PRD_RUN<PRD_MS && !reduced(), swx=swxNow();
   return `<section class="ast${TRE_ON?' tre-on':''} ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small>${(()=>{ try{ if(nbNew()) return ''; const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; return `<button class="qt-chip${rd?' rd':''}" onclick="qtOpen()" aria-label="まちのお願い ${c}/3">🙋 ${c}/3</button>`; }catch(e){ return ''; } })()}${(()=>{ try{ return treChip(); }catch(e){ return ''; } })()}<button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
-      ${swxLayer(swx)}${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
+      ${swxLayer(swx)}${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${(()=>{ try{ return xmtStreet(); }catch(e){ return ''; } })()}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
 }
 function astPar(sc){ const v=sc.parentNode; if(v) v.style.setProperty('--px', (sc.scrollLeft*0.3).toFixed(1)+'px'); smapWin(sc); }
 const __renderSM=render; render=function(){ const r=__renderSM.apply(this,arguments); try{ const sc=document.querySelector('.ast-sc'); if(sc) smapWin(sc); }catch(e){} return r; };
@@ -8281,12 +8306,12 @@ function hatBody(){ const P=S.prof, cur=shopEq('hat'), t=HTX.try||cur, it=SHOP.h
   const ava=(id,cls)=>`<span class="ava${id==='std'?'':' hat-on hat-'+id}${cls||''}" style="--s:${AVA_COLORS[(P.color||0)%6]};grid-row:auto">${esc(myAvatar()||initial(NET.name||'あなた'))}</span>`;
   const btn = on ? `<button class="btn big" disabled style="width:100%">つけています</button>`
     : own ? `<button class="btn gold big" style="width:100%" onclick="hatBuy()">これをつける</button>`
-    : it.p===null ? `<button class="btn big" style="width:100%" disabled>🗝️ 商店街の宝さがしで手に入る</button>`
+    : it.p===null ? `<button class="btn big" style="width:100%;white-space:normal" disabled>${it.lab||'🗝️'}：${(it.how||'').replace(/よ$/,'')}</button>`
     : `<button class="btn gold big" style="width:100%" onclick="hatBuy()" ${coin<it.p?'disabled':''}>🪙 ${it.p} で買ってつける</button>`;
   return `<div class="hatx"><div class="row spread"><span class="label">🎩 HAT SHOP</span><span class="coinbal" style="margin-right:46px">🪙 <b>${coin}</b></span></div><h3 class="ttl">ぼうし屋</h3>
     <div class="hat-mir"><i class="hat-light" aria-hidden="true"></i>${ava(t,' big')}<div class="hat-tag"><b>${it.n}</b><small>${it.d}</small></div></div>
     ${btn}${!own&&it.p!==null&&coin<it.p?`<p class="note" style="text-align:center">コインがあと ${it.p-coin} 足りないよ。試着は何回でもできる！</p>`:''}
-    <div class="hat-grid">${SHOP.hat.map(x=>{ const o=shopOwn('hat',x.id); return `<button class="hat-it${t===x.id?' on':''}${cur===x.id?' eq':''}" onclick="hatTry('${x.id}')"><span class="hat-ic">${x.ic||'🚫'}</span><b>${x.n}</b><small>${cur===x.id?'つけてる':o?'もってる':x.p===null?'🗝️ 宝さがし':'🪙'+x.p}</small></button>`; }).join('')}</div>
+    <div class="hat-grid">${SHOP.hat.map(x=>{ const o=shopOwn('hat',x.id); return `<button class="hat-it${t===x.id?' on':''}${cur===x.id?' eq':''}" onclick="hatTry('${x.id}')"><span class="hat-ic">${x.ic||'🚫'}</span><b>${x.n}</b><small>${cur===x.id?'つけてる':o?'もってる':x.p===null?(x.lab||'🗝️ 限定'):'🪙'+x.p}</small></button>`; }).join('')}</div>
     <p class="note">つけた帽子は、ホーム・マイページ・試合の席・プロフィールカード・優勝パレードにも出るよ。</p></div>`; }
 AST.push({n:'ぼうし屋',ic:'🎩',c:'#7a4ac8',a:'#ffd36a',h:104,f:()=>hatOpen(),b:()=>0});
 try{ SMAP_G[2].shops.push('ぼうし屋'); }catch(e){}
@@ -8521,6 +8546,33 @@ function nngBody(){ const N=nngS(), y=nngYear(), E=NNG_ETO[y%12], drawn=nngDrawn
     ${shopEq('hat')==='std'?`<button class="btn ghost" style="width:100%" onclick="hatOpen()">🎩 帽子をかぶって作る（ぼうし屋へ）</button>`:''}
     <button class="btn gold big" style="width:100%" onclick="nngSave()">🖨️ 年賀状を保存する</button></div>`; }
 if(nngOn()){ AST.push({n:'年賀状工房',ic:'🎍',c:'#b8142a',a:'#ffd36a',h:110,f:()=>nngOpen(),b:()=>{ const N=nngS(); return !N.no?'!':(nngDrawn(N)&&!N.got)?'🎁':0; }}); try{ SMAP_G[2].shops.push('年賀状工房'); }catch(e){} }
+/* ---- 🎄 みんなのクリスマスツリー（11/20〜12/25）：商店街の入口に大きなツリー。
+   試合を1回あそぶとオーナメント1こ（1位なら+1）。好きな場所にかざって、24こで完成 → 点灯式と限定「ツリーのかぶりもの」 ---- */
+const XMT_ORN=['🔴','⭐','🎁','🍬','🔔','❄️'];
+const XMT_SLOT=(()=>{ const out=[], rows=[[95,2],[138,4],[181,5],[224,6],[267,7]]; rows.forEach(([y,n])=>{ const w=(y-30)/270*250*0.82; for(let i=0;i<n;i++) out.push([150-w/2+(n===1?w/2:i*w/(n-1)), y]); }); return out; })();
+let XMX={orn:0};
+function xmtS(){ const P=S.prof, y=new Date().getFullYear(), st=P.st||{}; if(!P.xmt || P.xmt.y!==y) P.xmt={y, bg:(st.games||0), bw:(st.wins||0), slots:{}, lit:false}; return P.xmt; }
+function xmtHave(T){ const st=S.prof.st||{}; return Math.max(0, 2+((st.games||0)-T.bg)+((st.wins||0)-T.bw)-Object.keys(T.slots).length); }
+function xmtOpen(){ xmtS(); XMX.orn=XMX.orn||0; openSheet('xmt'); sfx('open'); }
+function xmtHang(k){ const T=xmtS(); if(T.slots[k]!=null || T.lit) return; if(xmtHave(T)<=0){ toast('オーナメントがないよ。試合をすると1こもらえる（1位なら+1）'); sfx('buzz'); return; }
+  T.slots[k]=XMX.orn; sfx('select'); haptic(8); const n=Object.keys(T.slots).length;
+  if(n>=XMT_SLOT.length){ T.lit=true; const P=S.prof; P.own=P.own||{}; P.own.hat=P.own.hat||[]; if(!P.own.hat.includes('xtree')) P.own.hat.push('xtree'); P.coin=(P.coin||0)+100; saveProfile(); renderSheet();
+    setTimeout(()=>{ sfx('fanfare'); haptic(50); confetti(); toast('🎄 ツリー完成！ 点灯式！ 🪙+100 ＆ 限定「ツリーのかぶりもの」'); },250); return; }
+  saveProfile(); renderSheet(); const el=document.querySelector(`.xmt-o[data-k="${k}"]`); if(el) el.classList.add('pop'); }
+function xmtBody(){ const T=xmtS(), have=xmtHave(T), n=Object.keys(T.slots).length;
+  const slots=XMT_SLOT.map(([x,y],k)=>{ const o=T.slots[k]; return o!=null?`<i class="xmt-o" data-k="${k}" style="left:${x/3}%;top:${y/3.6}%">${XMT_ORN[o]}</i>`:`<button class="xmt-e${have&&!T.lit?' can':''}" style="left:${x/3}%;top:${y/3.6}%" onclick="xmtHang(${k})" aria-label="ここにかざる"></button>`; }).join('');
+  return `<div class="xmt"><div class="row spread"><span class="label">🎄 CHRISTMAS TREE · ${n}/${XMT_SLOT.length}</span><span class="coinbal" style="margin-right:46px">🎁 <b>${have}</b></span></div><h3 class="ttl">みんなのクリスマスツリー</h3>
+    <div class="xmt-stage${T.lit?' lit':''}"><i class="xmt-snow" aria-hidden="true"></i>
+      <div class="xmt-tree"><svg viewBox="0 0 300 360" aria-hidden="true"><rect x="132" y="300" width="36" height="46" rx="4" fill="#7a4a24"/>
+        <polygon points="150,30 60,140 240,140" fill="#2f8a4a"/><polygon points="150,70 40,210 260,210" fill="#2a7a42"/><polygon points="150,120 20,300 280,300" fill="#236a3a"/>
+        ${T.lit?'<path d="M60 150 Q150 190 240 150 M40 220 Q150 270 260 220" stroke="#ffe58a" stroke-width="3" fill="none" stroke-dasharray="2 9" stroke-linecap="round"/>':''}</svg>
+        <i class="xmt-star${T.lit?' on':''}">⭐</i>${slots}</div>
+      ${T.lit?'<span class="xmt-done">点灯式 ✨ MERRY CHRISTMAS</span>':''}</div>
+    ${T.lit?`<div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> きれい…！ 商店街のみんなも よろこんでるよ。限定の「ツリーのかぶりもの」は ぼうし屋でつけてね</p></div><button class="btn gold" style="width:100%" onclick="hatOpen()">🎩 ぼうし屋へ</button>`
+      : `<div class="xmt-pick"><b>かざるもの</b><div class="phb-chs">${XMT_ORN.map((o,i)=>`<button class="phb-ch${XMX.orn===i?' on':''}" onclick="XMX.orn=${i};sfx('click');renderSheet()">${o}</button>`).join('')}</div></div>
+        <p class="note">${have?`オーナメントが <b>${have}こ</b> あるよ。ツリーの光っている場所をタップしてかざろう`:'試合を1回あそぶとオーナメント1こ（1位なら+1）。あと '+(XMT_SLOT.length-n)+'こで完成！'}</p>`}</div>`; }
+function xmtStreet(){ if(!advOn() || nbNew()) return ''; const T=xmtS(), n=Object.keys(T.slots).length, h=xmtHave(T);
+  return `<button class="xmt-st${T.lit?' lit':''}" onclick="event.stopPropagation();xmtOpen()" aria-label="みんなのクリスマスツリー ${n}/24"><span class="xmt-st-t">🎄</span><i class="xmt-st-n">${T.lit?'✨':`${n}/24`}</i>${h&&!T.lit?`<b class="ast-bd">${h}</b>`:''}</button>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -9776,6 +9828,7 @@ function renderSheet(){
   else if(k==='qt') body=qtBody();
   else if(k==='frw') body=frwBody();
   else if(k==='nng') body=nngBody();
+  else if(k==='xmt') body=xmtBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
@@ -9930,7 +9983,7 @@ const SHOP={
   frame:[ {id:'std',n:'なし',p:0,d:'いつものアイコン'}, {id:'gold',n:'ゴールド',p:150,d:'金の二重リング'}, {id:'fire',n:'フレイム',p:200,d:'燃えるオーラ'}, {id:'neon',n:'ネオン',p:250,d:'光る2色のライン'}, {id:'sakura',n:'さくら',p:250,d:'花びらが舞う'}, {id:'rainbow',n:'レインボー',p:400,d:'虹色に回る'} ],
   table:[ {id:'std',n:'ナイトマーケット',p:0,d:'いつもの夜の市場'}, {id:'green',n:'カジノグリーン',p:120,d:'緑のフェルトのテーブル'}, {id:'wood',n:'木目のテーブル',p:150,d:'あたたかい木の机'}, {id:'red',n:'レッドカーペット',p:200,d:'赤じゅうたんの特等席'}, {id:'space',n:'スペースステーション',p:300,d:'星空に浮かぶ取引所'}, {id:'sakura',n:'夜桜',p:null,d:'ラッキーボックス限定'},
     {id:'halloween',n:'ハロウィンナイト',p:100,d:'かぼちゃ色の満月',season:'halloween'}, {id:'xmas',n:'ホワイトクリスマス',p:100,d:'雪のふる市場',season:'xmas'}, {id:'shogatsu',n:'初売り',p:100,d:'紅白とこがねの新春',season:'newyear'} ],
-  hat:[ {id:'std',n:'なし',p:0,d:'なにもつけない',ic:''}, {id:'cap',n:'キャップ',p:60,d:'元気なトレーダー',ic:'🧢'}, {id:'ribbon',n:'リボン',p:60,d:'かわいく決める',ic:'🎀'}, {id:'flower',n:'花かざり',p:80,d:'春の市場の香り',ic:'🌸'}, {id:'helmet',n:'安全ヘルメット',p:100,d:'工場長スタイル',ic:'⛑️'}, {id:'shades',n:'サングラス',p:120,d:'相場をクールに読む',ic:'🕶️'}, {id:'tophat',n:'シルクハット',p:150,d:'大富豪の気分',ic:'🎩'}, {id:'grad',n:'角帽',p:200,d:'経済博士',ic:'🎓'}, {id:'crown',n:'王冠',p:500,d:'市場の王さま',ic:'👑'}, {id:'straw',n:'麦わら帽子',p:null,d:'宝さがしで見つけた',ic:'👒'} ],
+  hat:[ {id:'std',n:'なし',p:0,d:'なにもつけない',ic:''}, {id:'cap',n:'キャップ',p:60,d:'元気なトレーダー',ic:'🧢'}, {id:'ribbon',n:'リボン',p:60,d:'かわいく決める',ic:'🎀'}, {id:'flower',n:'花かざり',p:80,d:'春の市場の香り',ic:'🌸'}, {id:'helmet',n:'安全ヘルメット',p:100,d:'工場長スタイル',ic:'⛑️'}, {id:'shades',n:'サングラス',p:120,d:'相場をクールに読む',ic:'🕶️'}, {id:'tophat',n:'シルクハット',p:150,d:'大富豪の気分',ic:'🎩'}, {id:'grad',n:'角帽',p:200,d:'経済博士',ic:'🎓'}, {id:'crown',n:'王冠',p:500,d:'市場の王さま',ic:'👑'}, {id:'straw',n:'麦わら帽子',p:null,d:'宝さがしで見つけた',ic:'👒',how:'商店街の「宝さがし」で見つけると手に入るよ',lab:'🗝️ 宝さがし'}, {id:'xtree',n:'ツリーのかぶりもの',p:null,d:'クリスマスツリーを完成させた',ic:'🎄',how:'商店街のクリスマスツリーを24こ かざって完成させると手に入るよ',lab:'🎄 ツリー完成'} ],
   back:[ {id:'std',n:'スタンダード',p:0,d:'いつもの裏面'}, {id:'gold',n:'ゴールド',p:80,d:'金の箔押し'}, {id:'koban',n:'小判',p:120,d:'江戸の小判柄'}, {id:'stars',n:'星空',p:150,d:'きらめく夜空'}, {id:'carbon',n:'カーボン',p:200,d:'黒くて速そう'}, {id:'rainbow',n:'レインボー',p:null,d:'ラッキーボックス限定'},
     {id:'pumpkin',n:'パンプキン',p:80,d:'ハロウィン限定',season:'halloween'}, {id:'snow',n:'スノー',p:80,d:'クリスマス限定',season:'xmas'}, {id:'kagami',n:'鏡もち',p:80,d:'お正月限定',season:'newyear'} ]
 };
@@ -9942,7 +9995,7 @@ const bkc = () => { const b=S&&S.prof?shopEq('back'):'std'; if(b==='mine') myBac
 function shopBuy(k,id){
   const it=SHOP[k].find(x=>x.id===id), P=S.prof; if(!it) return;
   P.own=P.own||{}; P.own[k]=P.own[k]||[]; P.eq=P.eq||{};
-  if(k==='hat' && !shopOwn(k,id) && it.p===null){ toast('商店街の「宝さがし」で見つけると手に入るよ'); sfx('click'); return; }
+  if(k==='hat' && !shopOwn(k,id) && it.p===null){ toast(it.how||'限定のアイテムです'); sfx('click'); return; }
   if(!shopOwn(k,id) && it.p===null){ toast('ラッキーボックスで手に入るレアデザインです'); sfx('click'); return; }
   if(!shopOwn(k,id)){
     if(it.season && !(curSeason()&&curSeason().id===it.season)){ toast('このデザインは期間限定です'); sfx('buzz'); return; }
