@@ -5593,6 +5593,23 @@ html.lite .xmt-st.lit .xmt-st-t,html.lite .xmt-e.can,html.lite .xmt-stage.lit .x
 .rdo-list .now{opacity:1;background:#3a6aa8;color:#fff}.rdo-list .done{opacity:.9}.rdo-list .done::after{content:" ✓";color:#2fd47a}
 html.lite .rdo-box.on .rdo-eq i,html.lite .rdo-box.on .rdo-spk,html.lite .rdo-box.on .rdo-lamp{animation:none}
 @media (prefers-reduced-motion:reduce){.rdo-box.on .rdo-eq i,.rdo-box.on .rdo-spk,.rdo-txt.ty{animation:none}}
+/* 🌠 流れ星キャッチ */
+.stz-fly{position:absolute;left:-60px;z-index:6;padding:8px;border:0;background:none;cursor:pointer;animation:stzFly 3.2s linear both}
+.stz-fly span{display:block;font-size:32px;filter:drop-shadow(0 0 10px #fff3a8) drop-shadow(0 0 4px #fff)}
+.stz-tail{position:absolute;right:36px;top:50%;width:130px;height:4px;box-shadow:0 0 8px #fff3a8;margin-top:-1.5px;border-radius:2px;background:linear-gradient(90deg,transparent,#fff3a8);transform-origin:right}
+.stz-fly.day{animation:stzFloat 6s ease-in-out both}.stz-fly.day span{font-size:30px;filter:drop-shadow(0 3px 2px rgb(0 0 0 / .3))}
+@keyframes stzFly{from{transform:translate(0,0) rotate(18deg)}to{transform:translate(calc(100vw + 120px),70px) rotate(18deg)}}
+@keyframes stzFloat{0%{transform:translate(0,40px)}50%{transform:translate(calc(50vw + 30px),0) rotate(-8deg)}100%{transform:translate(calc(100vw + 120px),-30px) rotate(6deg)}}
+.stz-fly.got{animation-play-state:paused}.stz-fly.got span{animation:stzGot .6s ease-out both}
+@keyframes stzGot{to{transform:scale(2.2);opacity:0}}
+.stz{display:flex;flex-direction:column;gap:12px}.stz>*{flex:none}
+.stz-sky{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:12px;border-radius:20px;background:radial-gradient(120% 80% at 50% 0,#1a2a6a,#050818);box-shadow:inset 0 0 0 2px rgb(255 255 255 / .1)}
+.stz-c{display:flex;flex-direction:column;align-items:center;padding:6px 4px 8px;border-radius:14px;background:rgb(255 255 255 / .04)}
+.stz-c svg{width:100%;height:auto}
+.stz-c b{font-size:12.5px;color:#fff}.stz-c small{font-size:11px;font-weight:800;color:#b8c4ff}
+.stz-c.ok{background:rgb(255 229 138 / .1);box-shadow:inset 0 0 0 1.5px rgb(255 229 138 / .5)}.stz-c.ok small{color:#ffe58a}
+.stz-c circle.lit{filter:drop-shadow(0 0 3px #ffe58a)}
+@media (prefers-reduced-motion:reduce){.stz-fly{animation-duration:8s}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -8723,6 +8740,35 @@ function rdoBody(){ const X=RDX, P=X.prog, done=X.seg>=P.length, sg=P[Math.min(X
     <p class="note">番組は毎日かわるよ。さいごまで聞くと 1日1回 🪙10。${'speechSynthesis' in window?'声はこの端末の読み上げ機能を使うよ（音をオフにしていると字幕だけ）':'この端末では字幕だけで流れるよ'}</p></div>`; }
 AST.push({n:'AZAKEI FM',ic:'📻',c:'#3a6aa8',a:'#ffd36a',h:134,f:()=>rdoOpen(),b:()=>rdoS().day===todayKey()?0:'!'});
 try{ SMAP_G[2].shops.push('AZAKEI FM'); }catch(e){}
+/* ---- 🌠 流れ星キャッチと星座図鑑：ホームにいると、ときどき通りの空を流れ星（昼は風船🎈）が横切る。タップでつかまえると⭐。
+   ⭐は6つの「産業の星座」に入っていき、1つの星座が5つそろうと完成（🪙30）。1日につかまえられるのは12こまで ---- */
+const STZ_C=[{n:'エネルギー座',ic:'⚡',p:[[20,70],[38,40],[52,58],[70,22],[84,48]]},{n:'金融座',ic:'💰',p:[[22,30],[44,22],[66,30],[56,62],[32,62]]},
+  {n:'製造座',ic:'⚙️',p:[[50,18],[80,40],[70,76],[30,76],[20,40]]},{n:'小売座',ic:'🛒',p:[[14,30],[30,30],[40,64],[74,64],[82,36]]},
+  {n:'運輸座',ic:'🚚',p:[[16,56],[40,56],[62,40],[84,40],[86,64]]},{n:'メディア座',ic:'📺',p:[[24,26],[76,26],[80,70],[20,70],[50,48]]}];
+let STZ_T=0, STZ_BUSY=false;
+function stzS(){ const P=S.prof; if(!P.stz) P.stz={c:[0,0,0,0,0,0], day:0, n:0, tot:0}; if(P.stz.day!==todayKey()){ P.stz.day=todayKey(); P.stz.n=0; } return P.stz; }
+function stzSpawn(){ try{
+  if(STZ_BUSY || G || S.sheet || S.screen!=='home' || document.hidden || nbNew()) return; const K=stzS(); if(K.n>=12 || K.c.every(v=>v>=5)) return;
+  const v=document.querySelector('.ast-view'); if(!v) return; const r=v.getBoundingClientRect(); if(r.bottom<60 || r.top>innerHeight-60) return;
+  const night=['night','eve'].includes(skyPhase(new Date().getHours()));
+  const el=document.createElement('button'); el.className='stz-fly'+(night?'':' day'); el.setAttribute('aria-label',night?'流れ星をつかまえる':'風船をつかまえる');
+  el.innerHTML=night?'<i class="stz-tail"></i><span>⭐</span>':'<span>🎈</span>'; el.style.top=(10+Math.random()*30)+'%';
+  STZ_BUSY=true; const end=()=>{ STZ_BUSY=false; el.remove(); };
+  el.onclick=e=>{ e.stopPropagation(); if(el.dataset.got) return; el.dataset.got=1; stzCatch(el); setTimeout(end,700); };
+  el.addEventListener('animationend',ev=>{ if(ev.target===el && !el.dataset.got) end(); });
+  v.appendChild(el); setTimeout(()=>{ STZ_BUSY=false; if(el.isConnected && !el.dataset.got) el.remove(); },9000); if(!night) sfx('hat'); }catch(e){ STZ_BUSY=false; } }
+function stzCatch(el){ const K=stzS(); K.n++; K.tot++; let i=K.c.findIndex(v=>v<5); const open=K.c.map((v,j)=>v<5?j:-1).filter(j=>j>=0); if(open.length) i=open[Math.floor(Math.random()*open.length)];
+  K.c[i]++; const done=K.c[i]>=5; if(done) S.prof.coin=(S.prof.coin||0)+30; saveProfile();
+  el.classList.add('got'); sfx(done?'fanfare':'coin'); haptic(done?40:15); try{ burstAt(el,['#fff3a8','#ffc83a','#fff'],done?36:14); }catch(e){}
+  toast(done?`🌌 ${STZ_C[i].n} 完成！ 🪙+30`:`⭐ つかまえた！ ${STZ_C[i].ic}${STZ_C[i].n} ${K.c[i]}/5（きょう ${K.n}/12）`); }
+function stzLoop(){ clearTimeout(STZ_T); const wait=(reduced()?60:22)+Math.random()*26; STZ_T=setTimeout(()=>{ stzSpawn(); stzLoop(); }, wait*1000); }
+function stzBody(){ const K=stzS(), done=K.c.filter(v=>v>=5).length;
+  return `<div class="stz"><span class="label">🔭 STAR MAP · ${done}/6</span><h3 class="ttl">星空観察台</h3>
+    <div class="stz-sky">${STZ_C.map((c,i)=>{ const n=K.c[i], ok=n>=5; return `<div class="stz-c${ok?' ok':''}"><svg viewBox="0 0 100 90" aria-hidden="true">${ok?`<polyline points="${c.p.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#ffe58a" stroke-width="1.4" stroke-dasharray="2 2"/>`:''}${c.p.map((p,j)=>`<circle cx="${p[0]}" cy="${p[1]}" r="${j<n?4:2.4}" fill="${j<n?'#fff3a8':'rgba(255,255,255,.25)'}"${j<n?' class="lit"':''}/>`).join('')}</svg><b>${c.ic} ${c.n}</b><small>${ok?'完成！':`${n}/5`}</small></div>`; }).join('')}</div>
+    <p class="note">ホームの通りに、ときどき流れ星（昼は風船🎈）が飛んでくるよ。タップしてつかまえると⭐。1日12こまで（きょう ${K.n}/12）。星座が完成すると 🪙30。これまで ${K.tot||0}こ つかまえた</p></div>`; }
+AST.push({n:'星空観察台',ic:'🔭',c:'#2a2f6a',a:'#ffe58a',h:146,f:()=>{ openSheet('stz'); sfx('open'); },b:()=>0});
+try{ SMAP_G[0].shops.push('星空観察台'); }catch(e){}
+setTimeout(stzLoop, 15000);
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -9981,6 +10027,7 @@ function renderSheet(){
   else if(k==='xmt') body=xmtBody();
   else if(k==='msm') body=msmBody();
   else if(k==='rdo') body=rdoBody();
+  else if(k==='stz') body=stzBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
