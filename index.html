@@ -5710,6 +5710,28 @@ html.lite .oen-row i{animation:none!important}
 .mmg-st{font-size:44px;color:#ffc83a;letter-spacing:.06em;text-shadow:0 0 14px rgb(255 200 58 / .6)}.mmg-st i{font-style:normal;color:rgb(255 255 255 / .18);text-shadow:none}
 .mmg-res b{font-size:18px}.mmg-res em{font-style:normal;font-weight:900;color:var(--gold)}
 @media (prefers-reduced-motion:reduce){.mmg-in{transition:none}.mmg-c.done .mmg-in{animation:none}}
+/* 🎯 コルク射的 */
+.sht{display:flex;flex-direction:column;gap:10px}.sht>*{flex:none}
+.sht-top{display:flex;justify-content:space-between;font-size:13px;font-weight:800}.sht-top b{font-size:15px;color:var(--gold)}
+.sht-stage{position:relative;height:270px;border-radius:16px;overflow:hidden;cursor:crosshair;touch-action:manipulation;background:linear-gradient(180deg,#7a1a22 0,#a8323a 12px,#5a1a2a 12px,#2a0a14);box-shadow:inset 0 0 0 4px #e8b54a,inset 0 0 0 7px #5a1a1a}
+.sht-stage::before{content:"";position:absolute;left:0;right:0;top:0;height:18px;background:repeating-linear-gradient(90deg,#e8364a 0 20px,#fff 20px 40px);opacity:.9}
+.sht-shelf{position:absolute;left:0;right:0;height:10px;border-radius:2px;background:linear-gradient(180deg,#c89a5a,#7a5a2a);box-shadow:0 4px 6px rgb(0 0 0 / .4)}
+.sht-shelf.s0{top:46%}.sht-shelf.s1{top:84%}
+.sht-it{position:absolute;left:0;display:flex;flex-direction:column;align-items:center;pointer-events:none;will-change:transform}
+.sht-it.r0{bottom:54%}.sht-it.r1{bottom:16%}
+.sht-it i{font-style:normal;line-height:1;filter:drop-shadow(0 3px 2px rgb(0 0 0 / .4))}
+.sht-it small{font-size:10px;font-weight:900;color:#2a1a00;background:#ffe58a;padding:0 5px;border-radius:5px;margin-top:-2px}
+.sht-it.fall{animation:shtFall .7s ease-in forwards}
+@keyframes shtFall{to{margin-top:0;opacity:0;filter:brightness(1.4);translate:0 80px;rotate:40deg}}
+.sht-gun{position:absolute;left:50%;bottom:4px;transform:translateX(-50%) scaleX(-1) rotate(-50deg);font-size:30px;opacity:.85;pointer-events:none}
+.sht-ck{position:absolute;left:50%;bottom:20px;width:10px;height:12px;margin-left:-5px;border-radius:3px 3px 5px 5px;background:#d8a86a;box-shadow:inset 0 -3px 0 #a87a3a;pointer-events:none;animation:shtCk .2s linear forwards}
+@keyframes shtCk{to{transform:translate(var(--x),var(--y)) scale(.7)}}
+.sht-pop{position:absolute;transform:translate(-50%,-50%);font:400 22px var(--display,sans-serif);color:#ffe58a;text-shadow:0 2px 0 #7a1a00;pointer-events:none;animation:shtPop .8s ease-out forwards}
+.sht-pop.miss{font:900 14px var(--body,sans-serif);color:#fff;text-shadow:none;opacity:.8}
+@keyframes shtPop{to{transform:translate(-50%,-140%);opacity:0}}
+.sht-res{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px;border-radius:18px;background:var(--panel2)}
+.sht-res>b{font:400 40px var(--display,sans-serif);color:var(--gold)}.sht-res small{font-size:12px;opacity:.8}.sht-res em{font-style:normal;font-weight:900;color:var(--gold)}
+.sht-got{font-size:30px;letter-spacing:4px;margin-top:4px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9034,6 +9056,47 @@ function mmgBody(){ const X=MGX, K=mmgS();
     <p id="mmgMsg" class="mmg-msg">${esc(X.msg||'2まい めくって、ペアをさがそう')}</p></div>`; }
 AST.push({n:'ペアさがし屋',ic:'🃏',c:'#2a6a8a',a:'#fff3a8',h:104,f:()=>mmgOpen(),b:()=>mmgS().day===todayKey()?0:'!'});
 try{ SMAP_G[0].shops.push('ペアさがし屋'); }catch(e){}
+/* ---- 🎯 コルク射的：2段の棚を景品が流れていく。タップした場所にコルクが飛ぶ。当たると景品が落ちて点数。コルクは6発。
+   上の棚は小さくて速いけど高得点、下の棚は大きくてゆっくり。1日1回目は点数をコインに（最大80） ---- */
+const SHT_TOP=[{ic:'👑',p:50,w:30},{ic:'🎁',p:15,w:36},{ic:'🍬',p:5,w:34},{ic:'💎',p:40,w:28},{ic:'🎁',p:15,w:36},{ic:'🍬',p:5,w:34}];
+const SHT_BOT=[{ic:'🧸',p:30,w:52},{ic:'🎲',p:10,w:40},{ic:'🪀',p:10,w:40},{ic:'🧸',p:30,w:52},{ic:'🎲',p:10,w:40},{ic:'🪀',p:10,w:40}];
+let SHX={st:'ready'};
+function shtS(){ const P=S.prof; if(!P.sht) P.sht={day:0,best:0}; return P.sht; }
+function shtOpen(){ shtStop(); SHX={st:'ready'}; openSheet('sht'); sfx('open'); }
+function shtStop(){ if(SHX.raf) cancelAnimationFrame(SHX.raf); SHX.raf=0; }
+function shtStart(){ shtStop(); const mk=(arr,row)=>arr.slice().sort(()=>Math.random()-.5).map((x,i)=>({...x,row,i,gone:false}));
+  SHX={st:'play',items:mk(SHT_TOP,0).concat(mk(SHT_BOT,1)),corks:6,fly:0,pts:0,hits:0,t0:performance.now()}; renderSheet(); SHX.raf=requestAnimationFrame(shtFrame); }
+function shtPos(it,now,W){ const n=6, gap=(W+80)/n, v=it.row===0?95:-55, t=(now-SHX.t0)/1000; let x=(it.i*gap + v*t) % (W+80); if(x<0) x+=W+80; return x-40; }
+function shtFrame(){ if(SHX.st!=='play' || S.sheet!=='sht'){ shtStop(); return; } const st=document.getElementById('shtStage'); if(!st){ SHX.raf=requestAnimationFrame(shtFrame); return; }
+  const W=st.clientWidth, now=performance.now();
+  SHX.items.forEach((it,k)=>{ const el=st.querySelector(`.sht-it[data-k="${k}"]`); if(!el || it.gone) return; el.style.transform=`translateX(${shtPos(it,now,W).toFixed(1)}px)`; });
+  SHX.raf=requestAnimationFrame(shtFrame); }
+function shtShoot(e){ if(SHX.st!=='play' || SHX.corks<=0) return; const st=document.getElementById('shtStage'); if(!st) return; const r=st.getBoundingClientRect();
+  const x=e.clientX-r.left, y=e.clientY-r.top, W=r.width, H=r.height; SHX.corks--; SHX.fly++; sfx('click'); haptic(8);
+  const ck=document.createElement('i'); ck.className='sht-ck'; ck.style.setProperty('--x',(x-W/2)+'px'); ck.style.setProperty('--y',(y-H+20)+'px'); st.appendChild(ck);
+  const cnt=document.getElementById('shtCk'); if(cnt) cnt.textContent='🍾'.repeat(SHX.corks)||'—';
+  setTimeout(()=>{ ck.remove(); if(SHX.st!=='play') return; const now=performance.now(), row=(y>H*0.18&&y<H*0.5)?0:(y>H*0.55&&y<H*0.9)?1:-1;
+    let hit=null; SHX.items.forEach((it,k)=>{ if(it.gone||it.row!==row) return; const cx=shtPos(it,now,W)+it.w/2; if(Math.abs(cx-x)<=it.w/2+4 && (!hit||Math.abs(cx-x)<hit.d)) hit={it,k,d:Math.abs(cx-x)}; });
+    if(hit){ hit.it.gone=true; SHX.pts+=hit.it.p; SHX.hits++; const el=st.querySelector(`.sht-it[data-k="${hit.k}"]`); if(el){ el.classList.add('fall'); }
+      const pop=document.createElement('b'); pop.className='sht-pop'; pop.textContent='+'+hit.it.p; pop.style.left=x+'px'; pop.style.top=y+'px'; st.appendChild(pop); setTimeout(()=>pop.remove(),800);
+      sfx(hit.it.p>=30?'fanfare':'coin'); haptic(20); const pe=document.getElementById('shtPt'); if(pe) pe.textContent=SHX.pts; }
+    else { const m=document.createElement('b'); m.className='sht-pop miss'; m.textContent='スカッ'; m.style.left=x+'px'; m.style.top=y+'px'; st.appendChild(m); setTimeout(()=>m.remove(),700); }
+    SHX.fly--; if(SHX.corks<=0 && SHX.fly<=0) setTimeout(shtDone,700); }, 200); }
+function shtDone(){ if(SHX.st!=='play') return; shtStop(); const K=shtS(); let coin=0; if(K.day!==todayKey()){ K.day=todayKey(); coin=Math.min(80,SHX.pts); S.prof.coin=(S.prof.coin||0)+coin; } K.best=Math.max(K.best||0,SHX.pts); saveProfile();
+  Object.assign(SHX,{st:'done',coin}); renderSheet(); sfx(SHX.pts>=60?'fanfare':'coin'); if(SHX.pts>=80) confetti(); }
+function shtBody(){ const X=SHX, K=shtS();
+  const head=`<div class="row spread"><span class="label">🎯 CORK SHOOTING</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div><h3 class="ttl">コルク射的</h3>`;
+  if(X.st==='play') return `<div class="sht">${head}<div class="sht-top"><span>コルク <b id="shtCk">${'🍾'.repeat(X.corks)}</b></span><span>点数 <b id="shtPt">${X.pts}</b></span></div>
+    <div class="sht-stage" id="shtStage" onpointerdown="event.preventDefault();shtShoot(event)"><i class="sht-shelf s0"></i><i class="sht-shelf s1"></i>
+      ${X.items.map((it,k)=>`<span class="sht-it r${it.row}" data-k="${k}" style="width:${it.w}px"><i style="font-size:${Math.round(it.w*.8)}px">${it.ic}</i><small>${it.p}</small></span>`).join('')}</div>
+    <p class="note">ねらった景品をタップ！ 上の棚は小さくて速いけど高得点</p></div>`;
+  if(X.st==='done') return `<div class="sht">${head}<div class="sht-res"><b>${X.pts}点</b><small>6発中 ${X.hits}発あたり</small>${X.coin?`<em>🪙 +${X.coin}</em>`:''}<div class="sht-got">${X.items.filter(i=>i.gone).map(i=>i.ic).join('')||'…'}</div></div>
+    <div class="row" style="gap:8px"><button class="btn gold big" style="flex:1" onclick="shtStart()">もう一回</button><button class="btn ghost" onclick="SHX={st:'ready'};renderSheet()">もどる</button></div></div>`;
+  return `<div class="sht">${head}<div class="sht-stage sht-idle"><i class="sht-shelf s0"></i><i class="sht-shelf s1"></i><span class="sht-it r0" style="width:30px;transform:translateX(60px)"><i style="font-size:24px">👑</i><small>50</small></span><span class="sht-it r0" style="width:36px;transform:translateX(200px)"><i style="font-size:29px">🎁</i><small>15</small></span><span class="sht-it r1" style="width:52px;transform:translateX(120px)"><i style="font-size:42px">🧸</i><small>30</small></span></div>
+    <button class="btn gold big" style="width:100%" onclick="shtStart()">🎯 コルク6発で はじめる</button>
+    <p class="note">${K.day===todayKey()?'きょうのコインはもらったよ。何回でも遊べる':'きょうの1回目は、点数がそのままコインに（最大80）'}${K.best?` ・ ベスト ${K.best}点`:''}</p></div>`; }
+AST.push({n:'コルク射的',ic:'🎯',c:'#d85a2a',a:'#fff3a8',h:112,f:()=>shtOpen(),b:()=>shtS().day===todayKey()?0:'!'});
+try{ SMAP_G[0].shops.push('コルク射的'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10224,7 +10287,7 @@ ${rows(NEWS,T2)}
 }
 // ---- sheets (bottom sheet on phones / modal on desktop) ----
 function openSheet(k){ S.sheet=k; renderSheet(); }
-function closeSheet(){ try{ if(S.sheet==='rdo') rdoStop(); if(S.sheet==='tko'){ tkoStop(); TKX.st='ready'; } }catch(e){} S.sheet=null; mioAuto.last=''; try{ if(window.speechSynthesis && MIO_U) speechSynthesis.cancel(); }catch(e){} renderSheet(); }
+function closeSheet(){ try{ if(S.sheet==='rdo') rdoStop(); if(S.sheet==='tko'){ tkoStop(); TKX.st='ready'; } if(S.sheet==='sht'){ shtStop(); SHX.st='ready'; } }catch(e){} S.sheet=null; mioAuto.last=''; try{ if(window.speechSynthesis && MIO_U) speechSynthesis.cancel(); }catch(e){} renderSheet(); }
 function renderSheet(){
   const el=document.getElementById('sheet'); if(!el) return;
   const k=S.sheet; if(!k){ el.innerHTML=''; return; }
@@ -10297,6 +10360,7 @@ function renderSheet(){
   else if(k==='lbr') body=lbrBody();
   else if(k==='tko') body=tkoBody();
   else if(k==='mmg') body=mmgBody();
+  else if(k==='sht') body=shtBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
