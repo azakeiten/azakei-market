@@ -5627,6 +5627,27 @@ html.lite .rdo-box.on .rdo-eq i,html.lite .rdo-box.on .rdo-spk,html.lite .rdo-bo
 .oen.gasp .oen-say{background:#ffe0e6}
 html.lite .oen-row i{animation:none!important}
 @media (prefers-reduced-motion:reduce){.oen-row i,.oen-say{animation:none!important}}
+/* 🏪 あなたのお店 */
+.mys-st{position:relative;flex:none;align-self:flex-end;margin:0 8px 0 4px;padding:0;border:0;background:none;cursor:pointer}
+.mys-empty{width:92px;height:96px;border-radius:8px 8px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#fff;background:repeating-linear-gradient(45deg,rgb(255 200 58 / .25) 0 8px,rgb(0 0 0 / .15) 8px 16px);box-shadow:inset 0 0 0 2px rgb(255 200 58 / .6)}
+.mys-empty span{font-size:30px}.mys-empty small{font-size:10px;font-weight:900;line-height:1.25;text-align:center}
+.mys-front{position:relative;width:104px;height:124px;border-radius:8px 8px 0 0;background:linear-gradient(180deg,#fffaf0,#f0e2c8);box-shadow:inset 0 4px 0 rgb(0 0 0 / .08),inset -6px 0 0 rgb(0 0 0 / .06)}
+.mys-sign{position:absolute;left:6px;right:6px;top:4px;padding:2px 2px;border-radius:5px;font-size:9.5px;line-height:1.15;font-weight:900;text-align:center;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-all;color:var(--a);background:var(--c);box-shadow:0 2px 0 rgb(0 0 0 / .25)}
+.mys-aw{position:absolute;left:-4px;right:-4px;top:34px;height:16px;border-radius:0 0 8px 8px;background:repeating-linear-gradient(90deg,var(--c) 0 13px,var(--a) 13px 26px);box-shadow:0 3px 0 rgb(0 0 0 / .2)}
+.mys-win{position:absolute;left:8px;top:54px;width:40px;height:34px;border-radius:5px;display:flex;align-items:center;justify-content:center;gap:1px;font-size:14px;background:linear-gradient(160deg,#e6f4ff,#bcd8f0);box-shadow:inset 0 0 0 3px #8a6a3a}
+.mys-win i{font-style:normal}
+.mys-door{position:absolute;right:8px;bottom:0;width:42px;height:66px;border-radius:20px 20px 0 0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;background:linear-gradient(180deg,#6a4a2a,#4a2e14)}
+.mys-door .ava{width:30px;height:30px;font-size:13px}
+.mys-st .ast-bd{right:-6px;top:-6px}
+.mys{display:flex;flex-direction:column;gap:12px}.mys>*{flex:none}
+.mys-stage{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 10px 0;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#8fcfff,#c9ecff 70%,#9a9aa8 70%,#7a7a88)}
+.mys-front.big{transform:scale(1.45);transform-origin:50% 100%;margin-top:50px}
+.mys-line{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;padding:6px 4px 8px;width:100%}
+.mys-line i{font-style:normal;font-size:20px;animation:sgIn .4s var(--d) both}
+.mys-col{width:40px;height:32px;border:0;border-radius:8px;cursor:pointer;background:repeating-linear-gradient(90deg,var(--c) 0 8px,var(--a) 8px 16px);box-shadow:inset 0 0 0 2px rgb(0 0 0 / .2)}
+.mys-col.on{box-shadow:0 0 0 3px var(--gold),inset 0 0 0 2px rgb(0 0 0 / .2)}
+.mys-in{width:100%;box-sizing:border-box;padding:10px 12px;border:0;border-radius:12px;font:700 15px var(--body,sans-serif);color:var(--ink,#fff);background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.mys-stat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.mys-stat>div{display:flex;flex-direction:column;align-items:center;padding:8px 4px;border-radius:12px;background:var(--panel2)}.mys-stat small{font-size:10.5px;font-weight:800;opacity:.75}.mys-stat b{font-size:17px}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7082,7 +7103,7 @@ function astView(){
   const prdOn=PRD_RUN && Date.now()-PRD_RUN<PRD_MS && !reduced(), swx=swxNow();
   return `<section class="ast${TRE_ON?' tre-on':''} ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small>${(()=>{ try{ if(nbNew()) return ''; const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; return `<button class="qt-chip${rd?' rd':''}" onclick="qtOpen()" aria-label="まちのお願い ${c}/3">🙋 ${c}/3</button>`; }catch(e){ return ''; } })()}${(()=>{ try{ return treChip(); }catch(e){ return ''; } })()}<button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
-      ${swxLayer(swx)}${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${(()=>{ try{ return xmtStreet(); }catch(e){ return ''; } })()}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
+      ${swxLayer(swx)}${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${(()=>{ try{ return xmtStreet(); }catch(e){ return ''; } })()}${(()=>{ try{ return mysStreet(); }catch(e){ return ''; } })()}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
 }
 function astPar(sc){ const v=sc.parentNode; if(v) v.style.setProperty('--px', (sc.scrollLeft*0.3).toFixed(1)+'px'); smapWin(sc); }
 const __renderSM=render; render=function(){ const r=__renderSM.apply(this,arguments); try{ const sc=document.querySelector('.ast-sc'); if(sc) smapWin(sc); }catch(e){} return r; };
@@ -8802,6 +8823,44 @@ function oenReact(){ if(!oenOn() || !G.last) return; const me=myIndex(); if(me<0
   oenSet(r.k===1 ? (r.total>=4?'wow':'cheer') : 'gasp'); }
 function toggleOen(){ S.oen = S.oen===false; save('azakei-oen', S.oen?1:0); renderSheet(); }
 const __revealOen=revealFx; revealFx=function(){ const r=__revealOen.apply(this,arguments); try{ oenReact(); }catch(e){} return r; };
+/* ---- 🏪 あなたのお店：商店街に自分のお店を出す。業種（6産業）・のれんの色・お店の名前をえらぶと、通りの入口に自分の店が建つ。
+   店先には帽子をかぶったあなた。毎日のお客さんの数は「天気×業種」で変わる（雨の日はメディアが強い、など）。1日1回、売上をうけとれる ---- */
+const MYS_IND=[{n:'エネルギー',ic:'⚡',shop:'ねんりょう屋',it:'🔋',w:{cold:3,hot:1}},{n:'金融',ic:'💰',shop:'こぜに銀行',it:'🪙',w:{}},{n:'製造',ic:'⚙️',shop:'ものづくり工房',it:'🧸',w:{cloud:1}},
+  {n:'小売',ic:'🛒',shop:'なんでも屋',it:'🛍️',w:{sun:3,hot:1,rain:-2}},{n:'運輸',ic:'🚚',shop:'おとどけ便',it:'📦',w:{sun:1,rain:-1,cold:-1}},{n:'メディア',ic:'📺',shop:'まちの放送局',it:'📰',w:{rain:3,cold:1}}];
+const MYS_COL=[['#e8364a','#fff'],['#2f7fe0','#fff'],['#2fa86a','#fff3a8'],['#ffb23a','#fff'],['#8a5ad8','#ffe0f0'],['#3a3a4a','#ffc83a']];
+let MYX={edit:false};
+function mysS(){ const P=S.prof; if(!P.mys) P.mys={on:false, ind:3, col:0, name:'', day:0, tot:0}; return P.mys; }
+function mysName(M){ return (M.name||'').trim() || `${(NET.name||'').trim()||'あなた'}の${MYS_IND[M.ind].shop}`; }
+function mysToday(M){ const w=(typeof swxNow==='function')?swxNow():null, I=MYS_IND[M.ind], aff=w?(I.w[w.k]||0):0, r=mulberry(todayKey()*17+M.ind*5+M.col);
+  const n=Math.max(1, 5+aff*2+Math.floor(r()*4)); return {w, aff, n, coin:10+n*2}; }
+function mysOpen(){ const M=mysS(); MYX={edit:!M.on}; openSheet('mys'); sfx('open'); }
+function mysSet(k,v){ const M=mysS(); M[k]=v; sfx('select'); haptic(5); saveProfile(); renderSheet(); }
+function mysNameIn(el){ const M=mysS(); M.name=String(el.value||'').slice(0,12); saveProfile(); const t=document.querySelector('.mys-front .mys-sign'); if(t) t.textContent=mysName(M); }
+function mysBuild(){ const M=mysS(); const first=!M.on; M.on=true; saveProfile(); MYX.edit=false; renderSheet(); render(); if(first){ sfx('fanfare'); haptic(40); confetti(); toast(`🏪「${mysName(M)}」オープン！ 商店街の入口に建ったよ`); } else sfx('select'); }
+function mysCollect(){ const M=mysS(); if(M.day===todayKey()) return; const T=mysToday(M); M.day=todayKey(); M.tot=(M.tot||0)+T.coin; S.prof.coin=(S.prof.coin||0)+T.coin; saveProfile();
+  sfx('coin'); haptic(20); renderSheet(); setTimeout(()=>{ const el=document.querySelector('.mys-front'); if(el) burstAt(el,['#ffc83a','#fff','#7cf29a'],26); },40); toast(`🪙 きょうの売上 +${T.coin}（お客さん ${T.n}人）`); render(); }
+function mysFront(M, big){ const I=MYS_IND[M.ind], C=MYS_COL[M.col], P=S.prof;
+  return `<div class="mys-front${big?' big':''}" style="--c:${C[0]};--a:${C[1]}"><span class="mys-sign">${esc(mysName(M))}</span><i class="mys-aw"></i>
+    <span class="mys-win"><i>${I.it}</i><i>${I.ic}</i></span><span class="mys-door"><span class="ava${hatc()}" style="--s:${AVA_COLORS[(P.color||0)%6]};grid-row:auto">${esc(myAvatar()||initial(NET.name||'あなた'))}</span></span></div>`; }
+function mysStreet(){ if(nbNew()) return ''; const M=mysS();
+  if(!M.on) return `<button class="mys-st mys-empty" onclick="event.stopPropagation();mysOpen()" aria-label="あなたのお店を出す"><span>🏗️</span><small>あき地<br>お店を出す</small></button>`;
+  const ready=M.day!==todayKey(); return `<button class="mys-st" onclick="event.stopPropagation();mysOpen()" aria-label="${esc(mysName(M))}">${mysFront(M,false)}${ready?'<b class="ast-bd">🪙</b>':''}</button>`; }
+function mysBody(){ const M=mysS(), I=MYS_IND[M.ind];
+  if(MYX.edit) return `<div class="mys"><span class="label">🏗️ MY SHOP</span><h3 class="ttl">${M.on?'お店をリフォーム':'あなたのお店を出そう'}</h3>
+    <div class="mys-stage">${mysFront(M,true)}</div>
+    <div class="phb-row"><b>業種</b><div class="phb-chs">${MYS_IND.map((x,i)=>`<button class="phb-ch${M.ind===i?' on':''}" onclick="mysSet('ind',${i})">${x.ic} ${x.n}</button>`).join('')}</div></div>
+    <div class="phb-row"><b>のれんの色</b><div class="phb-chs">${MYS_COL.map((c,i)=>`<button class="mys-col${M.col===i?' on':''}" style="--c:${c[0]};--a:${c[1]}" onclick="mysSet('col',${i})" aria-label="色${i+1}"></button>`).join('')}</div></div>
+    <div class="phb-row"><b>お店の名前（12文字まで・空なら自動）</b><input class="mys-in" maxlength="12" value="${esc(M.name||'')}" placeholder="${esc(mysName({...M,name:''}))}" oninput="mysNameIn(this)"></div>
+    <button class="btn gold big" style="width:100%" onclick="mysBuild()">${M.on?'✅ これでOK':'🏪 この お店を建てる'}</button></div>`;
+  const T=mysToday(M), got=M.day===todayKey();
+  const why = !T.w ? '' : T.aff>0 ? `きょうは${T.w.ic}${T.w.n}。${I.n}のお店には ぴったりの日！ お客さんが多いよ` : T.aff<0 ? `きょうは${T.w.ic}${T.w.n}。${I.n}のお店には ちょっと不利な天気…` : `きょうは${T.w.ic}${T.w.n}。いつもどおりのお客さんだね`;
+  return `<div class="mys"><span class="label">🏪 MY SHOP · ${I.ic} ${I.n}</span><h3 class="ttl">${esc(mysName(M))}</h3>
+    <div class="mys-stage">${mysFront(M,true)}<div class="mys-line" aria-hidden="true">${['🧓','👧','🧑‍💼','👵','🧒','👨‍🍳','👩‍🏫','🧑‍🔧','👮','👦','👩','👴','🧑','👱','🧕','👨'].slice(0,Math.min(16,T.n)).map((f,i)=>`<i style="--d:${i*.08}s">${f}</i>`).join('')}</div></div>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> ${why}</p></div>
+    <div class="mys-stat"><div><small>きょうのお客さん</small><b>${T.n}人</b></div><div><small>売上</small><b>🪙${T.coin}</b></div><div><small>これまで</small><b>🪙${M.tot||0}</b></div></div>
+    ${got?'<button class="btn big" style="width:100%" disabled>きょうの売上は うけとったよ</button>':`<button class="btn gold big" style="width:100%" onclick="mysCollect()">🪙 きょうの売上をうけとる</button>`}
+    <button class="btn ghost" style="width:100%" onclick="MYX.edit=true;renderSheet()">🏗️ リフォーム（業種・色・名前）</button>
+    <p class="note">天気と業種で、お客さんの数がかわるよ。雨の日はメディア、晴れの日は小売、寒い日はエネルギーが強い。業種はいつでも変えられる</p></div>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10061,6 +10120,7 @@ function renderSheet(){
   else if(k==='msm') body=msmBody();
   else if(k==='rdo') body=rdoBody();
   else if(k==='stz') body=stzBody();
+  else if(k==='mys') body=mysBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
