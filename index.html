@@ -5663,6 +5663,25 @@ html.lite .oen-row i{animation:none!important}
 .lbr-pg.l{display:flex;flex-direction:column;justify-content:center;gap:4px;background:linear-gradient(90deg,#fffaf0,#f0e6d0);border-right:1px solid #d8c8a0}
 .lbr-pg.l small{font-size:10.5px;font-weight:800;opacity:.6}.lbr-pg.l b{font:900 22px "Shippori Mincho B1","Yu Mincho",serif;color:var(--c);line-height:1.2}.lbr-pg.l span{font-size:11px;font-weight:700;opacity:.75}
 .lbr-pg.r{display:flex;flex-direction:column;gap:8px;background:linear-gradient(90deg,#f0e6d0,#fffaf0 12%)}.lbr-pg.r p{margin:0;font-size:13px;line-height:1.65}.lbr-pg.r .btn{align-self:flex-start;font-size:12px;padding:6px 10px}
+/* 🥁 AZAKEI太鼓 */
+.tko{display:flex;flex-direction:column;gap:12px}.tko>*{flex:none}
+.tko-stage{position:relative;padding:34px 0 26px;border-radius:18px;background:radial-gradient(120% 90% at 20% 50%,#5a1a1a,#1a0a14);box-shadow:inset 0 0 0 3px #b8442a,inset 0 0 0 6px #2a0a0a}
+.tko-lane{position:relative;height:84px;margin:0 8px;border-radius:42px;background:linear-gradient(180deg,#2a1a1a,#3a2020 50%,#2a1a1a);box-shadow:inset 0 0 0 2px #6a3a2a;overflow:hidden;touch-action:manipulation;cursor:pointer}
+.tko-drum{position:absolute;left:16%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:radial-gradient(circle,#fff3e0 0 46%,#e8364a 48% 60%,#7a1a1a 62%);box-shadow:0 0 0 3px #ffc83a,0 0 16px rgb(255 200 58 / .5);z-index:2}
+.tko-drum.hit{animation:tkoHit .18s ease-out}
+@keyframes tkoHit{from{transform:scale(1.18);box-shadow:0 0 0 5px #fff3a8,0 0 30px rgb(255 230 140 / .9)}}
+.tko-n{position:absolute;left:0;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;z-index:3;background:radial-gradient(circle at 35% 30%,#ff8a7a,#e8364a 60%,#a81a2a);box-shadow:0 0 0 3px #fff,0 3px 6px rgb(0 0 0 / .5);will-change:transform}
+.tko-n.miss{opacity:.35;filter:grayscale(1)}.tko-n.demo{opacity:.8}
+.tko-cnt{position:absolute;left:0;right:0;top:4px;text-align:center;font:400 20px var(--display,sans-serif);color:#ffc83a}
+.tko-j{position:absolute;left:16%;top:6px;transform:translateX(-50%);z-index:4;font:900 22px "Shippori Mincho B1","Yu Mincho",serif;opacity:0;pointer-events:none}
+.tko-j.great{color:#ffc83a}.tko-j.good{color:#fff}.tko-j.miss{color:#8a8aa0}
+.tko-j.show{animation:tkoJ .5s ease-out both}
+@keyframes tkoJ{0%{opacity:1;transform:translate(-50%,6px) scale(1.3)}100%{opacity:0;transform:translate(-50%,-14px)}}
+.tko-combo{position:absolute;right:16px;bottom:4px;font:400 16px var(--display,sans-serif);color:#ffe58a}
+.tko-tap{width:100%;font-size:22px;padding:18px;touch-action:manipulation}
+.tko-res{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px;border-radius:18px;background:var(--panel2)}
+.tko-rk{font:400 64px var(--display,sans-serif);line-height:1}.rk-S{color:#ffc83a;text-shadow:0 0 18px rgb(255 200 58 / .7)}.rk-A{color:#4fe3ff}.rk-B{color:#7cf29a}.rk-C{color:#b8b8c8}
+.tko-res>b{font-size:22px}.tko-res small{font-size:12px;opacity:.8}.tko-res em{font-style:normal;font-weight:900;color:var(--gold)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -8910,6 +8929,50 @@ function lbrBody(){ const P=S.prof, L=lbrS(), have=LBR_W.filter(x=>x.ok(P)).leng
     <p class="note">商店街のお店で体験すると、そのことばの本が読めるようになるよ（読める本 ${have}/${LBR_W.length}）。はじめて読むと 🪙5、ぜんぶ読むと 🪙100。「？」の本をタップするとヒント</p></div>`; }
 AST.push({n:'AZAKEI図書館',ic:'📚',c:'#6a4a8a',a:'#f6ead0',h:132,f:()=>lbrOpen(),b:()=>{ const P=S.prof, L=lbrS(); const n=LBR_W.filter(x=>x.ok(P)&&!L.read[x.w]).length; return n||0; }});
 try{ SMAP_G[1].shops.push('AZAKEI図書館'); }catch(e){}
+/* ---- 🥁 AZAKEI太鼓：流れてくる音符が太鼓に重なったらタップ（スペース・F・J キーでもOK）。約16秒のリズムゲーム。
+   ぴったり「良」・すこしずれ「可」。ランク S/A/B/C、1日1回目はランクに応じてコイン ---- */
+const TKO_BEAT=500, TKO_LEAD=4, TKO_TRAVEL=1700;
+const TKO_CH={easy:{n:'やさしい',p:'x.x.x.x.x.x.x.xxx.x.x.x.x.x.x.x.x.xxx.x.'+'x.x.x.x.xxx.x.x.x.x.xxx.'},norm:{n:'ふつう',p:'x.xxx.x.xx.xx.x.xxxx.x.x.xx.xxx.x.xxxx.x'+'xx.xx.x.xxx.xx.x.xxxx.x.'}};
+let TKX={st:'ready',lv:'easy'};
+function tkoS(){ const P=S.prof; if(!P.tko) P.tko={day:0,best:{}}; return P.tko; }
+function tkoOpen(){ tkoStop(); TKX={st:'ready',lv:TKX.lv||'easy'}; openSheet('tko'); sfx('open'); }
+function tkoStop(){ if(TKX.raf) cancelAnimationFrame(TKX.raf); TKX.raf=0; clearInterval(TKX.iv); TKX.iv=0; document.removeEventListener('keydown',tkoKey); }
+function tkoStart(){ tkoStop(); const pat=TKO_CH[TKX.lv].p, step=TKO_BEAT/2, t0=performance.now()+TKO_LEAD*TKO_BEAT;
+  const notes=[]; [...pat].forEach((c,i)=>{ if(c==='x') notes.push({t:t0+i*step, j:null}); });
+  TKX={st:'play',lv:TKX.lv,notes,t0,end:t0+pat.length*step+600,pts:0,combo:0,max:0,great:0,good:0,miss:0}; renderSheet();
+  let b=0; TKX.iv=setInterval(()=>{ if(S.sheet!=='tko'){ tkoStop(); return; } b++; if(b<=TKO_LEAD){ const c=document.getElementById('tkoCnt'); if(c) c.textContent=b<TKO_LEAD?String(TKO_LEAD-b):'ドン！'; sfx(b<TKO_LEAD?'tick':'open'); } else sfx('hat'); }, TKO_BEAT);
+  document.addEventListener('keydown',tkoKey); TKX.raf=requestAnimationFrame(tkoFrame); }
+function tkoKey(e){ if(TKX.st!=='play') return; if(e.code==='Space'||e.key==='f'||e.key==='j'||e.key==='F'||e.key==='J'){ e.preventDefault(); tkoHit(); } }
+function tkoFrame(){ if(TKX.st!=='play' || S.sheet!=='tko'){ tkoStop(); return; } const now=performance.now(), lane=document.getElementById('tkoLane'); if(!lane){ TKX.raf=requestAnimationFrame(tkoFrame); return; }
+  const W=lane.clientWidth, hitX=W*0.16;
+  TKX.notes.forEach((n,i)=>{ let el=n.el; const dt=n.t-now;
+    if(n.j==null && dt< -130){ n.j='miss'; TKX.miss++; TKX.combo=0; tkoJudge('miss'); }
+    if(n.j && n.j!=='miss'){ if(el){ el.remove(); n.el=null; } return; }
+    if(dt>TKO_TRAVEL || dt< -260){ if(el){ el.remove(); n.el=null; } return; }
+    if(!el){ el=document.createElement('i'); el.className='tko-n'; lane.appendChild(el); n.el=el; }
+    el.style.transform=`translateX(${(hitX+dt/TKO_TRAVEL*(W-hitX)).toFixed(1)}px)`; if(n.j==='miss') el.classList.add('miss'); });
+  if(now>TKX.end) return tkoFinish(); TKX.raf=requestAnimationFrame(tkoFrame); }
+function tkoHit(){ if(TKX.st!=='play') return; const now=performance.now(); sfx('drum'); haptic(8);
+  const d=document.querySelector('.tko-drum'); if(d){ d.classList.remove('hit'); void d.offsetWidth; d.classList.add('hit'); }
+  let best=null; TKX.notes.forEach(n=>{ if(n.j==null){ const dt=Math.abs(n.t-now); if(dt<=130 && (!best||dt<best.dt)) best={n,dt}; } });
+  if(!best) return; const g=best.dt<=55; best.n.j=g?'great':'good'; TKX.pts+=g?2:1; TKX[g?'great':'good']++; TKX.combo++; TKX.max=Math.max(TKX.max,TKX.combo); tkoJudge(g?'great':'good'); }
+function tkoJudge(k){ const el=document.getElementById('tkoJ'); if(el){ el.className='tko-j '+k; el.textContent=k==='great'?'良':k==='good'?'可':'不可'; void el.offsetWidth; el.classList.add('show'); }
+  const c=document.getElementById('tkoCombo'); if(c) c.textContent=TKX.combo>=2?`${TKX.combo} コンボ`:''; }
+function tkoFinish(){ tkoStop(); const N=TKX.notes.length, pc=Math.round(TKX.pts/(2*N)*100), rk=pc>=95?'S':pc>=80?'A':pc>=60?'B':'C', K=tkoS();
+  let coin=0; if(K.day!==todayKey()){ K.day=todayKey(); coin={S:30,A:20,B:10,C:5}[rk]; S.prof.coin=(S.prof.coin||0)+coin; } K.best[TKX.lv]=Math.max(K.best[TKX.lv]||0,pc); saveProfile();
+  Object.assign(TKX,{st:'done',pc,rk,coin}); renderSheet(); sfx(rk==='S'||rk==='A'?'fanfare':'coin'); if(rk==='S') confetti(); }
+function tkoBody(){ const X=TKX, K=tkoS();
+  const head=`<div class="row spread"><span class="label">🥁 AZAKEI TAIKO</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div><h3 class="ttl">AZAKEI太鼓</h3>`;
+  if(X.st==='play') return `<div class="tko">${head}<div class="tko-stage"><span id="tkoCnt" class="tko-cnt">${TKO_LEAD}</span><div class="tko-lane" id="tkoLane" onpointerdown="event.preventDefault();tkoHit()"><span class="tko-drum"></span><b id="tkoJ" class="tko-j"></b></div><span id="tkoCombo" class="tko-combo"></span></div>
+    <button class="btn big gold tko-tap" onpointerdown="event.preventDefault();tkoHit()">🥁 ドン！</button><p class="note">音符が太鼓の輪にかさなったらタップ。パソコンはスペース・F・J キーでもOK</p></div>`;
+  if(X.st==='done') return `<div class="tko">${head}<div class="tko-res"><span class="tko-rk rk-${X.rk}">${X.rk}</span><b>${X.pc}%</b><small>良 ${X.great} ・ 可 ${X.good} ・ 不可 ${X.miss} ・ 最大 ${X.max}コンボ</small>${X.coin?`<em>🪙 +${X.coin}</em>`:''}</div>
+    <div class="row" style="gap:8px"><button class="btn gold big" style="flex:1" onclick="tkoStart()">もう一回</button><button class="btn ghost" onclick="TKX={st:'ready',lv:TKX.lv};renderSheet()">もどる</button></div></div>`;
+  return `<div class="tko">${head}<div class="tko-stage tko-idle"><div class="tko-lane"><span class="tko-drum"></span><i class="tko-n demo" style="transform:translateX(150px)"></i><i class="tko-n demo" style="transform:translateX(230px)"></i></div></div>
+    <div class="phb-row"><b>むずかしさ</b><div class="phb-chs">${Object.entries(TKO_CH).map(([k,c])=>`<button class="phb-ch${X.lv===k?' on':''}" onclick="TKX.lv='${k}';sfx('click');renderSheet()">${c.n}${K.best[k]?`（ベスト${K.best[k]}%）`:''}</button>`).join('')}</div></div>
+    <button class="btn gold big" style="width:100%" onclick="tkoStart()">🥁 はじめる</button>
+    <p class="note">「4・3・2・ドン！」のあと、音符が右から流れてくるよ。ぴったり＝良、すこしずれ＝可。きょうの1回目はランクでコイン（S 30・A 20・B 10・C 5）</p></div>`; }
+AST.push({n:'やぐら太鼓',ic:'🥁',c:'#b8442a',a:'#fff3a8',h:118,f:()=>tkoOpen(),b:()=>tkoS().day===todayKey()?0:'!'});
+try{ SMAP_G[0].shops.push('やぐら太鼓'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10100,7 +10163,7 @@ ${rows(NEWS,T2)}
 }
 // ---- sheets (bottom sheet on phones / modal on desktop) ----
 function openSheet(k){ S.sheet=k; renderSheet(); }
-function closeSheet(){ try{ if(S.sheet==='rdo') rdoStop(); }catch(e){} S.sheet=null; mioAuto.last=''; try{ if(window.speechSynthesis && MIO_U) speechSynthesis.cancel(); }catch(e){} renderSheet(); }
+function closeSheet(){ try{ if(S.sheet==='rdo') rdoStop(); if(S.sheet==='tko'){ tkoStop(); TKX.st='ready'; } }catch(e){} S.sheet=null; mioAuto.last=''; try{ if(window.speechSynthesis && MIO_U) speechSynthesis.cancel(); }catch(e){} renderSheet(); }
 function renderSheet(){
   const el=document.getElementById('sheet'); if(!el) return;
   const k=S.sheet; if(!k){ el.innerHTML=''; return; }
@@ -10171,6 +10234,7 @@ function renderSheet(){
   else if(k==='stz') body=stzBody();
   else if(k==='mys') body=mysBody();
   else if(k==='lbr') body=lbrBody();
+  else if(k==='tko') body=tkoBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
