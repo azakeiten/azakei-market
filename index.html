@@ -5776,6 +5776,22 @@ html.lite .oen-row i{animation:none!important}
 .mys-stage.building .mys-front{filter:grayscale(.6) brightness(.8)}
 .mys-scaf{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;font-size:56px;z-index:3;animation:qtBub .3s ease-in-out infinite alternate}.mys-scaf i{font-style:normal;font-size:14px;font-weight:900;color:#2a1a00;background:#ffe58a;padding:2px 10px;border-radius:99px}
 html.lite .mys-roof,html.lite .mys-scaf{animation:none}
+/* 📔 ミオの日記帳 */
+.dry{display:flex;flex-direction:column;gap:12px}.dry>*{flex:none}
+.dry-page{position:relative;padding:14px 16px 16px 30px;border-radius:6px 14px 14px 6px;color:#3a2a2a;background:repeating-linear-gradient(180deg,#fffdf6 0 29px,#cfe0f0 29px 30px),#fffdf6;background-position:0 52px;box-shadow:inset 18px 0 0 -14px #f08aa8,inset 4px 0 0 #e8d8c0,0 8px 18px rgb(0 0 0 / .3);font-size:14px;line-height:30px}
+.dry-page::before{content:"";position:absolute;left:8px;top:14px;bottom:14px;width:6px;background:radial-gradient(circle,#c8b8a8 2.5px,transparent 3px) 0 0/6px 30px}
+.dry-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #f08aa8;margin-bottom:4px;line-height:1.6}.dry-head b{font-size:16px}.dry-head span{font-size:13px;font-weight:800}
+.dry-list{list-style:none;margin:0;padding:0}.dry-list li{display:flex;gap:6px;align-items:center}.dry-list li i{font-style:normal;width:22px;text-align:center}
+.dry-none{margin:0;color:#a89888}
+.dry-mio{margin:4px 0 0;color:#c8507a;font-weight:800}.dry-mio span{display:block;text-align:right;font-size:12px;color:#a87a8a}
+.dry-hanko{position:absolute;right:12px;top:44px;width:66px;height:66px;border-radius:50%;display:grid;place-items:center;text-align:center;font:900 12px/1.25 "Shippori Mincho B1","Yu Mincho",serif;color:#e0364a;border:3px solid #e0364a;transform:rotate(-14deg);opacity:.25}
+.dry-hanko.on{opacity:.9}.dry-hanko.pop{animation:tpStamp .45s cubic-bezier(.3,1.6,.5,1) both;opacity:.9}
+.dry-coin{margin:0;text-align:center;font-weight:900;color:var(--gold)}
+.dry-cal{padding:10px 12px;border-radius:14px;background:var(--panel2)}.dry-cal>b{font-size:13px}
+.dry-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:8px}
+.dry-c{display:flex;flex-direction:column;align-items:center;padding:4px 0;border-radius:8px;background:rgb(255 255 255 / .05);min-height:44px}
+.dry-c small{font-size:10px;font-weight:800;opacity:.7}.dry-c i{font-style:normal;font-size:18px;line-height:1.2}
+.dry-c.st{background:rgb(240 138 168 / .2);box-shadow:inset 0 0 0 1.5px #f08aa8}.dry-c.today{box-shadow:inset 0 0 0 2px var(--gold)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7218,7 +7234,7 @@ let AST_SKY=null;
 function astSky(){ if(AST_SKY) return AST_SKY; const r=mulberry(4242); let x=0, out='';
   while(x<1600){ const w=22+Math.round(r()*34), hh=26+Math.round(r()*62); out+=`<rect x="${x}" y="${90-hh}" width="${w}" height="${hh}" rx="2"/>`; if(r()<.35) out+=`<rect x="${x+w/2-1}" y="${90-hh-10}" width="2" height="10"/>`; x+=w+2+Math.round(r()*6); }
   return AST_SKY=`<svg viewBox="0 0 1600 90" preserveAspectRatio="none" aria-hidden="true">${out}</svg>`; }
-function astView(){
+function astView(){ try{ dryBase(); }catch(e){}
   const ph=skyPhase(new Date().getHours());
   const lv=stLv().lv; stLvCheck(lv);
   const shops=AST.map((s,i)=>{ let b=0; try{ b=s.b(); }catch(e){}
@@ -9186,6 +9202,38 @@ function ciMe(){ const P=S.prof||{}; return `<div class="ci-me"><span class="ava
 const __cutInMe=cutIn; cutIn=function(text,sub,cls){ const r=__cutInMe.apply(this,arguments); try{ if(reduced() || !G || G.online || myIndex()<0 || !/(^|\s)(mono|big|lead)(\s|$)/.test(cls||'')) return r;
   const el=[...document.querySelectorAll('.cutin')].pop(); if(el && !el.querySelector('.ci-me')) el.insertAdjacentHTML('beforeend', ciMe()); }catch(e){} return r; };
 function oenToss(){ const P=S.prof||{}; return `<span class="oen-toss" aria-hidden="true"><span class="ava${hatc()}" style="--s:${AVA_COLORS[(P.color||0)%6]};grid-row:auto">${esc(myAvatar()||initial(NET.name||'あなた'))}</span></span>`; }
+/* ---- 📔 ミオの日記帳：その日、商店街でしたことをミオが日記にしてくれる（試合・屋台・せり・港・福引・宝さがし・流れ星・ラジオ…）。
+   3つ以上したら「よくできました」のはんこ（1日1回 🪙10）。下は2週間のはんこカレンダー ---- */
+function dryS(){ const P=S.prof; if(!P.dry) P.dry={days:{}, base:{d:0,g:0,w:0}}; return P.dry; }
+function dryBase(){ const D=dryS(), t=todayKey(), st=S.prof.st||{}; if(D.base.d!==t){ D.base={d:t, g:st.games||0, w:st.wins||0}; } }
+function dryList(){ const P=S.prof, t=todayKey(), st=P.st||{}, D=dryS(), out=[]; const g=(st.games||0)-(D.base.d===t?D.base.g:(st.games||0)), w=(st.wins||0)-(D.base.d===t?D.base.w:(st.wins||0));
+  if(g>0) out.push(['🃏',`試合を${g}回あそんだ${w>0?`（${w}回 1位！）`:''}`]);
+  const day=(o,ic,tx)=>{ if(o && o.day===t) out.push([ic,tx]); };
+  day(P.yt,'🍢','屋台をひらいた'); day(P.fc,'🏭','工場で ものづくりをした'); day(P.auc,'🔔','朝市のせりに参加した'); day(P.prt,'🚢','港から船を出した');
+  day(P.frw,'🎡','観覧車にのった'); day(P.rdo,'📻','AZAKEI FM を聞いた'); day(P.tko,'🥁','太鼓をたたいた'); day(P.mmg,'🃏','ペアさがしをした'); day(P.sht,'🎯','射的をした'); day(P.msm,'🏛️','ミュージアムのクイズに答えた'); day(P.mys,'🏪','お店の売上をうけとった');
+  if(P.tre && P.tre.d===t && P.tre.found) out.push(['💰','宝さがしで 宝箱を見つけた！']);
+  if(P.stz && P.stz.day===t && P.stz.n>0) out.push(['🌠',`流れ星を${P.stz.n}こ つかまえた`]);
+  try{ const Q=P.qt; if(Q && Q.d===t){ const c=Q.list.filter(q=>q.got).length; if(c) out.push(['🙋',`まちのお願いを${c}つ かなえた`]); } }catch(e){}
+  try{ if(P.bud && P.bud.done && P.bud.wk===fkWeek()) {} }catch(e){}
+  return out; }
+function dryOpen(){ dryBase(); const D=dryS(), t=todayKey(), L=dryList(); D.days[t]=Object.assign(D.days[t]||{}, {n:L.length, ic:L.map(x=>x[0]).slice(0,6)});
+  const keys=Object.keys(D.days).sort(); while(keys.length>40){ delete D.days[keys.shift()]; }
+  let coin=0; if(L.length>=3 && !D.days[t].st){ D.days[t].st=1; coin=10; S.prof.coin=(S.prof.coin||0)+coin; }
+  saveProfile(); DRY_COIN=coin; openSheet('dry'); sfx(coin?'coin':'open'); if(coin) setTimeout(()=>{ const h=document.querySelector('.dry-hanko'); if(h) h.classList.add('pop'); },300); }
+let DRY_COIN=0;
+function dryBody(){ const D=dryS(), t=todayKey(), d=new Date(), L=dryList(), w=(typeof swxNow==='function')?swxNow():null, st=D.days[t]&&D.days[t].st;
+  const say = L.length>=5 ? 'きょうは大いそがしの一日だったね！ 商店街のみんなも あなたのこと よく知ってるよ' : L.length>=3 ? 'いろいろ できた一日だったね。あしたも いっしょに さんぽしよう！' : L.length ? 'きょうは ゆっくりの日。あと少し遊ぶと「よくできました」のはんこだよ' : 'きょうは まだ なにもしてないね。商店街を さんぽしてみよう！';
+  const cal=[]; for(let i=13;i>=0;i--){ const x=new Date(); x.setDate(x.getDate()-i); const k=todayKey(x), e=D.days[k]; cal.push(`<span class="dry-c${e&&e.st?' st':''}${k===t?' today':''}"><small>${x.getDate()}</small><i>${e&&e.st?'💮':e&&e.n?e.ic[0]:''}</i></span>`); }
+  return `<div class="dry"><span class="label">📔 DIARY</span><h3 class="ttl">ミオの日記帳</h3>
+    <div class="dry-page"><div class="dry-head"><b>${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）</b><span>${w?`${w.ic} ${w.n}`:''}</span></div>
+      ${L.length?`<ul class="dry-list">${L.map(x=>`<li><i>${x[0]}</i>${x[1]}</li>`).join('')}</ul>`:'<p class="dry-none">（まだ 白紙のページ…）</p>'}
+      <p class="dry-mio">${say}<span>― ミオ</span></p>
+      ${L.length>=3?`<span class="dry-hanko${st?' on':''}">よく<br>できました</span>`:''}</div>
+    ${DRY_COIN?`<p class="dry-coin">💮 はんこをもらった！ 🪙+${DRY_COIN}</p>`:''}
+    <div class="dry-cal"><b>はんこカレンダー（2週間）</b><div class="dry-grid">${cal.join('')}</div></div>
+    <p class="note">日記は開くたびに きょうの分が書き足されるよ。3つ以上で「よくできました」（1日1回 🪙10）</p></div>`; }
+AST.push({n:'ミオの日記帳',ic:'📔',c:'#e86a9a',a:'#fff3f8',h:100,f:()=>dryOpen(),b:()=>{ const D=dryS(), e=D.days[todayKey()]; return (!e||!e.st)&&dryList().length>=3?'💮':0; }});
+try{ SMAP_G[2].shops.push('ミオの日記帳'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10451,6 +10499,7 @@ function renderSheet(){
   else if(k==='mmg') body=mmgBody();
   else if(k==='sht') body=shtBody();
   else if(k==='bud') body=budBody();
+  else if(k==='dry') body=dryBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
