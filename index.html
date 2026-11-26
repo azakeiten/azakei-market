@@ -5732,6 +5732,23 @@ html.lite .oen-row i{animation:none!important}
 .sht-res{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px;border-radius:18px;background:var(--panel2)}
 .sht-res>b{font:400 40px var(--display,sans-serif);color:var(--gold)}.sht-res small{font-size:12px;opacity:.8}.sht-res em{font-style:normal;font-weight:900;color:var(--gold)}
 .sht-got{font-size:30px;letter-spacing:4px;margin-top:4px}
+/* 🏛️ まちの予算会議 */
+.bud{display:flex;flex-direction:column;gap:12px}.bud>*{flex:none}
+.bud-pot{display:flex;align-items:baseline;justify-content:center;gap:8px;padding:10px;border-radius:14px;background:linear-gradient(180deg,#fff3c8,#f6d880);color:#5a3a00;box-shadow:inset 0 0 0 2px #d8a84a}
+.bud-pot span{font-weight:900;font-size:13px}.bud-pot b{font:400 30px var(--display,sans-serif)}.bud-pot small{font-size:12px;font-weight:800}
+.bud-rows{display:flex;flex-direction:column;gap:8px}
+.bud-r{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:var(--panel2)}
+.bud-ic{font-size:28px;width:36px;text-align:center}.bud-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.bud-mid b{font-size:14px}.bud-mid small{font-size:11px;opacity:.8}
+.bud-bar{position:relative;height:14px;border-radius:99px;background:rgb(255 255 255 / .1);overflow:hidden}.bud-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#ffc83a,#ff8a5a);transition:width .3s}.bud-bar em{position:absolute;right:8px;top:0;font-style:normal;font-size:10.5px;font-weight:900;line-height:14px}
+.bud-btn{display:flex;gap:4px}.bud-btn button{width:38px;height:38px;border:0;border-radius:10px;cursor:pointer;font-size:20px;font-weight:900;color:#fff;background:rgb(255 255 255 / .12);box-shadow:inset 0 0 0 1.5px var(--line)}
+.bud-btn button:active{transform:scale(.92)}
+.bud-town{padding:10px 12px;border-radius:14px;background:var(--panel2)}.bud-town>b{font-size:13px}
+.bud-faces{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-top:8px}
+.bud-faces span{display:flex;flex-direction:column;align-items:center}.bud-faces i{font-style:normal;font-size:24px}.bud-faces em{font-style:normal;font-size:16px;margin-top:-6px}.bud-faces small{font-size:10px;font-weight:800;opacity:.8}
+.bud-fl{position:absolute;left:0;right:0;bottom:24px;z-index:1;font-size:13px;letter-spacing:10px;white-space:nowrap;overflow:hidden;pointer-events:none;opacity:.95}
+.bud-cw{position:absolute;left:0;right:0;bottom:6px;height:12px;z-index:1;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 60px,rgb(255 255 255 / .85) 60px 66px,transparent 66px 72px,rgb(255 255 255 / .85) 72px 78px,transparent 78px 84px,rgb(255 255 255 / .85) 84px 90px,transparent 90px 420px)}
+.bud-kid{animation-duration:30s}.bud-kid.k2{animation-delay:-8s}
+.ast-lant.bud-lant{animation-name:srlySway}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7185,9 +7202,9 @@ function astView(){
     +(S.prof&&S.prof.pet?`<span class="ast-pedw pnk-walk" aria-hidden="true"><i style="filter:${PNK_COL[S.prof.pet.col].f}">${pnkSleep()?'💤':'🐈'}</i></span>`:'');
   const plaza=lv>=5?'<span class="ast-plaza" aria-hidden="true"><i>⛲</i></span>':'';
   const prdOn=PRD_RUN && Date.now()-PRD_RUN<PRD_MS && !reduced(), swx=swxNow();
-  return `<section class="ast${TRE_ON?' tre-on':''} ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small>${(()=>{ try{ if(nbNew()) return ''; const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; return `<button class="qt-chip${rd?' rd':''}" onclick="qtOpen()" aria-label="まちのお願い ${c}/3">🙋 ${c}/3</button>`; }catch(e){ return ''; } })()}${(()=>{ try{ return treChip(); }catch(e){ return ''; } })()}<button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
+  return `<section class="ast${TRE_ON?' tre-on':''}${budCls()} ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small>${(()=>{ try{ if(nbNew()) return ''; const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; return `<button class="qt-chip${rd?' rd':''}" onclick="qtOpen()" aria-label="まちのお願い ${c}/3">🙋 ${c}/3</button>`; }catch(e){ return ''; } })()}${(()=>{ try{ return treChip(); }catch(e){ return ''; } })()}<button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
-      ${swxLayer(swx)}${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${(()=>{ try{ return xmtStreet(); }catch(e){ return ''; } })()}${(()=>{ try{ return mysStreet(); }catch(e){ return ''; } })()}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
+      ${swxLayer(swx)}${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${budDeco()}${(()=>{ try{ return xmtStreet(); }catch(e){ return ''; } })()}${(()=>{ try{ return mysStreet(); }catch(e){ return ''; } })()}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
 }
 function astPar(sc){ const v=sc.parentNode; if(v) v.style.setProperty('--px', (sc.scrollLeft*0.3).toFixed(1)+'px'); smapWin(sc); }
 const __renderSM=render; render=function(){ const r=__renderSM.apply(this,arguments); try{ const sc=document.querySelector('.ast-sc'); if(sc) smapWin(sc); }catch(e){} return r; };
@@ -9097,6 +9114,35 @@ function shtBody(){ const X=SHX, K=shtS();
     <p class="note">${K.day===todayKey()?'きょうのコインはもらったよ。何回でも遊べる':'きょうの1回目は、点数がそのままコインに（最大80）'}${K.best?` ・ ベスト ${K.best}点`:''}</p></div>`; }
 AST.push({n:'コルク射的',ic:'🎯',c:'#d85a2a',a:'#fff3a8',h:112,f:()=>shtOpen(),b:()=>shtS().day===todayKey()?0:'!'});
 try{ SMAP_G[0].shops.push('コルク射的'); }catch(e){}
+/* ---- 🏛️ まちの予算会議：毎週、みんなの税金100をどう使うか決める（公園・道路・学校・おまつり）。
+   住人それぞれに好みがあって、よろこぶ人・こまる人が出る（トレードオフ）。30以上つかったものは、その週の通りに見た目で出る ---- */
+const BUD_C=[{k:'park',ic:'🌳',n:'公園',d:'花や木がふえる'},{k:'road',ic:'🛣️',n:'道路',d:'横断歩道ができる'},{k:'school',ic:'🏫',n:'学校',d:'子どもたちが通う'},{k:'fest',ic:'🏮',n:'おまつり',d:'ちょうちんが並ぶ'}];
+const BUD_WHO=[{ic:'🧓',n:'八百屋のおじいちゃん',w:[2,1,0,2]},{ic:'👮',n:'おまわりさん',w:[0,3,1,0]},{ic:'👩‍🏫',n:'学校の先生',w:[1,0,3,0]},{ic:'🧒',n:'こども',w:[2,0,1,2]},{ic:'👨‍🍳',n:'すし屋の大将',w:[0,2,0,2]},{ic:'👵',n:'駄菓子屋のおばあちゃん',w:[1,0,2,1]}];
+function budS(){ const P=S.prof, wk=fkWeek(); if(!P.bud || P.bud.wk!==wk) P.bud={wk, a:(P.bud&&P.bud.a)||[30,20,20,30], done:false}; return P.bud; }
+function budSat(a){ return BUD_WHO.map(r=>{ const mx=Math.max(...r.w); const v=a.reduce((t,x,i)=>t+x*r.w[i],0)/(100*mx); return Math.max(0,Math.min(1,v)); }); }
+function budOpen(){ budS(); openSheet('bud'); sfx('open'); }
+function budAdd(i,d){ const B=budS(); if(B.done) return; const sum=B.a.reduce((t,x)=>t+x,0); if(d>0 && sum>=100){ toast('予算は100まで。どこかを減らそう'); sfx('buzz'); return; } if(d<0 && B.a[i]<=0) return;
+  B.a[i]+=d; sfx('click'); haptic(4); saveProfile(); renderSheet(); }
+function budDecide(){ const B=budS(); const sum=B.a.reduce((t,x)=>t+x,0); if(sum!==100){ toast(`あと ${100-sum} のこってるよ`); sfx('buzz'); return; }
+  B.done=true; S.prof.coin=(S.prof.coin||0)+20; saveProfile(); sfx('fanfare'); haptic(30); confetti(); toast('🏛️ 予算が決まった！ 今週の通りが かわるよ 🪙+20'); renderSheet(); render(); }
+function budCls(){ try{ const B=budS(); if(!B.done) return ''; return BUD_C.filter((c,i)=>B.a[i]>=30).map(c=>' bud-'+c.k).join(''); }catch(e){ return ''; } }
+function budDeco(){ try{ const B=budS(); if(!B.done || nbNew()) return ''; let h='';
+  if(B.a[0]>=30) h+='<span class="bud-fl" aria-hidden="true">'+'🌷🌼🌳🌸'.repeat(Math.max(6,AST.length))+'</span>';
+  if(B.a[1]>=30) h+='<span class="bud-cw" aria-hidden="true"></span>';
+  if(B.a[2]>=30) h+='<span class="ast-pedw bud-kid" aria-hidden="true"><i>🎒</i></span><span class="ast-pedw bud-kid k2" aria-hidden="true"><i>🧒</i></span>';
+  if(B.a[3]>=30 && !srlyFest()) h+='<span class="ast-lant bud-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>';
+  return h; }catch(e){ return ''; } }
+function budBody(){ const B=budS(), sum=B.a.reduce((t,x)=>t+x,0), sat=budSat(B.a), avg=Math.round(sat.reduce((t,x)=>t+x,0)/sat.length*100);
+  const face=v=>v>=0.6?'😄':v>=0.35?'🙂':'😟';
+  return `<div class="bud"><span class="label">🏛️ TOWN BUDGET · ${B.done?'今週は決定ずみ':'今週の会議'}</span><h3 class="ttl">まちの予算会議</h3>
+    <div class="bud-pot"><span>💰 みんなの税金</span><b>${100-sum}</b><small>/ 100 のこり</small></div>
+    <div class="bud-rows">${BUD_C.map((c,i)=>`<div class="bud-r"><span class="bud-ic">${c.ic}</span><div class="bud-mid"><b>${c.n}</b><small>${c.d}${B.a[i]>=30?' ✨':''}</small><div class="bud-bar"><i style="width:${B.a[i]}%"></i><em>${B.a[i]}</em></div></div>${B.done?'':`<div class="bud-btn"><button onclick="budAdd(${i},-10)" aria-label="${c.n}をへらす">−</button><button onclick="budAdd(${i},10)" aria-label="${c.n}をふやす">＋</button></div>`}</div>`).join('')}</div>
+    <div class="bud-town"><b>住人のきもち（平均 ${avg}%）</b><div class="bud-faces">${BUD_WHO.map((r,i)=>`<span title="${r.n}"><i>${r.ic}</i><em>${face(sat[i])}</em><small>${Math.round(sat[i]*100)}%</small></span>`).join('')}</div></div>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> 税金は、道路や学校みたいに みんなで使うものに使われるよ。でもお金は限られているから、ぜんぶはできない。何かをえらぶと、何かをあきらめる…これが <span class="fk-em">トレードオフ</span></p></div>
+    ${B.done?'<button class="btn big" style="width:100%" disabled>今週の予算は決まったよ（30以上のものが通りに出ている）</button>':`<button class="btn gold big" style="width:100%" onclick="budDecide()" ${sum!==100?'disabled':''}>🏛️ この予算で決定（🪙20）</button>`}
+    <p class="note">30以上つかったものは、その週の商店街に見た目で出るよ。会議は毎週月曜に新しくなる</p></div>`; }
+AST.push({n:'まちの役場',ic:'🏛️',c:'#5a6a8a',a:'#f6ead0',h:140,f:()=>budOpen(),b:()=>budS().done?0:'!'});
+try{ SMAP_G[1].shops.push('まちの役場'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10361,6 +10407,7 @@ function renderSheet(){
   else if(k==='tko') body=tkoBody();
   else if(k==='mmg') body=mmgBody();
   else if(k==='sht') body=shtBody();
+  else if(k==='bud') body=budBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
