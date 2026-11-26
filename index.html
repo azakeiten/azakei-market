@@ -5532,6 +5532,38 @@ html.lite .tre-on .ast-shop::after,html.lite .tre-chip.on{animation:none}
 .xmt-pick .phb-ch{font-size:18px;padding:4px 12px}
 html.lite .xmt-st.lit .xmt-st-t,html.lite .xmt-e.can,html.lite .xmt-stage.lit .xmt-o,html.lite .xmt-star.on{animation:none}
 @media (prefers-reduced-motion:reduce){.xmt-st.lit .xmt-st-t,.xmt-e.can,.xmt-stage.lit .xmt-o,.xmt-star.on{animation:none}}
+/* 🏛️ 物価ミュージアム */
+.msm{display:flex;flex-direction:column;gap:12px}.msm>*{flex:none}
+.msm-gate{position:relative;display:flex;justify-content:space-around;align-items:flex-end;height:74px;padding:0 16px;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,#f6ead0,#d8c8a0);box-shadow:inset 0 -6px 0 #b8a478}
+.msm-gate::before{content:"";position:absolute;left:-6px;right:-6px;top:-14px;height:18px;clip-path:polygon(0 100%,50% 0,100% 100%);background:#e8d8b0}
+.msm-gate i{width:12px;height:54px;border-radius:3px;background:linear-gradient(90deg,#c8b48a,#fffaf0,#c8b48a)}
+.msm-gate span{position:absolute;left:50%;top:6px;transform:translateX(-50%);font:700 12px "Shippori Mincho B1","Yu Mincho",serif;color:#5a4a2a;letter-spacing:.2em;white-space:nowrap}
+.msm-ex{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:16px;background:#fffaf0;color:#2a1f0e;box-shadow:inset 0 0 0 2px #d8c8a0,0 6px 14px rgb(0 0 0 / .25)}
+.msm-plate{display:flex;flex-direction:column;gap:1px;padding:6px 10px;border-radius:6px;background:linear-gradient(180deg,#e8c06a,#c89a3a);color:#2a1a00;box-shadow:inset 0 -2px 0 rgb(0 0 0 / .2)}
+.msm-plate b{font-size:13.5px}.msm-plate small{font-size:10.5px;font-weight:700;opacity:.8}
+.msm-plate.tale{background:linear-gradient(180deg,#c8d8f0,#9ab0d8)}
+.msm-bars{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;align-items:end;height:150px;padding-top:8px}
+.msm-b{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:2px}
+.msm-b em{font-style:normal;font-weight:900;font-size:12px}
+.msm-b i{width:70%;height:var(--h);border-radius:4px 4px 0 0;background:linear-gradient(180deg,#e8364a,#b8142a);transform-origin:bottom;animation:msmGrow .7s var(--d) cubic-bezier(.3,1.2,.5,1) both}
+.msm-b small{font-size:8.5px;font-weight:700;line-height:1.2;text-align:center;min-height:2.4em;opacity:.8}
+@keyframes msmGrow{from{transform:scaleY(0)}to{transform:none}}
+.msm-cap{margin:0;font-size:12.5px;line-height:1.55}.msm-cap b{color:#b8142a}
+.msm-pay{display:flex;align-items:center;justify-content:center;gap:10px}.msm-pay>div{display:flex;flex-direction:column;align-items:center;padding:8px 12px;border-radius:10px;background:#f4ead6}.msm-pay small{font-size:11px;font-weight:700}.msm-pay b{font-size:17px}.msm-pay>span{font-weight:900;color:#b8142a}
+.msm-tale{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:12px;background:#f4ead6;filter:sepia(calc(var(--sep,0) * .9));transition:filter .4s}
+.msm-yr{align-self:center;font:400 22px var(--display,sans-serif);color:#5a3a1a}
+.msm-items{display:flex;justify-content:space-around}
+.msm-items>div{display:flex;flex-direction:column;align-items:center;gap:2px}.msm-items>div>span{font-size:30px}
+.msm-col{position:relative;width:34px;height:90px;border-radius:6px;background:#e8dcc0;overflow:hidden}.msm-col i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,#ffb23a,#e87a1a);transition:height .35s}
+.msm-items b{font-size:16px}.msm-items small{font-size:11px;font-weight:700}
+.msm-tale input{width:100%;accent-color:#b8142a}
+.msm-ticks{display:flex;justify-content:space-between;font-size:10px;font-weight:800;opacity:.7;padding:0 4px}
+.msm-qz{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.msm-qz>b{font-size:14px;line-height:1.5}
+.msm-op{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.msm-op .btn{padding:10px 4px;font-size:13px}
+.msm-ng{background:#ff6a7e!important;color:#fff!important}
+.msm-qz.done{flex-direction:row;align-items:center;justify-content:space-between}.msm-qz.done em{font-style:normal;font-weight:900;color:var(--gold)}
+@media (prefers-reduced-motion:reduce){.msm-b i{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -8573,6 +8605,42 @@ function xmtBody(){ const T=xmtS(), have=xmtHave(T), n=Object.keys(T.slots).leng
         <p class="note">${have?`オーナメントが <b>${have}こ</b> あるよ。ツリーの光っている場所をタップしてかざろう`:'試合を1回あそぶとオーナメント1こ（1位なら+1）。あと '+(XMT_SLOT.length-n)+'こで完成！'}</p>`}</div>`; }
 function xmtStreet(){ if(!advOn() || nbNew()) return ''; const T=xmtS(), n=Object.keys(T.slots).length, h=xmtHave(T);
   return `<button class="xmt-st${T.lit?' lit':''}" onclick="event.stopPropagation();xmtOpen()" aria-label="みんなのクリスマスツリー ${n}/24"><span class="xmt-st-t">🎄</span><i class="xmt-st-n">${T.lit?'✨':`${n}/24`}</i>${h&&!T.lit?`<b class="ast-bd">${h}</b>`:''}</button>`; }
+/* ---- 🏛️ AZAKEI物価ミュージアム：モノの値段は時代でかわる（インフレ）を、展示で見る。
+   本物の展示は確かめられた数字だけ（はがき料金：日本郵便／大卒初任給：厚生労働省）。ラーメンの展示は「AZAKEI市のおはなし」（実際の値段ではない）。
+   さいごに3問クイズ。1日1回、全問正解でコイン ---- */
+const MSM_POST=[{t:'1994年まで',p:41},{t:'1994年1月',p:50},{t:'2017年5月まで',p:52},{t:'2017年6月',p:62},{t:'2019年10月',p:63},{t:'2024年10月',p:85}];
+const MSM_PAY=[{t:'2024年',p:248300},{t:'2025年',p:262300}];
+const MSM_TALE=[[1970,150,180],[1980,350,190],[1990,500,200],[2000,550,190],[2010,600,200],[2020,750,210],[2025,950,260]];
+const MSM_Q=[{q:'2024年10月、ふつうのはがきは いくらになった？',o:['63円','85円','110円'],a:1},{q:'1994年の値上げで、はがきは41円から何円になった？',o:['45円','50円','62円'],a:1},{q:'2025年の大卒の平均初任給は、だいたいいくら？（厚生労働省）',o:['約16万円','約26万円','約40万円'],a:1}];
+let MSX={y:6,qi:0,ok:0,ans:null};
+function msmS(){ const P=S.prof; if(!P.msm) P.msm={day:0,best:0}; return P.msm; }
+function msmOpen(){ MSX={y:MSX.y==null?6:MSX.y,qi:0,ok:0,ans:null}; openSheet('msm'); sfx('open'); }
+function msmYear(v){ MSX.y=+v; const T=MSM_TALE[MSX.y], el=document.getElementById('msmTale'); if(el){ el.querySelector('.msm-yr').textContent=T[0]+'年'; el.querySelector('.msm-ra b').textContent=T[1]+'円'; el.querySelector('.msm-eg b').textContent=T[2]+'円'; el.style.setProperty('--sep',T[0]<1990?(1990-T[0])/20:0); el.querySelector('.msm-ra i').style.height=Math.round(T[1]/950*100)+'%'; el.querySelector('.msm-eg i').style.height=Math.round(T[2]/950*100)+'%'; } haptic(3); }
+function msmAns(i){ if(MSX.ans!=null) return; const Q=MSM_Q[MSX.qi]; MSX.ans=i; if(i===Q.a){ MSX.ok++; sfx('coin'); } else sfx('buzz'); renderSheet(); }
+function msmNext(){ if(MSX.qi<MSM_Q.length-1){ MSX.qi++; MSX.ans=null; renderSheet(); return; }
+  const K=msmS(); let coin=0; if(MSX.ok===MSM_Q.length && K.day!==todayKey()){ K.day=todayKey(); coin=20; S.prof.coin=(S.prof.coin||0)+coin; } K.best=Math.max(K.best||0,MSX.ok); saveProfile();
+  MSX.qi=MSM_Q.length; MSX.coin=coin; renderSheet(); if(MSX.ok===MSM_Q.length){ sfx('fanfare'); confetti(); } }
+function msmBody(){ const X=MSX, mx=85, T=MSM_TALE[X.y];
+  const post=`<div class="msm-ex"><div class="msm-plate"><b>展示1　はがきの値段</b><small>出典：日本郵便（料金改定）</small></div>
+    <div class="msm-bars">${MSM_POST.map((d,i)=>`<div class="msm-b" style="--h:${Math.round(d.p/mx*100)}%;--d:${i*.08}s"><em>${d.p}円</em><i></i><small>${d.t}</small></div>`).join('')}</div>
+    <p class="msm-cap">30年ちょっとで <b>41円 → 85円</b>。約2倍になったよ。同じ「はがき1まい」なのに、必要なお金がふえた ＝ <b>インフレ</b></p></div>`;
+  const pay=`<div class="msm-ex"><div class="msm-plate"><b>展示2　はたらく人のお給料</b><small>出典：厚生労働省「賃金構造基本統計調査」大卒初任給の平均</small></div>
+    <div class="msm-pay">${MSM_PAY.map(d=>`<div><small>${d.t}</small><b>${d.p.toLocaleString()}円</b></div>`).join('<span>→</span>')}</div>
+    <p class="msm-cap">1年で <b>+5.6%</b>。モノの値段が上がると、お給料も上げないと くらしが大変になる。だから両方を見ることが大事</p></div>`;
+  const tale=`<div class="msm-ex"><div class="msm-plate tale"><b>展示3　AZAKEI市のラーメン物語</b><small>※ AZAKEI市のおはなし（実際の値段ではありません）</small></div>
+    <div class="msm-tale" id="msmTale" style="--sep:${T[0]<1990?(1990-T[0])/20:0}"><span class="msm-yr">${T[0]}年</span>
+      <div class="msm-items"><div class="msm-ra"><span>🍜</span><div class="msm-col"><i style="height:${Math.round(T[1]/950*100)}%"></i></div><b>${T[1]}円</b><small>ラーメン</small></div>
+      <div class="msm-eg"><span>🥚</span><div class="msm-col"><i style="height:${Math.round(T[2]/950*100)}%"></i></div><b>${T[2]}円</b><small>たまご1パック</small></div></div>
+      <input type="range" min="0" max="${MSM_TALE.length-1}" step="1" value="${X.y}" oninput="msmYear(this.value)" aria-label="年を動かす"><div class="msm-ticks">${MSM_TALE.map(t=>`<span>${String(t[0]).slice(2)}</span>`).join('')}</div></div>
+    <p class="msm-cap">ラーメンはどんどん上がるのに、たまごはあまり変わらない。値段が変わりにくいモノは「物価の優等生」とよばれるよ（このおはなしの数字は作りもの）</p></div>`;
+  let quiz;
+  if(X.qi>=MSM_Q.length) quiz=`<div class="msm-qz done"><b>クイズ ${X.ok}/${MSM_Q.length} 正解！</b>${X.coin?`<em>🪙 +${X.coin}</em>`:''}<button class="btn ghost" onclick="MSX.qi=0;MSX.ok=0;MSX.ans=null;renderSheet()">もう一回</button></div>`;
+  else { const Q=MSM_Q[X.qi]; quiz=`<div class="msm-qz"><span class="label">ミュージアムクイズ ${X.qi+1}/${MSM_Q.length}</span><b>${Q.q}</b><div class="msm-op">${Q.o.map((o,i)=>`<button class="btn${X.ans==null?' ghost':i===Q.a?' gold':i===X.ans?' msm-ng':' ghost'}" onclick="msmAns(${i})" ${X.ans!=null?'disabled':''}>${o}</button>`).join('')}</div>${X.ans!=null?`<button class="btn gold" style="width:100%" onclick="msmNext()">${X.qi<MSM_Q.length-1?'次の問題':'けっか'}</button>`:''}</div>`; }
+  return `<div class="msm"><span class="label">🏛️ PRICE MUSEUM</span><h3 class="ttl">AZAKEI物価ミュージアム</h3>
+    <div class="msm-gate" aria-hidden="true"><i></i><i></i><i></i><i></i><span>モノの値段のれきし</span></div>
+    ${post}${pay}${tale}${quiz}<p class="note">1日1回、クイズ全問正解で 🪙20</p></div>`; }
+AST.push({n:'物価ミュージアム',ic:'🏛️',c:'#8a7a5a',a:'#f6ead0',h:128,f:()=>msmOpen(),b:()=>msmS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('物価ミュージアム'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -9829,6 +9897,7 @@ function renderSheet(){
   else if(k==='frw') body=frwBody();
   else if(k==='nng') body=nngBody();
   else if(k==='xmt') body=xmtBody();
+  else if(k==='msm') body=msmBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
