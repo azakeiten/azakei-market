@@ -5763,6 +5763,19 @@ html.lite .oen-row i{animation:none!important}
 @keyframes oenToss{0%,100%{transform:translateY(22px) rotate(0)}50%{transform:translateY(-14px) rotate(12deg)}}
 .oen.party .oen-say{left:auto!important;right:10px;top:8px}
 @media (prefers-reduced-motion:reduce){.ci-me,.ci-v,.oen-toss{animation:none}}
+/* 🏬 お店の増築 */
+.mys-up{position:absolute;left:4px;right:4px;bottom:100%;display:flex;flex-direction:column-reverse;border-radius:6px 6px 0 0;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 30%,#fffaf0),#f0e2c8);box-shadow:inset 0 3px 0 color-mix(in srgb,var(--c) 70%,#000),inset -5px 0 0 rgb(0 0 0 / .06)}
+.mys-up>i{display:block;height:18px;margin:0 6px;border-bottom:2px solid rgb(0 0 0 / .08);background:repeating-linear-gradient(90deg,transparent 0 6px,#bcd8f0 6px 22px,transparent 22px 28px) 0 4px/100% 10px no-repeat}
+.ast-night .mys-up>i,.ast-eve .mys-up>i{background:repeating-linear-gradient(90deg,transparent 0 6px,#ffe58a 6px 22px,transparent 22px 28px) 0 4px/100% 10px no-repeat}
+.mys-roof{display:block;margin:-18px -6px 2px;padding:2px 4px;border-radius:5px;font-size:9px;font-weight:900;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;background:linear-gradient(90deg,#ff3a8a,#ffb23a,#4fe3ff);box-shadow:0 0 8px rgb(255 120 200 / .7);animation:lhvBlink 2.4s steps(2) infinite}
+.mys-front.up1{margin-top:18px}.mys-front.up2{margin-top:36px}.mys-front.up3{margin-top:56px}
+.mys-stage .mys-front.big.up1{margin-top:76px}.mys-stage .mys-front.big.up2{margin-top:102px}.mys-stage .mys-front.big.up3{margin-top:140px}
+.mys-lv{display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .4)}
+.mys-lv>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.mys-lv b{font-size:14px}.mys-lv small{font-size:11.5px;opacity:.85}.mys-pay{color:#7cf29a;opacity:1!important;font-weight:800}
+.mys-lv.max{flex-direction:column;align-items:flex-start;box-shadow:inset 0 0 0 2px var(--gold)}
+.mys-stage.building .mys-front{filter:grayscale(.6) brightness(.8)}
+.mys-scaf{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;font-size:56px;z-index:3;animation:qtBub .3s ease-in-out infinite alternate}.mys-scaf i{font-style:normal;font-size:14px;font-weight:900;color:#2a1a00;background:#ffe58a;padding:2px 10px;border-radius:99px}
+html.lite .mys-roof,html.lite .mys-scaf{animation:none}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -8947,7 +8960,13 @@ let MYX={edit:false};
 function mysS(){ const P=S.prof; if(!P.mys) P.mys={on:false, ind:3, col:0, name:'', day:0, tot:0}; return P.mys; }
 function mysName(M){ return (M.name||'').trim() || `${(NET.name||'').trim()||'あなた'}の${MYS_IND[M.ind].shop}`; }
 function mysToday(M){ const w=(typeof swxNow==='function')?swxNow():null, I=MYS_IND[M.ind], aff=w?(I.w[w.k]||0):0, r=mulberry(todayKey()*17+M.ind*5+M.col);
-  const n=Math.max(1, 5+aff*2+Math.floor(r()*4)); return {w, aff, n, coin:10+n*2}; }
+  const n=Math.max(1, 5+aff*2+Math.floor(r()*4)), L=MYS_LV[M.lv||0]||MYS_LV[0]; return {w, aff, n:Math.round(n*L.c), coin:Math.round((10+n*2)*L.m)}; }
+/* ---- 🏬 お店の増築：コインで 2階建て → ビル → 百貨店 へ。建物が高くなって、お客さんと売上がふえる。
+   「何日で元がとれるか（投資の回収）」も表示 ---- */
+const MYS_LV=[{n:'お店',cost:0,m:1,c:1,fl:0},{n:'2階建て',cost:300,m:1.5,c:1.2,fl:1},{n:'ビル',cost:800,m:2.2,c:1.4,fl:2},{n:'百貨店',cost:2000,m:3.2,c:1.7,fl:3}];
+function mysUp(){ const M=mysS(), lv=M.lv||0, N=MYS_LV[lv+1]; if(!N) return; if((S.prof.coin||0)<N.cost){ toast(`コインが足りないよ（あと ${N.cost-(S.prof.coin||0)}）`); sfx('buzz'); return; }
+  S.prof.coin-=N.cost; M.lv=lv+1; saveProfile(); MYX.build=Date.now(); sfx('drum'); haptic(20); renderSheet();
+  setTimeout(()=>{ if(S.sheet!=='mys') return; MYX.build=0; renderSheet(); sfx('fanfare'); haptic(40); confetti(); toast(`🏬 「${N.n}」に増築した！ 売上 ×${N.m}`); render(); }, reduced()?100:1400); }
 function mysOpen(){ const M=mysS(); MYX={edit:!M.on}; openSheet('mys'); sfx('open'); }
 function mysSet(k,v){ const M=mysS(); M[k]=v; sfx('select'); haptic(5); saveProfile(); renderSheet(); }
 function mysNameIn(el){ const M=mysS(); M.name=String(el.value||'').slice(0,12); saveProfile(); const t=document.querySelector('.mys-front .mys-sign'); if(t) t.textContent=mysName(M); }
@@ -8955,7 +8974,8 @@ function mysBuild(){ const M=mysS(); const first=!M.on; M.on=true; saveProfile()
 function mysCollect(){ const M=mysS(); if(M.day===todayKey()) return; const T=mysToday(M); M.day=todayKey(); M.tot=(M.tot||0)+T.coin; S.prof.coin=(S.prof.coin||0)+T.coin; saveProfile();
   sfx('coin'); haptic(20); renderSheet(); setTimeout(()=>{ const el=document.querySelector('.mys-front'); if(el) burstAt(el,['#ffc83a','#fff','#7cf29a'],26); },40); toast(`🪙 きょうの売上 +${T.coin}（お客さん ${T.n}人）`); render(); }
 function mysFront(M, big){ const I=MYS_IND[M.ind], C=MYS_COL[M.col], P=S.prof;
-  return `<div class="mys-front${big?' big':''}" style="--c:${C[0]};--a:${C[1]}"><span class="mys-sign">${esc(mysName(M))}</span><i class="mys-aw"></i>
+  const L=MYS_LV[M.lv||0]||MYS_LV[0], fl=L.fl;
+  return `<div class="mys-front${big?' big':''}${fl?' up'+fl:''}" style="--c:${C[0]};--a:${C[1]};--fl:${fl}">${fl?`<span class="mys-up" aria-hidden="true">${fl>=3?`<b class="mys-roof">${esc(mysName(M))}</b>`:''}${'<i></i>'.repeat(fl)}</span>`:''}<span class="mys-sign">${esc(mysName(M))}</span><i class="mys-aw"></i>
     <span class="mys-win"><i>${I.it}</i><i>${I.ic}</i></span><span class="mys-door"><span class="ava${hatc()}" style="--s:${AVA_COLORS[(P.color||0)%6]};grid-row:auto">${esc(myAvatar()||initial(NET.name||'あなた'))}</span></span></div>`; }
 function mysStreet(){ if(nbNew()) return ''; const M=mysS();
   if(!M.on) return `<button class="mys-st mys-empty" onclick="event.stopPropagation();mysOpen()" aria-label="あなたのお店を出す"><span>🏗️</span><small>あき地<br>お店を出す</small></button>`;
@@ -8970,10 +8990,13 @@ function mysBody(){ const M=mysS(), I=MYS_IND[M.ind];
   const T=mysToday(M), got=M.day===todayKey();
   const why = !T.w ? '' : T.aff>0 ? `きょうは${T.w.ic}${T.w.n}。${I.n}のお店には ぴったりの日！ お客さんが多いよ` : T.aff<0 ? `きょうは${T.w.ic}${T.w.n}。${I.n}のお店には ちょっと不利な天気…` : `きょうは${T.w.ic}${T.w.n}。いつもどおりのお客さんだね`;
   return `<div class="mys"><span class="label">🏪 MY SHOP · ${I.ic} ${I.n}</span><h3 class="ttl">${esc(mysName(M))}</h3>
-    <div class="mys-stage">${mysFront(M,true)}<div class="mys-line" aria-hidden="true">${['🧓','👧','🧑‍💼','👵','🧒','👨‍🍳','👩‍🏫','🧑‍🔧','👮','👦','👩','👴','🧑','👱','🧕','👨'].slice(0,Math.min(16,T.n)).map((f,i)=>`<i style="--d:${i*.08}s">${f}</i>`).join('')}</div></div>
+    <div class="mys-stage${MYX.build?' building':''}">${mysFront(M,true)}${MYX.build?'<span class="mys-scaf" aria-hidden="true">🏗️<i>トンテンカン…</i></span>':''}<div class="mys-line" aria-hidden="true">${['🧓','👧','🧑‍💼','👵','🧒','👨‍🍳','👩‍🏫','🧑‍🔧','👮','👦','👩','👴','🧑','👱','🧕','👨'].slice(0,Math.min(16,T.n)).map((f,i)=>`<i style="--d:${i*.08}s">${f}</i>`).join('')}</div></div>
     <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> ${why}</p></div>
     <div class="mys-stat"><div><small>きょうのお客さん</small><b>${T.n}人</b></div><div><small>売上</small><b>🪙${T.coin}</b></div><div><small>これまで</small><b>🪙${M.tot||0}</b></div></div>
     ${got?'<button class="btn big" style="width:100%" disabled>きょうの売上は うけとったよ</button>':`<button class="btn gold big" style="width:100%" onclick="mysCollect()">🪙 きょうの売上をうけとる</button>`}
+    ${(()=>{ const lv=M.lv||0, L=MYS_LV[lv], N=MYS_LV[lv+1]; if(!N) return `<div class="mys-lv max"><b>🏬 ${L.n}（最大）</b><small>商店街いちばんの お店になったよ！ 売上 ×${L.m}</small></div>`;
+      const base=10+7*2, add=Math.round(base*(N.m-L.m)), days=Math.ceil(N.cost/Math.max(1,add)), can=(S.prof.coin||0)>=N.cost;
+      return `<div class="mys-lv"><div><b>🏗️ 増築：${L.n} → ${N.n}</b><small>売上 ×${L.m} → ×${N.m}（1日 約+${add}コイン）</small><small class="mys-pay">💡 ${N.cost}コインの投資は、約${days}日で元がとれる計算</small></div><button class="btn${can?' gold':''}" onclick="mysUp()" ${can?'':'disabled'}>🪙${N.cost}</button></div>`; })()}
     <button class="btn ghost" style="width:100%" onclick="MYX.edit=true;renderSheet()">🏗️ リフォーム（業種・色・名前）</button>
     <p class="note">天気と業種で、お客さんの数がかわるよ。雨の日はメディア、晴れの日は小売、寒い日はエネルギーが強い。業種はいつでも変えられる</p></div>`; }
 /* ---- 📚 AZAKEI図書館「ことばコレクション」：商店街で体験した経済のことばが、本になって棚にならんでいく。
