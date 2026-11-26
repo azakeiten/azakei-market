@@ -5792,6 +5792,21 @@ html.lite .mys-roof,html.lite .mys-scaf{animation:none}
 .dry-c{display:flex;flex-direction:column;align-items:center;padding:4px 0;border-radius:8px;background:rgb(255 255 255 / .05);min-height:44px}
 .dry-c small{font-size:10px;font-weight:800;opacity:.7}.dry-c i{font-style:normal;font-size:18px;line-height:1.2}
 .dry-c.st{background:rgb(240 138 168 / .2);box-shadow:inset 0 0 0 1.5px #f08aa8}.dry-c.today{box-shadow:inset 0 0 0 2px var(--gold)}
+/* 🛒 ミオのおつかい */
+.otk{display:flex;flex-direction:column;gap:10px}.otk>*{flex:none}
+.otk-wallet{position:sticky;top:0;z-index:3;display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:10px 14px;border-radius:14px;color:#1a3a1a;background:linear-gradient(180deg,#e6f7c8,#b8e08a);box-shadow:0 4px 12px rgb(0 0 0 / .3)}
+.otk-wallet span{font-size:12.5px;font-weight:900}.otk-wallet b{font:400 26px var(--display,sans-serif)}.otk-wallet small{font-size:12px;font-weight:900}
+.otk-wallet.over{background:linear-gradient(180deg,#ffe0e6,#ffb0bc);color:#7a1a2a}
+.otk-sw{display:flex;gap:6px;align-items:center;font-size:12.5px;font-weight:800}
+.otk-it{padding:10px;border-radius:14px;background:var(--panel2)}
+.otk-ih{display:flex;align-items:baseline;gap:6px;margin-bottom:6px}.otk-ih span{font-size:22px}.otk-ih b{font-size:14px}.otk-ih small{margin-left:auto;font-size:11.5px;font-weight:900;color:var(--gold)}
+.otk-ops{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.otk-op{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;padding:10px 4px 6px;border:0;border-radius:12px;cursor:pointer;color:#2a1f0e;background:#fffaf0;box-shadow:inset 0 0 0 2px #e8dcc0}
+.otk-op b{font-size:12px}.otk-op span{font-size:15px;font-weight:900}.otk-op small{font-size:10.5px;opacity:.8}.otk-op .otk-k{font-weight:900;opacity:1;color:#2f7a3a}
+.otk-op.on{box-shadow:inset 0 0 0 3px #2fa86a,0 0 10px rgb(47 168 106 / .5);background:#effbe8}
+.otk-op em{position:absolute;top:-8px;right:-4px;padding:1px 6px;border-radius:6px;font-style:normal;font-size:10px;font-weight:900;color:#fff;background:#e8364a;transform:rotate(6deg)}
+.otk-res{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px;border-radius:16px;background:var(--panel2);text-align:center;animation:sgIn .4s both}
+.otk-stars{font-size:36px;color:#ffc83a}.otk-stars i{font-style:normal;color:rgb(255 255 255 / .18)}.otk-res b{font-size:15px}.otk-res small{font-size:12px;opacity:.85}.otk-res em{font-style:normal;font-weight:900;color:var(--gold)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9234,6 +9249,36 @@ function dryBody(){ const D=dryS(), t=todayKey(), d=new Date(), L=dryList(), w=(
     <p class="note">日記は開くたびに きょうの分が書き足されるよ。3つ以上で「よくできました」（1日1回 🪙10）</p></div>`; }
 AST.push({n:'ミオの日記帳',ic:'📔',c:'#e86a9a',a:'#fff3f8',h:100,f:()=>dryOpen(),b:()=>{ const D=dryS(), e=D.days[todayKey()]; return (!e||!e.st)&&dryList().length>=3?'💮':0; }});
 try{ SMAP_G[2].shops.push('ミオの日記帳'); }catch(e){}
+/* ---- 🛒 ミオのおつかい：レシピの材料を、予算の中でできるだけ安く買う。ばら売り・お徳用パック・セール（〇%OFF）から選ぶ。
+   「1こあたり」の値段（単価）をくらべるのがコツ。いちばん安い買い方とくらべて ★、1日1回目は ★×🪙10 ---- */
+const OTK_R=[
+  {n:'カレー',ic:'🍛',bud:700,it:[{ic:'🥕',n:'にんじん',q:2,u:'本',o:[[1,60,0],[3,150,0],[5,260,20]]},{ic:'🥔',n:'じゃがいも',q:3,u:'こ',o:[[1,50,0],[4,180,0],[6,300,30]]},{ic:'🧅',n:'たまねぎ',q:2,u:'こ',o:[[1,45,0],[3,120,0]]},{ic:'🍫',n:'カレールー',q:1,u:'箱',o:[[1,220,0],[1,250,20],[2,400,0]]}]},
+  {n:'サンドイッチ',ic:'🥪',bud:600,it:[{ic:'🍞',n:'食パン',q:6,u:'まい',o:[[6,180,0],[8,220,0],[4,110,10]]},{ic:'🥚',n:'たまご',q:3,u:'こ',o:[[1,30,0],[6,200,0],[10,250,0]]},{ic:'🥒',n:'きゅうり',q:1,u:'本',o:[[1,50,0],[3,120,0]]},{ic:'🧀',n:'チーズ',q:4,u:'まい',o:[[4,160,0],[8,280,20],[2,90,0]]}]},
+  {n:'おにぎりパーティ',ic:'🍙',bud:900,it:[{ic:'🍚',n:'お米',q:3,u:'合',o:[[3,240,0],[10,700,30],[2,170,0]]},{ic:'🌿',n:'のり',q:6,u:'まい',o:[[10,200,0],[5,110,0],[20,340,0]]},{ic:'🐟',n:'しゃけ',q:2,u:'切れ',o:[[1,120,0],[3,300,10]]},{ic:'🍶',n:'うめぼし',q:3,u:'こ',o:[[5,150,0],[10,240,20]]}]}];
+let OTX={pick:[]};
+function otkS(){ const P=S.prof; if(!P.otk) P.otk={day:0,best:0}; return P.otk; }
+function otkRec(){ return OTK_R[todayKey()%OTK_R.length]; }
+function otkCost(it,oi){ const [c,p,d]=it.o[oi], k=Math.ceil(it.q/c); return {k, cnt:k*c, cost:Math.round(k*p*(1-d/100)), unit:Math.round(p*(1-d/100)/c*10)/10}; }
+function otkBest(R){ return R.it.reduce((t,it)=>t+Math.min(...it.o.map((_,i)=>otkCost(it,i).cost)),0); }
+function otkOpen(){ OTX={pick:otkRec().it.map(()=>null), done:false, unit:false}; openSheet('otk'); sfx('open'); }
+function otkPick(i,oi){ if(OTX.done) return; OTX.pick[i]=oi; sfx('select'); haptic(5); renderSheet(); }
+function otkBuy(){ const R=otkRec(); if(OTX.pick.some(p=>p==null)){ toast('まだ選んでいない材料があるよ'); sfx('buzz'); return; }
+  const tot=R.it.reduce((t,it,i)=>t+otkCost(it,OTX.pick[i]).cost,0); if(tot>R.bud){ toast(`予算オーバー！ あと ${tot-R.bud}円 へらそう`); sfx('buzz'); return; }
+  const best=otkBest(R), st=tot<=best?3:tot<=best*1.1?2:1, K=otkS(); let coin=0; if(K.day!==todayKey()){ K.day=todayKey(); coin=st*10; S.prof.coin=(S.prof.coin||0)+coin; } K.best=Math.max(K.best||0,st); saveProfile();
+  Object.assign(OTX,{done:true,tot,best,st,coin}); renderSheet(); sfx(st===3?'fanfare':'coin'); if(st===3) confetti(); }
+function otkBody(){ const R=otkRec(), X=OTX, tot=R.it.reduce((t,it,i)=>t+(X.pick[i]!=null?otkCost(it,X.pick[i]).cost:0),0), left=R.bud-tot;
+  const rows=R.it.map((it,i)=>`<div class="otk-it"><div class="otk-ih"><span>${it.ic}</span><b>${it.n}</b><small>${it.q}${it.u} いる</small></div><div class="otk-ops">${it.o.map((o,oi)=>{ const c=otkCost(it,oi), on=X.pick[i]===oi;
+      return `<button class="otk-op${on?' on':''}${o[2]?' sale':''}" onclick="otkPick(${i},${oi})">${o[2]?`<em>${o[2]}%OFF</em>`:''}<b>${o[0]}${it.u}入り</b><span>${o[1]}円</span>${X.unit?`<small>1${it.u} ${c.unit}円</small>`:''}<small class="otk-k">${c.k>1?`×${c.k}こ `:''}= ${c.cost}円</small></button>`; }).join('')}</div></div>`).join('');
+  const res = X.done ? `<div class="otk-res st${X.st}"><span class="otk-stars">${'★'.repeat(X.st)}<i>${'★'.repeat(3-X.st)}</i></span><b>${X.tot}円で 買えた！ おつり ${R.bud-X.tot}円</b><small>${X.tot<=X.best?'いちばん安い買い方！ 単価をくらべる名人だね':`いちばん安い買い方だと ${X.best}円（あと ${X.tot-X.best}円 安くできた）`}</small>${X.coin?`<em>🪙 +${X.coin}</em>`:''}</div>` : '';
+  return `<div class="otk"><span class="label">🛒 ERRAND · きょうのおつかい</span><h3 class="ttl">${R.ic} ${R.n}の材料を買おう</h3>
+    <div class="otk-wallet${left<0?' over':''}"><span>👛 予算 ${R.bud}円</span><b>${tot}円</b><small>${left>=0?`のこり ${left}円`:`${-left}円 オーバー！`}</small></div>
+    <label class="otk-sw"><input type="checkbox" ${X.unit?'checked':''} onchange="OTX.unit=this.checked;renderSheet()"> 「1こあたり」の値段を見る（単価）</label>
+    ${rows}${res}
+    ${X.done?`<button class="btn ghost" style="width:100%" onclick="otkOpen()">もう一回 えらびなおす</button>`:`<button class="btn gold big" style="width:100%" onclick="otkBuy()">🛒 これで買う</button>`}
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> 大きいパックは 1こあたりが安いことが多いけど、いらない分まで買うと 高くつくことも。セールの「〇%OFF」も、本当に安いか計算してみてね</p></div>
+    <p class="note">レシピは毎日かわるよ（カレー・サンドイッチ・おにぎりパーティ）。あまった材料は おうちで使えるから大丈夫！</p></div>`; }
+AST.push({n:'まちのスーパー',ic:'🛒',c:'#2fa86a',a:'#fff3a8',h:108,f:()=>otkOpen(),b:()=>otkS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('まちのスーパー'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10500,6 +10545,7 @@ function renderSheet(){
   else if(k==='sht') body=shtBody();
   else if(k==='bud') body=budBody();
   else if(k==='dry') body=dryBody();
+  else if(k==='otk') body=otkBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
