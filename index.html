@@ -5822,6 +5822,15 @@ html.lite .mys-roof,html.lite .mys-scaf{animation:none}
 .dlv-truck{font-size:22px;dominant-baseline:central;filter:drop-shadow(0 2px 2px rgb(0 0 0 / .4))}
 .dlv-res{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px;border-radius:16px;background:var(--panel2);text-align:center;animation:sgIn .4s both}
 .dlv-res b{font-size:15px}.dlv-res small{font-size:12px;opacity:.85}.dlv-res em{font-style:normal;font-weight:900;color:var(--gold)}
+/* 🏮 3つの通りのアーチ */
+.dst-gate{position:relative;flex:none;align-self:flex-end;width:96px;height:170px;margin:0 8px;pointer-events:none}
+.dst-pl{position:absolute;bottom:0;width:10px;height:150px;border-radius:4px 4px 0 0;background:linear-gradient(90deg,color-mix(in srgb,var(--g) 60%,#000),var(--g) 40%,color-mix(in srgb,var(--g) 80%,#fff))}
+.dst-pl.l{left:6px}.dst-pl.r{right:6px}
+.dst-gate b{position:absolute;left:-6px;right:-6px;top:4px;padding:6px 2px 5px;border-radius:10px 10px 6px 6px;text-align:center;font-size:11.5px;font-weight:900;white-space:nowrap;color:#fff;background:linear-gradient(180deg,color-mix(in srgb,var(--g) 85%,#fff),var(--g) 50%,color-mix(in srgb,var(--g) 75%,#000));box-shadow:0 3px 0 rgb(0 0 0 / .25),inset 0 0 0 2px rgb(255 255 255 / .35);text-shadow:0 1px 0 rgb(0 0 0 / .35)}
+.dst-gate b::before,.dst-gate b::after{content:"";position:absolute;bottom:-9px;width:8px;height:8px;border-radius:50%;background:#ffe58a;box-shadow:0 0 6px #ffe58a}
+.dst-gate b::before{left:10px}.dst-gate b::after{right:10px}
+.dst-gate small{position:absolute;left:0;right:0;top:36px;text-align:center;font-size:9.5px;font-weight:900;color:#fff;text-shadow:0 1px 2px rgb(0 0 0 / .6)}
+.ast-night .dst-gate b,.ast-eve .dst-gate b{box-shadow:0 3px 0 rgb(0 0 0 / .25),0 0 14px var(--g),inset 0 0 0 2px rgb(255 255 255 / .35)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7268,7 +7277,7 @@ function astView(){ try{ dryBase(); }catch(e){}
   const ph=skyPhase(new Date().getHours());
   const lv=stLv().lv; stLvCheck(lv);
   const shops=AST.map((s,i)=>{ let b=0; try{ b=s.b(); }catch(e){}
-    return `<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}">${(()=>{ const R=srlyS(); return R.ids.includes(s.n)?`<i class="srly-tag${R.got[s.n]?' got':''}">${R.got[s.n]?'✔':'🎫'}</i>`:''; })()}<span class="ast-sign">${s.n}</span>${(()=>{ try{ const T=treS(), m=T.log[s.n]; return m?`<i class="tre-mk">${m}</i>`:''; }catch(e){ return ''; } })()}<span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>${(()=>{ try{ return qtNpc(i); }catch(e){ return ''; } })()}`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
+    return (()=>{ try{ return dstGate(i); }catch(e){ return ''; } })()+`<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}">${(()=>{ const R=srlyS(); return R.ids.includes(s.n)?`<i class="srly-tag${R.got[s.n]?' got':''}">${R.got[s.n]?'✔':'🎫'}</i>`:''; })()}<span class="ast-sign">${s.n}</span>${(()=>{ try{ const T=treS(), m=T.log[s.n]; return m?`<i class="tre-mk">${m}</i>`:''; }catch(e){ return ''; } })()}<span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>${(()=>{ try{ return qtNpc(i); }catch(e){ return ''; } })()}`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
   const deco=(lv>=3?`<svg class="ast-flags" width="100%" height="18" aria-hidden="true"><defs><pattern id="astfl" width="42" height="18" patternUnits="userSpaceOnUse"><path d="M0 3H42" stroke="#fff" stroke-width="1.2"/><path d="M1 3L13 3L7 15Z" fill="#ff5a76"/><path d="M15 3L27 3L21 15Z" fill="#ffc83a"/><path d="M29 3L41 3L35 15Z" fill="#4fe3ff"/></pattern></defs><rect width="100%" height="18" fill="url(#astfl)"/></svg>`:'')
     +(lv>=4?'<span class="ast-pedw" aria-hidden="true"><i>🚶</i></span><span class="ast-pedw ast-ped2" aria-hidden="true"><i>🚶‍♀️</i></span>':'')
     +(lv>=7?'<span class="ast-pedw ast-busw" aria-hidden="true"><i>🚌</i></span>':'')
@@ -9331,6 +9340,13 @@ function dlvBody(){ const st=dlvStops(), X=DVX, C=v=>20+v*52, cur=X.ord.length?d
     <p class="note">📦倉庫から出発して、4けんに配達して、倉庫にもどるよ。お店をタップした順番が配達の順番（もう一度タップで取り消し）。配達先は毎日かわる</p></div>`; }
 AST.push({n:'AZAKEI配達便',ic:'🚚',c:'#2a7ad8',a:'#ffe58a',h:116,f:()=>dlvOpen(),b:()=>dlvS().day===todayKey()?0:'!'});
 try{ SMAP_G[1].shops.push('AZAKEI配達便'); }catch(e){}
+/* ---- 🏮 商店街を3つの通りに：お店が35けん近くになったので、マップと同じ「あそび横丁・まなび通り・くらし通り」に並べかえ、
+   通りの入口にアーチ（門）を立てる。どこを歩いているか一目でわかる ---- */
+const DST=[{n:'あそび横丁',ic:'🎮',c:'#ff8c5a'},{n:'まなび通り',ic:'💹',c:'#2fd47a'},{n:'くらし通り',ic:'🏠',c:'#5fa8f0'}];
+function dstOf(n){ try{ const i=SMAP_G.findIndex(g=>g.shops.includes(n)); return i<0?0:i; }catch(e){ return 0; } }
+(function dstSort(){ try{ const tagged=AST.map((s,i)=>({s,i,g:dstOf(s.n)})); tagged.sort((a,b)=>a.g-b.g||a.i-b.i); AST.splice(0,AST.length,...tagged.map(t=>t.s)); }catch(e){} })();
+function dstGate(i){ const g=dstOf(AST[i].n); if(i>0 && dstOf(AST[i-1].n)===g) return ''; const D=DST[g], cnt=AST.filter(s=>dstOf(s.n)===g).length;
+  return `<span class="dst-gate" style="--g:${D.c}" aria-label="${D.n}"><i class="dst-pl l"></i><i class="dst-pl r"></i><b>${D.ic} ${D.n}</b><small>${cnt}けん</small></span>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
