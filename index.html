@@ -5682,6 +5682,34 @@ html.lite .oen-row i{animation:none!important}
 .tko-res{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px;border-radius:18px;background:var(--panel2)}
 .tko-rk{font:400 64px var(--display,sans-serif);line-height:1}.rk-S{color:#ffc83a;text-shadow:0 0 18px rgb(255 200 58 / .7)}.rk-A{color:#4fe3ff}.rk-B{color:#7cf29a}.rk-C{color:#b8b8c8}
 .tko-res>b{font-size:22px}.tko-res small{font-size:12px;opacity:.8}.tko-res em{font-style:normal;font-weight:900;color:var(--gold)}
+/* 🃏 産業ペアさがし */
+.mmg{display:flex;flex-direction:column;gap:12px}.mmg>*{flex:none}
+.mmg-top{display:flex;justify-content:space-between;font-size:13px;font-weight:800}.mmg-top b{font-size:16px;color:var(--gold)}
+.mmg-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;perspective:800px}
+.mmg-c{position:relative;aspect-ratio:3/4;padding:0;border:0;background:none;cursor:pointer}
+.mmg-in{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.3,1.3,.5,1)}
+.mmg-c.up .mmg-in{transform:rotateY(180deg)}
+.mmg-bk,.mmg-fr{position:absolute;inset:0;border-radius:10px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.mmg-bk{display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#3a3a8a,#14143a);box-shadow:inset 0 0 0 3px #ffc83a,inset 0 0 0 5px #14143a,inset 0 0 0 6px rgb(255 200 58 / .5)}
+.mmg-bk i{width:26px;height:26px;border-radius:8px;background:conic-gradient(var(--i0) 0 60deg,var(--i1) 0 120deg,var(--i2) 0 180deg,var(--i3) 0 240deg,var(--i4) 0 300deg,var(--i5) 0);box-shadow:0 0 10px rgb(255 255 255 / .3)}
+.mmg-fr{transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;padding-bottom:5px;background:#fffaf0;color:#2a1f0e;box-shadow:inset 0 0 0 2px #d8c8a0}
+.mmg-fr b{position:relative;z-index:1;font-size:10.5px;font-weight:900;padding:1px 6px;border-radius:6px;background:rgb(255 255 255 / .85)}
+.mmg-fr.it{justify-content:center}.mmg-fr.it i{font-style:normal;font-size:34px;line-height:1.1}
+.mmg-art{position:absolute;inset:0}.mmg-art .mc-art{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mmg-c.done .mmg-fr{box-shadow:inset 0 0 0 3px #2fd47a,0 0 12px rgb(47 212 122 / .5)}
+.mmg-c.done .mmg-in{animation:mmgOk .45s ease-out}
+@keyframes mmgOk{50%{transform:rotateY(180deg) scale(1.08)}}
+.mmg-msg{margin:0;min-height:2.8em;padding:8px 12px;border-radius:12px;font-size:12.5px;line-height:1.55;background:var(--panel2)}
+.mmg-msg.pop{animation:sgIn .35s both}
+.mmg-demo{display:flex;align-items:center;justify-content:center;gap:10px}
+.mmg-dc{position:relative;width:74px;aspect-ratio:3/4;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:5px;background:#fffaf0;color:#2a1f0e;box-shadow:inset 0 0 0 2px #d8c8a0}
+.mmg-dc b{position:relative;z-index:1;font-size:10.5px;font-weight:900;padding:1px 6px;border-radius:6px;background:rgb(255 255 255 / .85)}.mmg-dc.it{justify-content:center}.mmg-dc.it i{font-style:normal;font-size:34px}
+.mmg-eq{font-size:22px;font-weight:900;color:var(--gold)}
+.mmg-how{margin:0;font-size:13px;line-height:1.6}.mmg-how b{color:var(--gold)}
+.mmg-res{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px;border-radius:18px;background:var(--panel2)}
+.mmg-st{font-size:44px;color:#ffc83a;letter-spacing:.06em;text-shadow:0 0 14px rgb(255 200 58 / .6)}.mmg-st i{font-style:normal;color:rgb(255 255 255 / .18);text-shadow:none}
+.mmg-res b{font-size:18px}.mmg-res em{font-style:normal;font-weight:900;color:var(--gold)}
+@media (prefers-reduced-motion:reduce){.mmg-in{transition:none}.mmg-c.done .mmg-in{animation:none}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -8973,6 +9001,39 @@ function tkoBody(){ const X=TKX, K=tkoS();
     <p class="note">「4・3・2・ドン！」のあと、音符が右から流れてくるよ。ぴったり＝良、すこしずれ＝可。きょうの1回目はランクでコイン（S 30・A 20・B 10・C 5）</p></div>`; }
 AST.push({n:'やぐら太鼓',ic:'🥁',c:'#b8442a',a:'#fff3a8',h:118,f:()=>tkoOpen(),b:()=>tkoS().day===todayKey()?0:'!'});
 try{ SMAP_G[0].shops.push('やぐら太鼓'); }catch(e){}
+/* ---- 🃏 産業ペアさがし（神経衰弱）：つながる街の「産業カード」と、その産業の「モノのカード」をペアにする。
+   そろうと ひとこと解説。手数で ★1〜3、1日1回目は ★でコイン ---- */
+const MMG_P=[{it:'🔋',w:'電池',say:'エネルギーは、電気や燃料をつくって とどける産業'},{it:'🏦',w:'銀行',say:'金融は、お金をあずかったり 貸したりする産業'},{it:'🏭',w:'工場',say:'製造は、材料からモノをつくる産業'},
+  {it:'🛒',w:'スーパー',say:'小売は、モノを お客さんに売る産業'},{it:'🚚',w:'トラック',say:'運輸は、人やモノを 運ぶ産業'},{it:'📺',w:'テレビ',say:'メディアは、ニュースや情報を とどける産業'}];
+let MGX={st:'ready'};
+function mmgS(){ const P=S.prof; if(!P.mmg) P.mmg={day:0,best:0}; return P.mmg; }
+function mmgOpen(){ clearTimeout(MGX.T); MGX={st:'ready'}; openSheet('mmg'); sfx('open'); }
+function mmgStart(){ const cards=[]; for(let i=0;i<6;i++){ cards.push({p:i,k:'ind'}); cards.push({p:i,k:'it'}); }
+  for(let i=cards.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cards[i],cards[j]]=[cards[j],cards[i]]; }
+  MGX={st:'play',cards:cards.map(c=>({...c,up:false,done:false})),sel:[],moves:0,t0:Date.now(),lock:false,msg:''}; renderSheet(); sfx('deal'); }
+function mmgFlip(i){ const X=MGX; if(X.st!=='play'||X.lock) return; const c=X.cards[i]; if(!c||c.up||c.done) return;
+  c.up=true; X.sel.push(i); sfx('flip'); haptic(5); mmgPaint();
+  if(X.sel.length<2) return; X.moves++; const [a,b]=X.sel.map(k=>X.cards[k]);
+  if(a.p===b.p && a.k!==b.k){ a.done=b.done=true; X.sel=[]; X.msg=`${IND[a.p]} × ${MMG_P[a.p].it}${MMG_P[a.p].w}：${MMG_P[a.p].say}`; sfx('coin'); haptic(15); mmgPaint();
+    if(X.cards.every(c=>c.done)) setTimeout(mmgDone,700); return; }
+  X.lock=true; X.T=setTimeout(()=>{ a.up=b.up=false; X.sel=[]; X.lock=false; mmgPaint(); },850); }
+function mmgPaint(){ const X=MGX; document.querySelectorAll('.mmg-c').forEach((el,i)=>{ const c=X.cards[i]; el.classList.toggle('up',c.up||c.done); el.classList.toggle('done',c.done); });
+  const m=document.getElementById('mmgMv'); if(m) m.textContent=X.moves; const s=document.getElementById('mmgMsg'); if(s && X.msg){ s.textContent=X.msg; s.classList.remove('pop'); void s.offsetWidth; s.classList.add('pop'); } }
+function mmgDone(){ const X=MGX, st=X.moves<=8?3:X.moves<=12?2:1, sec=Math.round((Date.now()-X.t0)/1000), K=mmgS(); let coin=0;
+  if(K.day!==todayKey()){ K.day=todayKey(); coin=st*10; S.prof.coin=(S.prof.coin||0)+coin; } K.best=Math.max(K.best||0,st); saveProfile();
+  Object.assign(X,{st:'done',stars:st,sec,coin}); renderSheet(); sfx(st===3?'fanfare':'coin'); if(st===3) confetti(); }
+function mmgBody(){ const X=MGX, K=mmgS();
+  const head=`<div class="row spread"><span class="label">🃏 PAIR MATCH</span><span class="coinbal" style="margin-right:46px">🪙 <b>${S.prof.coin||0}</b></span></div><h3 class="ttl">産業ペアさがし</h3>`;
+  if(X.st==='ready') return `<div class="mmg">${head}<div class="mmg-demo">${[0,3,5].map(i=>`<span class="mmg-dc"><span class="mmg-art">${mcArt(i)}</span><b>${IND[i]}</b></span><span class="mmg-eq">＝</span><span class="mmg-dc it"><i>${MMG_P[i].it}</i><b>${MMG_P[i].w}</b></span>`).slice(0,1).join('')}</div>
+    <p class="mmg-how">12まいのカードをめくって、<b>産業</b>と<b>その産業のモノ</b>をペアにしよう。少ない手数でそろえるほど ★が多い（8手以内で★3）</p>
+    <button class="btn gold big" style="width:100%" onclick="mmgStart()">🃏 はじめる</button><p class="note">${K.day===todayKey()?'きょうのコインはもらったよ。何回でも遊べる':'きょうの1回目は ★1つにつき 🪙10'}${K.best?` ・ ベスト ${'★'.repeat(K.best)}`:''}</p></div>`;
+  if(X.st==='done') return `<div class="mmg">${head}<div class="mmg-res"><span class="mmg-st">${'★'.repeat(X.stars)}<i>${'★'.repeat(3-X.stars)}</i></span><b>${X.moves}手 ・ ${X.sec}秒</b>${X.coin?`<em>🪙 +${X.coin}</em>`:''}</div>
+    <div class="row" style="gap:8px"><button class="btn gold big" style="flex:1" onclick="mmgStart()">もう一回</button><button class="btn ghost" onclick="MGX={st:'ready'};renderSheet()">もどる</button></div></div>`;
+  return `<div class="mmg">${head}<div class="mmg-top"><span>手数 <b id="mmgMv">${X.moves}</b></span><span>${X.cards.filter(c=>c.done).length/2}/6 ペア</span></div>
+    <div class="mmg-grid">${X.cards.map((c,i)=>`<button class="mmg-c${c.up||c.done?' up':''}${c.done?' done':''}" onclick="mmgFlip(${i})" aria-label="カード${i+1}"><span class="mmg-in"><span class="mmg-bk"><i></i></span><span class="mmg-fr ${c.k}">${c.k==='ind'?`<span class="mmg-art">${mcArt(c.p)}</span><b>${IND[c.p]}</b>`:`<i>${MMG_P[c.p].it}</i><b>${MMG_P[c.p].w}</b>`}</span></span></button>`).join('')}</div>
+    <p id="mmgMsg" class="mmg-msg">${esc(X.msg||'2まい めくって、ペアをさがそう')}</p></div>`; }
+AST.push({n:'ペアさがし屋',ic:'🃏',c:'#2a6a8a',a:'#fff3a8',h:104,f:()=>mmgOpen(),b:()=>mmgS().day===todayKey()?0:'!'});
+try{ SMAP_G[0].shops.push('ペアさがし屋'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10235,6 +10296,7 @@ function renderSheet(){
   else if(k==='mys') body=mysBody();
   else if(k==='lbr') body=lbrBody();
   else if(k==='tko') body=tkoBody();
+  else if(k==='mmg') body=mmgBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
