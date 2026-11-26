@@ -5831,6 +5831,24 @@ html.lite .mys-roof,html.lite .mys-scaf{animation:none}
 .dst-gate b::before{left:10px}.dst-gate b::after{right:10px}
 .dst-gate small{position:absolute;left:0;right:0;top:36px;text-align:center;font-size:9.5px;font-weight:900;color:#fff;text-shadow:0 1px 2px rgb(0 0 0 / .6)}
 .ast-night .dst-gate b,.ast-eve .dst-gate b{box-shadow:0 3px 0 rgb(0 0 0 / .25),0 0 14px var(--g),inset 0 0 0 2px rgb(255 255 255 / .35)}
+/* 🛡️ AZAKEI保険 */
+.hkn{display:flex;flex-direction:column;gap:10px}.hkn>*{flex:none}
+.hkn-how{margin:0;font-size:13px;line-height:1.6}.hkn-how b{color:var(--gold)}
+.hkn-ev{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.hkn-ev span{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;border-radius:12px;background:var(--panel2);font-size:24px}.hkn-ev small{font-size:9.5px;font-weight:800;text-align:center;line-height:1.3}
+.hkn-plan{display:flex;align-items:center;gap:10px;padding:12px;border:0;border-radius:16px;cursor:pointer;text-align:left;color:inherit;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.hkn-plan:active{transform:scale(.98)}.hkn-pi{font-size:26px;width:52px;text-align:center}.hkn-pt{flex:1;display:flex;flex-direction:column}.hkn-pt b{font-size:15px}.hkn-pt small{font-size:11.5px;opacity:.85}.hkn-go{font-size:22px;opacity:.6}
+.hkn-top{display:flex;justify-content:space-between;align-items:baseline;padding:10px 14px;border-radius:14px;background:linear-gradient(180deg,#e6f4ff,#b8d8f0);color:#0a2a4a}.hkn-top span{font-weight:900}.hkn-top b{font:400 24px var(--display,sans-serif)}
+.hkn-cal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+.hkn-m{position:relative;display:flex;flex-direction:column;align-items:center;padding:6px 2px 4px;border-radius:10px;background:rgb(255 255 255 / .06);min-height:58px}
+.hkn-m small{font-size:10px;font-weight:800;opacity:.7}.hkn-m i{font-style:normal;font-size:22px;opacity:.35}.hkn-m.open i{opacity:1}
+.hkn-m em{font-style:normal;font-size:10px;font-weight:900;color:#ff6a7e}
+.hkn-m.bad{background:rgb(255 106 126 / .15)}.hkn-m.now{box-shadow:inset 0 0 0 2px var(--gold);animation:sgIn .3s both}
+.hkn-msg{margin:0;min-height:2.8em;padding:8px 12px;border-radius:12px;background:var(--panel2);font-size:13px;line-height:1.55}
+.hkn-cmp{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:16px;background:var(--panel2);animation:sgIn .4s both}.hkn-cmp>b{font-size:13.5px}
+.hkn-cmp>div{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:baseline;padding:8px 10px;border-radius:10px;background:rgb(255 255 255 / .05)}
+.hkn-cmp>div span{font-weight:900;font-size:13px}.hkn-cmp>div small{font-size:11px;opacity:.75}.hkn-cmp>div b{font-size:17px}
+.hkn-cmp>div.me{box-shadow:inset 0 0 0 2px #4fe3ff}.hkn-cmp>div.top b{color:#7cf29a}
+.hkn-tr{font-size:11.5px;opacity:.85;text-align:right}.hkn-coin{margin:0;text-align:center;font-weight:900;color:var(--gold)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9347,6 +9365,38 @@ function dstOf(n){ try{ const i=SMAP_G.findIndex(g=>g.shops.includes(n)); return
 (function dstSort(){ try{ const tagged=AST.map((s,i)=>({s,i,g:dstOf(s.n)})); tagged.sort((a,b)=>a.g-b.g||a.i-b.i); AST.splice(0,AST.length,...tagged.map(t=>t.s)); }catch(e){} })();
 function dstGate(i){ const g=dstOf(AST[i].n); if(i>0 && dstOf(AST[i-1].n)===g) return ''; const D=DST[g], cnt=AST.filter(s=>dstOf(s.n)===g).length;
   return `<span class="dst-gate" style="--g:${D.c}" aria-label="${D.n}"><i class="dst-pl l"></i><i class="dst-pl r"></i><b>${D.ic} ${D.n}</b><small>${cnt}けん</small></span>`; }
+/* ---- 🛡️ AZAKEI保険：保険プラン（なし・ベーシック・しっかり）をえらぶと、1年（12か月）が1か月ずつすすむ。
+   ときどき トラブル（かさがこわれる・自転車パンク・かぜ・スマホを落とす）。おわったら、同じ1年を3つのプランでくらべる。
+   保険は「みんなで少しずつ出しあって、こまった人を助ける」しくみ。お金はゲームの中の練習用（コインとは別） ---- */
+const HKN_P=[{n:'保険なし',ic:'🙅',pay:0,cov:0,d:'毎月0円。トラブルは ぜんぶ自分で払う'},{n:'ベーシック',ic:'🛡️',pay:17,cov:50,d:'毎月17円。トラブルの半分を出してくれる'},{n:'しっかり',ic:'🛡️🛡️',pay:30,cov:90,d:'毎月30円。トラブルの9わりを出してくれる'}];
+const HKN_E=[{ic:'☔',n:'かさがこわれた',c:30},{ic:'🚲',n:'自転車がパンク',c:60},{ic:'🤧',n:'かぜで病院へ',c:100},{ic:'📱',n:'スマホを落としてわれた',c:300}];
+let HKX={st:'pick'};
+function hknS(){ const P=S.prof; if(!P.hkn) P.hkn={day:0,plays:0}; return P.hkn; }
+function hknYear(){ const r=Math.random; return Array.from({length:12},()=>{ const x=r(); return x<.55?null:x<.75?0:x<.88?1:x<.97?2:3; }); }
+function hknRun(year,pi){ const P=HKN_P[pi]; let m=1000; const log=year.map(e=>{ m-=P.pay; let lose=0; if(e!=null){ lose=Math.round(HKN_E[e].c*(100-P.cov)/100); m-=lose; } return {e,lose,m}; }); return {end:m, paid:P.pay*12, log}; }
+function hknOpen(){ clearTimeout(HKX.T); HKX={st:'pick'}; openSheet('hkn'); sfx('open'); }
+function hknStart(pi){ const year=hknYear(); HKX={st:'run',pi,year,mo:0,res:[0,1,2].map(i=>hknRun(year,i))}; renderSheet(); sfx('open'); hknTick(); }
+function hknTick(){ clearTimeout(HKX.T); if(HKX.st!=='run' || S.sheet!=='hkn') return; if(HKX.mo>=12){ return hknDone(); }
+  HKX.T=setTimeout(()=>{ if(HKX.st!=='run' || S.sheet!=='hkn') return; const e=HKX.year[HKX.mo]; HKX.mo++; renderSheet(); if(e!=null){ sfx(e>=2?'buzz':'click'); haptic(e>=2?30:10); } else sfx('hat'); hknTick(); }, reduced()?120:650); }
+function hknDone(){ const K=hknS(); let coin=0; if(K.day!==todayKey()){ K.day=todayKey(); coin=15; S.prof.coin=(S.prof.coin||0)+coin; } K.plays++; saveProfile(); HKX.st='done'; HKX.coin=coin; renderSheet(); sfx('coin'); }
+function hknBody(){ const X=HKX;
+  const head=`<span class="label">🛡️ INSURANCE · 1年シミュレーション</span><h3 class="ttl">AZAKEI保険</h3>`;
+  if(X.st==='pick') return `<div class="hkn">${head}<p class="hkn-how">おこづかい <b>1000円</b> で1年をすごすよ。ときどき トラブルが起きる。保険に入ると毎月お金がかかるけど、トラブルのときに出してくれる。どれにする？</p>
+    <div class="hkn-ev">${HKN_E.map(e=>`<span>${e.ic}<small>${e.n}<br>−${e.c}円</small></span>`).join('')}</div>
+    ${HKN_P.map((p,i)=>`<button class="hkn-plan" onclick="hknStart(${i})"><span class="hkn-pi">${p.ic}</span><span class="hkn-pt"><b>${p.n}</b><small>${p.d}</small></span><span class="hkn-go">›</span></button>`).join('')}
+    <p class="note">ここのお金は練習用（コインとは別）。さいごまで見ると、1日1回 🪙15</p></div>`;
+  const R=X.res[X.pi], P=HKN_P[X.pi], shown=R.log.slice(0,X.mo), m=X.mo?shown[X.mo-1].m:1000;
+  const cal=Array.from({length:12},(_,i)=>{ const L=R.log[i], open=i<X.mo; return `<div class="hkn-m${open?' open':''}${open&&L.e!=null?' bad':''}${i===X.mo-1?' now':''}"><small>${i+1}月</small><i>${open?(L.e!=null?HKN_E[L.e].ic:'😊'):'？'}</i>${open&&L.e!=null?`<em>−${L.lose}</em>`:''}</div>`; }).join('');
+  const last=X.mo?R.log[X.mo-1]:null, msg = !last ? `${P.ic} ${P.n}で スタート！` : last.e!=null ? `${HKN_E[last.e].ic} ${HKN_E[last.e].n}！ ${HKN_E[last.e].c}円のところ、${P.cov?`保険が${HKN_E[last.e].c-last.lose}円出してくれて `:''}${last.lose}円の出費` : '😊 なにもない 平和な月';
+  let cmp='';
+  if(X.st==='done'){ const best=Math.max(...X.res.map(r=>r.end)), trouble=X.year.filter(e=>e!=null).reduce((t,e)=>t+HKN_E[e].c,0);
+    cmp=`<div class="hkn-cmp"><b>同じ1年を、3つのプランでくらべると…</b>${X.res.map((r,i)=>`<div class="${i===X.pi?'me':''}${r.end===best?' top':''}"><span>${HKN_P[i].ic} ${HKN_P[i].n}</span><small>保険料 ${r.paid}円</small><b>${r.end}円</b></div>`).join('')}<small class="hkn-tr">この1年のトラブル合計：${trouble}円</small></div>
+      <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> ${trouble>=300?'大きなトラブルがあった年は、保険があると たすかるね。':'トラブルが少ない年は、保険料のぶん 損に見えるね。'} 平均すると、保険料のほうが少し高くなることが多いんだ（保険会社も運営にお金がかかるから）。そのかわり、大きなトラブルの年でも こまらない。保険は「何が起きるか わからない」ときの<span class="fk-em">安心</span>を買うもの。みんなで少しずつ出しあって、こまった人を助ける しくみなんだ</p></div>
+      ${X.coin?`<p class="hkn-coin">🪙 +${X.coin}</p>`:''}<button class="btn gold big" style="width:100%" onclick="hknOpen()">もう1年 ためす</button>`; }
+  return `<div class="hkn">${head}<div class="hkn-top"><span>${P.ic} ${P.n}</span><b>👛 ${m}円</b></div><div class="hkn-cal">${cal}</div>
+    <p class="hkn-msg">${msg}</p>${cmp}</div>`; }
+AST.push({n:'AZAKEI保険',ic:'🛡️',c:'#3a8aa8',a:'#ffffff',h:126,f:()=>hknOpen(),b:()=>hknS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('AZAKEI保険'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10615,6 +10665,7 @@ function renderSheet(){
   else if(k==='dry') body=dryBody();
   else if(k==='otk') body=otkBody();
   else if(k==='dlv') body=dlvBody();
+  else if(k==='hkn') body=hknBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
