@@ -5865,6 +5865,18 @@ html.lite .mys-roof,html.lite .mys-scaf{animation:none}
 .zen-card span{font-size:24px}.zen-card b{font-size:14px}.zen-card small{font-size:12px;font-weight:900}.zen-card i{position:absolute;left:0;bottom:0;height:5px;background:#e8364a}
 .dst-gate.won b{background:linear-gradient(180deg,#fff3a8,#ffc83a 50%,#c89a2a);color:#3a2000;text-shadow:none;box-shadow:0 3px 0 rgb(0 0 0 / .25),0 0 16px rgb(255 200 58 / .8),inset 0 0 0 2px #fff}
 .dst-gate.won small{color:#ffe58a}
+/* 🎹 作曲スタジオ */
+.mel{display:flex;flex-direction:column;gap:10px}.mel>*{flex:none}
+.mel-board{position:relative;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:3px;padding:8px 8px 4px;border-radius:16px;background:linear-gradient(180deg,#1a1440,#0c0a24);box-shadow:inset 0 0 0 2px #6a4ac8}
+.mel-col{display:flex;flex-direction:column;gap:4px;align-items:stretch;padding:3px;border-radius:8px;transition:background .1s}
+.mel-col:not(.mel-keys):nth-child(4n+2){background:rgb(255 255 255 / .04)}
+.mel-col.now{background:rgb(255 229 138 / .22);box-shadow:0 0 12px rgb(255 229 138 / .35)}
+.mel-col small{text-align:center;font-size:9.5px;font-weight:800;opacity:.6}
+.mel-cell{aspect-ratio:1;padding:0;border:0;border-radius:7px;cursor:pointer;background:rgb(255 255 255 / .08);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 45%,transparent)}
+.mel-cell.on{background:var(--c);box-shadow:0 0 10px var(--c),inset 0 -3px 0 rgb(0 0 0 / .25)}
+.mel-col.now .mel-cell.on{transform:scale(1.12);filter:brightness(1.25)}
+.mel-keys span{aspect-ratio:1;display:grid;place-items:center;font-size:9.5px;font-weight:900;color:var(--c)}
+.mel-keys{background:none!important}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9056,7 +9068,7 @@ const MYS_LV=[{n:'お店',cost:0,m:1,c:1,fl:0},{n:'2階建て',cost:300,m:1.5,c:
 function mysUp(){ const M=mysS(), lv=M.lv||0, N=MYS_LV[lv+1]; if(!N) return; if((S.prof.coin||0)<N.cost){ toast(`コインが足りないよ（あと ${N.cost-(S.prof.coin||0)}）`); sfx('buzz'); return; }
   S.prof.coin-=N.cost; M.lv=lv+1; saveProfile(); MYX.build=Date.now(); sfx('drum'); haptic(20); renderSheet();
   setTimeout(()=>{ if(S.sheet!=='mys') return; MYX.build=0; renderSheet(); sfx('fanfare'); haptic(40); confetti(); toast(`🏬 「${N.n}」に増築した！ 売上 ×${N.m}`); render(); }, reduced()?100:1400); }
-function mysOpen(){ const M=mysS(); MYX={edit:!M.on}; openSheet('mys'); sfx('open'); }
+function mysOpen(){ const M=mysS(); MYX={edit:!M.on}; openSheet('mys'); if(M.on && melS().g) setTimeout(melTheme,250); else sfx('open'); }
 function mysSet(k,v){ const M=mysS(); M[k]=v; sfx('select'); haptic(5); saveProfile(); renderSheet(); }
 function mysNameIn(el){ const M=mysS(); M.name=String(el.value||'').slice(0,12); saveProfile(); const t=document.querySelector('.mys-front .mys-sign'); if(t) t.textContent=mysName(M); }
 function mysBuild(){ const M=mysS(); const first=!M.on; M.on=true; saveProfile(); MYX.edit=false; renderSheet(); render(); if(first){ sfx('fanfare'); haptic(40); confetti(); toast(`🏪「${mysName(M)}」オープン！ 商店街の入口に建ったよ`); } else sfx('select'); }
@@ -9431,6 +9443,33 @@ function zenBody(){ const Z=zenS(), tot=AST.length, vis=AST.filter(s=>zenVis(s.n
     ${DST.map((d,g)=>{ const p=zenProg(g), done=p.n>=p.all; return `<section class="zen-d${done?' done':''}" style="--g:${d.c}"><div class="zen-h"><b>${d.ic} ${d.n}</b><span>${p.n}/${p.all}${done?' ★制覇':''}</span></div><div class="zen-bar"><i style="width:${Math.round(p.n/Math.max(1,p.all)*100)}%"></i></div>
       <div class="zen-grid">${p.list.map(s=>{ const v=zenVis(s.n), i=AST.indexOf(s); return `<button class="zen-s${v?' v':''}" onclick="smapGo(${i})" aria-label="${s.n}${v?'（行った）':'（まだ）'}"><i style="--c:${s.c}">${s.ic}</i><small>${s.n}</small>${v?'<em>済</em>':''}</button>`; }).join('')}</div></section>`; }).join('')}
     <p class="note">お店をタップすると、ミオがそのお店まで案内するよ。通りを1つ制覇で 🪙50、ぜんぶで 🪙200</p></div>`; }
+/* ---- 🎹 作曲スタジオ：8拍×6音のマスをタップしてメロディを作る（6つの音は6つの産業の色）。▶でくり返し演奏。
+   保存すると「あなたのお店」のテーマ曲に（お店を開くと流れる）。音は効果音の設定・音量にしたがう ---- */
+const MEL_F=[523.25,440,392,329.63,293.66,261.63], MEL_NM=['ド↑','ラ','ソ','ミ','レ','ド'];
+const MEL_PRE={'ドレミ':[[5],[4],[3],[2],[3],[4],[5],[]],'おまつり':[[2],[2],[0],[2],[1],[1],[3],[]],'しずかな夜':[[3],[],[2],[],[4],[],[5],[]],'元気なお店':[[5,3],[3],[2],[0],[2],[3],[0,3],[]]};
+let MLX={g:null,on:false,step:-1,T:0};
+function melS(){ const P=S.prof; if(!P.mel) P.mel={g:null,saved:0}; return P.mel; }
+function melGrid(){ if(!MLX.g){ const M=melS(); MLX.g=(M.g||MEL_PRE['ドレミ']).map(c=>c.slice()); } return MLX.g; }
+function melNote(r,t,dur){ try{ if(!S.sound) return; const a=ac(); if(!a) return; if(a.state==='suspended') a.resume().catch(()=>{}); const o=a.createOscillator(), g=a.createGain(), at=a.currentTime+(t||0);
+  o.type='triangle'; o.frequency.value=MEL_F[r]; g.gain.setValueAtTime(0,at); g.gain.linearRampToValueAtTime(.32,at+.015); g.gain.exponentialRampToValueAtTime(.001,at+(dur||.35)); o.connect(g); g.connect(mixOut('sfx')); o.start(at); o.stop(at+(dur||.35)+.05); }catch(e){} }
+function melOpen(){ melStop(); MLX={g:null,on:false,step:-1,T:0}; melGrid(); openSheet('mel'); sfx('open'); }
+function melStop(){ clearInterval(MLX.T); MLX.T=0; MLX.on=false; MLX.step=-1; document.querySelectorAll('.mel-col.now').forEach(e=>e.classList.remove('now')); }
+function melToggle(c,r){ const g=melGrid(), k=g[c].indexOf(r); if(k>=0) g[c].splice(k,1); else { g[c].push(r); melNote(r,0,.3); } haptic(4); const el=document.querySelector(`.mel-cell[data-c="${c}"][data-r="${r}"]`); if(el) el.classList.toggle('on',k<0); }
+function melPlay(){ if(MLX.on){ melStop(); renderSheet(); return; } if(!S.sound) toast('効果音がオフだと 音は出ないよ（光だけ動く）'); MLX.on=true; MLX.step=-1; renderSheet();
+  MLX.T=setInterval(()=>{ if(S.sheet!=='mel'){ melStop(); return; } MLX.step=(MLX.step+1)%8; const g=melGrid(); g[MLX.step].forEach(r=>melNote(r,0,.32));
+    document.querySelectorAll('.mel-col:not(.mel-keys)').forEach((e,i)=>e.classList.toggle('now',i===MLX.step)); }, 260); }
+function melPreset(n){ MLX.g=MEL_PRE[n].map(c=>c.slice()); sfx('click'); renderSheet(); }
+function melClear(){ MLX.g=Array.from({length:8},()=>[]); sfx('click'); renderSheet(); }
+function melSave(){ const M=melS(); M.g=melGrid().map(c=>c.slice()); const first=!M.saved; M.saved=(M.saved||0)+1; if(first) S.prof.coin=(S.prof.coin||0)+20; saveProfile(); sfx('fanfare'); toast(first?'🎵 テーマ曲を保存！ あなたのお店で流れるよ 🪙+20':'🎵 テーマ曲を保存したよ'); }
+function melTheme(){ try{ const M=melS(); if(!M.g || !S.sound) return; M.g.forEach((col,i)=>col.forEach(r=>melNote(r,i*.24,.3))); }catch(e){} }
+function melBody(){ const g=melGrid(), M=melS();
+  return `<div class="mel"><span class="label">🎹 COMPOSE · 8拍のメロディ</span><h3 class="ttl">作曲スタジオ</h3>
+    <div class="mel-board"><div class="mel-col mel-keys">${MEL_NM.map((n,r)=>`<span style="--c:var(--i${r})">${n}</span>`).join('')}<small>&nbsp;</small></div>${Array.from({length:8},(_,c)=>`<div class="mel-col${MLX.on&&MLX.step===c?' now':''}">${MEL_F.map((_,r)=>`<button class="mel-cell${g[c].includes(r)?' on':''}" data-c="${c}" data-r="${r}" style="--c:var(--i${r})" onclick="melToggle(${c},${r})" aria-label="${c+1}拍目 ${MEL_NM[r]}"></button>`).join('')}<small>${c+1}</small></div>`).join('')}</div>
+    <div class="row" style="gap:6px"><button class="btn gold" style="flex:1" onclick="melPlay()">${MLX.on?'⏸ とめる':'▶ 演奏'}</button><button class="btn ghost" onclick="melClear()">🧽 けす</button><button class="btn ghost" onclick="melSave()">💾 保存</button></div>
+    <div class="phb-row"><b>おてほん</b><div class="phb-chs">${Object.keys(MEL_PRE).map(n=>`<button class="phb-ch" onclick="melPreset('${n}')">${n}</button>`).join('')}</div></div>
+    <p class="note">マスをタップすると音が鳴るよ。1つの拍に2つ以上入れると和音になる。保存した曲は「あなたのお店」を開くと流れる${M.saved?'（保存ずみ）':'（はじめての保存で 🪙20）'}</p></div>`; }
+AST.push({n:'作曲スタジオ',ic:'🎹',c:'#6a4ac8',a:'#ffe0f8',h:112,f:()=>melOpen(),b:()=>melS().saved?0:'!'});
+try{ SMAP_G[2].shops.push('作曲スタジオ'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10621,7 +10660,7 @@ ${rows(NEWS,T2)}
 }
 // ---- sheets (bottom sheet on phones / modal on desktop) ----
 function openSheet(k){ S.sheet=k; renderSheet(); }
-function closeSheet(){ try{ if(S.sheet==='rdo') rdoStop(); if(S.sheet==='tko'){ tkoStop(); TKX.st='ready'; } if(S.sheet==='sht'){ shtStop(); SHX.st='ready'; } }catch(e){} S.sheet=null; mioAuto.last=''; try{ if(window.speechSynthesis && MIO_U) speechSynthesis.cancel(); }catch(e){} renderSheet(); }
+function closeSheet(){ try{ if(S.sheet==='rdo') rdoStop(); if(S.sheet==='tko'){ tkoStop(); TKX.st='ready'; } if(S.sheet==='sht'){ shtStop(); SHX.st='ready'; } if(S.sheet==='mel') melStop(); }catch(e){} S.sheet=null; mioAuto.last=''; try{ if(window.speechSynthesis && MIO_U) speechSynthesis.cancel(); }catch(e){} renderSheet(); }
 function renderSheet(){
   const el=document.getElementById('sheet'); if(!el) return;
   const k=S.sheet; if(!k){ el.innerHTML=''; return; }
@@ -10701,6 +10740,7 @@ function renderSheet(){
   else if(k==='dlv') body=dlvBody();
   else if(k==='hkn') body=hknBody();
   else if(k==='zen') body=zenBody();
+  else if(k==='mel') body=melBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
