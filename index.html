@@ -5849,6 +5849,22 @@ html.lite .mys-roof,html.lite .mys-scaf{animation:none}
 .hkn-cmp>div span{font-weight:900;font-size:13px}.hkn-cmp>div small{font-size:11px;opacity:.75}.hkn-cmp>div b{font-size:17px}
 .hkn-cmp>div.me{box-shadow:inset 0 0 0 2px #4fe3ff}.hkn-cmp>div.top b{color:#7cf29a}
 .hkn-tr{font-size:11.5px;opacity:.85;text-align:right}.hkn-coin{margin:0;text-align:center;font-weight:900;color:var(--gold)}
+/* 🏅 全店めぐり手帳 */
+.zen{display:flex;flex-direction:column;gap:12px}.zen>*{flex:none}
+.zen-master{display:flex;flex-direction:column;align-items:center;padding:12px;border-radius:16px;font:400 22px var(--display,sans-serif);color:#2a1a00;background:linear-gradient(180deg,#fff3a8,#ffc83a);box-shadow:0 0 20px rgb(255 200 58 / .5)}.zen-master small{font:800 12px var(--body,sans-serif)}
+.zen-d{padding:10px;border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--g) 40%,transparent)}
+.zen-d.done{box-shadow:inset 0 0 0 2.5px var(--g),0 0 14px color-mix(in srgb,var(--g) 40%,transparent)}
+.zen-h{display:flex;justify-content:space-between;align-items:baseline}.zen-h b{font-size:15px}.zen-h span{font-size:12.5px;font-weight:900;color:var(--g)}
+.zen-bar{height:8px;margin:6px 0 8px;border-radius:99px;background:rgb(255 255 255 / .1);overflow:hidden}.zen-bar i{display:block;height:100%;border-radius:99px;background:var(--g);transition:width .5s}
+.zen-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.zen-s{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px 6px;border:0;border-radius:12px;cursor:pointer;color:inherit;background:rgb(255 255 255 / .05)}
+.zen-s i{font-style:normal;font-size:24px;filter:grayscale(1) opacity(.45)}.zen-s.v i{filter:none}
+.zen-s small{font-size:9.5px;font-weight:800;line-height:1.2;text-align:center;opacity:.6}.zen-s.v small{opacity:1}
+.zen-s em{position:absolute;right:2px;top:2px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:900;color:#e0364a;border:2px solid #e0364a;background:rgb(255 255 255 / .9);transform:rotate(-12deg)}
+.zen-card{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;width:100%;padding:10px 12px 14px;border:0;border-radius:14px;cursor:pointer;color:#2a1a00;text-align:left;background:linear-gradient(180deg,#fff3c8,#f6d880);box-shadow:inset 0 0 0 2px #d8a84a;overflow:hidden}
+.zen-card span{font-size:24px}.zen-card b{font-size:14px}.zen-card small{font-size:12px;font-weight:900}.zen-card i{position:absolute;left:0;bottom:0;height:5px;background:#e8364a}
+.dst-gate.won b{background:linear-gradient(180deg,#fff3a8,#ffc83a 50%,#c89a2a);color:#3a2000;text-shadow:none;box-shadow:0 3px 0 rgb(0 0 0 / .25),0 0 16px rgb(255 200 58 / .8),inset 0 0 0 2px #fff}
+.dst-gate.won small{color:#ffe58a}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7291,7 +7307,7 @@ let AST_SKY=null;
 function astSky(){ if(AST_SKY) return AST_SKY; const r=mulberry(4242); let x=0, out='';
   while(x<1600){ const w=22+Math.round(r()*34), hh=26+Math.round(r()*62); out+=`<rect x="${x}" y="${90-hh}" width="${w}" height="${hh}" rx="2"/>`; if(r()<.35) out+=`<rect x="${x+w/2-1}" y="${90-hh-10}" width="2" height="10"/>`; x+=w+2+Math.round(r()*6); }
   return AST_SKY=`<svg viewBox="0 0 1600 90" preserveAspectRatio="none" aria-hidden="true">${out}</svg>`; }
-function astView(){ try{ dryBase(); }catch(e){}
+function astView(){ try{ dryBase(); }catch(e){} try{ dstEnsure(); }catch(e){}
   const ph=skyPhase(new Date().getHours());
   const lv=stLv().lv; stLvCheck(lv);
   const shops=AST.map((s,i)=>{ let b=0; try{ b=s.b(); }catch(e){}
@@ -8585,13 +8601,13 @@ function smapGo(i){ closeSheet(); if(S.screen!=='home'){ go('home'); }
   setTimeout(()=>{ const a=document.querySelector('.ast'); if(a) a.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); setTimeout(()=>astGo(i), reduced()?0:420); }, 60); }
 function smapTile(s,i){ const b=smapBadge(s), R=srlyS(), st=R.ids.includes(s.n)?(R.got[s.n]?'✔':'🎫'):'';
   return `<button class="smap-t" style="--c:${s.c};--a:${s.a}" onclick="smapGo(${i})"><i class="smap-aw"></i><span class="smap-ic">${s.ic}</span><b>${s.n}</b>${b?`<em class="smap-bd">${b}</em>`:''}${st?`<i class="smap-st${st==='✔'?' got':''}">${st}</i>`:''}</button>`; }
-function smapBody(){
+function smapBody(){ try{ dstEnsure(); }catch(e){}
   const all=AST.map((s,i)=>({s,i})), used=new Set(), news=all.filter(x=>smapBadge(x.s));
   const grp=SMAP_G.map(g=>{ const items=all.filter(x=>g.shops.includes(x.s.n)); items.forEach(x=>used.add(x.i)); return {g,items}; });
   const other=all.filter(x=>!used.has(x.i));
   if(other.length) grp[0].items=grp[0].items.concat(other);
   const lv=stLv().lv;
-  return `<div class="smap"><span class="label">🗺️ TOWN MAP · ${AST.length}けん</span><h3 class="ttl">AZAKEI STREET マップ</h3>
+  return `<div class="smap"><span class="label">🗺️ TOWN MAP · ${AST.length}けん</span><h3 class="ttl">AZAKEI STREET マップ</h3>${(()=>{ try{ const v=AST.filter(s=>zenVis(s.n)).length; return `<button class="zen-card" onclick="zenOpen()"><span>🏅</span><b>全店めぐり手帳</b><small>${v}/${AST.length}けん 行った</small><i style="width:${Math.round(v/AST.length*100)}%"></i></button>`; }catch(e){ return ''; } })()}
     ${news.length?`<div class="smap-news"><b>🔔 いま行くといいお店</b><div class="smap-chips">${news.slice(0,6).map(x=>`<button class="smap-chip" style="--c:${x.s.c}" onclick="smapGo(${x.i})">${x.s.ic} ${x.s.n}<em>${smapBadge(x.s)}</em></button>`).join('')}${news.length>6?`<span class="smap-more">ほか ${news.length-6}けん</span>`:''}</div></div>`:''}
     ${grp.filter(x=>x.items.length).map(({g,items})=>`<section class="smap-blk" style="--g:${g.c}"><div class="smap-bh"><span>${g.ic}</span><b>${g.n}</b><small>${items.length}けん</small></div><div class="smap-grid">${items.map(x=>smapTile(x.s,x.i)).join('')}</div></section>`).join('')}
     <p class="note">お店をタップすると、ミオがそのお店まで歩いて案内するよ。商店街レベル Lv.${lv}</p></div>`; }
@@ -9075,7 +9091,7 @@ function mysBody(){ const M=mysS(), I=MYS_IND[M.ind];
 /* ---- 📚 AZAKEI図書館「ことばコレクション」：商店街で体験した経済のことばが、本になって棚にならんでいく。
    体験するまでは「？」の本。はじめて読むと 🪙5、ぜんぶ集めると 🪙100。意味は既存の GLOSSARY があればそれを使う ---- */
 function lbrS(){ const P=S.prof; if(!P.lbr) P.lbr={vis:{}, read:{}, all:false}; return P.lbr; }
-function lbrVisit(n){ try{ const L=lbrS(); if(!L.vis[n]){ L.vis[n]=1; saveProfile(); } }catch(e){} }
+function lbrVisit(n){ try{ const L=lbrS(); if(!L.vis[n]){ L.vis[n]=1; saveProfile(); try{ zenCheck(); }catch(e){} } }catch(e){} }
 const LBR_W=[
   {w:'独占',c:'#e8364a',where:'🃏 試合',hint:'試合をあそぶ',ok:P=>((P.st||{}).games||0)>0,go:()=>{ closeSheet(); go('play'); }},
   {w:'需要と供給',c:'#ffb23a',where:'🍢 AZAKEI屋台',hint:'屋台をひらく',def:'ほしい人（需要）が多くて、モノ（供給）が少ないと値段は上がりやすい。反対だと下がりやすい。',ok:P=>((P.yt||{}).plays||0)>0,go:()=>openYatai()},
@@ -9362,9 +9378,12 @@ try{ SMAP_G[1].shops.push('AZAKEI配達便'); }catch(e){}
    通りの入口にアーチ（門）を立てる。どこを歩いているか一目でわかる ---- */
 const DST=[{n:'あそび横丁',ic:'🎮',c:'#ff8c5a'},{n:'まなび通り',ic:'💹',c:'#2fd47a'},{n:'くらし通り',ic:'🏠',c:'#5fa8f0'}];
 function dstOf(n){ try{ const i=SMAP_G.findIndex(g=>g.shops.includes(n)); return i<0?0:i; }catch(e){ return 0; } }
-(function dstSort(){ try{ const tagged=AST.map((s,i)=>({s,i,g:dstOf(s.n)})); tagged.sort((a,b)=>a.g-b.g||a.i-b.i); AST.splice(0,AST.length,...tagged.map(t=>t.s)); }catch(e){} })();
+function dstSort(){ try{ const tagged=AST.map((s,i)=>({s,i,g:dstOf(s.n)})); tagged.sort((a,b)=>a.g-b.g||a.i-b.i); AST.splice(0,AST.length,...tagged.map(t=>t.s)); }catch(e){} }
+/* お店は あとのバージョンでも追加されるので、通りを描くたび（お店の数が変わったとき）に並べなおす */
+let DST_N=0; function dstEnsure(){ if(DST_N!==AST.length){ dstSort(); DST_N=AST.length; } }
 function dstGate(i){ const g=dstOf(AST[i].n); if(i>0 && dstOf(AST[i-1].n)===g) return ''; const D=DST[g], cnt=AST.filter(s=>dstOf(s.n)===g).length;
-  return `<span class="dst-gate" style="--g:${D.c}" aria-label="${D.n}"><i class="dst-pl l"></i><i class="dst-pl r"></i><b>${D.ic} ${D.n}</b><small>${cnt}けん</small></span>`; }
+  const won=(()=>{ try{ return !!zenS().got[g]; }catch(e){ return false; } })();
+  return `<span class="dst-gate${won?' won':''}" style="--g:${D.c}" aria-label="${D.n}${won?'（制覇）':''}"><i class="dst-pl l"></i><i class="dst-pl r"></i><b>${D.ic} ${D.n}</b><small>${won?'★制覇':cnt+'けん'}</small></span>`; }
 /* ---- 🛡️ AZAKEI保険：保険プラン（なし・ベーシック・しっかり）をえらぶと、1年（12か月）が1か月ずつすすむ。
    ときどき トラブル（かさがこわれる・自転車パンク・かぜ・スマホを落とす）。おわったら、同じ1年を3つのプランでくらべる。
    保険は「みんなで少しずつ出しあって、こまった人を助ける」しくみ。お金はゲームの中の練習用（コインとは別） ---- */
@@ -9397,6 +9416,21 @@ function hknBody(){ const X=HKX;
     <p class="hkn-msg">${msg}</p>${cmp}</div>`; }
 AST.push({n:'AZAKEI保険',ic:'🛡️',c:'#3a8aa8',a:'#ffffff',h:126,f:()=>hknOpen(),b:()=>hknS().day===todayKey()?0:'!'});
 try{ SMAP_G[1].shops.push('AZAKEI保険'); }catch(e){}
+/* ---- 🏅 全店めぐり手帳：商店街のお店に行くと「済」のはんこ（図書館で記録している訪問を使う）。
+   通りごとに ぜんぶ回ると 🪙50 ＆ 通りのアーチに「★制覇」。3つの通りぜんぶで 🪙200 ＆ 称号「商店街マスター」 ---- */
+function zenS(){ const P=S.prof; if(!P.zen) P.zen={got:{}, all:false}; return P.zen; }
+function zenVis(n){ try{ return !!lbrS().vis[n]; }catch(e){ return false; } }
+function zenProg(g){ const list=AST.filter(s=>dstOf(s.n)===g); return {list, n:list.filter(s=>zenVis(s.n)).length, all:list.length}; }
+function zenCheck(){ const Z=zenS(); let msg=''; DST.forEach((d,g)=>{ const p=zenProg(g); if(p.all && p.n>=p.all && !Z.got[g]){ Z.got[g]=1; S.prof.coin=(S.prof.coin||0)+50; msg=`🏅「${d.n}」制覇！ 🪙+50`; } });
+  if(!Z.all && DST.every((d,g)=>Z.got[g])){ Z.all=true; S.prof.coin=(S.prof.coin||0)+200; msg='👑 商店街マスター！ 3つの通りを ぜんぶ制覇 🪙+200'; }
+  if(msg){ saveProfile(); setTimeout(()=>{ sfx('fanfare'); confetti(); toast(msg); },200); } return !!msg; }
+function zenOpen(){ zenCheck(); openSheet('zen'); sfx('open'); }
+function zenBody(){ const Z=zenS(), tot=AST.length, vis=AST.filter(s=>zenVis(s.n)).length;
+  return `<div class="zen"><span class="label">🏅 STREET PASSPORT · ${vis}/${tot}</span><h3 class="ttl">全店めぐり手帳</h3>
+    ${Z.all?'<div class="zen-master">👑 商店街マスター<small>AZAKEI STREET の ぜんぶのお店を めぐった！</small></div>':''}
+    ${DST.map((d,g)=>{ const p=zenProg(g), done=p.n>=p.all; return `<section class="zen-d${done?' done':''}" style="--g:${d.c}"><div class="zen-h"><b>${d.ic} ${d.n}</b><span>${p.n}/${p.all}${done?' ★制覇':''}</span></div><div class="zen-bar"><i style="width:${Math.round(p.n/Math.max(1,p.all)*100)}%"></i></div>
+      <div class="zen-grid">${p.list.map(s=>{ const v=zenVis(s.n), i=AST.indexOf(s); return `<button class="zen-s${v?' v':''}" onclick="smapGo(${i})" aria-label="${s.n}${v?'（行った）':'（まだ）'}"><i style="--c:${s.c}">${s.ic}</i><small>${s.n}</small>${v?'<em>済</em>':''}</button>`; }).join('')}</div></section>`; }).join('')}
+    <p class="note">お店をタップすると、ミオがそのお店まで案内するよ。通りを1つ制覇で 🪙50、ぜんぶで 🪙200</p></div>`; }
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10666,6 +10700,7 @@ function renderSheet(){
   else if(k==='otk') body=otkBody();
   else if(k==='dlv') body=dlvBody();
   else if(k==='hkn') body=hknBody();
+  else if(k==='zen') body=zenBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
