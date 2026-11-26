@@ -5807,6 +5807,21 @@ html.lite .mys-roof,html.lite .mys-scaf{animation:none}
 .otk-op em{position:absolute;top:-8px;right:-4px;padding:1px 6px;border-radius:6px;font-style:normal;font-size:10px;font-weight:900;color:#fff;background:#e8364a;transform:rotate(6deg)}
 .otk-res{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px;border-radius:16px;background:var(--panel2);text-align:center;animation:sgIn .4s both}
 .otk-stars{font-size:36px;color:#ffc83a}.otk-stars i{font-style:normal;color:rgb(255 255 255 / .18)}.otk-res b{font-size:15px}.otk-res small{font-size:12px;opacity:.85}.otk-res em{font-style:normal;font-weight:900;color:var(--gold)}
+/* 🚚 AZAKEI配達便 */
+.dlv{display:flex;flex-direction:column;gap:10px}.dlv>*{flex:none}
+.dlv-info{display:flex;justify-content:space-between;align-items:baseline;padding:8px 12px;border-radius:12px;background:var(--panel2);font-size:13px;font-weight:800}.dlv-info b{color:var(--gold)}
+.dlv-wrap{border-radius:16px;overflow:hidden;background:#cfe8b8;box-shadow:inset 0 0 0 3px #8ab86a}
+.dlv-map{display:block;width:100%;height:auto}
+.dlv-bl rect{fill:#e8f2d8;stroke:#b8d498;stroke-width:1}.dlv-bl rect.pk{fill:#a8d888}
+.dlv-rd line{stroke:#8a8a9a;stroke-width:9;stroke-linecap:round}
+.dlv-route{fill:none;stroke:#ff8a3a;stroke-width:5;stroke-linejoin:round;stroke-dasharray:8 6;opacity:.9}
+.dlv-depot circle{fill:#5a6a8a;stroke:#fff;stroke-width:3}
+.dlv-depot text,.dlv-st text,.dlv-truck{font-size:20px;text-anchor:middle}
+.dlv-st{cursor:pointer}.dlv-st circle{fill:#fff;stroke:#2a7ad8;stroke-width:3}.dlv-st.on>circle:first-child{fill:#fff3c8;stroke:#ff8a3a}
+.dlv-nb{fill:#e8364a!important;stroke:#fff!important;stroke-width:2!important}.dlv-nt{font-size:11px!important;font-weight:900;fill:#fff}
+.dlv-truck{font-size:22px;dominant-baseline:central;filter:drop-shadow(0 2px 2px rgb(0 0 0 / .4))}
+.dlv-res{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px;border-radius:16px;background:var(--panel2);text-align:center;animation:sgIn .4s both}
+.dlv-res b{font-size:15px}.dlv-res small{font-size:12px;opacity:.85}.dlv-res em{font-style:normal;font-weight:900;color:var(--gold)}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9279,6 +9294,43 @@ function otkBody(){ const R=otkRec(), X=OTX, tot=R.it.reduce((t,it,i)=>t+(X.pick
     <p class="note">レシピは毎日かわるよ（カレー・サンドイッチ・おにぎりパーティ）。あまった材料は おうちで使えるから大丈夫！</p></div>`; }
 AST.push({n:'まちのスーパー',ic:'🛒',c:'#2fa86a',a:'#fff3a8',h:108,f:()=>otkOpen(),b:()=>otkS().day===todayKey()?0:'!'});
 try{ SMAP_G[1].shops.push('まちのスーパー'); }catch(e){}
+/* ---- 🚚 AZAKEI配達便：倉庫から4けんのお店に荷物をとどけて、倉庫にもどる。回る順番をタップで決めると、トラックが走る。
+   道のりが短いほどガソリン代が安い（1マス10円）。いちばん短い道とくらべて ★。物流の「効率」を体験 ---- */
+const DLV_N=6, DLV_DEPOT=[0,5];
+let DVX={ord:[],st:'plan'};
+function dlvS(){ const P=S.prof; if(!P.dlv) P.dlv={day:0,best:0}; return P.dlv; }
+function dlvStops(){ const r=mulberry(todayKey()*29+11), used=new Set(['0,5']), out=[], ics=['🍢','🏦','🏭','📮','🐟','📚','🎡','🛒','🌾','📻'];
+  while(out.length<4){ const x=Math.floor(r()*DLV_N), y=Math.floor(r()*DLV_N), k=x+','+y; if(used.has(k) || x+(5-y)<2) continue; used.add(k); out.push({x,y,ic:ics[Math.floor(r()*ics.length)]}); } return out; }
+const dlvD = (a,b) => Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1]);
+function dlvLen(stops, ord){ let p=DLV_DEPOT, t=0; ord.forEach(i=>{ const q=[stops[i].x,stops[i].y]; t+=dlvD(p,q); p=q; }); return t+dlvD(p,DLV_DEPOT); }
+function dlvBest(stops){ let best=1e9; const perm=(a,rest)=>{ if(!rest.length){ best=Math.min(best,dlvLen(stops,a)); return; } rest.forEach((v,i)=>perm(a.concat([v]),rest.filter((_,j)=>j!==i))); }; perm([],[0,1,2,3]); return best; }
+function dlvOpen(){ DVX={ord:[],st:'plan'}; openSheet('dlv'); sfx('open'); }
+function dlvTap(i){ if(DVX.st!=='plan') return; const k=DVX.ord.indexOf(i); if(k>=0){ DVX.ord=DVX.ord.slice(0,k); sfx('click'); } else { DVX.ord.push(i); sfx('select'); haptic(5); } renderSheet(); }
+function dlvGo(){ const st=dlvStops(); if(DVX.ord.length<4){ toast('4けん ぜんぶの順番を決めてね'); sfx('buzz'); return; }
+  const len=dlvLen(st,DVX.ord), best=dlvBest(st), stars=len<=best?3:len<=best+2?2:1; DVX={...DVX,st:'drive',len,best,stars}; renderSheet(); sfx('whoosh');
+  setTimeout(()=>{ if(S.sheet!=='dlv' || DVX.st!=='drive') return; const K=dlvS(); let coin=0; if(K.day!==todayKey()){ K.day=todayKey(); coin=stars*10; S.prof.coin=(S.prof.coin||0)+coin; } K.best=Math.max(K.best||0,stars); saveProfile();
+    DVX.st='done'; DVX.coin=coin; renderSheet(); sfx(stars===3?'fanfare':'coin'); if(stars===3) confetti(); }, reduced()?200:Math.min(7000,len*450+600)); }
+function dlvPath(stops, ord){ const pts=[DLV_DEPOT].concat(ord.map(i=>[stops[i].x,stops[i].y]),[DLV_DEPOT]), C=v=>20+v*52; let d=`M${C(pts[0][0])} ${C(pts[0][1])}`;
+  for(let i=1;i<pts.length;i++){ const a=pts[i-1], b=pts[i]; d+=` L${C(b[0])} ${C(a[1])} L${C(b[0])} ${C(b[1])}`; } return d; }
+function dlvBody(){ const st=dlvStops(), X=DVX, C=v=>20+v*52, cur=X.ord.length?dlvLen(st,X.ord.concat([])):0;
+  const grid=Array.from({length:DLV_N},(_,i)=>`<line x1="${C(0)}" y1="${C(i)}" x2="${C(5)}" y2="${C(i)}"/><line x1="${C(i)}" y1="${C(0)}" x2="${C(i)}" y2="${C(5)}"/>`).join('');
+  const blocks=[]; for(let x=0;x<DLV_N-1;x++) for(let y=0;y<DLV_N-1;y++) blocks.push(`<rect x="${C(x)+7}" y="${C(y)+7}" width="38" height="38" rx="6" class="${(x*7+y*3)%5===0?'pk':''}"/>`);
+  const path=X.ord.length?dlvPath(st,X.ord):'', full=X.ord.length===4?dlvPath(st,X.ord):'';
+  const svg=`<svg class="dlv-map" viewBox="0 0 300 300" aria-label="配達の地図"><g class="dlv-bl">${blocks.join('')}</g><g class="dlv-rd">${grid}</g>
+    ${path?`<path class="dlv-route" d="${path}"/>`:''}
+    <g class="dlv-depot"><circle cx="${C(DLV_DEPOT[0])}" cy="${C(DLV_DEPOT[1])}" r="17"/><text x="${C(DLV_DEPOT[0])}" y="${C(DLV_DEPOT[1])+7}">📦</text></g>
+    ${st.map((s,i)=>{ const n=X.ord.indexOf(i); return `<g class="dlv-st${n>=0?' on':''}" onclick="dlvTap(${i})"><circle cx="${C(s.x)}" cy="${C(s.y)}" r="17"/><text x="${C(s.x)}" y="${C(s.y)+7}">${s.ic}</text>${n>=0?`<circle class="dlv-nb" cx="${C(s.x)+13}" cy="${C(s.y)-13}" r="9"/><text class="dlv-nt" x="${C(s.x)+13}" y="${C(s.y)-9}">${n+1}</text>`:''}</g>`; }).join('')}
+    ${X.st==='drive'&&full?`<text class="dlv-truck"><animateMotion dur="${Math.min(6.5,X.len*0.42)}s" fill="freeze" path="${full}"/>🚚</text>`:X.st==='done'?`<text class="dlv-truck" x="${C(DLV_DEPOT[0])+30}" y="${C(DLV_DEPOT[1])-2}">🚚</text>`:''}</svg>`;
+  const res = X.st==='done' ? `<div class="dlv-res"><span class="otk-stars">${'★'.repeat(X.stars)}<i>${'★'.repeat(3-X.stars)}</i></span><b>道のり ${X.len}マス ・ ガソリン代 ${X.len*10}円</b><small>${X.len<=X.best?'いちばん短いルート！ 配達名人だね':`いちばん短いルートは ${X.best}マス（${(X.len-X.best)*10}円 節約できた）`}</small>${X.coin?`<em>🪙 +${X.coin}</em>`:''}</div>` : '';
+  return `<div class="dlv"><span class="label">🚚 DELIVERY · きょうの配達</span><h3 class="ttl">AZAKEI配達便</h3>
+    <div class="dlv-info"><span>📦 4けんに配達</span><b>${X.ord.length?`${cur}マス（${cur*10}円）`:'順番をえらんでね'}</b></div>
+    <div class="dlv-wrap">${svg}</div>${res}
+    ${X.st==='plan'?`<div class="row" style="gap:8px"><button class="btn gold big" style="flex:1" onclick="dlvGo()" ${X.ord.length<4?'disabled':''}>🚚 出発！</button><button class="btn ghost" onclick="DVX.ord=[];renderSheet()">やりなおし</button></div>`
+      : X.st==='drive' ? '<p class="note" style="text-align:center">配達中… 🚚💨</p>' : `<button class="btn ghost" style="width:100%" onclick="dlvOpen()">もう一回 ルートを考える</button>`}
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> 運輸の会社は、同じ荷物を「どの順番で回るか」で ガソリン代や時間が大きく変わるんだ。近いところから回ればいい…とは かぎらないよ</p></div>
+    <p class="note">📦倉庫から出発して、4けんに配達して、倉庫にもどるよ。お店をタップした順番が配達の順番（もう一度タップで取り消し）。配達先は毎日かわる</p></div>`; }
+AST.push({n:'AZAKEI配達便',ic:'🚚',c:'#2a7ad8',a:'#ffe58a',h:116,f:()=>dlvOpen(),b:()=>dlvS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('AZAKEI配達便'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10546,6 +10598,7 @@ function renderSheet(){
   else if(k==='bud') body=budBody();
   else if(k==='dry') body=dryBody();
   else if(k==='otk') body=otkBody();
+  else if(k==='dlv') body=dlvBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
