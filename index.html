@@ -5877,6 +5877,24 @@ html.lite .mys-roof,html.lite .mys-scaf{animation:none}
 .mel-col.now .mel-cell.on{transform:scale(1.12);filter:brightness(1.25)}
 .mel-keys span{aspect-ratio:1;display:grid;place-items:center;font-size:9.5px;font-weight:900;color:var(--c)}
 .mel-keys{background:none!important}
+/* 🧸 ほしいもの計画 */
+.kpl{display:flex;flex-direction:column;gap:10px}.kpl>*{flex:none}
+.kpl-its{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.kpl-it{display:flex;flex-direction:column;align-items:center;gap:1px;padding:10px 4px;border:0;border-radius:14px;cursor:pointer;color:inherit;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}
+.kpl-it i{font-style:normal;font-size:30px}.kpl-it b{font-size:12px}.kpl-it small{font-size:11.5px;font-weight:900;color:var(--gold)}
+.kpl-it.on{box-shadow:inset 0 0 0 2.5px var(--gold);background:linear-gradient(180deg,rgb(255 200 58 / .16),var(--panel2))}
+.kpl-sum{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;border-radius:14px;color:#3a2200;background:linear-gradient(180deg,#fff3c8,#f6d880)}.kpl-sum span{font-weight:900;font-size:13px}.kpl-sum b{font:400 30px var(--display,sans-serif)}.kpl-sum small{font-size:12px;font-weight:800}
+.kpl-tl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.kpl-m{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 2px;border-radius:10px;background:rgb(255 255 255 / .05);animation:sgIn .35s var(--d) both}
+.kpl-m small{font-size:10px;font-weight:800;opacity:.7}.kpl-m i{font-style:normal;font-size:20px;opacity:.6}.kpl-m.have i{opacity:1}.kpl-m b{font-size:12px}.kpl-m b{color:#7cf29a}
+.kpl-m em{font-style:normal;font-size:9.5px;font-weight:800;opacity:.85;text-align:center;min-height:1.2em}
+.kpl-m.got{box-shadow:inset 0 0 0 2px var(--gold);background:rgb(255 200 58 / .14)}
+.kpl-m.minus{background:rgb(255 106 126 / .16)}.kpl-m.minus b,.kpl-m.minus em{color:#ff6a7e}
+.kpl-cmp{display:flex;flex-direction:column;gap:5px;padding:10px 12px;border-radius:14px;background:var(--panel2)}.kpl-cmp>b{font-size:13px}
+.kpl-c{display:grid;grid-template-columns:1fr auto auto;grid-template-areas:"n t f" "s t f";column-gap:8px;align-items:center;padding:6px 8px;border-radius:10px;background:rgb(255 255 255 / .04)}
+.kpl-c span{grid-area:n;font-weight:900;font-size:12.5px}.kpl-c small{grid-area:s;font-size:10.5px;opacity:.75}.kpl-c b{grid-area:t;font-size:15px}.kpl-c em{grid-area:f;font-style:normal;font-size:11px;font-weight:900;color:#ff6a7e}.kpl-c em.ok{color:#7cf29a}
+.kpl-c.on{box-shadow:inset 0 0 0 2px #4fe3ff}
+.kpl-warn{margin-top:4px;padding:4px 10px;border-radius:8px;font-style:normal;font-size:11.5px;font-weight:900;color:#fff;background:#e8364a;text-align:center}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9470,6 +9488,39 @@ function melBody(){ const g=melGrid(), M=melS();
     <p class="note">マスをタップすると音が鳴るよ。1つの拍に2つ以上入れると和音になる。保存した曲は「あなたのお店」を開くと流れる${M.saved?'（保存ずみ）':'（はじめての保存で 🪙20）'}</p></div>`; }
 AST.push({n:'作曲スタジオ',ic:'🎹',c:'#6a4ac8',a:'#ffe0f8',h:112,f:()=>melOpen(),b:()=>melS().saved?0:'!'});
 try{ SMAP_G[2].shops.push('作曲スタジオ'); }catch(e){}
+/* ---- 🧸 ほしいもの計画（AZAKEIおもちゃ屋）：おこづかい 月500円で、ほしいものを手に入れる方法をくらべる。
+   「ためてから買う」＝手に入るのはおそいけど、ねだんどおり。「分割払い」＝すぐ手に入るけど、手数料のぶん多く払う（回数が多いほど手数料も多い）。
+   月ごとのタイムラインで、おさいふと「いつ手に入るか」を見せる。手数料の％はこのおはなしの数字 ---- */
+const KPL_IT=[{ic:'⚽',n:'サッカーボール',p:1200},{ic:'🚲',n:'自転車',p:3000},{ic:'🎮',n:'ゲーム機',p:6000}];
+const KPL_PL=[{k:'save',n:'ためてから買う',ic:'🐷',fee:0},{k:'i3',n:'3回払い',ic:'💳',fee:5,m:3},{k:'i6',n:'6回払い',ic:'💳',fee:8,m:6},{k:'i12',n:'12回払い',ic:'💳',fee:15,m:12}];
+const KPL_POCKET=500;
+let KPX={it:1,pl:0,shown:false};
+function kplS(){ const P=S.prof; if(!P.kpl) P.kpl={day:0}; return P.kpl; }
+function kplCalc(it,pl){ const I=KPL_IT[it], L=KPL_PL[pl];
+  if(L.k==='save'){ const mo=Math.ceil(I.p/KPL_POCKET); return {get:mo, total:I.p, per:0, fee:0, months:Math.max(mo,1)}; }
+  const total=Math.round(I.p*(1+L.fee/100)), per=Math.ceil(total/L.m); return {get:0, total, per, fee:total-I.p, months:L.m}; }
+function kplOpen(){ KPX={it:KPX.it||1,pl:0,shown:false}; openSheet('kpl'); sfx('open'); }
+function kplSet(k,v){ KPX[k]=v; KPX.shown=false; sfx('select'); haptic(4); renderSheet(); }
+function kplShow(){ KPX.shown=true; renderSheet(); sfx('flip'); const K=kplS(); if(K.day!==todayKey()){ K.day=todayKey(); S.prof.coin=(S.prof.coin||0)+10; saveProfile(); setTimeout(()=>toast('🧸 計画を立てた！ 🪙+10'),400); } }
+function kplTimeline(it,pl){ const I=KPL_IT[it], L=KPL_PL[pl], C=kplCalc(it,pl), n=Math.max(C.months,12>C.months?Math.min(12,C.months+2):C.months);
+  let bank=0, paid=0, rows=[]; for(let m=1;m<=n;m++){ bank+=KPL_POCKET; let got=false, note='';
+    if(L.k==='save'){ if(m===C.get){ bank-=I.p; got=true; note='買えた！'; } }
+    else { if(m===1){ got=true; note='すぐ手に入る！'; } if(m<=L.m){ const pay=Math.min(C.per, C.total-paid); bank-=pay; paid+=pay; note=note||`${pay}円 はらう`; } }
+    rows.push({m, bank, got, note:bank<0?"おこづかいが たりない！":note, minus:bank<0, have: L.k==="save" ? m>=C.get : true}); }
+  return rows; }
+function kplBody(){ const X=KPX, I=KPL_IT[X.it], C=kplCalc(X.it,X.pl), L=KPL_PL[X.pl];
+  const cmp=KPL_PL.map((p,i)=>{ const c=kplCalc(X.it,i); return `<div class="kpl-c${i===X.pl?' on':''}"><span>${p.ic} ${p.n}</span><small>${p.k==='save'?`${c.get}か月後に手に入る`:'すぐ手に入る'}</small><b>${c.total.toLocaleString()}円</b>${c.fee?`<em>+${c.fee}円</em>`:'<em class="ok">ぴったり</em>'}</div>`; }).join('');
+  const tl = X.shown ? `<div class="kpl-tl">${kplTimeline(X.it,X.pl).map(r=>`<div class="kpl-m${r.have?' have':''}${r.got?' got':''}${r.minus?' minus':''}" style="--d:${r.m*.06}s"><small>${r.m}月目</small><i>${r.have?I.ic:'⏳'}</i><b>${r.bank}円</b><em>${r.note}</em></div>`).join('')}</div>` : '';
+  return `<div class="kpl"><span class="label">🧸 TOY SHOP · おこづかい 月${KPL_POCKET}円</span><h3 class="ttl">ほしいもの計画</h3>
+    <div class="phb-row"><b>ほしいもの</b><div class="kpl-its">${KPL_IT.map((it,i)=>`<button class="kpl-it${X.it===i?' on':''}" onclick="kplSet('it',${i})"><i>${it.ic}</i><b>${it.n}</b><small>${it.p.toLocaleString()}円</small></button>`).join('')}</div></div>
+    <div class="phb-row"><b>手に入れ方</b><div class="phb-chs">${KPL_PL.map((p,i)=>`<button class="phb-ch${X.pl===i?' on':''}" onclick="kplSet('pl',${i})">${p.ic} ${p.n}${p.fee?`（手数料${p.fee}%）`:''}</button>`).join('')}</div></div>
+    <div class="kpl-sum"><span>${L.ic} ${L.n}</span><b>${C.total.toLocaleString()}円</b><small>${L.k==='save'?`毎月${KPL_POCKET}円ためて、${C.get}か月後に買える`:`毎月 ${C.per}円 × ${L.m}回。手数料 ${C.fee}円`}</small>${L.k!=="save"&&C.per>KPL_POCKET?`<em class="kpl-warn">⚠️ 毎月の支払いが おこづかい（${KPL_POCKET}円）より多い！ このままだと払えないよ</em>`:""}</div>
+    ${X.shown?tl:`<button class="btn gold big" style="width:100%" onclick="kplShow()">📅 月ごとに見てみる</button>`}
+    <div class="kpl-cmp"><b>くらべてみよう（${I.ic}${I.n} ${I.p.toLocaleString()}円）</b>${cmp}</div>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> 分割払いは「先にもらって、あとで払う」こと。すぐ使えるのはうれしいけど、<span class="fk-em">手数料のぶん高くなる</span>し、回数が多いほど高くなるよ。ためてから買うと、待つあいだに「本当にほしいかな？」って考えられるのもいいところ</p></div>
+    <p class="note">ここの手数料（3回5%・6回8%・12回15%）は、このおはなしの数字だよ。計画を立てると1日1回 🪙10</p></div>`; }
+AST.push({n:'AZAKEIおもちゃ屋',ic:'🧸',c:'#e8a83a',a:'#fff3f0',h:106,f:()=>kplOpen(),b:()=>kplS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('AZAKEIおもちゃ屋'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10741,6 +10792,7 @@ function renderSheet(){
   else if(k==='hkn') body=hknBody();
   else if(k==='zen') body=zenBody();
   else if(k==='mel') body=melBody();
+  else if(k==='kpl') body=kplBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
