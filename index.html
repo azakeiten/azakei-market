@@ -5895,6 +5895,17 @@ html.lite .mys-roof,html.lite .mys-scaf{animation:none}
 .kpl-c span{grid-area:n;font-weight:900;font-size:12.5px}.kpl-c small{grid-area:s;font-size:10.5px;opacity:.75}.kpl-c b{grid-area:t;font-size:15px}.kpl-c em{grid-area:f;font-style:normal;font-size:11px;font-weight:900;color:#ff6a7e}.kpl-c em.ok{color:#7cf29a}
 .kpl-c.on{box-shadow:inset 0 0 0 2px #4fe3ff}
 .kpl-warn{margin-top:4px;padding:4px 10px;border-radius:8px;font-style:normal;font-size:11.5px;font-weight:900;color:#fff;background:#e8364a;text-align:center}
+/* ❄️ 冬の商店街 */
+.wnt-cap{position:absolute;left:-5px;right:-5px;top:-9px;height:13px;z-index:2;pointer-events:none;border-radius:10px 12px 4px 4px;background:radial-gradient(14px 10px at 20% 100%,#fff 60%,transparent 62%),radial-gradient(18px 11px at 55% 100%,#fff 60%,transparent 62%),radial-gradient(12px 9px at 85% 100%,#fff 60%,transparent 62%),linear-gradient(180deg,#fff,#eef4ff);box-shadow:0 2px 3px rgb(0 0 40 / .25)}
+.wnt-cap::after{content:"";position:absolute;left:8px;right:8px;top:100%;height:9px;background:repeating-linear-gradient(90deg,transparent 0 9px,rgb(220 240 255 / .9) 9px 11px,transparent 11px 21px);-webkit-mask:linear-gradient(180deg,#000,transparent);mask:linear-gradient(180deg,#000,transparent)}
+.wnt-sleigh{position:absolute;left:-120px;top:14px;z-index:6;padding:6px;border:0;background:none;cursor:pointer;animation:wntFly 8s linear both}
+.wnt-sleigh span{display:block;font-size:22px;white-space:nowrap;transform:scaleX(-1);filter:drop-shadow(0 0 6px rgb(255 240 200 / .8))}
+.wnt-trail{position:absolute;right:100%;top:50%;width:70px;height:2px;margin-top:-1px;background:linear-gradient(90deg,transparent,#fff3a8);opacity:.8}
+@keyframes wntFly{0%{transform:translate(0,18px)}50%{transform:translate(calc(50vw + 60px),-4px)}100%{transform:translate(calc(100vw + 260px),14px)}}
+.wnt-gift{position:absolute;z-index:6;font-style:normal;font-size:24px;pointer-events:none;animation:wntDrop 1.3s cubic-bezier(.5,0,.8,1) forwards}
+@keyframes wntDrop{0%{transform:translate(-50%,0) rotate(0)}80%{transform:translate(-50%,120px) rotate(30deg);opacity:1}100%{transform:translate(-50%,120px) scale(1.6);opacity:0}}
+html.lite .wnt-sleigh{animation-duration:12s}
+@media (prefers-reduced-motion:reduce){.wnt-sleigh{animation-duration:14s}.wnt-gift{animation:none;opacity:0}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7341,7 +7352,7 @@ function astView(){ try{ dryBase(); }catch(e){} try{ dstEnsure(); }catch(e){}
   const ph=skyPhase(new Date().getHours());
   const lv=stLv().lv; stLvCheck(lv);
   const shops=AST.map((s,i)=>{ let b=0; try{ b=s.b(); }catch(e){}
-    return (()=>{ try{ return dstGate(i); }catch(e){ return ''; } })()+`<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}">${(()=>{ const R=srlyS(); return R.ids.includes(s.n)?`<i class="srly-tag${R.got[s.n]?' got':''}">${R.got[s.n]?'✔':'🎫'}</i>`:''; })()}<span class="ast-sign">${s.n}</span>${(()=>{ try{ const T=treS(), m=T.log[s.n]; return m?`<i class="tre-mk">${m}</i>`:''; }catch(e){ return ''; } })()}<span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>${(()=>{ try{ return qtNpc(i); }catch(e){ return ''; } })()}`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">🌳</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
+    return (()=>{ try{ return dstGate(i); }catch(e){ return ''; } })()+`<button class="ast-shop" style="--c:${s.c};--a:${s.a};--h:${s.h}px" onclick="astGo(${i})" aria-label="${s.n}${b?'（お知らせあり）':''}">${(()=>{ const R=srlyS(); return R.ids.includes(s.n)?`<i class="srly-tag${R.got[s.n]?' got':''}">${R.got[s.n]?'✔':'🎫'}</i>`:''; })()}<span class="ast-sign">${s.n}</span>${advOn()?'<i class="wnt-cap" aria-hidden="true"></i>':''}${(()=>{ try{ const T=treS(), m=T.log[s.n]; return m?`<i class="tre-mk">${m}</i>`:''; }catch(e){ return ''; } })()}<span class="ast-aw"></span><span class="ast-win"><i>${s.ic}</i></span><span class="ast-door"></span>${b?`<b class="ast-bd">${b}</b>`:''}</button>${(()=>{ try{ return qtNpc(i); }catch(e){ return ''; } })()}`; }).map((h,i)=>i===0?h:(lv>=2&&i%2===0?'<i class="ast-tree" aria-hidden="true">'+(advOn()&&i%4===0?'⛄':'🌳')+'</i>':'<i class="ast-lamp" aria-hidden="true"></i>')+h).join('');
   const deco=(lv>=3?`<svg class="ast-flags" width="100%" height="18" aria-hidden="true"><defs><pattern id="astfl" width="42" height="18" patternUnits="userSpaceOnUse"><path d="M0 3H42" stroke="#fff" stroke-width="1.2"/><path d="M1 3L13 3L7 15Z" fill="#ff5a76"/><path d="M15 3L27 3L21 15Z" fill="#ffc83a"/><path d="M29 3L41 3L35 15Z" fill="#4fe3ff"/></pattern></defs><rect width="100%" height="18" fill="url(#astfl)"/></svg>`:'')
     +(lv>=4?'<span class="ast-pedw" aria-hidden="true"><i>🚶</i></span><span class="ast-pedw ast-ped2" aria-hidden="true"><i>🚶‍♀️</i></span>':'')
     +(lv>=7?'<span class="ast-pedw ast-busw" aria-hidden="true"><i>🚌</i></span>':'')
@@ -9521,6 +9532,21 @@ function kplBody(){ const X=KPX, I=KPL_IT[X.it], C=kplCalc(X.it,X.pl), L=KPL_PL[
     <p class="note">ここの手数料（3回5%・6回8%・12回15%）は、このおはなしの数字だよ。計画を立てると1日1回 🪙10</p></div>`; }
 AST.push({n:'AZAKEIおもちゃ屋',ic:'🧸',c:'#e8a83a',a:'#fff3f0',h:106,f:()=>kplOpen(),b:()=>kplS().day===todayKey()?0:'!'});
 try{ SMAP_G[1].shops.push('AZAKEIおもちゃ屋'); }catch(e){}
+/* ---- ❄️ 冬の商店街（11/20〜12/25）：お店の屋根にこんもり雪とつらら、木のかわりに雪だるま。
+   夕方〜夜は、ときどき サンタのそりが空を横切る。タップするとプレゼント🎁が落ちてくる（1日5こまで、1こ🪙5） ---- */
+let WNT_T=0, WNT_BUSY=false;
+function wntS(){ const P=S.prof; if(!P.wnt) P.wnt={day:0,n:0,tot:0}; if(P.wnt.day!==todayKey()){ P.wnt.day=todayKey(); P.wnt.n=0; } return P.wnt; }
+function wntSpawn(){ try{ if(WNT_BUSY || !advOn() || G || S.sheet || S.screen!=='home' || document.hidden || nbNew()) return; if(!['night','eve'].includes(skyPhase(new Date().getHours()))) return; if(wntS().n>=5) return;
+  const v=document.querySelector('.ast-view'); if(!v) return; const r=v.getBoundingClientRect(); if(r.bottom<60 || r.top>innerHeight-60) return;
+  const el=document.createElement('button'); el.className='wnt-sleigh'; el.setAttribute('aria-label','サンタのそり'); el.innerHTML='<span>🦌🦌🛷</span><i class="wnt-trail"></i>';
+  WNT_BUSY=true; const end=()=>{ WNT_BUSY=false; el.remove(); };
+  el.onclick=e=>{ e.stopPropagation(); if(el.dataset.got) return; el.dataset.got=1; wntGift(el,v); };
+  el.addEventListener('animationend',ev=>{ if(ev.target===el) end(); }); v.appendChild(el); setTimeout(()=>{ if(el.isConnected) end(); else WNT_BUSY=false; },9500); sfx('hat'); }catch(e){ WNT_BUSY=false; } }
+function wntGift(el,v){ const W=wntS(); W.n++; W.tot++; S.prof.coin=(S.prof.coin||0)+5; saveProfile();
+  const r=el.getBoundingClientRect(), vr=v.getBoundingClientRect(); const g=document.createElement('i'); g.className='wnt-gift'; g.textContent='🎁'; g.style.left=(r.left-vr.left+r.width/2)+'px'; g.style.top=(r.top-vr.top+10)+'px'; v.appendChild(g); setTimeout(()=>g.remove(),1400);
+  sfx('coin'); haptic(15); toast(`🎅 サンタさんからプレゼント！ 🪙+5（きょう ${W.n}/5）`); }
+function wntLoop(){ clearTimeout(WNT_T); WNT_T=setTimeout(()=>{ wntSpawn(); wntLoop(); }, (35+Math.random()*35)*1000); }
+setTimeout(wntLoop, 20000);
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
