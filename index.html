@@ -5906,6 +5906,17 @@ html.lite .mys-roof,html.lite .mys-scaf{animation:none}
 @keyframes wntDrop{0%{transform:translate(-50%,0) rotate(0)}80%{transform:translate(-50%,120px) rotate(30deg);opacity:1}100%{transform:translate(-50%,120px) scale(1.6);opacity:0}}
 html.lite .wnt-sleigh{animation-duration:12s}
 @media (prefers-reduced-motion:reduce){.wnt-sleigh{animation-duration:14s}.wnt-gift{animation:none;opacity:0}}
+/* 🚶 ミオの商店街ツアー */
+.tur-chip{flex:none;padding:3px 9px;border:0;border-radius:99px;cursor:pointer;font-weight:900;font-size:11.5px;color:#fff;background:linear-gradient(180deg,#ff8ab8,#e0507a);box-shadow:0 2px 0 #a8305a;animation:qtBub 1s ease-in-out infinite alternate}
+.ast{position:relative}
+.tur-box{position:relative;z-index:8;display:flex;gap:8px;align-items:flex-start;margin-top:8px;padding:10px 12px;border-radius:16px;background:#fff;color:#2a1a33;box-shadow:0 8px 20px rgb(0 0 0 / .35),0 0 0 3px #ff8ab8;animation:sgIn .35s both}
+.tur-box .gd-ava{flex:none;width:44px;height:44px}
+.tur-b{flex:1;min-width:0}.tur-b small{font-size:10.5px;font-weight:900;color:#e0507a}.tur-b p{margin:2px 0 8px;font-size:13.5px;line-height:1.6;font-weight:700}
+.tur-btns{display:flex;justify-content:flex-end;gap:6px}.tur-btns .btn{padding:6px 14px;font-size:13px}.tur-btns .btn.ghost{color:#6a5a7a;box-shadow:inset 0 0 0 1.5px #d8c8e0;background:#faf6fc}
+.tur-hl{position:relative;z-index:5;animation:turHl 1s ease-in-out infinite alternate!important;filter:drop-shadow(0 0 10px #ff8ab8) drop-shadow(0 0 4px #fff)}
+@keyframes turHl{from{filter:drop-shadow(0 0 4px #ff8ab8)}to{filter:drop-shadow(0 0 16px #ff8ab8) drop-shadow(0 0 6px #fff)}}
+html.lite .tur-chip,html.lite .tur-hl{animation:none!important}
+@media (prefers-reduced-motion:reduce){.tur-chip,.tur-hl{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -7359,7 +7370,7 @@ function astView(){ try{ dryBase(); }catch(e){} try{ dstEnsure(); }catch(e){}
     +(S.prof&&S.prof.pet?`<span class="ast-pedw pnk-walk" aria-hidden="true"><i style="filter:${PNK_COL[S.prof.pet.col].f}">${pnkSleep()?'💤':'🐈'}</i></span>`:'');
   const plaza=lv>=5?'<span class="ast-plaza" aria-hidden="true"><i>⛲</i></span>':'';
   const prdOn=PRD_RUN && Date.now()-PRD_RUN<PRD_MS && !reduced(), swx=swxNow();
-  return `<section class="ast${TRE_ON?' tre-on':''}${budCls()} ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small>${(()=>{ try{ if(nbNew()) return ''; const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; return `<button class="qt-chip${rd?' rd':''}" onclick="qtOpen()" aria-label="まちのお願い ${c}/3">🙋 ${c}/3</button>`; }catch(e){ return ''; } })()}${(()=>{ try{ return treChip(); }catch(e){ return ''; } })()}<button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
+  return `<section class="ast${TRE_ON?' tre-on':''}${budCls()} ast-${ph}${swx?' swxw-'+swx.k:''}${prdOn||(prdLive()&&!prdLive().seen&&!reduced())?' prd-on':''}${advOn()?' ast-winter':''}${lv>=10?' ast-gold':''}${srlyFest()?' ast-fest':''}" aria-label="AZAKEIストリート"><div class="ast-head"><span class="label">🏙️ AZAKEI STREET</span>${srlyChip()}<button class="ast-lv" onclick="openSheet('stlv');sfx('open')" aria-label="商店街レベル ${lv}">Lv.${lv}<i style="width:${Math.round(stLv().p*100)}%"></i></button><small>お店をタップ → ミオが案内</small>${(()=>{ try{ if(nbNew()) return ''; const Q=qtS(), c=Q.list.filter(q=>q.got).length, rd=Q.list.filter(q=>!q.got&&qtDone(q)).length; return `<button class="qt-chip${rd?' rd':''}" onclick="qtOpen()" aria-label="まちのお願い ${c}/3">🙋 ${c}/3</button>`; }catch(e){ return ''; } })()}${(()=>{ try{ return turChip(); }catch(e){ return ''; } })()}${(()=>{ try{ return treChip(); }catch(e){ return ''; } })()}<button class="smap-btn" onclick="smapOpen()" aria-label="まちマップを開く">🗺️ マップ</button></div>
     <div class="ast-view"><i class="ast-far" aria-hidden="true">${astSky()}</i><i class="ast-cloud" aria-hidden="true"></i>${ph==='night'?'<i class="ast-stars" aria-hidden="true"></i>':''}${advOn()?'<i class="wsnow" aria-hidden="true"></i>':''}${lv>=6?'<i class="ast-bal" aria-hidden="true">🎈</i><i class="ast-bal b2" aria-hidden="true">🎈</i>':''}${lv>=8&&(ph==='night'||ph==='eve')?'<i class="ast-fw" aria-hidden="true"></i><i class="ast-fw f2" aria-hidden="true"></i>':''}${lv>=9?'<i class="ast-tower" aria-hidden="true">🗼</i>':''}
       ${swxLayer(swx)}${(()=>{ try{ return prdHtml(); }catch(e){ return ''; } })()}<div class="ast-sc" onscroll="astPar(this)"><div class="ast-in">${srlyFest()?'<span class="ast-lant" aria-hidden="true">'+'🏮'.repeat(Math.max(8,AST.length*2))+'</span>':''}${deco}${plaza}${budDeco()}${(()=>{ try{ return xmtStreet(); }catch(e){ return ''; } })()}${(()=>{ try{ return mysStreet(); }catch(e){ return ''; } })()}${shops}<span class="ast-mio" id="astMio" aria-hidden="true"><span>${FACE[GUIDE.n]?face(GUIDE.n):GUIDE.ic}</span></span></div></div></div>${smapRail()}</section>`;
 }
@@ -9547,6 +9558,30 @@ function wntGift(el,v){ const W=wntS(); W.n++; W.tot++; S.prof.coin=(S.prof.coin
   sfx('coin'); haptic(15); toast(`🎅 サンタさんからプレゼント！ 🪙+5（きょう ${W.n}/5）`); }
 function wntLoop(){ clearTimeout(WNT_T); WNT_T=setTimeout(()=>{ wntSpawn(); wntLoop(); }, (35+Math.random()*35)*1000); }
 setTimeout(wntLoop, 20000);
+/* ---- 🚶 ミオの商店街ツアー：ミオが通りを歩いて、3つの通り・あなたのお店・マップを順番に案内する。
+   しゃべっている場所がひかって、通りが自動でスクロール。はじめて最後まで見ると 🪙20 ---- */
+const TUR_STEPS=[
+  {sel:null, t:'ようこそ、AZAKEI STREET へ！ お店が たくさんあるから、ミオが3つの通りを案内するね'},
+  {sel:'.dst-gate:nth-of-type(1)', gi:0, t:'ここからが「あそび横丁」。福引・太鼓・射的・観覧車… 毎日ちょっとずつ遊ぶと コインがたまるよ'},
+  {sel:'.dst-gate', gi:1, t:'こっちは「まなび通り」。港・せり・保険・おつかい… お金のしくみを 体験しながら学べるんだ'},
+  {sel:'.dst-gate', gi:2, t:'さいごは「くらし通り」。帽子屋・写真館・日記帳… あなたの毎日が もっと楽しくなるよ'},
+  {sel:'.mys-st', t:'それから、ここは あなたのお店！ 天気と業種で お客さんがかわるよ。大きく増築もできる'},
+  {sel:'.smap-btn', t:'迷ったら 🗺️マップ。宝さがし・まちのお願い・全店めぐり手帳も ここから。じゃあ、楽しんでね！', head:true}];
+let TUR=null;
+function turS(){ const P=S.prof; if(!P.tur) P.tur={done:false}; return P.tur; }
+function turStart(){ TUR={i:0}; sfx('open'); const a=document.querySelector('.ast'); if(a) a.scrollIntoView({block:'center',behavior:reduced()?'auto':'smooth'}); setTimeout(turApply,reduced()?0:350); }
+function turEnd(done){ document.querySelectorAll('.tur-hl').forEach(e=>e.classList.remove('tur-hl')); document.querySelectorAll('.tur-box').forEach(e=>e.remove()); TUR=null;
+  if(done){ const T=turS(); if(!T.done){ T.done=true; S.prof.coin=(S.prof.coin||0)+20; saveProfile(); sfx('fanfare'); confetti(); toast('🚶 ツアー完了！ 🪙+20'); render(); } else sfx('select'); } }
+function turNext(){ if(!TUR) return; if(TUR.i>=TUR_STEPS.length-1) return turEnd(true); TUR.i++; sfx('click'); turApply(); }
+function turTarget(st){ if(!st.sel) return null; if(st.gi!=null) return document.querySelectorAll('.dst-gate')[st.gi]||null; return document.querySelector(st.sel); }
+function turApply(){ if(!TUR) return; const sec=document.querySelector('.ast'); if(!sec){ return; } const st=TUR_STEPS[TUR.i];
+  document.querySelectorAll('.tur-hl').forEach(e=>e.classList.remove('tur-hl')); const tg=turTarget(st), sc=sec.querySelector('.ast-sc'), mio=document.getElementById('astMio');
+  if(tg){ tg.classList.add('tur-hl'); if(!st.head && sc){ const x=tg.offsetLeft; sc.scrollTo({left:Math.max(0,x-sc.clientWidth/2+tg.offsetWidth/2),behavior:reduced()?'auto':'smooth'}); if(mio){ const cur=parseFloat(mio.style.left)||24; mio.classList.toggle('left', x<cur); mio.classList.add('walk'); mio.style.left=Math.max(10,x-30)+'px'; setTimeout(()=>mio.classList.remove('walk'),700); } } }
+  else if(sc){ sc.scrollTo({left:0,behavior:reduced()?'auto':'smooth'}); }
+  let box=sec.querySelector('.tur-box'); if(!box){ box=document.createElement('div'); box.className='tur-box'; sec.appendChild(box); }
+  box.innerHTML=`${guideAva()}<div class="tur-b"><small>ミオの商店街ツアー ${TUR.i+1}/${TUR_STEPS.length}</small><p>${st.t}</p><div class="tur-btns"><button class="btn ghost" onclick="turEnd(false)">とじる</button><button class="btn gold" onclick="turNext()">${TUR.i>=TUR_STEPS.length-1?'おわり 🎉':'つぎ ›'}</button></div></div>`; }
+function turChip(){ if(nbNew()) return ''; const T=turS(); return T.done?'':`<button class="tur-chip" onclick="turStart()" aria-label="ミオの商店街ツアー">🚶 ツアー</button>`; }
+const __renderTur=render; render=function(){ const r=__renderTur.apply(this,arguments); try{ if(TUR) turApply(); }catch(e){} return r; };
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
