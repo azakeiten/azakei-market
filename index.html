@@ -6242,6 +6242,46 @@ html.lite .tur-chip,html.lite .tur-hl{animation:none!important}
 .vot-facts{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:var(--panel2)}.vot-facts>b{font-size:13px}
 .vot-facts>div{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5}.vot-facts i{font-style:normal;font-size:20px}.vot-facts span b{color:#8ac8ff}
 @media (prefers-reduced-motion:reduce){.vot *{animation-duration:.01s!important;animation-delay:0s!important}}
+/* ✈️ AZAKEI空港 りょうがえ所 */
+.fxr{display:flex;flex-direction:column;gap:10px}.fxr>*{flex:none}
+.fxr-lead{margin:0;font-size:12.5px;line-height:1.6;font-weight:700}.fxr-lead b{color:var(--gold)}
+.fxr-board{padding:10px 12px 12px;border-radius:12px;background:linear-gradient(180deg,#1a1d24,#0c0e12);box-shadow:inset 0 0 0 2px #333a46,0 8px 18px rgb(0 0 0 / .4);color:#ffd84a}
+.fxr-bh{display:flex;justify-content:space-between;font:900 10px var(--body,sans-serif);letter-spacing:2px;color:#8a93a6;padding-bottom:6px;border-bottom:1px dashed #333a46;margin-bottom:8px}
+.fxr-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center}.fxr-cur{font:900 14px var(--body,sans-serif);color:#fff;margin-right:4px}.fxr-eq{font-size:14px;font-weight:900}
+.fxr-num{display:flex;gap:3px}
+.fxr-fl{position:relative;display:block;width:30px;height:44px;overflow:hidden;border-radius:5px;background:linear-gradient(180deg,#2a2e38 50%,#20242c 50%);box-shadow:inset 0 0 0 1px #000}
+.fxr-fl::after{content:'';position:absolute;left:0;right:0;top:50%;height:1.5px;background:#000;z-index:2}
+.fxr-fl i{display:block;font:900 32px/44px "Courier New",monospace;text-align:center;font-style:normal;color:#ffd84a;transform:translateY(calc(var(--n) * -44px));animation:fxrSpin 1.1s var(--d) cubic-bezier(.2,.7,.3,1) both}
+@keyframes fxrSpin{from{transform:translateY(-396px)}to{transform:translateY(calc(var(--n) * -44px))}}
+.fxr-wal{display:flex;align-items:baseline;gap:8px;padding:8px 12px;border-radius:12px;background:var(--panel2);font-weight:800;font-size:12.5px}.fxr-wal b{font-size:20px;color:var(--gold)}.fxr-wal small{opacity:.6}
+.fxr-win{position:relative;display:flex;align-items:center;justify-content:space-between;height:110px;padding:0 6px;border-radius:14px;background:linear-gradient(180deg,#dfeefc,#bcd6f0);overflow:hidden}
+.fxr-cnt{z-index:2;display:flex;flex-direction:column;align-items:center;font-size:40px;line-height:1}.fxr-cnt small{font-size:11px;font-weight:900;color:#2a4a6a}
+.fxr-fly{position:relative;width:90px;height:100%}.fxr-fly i{position:absolute;top:40%;font-style:normal;font-size:28px}
+.fxr-fly.a i{left:0;animation:fxrIn 1.2s calc(var(--k,0) * .12s) ease-in both}.fxr-fly.b i{right:0;animation:fxrOut 1s calc(.7s + var(--k,0) * .12s) ease-out both}
+.fxr-fly i:nth-child(2){--k:1}.fxr-fly i:nth-child(3){--k:2}.fxr-fly i:nth-child(4){--k:3}.fxr-fly i:nth-child(5){--k:4}
+@keyframes fxrIn{from{transform:translate(0,0) rotate(-10deg);opacity:1}to{transform:translate(110px,-14px) rotate(20deg) scale(.4);opacity:0}}
+@keyframes fxrOut{from{transform:translate(-110px,0) scale(.4);opacity:0}to{transform:translate(calc(var(--k) * -12px),calc(var(--k) * 6px - 12px)) rotate(-8deg);opacity:1}}
+.fxr-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:7px}
+.fxr-it{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;padding:9px 4px 7px;border:0;border-radius:14px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line);color:inherit;cursor:pointer;animation:sgIn .3s var(--d) both;transition:transform .15s}
+.fxr-it:active{transform:scale(.95)}.fxr-it>span{font-size:30px}.fxr-it b{font-size:11.5px}.fxr-it em{font-style:normal;font:900 16px "Courier New",monospace;color:#7cf29a}.fxr-it small{font-size:10px;opacity:.7}
+.fxr-it.on{box-shadow:inset 0 0 0 2.5px var(--gold);background:linear-gradient(180deg,rgb(255 200 58 / .18),var(--panel2))}.fxr-it.no{opacity:.4}
+.fxr-it>i{position:absolute;top:5px;right:7px;font-style:normal;font-weight:900;color:var(--gold)}
+.fxr-cmp{display:flex;flex-direction:column;gap:8px;padding:10px 12px;border-radius:14px;background:var(--panel2)}
+.fxr-c{display:grid;grid-template-columns:1fr 54px;gap:2px 8px;align-items:center;font-size:12px;font-weight:800;animation:sgIn .3s var(--d) both}.fxr-c>span{grid-column:1/3}
+.fxr-c>i{height:14px;border-radius:99px;background:rgb(255 255 255 / .08);overflow:hidden}.fxr-c em{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#4fa8ff,#8ac8ff);animation:skdW 1.2s calc(var(--d) + .3s) cubic-bezier(.3,.7,.4,1) forwards}
+.fxr-c>b{text-align:right;font-family:"Courier New",monospace;font-size:14px}.fxr-c.me>span{color:var(--gold)}.fxr-c.me em{background:linear-gradient(90deg,#ffc83a,#ff8c5a)}
+.fxr-arrow{display:flex;align-items:stretch;gap:6px}.fxr-arrow>div{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px;border-radius:12px;text-align:center}
+.fxr-arrow>div:first-child{background:rgb(79 168 255 / .14)}.fxr-arrow>div:last-child{background:rgb(255 140 90 / .14)}.fxr-arrow b{font-size:16px}.fxr-arrow small{font-size:10.5px;line-height:1.45;font-weight:700;opacity:.85}.fxr-arrow>span{align-self:center;font-size:18px;opacity:.6}
+.fxr-eff{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:var(--panel2)}.fxr-eff>b{font-size:13px}.fxr-eff>small{font-size:11px;opacity:.75;line-height:1.5}
+.fxr-eff>div{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5}.fxr-eff i{font-style:normal;font-size:20px}.fxr-eff span b{color:#ffb38a}
+.fxr-bag{padding:8px 12px;border-radius:12px;background:rgb(255 255 255 / .05);font-size:12px;font-weight:800;line-height:1.6}
+.fxr-q{display:flex;flex-direction:column;gap:10px;animation:sgIn .3s both}.fxr-q>p{margin:0;padding:14px;border-radius:14px;background:var(--panel2);font-size:14px;font-weight:900;line-height:1.6;text-align:center}
+.fxr-qa{display:flex;gap:8px}.fxr-qb{flex:1;padding:14px 6px;border:0;border-radius:14px;background:var(--panel2);box-shadow:inset 0 0 0 2px var(--line);color:inherit;font-size:14px;font-weight:900;cursor:pointer}
+.fxr-qb.ok{box-shadow:inset 0 0 0 2.5px #7cf29a;background:rgb(124 242 154 / .15)}.fxr-qb.ng{box-shadow:inset 0 0 0 2.5px #ff6a6a;background:rgb(255 106 106 / .14)}.fxr-qb.dim{opacity:.45}
+.fxr-why{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:12px;font-size:12.5px;line-height:1.55;font-weight:700;animation:sgIn .3s both}.fxr-why.ok{background:rgb(124 242 154 / .1)}.fxr-why.ng{background:rgb(255 106 106 / .1)}
+.fxr-score{display:flex;flex-direction:column;align-items:center;padding:14px;border-radius:16px;background:linear-gradient(180deg,rgb(79 168 255 / .2),var(--panel2));box-shadow:inset 0 0 0 2px #4fa8ff;animation:fxrPop .5s both}.fxr-score b{font:900 34px "Courier New",monospace;color:#ffd84a}.fxr-score span{font-weight:900}
+@keyframes fxrPop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fxr *{animation-duration:.01s!important;animation-delay:0s!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -10416,6 +10456,80 @@ function votBody(){ const X=VOX||(VOX=votNew(todayKey()*23+9,true)), V=votS(), C
 AST.push({n:'まちの選挙',ic:'🗳️',c:'#3a6ab8',a:'#eef4ff',h:108,f:()=>votOpen(),b:()=>votS().day===todayKey()?0:'!'});
 try{ SMAP_G[1].shops.push('まちの選挙'); }catch(e){}
 try{ const C={id:'vote',ic:'🗳️',n:'選挙と公約',d:'公約（やくそく）と 財源（お金をどこから出すか）を くらべて 投票する。日本では18さい以上が 投票できる',shop:'まちの選挙',fn:'votCast'}; MNB.push(C); mnbHook(C); }catch(e){}
+/* ---- ✈️ AZAKEI空港 りょうがえ所：きょうのレートで 円→ドル に両替して おみやげを買う → 「1ドル=100円の日」「150円の日」とくらべて 円高・円安を体感。
+   レートはゲーム用の かくうの数字。360円の固定レート（1949〜1971年）と変動相場制（1973年〜）は実際の話 ---- */
+const FXR_IT=[{ic:'🍔',n:'ハンバーガー',p:6},{ic:'👕',n:'Tシャツ',p:12},{ic:'🧢',n:'キャップ',p:9},{ic:'💌',n:'ポストカード',p:1},{ic:'🧸',n:'くまのぬいぐるみ',p:8},{ic:'🔑',n:'キーホルダー',p:3},{ic:'🍫',n:'チョコ',p:4}];
+const FXR_Q=[
+  {q:'1ドル＝100円 → 1ドル＝120円 になった。これは？',a:['円安','円高'],k:0,w:'1ドルを買うのに 円が たくさん いるようになった ＝ 円の力が弱くなった（円安）'},
+  {q:'1ドル＝150円 → 1ドル＝110円 になった。これは？',a:['円安','円高'],k:1,w:'1ドルが 少ない円で 買えるようになった ＝ 円の力が強くなった（円高）'},
+  {q:'円安になると、外国から買う バナナや ガソリンは？',a:['高くなりやすい','安くなりやすい'],k:0,w:'外国の物は ドルで買うから、ドルが高いと 円での ねだんが上がりやすい'},
+  {q:'円高のとき、日本から 海外旅行に行くと？',a:['おトクになりやすい','高くなりやすい'],k:0,w:'同じ円で 多くのドルに かえられるから、むこうで たくさん買える'},
+  {q:'円安のとき、日本に来る 外国の旅行者は？',a:['買い物しやすい','買い物しにくい'],k:0,w:'外国のお金を 円にかえると たくさんの円になるから、日本の物が 安く感じる'},
+  {q:'円安のとき、車を外国に売る 日本の会社は？',a:['もうけが ふえやすい','もうけが へりやすい'],k:0,w:'外国で売れた ドルを 円にかえると、たくさんの円になる'}];
+let FXX=null;
+function fxrS(){ const P=S.prof; if(!P.fxr) P.fxr={day:0,n:0}; return P.fxr; }
+function fxrNew(seed,daily){ const R=mulberry(seed), rate=90+Math.floor(R()*15)*5, qs=FXR_Q.map((_,i)=>[R(),i]).sort((a,b)=>a[0]-b[0]).slice(0,3).map(a=>a[1]);
+  return {rate, yen:3000, usd:Math.floor(3000/rate), cart:[], qs, qi:0, ans:null, ok:0, ph:'board', daily}; }
+function fxrOpen(){ FXX=fxrNew(todayKey()*29+5,true); openSheet('fxr'); sfx('open'); }
+function fxrAgain(){ FXX=fxrNew((Math.random()*1e9)|0,false); sfx('deal'); renderSheet(); }
+function fxrSpent(){ return FXX.cart.reduce((a,i)=>a+FXR_IT[i].p,0); }
+function fxrEx(){ FXX.ph='swap'; sfx('whoosh'); haptic(8); renderSheet(); setTimeout(()=>{ if(S.sheet==='fxr'&&FXX.ph==='swap'){ FXX.ph='shop'; sfx('coin'); renderSheet(); } },1900); }
+function fxrTog(i){ const X=FXX, j=X.cart.indexOf(i); if(j>=0){ X.cart.splice(j,1); sfx('click'); }
+  else { if(fxrSpent()+FXR_IT[i].p>X.usd){ toast('💵 ドルが たりないよ'); haptic(20); return; } X.cart.push(i); sfx('coin'); haptic(5); } renderSheet(); }
+function fxrCmp(){ FXX.ph='cmp'; sfx('flip'); renderSheet(); }
+function fxrQuiz(){ FXX.ph='quiz'; FXX.qi=0; FXX.ans=null; FXX.ok=0; sfx('select'); renderSheet(); }
+function fxrAns(k){ const X=FXX; if(X.ans!==null) return; const Q=FXR_Q[X.qs[X.qi]]; X.ans=k; if(k===Q.k){ X.ok++; sfx('select'); haptic(6); } else { sfx('click'); haptic(20); } renderSheet(); }
+function fxrNext(){ const X=FXX; if(X.qi<2){ X.qi++; X.ans=null; sfx('flip'); renderSheet(); } else fxrFin(); }
+function fxrFin(){ const X=FXX, V=fxrS(); X.ph='end'; V.n=(V.n||0)+1;
+  if(X.daily && V.day!==todayKey()){ V.day=todayKey(); const c=10+(X.ok===3?5:0); S.prof.coin=(S.prof.coin||0)+c; setTimeout(()=>toast('✈️ 両替マスター！ 🪙+'+c),400); if(X.ok===3) confetti(); }
+  saveProfile(); sfx('fanfare'); renderSheet(); }
+function fxrFlap(v){ return String(v).split('').map((d,k)=>`<span class="fxr-fl"><i style="--n:${+d};--d:${.2+k*.22}s">${'0123456789'.split('').join('<br>')}</i></span>`).join(''); }
+function fxrBody(){ const X=FXX||(FXX=fxrNew(todayKey()*29+5,true)), V=fxrS();
+  const hd=`<span class="label">✈️ AIRPORT · りょうがえ所</span>`;
+  const board=`<div class="fxr-board"><div class="fxr-bh"><span>EXCHANGE RATE</span><span>きょうのレート</span></div>
+    <div class="fxr-row"><span class="fxr-cur">🇺🇸 USD</span><span class="fxr-eq">1ドル ＝</span><span class="fxr-num">${fxrFlap(X.rate)}</span><span class="fxr-eq">円</span></div></div>`;
+  if(X.ph==='board') return `<div class="fxr">${hd}<h3 class="ttl">AZAKEI空港 りょうがえ所</h3>${board}
+    <div class="fxr-wal"><span>👛 おこづかい</span><b>${X.yen.toLocaleString()}円</b></div>
+    <p class="fxr-lead">アメリカで おみやげを買うには <b>ドル</b>が いるよ。きょうのレートだと、${X.yen.toLocaleString()}円 は <b>${X.usd}ドル</b> になる（${X.yen}÷${X.rate}）</p>
+    <button class="btn gold big" style="width:100%" onclick="fxrEx()">💱 ドルに 両替する</button>
+    <p class="note">レートは ゲーム用の かくうの数字。ほんとうの両替では 手数料も かかるよ</p></div>`;
+  if(X.ph==='swap') return `<div class="fxr">${hd}<h3 class="ttl">両替中…</h3>${board}
+    <div class="fxr-win"><div class="fxr-fly a">${'<i>💴</i>'.repeat(5)}</div><div class="fxr-cnt">🏦<small>窓口</small></div><div class="fxr-fly b">${'<i>💵</i>'.repeat(5)}</div></div>
+    <p class="fxr-lead" style="text-align:center"><b>${X.yen.toLocaleString()}円</b> → <b>${X.usd}ドル</b></p></div>`;
+  const sp=fxrSpent(), left=X.usd-sp;
+  if(X.ph==='shop') return `<div class="fxr">${hd}<h3 class="ttl">🗽 アメリカの おみやげ屋</h3>
+    <div class="fxr-wal"><span>💵 のこり</span><b>${left}ドル</b><small>（${X.usd}ドル中）</small></div>
+    <div class="fxr-items">${FXR_IT.map((it,i)=>{ const on=X.cart.includes(i), no=!on&&it.p>left; return `<button class="fxr-it${on?' on':''}${no?' no':''}" style="--d:${i*.05}s" onclick="fxrTog(${i})"><span>${it.ic}</span><b>${it.n}</b><em>$${it.p}</em><small>≈${(it.p*X.rate).toLocaleString()}円</small>${on?'<i>✓</i>':''}</button>`; }).join('')}</div>
+    <p class="note">「≈○円」は きょうのレート（1ドル＝${X.rate}円）で 円にすると いくらか</p>
+    <button class="btn gold big" style="width:100%" onclick="fxrCmp()" ${X.cart.length?'':'disabled'}>🛍️ おかいもの おわり ›</button></div>`;
+  if(X.ph==='cmp'){ const R=[{r:100,t:'1ドル＝100円 の日'},{r:X.rate,t:'きょう（1ドル＝'+X.rate+'円）',me:1},{r:150,t:'1ドル＝150円 の日'}].filter(o=>o.me||o.r!==FXX.rate).sort((a,b)=>a.r-b.r), mx=Math.floor(3000/Math.min(...R.map(o=>o.r)));
+    return `<div class="fxr">${hd}<h3 class="ttl">同じ 3000円 でも…</h3>
+      <div class="fxr-cmp">${R.map((o,k)=>{ const d=Math.floor(3000/o.r); return `<div class="fxr-c${o.me?' me':''}" style="--d:${k*.25}s"><span>${o.t}</span><i><em style="--w:${d/mx*100}%"></em></i><b>${d}ドル</b></div>`; }).join('')}</div>
+      <div class="fxr-arrow"><div><b>円高</b><small>1ドルが 少ない円で買える<br>円の力が 強い 💪</small></div><span>⇄</span><div><b>円安</b><small>1ドルに 円が たくさんいる<br>円の力が 弱い</small></div></div>
+      <div class="fxr-eff"><b>円安になると…</b>
+        <div><i>🍌</i><span>外国から買う物（バナナ・ガソリンなど）が <b>高くなりやすい</b></span></div>
+        <div><i>✈️</i><span>日本からの 海外旅行が <b>高くなりやすい</b></span></div>
+        <div><i>🧳</i><span>日本に来る 外国の旅行者は <b>買い物しやすい</b></span></div>
+        <div><i>🚗</i><span>外国に物を売る 日本の会社は <b>もうけが ふえやすい</b></span></div>
+        <small>円高のときは だいたい この反対。どちらにも 得する人と こまる人が いるよ</small></div>
+      <div class="fxr-bag">🛍️ 買ったもの：${X.cart.map(i=>FXR_IT[i].ic).join(' ')} ＝ ${sp}ドル（きょうのレートで ${(sp*X.rate).toLocaleString()}円 ぶん）</div>
+      <button class="btn gold big" style="width:100%" onclick="fxrQuiz()">❓ 円高・円安 クイズ（3問） ›</button></div>`; }
+  if(X.ph==='quiz'){ const Q=FXR_Q[X.qs[X.qi]];
+    return `<div class="fxr">${hd}<h3 class="ttl">クイズ ${X.qi+1} / 3</h3>
+      <div class="fxr-q" key="${X.qi}"><p>${Q.q}</p><div class="fxr-qa">${Q.a.map((a,k)=>`<button class="fxr-qb${X.ans===null?'':k===Q.k?' ok':k===X.ans?' ng':' dim'}" onclick="fxrAns(${k})">${a}</button>`).join('')}</div>
+      ${X.ans===null?'':`<div class="fxr-why ${X.ans===Q.k?'ok':'ng'}"><b>${X.ans===Q.k?'⭕ せいかい！':'❌ ざんねん'}</b><span>${Q.w}</span></div>`}</div>
+      ${X.ans===null?'':`<button class="btn gold big" style="width:100%" onclick="fxrNext()">${X.qi<2?'つぎへ ›':'けっかを見る ›'}</button>`}</div>`; }
+  return `<div class="fxr">${hd}<h3 class="ttl">✈️ おかえりなさい！</h3>
+    <div class="fxr-score"><b>${X.ok} / 3</b><span>${X.ok===3?'両替マスター！':X.ok>=2?'あと少し！':'もういちど ためしてみよう'}</span></div>
+    <div class="fxr-eff"><b>本物の レートのこと</b>
+      <div><i>📜</i><span>むかし（1949〜1971年）は <b>1ドル＝360円</b> と決まっていた</span></div>
+      <div><i>📈</i><span>1973年からは、ドルと円を 売り買いする人の 多さで <b>毎日 レートが かわる</b> しくみ（変動相場制）</span></div></div>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> 数字が 大きくなると「円安」って、ちょっと ふしぎだよね。「<span class="fk-em">1ドルを買うのに 円が いくつ いる？</span>」と考えると まちがえにくいよ。ニュースで レートを見たら、思い出してみてね</p></div>
+    <div class="row" style="gap:6px"><button class="btn ghost" style="flex:1" onclick="fxrAgain()">🔀 べつの日</button><button class="btn gold" style="flex:1" onclick="closeSheet()">とじる</button></div>
+    <p class="note">レート・ねだんは ゲーム用。${V.day===todayKey()?'きょうのコインは受け取りずみ':'1日1回 🪙10（全問せいかいで +5）'}</p></div>`; }
+AST.push({n:'AZAKEI空港',ic:'✈️',c:'#2a7ab8',a:'#eaf6ff',h:206,f:()=>fxrOpen(),b:()=>fxrS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('AZAKEI空港'); }catch(e){}
+try{ const C={id:'fx',ic:'💱',n:'円高・円安',d:'1ドルを買うのに 円が たくさんいるのが 円安、少なくてすむのが 円高。円安だと 外国の物が 高くなりやすい',shop:'AZAKEI空港',fn:'fxrFin'}; MNB.push(C); mnbHook(C); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -11697,6 +11811,7 @@ function renderSheet(){
   else if(k==='mnb') body=mnbBody();
   else if(k==='sns') body=snsBody();
   else if(k==='vot') body=votBody();
+  else if(k==='fxr') body=fxrBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
