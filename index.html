@@ -6209,6 +6209,39 @@ html.lite .tur-chip,html.lite .tur-hl{animation:none!important}
 .sns-tl{width:100%;height:5px;border-radius:99px;background:rgb(255 255 255 / .1);overflow:hidden}.sns-tl em{display:block;height:100%;width:0;animation:skdW 1.6s .9s forwards;--w:100%}
 .sns-col.bad .sns-tl em{background:#ff6a7e}.sns-col.good .sns-tl em{background:#7cf29a}
 @media (prefers-reduced-motion:reduce){.sns *{animation-duration:.01s!important;animation-delay:0s!important}}
+/* 🗳️ まちの選挙 */
+.vot{display:flex;flex-direction:column;gap:10px}.vot>*{flex:none}
+.vot-lead{margin:0;font-size:12.5px;line-height:1.6;font-weight:700}.vot-lead b{color:var(--gold)}
+.vot-cands{display:flex;flex-direction:column;gap:7px}
+.vot-c{border-radius:16px;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden;animation:sgIn .35s var(--d) both}
+.vot-c.open{box-shadow:inset 0 0 0 2px #4fa8ff}
+.vot-ch{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:0;background:none;color:inherit;cursor:pointer;text-align:left}
+.vot-face{flex:none;width:48px;height:48px;display:grid;place-items:center;font-size:30px;border-radius:50%;background:linear-gradient(180deg,#fff,#e0eaff);box-shadow:0 0 0 3px #4fa8ff}
+.vot-ch>span:nth-child(2){flex:1;display:flex;flex-direction:column;min-width:0}.vot-ch small{font-size:10px;font-weight:900;opacity:.6}.vot-ch b{font-size:15px}.vot-ch em{font-style:normal;font-size:12.5px;font-weight:800;color:#ffe58a}
+.vot-ch>i{font-style:normal;font-size:11px;opacity:.6}
+.vot-det{display:flex;flex-direction:column;gap:6px;padding:0 12px 12px;animation:sgIn .3s both}
+.vot-det>div{display:flex;flex-direction:column;padding:6px 10px;border-radius:10px;background:rgb(255 255 255 / .05)}.vot-det small{font-size:10.5px;font-weight:900;opacity:.75}.vot-det b{font-size:13px}
+.vot-det .g{background:rgb(124 242 154 / .1)}.vot-det .c{background:rgb(255 200 58 / .1)}
+.vot-booth{position:relative;display:flex;flex-direction:column;align-items:center;gap:0;padding:14px 0 6px}
+.vot-paper{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:4px;width:190px;padding:10px 12px;border-radius:4px;color:#2a2a3a;background:repeating-linear-gradient(0deg,#fdfcf4 0 18px,#eef0e4 18px 19px);box-shadow:0 6px 14px rgb(0 0 0 / .35)}
+.vot-paper small{font-size:9.5px;font-weight:800;opacity:.7}.vot-wr{font:700 30px "Yu Mincho","Hiragino Mincho ProN",serif;letter-spacing:4px;padding:2px 10px;border-bottom:1.5px solid #888;animation:votWr .7s steps(6) both}
+@keyframes votWr{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.vot-box{position:relative;margin-top:-6px;width:170px;height:84px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;border-radius:6px 6px 10px 10px;color:#fff;background:linear-gradient(180deg,#4a6ab8,#2a4a8a);box-shadow:inset 0 0 0 3px #6a8ad8,0 6px 14px rgb(0 0 0 / .35)}
+.vot-box b{font-size:13px;letter-spacing:3px}.vot-box .slot{position:absolute;top:12px;left:50%;width:100px;height:6px;margin-left:-50px;border-radius:3px;background:#0a1a3a}
+.vot-booth.drop .vot-paper{width:120px;animation:votDrop .9s cubic-bezier(.5,0,.7,1) forwards}.vot-booth.drop .vot-wr{animation:none;font-size:20px}
+@keyframes votDrop{0%{transform:none}35%{transform:scaleY(.5) translateY(-10px)}100%{transform:scaleY(.4) translateY(90px);opacity:0}}
+.vot-res{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:var(--panel2)}
+.vot-r{display:grid;grid-template-columns:96px 1fr 50px;align-items:center;gap:6px;font-size:12.5px;font-weight:800}.vot-r>b{text-align:right;opacity:0;animation:sgIn .3s 2.6s forwards}
+.vot-r>i{height:16px;border-radius:99px;background:rgb(255 255 255 / .08);overflow:hidden}.vot-r em{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#4fa8ff,#8ac8ff);animation:skdW 1.6s 1s cubic-bezier(.3,.7,.4,1) forwards}
+.vot-r.win em{background:linear-gradient(90deg,#ffc83a,#ff8c5a)}
+.vot-win{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;border-radius:16px;background:linear-gradient(180deg,rgb(255 200 58 / .22),var(--panel2));box-shadow:inset 0 0 0 2px var(--gold);opacity:0;animation:votPop .5s 2.8s cubic-bezier(.2,.9,.3,1.3) forwards}@keyframes votPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.vot-win>span{font-size:12px;font-weight:900;color:var(--gold)}.vot-win>b{font:400 24px var(--display,sans-serif)}.vot-win>small{font-size:11px;text-align:center;opacity:.85}
+.vot-next{opacity:0;animation:sgIn .35s 3.2s forwards}
+.vot-news{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:6px;color:#2a2418;background:#f6f0e0;box-shadow:0 6px 14px rgb(0 0 0 / .3);font-family:"Yu Mincho","Hiragino Mincho ProN",serif;animation:sgIn .4s both}
+.vot-news small{font:900 11px var(--body,sans-serif);letter-spacing:2px;padding-bottom:3px;border-bottom:2px double #6a5a40}.vot-news b{font-size:18px}.vot-news p{margin:0;font-size:13px;line-height:1.7;font-weight:600}
+.vot-facts{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:var(--panel2)}.vot-facts>b{font-size:13px}
+.vot-facts>div{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5}.vot-facts i{font-style:normal;font-size:20px}.vot-facts span b{color:#8ac8ff}
+@media (prefers-reduced-motion:reduce){.vot *{animation-duration:.01s!important;animation-delay:0s!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -10330,6 +10363,59 @@ function snsBody(){ const X=SNX, {cost,g}=snsSum(), K=snsS();
 AST.push({n:'そなえショップ',ic:'🎒',c:'#d8603a',a:'#fff0e8',h:104,f:()=>snsOpen(),b:()=>snsS().day===todayKey()?0:'!'});
 try{ SMAP_G[2].shops.push('そなえショップ'); }catch(e){}
 try{ const C={id:'stock',ic:'🎒',n:'ローリングストック',d:'ふだん食べる物を 少し多めに買い、古いものから食べて 食べたぶん買い足す。そなえが ムダにならない',shop:'そなえショップ',fn:'snsCheck'}; MNB.push(C); mnbHook(C); }catch(e){}
+/* ---- 🗳️ まちの選挙：3人の候補者の「公約」と「財源（そのお金をどこから出すか）」をくらべて投票 → 開票 → 1年後のまち。
+   どの候補にも いいこと・気になることがある（正解はない）。選挙権18さい以上（2016年から）など制度の話は実際のもの、候補者とまちの話はおはなし ---- */
+const VOT_C=[
+  {ic:'🐻',n:'クマ山',p:'公園を2倍に広げます',fund:'税金を すこし上げる',good:'遊ぶ場所が ふえる',care:'みんなが はらうお金が ふえる',after:'公園は広くなって、休みの日は にぎやか。でも 税金が上がって「高くなったね」という声も。'},
+  {ic:'🦊',n:'キツネ川',p:'税金を下げます',fund:'バスの本数を へらす',good:'はらうお金が へる',care:'バスが 不便になる',after:'税金は下がった！ でも バスが1時間に1本になって、車のない お年よりが こまっている。'},
+  {ic:'🐰',n:'ウサ田',p:'図書館を 夜9時まで あけます',fund:'役場のムダな出費を 見直す',good:'新しいお金が あまりいらない',care:'ムダが本当に 見つかるかは わからない',after:'ムダを見直して 図書館は夜まで開いた。ただ、見直しに 半年かかった。'},
+  {ic:'🐼',n:'パン田',p:'給食を 無料にします',fund:'道路の工事を あとまわしにする',good:'家の負担が へる',care:'こわれた道路が そのままに',after:'給食は無料に！ でも でこぼこ道が ふえて、自転車の人が こまっている。'},
+  {ic:'🦉',n:'フクロウ谷',p:'商店街に 大きな駐車場を つくります',fund:'まちの貯金を 使う',good:'遠くから お客さんが来る',care:'貯金がへって、もしもの時に 使えない',after:'お客さんは ふえた。でも 大雨のあとの修理で お金が たりなくなった。'},
+  {ic:'🐢',n:'カメ井',p:'まちに 木を たくさん植えます',fund:'寄付と ボランティアを つのる',good:'まちが すずしく きれいに',care:'寄付が 集まらないと すすまない',after:'みんなが参加して 木が200本。でも 予定の半分しか 植えられなかった。'}];
+let VOX=null;
+function votS(){ const P=S.prof; if(!P.vot) P.vot={day:0,n:0,won:0}; return P.vot; }
+function votNew(seed,daily){ const R=mulberry(seed), ix=VOT_C.map((_,i)=>i).map(i=>[R(),i]).sort((a,b)=>a[0]-b[0]).slice(0,3).map(a=>a[1]);
+  const N=240, turn=.45+R()*.25, voters=Math.round(N*turn), w=ix.map(()=>.6+R()), ws=w.reduce((a,b)=>a+b);
+  const base=w.map(x=>Math.floor(voters*x/ws)); return {ix, N, voters, base, open:null, pick:null, ph:'read', daily}; }
+function votOpen(){ VOX=votNew(todayKey()*23+9,true); openSheet('vot'); sfx('open'); }
+function votAgain(){ VOX=votNew((Math.random()*1e9)|0,false); sfx('deal'); renderSheet(); }
+function votTog(k){ VOX.open=VOX.open===k?null:k; sfx('flip'); renderSheet(); }
+function votPick(k){ VOX.pick=k; VOX.ph='ballot'; sfx('select'); haptic(6); renderSheet(); }
+function votCast(){ const X=VOX; if(X.ph!=='ballot') return; X.votes=X.base.map((v,k)=>v+(k===X.pick?1:0)); X.voters=X.votes.reduce((a,b)=>a+b,0); const mx=Math.max(...X.votes); X.win=X.votes.indexOf(mx); X.ph='count'; sfx('slam'); haptic(15);
+  const V=votS(); if(X.win===X.pick) V.won=(V.won||0)+1;
+  if(X.daily && V.day!==todayKey()){ V.day=todayKey(); V.n=(V.n||0)+1; S.prof.coin=(S.prof.coin||0)+10; setTimeout(()=>toast('🗳️ 投票おつかれさま！ 🪙+10'),3200); }
+  saveProfile(); setTimeout(()=>{ if(S.sheet==='vot') sfx('fanfare'); },2900); renderSheet(); }
+function votAfter(){ VOX.ph='after'; sfx('whoosh'); renderSheet(); }
+function votBody(){ const X=VOX||(VOX=votNew(todayKey()*23+9,true)), V=votS(), C=X.ix.map(i=>VOT_C[i]);
+  const hd=`<span class="label">🗳️ ELECTION · まちの選挙</span>`;
+  if(X.ph==='read') return `<div class="vot">${hd}<h3 class="ttl">AZAKEIまち 町長選挙</h3>
+    <p class="vot-lead">3人が 町長に立候補したよ。<b>公約</b>（やくそく）と、<b>財源</b>（そのお金をどこから出すか）を くらべて、1人に投票しよう</p>
+    <div class="vot-cands">${C.map((c,k)=>`<div class="vot-c${X.open===k?' open':''}" style="--d:${k*.1}s"><button class="vot-ch" onclick="votTog(${k})"><span class="vot-face">${c.ic}</span><span><small>候補者 ${k+1}</small><b>${c.n}さん</b><em>「${c.p}」</em></span><i>${X.open===k?'▲':'▼'}</i></button>
+      ${X.open===k?`<div class="vot-det"><div><small>💰 財源</small><b>${c.fund}</b></div><div class="g"><small>👍 いいこと</small><b>${c.good}</b></div><div class="c"><small>🤔 気になること</small><b>${c.care}</b></div><button class="btn gold" style="width:100%" onclick="votPick(${k})">🗳️ ${c.n}さんに 投票する</button></div>`:''}</div>`).join('')}</div>
+    <p class="note">▼をタップすると くわしく見られるよ。だれに入れたかは ひみつにできる（秘密投票）</p></div>`;
+  if(X.ph==='ballot'){ const c=C[X.pick];
+    return `<div class="vot">${hd}<h3 class="ttl">投票所</h3>
+      <div class="vot-booth"><div class="vot-paper"><small>AZAKEIまち 町長選挙 投票用紙</small><span class="vot-wr">${c.n}</span><small class="vot-ft">候補者の名前を 書いて 投票箱へ</small></div><div class="vot-box"><i class="slot"></i><b>投票箱</b></div></div>
+      <div class="row" style="gap:6px"><button class="btn ghost" style="flex:1" onclick="VOX.ph='read';sfx('click');renderSheet()">‹ えらびなおす</button><button class="btn gold" style="flex:2" onclick="votCast()">📮 投票箱に入れる</button></div></div>`; }
+  if(X.ph==='count'){ const mx=Math.max(...X.votes);
+    return `<div class="vot">${hd}<h3 class="ttl">開票！</h3>
+      <div class="vot-booth drop"><div class="vot-paper fold"><span class="vot-wr">${C[X.pick].n}</span></div><div class="vot-box"><i class="slot"></i><b>投票箱</b></div></div>
+      <div class="vot-res">${C.map((c,k)=>`<div class="vot-r${k===X.win?' win':''}"><span>${c.ic} ${c.n}</span><i><em style="--w:${X.votes[k]/mx*100}%"></em></i><b>${X.votes[k]}票</b></div>`).join('')}</div>
+      <div class="vot-win"><span>🎉 当選</span><b>${C[X.win].ic} ${C[X.win].n}さん</b><small>投票した人 ${X.voters}人 / ${X.N}人（投票率 ${Math.round(X.voters/X.N*100)}%）${X.win===X.pick?'・あなたの えらんだ人！':''}</small></div>
+      <button class="btn gold big vot-next" style="width:100%" onclick="votAfter()">📅 1年後の まちを見る ›</button></div>`; }
+  const W=C[X.win];
+  return `<div class="vot">${hd}<h3 class="ttl">1年後の AZAKEIまち</h3>
+    <div class="vot-news"><small>AZAKEI新聞</small><b>${W.ic} ${W.n}町長の1年</b><p>「${W.p}」 → ${W.after}</p></div>
+    <div class="vot-facts"><b>本物の選挙のこと</b>
+      <div><i>🎂</i><span>日本では <b>18さい以上</b>になると 投票できる（2016年から。それまでは20さい以上）</span></div>
+      <div><i>🤫</i><span>だれに投票したかは <b>ひみつ</b>にできる</span></div>
+      <div><i>📅</i><span>選挙の日に行けない人は、前もって投票できる <b>期日前投票</b>もある</span></div></div>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> どの公約にも いいことと 気になることが あったね。「<span class="fk-em">そのお金は どこから出すの？</span>」を考えると、公約が ぐっと くらべやすくなるよ。投票する人が少ないと、少ない人の意見だけで まちのことが決まっちゃうんだ</p></div>
+    <div class="row" style="gap:6px"><button class="btn ghost" style="flex:1" onclick="votAgain()">🔀 べつの選挙</button><button class="btn gold" style="flex:1" onclick="closeSheet()">とじる</button></div>
+    <p class="note">候補者・票の数・1年後の話は このおはなし。${V.day===todayKey()?'きょうのコインは受け取りずみ':'1日1回 🪙10'}</p></div>`; }
+AST.push({n:'まちの選挙',ic:'🗳️',c:'#3a6ab8',a:'#eef4ff',h:108,f:()=>votOpen(),b:()=>votS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('まちの選挙'); }catch(e){}
+try{ const C={id:'vote',ic:'🗳️',n:'選挙と公約',d:'公約（やくそく）と 財源（お金をどこから出すか）を くらべて 投票する。日本では18さい以上が 投票できる',shop:'まちの選挙',fn:'votCast'}; MNB.push(C); mnbHook(C); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -11610,6 +11696,7 @@ function renderSheet(){
   else if(k==='bky') body=bkyBody();
   else if(k==='mnb') body=mnbBody();
   else if(k==='sns') body=snsBody();
+  else if(k==='vot') body=votBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
