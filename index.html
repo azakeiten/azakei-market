@@ -6087,6 +6087,34 @@ html.lite .tur-chip,html.lite .tur-hl{animation:none!important}
 .skd-gave span:not(.oc){animation-name:skdIn2}@keyframes skdIn2{from{opacity:0;transform:translateY(8px)}to{opacity:.55;transform:none}}
 .skd-talk{opacity:0;animation:skdIn .4s 3.8s forwards}.skd-end{opacity:0;animation:skdIn .4s 4s forwards}
 @media (prefers-reduced-motion:reduce){.skd *{animation-duration:.01s!important;animation-delay:0s!important}}
+/* 🛡️ スマホ見やぶり隊 */
+.mtr{display:flex;flex-direction:column;gap:10px}.mtr>*{flex:none}
+.mtr-ph{--sw:0;position:relative;margin:0 auto;width:min(100%,300px);min-height:330px;padding:34px 12px 30px;border-radius:34px;background:linear-gradient(180deg,#1e2a5a,#3a2a6a 60%,#5a3a6a);box-shadow:0 0 0 6px #14141e,0 0 0 8px #3a3a4a,0 12px 30px rgb(0 0 0 / .5);overflow:hidden}
+.mtr-ph::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgb(255 90 110 / calc(var(--sw) * -0.45)),transparent 45%,transparent 55%,rgb(90 230 140 / calc(var(--sw) * 0.45)))}
+.mtr-notch{position:absolute;left:50%;top:8px;width:84px;height:20px;margin-left:-42px;border-radius:99px;background:#0a0a12}
+.mtr-sb{position:absolute;left:22px;right:22px;top:10px;display:flex;justify-content:space-between;font-size:11px;font-weight:800;opacity:.85}
+.mtr-hint{position:absolute;top:44px;font-style:normal;font-size:12px;font-weight:900;padding:3px 8px;border-radius:99px;opacity:.35}
+.mtr-hint.l{left:12px;color:#ff98a6;background:rgb(255 90 110 / .15);opacity:calc(.35 + var(--sw) * -0.65)}.mtr-hint.r{right:12px;color:#8affb0;background:rgb(90 230 140 / .15);opacity:calc(.35 + var(--sw) * 0.65)}
+.mtr-card{position:relative;margin-top:36px;padding:12px 14px;border-radius:18px;color:#1e1e2e;background:rgb(255 255 255 / .96);box-shadow:0 8px 20px rgb(0 0 0 / .35);touch-action:pan-y;cursor:grab;user-select:none;transition:transform .25s cubic-bezier(.2,.9,.3,1.3);animation:mtrIn .45s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes mtrIn{from{opacity:0;transform:translateY(-30px) scale(.92)}to{opacity:1;transform:none}}
+.mtr-from{display:flex;align-items:center;gap:6px}.mtr-from i{font-style:normal;font-size:20px;width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#eef0f8}.mtr-from b{font-size:12.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mtr-from small{font-size:10px;opacity:.55}
+.mtr-card p{margin:8px 0 6px;font-size:13.5px;font-weight:700;line-height:1.6}
+.mtr-fake{display:inline-block;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:900;color:#fff;background:linear-gradient(180deg,#ff6a8a,#e0406a)}
+.mtr-mk{background:linear-gradient(transparent 55%,rgb(255 106 126 / .55) 55%);color:inherit;padding:0 1px;animation:mtrMk .5s both}
+@keyframes mtrMk{from{background-size:0 100%}to{background-size:100% 100%}}
+.mtr-mk{background-repeat:no-repeat}
+.mtr-card.right{box-shadow:0 0 0 3px #3ac87a,0 8px 20px rgb(0 0 0 / .35)}.mtr-card.wrong{box-shadow:0 0 0 3px #ff6a7e,0 8px 20px rgb(0 0 0 / .35);animation:shake .35s both}
+.mtr-ans{margin-top:10px;padding:8px 10px;border-radius:12px;font-size:12px;line-height:1.55;animation:sgIn .35s both}.mtr-ans b{display:block;font-size:12.5px;margin-bottom:2px}
+.mtr-ans.bad{background:#fff0f2;color:#8a1a2a}.mtr-ans.ok{background:#eafff2;color:#1a5a3a}
+.mtr-dots{position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:5px}.mtr-dots i{width:7px;height:7px;border-radius:50%;background:rgb(255 255 255 / .25)}.mtr-dots i.d{background:rgb(255 255 255 / .7)}.mtr-dots i.n{background:#ffe58a;box-shadow:0 0 6px #ffe58a}
+.mtr-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mtr-b{padding:13px 6px;border:0;border-radius:16px;cursor:pointer;font-weight:900;font-size:15px;color:#fff;transition:transform .1s}.mtr-b:active{transform:scale(.96)}
+.mtr-b.bad{background:linear-gradient(180deg,#ff7a8e,#d8405a);box-shadow:0 3px 0 #9a2a3e}.mtr-b.ok{background:linear-gradient(180deg,#4ad890,#26a868);box-shadow:0 3px 0 #1a7a4a}
+.mtr-badge{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px;border-radius:18px;background:var(--panel2);animation:popn .5s both}.mtr-badge i{font-style:normal;font-size:48px}.mtr-badge b{font-size:16px}
+.mtr-badge.gold{background:linear-gradient(180deg,rgb(255 200 58 / .25),var(--panel2));box-shadow:inset 0 0 0 2px var(--gold)}
+.mtr-rules{display:flex;flex-direction:column;gap:7px;padding:10px 12px;border-radius:14px;background:var(--panel2)}.mtr-rules>b{font-size:13px}
+.mtr-rules>div{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5;animation:sgIn .35s var(--d) both}.mtr-rules i{font-style:normal;font-size:22px}.mtr-rules span b{display:block;font-size:13px}
+@media (prefers-reduced-motion:reduce){.mtr *{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -10001,6 +10029,67 @@ function skdBody(){ const X=SKX, used=skdUsed();
     <p class="note">ぜんぶやると16時間。半分しか入らないよ。1日1回 🪙10</p></div>`; }
 AST.push({n:'ミオの土曜日',ic:'🗓️',c:'#4a8ad8',a:'#eaf4ff',h:102,f:()=>skdOpen(),b:()=>skdS().day===todayKey()?0:'!'});
 try{ SMAP_G[1].shops.push('ミオの土曜日'); }catch(e){}
+/* ---- 🛡️ スマホ見やぶり隊：スマホにとどくメッセージを「あやしい ❌ / だいじょうぶ ⭕」に見分ける（左右スワイプ or ボタン）。
+   答えると、あやしいポイントに線が引かれて理由が出る。最後に「3つのおやくそく」と 消費者ホットライン188 ---- */
+const MTR_POOL=[
+  {bad:1,ic:'🎁',from:'プレゼント事務局',t:'おめでとうございます！あなたは[[1000万人目]]の訪問者です。賞品を受け取るには[[今すぐここをタップ]]',btn:'賞品を受け取る',why:'知らない相手からの「当選しました」は ほとんどがウソ。タップさせて 個人情報やお金を とろうとしているよ'},
+  {bad:1,ic:'⚠️',from:'secure-acc0unt.xyz',t:'【重要】あなたのアカウントは[[24時間以内に停止]]されます。[[今すぐパスワードを入力]]してください',btn:'ログインする',why:'「停止される」と あわてさせて パスワードを ぬすむ手口（フィッシング）。本物の会社は メッセージで パスワードを 聞かないよ'},
+  {bad:1,ic:'💎',from:'無料ジェム配布',t:'[[タダで10000ジェム]]もらえる！[[IDとパスワード]]を入力するだけ！',btn:'ジェムをもらう',why:'「タダでもらえる」と言って IDとパスワードを聞くのは アカウントを のっとる手口。パスワードは だれにも教えない'},
+  {bad:1,ic:'🦠',from:'セキュリティ警告',t:'このスマホは[[ウイルスに感染]]しています！[[今すぐこのアプリを入れて]]ください',btn:'アプリを入れる',why:'こわがらせて 変なアプリを入れさせる手口。画面の警告だけで あわてず、おうちの人に見せよう'},
+  {bad:1,ic:'👤',from:'しらない人',t:'ゲームで仲よくなったね！きみの[[住所と学校]]おしえて？[[プレゼントおくる]]よ',btn:'返信する',why:'ネットだけで知り合った人に 住所・学校・写真を 教えちゃダメ。やさしい言葉でも 会ったことのない人だよ'},
+  {bad:1,ic:'🎵',from:'音楽アプリ',t:'今だけ！[[最初の1か月 100円]]で聞き放題 [[※2か月目からは毎月980円・自動で更新]]',btn:'はじめる',why:'これは「サブスク（定期購入）」。はじめは安くても、やめる手続きをしないと 毎月お金がかかりつづける。小さい字まで 読もう'},
+  {bad:1,ic:'🎰',from:'ガチャ広告',t:'10連ガチャ！ [[あと1回で 必ずレア！]] [[残り時間 00:59]]',btn:'もう1回まわす',why:'「あと1回」「残りわずか」は 急がせて 何回もお金を使わせる作戦。使う金額は 先に決めておこう'},
+  {bad:1,ic:'📦',from:'+81 80-xxxx-xxxx',t:'お荷物を おあずかりしています。[[下記URLから確認]]してください [[http://bit-xx.top]]',btn:'URLをひらく',why:'宅配便を名のる ニセのメッセージ。知らない番号からの URL は ひらかない。本物か気になったら おうちの人に'},
+  {bad:0,ic:'🏠',from:'おうちの人',t:'きょうは6時に帰るね。宿題やっておいてね',why:'いつもの家族からの ふつうの連絡。リンクも お金の話もないね'},
+  {bad:0,ic:'🏫',from:'学校れんらく帳',t:'明日は体育があります。体操服を持ってきてください',why:'学校からの お知らせ。何かを入力させたり、お金をはらわせたりしていないね'},
+  {bad:0,ic:'📚',from:'AZAKEI図書館',t:'予約した本が届きました。カウンターで受け取ってください',why:'受け取りは「カウンターで」。メッセージの中で 情報を入力させないから 安心'},
+  {bad:0,ic:'🎮',from:'ゲームのお知らせ',t:'メンテナンスは15時までです。くわしくはゲーム内のお知らせを見てね',why:'「ゲームの中で確認して」と 正しい場所に案内しているね。パスワードも聞いていない'},
+  {bad:0,ic:'🧒',from:'ともだち（いつもの子）',t:'明日の公園、10時でいい？',why:'いつも会っている友だちとの約束。ふつうのやりとりだね'},
+  {bad:0,ic:'🌦️',from:'天気アプリ',t:'午後から雨のよほう。かさを持っていこう',why:'天気のお知らせ。タップしても お金や情報は とられないよ'}];
+let MTX=null;
+function mtrS(){ const P=S.prof; if(!P.mtr) P.mtr={day:0,n:0,best:0}; return P.mtr; }
+function mtrNew(seed,daily){ const R=mulberry(seed), bad=MTR_POOL.filter(x=>x.bad), ok=MTR_POOL.filter(x=>!x.bad), sh=a=>a.map(v=>[R(),v]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+  const deck=sh([...sh(bad).slice(0,5),...sh(ok).slice(0,3)]); return {deck,i:0,ok:0,ans:null,daily,end:false}; }
+function mtrOpen(){ MTX=mtrNew(todayKey()*17+3,true); openSheet('mtr'); sfx('open'); }
+function mtrAgain(){ MTX=mtrNew((Math.random()*1e9)|0,false); sfx('deal'); renderSheet(); }
+function mtrAns(bad){ const X=MTX; if(!X||X.ans!=null||X.end) return; const C=X.deck[X.i], right=(!!C.bad)===bad; X.ans={bad,right}; if(right) X.ok++;
+  sfx(right?'coin':'buzz'); haptic(right?8:25); renderSheet(); }
+function mtrNext(){ const X=MTX; if(X.i<X.deck.length-1){ X.i++; X.ans=null; sfx('flip'); renderSheet(); return; }
+  X.end=true; const M=mtrS(); if(X.ok>(M.best||0)) M.best=X.ok;
+  if(X.daily && M.day!==todayKey()){ M.day=todayKey(); M.n=(M.n||0)+1; S.prof.coin=(S.prof.coin||0)+10+(X.ok===X.deck.length?5:0); setTimeout(()=>toast(`🛡️ 見やぶり隊 🪙+${10+(X.ok===X.deck.length?5:0)}`),400); }
+  saveProfile(); sfx('fanfare'); if(X.ok>=6) try{ confetti(); }catch(e){} renderSheet(); }
+let MTR_D=null;
+function mtrDown(e){ if(!MTX||MTX.ans!=null) return; const el=e.currentTarget; MTR_D={x:e.clientX,el}; try{ el.setPointerCapture(e.pointerId); }catch(_){} el.style.transition='none'; }
+function mtrMove(e){ if(!MTR_D) return; const dx=e.clientX-MTR_D.x; MTR_D.dx=dx; MTR_D.el.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`; const ph=MTR_D.el.closest('.mtr-ph'); if(ph){ ph.style.setProperty('--sw',Math.max(-1,Math.min(1,dx/90))); } }
+function mtrUp(){ if(!MTR_D) return; const dx=MTR_D.dx||0, el=MTR_D.el; MTR_D=null; el.style.transition=''; el.style.transform=''; const ph=el.closest('.mtr-ph'); if(ph) ph.style.setProperty('--sw',0);
+  if(dx<-80) mtrAns(true); else if(dx>80) mtrAns(false); }
+function mtrText(t,show){ return esc(t).replace(/\[\[(.+?)\]\]/g,(_,w)=>show?`<mark class="mtr-mk">${w}</mark>`:w); }
+function mtrBody(){ const X=MTX||(MTX=mtrNew(todayKey()*17+3,true)), M=mtrS();
+  if(X.end){ const n=X.deck.length;
+    return `<div class="mtr"><span class="label">🛡️ SAFETY · スマホのお金トラブル</span><h3 class="ttl">${X.ok}/${n} 見やぶった！</h3>
+      <div class="mtr-badge${X.ok===n?' gold':''}"><i>${X.ok===n?'🏅':X.ok>=6?'🛡️':'🔰'}</i><b>${X.ok===n?'見やぶり名人':X.ok>=6?'見やぶり隊員':'見習い隊員'}</b></div>
+      <div class="mtr-rules"><b>スマホの3つのおやくそく</b>
+        <div style="--d:.1s"><i>✋</i><span><b>あわてて おさない</b>「今すぐ」「あと1回」「停止されます」は 急がせる作戦</span></div>
+        <div style="--d:.25s"><i>🔒</i><span><b>パスワード・住所・学校は 教えない</b>本物の会社は メッセージで パスワードを聞かない</span></div>
+        <div style="--d:.4s"><i>🗣️</i><span><b>こまったら すぐ おうちの人に</b>「おかしいな？」と思ったら 1人でなやまない</span></div></div>
+      <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> お金のトラブルで こまったときは、おうちの人といっしょに <span class="fk-em">消費者ホットライン「188（いやや！）」</span>に電話すると、近くの相談窓口を 案内してもらえるよ</p></div>
+      <div class="row" style="gap:6px"><button class="btn ghost" style="flex:1" onclick="mtrAgain()">🔀 べつのメッセージで</button><button class="btn gold" style="flex:1" onclick="closeSheet()">とじる</button></div>
+      <p class="note">メッセージは れんしゅう用の つくりものだよ。${M.day===todayKey()?'きょうのコインは受け取りずみ':''}</p></div>`; }
+  const C=X.deck[X.i], A=X.ans;
+  return `<div class="mtr"><span class="label">🛡️ SAFETY · スマホのお金トラブル ${X.i+1}/${X.deck.length}</span><h3 class="ttl">スマホ見やぶり隊</h3>
+    <div class="mtr-ph" style="--sw:0"><div class="mtr-notch"></div><div class="mtr-sb"><span>9:41</span><span>📶 🔋</span></div>
+      <i class="mtr-hint l">❌ あやしい</i><i class="mtr-hint r">⭕ だいじょうぶ</i>
+      <div class="mtr-card${A?(A.right?' right':' wrong'):''}" onpointerdown="mtrDown(event)" onpointermove="mtrMove(event)" onpointerup="mtrUp()" onpointercancel="mtrUp()">
+        <div class="mtr-from"><i>${C.ic}</i><b>${esc(C.from)}</b><small>いま</small></div>
+        <p>${mtrText(C.t,!!A)}</p>${C.btn?`<span class="mtr-fake">${C.btn} ›</span>`:''}
+        ${A?`<div class="mtr-ans ${C.bad?'bad':'ok'}"><b>${A.right?'⭕ せいかい！':'❌ ざんねん'}　これは ${C.bad?'あやしい メッセージ':'だいじょうぶな メッセージ'}</b><span>${C.why}</span></div>`:''}
+      </div>
+      <div class="mtr-dots">${X.deck.map((_,k)=>`<i class="${k<X.i?'d':k===X.i?'n':''}"></i>`).join('')}</div></div>
+    ${A?`<button class="btn gold big" style="width:100%" onclick="mtrNext()">${X.i<X.deck.length-1?'つぎのメッセージ ›':'けっかを見る 🛡️'}</button>`
+      :`<div class="mtr-btns"><button class="mtr-b bad" onclick="mtrAns(true)">❌ あやしい</button><button class="mtr-b ok" onclick="mtrAns(false)">⭕ だいじょうぶ</button></div><p class="note" style="text-align:center">カードを 左右にスワイプしても えらべるよ</p>`}
+  </div>`; }
+AST.push({n:'スマホ見やぶり隊',ic:'🛡️',c:'#3a5ad8',a:'#eef2ff',h:110,f:()=>mtrOpen(),b:()=>mtrS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('スマホ見やぶり隊'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -11277,6 +11366,7 @@ function renderSheet(){
   else if(k==='rjc') body=rjcBody();
   else if(k==='osr') body=osrBody();
   else if(k==='skd') body=skdBody();
+  else if(k==='mtr') body=mtrBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
