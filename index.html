@@ -5917,6 +5917,37 @@ html.lite .wnt-sleigh{animation-duration:12s}
 @keyframes turHl{from{filter:drop-shadow(0 0 4px #ff8ab8)}to{filter:drop-shadow(0 0 16px #ff8ab8) drop-shadow(0 0 6px #fff)}}
 html.lite .tur-chip,html.lite .tur-hl{animation:none!important}
 @media (prefers-reduced-motion:reduce){.tur-chip,.tur-hl{animation:none!important}}
+/* 🐚 むかしの交換市 */
+.brt{display:flex;flex-direction:column;gap:10px}.brt>*{flex:none}
+.brt-bar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:16px;color:#3a2410;background:linear-gradient(180deg,#fff1d6,#f0d29a);box-shadow:inset 0 -3px 0 rgb(120 70 20 / .18)}
+.brt-bar>div{display:flex;flex-direction:column;align-items:center;gap:3px}.brt-bar>div>small{font-size:10px;font-weight:900;opacity:.7}
+.brt-arr{font-size:18px;opacity:.6}
+.brt-cnt{margin-left:auto;display:grid!important;grid-template-columns:auto auto;column-gap:6px;align-items:baseline;font-size:10px}.brt-cnt b{font-size:16px;text-align:right}
+.brt-it{display:inline-flex;flex-direction:column;align-items:center;line-height:1.1}.brt-it i{font-style:normal;font-size:30px}.brt-it small{font-size:11px;font-weight:900}
+.brt-it.brt-h i{animation:popn .45s both}
+.brt-it.brt-g{opacity:.55;filter:grayscale(.6)}.brt-it.brt-g.brt-gok{opacity:1;filter:none;animation:popn .5s both}
+.brt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.brt-tr{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"f n" "f d";column-gap:8px;align-items:center;padding:8px 10px;border:0;border-radius:14px;cursor:pointer;color:inherit;text-align:left;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s}
+.brt-tr:active{transform:scale(.97)}
+.brt-face{grid-area:f;font-size:30px;line-height:1}.brt-tr>b{grid-area:n;font-size:12.5px}
+.brt-deal{grid-area:d;display:flex;flex-direction:column;font-size:11.5px;font-weight:800;opacity:.85}.brt-deal span{white-space:nowrap}
+.brt-tr.done{opacity:.45;box-shadow:inset 0 0 0 1.5px #7cf29a}
+.brt-tr.yes{opacity:1;box-shadow:inset 0 0 0 2.5px #7cf29a,0 0 14px rgb(124 242 154 / .35);animation:popn .4s both}
+.brt-tr.no{box-shadow:inset 0 0 0 2.5px #ff6a7e;animation:shake .35s both}
+.brt-msg{margin:0;padding:8px 12px;border-radius:12px;font-size:13px;font-weight:800;line-height:1.55;background:rgb(255 255 255 / .06)}
+.brt-win{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px;border-radius:14px;background:rgb(255 200 58 / .12);box-shadow:inset 0 0 0 2px var(--gold);animation:sgIn .4s both}.brt-win>b{font-size:16px}.brt-win>span{font-size:12px;opacity:.8}
+.brt-mon{display:flex;flex-direction:column;gap:8px}
+.brt-step{display:grid;grid-template-columns:auto auto auto 1fr;align-items:center;gap:8px;padding:8px 12px;border-radius:14px;background:var(--panel2);transition:opacity .2s}
+.brt-step small{font-size:12px;font-weight:800;text-align:right}.brt-step.dim{opacity:.4}.brt-step.ok{box-shadow:inset 0 0 0 2px #7cf29a}.brt-step.ok small::after{content:" ✔";color:#7cf29a}
+.brt-shell{font-size:20px;letter-spacing:-3px}
+.brt-cmp{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px}
+.brt-cmp>div{display:flex;flex-direction:column;align-items:center;padding:10px;border-radius:14px;background:var(--panel2);animation:sgIn .4s both}.brt-cmp>div.ok{background:linear-gradient(180deg,rgb(124 242 154 / .22),var(--panel2));animation-delay:.25s}
+.brt-cmp small{font-size:11px;font-weight:900;opacity:.75}.brt-cmp b{font:400 34px var(--display,sans-serif)}.brt-cmp span{font-size:11px;font-weight:800}
+.brt-cmp .vs{padding:0;background:none;font-weight:900;opacity:.6}
+.brt-roles{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:var(--panel2)}.brt-roles>b{font-size:13px}
+.brt-roles>div{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5;animation:sgIn .35s both}.brt-roles>div:nth-child(3){animation-delay:.12s}.brt-roles>div:nth-child(4){animation-delay:.24s}
+.brt-roles i{font-style:normal;font-size:20px}.brt-roles span b{display:block;font-size:12.5px}
+@media (prefers-reduced-motion:reduce){.brt-tr,.brt-it,.brt-cmp>div,.brt-roles>div,.brt-win{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9582,6 +9613,58 @@ function turApply(){ if(!TUR) return; const sec=document.querySelector('.ast'); 
   box.innerHTML=`${guideAva()}<div class="tur-b"><small>ミオの商店街ツアー ${TUR.i+1}/${TUR_STEPS.length}</small><p>${st.t}</p><div class="tur-btns"><button class="btn ghost" onclick="turEnd(false)">とじる</button><button class="btn gold" onclick="turNext()">${TUR.i>=TUR_STEPS.length-1?'おわり 🎉':'つぎ ›'}</button></div></div>`; }
 function turChip(){ if(nbNew()) return ''; const T=turS(); return T.done?'':`<button class="tur-chip" onclick="turStart()" aria-label="ミオの商店街ツアー">🚶 ツアー</button>`; }
 const __renderTur=render; render=function(){ const r=__renderTur.apply(this,arguments); try{ if(TUR) turApply(); }catch(e){} return r; };
+/* ---- 🐚 むかしの交換市：お金がない時代の「物々交換」パズル。もっている物を、ほしい物まで交換でつなぐ。
+   ゴールしたら「お金（貝がら）があったら？」を体験して、回数をくらべる → お金が生まれた理由がわかる ---- */
+const BRT_IT=[{ic:'🐟',n:'魚',w:['🎣','りょうし']},{ic:'🍎',n:'りんご',w:['👩‍🌾','くだもの農家']},{ic:'🌾',n:'お米',w:['👨‍🌾','お米農家']},{ic:'🧺',n:'かご',w:['👵','かご職人']},
+  {ic:'🏺',n:'つぼ',w:['👴','つぼ職人']},{ic:'🧶',n:'毛糸',w:['👩','ひつじかい']},{ic:'🪵',n:'まき',w:['🧔','木こり']},{ic:'👟',n:'くつ',w:['🧑','くつ職人']},{ic:'🧂',n:'塩',w:['🧑‍🍳','塩づくり']},{ic:'🍯',n:'はちみつ',w:['👧','はちみつ屋']}];
+const BRT_ROT=['🐟','🍎','🍯'];
+let BRX=null;
+function brtS(){ const P=S.prof; if(!P.brt) P.brt={day:0,n:0,best:0}; return P.brt; }
+function brtNew(seed){ const R=mulberry(seed), idx=BRT_IT.map((_,i)=>i); for(let i=idx.length-1;i>0;i--){ const j=Math.floor(R()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; }
+  const ch=idx.slice(0,6), dc=idx.slice(6);
+  const tr=ch.slice(1).map((it,k)=>({has:it,want:ch[k]})); tr.push({has:dc[0],want:dc[1],decoy:true});
+  for(let i=tr.length-1;i>0;i--){ const j=Math.floor(R()*(i+1)); [tr[i],tr[j]]=[tr[j],tr[i]]; }
+  return {ch, tr, hold:ch[0], goal:ch[5], steps:0, no:0, ph:'trade', last:-1, bad:-1, mon:0, msg:''}; }
+function brtOpen(){ BRX=brtNew(todayKey()*7+11); BRX.daily=true; openSheet('brt'); sfx('open'); }
+function brtAgain(){ BRX=brtNew((Math.random()*1e9)|0); sfx('deal'); renderSheet(); }
+function brtTap(k){ const X=BRX; if(!X||X.ph!=='trade') return; const t=X.tr[k];
+  if(t.done){ X.msg=`${BRT_IT[t.has].w[0]}「もう 交換したよ」`; X.bad=-1; X.last=-1; renderSheet(); return; }
+  if(t.want!==X.hold){ X.no++; X.bad=k; X.last=-1; X.msg=`${BRT_IT[t.has].w[0]}「${BRT_IT[X.hold].ic}${BRT_IT[X.hold].n}は いらないなあ… ほしいのは ${BRT_IT[t.want].ic}${BRT_IT[t.want].n}」`; sfx('buzz'); haptic(20); renderSheet(); return; }
+  const give=X.hold; X.hold=t.has; t.done=true; t.got=give; X.steps++; X.last=k; X.bad=-1; sfx('coin'); haptic(8);
+  X.msg=`${BRT_IT[t.has].w[0]}「${BRT_IT[give].ic}と ${BRT_IT[t.has].ic}、交換しよう！」`;
+  if(X.hold===X.goal){ X.ph='goal'; sfx('fanfare'); setTimeout(()=>{ try{ confetti(); }catch(e){} },200); }
+  renderSheet(); }
+function brtMoney(){ const X=BRX; X.ph='money'; X.mon=0; sfx('flip'); renderSheet(); }
+function brtPay(){ const X=BRX; if(!X||X.ph!=='money') return; X.mon++; sfx(X.mon===1?'coin':'fanfare'); haptic(10);
+  if(X.mon>=2){ X.ph='end'; const B=brtS(); if(X.daily && B.day!==todayKey()){ B.day=todayKey(); B.n=(B.n||0)+1; if(!B.best||X.steps+X.no<B.best) B.best=X.steps+X.no; S.prof.coin=(S.prof.coin||0)+15; saveProfile(); setTimeout(()=>toast('🐚 交換市クリア！ 🪙+15'),400); } }
+  renderSheet(); }
+function brtIt(i,cl){ const I=BRT_IT[i]; return `<span class="brt-it${cl?' '+cl:''}"><i>${I.ic}</i><small>${I.n}</small></span>`; }
+function brtBody(){ const X=BRX||(BRX=brtNew(todayKey()*7+11)), G=BRT_IT[X.goal], St=BRT_IT[X.ch[0]];
+  const top=`<div class="brt-bar"><div><small>もっている</small>${brtIt(X.hold,'brt-h')}</div><b class="brt-arr">➜</b><div><small>ほしい</small>${brtIt(X.goal,'brt-g'+(X.hold===X.goal?' brt-gok':''))}</div><div class="brt-cnt"><small>交換</small><b>${X.steps}</b><small>ことわられた</small><b>${X.no}</b></div></div>`;
+  let main='';
+  if(X.ph==='trade'||X.ph==='goal'){
+    main=`<div class="brt-grid">${X.tr.map((t,k)=>{ const W=BRT_IT[t.has].w; return `<button class="brt-tr${t.done?' done':''}${X.bad===k?' no':''}${X.last===k?' yes':''}" onclick="brtTap(${k})" aria-label="${W[1]}：${BRT_IT[t.has].n}を持っていて、${BRT_IT[t.want].n}がほしい"><span class="brt-face">${W[0]}</span><b>${W[1]}</b><span class="brt-deal"><span>${t.done?'✔ 交換ずみ':`${BRT_IT[t.has].ic} あげる`}</span><span>ほしい ${t.done?BRT_IT[t.got].ic:BRT_IT[t.want].ic}</span></span></button>`; }).join('')}</div>
+      <p class="brt-msg">${X.msg||`あなたは ${St.ic}${St.n} を持っている。交換をつないで ${G.ic}${G.n} を手に入れよう！`}</p>
+      ${X.ph==='goal'?`<div class="brt-win"><b>🎉 ${G.ic}${G.n} を手に入れた！</b><span>交換 ${X.steps}回・ことわられた ${X.no}回</span><button class="btn gold big" style="width:100%" onclick="brtMoney()">🐚 もし「お金」があったら…？</button></div>`:''}`;
+  } else if(X.ph==='money'){
+    main=`<div class="brt-mon"><p class="brt-msg">こんどは 貝がら🐚が「お金」として使える世界。だれでも 貝がらなら受け取ってくれるよ</p>
+      <div class="brt-step${X.mon>=1?' ok':''}">${brtIt(X.ch[0])}<b>➜</b><span class="brt-shell">🐚🐚🐚</span><small>①市場で ${St.n}を売る</small></div>
+      <div class="brt-step${X.mon>=2?' ok':''}${X.mon<1?' dim':''}"><span class="brt-shell">🐚🐚🐚</span><b>➜</b>${brtIt(X.goal)}<small>② ${G.w[1]}から ${G.n}を買う</small></div>
+      <button class="btn gold big" style="width:100%" onclick="brtPay()">${X.mon===0?`🐚 ${St.ic}を売る`:`🐚 ${G.ic}を買う`}</button></div>`;
+  } else {
+    main=`<div class="brt-cmp"><div><small>物々交換</small><b>${X.steps+X.no}</b><span>回 たのんだ</span></div><div class="vs">VS</div><div class="ok"><small>お金</small><b>2</b><span>回で おわり</span></div></div>
+      <div class="brt-roles"><b>お金の3つのやくめ</b>
+        <div><i>🔁</i><span><b>なんとでも交換できる</b>「相手が ほしい物を持ってる人」を さがさなくていい</span></div>
+        <div><i>📏</i><span><b>ねうちをはかる ものさし</b>「くつ1足は 貝3まい」みたいに 値段でくらべられる</span></div>
+        <div><i>🏦</i><span><b>ためておける</b>${BRT_ROT.includes(St.ic)?`${St.n}は くさっちゃうけど、`:''}お金なら あとで使える</span></div></div>
+      <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> 大むかしの中国では、ほんとうに <span class="fk-em">貝がらがお金</span>として使われていたんだって。だから「買」「貨」「財」「貯」…お金に関係する漢字には「貝」が入ってるんだよ</p></div>
+      <div class="row" style="gap:6px"><button class="btn ghost" style="flex:1" onclick="brtAgain()">🔀 べつの問題</button><button class="btn gold" style="flex:1" onclick="closeSheet()">とじる</button></div>`;
+  }
+  const B=brtS();
+  return `<div class="brt"><span class="label">🐚 BARTER MARKET · お金がなかったころ</span><h3 class="ttl">むかしの交換市</h3>${top}${main}
+    <p class="note">${B.day===todayKey()?'きょうの交換市はクリアずみ（もう1回は「べつの問題」で）':'きょうの問題をクリアすると 🪙15'}。「貝3まい」などの値段は このおはなしの数字だよ</p></div>`; }
+AST.push({n:'むかしの交換市',ic:'🐚',c:'#b8864a',a:'#fff1d6',h:100,f:()=>brtOpen(),b:()=>brtS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('むかしの交換市'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10854,6 +10937,7 @@ function renderSheet(){
   else if(k==='zen') body=zenBody();
   else if(k==='mel') body=melBody();
   else if(k==='kpl') body=kplBody();
+  else if(k==='brt') body=brtBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
