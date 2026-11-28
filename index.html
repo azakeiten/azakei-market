@@ -6179,6 +6179,36 @@ html.lite .tur-chip,html.lite .tur-hl{animation:none!important}
 .mnb-cnt{position:relative;margin:0;font-weight:900;font-size:14px;color:#fff;animation:sgIn .4s .8s both}
 .mnb-tap{position:relative;font-size:11px;opacity:.6;color:#fff}
 @media (prefers-reduced-motion:reduce){.mnb-card,.mnb-shine,.mnb-rays,.mnb-ov .mnb-card.big{animation:none!important}}
+/* 🎒 そなえショップ */
+.sns{display:flex;flex-direction:column;gap:10px}.sns>*{flex:none}
+.sns-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:16px;color:#3a1a10;background:linear-gradient(180deg,#fff0e0,#ffd0b0)}
+.sns-fam{display:flex;flex-direction:column;font-size:24px;line-height:1.1}.sns-fam small{font-size:11px;font-weight:900}
+.sns-bud{display:flex;align-items:baseline;gap:4px}.sns-bud small{font-size:10.5px;font-weight:800}.sns-bud b{font:400 26px var(--display,sans-serif);color:#2a7a4a}.sns-bud.hi b{color:#d8403a}
+.sns-gs{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:var(--panel2)}
+.sns-gs>div:not(.sns-ess){display:grid;grid-template-columns:70px 1fr 70px;align-items:center;gap:6px;font-size:12px;font-weight:800}.sns-gs>div>b{text-align:right}
+.sns-gb{height:12px;border-radius:99px;background:rgb(255 255 255 / .08);overflow:hidden}.sns-gb em{display:block;height:100%;border-radius:99px;transition:width .3s}
+.sns-ess{display:flex;gap:6px}.sns-ess span{flex:1;padding:4px 0;border-radius:99px;text-align:center;font-size:11.5px;font-weight:900;opacity:.4;background:rgb(255 255 255 / .06)}.sns-ess span.on{opacity:1;background:rgb(124 242 154 / .18);box-shadow:inset 0 0 0 1.5px #7cf29a}
+.sns-list{display:flex;flex-direction:column;gap:4px}
+.sns-it{display:grid;grid-template-columns:32px 1fr 34px 28px 34px;align-items:center;gap:6px;padding:5px 8px;border-radius:12px;background:rgb(255 255 255 / .04)}
+.sns-it.on{background:rgb(255 200 58 / .08);box-shadow:inset 0 0 0 1.5px rgb(255 200 58 / .35)}
+.sns-it>i{font-style:normal;font-size:22px;text-align:center}.sns-it span{display:flex;flex-direction:column}.sns-it span b{font-size:12.5px}.sns-it span small{font-size:10.5px;opacity:.75}
+.sns-it button{width:34px;height:30px;padding:0;border:0;border-radius:10px;cursor:pointer;font-weight:900;font-size:17px;color:inherit;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}.sns-it button:disabled{opacity:.3;cursor:default}
+.sns-it .n{text-align:center;font-size:16px}
+.sns-chk{display:flex;flex-direction:column;gap:5px}
+.sns-chk>div{display:flex;gap:8px;align-items:flex-start;padding:7px 10px;border-radius:12px;font-size:12px;line-height:1.5;animation:sgIn .35s var(--d) both}.sns-chk i{font-style:normal;font-size:22px}.sns-chk span b{display:block;font-size:13px}
+.sns-chk .ok{background:rgb(124 242 154 / .1)}.sns-chk .ok b{color:#7cf29a}.sns-chk .ng{background:rgb(255 106 126 / .12)}.sns-chk .ng b{color:#ff8a9a}
+.sns-rs{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:14px;background:var(--panel2)}.sns-rs>b{font-size:13px}
+.sns-cmp{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.sns-col{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;border-radius:12px;background:rgb(255 255 255 / .04)}.sns-col>small{font-size:11px;font-weight:900}
+.sns-col p{margin:0;font-size:10.5px;line-height:1.5;text-align:center}.sns-col p b{font-size:11px}.sns-col.bad p b{color:#ff8a9a}.sns-col.good p b{color:#7cf29a}
+.sns-shelf{display:flex;flex-wrap:wrap;justify-content:center;gap:1px;font-size:15px;padding:4px;border-radius:8px;background:linear-gradient(180deg,#6a4a32,#4a3220)}
+.sns-col.bad .sns-shelf{animation:snsRot 1.2s 1.6s forwards}
+@keyframes snsRot{to{filter:grayscale(1) sepia(.6) brightness(.7);opacity:.55}}
+.sns-col.good .sns-shelf{animation:snsFresh 1.2s 1.6s ease-in-out 2 alternate}
+@keyframes snsFresh{50%{transform:scale(.96);filter:brightness(1.3)}}
+.sns-tl{width:100%;height:5px;border-radius:99px;background:rgb(255 255 255 / .1);overflow:hidden}.sns-tl em{display:block;height:100%;width:0;animation:skdW 1.6s .9s forwards;--w:100%}
+.sns-col.bad .sns-tl em{background:#ff6a7e}.sns-col.good .sns-tl em{background:#7cf29a}
+@media (prefers-reduced-motion:reduce){.sns *{animation-duration:.01s!important;animation-delay:0s!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -10251,6 +10281,55 @@ function mnbHook(C){ const o=window[C.fn]; if(typeof o!=='function') return;
 MNB.forEach(mnbHook);
 AST.push({n:'まなびカード館',ic:'🃏',c:'#7a4ad8',a:'#f4eaff',h:110,f:()=>mnbOpen(),b:()=>{ const n=mnbN(), M=mnbS(); return n>(M.seen||0)?'NEW':0; }});
 try{ SMAP_G[1].shops.unshift('まなびカード館'); }catch(e){}
+/* ---- 🎒 そなえショップ：ミオの家族3人ぶん「3日間のそなえ」を予算内でそろえる（水・食べ物・あかり・トイレ・情報）。
+   そのあと「しまいっぱなし」と「ローリングストック」を1年くらべる。備蓄の目安（最低3日〜1週間、水は1人1日約3L）は農林水産省の資料、ねだんはおはなしの数字 ---- */
+const SNS_IT=[
+  {k:'w',ic:'💧',n:'水 2L',p:100,g:'water',v:2,max:20},
+  {k:'r',ic:'🍚',n:'アルファ米',p:300,g:'food',v:1,max:20},
+  {k:'c',ic:'🍛',n:'レトルトカレー',p:200,g:'food',v:1,max:20},
+  {k:'k',ic:'🥫',n:'缶づめ',p:150,g:'food',v:1,max:20},
+  {k:'b',ic:'🍪',n:'ビスケット',p:100,g:'food',v:1,max:20},
+  {k:'l',ic:'🔦',n:'かいちゅう電灯',p:800,g:'light',v:1,max:2},
+  {k:'t',ic:'🚽',n:'かんいトイレ',p:1000,g:'toilet',v:1,max:2},
+  {k:'o',ic:'📻',n:'ラジオ',p:1500,g:'info',v:1,max:1},
+  {k:'g',ic:'🔥',n:'カセットコンロ',p:2500,g:'stove',v:1,max:1}];
+const SNS_BUD=10000, SNS_PPL=3, SNS_DAY=3, SNS_WN=SNS_PPL*SNS_DAY*3, SNS_FN=SNS_PPL*SNS_DAY*3;
+let SNX={q:{},ph:'shop'};
+function snsS(){ const P=S.prof; if(!P.sns) P.sns={day:0,n:0,best:0}; return P.sns; }
+function snsOpen(){ SNX={q:{},ph:'shop'}; openSheet('sns'); sfx('open'); }
+function snsSum(){ let cost=0, g={water:0,food:0,light:0,toilet:0,info:0,stove:0}, kinds=0; SNS_IT.forEach(it=>{ const n=SNX.q[it.k]||0; cost+=n*it.p; g[it.g]+=n*it.v; if(it.g==='food'&&n) kinds++; }); return {cost,g,kinds}; }
+function snsAdd(k,d){ const it=SNS_IT.find(x=>x.k===k), n=(SNX.q[k]||0)+d; if(n<0||n>it.max) return; if(d>0 && snsSum().cost+it.p>SNS_BUD){ sfx('buzz'); haptic(20); toast('💸 予算オーバー！ ほかを へらそう'); return; } SNX.q[k]=n; sfx(d>0?'tick':'click'); haptic(4); renderSheet(); }
+function snsCheck(){ SNX.ph='check'; const R=snsRes(); const K=snsS(); if(R.stars>(K.best||0)) K.best=R.stars;
+  if(K.day!==todayKey()){ K.day=todayKey(); K.n=(K.n||0)+1; S.prof.coin=(S.prof.coin||0)+10+(R.stars===5?5:0); setTimeout(()=>toast(`🎒 そなえチェック 🪙+${10+(R.stars===5?5:0)}`),600); }
+  saveProfile(); sfx(R.stars===5?'fanfare':'flip'); if(R.stars===5) try{ confetti(); }catch(e){} renderSheet(); }
+function snsRes(){ const {cost,g,kinds}=snsSum(); const it=[
+  {ok:g.water>=SNS_WN, ic:'💧', n:'水', d:g.water>=SNS_WN?`${g.water}L。3人×3日×3L＝${SNS_WN}L をクリア`:`${g.water}L。3人×3日×1日3L＝${SNS_WN}L ひつよう`},
+  {ok:g.food>=SNS_FN, ic:'🍚', n:'食べ物', d:g.food>=SNS_FN?`${g.food}食。3人×3日×3食＝${SNS_FN}食 をクリア${kinds>=3?'。しゅるいもバッチリ':'（しゅるいが少ないと あきちゃうかも）'}`:`${g.food}食。3人×3日×3食＝${SNS_FN}食 ひつよう`},
+  {ok:g.light>0, ic:'🔦', n:'あかり', d:g.light>0?'停電の夜も 安心':'停電すると 夜はまっくら…'},
+  {ok:g.toilet>0, ic:'🚽', n:'トイレ', d:g.toilet>0?'水が止まっても トイレが使える':'水が止まると トイレが流せない！'},
+  {ok:g.info>0, ic:'📻', n:'情報', d:g.info>0?'スマホの電池がなくても ニュースが聞ける':'情報がないと 何が起きているか わからない'}];
+  return {it, stars:it.filter(x=>x.ok).length, cost, g, stove:g.stove>0}; }
+function snsBar(v,max,c){ return `<i class="sns-gb"><em style="width:${Math.min(100,v/max*100)}%;background:${v>=max?'#7cf29a':c}"></em></i>`; }
+function snsBody(){ const X=SNX, {cost,g}=snsSum(), K=snsS();
+  if(X.ph==='check'){ const R=snsRes();
+    return `<div class="sns"><span class="label">🎒 BOSAI · 3日間のそなえ</span><h3 class="ttl">そなえチェック ${'⭐'.repeat(R.stars)}${'☆'.repeat(5-R.stars)}</h3>
+      <div class="sns-chk">${R.it.map((x,i)=>`<div class="${x.ok?'ok':'ng'}" style="--d:${i*.15}s"><i>${x.ic}</i><span><b>${x.n} ${x.ok?'✔':'✖'}</b>${x.d}</span></div>`).join('')}${R.stove?'<div class="ok" style="--d:.75s"><i>🔥</i><span><b>カセットコンロ ✔</b>あたたかいものが 食べられる（なくても大丈夫だけど あると心強い）</span></div>':''}</div>
+      <div class="sns-rs"><b>🔄 しまいっぱなし VS ローリングストック（1年後）</b>
+        <div class="sns-cmp"><div class="sns-col bad"><small>しまいっぱなし</small><div class="sns-shelf">${'🥫'.repeat(12)}</div><span class="sns-tl"><em></em></span><p>押し入れにしまったまま 1年…<br><b>賞味期限が切れて ぜんぶ捨てて 買い直し</b></p></div>
+        <div class="sns-col good"><small>ローリングストック</small><div class="sns-shelf">${'🥫'.repeat(12)}</div><span class="sns-tl"><em></em></span><p>ふだんの食事で 古いものから食べて、食べたぶん 買い足す<br><b>いつも 新しいそなえが ある</b></p></div></div></div>
+      <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> 食べ物のそなえは <span class="fk-em">1人 最低3日分〜1週間分</span>、水は <span class="fk-em">1人1日 約3リットル</span>が目安なんだって。ふだん食べるものを 少し多めに買っておく「ローリングストック」なら、ムダにならないよ</p></div>
+      <div class="row" style="gap:6px"><button class="btn ghost" style="flex:1" onclick="SNX.ph='shop';sfx('click');renderSheet()">🛒 買いなおす</button><button class="btn gold" style="flex:1" onclick="closeSheet()">とじる</button></div>
+      <p class="note">目安は農林水産省「災害時に備えた食品ストックガイド」などより。ねだんは このおはなしの数字。おうちの そなえも 家族でたしかめてみてね</p></div>`; }
+  return `<div class="sns"><span class="label">🎒 BOSAI · 3日間のそなえ</span><h3 class="ttl">そなえショップ</h3>
+    <div class="sns-hd"><span class="sns-fam">👩👨👧<small>ミオの家族 ${SNS_PPL}人 × ${SNS_DAY}日</small></span><span class="sns-bud${cost>SNS_BUD*.9?' hi':''}"><small>予算</small><b>${(SNS_BUD-cost).toLocaleString()}</b><small>/ ${SNS_BUD.toLocaleString()}円</small></span></div>
+    <div class="sns-gs"><div><span>💧 水</span>${snsBar(g.water,SNS_WN,'#4fc3ff')}<b>${g.water}/${SNS_WN}L</b></div><div><span>🍚 食べ物</span>${snsBar(g.food,SNS_FN,'#ffc83a')}<b>${g.food}/${SNS_FN}食</b></div>
+      <div class="sns-ess">${[['light','🔦','あかり'],['toilet','🚽','トイレ'],['info','📻','情報']].map(([k,ic,n])=>`<span class="${g[k]?'on':''}">${ic} ${n}</span>`).join('')}</div></div>
+    <div class="sns-list">${SNS_IT.map(it=>{ const n=X.q[it.k]||0; return `<div class="sns-it${n?' on':''}"><i>${it.ic}</i><span><b>${it.n}</b><small>${it.p}円${it.g==='water'?'（2L）':it.g==='food'?'（1食）':''}</small></span><button onclick="snsAdd('${it.k}',-1)" aria-label="${it.n}をへらす"${n?'':' disabled'}>−</button><b class="n">${n}</b><button onclick="snsAdd('${it.k}',1)" aria-label="${it.n}をふやす"${n>=it.max?' disabled':''}>＋</button></div>`; }).join('')}</div>
+    <button class="btn gold big" style="width:100%" onclick="snsCheck()">🎒 これで そなえチェック！</button>
+    <p class="note">ぜんぶは買えないよ。何が いちばん大事かな？ 1日1回 🪙10（ぜんぶ⭐で +5）</p></div>`; }
+AST.push({n:'そなえショップ',ic:'🎒',c:'#d8603a',a:'#fff0e8',h:104,f:()=>snsOpen(),b:()=>snsS().day===todayKey()?0:'!'});
+try{ SMAP_G[2].shops.push('そなえショップ'); }catch(e){}
+try{ const C={id:'stock',ic:'🎒',n:'ローリングストック',d:'ふだん食べる物を 少し多めに買い、古いものから食べて 食べたぶん買い足す。そなえが ムダにならない',shop:'そなえショップ',fn:'snsCheck'}; MNB.push(C); mnbHook(C); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -11530,6 +11609,7 @@ function renderSheet(){
   else if(k==='mtr') body=mtrBody();
   else if(k==='bky') body=bkyBody();
   else if(k==='mnb') body=mnbBody();
+  else if(k==='sns') body=snsBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
