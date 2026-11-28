@@ -5948,6 +5948,54 @@ html.lite .tur-chip,html.lite .tur-hl{animation:none!important}
 .brt-roles>div{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5;animation:sgIn .35s both}.brt-roles>div:nth-child(3){animation-delay:.12s}.brt-roles>div:nth-child(4){animation-delay:.24s}
 .brt-roles i{font-style:normal;font-size:20px}.brt-roles span b{display:block;font-size:12.5px}
 @media (prefers-reduced-motion:reduce){.brt-tr,.brt-it,.brt-cmp>div,.brt-roles>div,.brt-win{animation:none!important}}
+/* 🏪 AZAKEIコンビニのレジ打ち */
+.rjc{display:flex;flex-direction:column;gap:10px}.rjc>*{flex:none}
+.rjc-top{display:flex;align-items:center;gap:10px}
+.rjc-dots{display:flex;gap:5px}.rjc-dots i{width:10px;height:10px;border-radius:50%;background:rgb(255 255 255 / .18)}.rjc-dots i.now{background:var(--gold);box-shadow:0 0 8px var(--gold)}.rjc-dots i.ok{background:#7cf29a}
+.rjc-lcd{margin-left:auto;display:flex;align-items:baseline;gap:8px;padding:6px 12px;border-radius:10px;background:#0d2a1c;box-shadow:inset 0 0 0 2px #2a9a6a,inset 0 0 14px rgb(0 0 0 / .6);color:#7dffb0;font-family:ui-monospace,Consolas,monospace;text-shadow:0 0 6px rgb(125 255 176 / .6)}
+.rjc-lcd small{font-size:10px;font-weight:800;opacity:.8}.rjc-lcd b{font-size:20px;letter-spacing:1px}
+.rjc-cus{display:flex;align-items:center;gap:10px}
+.rjc-who{font-size:40px;line-height:1;animation:sgIn .4s both}.rjc-who.happy{animation:popn .5s both}
+.rjc-bub{position:relative;margin:0;flex:1;padding:8px 12px;border-radius:14px;background:#fff;color:#22331f;font-size:13px;font-weight:700;line-height:1.5}
+.rjc-bub::before{content:"";position:absolute;left:-6px;top:50%;margin-top:-6px;border:6px solid transparent;border-left:0;border-right-color:#fff}
+.rjc-bub b{color:#d0306a}
+.rjc-rc{position:relative;padding:10px 14px 12px;border-radius:4px;color:#2a2a2a;background:#fdfcf6;font-family:ui-monospace,Consolas,"Segoe UI Emoji",monospace;font-size:12.5px;box-shadow:0 4px 10px rgb(0 0 0 / .3);-webkit-mask:linear-gradient(#000,#000) top/100% calc(100% - 6px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/12px 6px repeat-x;mask:linear-gradient(#000,#000) top/100% calc(100% - 6px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/12px 6px repeat-x}
+.rjc-rch{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:4px;margin-bottom:4px;border-bottom:1.5px dashed #bbb;font-weight:900;letter-spacing:1px}.rjc-rch small{font-size:10px;letter-spacing:0;opacity:.6}
+.rjc-ln{display:flex;justify-content:space-between;gap:8px;padding:1px 0;animation:sgIn .3s var(--d,0s) both}.rjc-ln em{font-style:normal;color:#d0306a;margin-left:2px;font-weight:900}
+.rjc-ln.sub{margin-top:3px;padding-top:3px;border-top:1px dashed #ccc}.rjc-ln.tx{font-size:11px;opacity:.75}
+.rjc-ln.tot{margin-top:2px;font-size:15px;font-weight:900}
+.rjc-rcn{display:block;margin-top:4px;font-size:10px;opacity:.65}
+.rjc-q{display:flex;flex-direction:column;align-items:center}.rjc-q b{font-size:15px}.rjc-q small{font-size:11.5px;opacity:.75}
+.rjc-opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.rjc-op{padding:12px 4px;border:0;border-radius:14px;cursor:pointer;font:900 17px ui-monospace,Consolas,monospace;color:#7dffb0;background:#0d2a1c;box-shadow:inset 0 0 0 2px #2a9a6a,0 3px 0 #0a1a12;transition:transform .1s}
+.rjc-op:active{transform:translateY(2px);box-shadow:inset 0 0 0 2px #2a9a6a}
+.rjc-ok,.rjc-ng{margin:0;padding:7px 12px;border-radius:12px;font-size:13px;font-weight:800;animation:sgIn .3s both}.rjc-ok{background:rgb(124 242 154 / .14);color:#7cf29a}.rjc-ng{background:rgb(255 106 126 / .14);color:#ff98a6}
+.rjc-pay{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;line-height:1.5}
+.rjc-bill{flex:none;padding:8px 10px;border-radius:6px;font-weight:900;font-size:13px;color:#1d3a2a;background:repeating-linear-gradient(90deg,#d6ecd8 0 6px,#c8e4cc 6px 12px);box-shadow:inset 0 0 0 2px #8ab896,0 2px 4px rgb(0 0 0 / .3)}
+.rjc-tray{position:relative;display:flex;flex-wrap:wrap;gap:4px;align-items:center;min-height:58px;padding:8px 70px 8px 10px;border-radius:16px;background:linear-gradient(180deg,#4a3a5a,#2e2440);box-shadow:inset 0 3px 8px rgb(0 0 0 / .5)}
+.rjc-tray>small{font-size:11px;opacity:.6}
+.rjc-ts{position:absolute;right:10px;top:50%;transform:translateY(-50%);font:900 17px ui-monospace,Consolas,monospace;color:#ffe58a}
+.rjc-coins{display:flex;justify-content:space-between;gap:4px}
+.rjc-co{--s:44px;flex:none;width:var(--s);height:var(--s);padding:0;border:0;border-radius:50%;cursor:pointer;font:900 11px var(--body,sans-serif);color:#3a2a10;box-shadow:inset 0 0 0 2px rgb(0 0 0 / .18),inset 0 -3px 0 rgb(0 0 0 / .15),0 2px 4px rgb(0 0 0 / .35);transition:transform .1s}
+.rjc-co:active{transform:scale(.9)}
+.rjc-co.in{--s:34px;font-size:9px;animation:popn .3s both}
+.rjc-c500{background:radial-gradient(circle at 35% 30%,#fff3b8,#d8b44a 55%,#a8842a);--s:48px}.rjc-co.in.rjc-c500{--s:36px}
+.rjc-c100{background:radial-gradient(circle at 35% 30%,#fff,#c8ccd4 55%,#8a909a)}
+.rjc-c50{background:radial-gradient(circle,#2e2440 0 16%,#a8aeb8 17% 22%,#e0e4ea 23%,#9aa0aa)}
+.rjc-c10{background:radial-gradient(circle at 35% 30%,#ffc8a0,#c87a4a 55%,#8a4a2a);color:#fff}
+.rjc-c5{background:radial-gradient(circle,#2e2440 0 15%,#c8a040 16% 21%,#f0d888 22%,#c8a040)}
+.rjc-c1{background:radial-gradient(circle at 35% 30%,#fff,#e4e6ea 60%,#b8bcc4);--s:38px}.rjc-co.in.rjc-c1{--s:28px}
+.rjc-c50,.rjc-c5{display:grid;align-content:end;padding-bottom:3px}
+.rjc-res{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.rjc-res>div{display:flex;flex-direction:column;align-items:center;padding:10px 4px;border-radius:14px;background:var(--panel2);animation:sgIn .35s both}.rjc-res>div:nth-child(2){animation-delay:.1s}.rjc-res>div:nth-child(3){animation-delay:.2s}
+.rjc-res small{font-size:10.5px;font-weight:800;opacity:.75}.rjc-res b{font:400 28px var(--display,sans-serif)}.rjc-res b i{font-style:normal;font-size:14px;opacity:.6}
+.rjc-per{margin:0;text-align:center;font-weight:900;font-size:16px;color:var(--gold);animation:popn .5s both}
+.rjc-taxbox{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px;border-radius:14px;color:#1d3a2a;background:linear-gradient(180deg,#e8fff4,#b8ecd0)}.rjc-taxbox>span{font-size:12px;font-weight:900}.rjc-taxbox>b{font:400 30px var(--display,sans-serif)}.rjc-taxbox>small{font-size:11.5px;line-height:1.55;text-align:center;font-weight:700}
+.rjc-hist{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:var(--panel2)}.rjc-hist>b{font-size:13px}.rjc-hist>small{font-size:11px;opacity:.75}
+.rjc-hist>div{display:flex;align-items:center;justify-content:space-between;gap:2px}.rjc-hist>div>i{font-style:normal;opacity:.5}
+.rjc-hist span{display:flex;flex-direction:column;align-items:center;animation:sgIn .35s var(--d) both}.rjc-hist span small{font-size:9.5px;opacity:.7;white-space:nowrap}.rjc-hist span b{font-size:17px;color:#7cf29a}
+@media (max-width:360px){.rjc-co{--s:40px}.rjc-c500{--s:44px}}
+@media (prefers-reduced-motion:reduce){.rjc *{animation:none!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -9665,6 +9713,80 @@ function brtBody(){ const X=BRX||(BRX=brtNew(todayKey()*7+11)), G=BRT_IT[X.goal]
     <p class="note">${B.day===todayKey()?'きょうの交換市はクリアずみ（もう1回は「べつの問題」で）':'きょうの問題をクリアすると 🪙15'}。「貝3まい」などの値段は このおはなしの数字だよ</p></div>`; }
 AST.push({n:'むかしの交換市',ic:'🐚',c:'#b8864a',a:'#fff1d6',h:100,f:()=>brtOpen(),b:()=>brtS().day===todayKey()?0:'!'});
 try{ SMAP_G[1].shops.push('むかしの交換市'); }catch(e){}
+/* ---- 🏪 AZAKEIコンビニのレジ打ち：お客さん3人のレジを打つ。①税込みの合計をえらぶ（食べ物は軽減税率8%、
+   ただし店内で食べると10%）②あずかったお金から、おつりを硬貨でわたす。消費税の税率・歴史は実際のもの、ねだんはおはなしの数字 ---- */
+const RJC_FD=[{ic:'🍙',n:'おにぎり',p:150},{ic:'🥪',n:'サンドイッチ',p:250},{ic:'🍞',n:'パン',p:200},{ic:'🥛',n:'牛乳',p:150},{ic:'🍫',n:'チョコ',p:100},{ic:'🍱',n:'おべんとう',p:300},{ic:'🧃',n:'ジュース',p:100}];
+const RJC_GD=[{ic:'✏️',n:'えんぴつ',p:90},{ic:'📓',n:'ノート',p:150},{ic:'🧻',n:'ティッシュ',p:210},{ic:'🔋',n:'でんち',p:330},{ic:'🧼',n:'せっけん',p:120}];
+const RJC_WHO=['🧑','👵','👦','👩‍💼','👨‍🦳','👧','🧔','👩'];
+const RJC_COIN=[500,100,50,10,5,1];
+let RJX=null;
+function rjcS(){ const P=S.prof; if(!P.rjc) P.rjc={day:0,n:0,tax:0,best:0}; return P.rjc; }
+function rjcCust(R){ const pick=a=>a[Math.floor(R()*a.length)], n=2+Math.floor(R()*2), it=[]; const kind=R();
+  for(let k=0;k<n;k++){ const fd = kind<.35 ? true : kind<.55 ? false : R()<.6; const src=fd?RJC_FD:RJC_GD; let x=pick(src), g=0; while(it.some(y=>y.n===x.n)&&g++<9) x=pick(src); it.push({...x,fd}); }
+  const hasFd=it.some(x=>x.fd), eat=hasFd && it.every(x=>x.fd) && R()<.45;
+  const s8=eat?0:it.filter(x=>x.fd).reduce((a,x)=>a+x.p,0), s10=it.reduce((a,x)=>a+x.p,0)-s8;
+  const t8=s8*8/100, t10=s10/10, sub=s8+s10, tot=sub+t8+t10;
+  let alt = (s8>0) ? Math.floor(sub*1.1) : Math.floor(sub*108/100); if(alt===tot) alt=tot+Math.round(sub*.02)+10;
+  const opts=[tot,sub,alt]; for(let i=2;i>0;i--){ const j=Math.floor(R()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+  const pay=Math.ceil((tot+1)/1000)*1000;
+  return {who:pick(RJC_WHO), it, eat, s8, s10, t8, t10, sub, tot, opts, pay}; }
+function rjcNew(seed,daily){ const R=mulberry(seed); return {cs:[0,1,2].map(()=>rjcCust(R)), i:0, ph:'total', pick:null, tray:{}, miss:0, okT:0, okC:0, star:0, tax:0, daily, msg:''}; }
+function rjcOpen(){ RJX=rjcNew(todayKey()*13+5,true); openSheet('rjc'); sfx('open'); }
+function rjcAgain(){ RJX=rjcNew((Math.random()*1e9)|0,false); sfx('deal'); renderSheet(); }
+function rjcPick(v){ const X=RJX; if(!X||X.ph!=='total') return; const C=X.cs[X.i]; X.pick=v; X.ph='change'; X.tray={}; X.msg='';
+  if(v===C.tot){ X.okT++; sfx('coin'); haptic(8); } else { sfx('buzz'); haptic(20); } renderSheet(); }
+function rjcTraySum(){ return Object.entries(RJX.tray).reduce((a,[d,n])=>a+d*n,0); }
+function rjcAdd(d){ const X=RJX; if(!X||X.ph!=='change') return; X.tray[d]=(X.tray[d]||0)+1; X.msg=''; sfx('tick'); haptic(4); renderSheet(); }
+function rjcDel(d){ const X=RJX; if(!X.tray[d]) return; X.tray[d]--; if(!X.tray[d]) delete X.tray[d]; sfx('click'); renderSheet(); }
+function rjcMin(v){ let n=0; for(const d of RJC_COIN){ n+=Math.floor(v/d); v%=d; } return n; }
+function rjcGive(){ const X=RJX; if(!X||X.ph!=='change') return; const C=X.cs[X.i], need=C.pay-C.tot, got=rjcTraySum();
+  if(got!==need){ X.miss++; X.msg = got<need ? `🤔 おつりが すくないみたい…（${C.pay.toLocaleString()} − ${C.tot.toLocaleString()} を計算してみよう）` : '🤔 おつりが 多すぎるみたい…'; sfx('buzz'); haptic(20); renderSheet(); return; }
+  const cnt=Object.values(X.tray).reduce((a,n)=>a+n,0), best=rjcMin(need); X.okC++; X.tax+=C.t8+C.t10; X.lastStar = cnt<=best; if(X.lastStar) X.star++;
+  X.ph='thanks'; sfx('fanfare'); haptic(10); renderSheet(); }
+function rjcNext(){ const X=RJX; if(X.i<X.cs.length-1){ X.i++; X.ph='total'; X.pick=null; X.tray={}; X.msg=''; sfx('deal'); renderSheet(); return; }
+  X.ph='end'; const B=rjcS(); B.tax=(B.tax||0)+X.tax;
+  if(X.daily && B.day!==todayKey()){ B.day=todayKey(); B.n=(B.n||0)+1; const perfect = X.okT===3 && X.miss===0; const c=15+(perfect?5:0); S.prof.coin=(S.prof.coin||0)+c; setTimeout(()=>toast(`🏪 レジ打ちおつかれさま！ 🪙+${c}${perfect?'（パーフェクト！）':''}`),400); }
+  saveProfile(); sfx('fanfare'); try{ confetti(); }catch(e){} renderSheet(); }
+function rjcCoin(d,cl,on){ const big=d>=100; return `<button class="rjc-co rjc-c${d}${cl?' '+cl:''}" ${on||''} aria-label="${d}円">${d}</button>`; }
+function rjcReceipt(C,showTax){ return `<div class="rjc-rc"><div class="rjc-rch">AZAKEI MART<small>レシート</small></div>
+  ${C.it.map((x,k)=>`<div class="rjc-ln" style="--d:${k*.12}s"><span>${x.ic} ${x.n}${x.fd&&!C.eat?'<em>※</em>':''}</span><b>¥${x.p}</b></div>`).join('')}
+  <div class="rjc-ln sub"><span>小計</span><b>¥${C.sub}</b></div>
+  ${showTax?`${C.s8?`<div class="rjc-ln tx"><span>(8%対象 ¥${C.s8})　消費税</span><b>¥${C.t8}</b></div>`:''}${C.s10?`<div class="rjc-ln tx"><span>(10%対象 ¥${C.s10})　消費税</span><b>¥${C.t10}</b></div>`:''}<div class="rjc-ln tot"><span>合計</span><b>¥${C.tot.toLocaleString()}</b></div>`:''}
+  ${C.it.some(x=>x.fd)&&!C.eat?'<small class="rjc-rcn">※は軽減税率（8%）の対象</small>':''}</div>`; }
+function rjcBody(){ const X=RJX||(RJX=rjcNew(todayKey()*13+5,true)), B=rjcS();
+  if(X.ph==='end'){ const per=X.okT===3&&X.miss===0;
+    return `<div class="rjc"><span class="label">🏪 CASHIER · 消費税とおつり</span><h3 class="ttl">レジ打ち おつかれさま！</h3>
+      <div class="rjc-res"><div><small>合計の正解</small><b>${X.okT}<i>/3</i></b></div><div><small>おつりミス</small><b>${X.miss}</b></div><div><small>最小まいすう</small><b>${X.star}<i>/3</i></b></div></div>
+      ${per?'<p class="rjc-per">🏅 パーフェクト・レジ！</p>':''}
+      <div class="rjc-taxbox"><span>きょうあずかった 消費税</span><b>¥${X.tax}</b><small>お店は消費税を あずかって、まとめて 国や都道府県などに納めるよ。医療・年金・介護・子育てなど みんなのくらしを ささえるお金になるんだ</small></div>
+      <div class="rjc-hist"><b>消費税の税率のうつりかわり</b><div>${[['1989年4月','3%'],['1997年4月','5%'],['2014年4月','8%'],['2019年10月','10%']].map((r,i)=>`<span style="--d:${i*.12}s"><small>${r[0]}</small><b>${r[1]}</b></span>`).join('<i>›</i>')}</div><small>2019年10月から、食べ物や飲み物（お酒・外食をのぞく）は 軽減税率 8% のまま</small></div>
+      <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> 同じおにぎりでも、<span class="fk-em">持ち帰りは8%、お店の中で食べると10%</span>。レシートの「※」マークを 次の買いものでさがしてみてね</p></div>
+      <div class="row" style="gap:6px"><button class="btn ghost" style="flex:1" onclick="rjcAgain()">🔀 もう1回</button><button class="btn gold" style="flex:1" onclick="closeSheet()">とじる</button></div>
+      <p class="note">ねだんは このおはなしの数字。税率と歴史は 実際のものだよ。${B.day===todayKey()?'きょうのコインは受け取りずみ':''}</p></div>`; }
+  const C=X.cs[X.i], dots=X.cs.map((_,k)=>`<i class="${k<X.i||(k===X.i&&X.ph==='thanks')?'ok':k===X.i?'now':''}"></i>`).join('');
+  const line = X.ph==='thanks' ? (X.lastStar?'ありがとう！ おつりも ぴったり、ちょうどいい まいすうだね':'ありがとう！ （もっと少ないまいすうでも わたせたよ）') : C.eat ? 'これください。<b>ここで食べていきます</b>' : C.it.some(x=>x.fd) ? 'これください。<b>持ち帰りで</b>' : 'これ、おねがいします';
+  const lcd = X.ph==='total' ? ['小計',C.sub] : X.ph==='change' ? ['おあずかり',C.pay] : ['おつり',C.pay-C.tot];
+  let main='';
+  if(X.ph==='total'){
+    main=`<div class="rjc-q"><b>税込みの合計は？</b><small>${C.eat?'店内で食べる → 食べ物も10%':C.it.some(x=>x.fd)?'食べ物（※）は8%、それ以外は10%':'食べ物ではないので10%'}</small></div>
+      <div class="rjc-opts">${C.opts.map(v=>`<button class="rjc-op" onclick="rjcPick(${v})">¥${v.toLocaleString()}</button>`).join('')}</div>`;
+  } else if(X.ph==='change'){
+    const ok=X.pick===C.tot, sum=rjcTraySum(), tray=RJC_COIN.filter(d=>X.tray[d]).map(d=>Array.from({length:X.tray[d]},()=>rjcCoin(d,'in',`onclick="rjcDel(${d})"`)).join('')).join('');
+    main=`${ok?'<p class="rjc-ok">⭕ 合計 正解！</p>':`<p class="rjc-ng">❌ 正しい合計は <b>¥${C.tot.toLocaleString()}</b>（小計 ¥${C.sub} ＋ 消費税 ¥${C.t8+C.t10}）</p>`}
+      <div class="rjc-pay"><span class="rjc-bill">${C.pay.toLocaleString()}円</span><span>をあずかった。<b>おつりはいくら？</b> 硬貨をタップして トレーにのせよう</span></div>
+      <div class="rjc-tray" aria-label="おつりトレー">${tray||'<small>ここにおつりがならぶよ（タップでもどす）</small>'}<b class="rjc-ts">¥${sum}</b></div>
+      <div class="rjc-coins">${RJC_COIN.map(d=>rjcCoin(d,'',`onclick="rjcAdd(${d})"`)).join('')}</div>
+      ${X.msg?`<p class="rjc-ng">${X.msg}</p>`:''}
+      <button class="btn gold big" style="width:100%" onclick="rjcGive()">🤲 おつりをわたす</button>`;
+  } else {
+    main=`<p class="rjc-ok">✅ おつり ¥${C.pay-C.tot} ぴったり！${X.lastStar?' ⭐いちばん少ないまいすう':''}</p><button class="btn gold big" style="width:100%" onclick="rjcNext()">${X.i<X.cs.length-1?'つぎのお客さん ›':'きょうのレジをしめる 🧾'}</button>`;
+  }
+  return `<div class="rjc"><span class="label">🏪 CASHIER · 消費税とおつり</span><h3 class="ttl">AZAKEIコンビニのレジ打ち</h3>
+    <div class="rjc-top"><div class="rjc-dots">${dots}</div><div class="rjc-lcd"><small>${lcd[0]}</small><b>¥${lcd[1].toLocaleString()}</b></div></div>
+    <div class="rjc-cus"><span class="rjc-who${X.ph==='thanks'?' happy':''}">${C.who}</span><p class="rjc-bub">${line}</p></div>
+    ${rjcReceipt(C, X.ph!=='total')}${main}</div>`; }
+AST.push({n:'AZAKEIコンビニ',ic:'🏪',c:'#2a9a6a',a:'#e8fff4',h:104,f:()=>rjcOpen(),b:()=>rjcS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('AZAKEIコンビニ'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -10938,6 +11060,7 @@ function renderSheet(){
   else if(k==='mel') body=melBody();
   else if(k==='kpl') body=kplBody();
   else if(k==='brt') body=brtBody();
+  else if(k==='rjc') body=rjcBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
