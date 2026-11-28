@@ -6115,6 +6115,40 @@ html.lite .tur-chip,html.lite .tur-hl{animation:none!important}
 .mtr-rules{display:flex;flex-direction:column;gap:7px;padding:10px 12px;border-radius:14px;background:var(--panel2)}.mtr-rules>b{font-size:13px}
 .mtr-rules>div{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5;animation:sgIn .35s var(--d) both}.mtr-rules i{font-style:normal;font-size:22px}.mtr-rules span b{display:block;font-size:13px}
 @media (prefers-reduced-motion:reduce){.mtr *{animation:none!important}}
+/* 🥐 AZAKEIパン屋の1日 */
+.bky{display:flex;flex-direction:column;gap:10px}.bky>*{flex:none}
+.bky-sky{position:relative;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;color:#2a1a10;background:linear-gradient(180deg,#bfe6ff,#fff3d6)}
+.bky-sky.w1{background:linear-gradient(180deg,#d6dde8,#f4efe4)}.bky-sky.w2{background:linear-gradient(180deg,#9ab0c8,#e0e6ee)}
+.bky-fc{display:flex;flex-direction:column;align-items:center}.bky-fc i{font-style:normal;font-size:30px;line-height:1}.bky-fc b{font-size:12px}.bky-fc small{font-size:10px;font-weight:800;opacity:.75}
+.bky-hint{display:flex;flex-direction:column;padding:4px 10px;border-radius:10px;background:rgb(255 255 255 / .6)}.bky-hint small{font-size:10px;font-weight:800;opacity:.7}.bky-hint b{font-size:16px}
+.bky-clock{--h:7;position:relative;margin-left:auto;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle,#fff 60%,#f0e6d0);box-shadow:inset 0 0 0 3px #8a5a2a,0 2px 4px rgb(0 0 0 / .2)}
+.bky-clock i{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:2px;background:#3a2a1a}
+.bky-clock .hh{width:4px;height:14px;margin-left:-2px;transform:rotate(calc(var(--h) * 30deg))}
+.bky-clock .mh{width:2px;height:19px;margin-left:-1px;transform:rotate(0deg)}
+.bky-clock.run1 .hh{animation:bkyH1 2.6s linear both}.bky-clock.run1 .mh{animation:bkyM 0.26s linear 10}
+.bky-clock.run2 .hh{animation:bkyH2 1.5s linear both}.bky-clock.run2 .mh{animation:bkyM 0.75s linear 2}
+@keyframes bkyH1{from{transform:rotate(210deg)}to{transform:rotate(510deg)}}@keyframes bkyH2{from{transform:rotate(510deg)}to{transform:rotate(570deg)}}@keyframes bkyM{to{transform:rotate(360deg)}}
+.bky-tips{display:flex;flex-wrap:wrap;gap:5px}.bky-tips span{padding:3px 9px;border-radius:99px;font-size:11px;font-weight:800;background:var(--panel2)}
+.bky-oven{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:linear-gradient(180deg,#5a3a2a,#3a2418);box-shadow:inset 0 0 0 3px #8a5a3a,inset 0 -10px 20px rgb(255 120 40 / .25)}
+.bky-qty{display:flex;flex-direction:column;align-items:center;color:#ffe2b8}.bky-qty small{font-size:10px;font-weight:800}.bky-qty b{font:400 34px var(--display,sans-serif);line-height:1}
+.bky-tray{flex:1;display:flex;flex-wrap:wrap;gap:1px;font-size:14px;line-height:1.1;min-height:40px;align-content:center}
+.bky-rng{width:100%;accent-color:#e8a83a}
+.bky-pc{display:flex;justify-content:space-between;font-size:12px;font-weight:800}.bky-pc b{color:var(--gold)}.bky-cost{opacity:.8}
+.bky-shelf{display:flex;flex-wrap:wrap;gap:2px;padding:10px;border-radius:14px;font-size:18px;line-height:1.15;background:linear-gradient(180deg,#7a5232,#5a3a22);box-shadow:inset 0 -4px 0 rgb(0 0 0 / .25),inset 0 0 0 2px #9a6a42}
+.bky-shelf i{font-style:normal}.bky-shelf i.s{animation:bkySold .3s var(--d) forwards}
+@keyframes bkySold{to{opacity:.12;transform:translateY(-6px) scale(.7);filter:grayscale(1)}}
+.bky-rep{display:flex;justify-content:space-between;font-size:13px;font-weight:800;opacity:0;animation:sgIn .3s 2.7s forwards}.bky-rep b{color:#7cf29a;font-size:16px}.bky-rep b.z{color:#ffc83a}
+.bky-q{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:rgb(255 200 58 / .1);box-shadow:inset 0 0 0 2px rgb(255 200 58 / .45);opacity:0;animation:sgIn .35s 2.9s forwards}.bky-q>b{font-size:13.5px}.bky-q>small{font-size:12px;opacity:.8}
+.bky-sales{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.bky-sl{display:flex;flex-direction:column;align-items:center;padding:8px 2px;border:0;border-radius:12px;cursor:pointer;color:inherit;background:var(--panel2);box-shadow:inset 0 0 0 1.5px var(--line)}.bky-sl i{font-style:normal;font-size:22px}.bky-sl b{font-size:12.5px}.bky-sl small{font-size:11px;font-weight:900;color:var(--gold)}
+.bky-sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;opacity:0;animation:sgIn .35s 1.6s forwards}
+.bky-sum>div{display:flex;flex-direction:column;align-items:center;padding:8px 2px;border-radius:14px;background:var(--panel2)}.bky-sum small{font-size:10.5px;font-weight:800;opacity:.75}.bky-sum b{font:400 26px var(--display,sans-serif)}.bky-sum span{font-size:11px;font-weight:800}
+.bky-sum .bad b{color:#ff6a7e}.bky-sum .good b{color:#7cf29a}
+.bky-calc{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:8px 12px;border-radius:12px;font-size:11.5px;font-weight:700;background:rgb(255 255 255 / .05);opacity:0;animation:sgIn .35s 1.8s forwards}.bky-calc b{text-align:right}
+.bky-truth{display:flex;flex-direction:column;align-items:center;padding:8px 12px;border-radius:12px;background:rgb(79 227 255 / .1);box-shadow:inset 0 0 0 1.5px rgb(79 227 255 / .4);opacity:0;animation:sgIn .35s 2s forwards}.bky-truth span{font-size:11.5px;font-weight:800}.bky-truth b{font-size:20px}.bky-truth small{font-size:11px;text-align:center;opacity:.85}
+.bky .gd-talk{opacity:0;animation:sgIn .4s 2.3s forwards}
+.bky-tip{padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.55;font-weight:700;background:var(--panel2);opacity:0;animation:sgIn .35s 2.5s forwards}.bky-tip b{color:#7cf29a}
+@media (prefers-reduced-motion:reduce){.bky *{animation-duration:.01s!important;animation-delay:0s!important}}
 .trcard{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--rc) 38%,transparent),transparent 55%),linear-gradient(160deg,var(--panel2),var(--panel));box-shadow:0 5px 0 var(--rail),inset 0 0 0 1px color-mix(in srgb,var(--rc) 45%,var(--line))}
 .trcard::after{content:"VS";position:absolute;right:-6px;bottom:-22px;font-family:var(--display);font-size:96px;color:color-mix(in srgb,var(--rc) 18%,transparent);pointer-events:none}
 .tr-ava{width:64px;height:64px;font-size:32px;animation:trbob 2.4s ease-in-out infinite}
@@ -10090,6 +10124,57 @@ function mtrBody(){ const X=MTX||(MTX=mtrNew(todayKey()*17+3,true)), M=mtrS();
   </div>`; }
 AST.push({n:'スマホ見やぶり隊',ic:'🛡️',c:'#3a5ad8',a:'#eef2ff',h:110,f:()=>mtrOpen(),b:()=>mtrS().day===todayKey()?0:'!'});
 try{ SMAP_G[1].shops.push('スマホ見やぶり隊'); }catch(e){}
+/* ---- 🥐 AZAKEIパン屋の1日：天気と曜日を見て、朝に焼くパンの数を決める → 17時までの売れ行き → タイムセールするか決める → 閉店。
+   売れ残り＝食品ロス。値引きは「もともと買う人にも安く売る」ことになるトレードオフ。食品ロスの数字は農林水産省・環境省などの公表値 ---- */
+const BKY_W=[{ic:'☀️',n:'はれ',d:8},{ic:'☁️',n:'くもり',d:0},{ic:'☔',n:'雨',d:-10}];
+const BKY_P=150, BKY_C=40;
+const BKY_SALE=[{n:'そのまま',ic:'🙂',r:1,p:0},{n:'30%引き',ic:'🏷️',r:.7,p:.4},{n:'半額',ic:'💥',r:.5,p:.8}];
+let BKX=null;
+function bkyS(){ const P=S.prof; if(!P.bky) P.bky={day:0,n:0,best:0,loss:0}; return P.bky; }
+function bkyNew(seed,daily){ const R=mulberry(seed), w=Math.floor(R()*3), hol=R()<.35, base=30+BKY_W[w].d+(hol?10:0), D=Math.max(8,Math.round(base*(.75+R()*.5)));
+  const yest=Math.max(8,Math.round(base*(.8+R()*.4))); return {w,hol,base,D,yest,bake:Math.round(base/5)*5,ph:'plan',sale:null,daily}; }
+function bkyOpen(){ BKX=bkyNew(todayKey()*19+7,true); openSheet('bky'); sfx('open'); }
+function bkyAgain(){ BKX=bkyNew((Math.random()*1e9)|0,false); sfx('deal'); renderSheet(); }
+function bkySet(v){ BKX.bake=+v; const o=document.querySelector('.bky-qty b'); if(o) o.textContent=v; const c=document.querySelector('.bky-cost'); if(c) c.textContent=`材料・電気代 ${(v*BKY_C).toLocaleString()}円`; const sh=document.querySelector('.bky-tray'); if(sh) sh.innerHTML='🥐'.repeat(v); }
+function bkyBake(){ const X=BKX; X.day=Math.min(X.bake,Math.round(X.D*.75)); X.ph='day'; sfx('whoosh'); renderSheet(); }
+function bkySale(k){ const X=BKX; if(X.ph!=='day') return; const L=BKY_SALE[k], left=X.bake-X.day, eb=Math.min(left,Math.round(X.D*.25)), ex=Math.round((left-eb)*L.p);
+  X.sale=k; X.eve=eb+ex; X.ePrice=Math.round(BKY_P*L.r); X.loss=left-X.eve; X.rev=X.day*BKY_P+X.eve*X.ePrice; X.cost=X.bake*BKY_C; X.prof=X.rev-X.cost; X.ph='end';
+  X.ideal=X.D*(BKY_P-BKY_C);
+  const B=bkyS(); B.loss=(B.loss||0)+X.loss; if(X.prof>(B.best||0)) B.best=X.prof;
+  if(X.daily && B.day!==todayKey()){ B.day=todayKey(); B.n=(B.n||0)+1; const c=10+(X.loss===0&&X.prof>0?5:0); S.prof.coin=(S.prof.coin||0)+c; setTimeout(()=>toast(`🥐 閉店おつかれさま！ 🪙+${c}`),2200); }
+  saveProfile(); sfx(k?'slam':'click'); setTimeout(()=>{ if(S.sheet==='bky') sfx(X.loss?'flip':'fanfare'); },1800); renderSheet(); }
+function bkyClock(h,anim){ return `<div class="bky-clock${anim?' '+anim:''}" style="--h:${h}"><i class="hh"></i><i class="mh"></i></div>`; }
+function bkyShelf(n,sold,from,dur){ return `<div class="bky-shelf">${Array.from({length:n},(_,k)=>`<i${k<sold?` class="s" style="--d:${(from+dur*(k+.5)/Math.max(1,sold)).toFixed(2)}s"`:''}>🥐</i>`).join('')}</div>`; }
+function bkyBody(){ const X=BKX||(BKX=bkyNew(todayKey()*19+7,true)), W=BKY_W[X.w], B=bkyS();
+  const head=`<div class="bky-sky w${X.w}"><span class="bky-fc"><i>${W.ic}</i><b>${W.n}</b><small>${X.hol?'お休みの日':'平日'}</small></span><span class="bky-hint"><small>きのう売れた数</small><b>${X.yest}こ</b></span>${bkyClock(X.ph==='plan'?7:X.ph==='day'?17:19, X.ph==='day'?'run1':X.ph==='end'?'run2':'')}</div>`;
+  if(X.ph==='plan') return `<div class="bky"><span class="label">🥐 BAKERY · つくる数を決める</span><h3 class="ttl">AZAKEIパン屋の1日</h3>${head}
+    <div class="bky-tips"><span>☀️ はれ → お客さん多め</span><span>☔ 雨 → 少なめ</span><span>🎈 お休みの日 → 多め</span></div>
+    <div class="bky-oven"><div class="bky-qty"><small>朝に焼く数</small><b>${X.bake}</b><small>こ</small></div><div class="bky-tray">${'🥐'.repeat(X.bake)}</div></div>
+    <input class="bky-rng" type="range" min="10" max="60" step="5" value="${X.bake}" oninput="bkySet(this.value)" aria-label="焼くパンの数">
+    <div class="bky-pc"><span>1こ <b>${BKY_P}円</b> で売る</span><span class="bky-cost">材料・電気代 ${(X.bake*BKY_C).toLocaleString()}円</span></div>
+    <button class="btn gold big" style="width:100%" onclick="bkyBake()">🔥 焼いて お店をあける！</button>
+    <p class="note">少なすぎると すぐ売り切れ（買えないお客さん）、多すぎると 売れ残る。きょうのお客さんの数は ひみつだよ</p></div>`;
+  if(X.ph==='day'){ const left=X.bake-X.day;
+    return `<div class="bky"><span class="label">🥐 BAKERY · 7時〜17時</span><h3 class="ttl">お店 オープン！</h3>${head}
+      ${bkyShelf(X.bake,X.day,.2,2.4)}
+      <div class="bky-rep"><span>17時までに <b>${X.day}こ</b> 売れた</span><span>のこり <b class="${left?'':'z'}">${left}こ</b></span></div>
+      ${left?`<div class="bky-q"><b>⏰ 17時。閉店まで あと2時間。タイムセールする？</b><div class="bky-sales">${BKY_SALE.map((L,k)=>`<button class="bky-sl" onclick="bkySale(${k})"><i>${L.ic}</i><b>${L.n}</b><small>${Math.round(BKY_P*L.r)}円</small></button>`).join('')}</div></div>`
+        :`<div class="bky-q"><b>😮 夕方を待たずに 売り切れ！</b><small>もっと焼いていたら 売れたかも…？</small><button class="btn gold" style="width:100%;margin-top:6px" onclick="bkySale(0)">閉店する</button></div>`}</div>`; }
+  const L=BKY_SALE[X.sale], miss=Math.max(0,X.D-X.bake), sellout=X.bake-X.day===0;
+  return `<div class="bky"><span class="label">🥐 BAKERY · 閉店</span><h3 class="ttl">きょうの けっか</h3>${head}
+    ${bkyShelf(X.bake-X.day,X.eve,.1,1.4)}
+    <div class="bky-sum">
+      <div><small>売れた</small><b>${X.day+X.eve}</b><span>こ</span></div>
+      <div class="${X.loss?'bad':''}"><small>売れ残り</small><b>${X.loss}</b><span>こ ${X.loss?'🗑️':'✨'}</span></div>
+      <div class="${X.prof<0?'bad':'good'}"><small>もうけ</small><b>${X.prof.toLocaleString()}</b><span>円</span></div></div>
+    <div class="bky-calc"><span>売上 ${X.day}こ×${BKY_P}円${X.eve?` ＋ ${X.eve}こ×${X.ePrice}円`:''}</span><b>${X.rev.toLocaleString()}円</b><span>材料・電気代 ${X.bake}こ×${BKY_C}円</span><b>−${X.cost.toLocaleString()}円</b></div>
+    <div class="bky-truth"><span>🔎 きょうの ほんとうのお客さん</span><b>${X.D}人</b><small>${miss?`${miss}人は 売り切れで 買えなかった`:`焼いた数 ${X.bake}こ`}${X.sale&&X.eve?`・セールで 安く買えた人 ${X.eve}人（もともと買う予定だった人もいたよ）`:''}</small></div>
+    <div class="gd-talk">${guideAva()}<p class="gd-bub"><b>${GUIDE.n}</b> ${X.loss?`売れ残った${X.loss}こは 捨てることに…これが <span class="fk-em">食品ロス</span>。`:sellout&&miss?'売り切れは うれしいけど、買えなかった人もいたね。':'ぴったり売れた！ '}日本では まだ食べられるのに捨てられる食べ物が <span class="fk-em">1年に約461万トン</span>（2024年度の推計）。1人あたりにすると 1日 約100g、おにぎり1こ分くらいなんだって</p></div>
+    <div class="bky-tip">${X.sale?`🏷️ ${L.n}は 売れ残りをへらせるけど、もともと買う人にも安く売ることになるよ。`:'🏷️ タイムセールにすると 売れ残りはへるけど、1こあたりの もうけは へるよ。'}お店は「売り切れでお客さんをがっかりさせたくない」と 多めに作りがち。これも食品ロスが生まれる理由のひとつ。売れ残ったパンを <b>フードバンク</b>（食べ物をこまっている人にとどける活動）にわたすお店もあるよ</div>
+    <div class="row" style="gap:6px"><button class="btn ghost" style="flex:1" onclick="bkyAgain()">🔀 べつの日</button><button class="btn gold" style="flex:1" onclick="closeSheet()">とじる</button></div>
+    <p class="note">パンのねだん・お客さんの数は このおはなしの数字。食品ロスの量は 農林水産省・環境省などの公表値（1人1日あたりは 人口でわった計算）。${B.day===todayKey()?'きょうのコインは受け取りずみ':'1日1回 🪙10（売れ残り0でもうけが出たら +5）'}</p></div>`; }
+AST.push({n:'AZAKEIパン屋',ic:'🥐',c:'#c8843a',a:'#fff4e0',h:104,f:()=>bkyOpen(),b:()=>bkyS().day===todayKey()?0:'!'});
+try{ SMAP_G[1].shops.push('AZAKEIパン屋'); }catch(e){}
 /* ---- 🎚️ サウンドミキサー（シート） ---- */
 const MIX_CH=[{k:'sfx',n:'効果音',ic:'🔔',c:'#4fe3ff'},{k:'bgm',n:'BGM',ic:'🎵',c:'#a77bff'},{k:'vo',n:'アナウンス',ic:'📢',c:'#ffc83a'},{k:'mio',n:'ミオ',ic:'💬',c:'#ff8cc8'}];
 function voCdOk(){ const m=S.cdVo||'all'; if(m==='off') return false; if(m==='last') return bgmTense(); return true; }
@@ -11367,6 +11452,7 @@ function renderSheet(){
   else if(k==='osr') body=osrBody();
   else if(k==='skd') body=skdBody();
   else if(k==='mtr') body=mtrBody();
+  else if(k==='bky') body=bkyBody();
   else if(k.startsWith('dex:')) body=dexSheetBody(k.slice(4));
   else if(k.startsWith('ind:')) body=indSheetBody(+k.slice(4));
   else if(k==='terms') body=termsBody();
